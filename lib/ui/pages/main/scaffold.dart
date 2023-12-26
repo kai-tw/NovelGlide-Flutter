@@ -29,8 +29,8 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: _titleWidget(),
-        body: bodyWidget(),
-        bottomNavigationBar: navWidget());
+        body: _bodyWidget(),
+        bottomNavigationBar: _navWidget());
   }
 
   PreferredSizeWidget _titleWidget() {
@@ -40,34 +40,30 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget bodyWidget() {
+  Widget _bodyWidget() {
     return Container(
       margin: const EdgeInsets.all(8.0),
       child: _widgetOptions[_currentPageIndex],
     );
   }
 
-  Widget navWidget() {
-    return Container(
-        margin: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 12.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          child: NavigationBar(
-            height: 64.0,
-            onDestinationSelected: (int index) {
-              setState(() {
-                _currentPageIndex = index;
-              });
-            },
-            indicatorColor: Colors.transparent,
-            selectedIndex: _currentPageIndex,
-            labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-            destinations: const <Widget>[
-              NavigationDestination(icon: Icon(Icons.home_outlined), label: ''),
-              NavigationDestination(icon: Icon(Icons.bookmark), label: ''),
-              NavigationDestination(icon: Icon(Icons.settings), label: '')
-            ],
-          ),
-        ));
+  Widget _navWidget() {
+    return NavigationBar(
+      height: 64.0,
+      onDestinationSelected: (int index) {
+        setState(() {
+          _currentPageIndex = index;
+        });
+      },
+      indicatorColor: Colors.transparent,
+      selectedIndex: _currentPageIndex,
+      labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+      backgroundColor: Theme.of(context).colorScheme.background,
+      destinations: const <Widget>[
+        NavigationDestination(icon: Icon(Icons.home_outlined), label: ''),
+        NavigationDestination(icon: Icon(Icons.bookmark), label: ''),
+        NavigationDestination(icon: Icon(Icons.settings), label: '')
+      ],
+    );
   }
 }
