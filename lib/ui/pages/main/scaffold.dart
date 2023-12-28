@@ -28,9 +28,10 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: _titleWidget(),
-        body: _bodyWidget(),
-        bottomNavigationBar: _navWidget());
+      appBar: _titleWidget(),
+      body: _bodyWidget(),
+      bottomNavigationBar: _navWidget()
+    );
   }
 
   PreferredSizeWidget _titleWidget() {
@@ -60,7 +61,7 @@ class _MainPageState extends State<MainPage> {
       labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
       backgroundColor: Theme.of(context).colorScheme.background,
       destinations: const <Widget>[
-        NavigationDestination(icon: Icon(Icons.home_outlined), label: ''),
+        NavigationDestination(icon: Icon(Icons.home_filled), label: ''),
         NavigationDestination(icon: Icon(Icons.bookmark), label: ''),
         NavigationDestination(icon: Icon(Icons.settings), label: '')
       ],
