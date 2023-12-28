@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:path/path.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:novelglide/core/file_process.dart';
+import 'package:novelglide/ui/components/emoticon_collection.dart';
 
 class LibraryWidget extends StatefulWidget {
   const LibraryWidget({super.key});
@@ -9,50 +14,39 @@ class LibraryWidget extends StatefulWidget {
 }
 
 class _LibraryWidgetState extends State<LibraryWidget> {
-  String supportPath = "";
-  String documentPath = "";
-  String cachePath = "";
-  String tempPath = "";
+  Widget mainWidget = const SizedBox();
+  String noBookLocalization = '';
 
   @override
   void initState() {
     super.initState();
-    FileProcess.supportFolder.then((value) {
-      setState(() {
-        supportPath = value;
-      });
-    });
-    FileProcess.documentFolder.then((value) {
-      setState(() {
-        documentPath = value;
-      });
-    });
-    FileProcess.cacheFolder.then((value) {
-      setState(() {
-        cachePath = value;
-      });
-    });
-    FileProcess.tempFolder.then((value) {
-      setState(() {
-        tempPath = value;
-      });
-    });
-    FileProcess.createIfNotExists(FileProcess.typeFolder, "/NovelGlide");
+    FileProcess.getLibraryBookList().then(renderBookList);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shadowColor: Colors.transparent,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Center(
-          child: Column(
-            children: [
-              Text(supportPath),
-              Text(documentPath),
-              Text(cachePath),
-              Text(tempPath)
-      ]))));
+    noBookLocalization = AppLocalizations.of(context)!.no_book;
+    return Hero(
+        tag: 'Library List Hero',
+        child: Padding(padding: const EdgeInsets.all(16), child: mainWidget));
+  }
+
+  void renderBookList(List<Directory> bookList) {
+    List<Widget> bookWidgetList = [];
+    setState(() {
+      if (bookList.isNotEmpty) {
+        mainWidget = Column(children: bookWidgetList);
+        for (Directory item in bookList) {
+          bookWidgetList.add(ListTile(title: Text(basename(item.path))));
+        }
+      } else {
+        mainWidget = Center(
+          child: Center(
+              child: Text(
+                  '${EmoticonCollection.getRandomShock()}\n$noBookLocalization',
+                  textAlign: TextAlign.center)),
+        );
+      }
+    });
   }
 }

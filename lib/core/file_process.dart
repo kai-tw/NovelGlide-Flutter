@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileProcess {
@@ -8,14 +7,17 @@ class FileProcess {
     final folder = await getApplicationSupportDirectory();
     return folder.path;
   }
+
   static Future<String> get documentFolder async {
     final folder = await getApplicationDocumentsDirectory();
     return folder.path;
   }
+
   static Future<String> get cacheFolder async {
     final folder = await getApplicationCacheDirectory();
     return folder.path;
   }
+
   static Future<String> get tempFolder async {
     final folder = await getTemporaryDirectory();
     return folder.path;
@@ -28,11 +30,9 @@ class FileProcess {
   static void createIfNotExists(int type, String path) async {
     switch (type) {
       case typeFolder:
-        final root = await supportFolder;
-        final folder = Directory(root + path);
+        final folder = Directory(path);
         if (!await folder.exists()) {
           folder.createSync(recursive: true);
-          debugPrint('Created folder: ${folder.path}');
         }
         break;
       case typeFile:
@@ -42,5 +42,14 @@ class FileProcess {
         }
         break;
     }
+  }
+
+  static Future<List<Directory>> getLibraryBookList() async {
+    final String root = await supportFolder;
+    final String libraryRoot = '$root/Library';
+    createIfNotExists(typeFolder, libraryRoot);
+    final folder = Directory(libraryRoot);
+    final entries = folder.listSync().whereType<Directory>().toList();
+    return entries;
   }
 }

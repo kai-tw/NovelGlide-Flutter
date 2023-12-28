@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'bookmarks.dart';
 import 'library.dart';
 import 'settings.dart';
@@ -19,32 +20,31 @@ class _MainPageState extends State<MainPage> {
     BookmarkWidget(),
     SettingsWidget()
   ];
-  static const List<String> _widgetTitle = <String>[
-    'NovelGlide',
-    'Bookmarks',
-    'Settings'
-  ];
 
   @override
   Widget build(BuildContext context) {
+    List<String> widgetTitle = <String>[
+      AppLocalizations.of(context)!.app_name,
+      AppLocalizations.of(context)!.title_bookmarks,
+      AppLocalizations.of(context)!.title_settings
+    ];
     return Scaffold(
-      appBar: _titleWidget(),
-      body: _bodyWidget(),
-      bottomNavigationBar: _navWidget()
-    );
+        appBar: _titleWidget(widgetTitle[_currentPageIndex]),
+        body: _bodyWidget(),
+        bottomNavigationBar: _navWidget());
   }
 
-  PreferredSizeWidget _titleWidget() {
+  PreferredSizeWidget _titleWidget(title) {
     return AppBar(
-      title: Text(_widgetTitle[_currentPageIndex]),
-      backgroundColor: Theme.of(context).colorScheme.background,
+      title: Text(title, textAlign: TextAlign.left),
+      backgroundColor: Theme.of(context).colorScheme.background
     );
   }
 
   Widget _bodyWidget() {
     return Container(
       margin: const EdgeInsets.all(8.0),
-      child: _widgetOptions[_currentPageIndex],
+      child: _widgetOptions[_currentPageIndex]
     );
   }
 
@@ -64,7 +64,7 @@ class _MainPageState extends State<MainPage> {
         NavigationDestination(icon: Icon(Icons.home_filled), label: ''),
         NavigationDestination(icon: Icon(Icons.bookmark), label: ''),
         NavigationDestination(icon: Icon(Icons.settings), label: '')
-      ],
+      ]
     );
   }
 }
