@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:novelglide/ui/pages/main/scaffold.dart';
+import 'package:novelglide/ui/pages/main/bloc/navigation.dart';
+import 'package:novelglide/ui/pages/main/layout/scaffold.dart';
 import 'package:novelglide/ui/theme/theme.dart';
 
 void main() {
@@ -13,7 +15,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return BlocProvider(
+        create: (context) => NavigationCubit(), child: MaterialApp(
         title: 'NovelGlide',
         theme: lightThemeData(),
         darkTheme: darkThemeData(),
@@ -29,6 +32,6 @@ class App extends StatelessWidget {
           Locale.fromSubtags(
               languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW')
         ],
-        home: const MainPage(title: 'NovelGlide'));
+        home: const MainPage()));
   }
 }
