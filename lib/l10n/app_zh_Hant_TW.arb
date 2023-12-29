@@ -2,5 +2,6 @@
   "app_name": "NovelGlide",
   "no_book": "沒有書籍",
   "title_bookmarks": "書籤",
-  "title_settings": "設定"
+  "title_settings": "設定",
+  "add_book_title": "新增書籍"
 }
