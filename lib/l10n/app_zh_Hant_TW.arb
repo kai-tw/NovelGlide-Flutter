@@ -1,7 +1,9 @@
 {
   "app_name": "NovelGlide",
   "no_book": "沒有書籍",
+  "form_submit": "送出",
   "title_bookmarks": "書籤",
   "title_settings": "設定",
-  "add_book_title": "新增書籍"
+  "add_book_title": "新增書籍",
+  "add_book_book_name": "書名"
 }

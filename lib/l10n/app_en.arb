@@ -1,7 +1,9 @@
 {
   "app_name": "NovelGlide",
   "no_book": "There's not a book here.",
+  "form_submit": "Submit",
   "title_bookmarks": "Bookmarks",
   "title_settings": "Settings",
-  "add_book_title": "Add a book"
+  "add_book_title": "Add a book",
+  "add_book_book_name": "Book name"
 }
