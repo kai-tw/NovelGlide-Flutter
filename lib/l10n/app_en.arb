@@ -6,5 +6,7 @@
   "title_settings": "Settings",
   "add_book_title": "Add a book",
   "add_book_book_name": "Book name",
-  "form_invalid_book_name": "Invalid book name"
+  "add_book_book_name_invalid": "Invalid book name",
+  "add_book_book_name_blank": "The book name cannot be blank.",
+  "add_book_book_exists": "The book already exists."
 }

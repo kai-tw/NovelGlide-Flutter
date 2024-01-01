@@ -23,11 +23,13 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: _appBar(),
-        body: _bodyWidget(),
-        floatingActionButton: _floatingActionButton(),
-        bottomNavigationBar: _navWidget());
+    return BlocProvider(
+        create: (_) => NavigationCubit(),
+        child: Scaffold(
+            appBar: _appBar(),
+            body: _bodyWidget(),
+            floatingActionButton: _floatingActionButton(),
+            bottomNavigationBar: _navWidget()));
   }
 
   PreferredSizeWidget _appBar() {
