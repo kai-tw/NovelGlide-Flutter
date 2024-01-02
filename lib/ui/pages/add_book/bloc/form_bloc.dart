@@ -11,10 +11,10 @@ enum AddBookFormBookNameErrorCode {
 }
 
 class AddBookFormCubit extends Cubit<AddBookFormState> {
-  AddBookFormCubit():super(const AddBookFormState(AddBookFormBookNameErrorCode.nothing));
+  AddBookFormCubit():super(const AddBookFormState(AddBookFormBookNameErrorCode.blank));
 
   void bookNameVerify(AddBookFormState state, String? name) async {
-    if (name == null) {
+    if (name == null || name == '') {
       emit(state.copyWith(bookNameErrorCode: AddBookFormBookNameErrorCode.blank));
       return;
     }
@@ -26,6 +26,7 @@ class AddBookFormCubit extends Cubit<AddBookFormState> {
       emit(state.copyWith(bookNameErrorCode: AddBookFormBookNameErrorCode.exists));
       return;
     }
+    emit(state.copyWith(bookNameErrorCode: AddBookFormBookNameErrorCode.nothing));
   }
 }
 
