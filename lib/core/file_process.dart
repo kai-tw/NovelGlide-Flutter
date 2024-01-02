@@ -36,4 +36,9 @@ class FileProcess {
     final entries = folder.listSync().whereType<Directory>().toList();
     return entries;
   }
+
+  static Future<bool> isBookExists(String name) async {
+    final folder = Directory(await libraryRoot + name);
+    return folder.existsSync();
+  }
 }

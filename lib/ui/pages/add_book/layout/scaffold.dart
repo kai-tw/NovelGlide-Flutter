@@ -17,16 +17,13 @@ class _AddBookPageState extends State<AddBookPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => AddBookFormCubit(),
+        create: (context) => AddBookFormCubit(),
         child: Scaffold(appBar: _appBar(context), body: _bodyWidget()));
   }
 
   PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .background,
+        backgroundColor: Theme.of(context).colorScheme.background,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () {
@@ -41,33 +38,42 @@ class _AddBookPageState extends State<AddBookPage> {
   Widget _bodyWidget() {
     return BlocBuilder<AddBookFormCubit, AddBookFormState>(
         builder: (context, state) {
-          return Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                  child: Padding(
-                      padding: const EdgeInsets.all(40.0),
-                      child: Column(
-                        children: [
-                          _bookNameInput(state),
-                          const SizedBox(height: 24),
-                          _submitButton()
-                        ],
-                      ))));
-        });
+      return Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+              child: Padding(
+                  padding: const EdgeInsets.all(40.0),
+                  child: Column(
+                    children: [
+                      _bookNameInput(state),
+                      const SizedBox(height: 24),
+                      _submitButton()
+                    ],
+                  ))));
+    });
   }
 
-  Widget _bookNameInput(state) {
+  Widget _bookNameInput(AddBookFormState state) {
     return TextFormField(
         onSaved: (String? value) {
           bookName = value;
         },
-        validator: (value) {},
+        validator: (value) {
+          BlocProvider.of<AddBookFormCubit>(context).bookNameVerify(state, value);
+          AddBookFormBookNameErrorCode errorCode = state.bookNameErrorCode;
+          switch (errorCode) {
+            case AddBookFormBookNameErrorCode.nothing: return '';
+            case AddBookFormBookNameErrorCode.blank: return AppLocalizations.of(context)!.add_book_book_name_blank;
+            case AddBookFormBookNameErrorCode.invalid: return AppLocalizations.of(context)!.add_book_book_name_invalid;
+            case AddBookFormBookNameErrorCode.exists: return AppLocalizations.of(context)!.add_book_book_exists;
+          }
+        },
         decoration: InputDecoration(
             labelText: AppLocalizations.of(context)!.add_book_book_name,
             labelStyle: const TextStyle(fontSize: 16),
             contentPadding: const EdgeInsets.all(24.0),
             border:
-            OutlineInputBorder(borderRadius: BorderRadius.circular(20))));
+                OutlineInputBorder(borderRadius: BorderRadius.circular(20))));
   }
 
   Widget _submitButton() {
@@ -77,20 +83,11 @@ class _AddBookPageState extends State<AddBookPage> {
         child: ElevatedButton(
             onPressed: _submitButtonPressed,
             style: ElevatedButton.styleFrom(
-                foregroundColor: Theme
-                    .of(context)
-                    .colorScheme
-                    .onPrimary,
-                backgroundColor: Theme
-                    .of(context)
-                    .colorScheme
-                    .primary),
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                backgroundColor: Theme.of(context).colorScheme.primary),
             child: Text(AppLocalizations.of(context)!.form_submit,
                 style: TextStyle(
-                    color: Theme
-                        .of(context)
-                        .colorScheme
-                        .onPrimary))));
+                    color: Theme.of(context).colorScheme.onPrimary))));
   }
 
   void _submitButtonPressed() {
