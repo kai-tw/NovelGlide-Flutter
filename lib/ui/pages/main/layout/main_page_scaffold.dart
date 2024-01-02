@@ -14,9 +14,7 @@ class MainPage extends StatelessWidget {
     return BlocProvider(
         create: (_) => NavigationCubit(),
         child: Scaffold(
-            appBar: AppBar(
-                backgroundColor: Theme.of(context).colorScheme.background,
-                title: const MainPageAppBar()),
+            appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, title: const MainPageAppBar()),
             body: const MainPageBodyWidget(),
             floatingActionButton: const MainPageFab(),
             bottomNavigationBar: const MainPageNavigationBar()));

@@ -9,19 +9,14 @@ import '../bloc/navigation.dart';
 class MainPageBodyWidget extends StatelessWidget {
   const MainPageBodyWidget({super.key});
 
-  final List<Widget> _widgetOptions = const <Widget>[
-    LibraryWidget(),
-    BookmarkWidget(),
-    SettingsWidget()
-  ];
+  final List<Widget> _widgetOptions = const <Widget>[LibraryWidget(), BookmarkWidget(), SettingsWidget()];
 
   @override
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.all(8.0),
-        child: BlocBuilder<NavigationCubit, NavigationState>(
-            builder: (context, state) {
-              return _widgetOptions[state.index];
-            }));
+        child: BlocBuilder<NavigationCubit, NavigationState>(builder: (context, state) {
+          return _widgetOptions[state.index];
+        }));
   }
 }

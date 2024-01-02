@@ -15,8 +15,7 @@ class MainPageAppBar extends StatelessWidget {
     ];
     return Align(
         alignment: Alignment.centerLeft,
-        child: BlocBuilder<NavigationCubit, NavigationState>(
-            builder: (context, state) {
+        child: BlocBuilder<NavigationCubit, NavigationState>(builder: (context, state) {
           return Text(titleList[state.index]);
         }));
   }

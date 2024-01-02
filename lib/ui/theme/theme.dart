@@ -11,8 +11,5 @@ ThemeData lightThemeData() {
 
 ThemeData darkThemeData() {
   return ThemeData(
-      brightness: Brightness.dark,
-      colorScheme: darkColorScheme(),
-      splashColor: Colors.transparent,
-      useMaterial3: true);
+      brightness: Brightness.dark, colorScheme: darkColorScheme(), splashColor: Colors.transparent, useMaterial3: true);
 }

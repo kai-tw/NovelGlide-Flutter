@@ -19,11 +19,7 @@ class AddBookFormWidget extends StatelessWidget {
                 child: BlocProvider(
                     create: (_) => AddBookFormCubit(),
                     child: const Column(
-                      children: [
-                        AddBookInputBookName(),
-                        SizedBox(height: 24),
-                        AddBookSubmitButton()
-                      ],
+                      children: [AddBookInputBookName(), SizedBox(height: 24), AddBookSubmitButton()],
                     )))));
   }
 }

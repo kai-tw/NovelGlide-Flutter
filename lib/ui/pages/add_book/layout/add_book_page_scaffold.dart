@@ -18,9 +18,8 @@ class AddBookPage extends StatelessWidget {
                     Navigator.of(context).pop();
                   },
                 ),
-                title: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(AppLocalizations.of(context)!.add_book_title))),
+                title:
+                    Align(alignment: Alignment.centerLeft, child: Text(AppLocalizations.of(context)!.add_book_title))),
             body: AddBookFormWidget()));
   }
 }

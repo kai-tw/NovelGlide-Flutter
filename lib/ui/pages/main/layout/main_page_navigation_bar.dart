@@ -7,35 +7,31 @@ class MainPageNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NavigationCubit, NavigationState>(
-        builder: (context, state) {
-          return NavigationBar(
-              height: 64.0,
-              selectedIndex: state.index,
-              indicatorColor: Colors.transparent,
-              labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-              backgroundColor: Theme.of(context).colorScheme.background,
-              destinations: const <Widget>[
-                NavigationDestination(icon: Icon(Icons.home_filled), label: ''),
-                NavigationDestination(icon: Icon(Icons.bookmark), label: ''),
-                NavigationDestination(icon: Icon(Icons.settings), label: '')
-              ],
-              onDestinationSelected: (index) {
-                switch (index) {
-                  case 0:
-                    BlocProvider.of<NavigationCubit>(context)
-                        .setItem(NavigationItem.library);
-                    break;
-                  case 1:
-                    BlocProvider.of<NavigationCubit>(context)
-                        .setItem(NavigationItem.bookmark);
-                    break;
-                  case 2:
-                    BlocProvider.of<NavigationCubit>(context)
-                        .setItem(NavigationItem.settings);
-                    break;
-                }
-              });
-        });
+    return BlocBuilder<NavigationCubit, NavigationState>(builder: (context, state) {
+      return NavigationBar(
+          height: 64.0,
+          selectedIndex: state.index,
+          indicatorColor: Colors.transparent,
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          destinations: const <Widget>[
+            NavigationDestination(icon: Icon(Icons.home_filled), label: ''),
+            NavigationDestination(icon: Icon(Icons.bookmark), label: ''),
+            NavigationDestination(icon: Icon(Icons.settings), label: '')
+          ],
+          onDestinationSelected: (index) {
+            switch (index) {
+              case 0:
+                BlocProvider.of<NavigationCubit>(context).setItem(NavigationItem.library);
+                break;
+              case 1:
+                BlocProvider.of<NavigationCubit>(context).setItem(NavigationItem.bookmark);
+                break;
+              case 2:
+                BlocProvider.of<NavigationCubit>(context).setItem(NavigationItem.settings);
+                break;
+            }
+          });
+    });
   }
 }

@@ -7,10 +7,6 @@ class SettingsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-        shadowColor: Colors.transparent,
-        child: Center(
-            child: Text(AppLocalizations.of(context)!.title_settings)
-        )
-    );
+        shadowColor: Colors.transparent, child: Center(child: Text(AppLocalizations.of(context)!.title_settings)));
   }
 }

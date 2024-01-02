@@ -3,12 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:novelglide/core/file_process.dart';
 import 'package:novelglide/core/input_verify.dart';
 
-enum AddBookFormBookNameErrorCode {
-  nothing,
-  blank,
-  invalid,
-  exists
-}
+enum AddBookFormBookNameErrorCode { nothing, blank, invalid, exists }
 
 class AddBookFormData {
   String bookName;
@@ -26,7 +21,7 @@ class AddBookFormData {
 }
 
 class AddBookFormCubit extends Cubit<AddBookFormState> {
-  AddBookFormCubit():super(const AddBookFormState(AddBookFormBookNameErrorCode.blank));
+  AddBookFormCubit() : super(const AddBookFormState(AddBookFormBookNameErrorCode.blank));
 
   AddBookFormData data = AddBookFormData('');
 
@@ -59,7 +54,7 @@ class AddBookFormCubit extends Cubit<AddBookFormState> {
   }
 }
 
-class AddBookFormState extends Equatable{
+class AddBookFormState extends Equatable {
   final AddBookFormBookNameErrorCode bookNameErrorCode;
 
   const AddBookFormState(this.bookNameErrorCode);

@@ -16,13 +16,9 @@ class AddBookSubmitButton extends StatelessWidget {
               if (Form.of(context).validate()) {
                 Form.of(context).save();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                      content: Text(AppLocalizations.of(context)!
-                          .add_book_form_processing)),
+                  SnackBar(content: Text(AppLocalizations.of(context)!.add_book_form_processing)),
                 );
-                BlocProvider.of<AddBookFormCubit>(context)
-                    .submitData()
-                    .then((isSuccessful) {
+                BlocProvider.of<AddBookFormCubit>(context).submitData().then((isSuccessful) {
                   String message = isSuccessful
                       ? AppLocalizations.of(context)!.add_book_form_successful
                       : AppLocalizations.of(context)!.add_book_form_failed;
@@ -38,7 +34,6 @@ class AddBookSubmitButton extends StatelessWidget {
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 backgroundColor: Theme.of(context).colorScheme.primary),
             child: Text(AppLocalizations.of(context)!.form_submit,
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary))));
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary))));
   }
 }
