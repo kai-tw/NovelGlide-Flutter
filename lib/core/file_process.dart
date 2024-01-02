@@ -38,7 +38,13 @@ class FileProcess {
   }
 
   static Future<bool> isBookExists(String name) async {
-    final folder = Directory(await libraryRoot + name);
+    final folder = Directory('${await libraryRoot}/$name');
+    return folder.existsSync();
+  }
+
+  static Future<bool> createBook(String name) async {
+    final folder = Directory('${await libraryRoot}/$name');
+    folder.createSync(recursive: true);
     return folder.existsSync();
   }
 }
