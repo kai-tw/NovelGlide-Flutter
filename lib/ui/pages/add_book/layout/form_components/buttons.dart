@@ -12,8 +12,9 @@ class AddBookSubmitButton extends StatelessWidget {
         child: ElevatedButton(
             onPressed: () {
               if (Form.of(context).validate()) {
+                Form.of(context).save();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Processing Data')),
+                  SnackBar(content: Text(AppLocalizations.of(context)!.add_book_form_processing)),
                 );
               }
             },
