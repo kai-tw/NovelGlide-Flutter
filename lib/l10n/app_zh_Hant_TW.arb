@@ -8,5 +8,6 @@
   "add_book_book_name": "書名",
   "add_book_book_name_invalid": "書名不符合命名規則",
   "add_book_book_name_blank": "書名不能空白",
-  "add_book_book_exists": "書名已存在"
+  "add_book_book_exists": "書名已存在",
+  "add_book_form_processing": "處理中..."
 }

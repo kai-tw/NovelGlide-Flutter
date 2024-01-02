@@ -8,5 +8,6 @@
   "add_book_book_name": "Book name",
   "add_book_book_name_invalid": "Invalid book name",
   "add_book_book_name_blank": "The book name cannot be blank.",
-  "add_book_book_exists": "The book already exists."
+  "add_book_book_exists": "The book already exists.",
+  "add_book_form_processing": "Processing..."
 }
