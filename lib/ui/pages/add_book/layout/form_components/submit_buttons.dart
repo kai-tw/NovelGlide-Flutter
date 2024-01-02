@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:novelglide/ui/pages/add_book/bloc/form_bloc.dart';
 
 class AddBookSubmitButton extends StatelessWidget {
   const AddBookSubmitButton({super.key});
@@ -14,8 +16,22 @@ class AddBookSubmitButton extends StatelessWidget {
               if (Form.of(context).validate()) {
                 Form.of(context).save();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(AppLocalizations.of(context)!.add_book_form_processing)),
+                  SnackBar(
+                      content: Text(AppLocalizations.of(context)!
+                          .add_book_form_processing)),
                 );
+                BlocProvider.of<AddBookFormCubit>(context)
+                    .submitData()
+                    .then((isSuccessful) {
+                  String message = isSuccessful
+                      ? AppLocalizations.of(context)!.add_book_form_successful
+                      : AppLocalizations.of(context)!.add_book_form_failed;
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(message)),
+                  );
+                  Navigator.of(context).pop();
+                });
               }
             },
             style: ElevatedButton.styleFrom(

@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class BookmarkWidget extends StatefulWidget {
+class BookmarkWidget extends StatelessWidget {
   const BookmarkWidget({super.key});
 
-  @override
-  State<BookmarkWidget> createState() => BookmarkWidgetState();
-}
-
-class BookmarkWidgetState extends State<BookmarkWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(

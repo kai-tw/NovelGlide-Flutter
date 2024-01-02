@@ -10,8 +10,25 @@ enum AddBookFormBookNameErrorCode {
   exists
 }
 
+class AddBookFormData {
+  String bookName;
+
+  AddBookFormData(this.bookName);
+
+  void save({String? bookName}) {
+    this.bookName = bookName ?? this.bookName;
+  }
+
+  @override
+  String toString() {
+    return 'bookName: $bookName';
+  }
+}
+
 class AddBookFormCubit extends Cubit<AddBookFormState> {
   AddBookFormCubit():super(const AddBookFormState(AddBookFormBookNameErrorCode.blank));
+
+  AddBookFormData data = AddBookFormData('');
 
   void bookNameVerify(AddBookFormState state, String? name) async {
     if (name == null || name == '') {
@@ -27,6 +44,18 @@ class AddBookFormCubit extends Cubit<AddBookFormState> {
       return;
     }
     emit(state.copyWith(bookNameErrorCode: AddBookFormBookNameErrorCode.nothing));
+  }
+
+  void saveData({String? bookName}) {
+    data.save(bookName: bookName);
+  }
+
+  AddBookFormData getData() {
+    return data;
+  }
+
+  Future<bool> submitData() async {
+    return await FileProcess.createBook(data.bookName);
   }
 }
 
