@@ -9,5 +9,7 @@
   "add_book_book_name_invalid": "書名不符合命名規則",
   "add_book_book_name_blank": "書名不能空白",
   "add_book_book_exists": "書名已存在",
-  "add_book_form_processing": "處理中..."
+  "add_book_form_processing": "處理中...",
+  "add_book_form_successful": "新增成功",
+  "add_book_form_failed": "新增失敗"
 }
