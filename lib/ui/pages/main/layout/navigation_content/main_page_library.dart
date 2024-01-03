@@ -20,7 +20,7 @@ class LibraryWidget extends StatelessWidget {
                 if (!state.isLoaded) {
                   BlocProvider.of<LibraryBookListCubit>(context).refresh();
                   return Center(
-                      child: Text('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.no_book}',
+                      child: Text('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.loading}',
                           textAlign: TextAlign.center));
                 }
                 if (state.bookList.isEmpty) {
