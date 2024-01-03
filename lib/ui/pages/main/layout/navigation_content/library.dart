@@ -8,13 +8,10 @@ class LibraryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-        tag: 'MainPage2AddBookPage',
-        child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: SizedBox(
-                width: double.infinity,
-                height: double.infinity,
-                child: BlocProvider(create: (_) => LibraryBookListCubit(), child: MainPageLibraryBookList()))));
+    return Padding(
+        padding: const EdgeInsets.all(16),
+        child: BlocProvider(
+            create: (_) => LibraryBookListCubit(),
+            child: const MainPageLibraryBookList()));
   }
 }

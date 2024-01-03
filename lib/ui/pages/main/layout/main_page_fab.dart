@@ -20,10 +20,28 @@ class MainPageFab extends StatelessWidget {
                   create: (_) => LibraryBookListCubit(),
                   child: FloatingActionButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddBookPage()));
+                        Navigator.of(context).push(_routeToAddBookPage());
                       },
                       backgroundColor: Theme.of(context).colorScheme.primary,
                       child: Icon(Icons.add, color: Theme.of(context).colorScheme.onPrimary)))));
     });
+  }
+
+  Route _routeToAddBookPage() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => const AddBookPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
   }
 }
