@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:novelglide/ui/pages/main/bloc/library_book_list.dart';
 import 'package:novelglide/ui/pages/main/bloc/navigation.dart';
 import 'package:novelglide/ui/pages/main/layout/main_page_body_widget.dart';
 import 'package:novelglide/ui/pages/main/layout/main_page_app_bar.dart';
@@ -11,8 +12,11 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (_) => NavigationCubit(),
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => NavigationCubit()),
+          BlocProvider(create: (_) => LibraryBookListCubit())
+        ],
         child: Scaffold(
             appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.background, title: const MainPageAppBar()),
             body: const MainPageBodyWidget(),
