@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 enum FileProcessType {folder, file}
@@ -30,11 +31,11 @@ class FileProcess {
     return '$folder/Library';
   }
 
-  static Future<List<Directory>> getLibraryBookList() async {
+  static Future<List<String>> getLibraryBookList() async {
     final folder = Directory(await libraryRoot);
     folder.createSync(recursive: true);
     final entries = folder.listSync().whereType<Directory>().toList();
-    return entries;
+    return entries.map((dir) => basename(dir.path)).toList();
   }
 
   static Future<bool> isBookExists(String name) async {
@@ -46,5 +47,13 @@ class FileProcess {
     final folder = Directory('${await libraryRoot}/$name');
     folder.createSync(recursive: true);
     return folder.existsSync();
+  }
+
+  static Future<bool> deleteBook(String name) async {
+    final folder = Directory('${await libraryRoot}/$name');
+    if (folder.existsSync()) {
+      folder.deleteSync(recursive: true);
+    }
+    return !folder.existsSync();
   }
 }

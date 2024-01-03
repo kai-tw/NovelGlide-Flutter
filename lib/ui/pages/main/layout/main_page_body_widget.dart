@@ -10,7 +10,7 @@ class MainPageBodyWidget extends StatelessWidget {
   const MainPageBodyWidget({super.key});
 
   final List<Widget> _widgetOptions = const <Widget>[
-    LibraryWidget(),
+    MainPageLibraryWidget(),
     BookmarkWidget(),
     SettingsWidget()
   ];

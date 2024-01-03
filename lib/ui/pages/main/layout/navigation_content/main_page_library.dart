@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:novelglide/ui/components/centered_text.dart';
 import 'package:novelglide/ui/components/emoticon_collection.dart';
 import 'package:novelglide/ui/pages/main/bloc/library_book_list.dart';
-import 'package:path/path.dart';
+import 'package:novelglide/ui/pages/main/layout/navigation_content/library_components/main_page_library_item.dart';
 
-class LibraryWidget extends StatelessWidget {
-  const LibraryWidget({super.key});
+class MainPageLibraryWidget extends StatelessWidget {
+  const MainPageLibraryWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,17 +20,12 @@ class LibraryWidget extends StatelessWidget {
           builder: (context, state) {
             if (!state.isLoaded) {
               BlocProvider.of<LibraryBookListCubit>(context).refresh();
-              return Center(
-                  child: Text('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.loading}',
-                      textAlign: TextAlign.center));
+              return CenteredText('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.loading}');
             }
             if (state.bookList.isEmpty) {
-              return Center(
-                  child: Text('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.no_book}',
-                      textAlign: TextAlign.center));
+              return CenteredText('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.no_book}');
             }
-            debugPrint(state.toString());
-            return ListView(children: state.bookList.map((item) => Text(basename(item.path))).toList());
+            return ListView(children: state.bookList.map((item) => MainPageLibraryItem(item)).toList());
           },
         ));
   }
