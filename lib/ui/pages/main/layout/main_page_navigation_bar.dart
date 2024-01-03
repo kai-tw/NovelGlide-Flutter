@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:novelglide/ui/pages/main/bloc/library_book_list.dart';
 import 'package:novelglide/ui/pages/main/bloc/navigation.dart';
 
 class MainPageNavigationBar extends StatelessWidget {
@@ -23,6 +24,7 @@ class MainPageNavigationBar extends StatelessWidget {
             switch (index) {
               case 0:
                 BlocProvider.of<NavigationCubit>(context).setItem(NavigationItem.library);
+                BlocProvider.of<LibraryBookListCubit>(context).refresh();
                 break;
               case 1:
                 BlocProvider.of<NavigationCubit>(context).setItem(NavigationItem.bookmark);
