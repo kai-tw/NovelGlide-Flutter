@@ -1,6 +1,7 @@
 {
   "app_name": "NovelGlide",
   "no_book": "There's not a book here.",
+  "loading": "Loading...",
   "form_submit": "Submit",
   "title_bookmarks": "Bookmarks",
   "title_settings": "Settings",

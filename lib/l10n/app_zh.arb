@@ -1,6 +1,7 @@
 {
   "app_name": "NovelGlide",
   "no_book": "沒有書籍",
+  "loading": "載入中...",
   "form_submit": "送出",
   "title_bookmarks": "書籤",
   "title_settings": "設定",
