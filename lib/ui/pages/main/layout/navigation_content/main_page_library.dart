@@ -12,24 +12,25 @@ class LibraryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(16),
-        child: BlocProvider(
-            create: (_) => LibraryBookListCubit(),
-            child: BlocBuilder<LibraryBookListCubit, LibraryBookListState>(
-              buildWhen: (_, currentState) {return currentState.isLoaded;},
-              builder: (context, state) {
-                if (!state.isLoaded) {
-                  BlocProvider.of<LibraryBookListCubit>(context).refresh();
-                  return Center(
-                      child: Text('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.loading}',
-                          textAlign: TextAlign.center));
-                }
-                if (state.bookList.isEmpty) {
-                  return Center(
-                      child: Text('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.no_book}',
-                          textAlign: TextAlign.center));
-                }
-                return ListView(children: state.bookList.map((item) => Text(basename(item.path))).toList());
-              },
-            )));
+        child: BlocBuilder<LibraryBookListCubit, LibraryBookListState>(
+          buildWhen: (_, currentState) {
+            return currentState.isLoaded;
+          },
+          builder: (context, state) {
+            if (!state.isLoaded) {
+              BlocProvider.of<LibraryBookListCubit>(context).refresh();
+              return Center(
+                  child: Text('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.loading}',
+                      textAlign: TextAlign.center));
+            }
+            if (state.bookList.isEmpty) {
+              return Center(
+                  child: Text('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.no_book}',
+                      textAlign: TextAlign.center));
+            }
+            debugPrint(state.toString());
+            return ListView(children: state.bookList.map((item) => Text(basename(item.path))).toList());
+          },
+        ));
   }
 }
