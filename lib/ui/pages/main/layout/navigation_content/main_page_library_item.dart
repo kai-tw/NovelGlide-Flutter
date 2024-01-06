@@ -11,13 +11,22 @@ class MainPageLibraryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isSelected = state.selectedBook.contains(bookName);
-    return ListTile(
-        selected: isSelected,
-        title: Text(bookName),
+    return GestureDetector(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+            color: isSelected ? Theme.of(context).colorScheme.onTertiary : Colors.transparent,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(bookName),
+          ),
+        ),
         onTap: () {
           if (state.isSelecting) {
             // Selection mode.
-            if (state.selectedBook.contains(bookName)) {
+            if (isSelected) {
               BlocProvider.of<LibraryBookListCubit>(context).removeSelect(state, bookName);
             } else {
               BlocProvider.of<LibraryBookListCubit>(context).addSelect(state, bookName);

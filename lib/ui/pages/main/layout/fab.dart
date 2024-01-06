@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:novelglide/ui/pages/add_book/layout/add_book_page_scaffold.dart';
+import 'package:novelglide/ui/pages/add_book/layout/main.dart';
 import 'package:novelglide/ui/pages/main/bloc/library_book_list.dart';
 import 'package:novelglide/ui/pages/main/bloc/navigation.dart';
 

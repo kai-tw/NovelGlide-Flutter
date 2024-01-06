@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:novelglide/ui/pages/main/bloc/library_book_list.dart';
 
-class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSizeWidget{
+class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSizeWidget {
   const MainPageAppBarBookSelection({super.key});
 
   @override
@@ -24,8 +24,49 @@ class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSi
             style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete_rounded),
+            onPressed: () {
+              _showConfirmDialog(context).then((isDelete) {
+                if (isDelete) {
+                  BlocProvider.of<LibraryBookListCubit>(context).deleteSelectBook(state);
+                }
+              });
+            },
+          ),
+        ],
       );
     });
+  }
+
+  Future<T?> _showConfirmDialog<T>(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.confirm_title),
+          content: Text(AppLocalizations.of(context)!.library_book_list_confirm_content_delete),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: Text(
+                  AppLocalizations.of(context)!.confirm_btn_delete,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                )),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: Text(AppLocalizations.of(context)!.confirm_btn_cancel)),
+          ],
+        );
+      },
+    );
   }
 
   @override

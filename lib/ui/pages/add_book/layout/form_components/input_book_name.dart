@@ -8,8 +8,9 @@ class AddBookInputBookName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddBookFormCubit, AddBookFormState>(builder: (context, state) {
-      return TextFormField(
+    return BlocBuilder<AddBookFormCubit, AddBookFormState>(
+      builder: (context, state) {
+        return TextFormField(
           onSaved: (String? value) => BlocProvider.of<AddBookFormCubit>(context).saveData(bookName: value),
           onChanged: (String? value) => BlocProvider.of<AddBookFormCubit>(context).bookNameVerify(state, value),
           validator: (_) {
@@ -25,10 +26,15 @@ class AddBookInputBookName extends StatelessWidget {
             }
           },
           decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)!.add_book_book_name,
-              labelStyle: const TextStyle(fontSize: 16),
-              contentPadding: const EdgeInsets.all(24.0),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))));
-    });
+            labelText: AppLocalizations.of(context)!.add_book_book_name,
+            labelStyle: const TextStyle(fontSize: 16),
+            contentPadding: const EdgeInsets.all(24.0),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

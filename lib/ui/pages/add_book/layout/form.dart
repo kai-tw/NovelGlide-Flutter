@@ -12,14 +12,18 @@ class AddBookFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-            child: Padding(
-                padding: const EdgeInsets.all(40.0),
-                child: BlocProvider(
-                    create: (_) => AddBookFormCubit(),
-                    child: const Column(
-                      children: [AddBookInputBookName(), SizedBox(height: 24), AddBookSubmitButton()],
-                    )))));
+      key: _formKey,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(40.0),
+          child: BlocProvider(
+            create: (_) => AddBookFormCubit(),
+            child: const Column(
+              children: [AddBookInputBookName(), SizedBox(height: 24), AddBookSubmitButton()],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

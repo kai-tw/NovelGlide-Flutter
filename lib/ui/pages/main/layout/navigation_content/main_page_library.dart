@@ -25,7 +25,18 @@ class MainPageLibraryWidget extends StatelessWidget {
             if (state.bookList.isEmpty) {
               return CenteredText('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.no_book}');
             }
-            return ListView(children: state.bookList.map((item) => MainPageLibraryItem(state, item)).toList());
+            return CustomScrollView(
+              slivers: [
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, i) {
+                      return MainPageLibraryItem(state, state.bookList[i]);
+                    },
+                    childCount: state.bookList.length,
+                  ),
+                ),
+              ],
+            );
           },
         ));
   }
