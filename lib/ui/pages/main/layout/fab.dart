@@ -19,7 +19,6 @@ class MainPageFab extends StatelessWidget {
               child: FloatingActionButton(
                   onPressed: () {
                     Navigator.of(context).push(_routeToAddBookPage()).then((_) {
-                      debugPrint('return');
                       BlocProvider.of<LibraryBookListCubit>(context).refresh();
                     });
                   },

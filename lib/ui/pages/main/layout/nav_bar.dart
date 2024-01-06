@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:novelglide/ui/pages/main/bloc/library_book_list.dart';
 import 'package:novelglide/ui/pages/main/bloc/navigation.dart';
 
-class MainPageNavigationBar extends StatelessWidget {
-  const MainPageNavigationBar({super.key});
+class MainPageNavBar extends StatelessWidget {
+  const MainPageNavBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +21,10 @@ class MainPageNavigationBar extends StatelessWidget {
             NavigationDestination(icon: Icon(Icons.settings), label: '')
           ],
           onDestinationSelected: (index) {
+            if (state.index == index) {
+              return;
+            }
+            BlocProvider.of<LibraryBookListCubit>(context).clearSelect(BlocProvider.of<LibraryBookListCubit>(context).state);
             switch (index) {
               case 0:
                 BlocProvider.of<NavigationCubit>(context).setItem(NavigationItem.library);
