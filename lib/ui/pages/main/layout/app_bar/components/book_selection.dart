@@ -29,7 +29,7 @@ class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSi
             icon: const Icon(Icons.delete_rounded),
             onPressed: () {
               _showConfirmDialog(context).then((isDelete) {
-                if (isDelete) {
+                if (isDelete != null && isDelete) {
                   BlocProvider.of<LibraryBookListCubit>(context).deleteSelectBook(state);
                 }
               });

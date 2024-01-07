@@ -5,7 +5,8 @@ import 'package:novelglide/core/file_process.dart';
 enum LibraryBookListAppBarState { normal, selecting }
 
 class LibraryBookListCubit extends Cubit<LibraryBookListState> {
-  LibraryBookListCubit() : super(const LibraryBookListState(false, false, LibraryBookListAppBarState.normal, [], <String>{}));
+  LibraryBookListCubit()
+      : super(const LibraryBookListState(false, false, LibraryBookListAppBarState.normal, [], <String>{}));
 
   /// Get the list of latest books.
   void refresh() async {
@@ -15,6 +16,9 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
 
   /// Add the book into the selected list.
   void addSelect(LibraryBookListState state, String name) {
+    if (state.selectedBook.contains(name)) {
+      return;
+    }
     List<String> bookList = List<String>.from(state.bookList);
     Set<String> selectedBook = Set<String>.from(state.selectedBook);
     selectedBook.add(name);
@@ -23,6 +27,9 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
 
   /// Remove the book from the selected list.
   void removeSelect(LibraryBookListState state, String name) {
+    if (!state.selectedBook.contains(name)) {
+      return;
+    }
     List<String> bookList = List<String>.from(state.bookList);
     Set<String> selectedBook = Set<String>.from(state.selectedBook);
     selectedBook.remove(name);
@@ -45,6 +52,12 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
     for (var item in state.selectedBook) {
       FileProcess.deleteBook(item);
     }
+    refresh();
+  }
+
+  /// Delete the book by the user.
+  void deleteBook(LibraryBookListState state, String bookName) {
+    FileProcess.deleteBook(bookName);
     refresh();
   }
 }
