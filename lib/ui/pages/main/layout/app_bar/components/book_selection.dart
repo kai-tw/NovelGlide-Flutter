@@ -9,9 +9,13 @@ class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSi
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LibraryBookListCubit, LibraryBookListState>(builder: (context, state) {
+      bool isAllSelect = state.bookList.length == state.selectedBook.length;
       return AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            size: 20,
+          ),
           onPressed: () {
             BlocProvider.of<LibraryBookListCubit>(context).clearSelect(state);
           },
@@ -19,9 +23,28 @@ class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSi
         backgroundColor: Theme.of(context).colorScheme.surface,
         title: Align(
           alignment: Alignment.centerLeft,
-          child: Text(
-            state.selectedBook.length.toString(),
-            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+          child: Row(
+            children: [
+              IconButton(
+                icon: Icon(
+                  isAllSelect ? Icons.check_box_rounded : Icons.indeterminate_check_box_rounded,
+                  size: 20,
+                ),
+                onPressed: () {
+                  if (isAllSelect) {
+                    debugPrint('Not select all');
+                    BlocProvider.of<LibraryBookListCubit>(context).clearSelect(state);
+                  } else {
+                    BlocProvider.of<LibraryBookListCubit>(context).allSelect(state);
+                    debugPrint('Select all');
+                  }
+                },
+              ),
+              Text(
+                state.selectedBook.length.toString(),
+                style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+              ),
+            ],
           ),
         ),
         actions: [

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:novelglide/ui/components/centered_text.dart';
 import 'package:novelglide/ui/components/emoticon_collection.dart';
 import 'package:novelglide/ui/pages/main/bloc/library_book_list.dart';
@@ -12,20 +13,21 @@ class MainPageLibraryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(16),
-        child: BlocBuilder<LibraryBookListCubit, LibraryBookListState>(
-          buildWhen: (_, currentState) {
-            return currentState.isLoaded;
-          },
-          builder: (context, state) {
-            if (!state.isLoaded) {
-              BlocProvider.of<LibraryBookListCubit>(context).refresh();
-              return CenteredText('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.loading}');
-            }
-            if (state.bookList.isEmpty) {
-              return CenteredText('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.no_book}');
-            }
-            return CustomScrollView(
+      padding: const EdgeInsets.all(16),
+      child: BlocBuilder<LibraryBookListCubit, LibraryBookListState>(
+        buildWhen: (_, currentState) {
+          return currentState.isLoaded;
+        },
+        builder: (context, state) {
+          if (!state.isLoaded) {
+            BlocProvider.of<LibraryBookListCubit>(context).refresh();
+            return CenteredText('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.loading}');
+          }
+          if (state.bookList.isEmpty) {
+            return CenteredText('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.no_book}');
+          }
+          return SlidableAutoCloseBehavior(
+            child: CustomScrollView(
               slivers: [
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
@@ -36,8 +38,10 @@ class MainPageLibraryWidget extends StatelessWidget {
                   ),
                 ),
               ],
-            );
-          },
-        ));
+            ),
+          );
+        },
+      ),
+    );
   }
 }

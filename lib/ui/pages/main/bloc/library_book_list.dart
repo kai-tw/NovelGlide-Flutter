@@ -19,10 +19,14 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
     if (state.selectedBook.contains(name)) {
       return;
     }
-    List<String> bookList = List<String>.from(state.bookList);
     Set<String> selectedBook = Set<String>.from(state.selectedBook);
     selectedBook.add(name);
-    emit(LibraryBookListState(true, true, LibraryBookListAppBarState.selecting, bookList, selectedBook));
+    emit(LibraryBookListState(true, true, LibraryBookListAppBarState.selecting, state.bookList, selectedBook));
+  }
+
+  void allSelect(LibraryBookListState state) {
+    emit(
+        LibraryBookListState(true, true, LibraryBookListAppBarState.selecting, state.bookList, state.bookList.toSet()));
   }
 
   /// Remove the book from the selected list.
@@ -30,21 +34,19 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
     if (!state.selectedBook.contains(name)) {
       return;
     }
-    List<String> bookList = List<String>.from(state.bookList);
     Set<String> selectedBook = Set<String>.from(state.selectedBook);
     selectedBook.remove(name);
     emit(LibraryBookListState(
         true,
         selectedBook.isNotEmpty,
         selectedBook.isNotEmpty ? LibraryBookListAppBarState.selecting : LibraryBookListAppBarState.normal,
-        bookList,
+        state.bookList,
         selectedBook));
   }
 
   /// Clear the selected list.
   void clearSelect(LibraryBookListState state) {
-    List<String> bookList = List<String>.from(state.bookList);
-    emit(LibraryBookListState(true, false, LibraryBookListAppBarState.normal, bookList, const <String>{}));
+    emit(LibraryBookListState(true, false, LibraryBookListAppBarState.normal, state.bookList, const <String>{}));
   }
 
   /// Delete all books selected by the user.
