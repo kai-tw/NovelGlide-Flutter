@@ -11,17 +11,26 @@ class AddBookFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const double paddingHorizontal = 40.0;
     return Form(
       key: _formKey,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(40.0),
-          child: BlocProvider(
-            create: (_) => AddBookFormCubit(),
-            child: const Column(
-              children: [AddBookInputBookName(), SizedBox(height: 24), AddBookSubmitButton()],
+      child: BlocProvider(
+        create: (_) => AddBookFormCubit(),
+        child: const CustomScrollView(
+          slivers: [
+            SliverPadding(
+              padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
+              sliver: SliverToBoxAdapter(
+                child: AddBookInputBookName(),
+              ),
             ),
-          ),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
+              sliver: SliverToBoxAdapter(
+                child: AddBookSubmitButton(),
+              ),
+            ),
+          ],
         ),
       ),
     );

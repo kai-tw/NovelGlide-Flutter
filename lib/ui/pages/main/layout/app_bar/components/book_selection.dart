@@ -46,14 +46,14 @@ class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSi
       builder: (context) {
         return AlertDialog(
           title: Text(AppLocalizations.of(context)!.confirm_title),
-          content: Text(AppLocalizations.of(context)!.library_book_list_confirm_content_delete),
+          content: Text(AppLocalizations.of(context)!.confirm_content_delete),
           actions: [
             TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(true);
                 },
                 child: Text(
-                  AppLocalizations.of(context)!.confirm_btn_delete,
+                  AppLocalizations.of(context)!.delete,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.error,
                   ),
@@ -62,7 +62,7 @@ class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSi
                 onPressed: () {
                   Navigator.of(context).pop(false);
                 },
-                child: Text(AppLocalizations.of(context)!.confirm_btn_cancel)),
+                child: Text(AppLocalizations.of(context)!.cancel)),
           ],
         );
       },

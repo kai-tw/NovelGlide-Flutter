@@ -2,20 +2,27 @@
   "app_name": "NovelGlide",
   "no_book": "沒有書籍",
   "loading": "載入中...",
-  "form_submit": "送出",
+  "submit": "送出",
+  "confirm": "確認",
+  "delete": "刪除",
+  "cancel": "取消",
+  "close": "關閉",
+  "processing": "處理中...",
+  "add_successful": "新增成功",
+  "add_failed": "新增失敗",
+
   "confirm_title": "確定嗎？",
-  "confirm_btn_confirm": "確認",
-  "confirm_btn_delete": "刪除",
-  "confirm_btn_cancel": "取消",
-  "library_book_list_confirm_content_delete": "將會永久刪除這謝書籍。",
+
+  "confirm_content_delete": "將會永久刪除。",
+
   "title_bookmarks": "書籤",
   "title_settings": "設定",
+
   "add_book_title": "新增書籍",
-  "add_book_book_name": "書名",
-  "add_book_book_name_invalid": "書名不符合命名規則",
-  "add_book_book_name_blank": "書名不能空白",
-  "add_book_book_exists": "書名已存在",
-  "add_book_form_processing": "處理中...",
-  "add_book_form_successful": "新增成功",
-  "add_book_form_failed": "新增失敗"
+  "book_name": "書名",
+  "book_name_invalid": "書名不符合命名規則",
+  "book_name_blank": "書名不能空白",
+  "book_name_rule_title": "書籍命名規則",
+  "book_name_rule_content": "可用的英文符號：",
+  "book_exists": "書名已存在"
 }

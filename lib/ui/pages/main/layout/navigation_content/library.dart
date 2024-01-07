@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:novelglide/ui/components/centered_text.dart';
 import 'package:novelglide/ui/components/emoticon_collection.dart';
 import 'package:novelglide/ui/pages/main/bloc/library_book_list.dart';
-import 'package:novelglide/ui/pages/main/layout/navigation_content/main_page_library_item.dart';
+import 'package:novelglide/ui/pages/main/layout/navigation_content/library_item.dart';
 
 class MainPageLibraryWidget extends StatelessWidget {
   const MainPageLibraryWidget({super.key});

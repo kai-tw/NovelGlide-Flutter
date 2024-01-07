@@ -1,6 +1,6 @@
 class InputVerify {
   static bool isFolderNameValid(String name) {
-    RegExp regex = RegExp(r'^[\p{L}\p{N}_-]+$', unicode: true);
+    RegExp regex = RegExp(r"^[\p{L}\p{N}_ -.,&()@#$%^+=\[{\]};'~`<>?|，。【】「」『』！？：；、…]+$", unicode: true);
     return regex.hasMatch(name);
   }
 }

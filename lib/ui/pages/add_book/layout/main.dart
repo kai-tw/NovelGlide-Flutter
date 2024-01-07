@@ -9,19 +9,20 @@ class AddBookPage extends StatelessWidget {
   Widget build(BuildContext context) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new_rounded),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          title: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(AppLocalizations.of(context)!.add_book_title),
-          ),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
-        body: AddBookFormWidget());
+        title: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(AppLocalizations.of(context)!.add_book_title),
+        ),
+      ),
+      body: AddBookFormWidget(),
+    );
   }
 }

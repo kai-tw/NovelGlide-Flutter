@@ -2,20 +2,27 @@
   "app_name": "NovelGlide",
   "no_book": "There's not a book here.",
   "loading": "Loading...",
-  "form_submit": "Submit",
+  "submit": "Submit",
+  "confirm": "Confirm",
+  "delete": "Delete",
+  "cancel": "Cancel",
+  "close": "Close",
+  "processing": "Processing...",
+  "add_successful": "Add successfully.",
+  "add_failed": "Add failed.",
+
   "confirm_title": "Are you sure?",
-  "confirm_btn_confirm": "Confirm",
-  "confirm_btn_delete": "Delete",
-  "confirm_btn_cancel": "Cancel",
-  "library_book_list_confirm_content_delete": "You will delete these books forever.",
+
+  "confirm_content_delete": "You will delete them forever.",
+
   "title_bookmarks": "Bookmarks",
   "title_settings": "Settings",
+
   "add_book_title": "Add a book",
-  "add_book_book_name": "Book name",
-  "add_book_book_name_invalid": "Invalid book name",
-  "add_book_book_name_blank": "The book name cannot be blank.",
-  "add_book_book_exists": "The book already exists.",
-  "add_book_form_processing": "Processing...",
-  "add_book_form_successful": "Add successfully.",
-  "add_book_form_failed": "Add failed."
+  "book_name": "Book name",
+  "book_name_invalid": "Invalid book name",
+  "book_name_blank": "The book name cannot be blank.",
+  "book_name_rule_title": "Book naming rule",
+  "book_name_rule_content": "Accepted symbols: ",
+  "book_exists": "The book already exists."
 }
