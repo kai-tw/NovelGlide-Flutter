@@ -44,7 +44,6 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
     }
     Set<String> selectedSet = Set<String>.from(state.selectedBook);
     selectedSet.remove(name);
-    debugPrint(selectedSet.toString());
     LibraryBookListStateCode stateCode =
         selectedSet.isNotEmpty ? LibraryBookListStateCode.selecting : LibraryBookListStateCode.normal;
     emit(state.copyWith(code: stateCode, selectedBook: selectedSet));
