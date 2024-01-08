@@ -8,24 +8,19 @@ enum BookFormType { add, edit, multiEdit }
 enum BookFormNameErrorCode { nothing, blank, invalid, exists }
 
 class BookFormData {
-  String bookName;
+  String oldBookName = '';
+  String newBookName = '';
 
-  BookFormData(this.bookName);
-
-  void save({String? bookName}) {
-    this.bookName = bookName ?? this.bookName;
-  }
-
-  @override
-  String toString() {
-    return 'bookName: $bookName';
+  void save({String? oldBookName, String? newBookName}) {
+    this.oldBookName = oldBookName ?? this.oldBookName;
+    this.newBookName = newBookName ?? this.newBookName;
   }
 }
 
 class BookFormCubit extends Cubit<BookFormState> {
-  BookFormCubit() : super(const BookFormState(BookFormType.add, BookFormNameErrorCode.blank));
+  BookFormCubit() : super(const BookFormState(BookFormNameErrorCode.blank));
 
-  BookFormData data = BookFormData('');
+  BookFormData data = BookFormData();
 
   void bookNameVerify(BookFormState state, String? name) async {
     if (name == null || name == '') {
@@ -43,33 +38,18 @@ class BookFormCubit extends Cubit<BookFormState> {
     emit(state.copyWith(nameErrorCode: BookFormNameErrorCode.nothing));
   }
 
-  void saveData({String? bookName}) {
-    data.save(bookName: bookName);
-  }
-
-  BookFormData getData() {
-    return data;
-  }
-
   Future<bool> submitData() async {
-    return await FileProcess.createBook(data.bookName);
+    return await FileProcess.createBook(data.newBookName);
   }
 }
 
 class BookFormState extends Equatable {
-  final BookFormType type;
   final BookFormNameErrorCode nameErrorCode;
 
-  const BookFormState(this.type, this.nameErrorCode);
+  const BookFormState(this.nameErrorCode);
 
-  BookFormState copyWith({
-    BookFormType? type,
-    BookFormNameErrorCode? nameErrorCode,
-  }) {
-    return BookFormState(
-      type ?? this.type,
-      nameErrorCode ?? this.nameErrorCode,
-    );
+  BookFormState copyWith({BookFormNameErrorCode? nameErrorCode}) {
+    return BookFormState(nameErrorCode ?? this.nameErrorCode);
   }
 
   @override

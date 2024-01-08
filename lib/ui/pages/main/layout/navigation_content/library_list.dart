@@ -30,7 +30,7 @@ class MainPageLibraryWidget extends StatelessWidget {
                   slivers: [
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
-                            (context, i) {
+                        (context, i) {
                           return MainPageLibraryItem(state.bookList[i]);
                         },
                         childCount: state.bookList.length,
