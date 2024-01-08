@@ -4,7 +4,7 @@ import 'package:novelglide/ui/pages/main/layout/navigation_content/bookmarks.dar
 import 'package:novelglide/ui/pages/main/layout/navigation_content/library_list.dart';
 import 'package:novelglide/ui/pages/main/layout/navigation_content/settings.dart';
 
-import '../bloc/navigation.dart';
+import '../bloc/navigation_bloc.dart';
 
 class MainPageBodyWidget extends StatelessWidget {
   const MainPageBodyWidget({super.key});

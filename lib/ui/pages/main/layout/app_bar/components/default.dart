@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:novelglide/ui/pages/main/bloc/navigation.dart';
+import 'package:novelglide/ui/pages/main/bloc/navigation_bloc.dart';
 
 class MainPageAppBarDefault extends StatelessWidget implements PreferredSizeWidget {
   const MainPageAppBarDefault({super.key});

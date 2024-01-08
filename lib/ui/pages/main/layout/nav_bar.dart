@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:novelglide/ui/pages/main/bloc/library_bloc.dart';
-import 'package:novelglide/ui/pages/main/bloc/navigation.dart';
+import 'package:novelglide/ui/pages/main/bloc/navigation_bloc.dart';
 
 class MainPageNavBar extends StatelessWidget {
   const MainPageNavBar({super.key});
