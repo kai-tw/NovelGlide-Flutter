@@ -12,12 +12,13 @@ class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSi
       bool isAllSelect = state.bookList.length == state.selectedBook.length;
       return AppBar(
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 20,
-          ),
+          icon: Icon(isAllSelect ? Icons.check_box_rounded : Icons.indeterminate_check_box_rounded, size: 20.0),
           onPressed: () {
-            BlocProvider.of<LibraryBookListCubit>(context).clearSelect(state);
+            if (isAllSelect) {
+              BlocProvider.of<LibraryBookListCubit>(context).clearSelect(state);
+            } else {
+              BlocProvider.of<LibraryBookListCubit>(context).allSelect(state);
+            }
           },
         ),
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -30,20 +31,7 @@ class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSi
         ),
         actions: [
           IconButton(
-            icon: Icon(
-              isAllSelect ? Icons.check_box_rounded : Icons.indeterminate_check_box_rounded,
-              size: 20,
-            ),
-            onPressed: () {
-              if (isAllSelect) {
-                BlocProvider.of<LibraryBookListCubit>(context).clearSelect(state);
-              } else {
-                BlocProvider.of<LibraryBookListCubit>(context).allSelect(state);
-              }
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.delete_rounded),
+            icon: const Icon(Icons.delete_rounded, size: 20.0),
             onPressed: () {
               _showConfirmDialog(context).then((isDelete) {
                 if (isDelete != null && isDelete) {

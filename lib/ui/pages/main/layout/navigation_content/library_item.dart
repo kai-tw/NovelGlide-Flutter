@@ -31,9 +31,13 @@ class MainPageLibraryItem extends StatelessWidget {
           motion: MotionListener(
             onOpenEnd: () {
               BlocProvider.of<LibraryBookListCubit>(context).removeSelect(state, bookName);
+              BlocProvider.of<LibraryBookListCubit>(context).addSlide(state, bookName);
               isSlideOpen = true;
             },
-            onClose: () => isSlideOpen = false,
+            onClose: () {
+              BlocProvider.of<LibraryBookListCubit>(context).removeSlide(state, bookName);
+              isSlideOpen = false;
+            },
             motionWidget: const DrawerMotion(),
           ),
           children: [
