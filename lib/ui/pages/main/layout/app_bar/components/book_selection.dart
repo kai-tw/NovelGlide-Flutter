@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:novelglide/ui/pages/main/bloc/library_book_list.dart';
+import 'package:novelglide/ui/pages/main/bloc/library_bloc.dart';
 
 class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSizeWidget {
   const MainPageAppBarBookSelection({super.key});

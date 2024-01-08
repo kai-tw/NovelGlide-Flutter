@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:novelglide/ui/motion/motion_listener.dart';
-import 'package:novelglide/ui/pages/main/bloc/library_book_list.dart';
+import 'package:novelglide/ui/pages/main/bloc/library_bloc.dart';
 
 class MainPageLibraryItem extends StatelessWidget {
   const MainPageLibraryItem(this.bookName, {super.key});
