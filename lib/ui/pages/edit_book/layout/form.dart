@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:novelglide/ui/pages/add_book/bloc/form_bloc.dart';
-import 'package:novelglide/ui/pages/add_book/layout/form_components/input_book_name.dart';
-import 'package:novelglide/ui/pages/add_book/layout/form_components/submit_buttons.dart';
+import 'package:novelglide/ui/pages/edit_book/bloc/form_bloc.dart';
+import 'package:novelglide/ui/pages/edit_book/layout/form_components/input_book_name.dart';
+import 'package:novelglide/ui/pages/edit_book/layout/form_components/submit_buttons.dart';
 
-class AddBookFormWidget extends StatelessWidget {
-  AddBookFormWidget({super.key});
+class EditBookFormWidget extends StatelessWidget {
+  EditBookFormWidget({super.key});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -15,19 +15,19 @@ class AddBookFormWidget extends StatelessWidget {
     return Form(
       key: _formKey,
       child: BlocProvider(
-        create: (_) => AddBookFormCubit(),
+        create: (_) => EditBookFormCubit(),
         child: const CustomScrollView(
           slivers: [
             SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
               sliver: SliverToBoxAdapter(
-                child: AddBookInputBookName(),
+                child: EditBookInputBookName(),
               ),
             ),
             SliverPadding(
               padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
               sliver: SliverToBoxAdapter(
-                child: AddBookSubmitButton(),
+                child: EditBookSubmitButton(),
               ),
             ),
           ],

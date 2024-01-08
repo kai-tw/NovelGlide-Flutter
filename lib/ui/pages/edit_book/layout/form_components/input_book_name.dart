@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:novelglide/ui/pages/add_book/bloc/form_bloc.dart';
+import 'package:novelglide/ui/pages/edit_book/bloc/form_bloc.dart';
 
-class AddBookInputBookName extends StatelessWidget {
-  const AddBookInputBookName({super.key});
+class EditBookInputBookName extends StatelessWidget {
+  const EditBookInputBookName({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddBookFormCubit, AddBookFormState>(
+    return BlocBuilder<EditBookFormCubit, EditBookFormState>(
       builder: (context, state) {
         return TextFormField(
-          onSaved: (String? value) => BlocProvider.of<AddBookFormCubit>(context).saveData(bookName: value),
-          onChanged: (String? value) => BlocProvider.of<AddBookFormCubit>(context).bookNameVerify(state, value),
+          onSaved: (String? value) => BlocProvider.of<EditBookFormCubit>(context).saveData(bookName: value),
+          onChanged: (String? value) => BlocProvider.of<EditBookFormCubit>(context).bookNameVerify(state, value),
           validator: (_) {
             switch (state.bookNameErrorCode) {
-              case AddBookFormBookNameErrorCode.nothing:
+              case EditBookFormBookNameErrorCode.nothing:
                 return null;
-              case AddBookFormBookNameErrorCode.blank:
+              case EditBookFormBookNameErrorCode.blank:
                 return AppLocalizations.of(context)!.book_name_blank;
-              case AddBookFormBookNameErrorCode.invalid:
+              case EditBookFormBookNameErrorCode.invalid:
                 return AppLocalizations.of(context)!.book_name_invalid;
-              case AddBookFormBookNameErrorCode.exists:
+              case EditBookFormBookNameErrorCode.exists:
                 return AppLocalizations.of(context)!.book_exists;
             }
           },

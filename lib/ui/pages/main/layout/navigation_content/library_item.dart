@@ -68,13 +68,13 @@ class MainPageLibraryItem extends StatelessWidget {
               width: double.infinity,
               child: Row(
                 children: [
-                  Padding(
-                    padding: state.code == LibraryBookListStateCode.selecting
-                        ? const EdgeInsets.only(right: 12.0)
-                        : const EdgeInsets.all(0),
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    margin: const EdgeInsets.only(right: 12.0),
+                    width: state.code == LibraryBookListStateCode.selecting ? 20.0 : 0.0,
                     child: Icon(
                       isSelected ? Icons.check : Icons.check_box_outline_blank_rounded,
-                      size: state.code == LibraryBookListStateCode.selecting ? 20 : 0,
+                      size: state.code == LibraryBookListStateCode.selecting ? 20.0 : 0.0,
                     ),
                   ),
                   Expanded(child: Text(bookName)),
