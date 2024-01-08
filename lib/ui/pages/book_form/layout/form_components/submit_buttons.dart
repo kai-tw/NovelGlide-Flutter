@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:novelglide/ui/pages/edit_book/bloc/form_bloc.dart';
+import 'package:novelglide/ui/pages/book_form/bloc/form_bloc.dart';
 
-class EditBookSubmitButton extends StatelessWidget {
-  const EditBookSubmitButton({super.key});
+class BookFormSubmitButton extends StatelessWidget {
+  const BookFormSubmitButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class EditBookSubmitButton extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(AppLocalizations.of(context)!.processing)),
             );
-            BlocProvider.of<EditBookFormCubit>(context).submitData().then((isSuccessful) {
+            BlocProvider.of<BookFormCubit>(context).submitData().then((isSuccessful) {
               String message = isSuccessful
                   ? AppLocalizations.of(context)!.add_successful
                   : AppLocalizations.of(context)!.add_failed;

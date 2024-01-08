@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:novelglide/ui/pages/edit_book/layout/main.dart';
+import 'package:novelglide/ui/pages/book_form/layout/main.dart';
 import 'package:novelglide/ui/pages/main/bloc/library_book_list.dart';
 import 'package:novelglide/ui/pages/main/bloc/navigation.dart';
 
@@ -29,7 +29,7 @@ class MainPageFab extends StatelessWidget {
 
   Route _routeToAddBookPage() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => const EditBookPage(),
+      pageBuilder: (context, animation, secondaryAnimation) => const BookFormPage(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         const begin = Offset(0.0, 1.0);
         const end = Offset.zero;

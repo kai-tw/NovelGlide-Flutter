@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:novelglide/ui/pages/edit_book/layout/form.dart';
+import 'package:novelglide/ui/pages/book_form/layout/form.dart';
 
-class EditBookPage extends StatelessWidget {
-  const EditBookPage({super.key});
+class BookFormPage extends StatelessWidget {
+  const BookFormPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class EditBookPage extends StatelessWidget {
           child: Text(AppLocalizations.of(context)!.add_book_title),
         ),
       ),
-      body: EditBookFormWidget(),
+      body: BookFormWidget(),
     );
   }
 }
