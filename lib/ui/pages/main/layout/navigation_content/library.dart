@@ -15,11 +15,8 @@ class MainPageLibraryWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: BlocBuilder<LibraryBookListCubit, LibraryBookListState>(
-        buildWhen: (_, currentState) {
-          return currentState.code == LibraryBookListStateCode.normal;
-        },
         builder: (context, state) {
-          if (state.code == LibraryBookListStateCode.normal) {
+          if (state.code == LibraryBookListStateCode.unLoad) {
             BlocProvider.of<LibraryBookListCubit>(context).refresh();
             return CenteredText('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.loading}');
           }
@@ -29,6 +26,7 @@ class MainPageLibraryWidget extends StatelessWidget {
           return SlidableAutoCloseBehavior(
             child: CustomScrollView(
               slivers: [
+
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, i) {

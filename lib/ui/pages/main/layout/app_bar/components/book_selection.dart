@@ -23,31 +23,25 @@ class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSi
         backgroundColor: Theme.of(context).colorScheme.surface,
         title: Align(
           alignment: Alignment.centerLeft,
-          child: Row(
-            children: [
-              IconButton(
-                icon: Icon(
-                  isAllSelect ? Icons.check_box_rounded : Icons.indeterminate_check_box_rounded,
-                  size: 20,
-                ),
-                onPressed: () {
-                  if (isAllSelect) {
-                    debugPrint('Not select all');
-                    BlocProvider.of<LibraryBookListCubit>(context).clearSelect(state);
-                  } else {
-                    BlocProvider.of<LibraryBookListCubit>(context).allSelect(state);
-                    debugPrint('Select all');
-                  }
-                },
-              ),
-              Text(
-                state.selectedBook.length.toString(),
-                style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-              ),
-            ],
+          child: Text(
+            state.selectedBook.length.toString(),
+            style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
           ),
         ),
         actions: [
+          IconButton(
+            icon: Icon(
+              isAllSelect ? Icons.check_box_rounded : Icons.indeterminate_check_box_rounded,
+              size: 20,
+            ),
+            onPressed: () {
+              if (isAllSelect) {
+                BlocProvider.of<LibraryBookListCubit>(context).clearSelect(state);
+              } else {
+                BlocProvider.of<LibraryBookListCubit>(context).allSelect(state);
+              }
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.delete_rounded),
             onPressed: () {
