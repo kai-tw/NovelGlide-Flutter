@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:novelglide/core/file_process.dart';
 import 'package:novelglide/core/input_verify.dart';
 
+enum BookFormType { add, edit, multiEdit }
+
 enum BookFormNameErrorCode { nothing, blank, invalid, exists }
 
 class BookFormData {
@@ -21,24 +23,24 @@ class BookFormData {
 }
 
 class BookFormCubit extends Cubit<BookFormState> {
-  BookFormCubit() : super(const BookFormState(BookFormNameErrorCode.blank));
+  BookFormCubit() : super(const BookFormState(BookFormType.add, BookFormNameErrorCode.blank));
 
   BookFormData data = BookFormData('');
 
   void bookNameVerify(BookFormState state, String? name) async {
     if (name == null || name == '') {
-      emit(state.copyWith(bookNameErrorCode: BookFormNameErrorCode.blank));
+      emit(state.copyWith(nameErrorCode: BookFormNameErrorCode.blank));
       return;
     }
     if (!InputVerify.isFolderNameValid(name)) {
-      emit(state.copyWith(bookNameErrorCode: BookFormNameErrorCode.invalid));
+      emit(state.copyWith(nameErrorCode: BookFormNameErrorCode.invalid));
       return;
     }
     if (await FileProcess.isBookExists(name)) {
-      emit(state.copyWith(bookNameErrorCode: BookFormNameErrorCode.exists));
+      emit(state.copyWith(nameErrorCode: BookFormNameErrorCode.exists));
       return;
     }
-    emit(state.copyWith(bookNameErrorCode: BookFormNameErrorCode.nothing));
+    emit(state.copyWith(nameErrorCode: BookFormNameErrorCode.nothing));
   }
 
   void saveData({String? bookName}) {
@@ -55,14 +57,21 @@ class BookFormCubit extends Cubit<BookFormState> {
 }
 
 class BookFormState extends Equatable {
-  final BookFormNameErrorCode bookNameErrorCode;
+  final BookFormType type;
+  final BookFormNameErrorCode nameErrorCode;
 
-  const BookFormState(this.bookNameErrorCode);
+  const BookFormState(this.type, this.nameErrorCode);
 
-  BookFormState copyWith({BookFormNameErrorCode? bookNameErrorCode}) {
-    return BookFormState(bookNameErrorCode!);
+  BookFormState copyWith({
+    BookFormType? type,
+    BookFormNameErrorCode? nameErrorCode,
+  }) {
+    return BookFormState(
+      type ?? this.type,
+      nameErrorCode ?? this.nameErrorCode,
+    );
   }
 
   @override
-  List<Object?> get props => [bookNameErrorCode];
+  List<Object?> get props => [nameErrorCode];
 }

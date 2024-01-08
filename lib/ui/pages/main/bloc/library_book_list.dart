@@ -14,7 +14,7 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
         const LibraryBookListState(LibraryBookListStateCode.loading, [], <String>{}, <String>{});
     emit(initState);
     List<String> list = await FileProcess.getLibraryBookList();
-    emit(initState.copyWith(newCode: LibraryBookListStateCode.normal, newList: list));
+    emit(initState.copyWith(code: LibraryBookListStateCode.normal, bookList: list));
   }
 
   /// Add the book into the selected list.
@@ -24,14 +24,14 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
     }
     Set<String> selectedSet = Set<String>.from(state.selectedBook);
     selectedSet.add(name);
-    emit(state.copyWith(newCode: LibraryBookListStateCode.selecting, newSelectedSet: selectedSet));
+    emit(state.copyWith(code: LibraryBookListStateCode.selecting, selectedBook: selectedSet));
   }
 
   /// Select all books except those the slide menu is open.
   void allSelect(LibraryBookListState state) {
     emit(state.copyWith(
-      newCode: LibraryBookListStateCode.selecting,
-      newSelectedSet: state.bookList.toSet().difference(state.slidedBook),
+      code: LibraryBookListStateCode.selecting,
+      selectedBook: state.bookList.toSet().difference(state.slidedBook),
     ));
   }
 
@@ -44,12 +44,12 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
     selectedSet.remove(name);
     LibraryBookListStateCode stateCode =
         selectedSet.isNotEmpty ? LibraryBookListStateCode.selecting : LibraryBookListStateCode.normal;
-    emit(state.copyWith(newCode: stateCode, newSelectedSet: selectedSet));
+    emit(state.copyWith(code: stateCode, selectedBook: selectedSet));
   }
 
   /// Clear the selected list.
   void clearSelect(LibraryBookListState state) {
-    emit(state.copyWith(newCode: LibraryBookListStateCode.normal,newSelectedSet: <String>{}));
+    emit(state.copyWith(code: LibraryBookListStateCode.normal,selectedBook: <String>{}));
   }
 
   /// Add the book into the sliding set.
@@ -59,7 +59,7 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
     }
     Set<String> slideSet = Set<String>.from(state.slidedBook);
     slideSet.add(name);
-    emit(state.copyWith(newSlidedSet: slideSet));
+    emit(state.copyWith(slidedBook: slideSet));
   }
 
   /// Remove the book from the sliding set.
@@ -69,7 +69,7 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
     }
     Set<String> slideSet = Set<String>.from(state.slidedBook);
     slideSet.remove(name);
-    emit(state.copyWith(newSlidedSet: slideSet));
+    emit(state.copyWith(slidedBook: slideSet));
   }
 
   /// Delete all books selected by the user.
@@ -102,16 +102,16 @@ class LibraryBookListState extends Equatable {
   const LibraryBookListState(this.code, this.bookList, this.selectedBook, this.slidedBook);
 
   LibraryBookListState copyWith({
-    LibraryBookListStateCode? newCode,
-    List<String>? newList,
-    Set<String>? newSelectedSet,
-    Set<String>? newSlidedSet,
+    LibraryBookListStateCode? code,
+    List<String>? bookList,
+    Set<String>? selectedBook,
+    Set<String>? slidedBook,
   }) {
     return LibraryBookListState(
-      newCode ?? code,
-      newList ?? bookList,
-      newSelectedSet ?? selectedBook,
-      newSlidedSet ?? slidedBook,
+      code ?? this.code,
+      bookList ?? this.bookList,
+      selectedBook ?? this.selectedBook,
+      slidedBook ?? this.slidedBook,
     );
   }
 

@@ -14,7 +14,7 @@ class BookFormInputBookName extends StatelessWidget {
           onSaved: (String? value) => BlocProvider.of<BookFormCubit>(context).saveData(bookName: value),
           onChanged: (String? value) => BlocProvider.of<BookFormCubit>(context).bookNameVerify(state, value),
           validator: (_) {
-            switch (state.bookNameErrorCode) {
+            switch (state.nameErrorCode) {
               case BookFormNameErrorCode.nothing:
                 return null;
               case BookFormNameErrorCode.blank:
