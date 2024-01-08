@@ -15,86 +15,90 @@ class MainPageLibraryItem extends StatelessWidget {
     LibraryBookListState state = BlocProvider.of<LibraryBookListCubit>(context).state;
     bool isSelected = state.selectedBook.contains(bookName);
     bool isSlideOpen = false;
-    Radius borderRadius = const Radius.circular(16.0);
+    double borderRadius = 16.0;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2.0),
-      child: GestureDetector(
-        child: AnimatedContainer(
-          padding: const EdgeInsets.all(16.0),
-          width: double.infinity,
-          duration: const Duration(milliseconds: 200),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(borderRadius),
-            color: isSelected ? Theme.of(context).colorScheme.onTertiary : Colors.transparent,
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 2.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: Slidable(
+        groupTag: 'LibraryBookList',
+        closeOnScroll: false,
+        endActionPane: ActionPane(
+          extentRatio: 0.2,
+          motion: MotionListener(
+            onOpenEnd: () {
+              BlocProvider.of<LibraryBookListCubit>(context).removeSelect(state, bookName);
+              isSlideOpen = true;
+            },
+            onClose: () => isSlideOpen = false,
+            motionWidget: const DrawerMotion(),
           ),
-          clipBehavior: Clip.hardEdge,
-          child: Slidable(
-            groupTag: 'LibraryBookList',
-            closeOnScroll: false,
-            endActionPane: ActionPane(
-              extentRatio: 0.2,
-              motion: MotionListener(
-                onOpenEnd: () {
-                  BlocProvider.of<LibraryBookListCubit>(context).removeSelect(state, bookName);
-                  isSlideOpen = true;
-                },
-                onClose: () => isSlideOpen = false,
-                motionWidget: const DrawerMotion(),
-              ),
-              children: [
-                SlidableAction(
-                  padding: const EdgeInsets.all(0.0),
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                  foregroundColor: Theme.of(context).colorScheme.onError,
-                  icon: Icons.delete_outline_rounded,
-                  onPressed: (_) {
-                    _showConfirmDialog(context).then((isDelete) {
-                      if (isDelete != null && isDelete) {
-                        BlocProvider.of<LibraryBookListCubit>(context).deleteBook(state, bookName);
-                      }
-                    });
-                  },
-                ),
-              ],
+          children: [
+            SlidableAction(
+              padding: const EdgeInsets.all(16.0),
+              backgroundColor: Theme.of(context).colorScheme.error,
+              foregroundColor: Theme.of(context).colorScheme.onError,
+              icon: Icons.delete_outline_rounded,
+              onPressed: (_) {
+                _showConfirmDialog(context).then((isDelete) {
+                  if (isDelete != null && isDelete) {
+                    BlocProvider.of<LibraryBookListCubit>(context).deleteBook(state, bookName);
+                  }
+                });
+              },
+            ),
+          ],
+        ),
+        child: GestureDetector(
+          child: AnimatedContainer(
+            padding: const EdgeInsets.all(16.0),
+            width: double.infinity,
+            duration: const Duration(milliseconds: 200),
+            decoration: BoxDecoration(
+              color: isSelected ? Theme.of(context).colorScheme.onTertiary : Colors.transparent,
             ),
             child: SizedBox(
               width: double.infinity,
               child: Row(
                 children: [
                   Padding(
-                    padding: state.code == LibraryBookListStateCode.selecting ? const EdgeInsets.only(right: 12.0) : const EdgeInsets.all(0),
+                    padding: state.code == LibraryBookListStateCode.selecting
+                        ? const EdgeInsets.only(right: 12.0)
+                        : const EdgeInsets.all(0),
                     child: Icon(
                       isSelected ? Icons.check : Icons.check_box_outline_blank_rounded,
                       size: state.code == LibraryBookListStateCode.selecting ? 20 : 0,
                     ),
                   ),
-                  Text(bookName),
+                  Expanded(child: Text(bookName)),
                 ],
               ),
             ),
           ),
-        ),
 
-        /// Actions
-        onTap: () {
-          if (state.code == LibraryBookListStateCode.selecting) {
-            // Selection mode.
-            if (isSelected) {
-              BlocProvider.of<LibraryBookListCubit>(context).removeSelect(state, bookName);
+          /// Actions
+          onTap: () {
+            if (state.code == LibraryBookListStateCode.selecting) {
+              // Selection mode.
+              if (isSelected) {
+                BlocProvider.of<LibraryBookListCubit>(context).removeSelect(state, bookName);
+              } else {
+                BlocProvider.of<LibraryBookListCubit>(context).addSelect(state, bookName);
+              }
             } else {
+              // Open mode.
+              // TODO Open book.
+            }
+          },
+          onLongPress: () {
+            if (!isSlideOpen) {
               BlocProvider.of<LibraryBookListCubit>(context).addSelect(state, bookName);
             }
-          } else {
-            // Open mode.
-            // TODO Open book.
-          }
-        },
-        onLongPress: () {
-          if (!isSlideOpen) {
-            BlocProvider.of<LibraryBookListCubit>(context).addSelect(state, bookName);
-          }
-        },
+          },
+        ),
       ),
     );
   }
