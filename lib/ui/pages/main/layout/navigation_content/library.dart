@@ -26,7 +26,6 @@ class MainPageLibraryWidget extends StatelessWidget {
           return SlidableAutoCloseBehavior(
             child: CustomScrollView(
               slivers: [
-
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, i) {
