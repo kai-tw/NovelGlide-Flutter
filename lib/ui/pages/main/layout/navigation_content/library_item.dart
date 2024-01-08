@@ -63,10 +63,10 @@ class MainPageLibraryItem extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding: state.isSelecting ? const EdgeInsets.only(right: 12.0) : const EdgeInsets.all(0),
+                    padding: state.code == LibraryBookListStateCode.selecting ? const EdgeInsets.only(right: 12.0) : const EdgeInsets.all(0),
                     child: Icon(
                       isSelected ? Icons.check : Icons.check_box_outline_blank_rounded,
-                      size: state.isSelecting ? 20 : 0,
+                      size: state.code == LibraryBookListStateCode.selecting ? 20 : 0,
                     ),
                   ),
                   Text(bookName),
@@ -78,7 +78,7 @@ class MainPageLibraryItem extends StatelessWidget {
 
         /// Actions
         onTap: () {
-          if (state.isSelecting) {
+          if (state.code == LibraryBookListStateCode.selecting) {
             // Selection mode.
             if (isSelected) {
               BlocProvider.of<LibraryBookListCubit>(context).removeSelect(state, bookName);

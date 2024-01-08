@@ -16,10 +16,10 @@ class MainPageLibraryWidget extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: BlocBuilder<LibraryBookListCubit, LibraryBookListState>(
         buildWhen: (_, currentState) {
-          return currentState.isLoaded;
+          return currentState.code == LibraryBookListStateCode.normal;
         },
         builder: (context, state) {
-          if (!state.isLoaded) {
+          if (state.code == LibraryBookListStateCode.normal) {
             BlocProvider.of<LibraryBookListCubit>(context).refresh();
             return CenteredText('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.loading}');
           }

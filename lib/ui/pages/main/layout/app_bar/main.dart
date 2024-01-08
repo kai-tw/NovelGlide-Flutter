@@ -11,8 +11,8 @@ class MainPageAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LibraryBookListCubit, LibraryBookListState>(builder: (context, state) {
       Widget child;
-      switch (state.appBarState) {
-        case LibraryBookListAppBarState.selecting:
+      switch (state.code) {
+        case LibraryBookListStateCode.selecting:
           child = const MainPageAppBarBookSelection();
           break;
         default:

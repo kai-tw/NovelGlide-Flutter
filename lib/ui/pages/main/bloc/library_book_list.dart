@@ -2,16 +2,17 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:novelglide/core/file_process.dart';
 
-enum LibraryBookListAppBarState { normal, selecting }
+enum LibraryBookListStateCode { normal, selecting, unLoad, loading }
 
 class LibraryBookListCubit extends Cubit<LibraryBookListState> {
   LibraryBookListCubit()
-      : super(const LibraryBookListState(false, false, LibraryBookListAppBarState.normal, [], <String>{}));
+      : super(const LibraryBookListState(LibraryBookListStateCode.unLoad, [], <String>{}));
 
   /// Get the list of latest books.
   void refresh() async {
+    emit(const LibraryBookListState(LibraryBookListStateCode.loading, [], <String>{}));
     List<String> list = await FileProcess.getLibraryBookList();
-    emit(LibraryBookListState(true, false, LibraryBookListAppBarState.normal, list, const <String>{}));
+    emit(LibraryBookListState(LibraryBookListStateCode.normal, list, const <String>{}));
   }
 
   /// Add the book into the selected list.
@@ -21,12 +22,12 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
     }
     Set<String> selectedBook = Set<String>.from(state.selectedBook);
     selectedBook.add(name);
-    emit(LibraryBookListState(true, true, LibraryBookListAppBarState.selecting, state.bookList, selectedBook));
+    emit(LibraryBookListState(LibraryBookListStateCode.selecting, state.bookList, selectedBook));
   }
 
   void allSelect(LibraryBookListState state) {
     emit(
-        LibraryBookListState(true, true, LibraryBookListAppBarState.selecting, state.bookList, state.bookList.toSet()));
+        LibraryBookListState(LibraryBookListStateCode.selecting, state.bookList, state.bookList.toSet()));
   }
 
   /// Remove the book from the selected list.
@@ -36,17 +37,14 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
     }
     Set<String> selectedBook = Set<String>.from(state.selectedBook);
     selectedBook.remove(name);
-    emit(LibraryBookListState(
-        true,
-        selectedBook.isNotEmpty,
-        selectedBook.isNotEmpty ? LibraryBookListAppBarState.selecting : LibraryBookListAppBarState.normal,
-        state.bookList,
-        selectedBook));
+    LibraryBookListStateCode stateCode =
+        selectedBook.isNotEmpty ? LibraryBookListStateCode.selecting : LibraryBookListStateCode.normal;
+    emit(LibraryBookListState(stateCode, state.bookList, selectedBook));
   }
 
   /// Clear the selected list.
   void clearSelect(LibraryBookListState state) {
-    emit(LibraryBookListState(true, false, LibraryBookListAppBarState.normal, state.bookList, const <String>{}));
+    emit(LibraryBookListState(LibraryBookListStateCode.normal, state.bookList, const <String>{}));
   }
 
   /// Delete all books selected by the user.
@@ -70,18 +68,16 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
 ///         bookList      The list stores the names of all books.
 ///         selectedBook  The set stores the books selected by the user.
 class LibraryBookListState extends Equatable {
-  final bool isLoaded;
-  final bool isSelecting;
-  final LibraryBookListAppBarState appBarState;
+  final LibraryBookListStateCode code;
   final List<String> bookList;
   final Set<String> selectedBook;
 
-  const LibraryBookListState(this.isLoaded, this.isSelecting, this.appBarState, this.bookList, this.selectedBook);
+  const LibraryBookListState(this.code, this.bookList, this.selectedBook);
 
   LibraryBookListState copyWith() {
-    return LibraryBookListState(isLoaded, isSelecting, appBarState, bookList, selectedBook);
+    return LibraryBookListState(code, bookList, selectedBook);
   }
 
   @override
-  List<Object?> get props => [isLoaded, isSelecting, appBarState, bookList, selectedBook];
+  List<Object?> get props => [code, bookList, selectedBook];
 }
