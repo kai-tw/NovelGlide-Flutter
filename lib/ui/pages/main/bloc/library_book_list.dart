@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:novelglide/core/file_process.dart';
 
-enum LibraryBookListStateCode { normal, selecting, unLoad, loading }
+enum LibraryBookListStateCode { normal, selecting, unLoad, loading, noBook }
 
 class LibraryBookListCubit extends Cubit<LibraryBookListState> {
   LibraryBookListCubit()
@@ -14,7 +15,8 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
         const LibraryBookListState(LibraryBookListStateCode.loading, [], <String>{}, <String>{});
     emit(initState);
     List<String> list = await FileProcess.getLibraryBookList();
-    emit(initState.copyWith(code: LibraryBookListStateCode.normal, bookList: list));
+    LibraryBookListStateCode code = list.isEmpty ? LibraryBookListStateCode.noBook : LibraryBookListStateCode.normal;
+    emit(initState.copyWith(code: code, bookList: list));
   }
 
   /// Add the book into the selected list.
@@ -42,6 +44,7 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
     }
     Set<String> selectedSet = Set<String>.from(state.selectedBook);
     selectedSet.remove(name);
+    debugPrint(selectedSet.toString());
     LibraryBookListStateCode stateCode =
         selectedSet.isNotEmpty ? LibraryBookListStateCode.selecting : LibraryBookListStateCode.normal;
     emit(state.copyWith(code: stateCode, selectedBook: selectedSet));
@@ -49,7 +52,7 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
 
   /// Clear the selected list.
   void clearSelect(LibraryBookListState state) {
-    emit(state.copyWith(code: LibraryBookListStateCode.normal,selectedBook: <String>{}));
+    emit(state.copyWith(code: LibraryBookListStateCode.normal, selectedBook: <String>{}));
   }
 
   /// Add the book into the sliding set.

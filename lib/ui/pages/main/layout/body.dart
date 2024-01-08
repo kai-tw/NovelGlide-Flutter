@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:novelglide/ui/pages/main/layout/navigation_content/bookmarks.dart';
-import 'package:novelglide/ui/pages/main/layout/navigation_content/library.dart';
+import 'package:novelglide/ui/pages/main/layout/navigation_content/library_list.dart';
 import 'package:novelglide/ui/pages/main/layout/navigation_content/settings.dart';
 
 import '../bloc/navigation.dart';
