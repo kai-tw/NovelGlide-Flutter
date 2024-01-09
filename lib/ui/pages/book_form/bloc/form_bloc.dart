@@ -8,11 +8,11 @@ enum BookFormType { add, edit, multiEdit }
 enum BookFormNameState { nothing, blank, invalid, exists }
 
 class BookFormData {
-  String oldBookName = '';
+  String bookNamePattern = '';
   String newBookName = '';
 
-  void save({String? oldBookName, String? newBookName}) {
-    this.oldBookName = oldBookName ?? this.oldBookName;
+  void save({String? bookNamePattern, String? newBookName}) {
+    this.bookNamePattern = bookNamePattern ?? this.bookNamePattern;
     this.newBookName = newBookName ?? this.newBookName;
   }
 }
@@ -22,13 +22,13 @@ class BookFormCubit extends Cubit<BookFormState> {
 
   BookFormData data = BookFormData();
 
-  void oldNameVerify(BookFormState state, String? name) {
+  void patternVerify(BookFormState state, String? name) {
     _bookNameVerify(name).then((result) {
       emit(state.copyWith(newNameState: result));
     });
   }
 
-  void newNameVerify(BookFormState state, String? name) {
+  void nameVerify(BookFormState state, String? name) {
     _bookNameVerify(name).then((result) {
       emit(state.copyWith(newNameState: result));
     });
@@ -47,8 +47,17 @@ class BookFormCubit extends Cubit<BookFormState> {
     return BookFormNameState.nothing;
   }
 
-  Future<bool> submitData() async {
-    return await FileProcess.createBook(data.newBookName);
+  Future<bool> submitData(BookFormState state) async {
+    switch (state.formType) {
+      case BookFormType.add:
+        return await FileProcess.createBook(data.newBookName);
+      case BookFormType.edit:
+        return false;
+      case BookFormType.multiEdit:
+        return false;
+      default:
+        return false;
+    }
   }
 }
 

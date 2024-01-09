@@ -8,6 +8,7 @@
   "cancel": "取消",
   "close": "關閉",
   "processing": "處理中...",
+  "preview": "預覽",
   "add_successful": "新增成功",
   "add_failed": "新增失敗",
 
@@ -24,5 +25,9 @@
   "book_name_blank": "書名不能空白",
   "book_name_rule_title": "書籍命名規則",
   "book_name_rule_content": "可用的英文符號：",
-  "book_exists": "書名已存在"
+  "book_exists": "書名已存在",
+
+  "original_book_name": "原始書名",
+  "replace_pattern": "尋找",
+  "replace_with": "取代為"
 }

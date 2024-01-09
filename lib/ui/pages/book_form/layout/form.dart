@@ -16,27 +16,71 @@ class BookFormWidget extends StatelessWidget {
       child: Form(
         child: BlocBuilder<BookFormCubit, BookFormState>(
           builder: (context, state) {
-            return CustomScrollView(
-              slivers: [
-                SliverPadding(
+            List<Widget> sliverList = [];
+
+            switch (state.formType) {
+              case BookFormType.edit:
+                sliverList.add(const SliverPadding(
+                  padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
+                  sliver: SliverToBoxAdapter(
+                    child: Text('old name'),
+                  ),
+                ));
+                break;
+              case BookFormType.multiEdit:
+              // Multi-Edit pattern input field
+                sliverList.add(SliverPadding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
                   sliver: SliverToBoxAdapter(
                     child: BookFormInputBookName(
                       labelText: AppLocalizations.of(context)!.book_name,
                     ),
                   ),
+                ));
+                break;
+              default:
+            }
+
+            // New book name input field
+            sliverList.add(SliverPadding(
+              padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
+              sliver: SliverToBoxAdapter(
+                child: BookFormInputBookName(
+                  labelText: AppLocalizations.of(context)!.book_name,
+                  validator: (_) => nameStateToString(context, state.newNameState),
+                  onChanged: (value) => BlocProvider.of<BookFormCubit>(context).nameVerify(state, value),
+                  onSave: (value) => BlocProvider.of<BookFormCubit>(context).data.save(newBookName: value),
                 ),
-                const SliverPadding(
-                  padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
-                  sliver: SliverToBoxAdapter(
-                    child: BookFormSubmitButton(),
-                  ),
-                ),
-              ],
-            );
+              ),
+            ));
+
+            // Submit button
+            sliverList.add(const SliverPadding(
+              padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
+              sliver: SliverToBoxAdapter(
+                child: BookFormSubmitButton(),
+              ),
+            ));
+
+            return CustomScrollView(slivers: sliverList);
           },
         ),
       ),
     );
+  }
+
+  String? nameStateToString(BuildContext context, BookFormNameState? state) {
+    final localization = AppLocalizations.of(context);
+    switch (state) {
+      case BookFormNameState.blank:
+      case null:
+        return localization!.book_name_blank;
+      case BookFormNameState.invalid:
+        return localization!.book_name_invalid;
+      case BookFormNameState.exists:
+        return localization!.book_exists;
+      case BookFormNameState.nothing:
+        return null;
+    }
   }
 }

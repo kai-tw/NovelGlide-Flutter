@@ -8,6 +8,8 @@ class BookFormSubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final BookFormState state = BlocProvider.of<BookFormCubit>(context).state;
+
     return SizedBox(
       width: double.infinity,
       height: 48,
@@ -18,7 +20,7 @@ class BookFormSubmitButton extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(AppLocalizations.of(context)!.processing)),
             );
-            BlocProvider.of<BookFormCubit>(context).submitData().then((isSuccessful) {
+            BlocProvider.of<BookFormCubit>(context).submitData(state).then((isSuccessful) {
               String message = isSuccessful
                   ? AppLocalizations.of(context)!.add_successful
                   : AppLocalizations.of(context)!.add_failed;

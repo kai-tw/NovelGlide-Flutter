@@ -8,6 +8,7 @@
   "cancel": "Cancel",
   "close": "Close",
   "processing": "Processing...",
+  "preview": "Preview",
   "add_successful": "Add successfully.",
   "add_failed": "Add failed.",
 
@@ -24,5 +25,9 @@
   "book_name_blank": "The book name cannot be blank.",
   "book_name_rule_title": "Book naming rule",
   "book_name_rule_content": "Accepted symbols: ",
-  "book_exists": "The book already exists."
+  "book_exists": "The book already exists.",
+
+  "original_book_name": "Original book name",
+  "replace_pattern": "Search for",
+  "replace_with": "Replace with"
 }
