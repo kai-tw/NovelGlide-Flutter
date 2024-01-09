@@ -30,7 +30,6 @@ class MainPageLibraryItem extends StatelessWidget {
           extentRatio: 0.2,
           motion: MotionListener(
             onOpenEnd: () {
-              BlocProvider.of<LibraryBookListCubit>(context).removeSelect(state, bookName);
               BlocProvider.of<LibraryBookListCubit>(context).addSlide(state, bookName);
               isSlideOpen = true;
             },

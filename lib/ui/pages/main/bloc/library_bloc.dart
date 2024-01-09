@@ -58,9 +58,19 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
     if (state.slidedBook.contains(name)) {
       return;
     }
+
+    // If the book is selected, remove it from the selection set.
+    LibraryBookListStateCode code = state.code;
+    Set<String> selectedSet = Set<String>.from(state.selectedBook);
+    if (state.selectedBook.contains(name)) {
+      selectedSet.remove(name);
+      code = selectedSet.isEmpty ? LibraryBookListStateCode.normal : LibraryBookListStateCode.selecting;
+    }
+
+    // Add the book into the sliding set.
     Set<String> slideSet = Set<String>.from(state.slidedBook);
     slideSet.add(name);
-    emit(state.copyWith(slidedBook: slideSet));
+    emit(state.copyWith(code: code, selectedBook: selectedSet,slidedBook: slideSet));
   }
 
   /// Remove the book from the sliding set.
