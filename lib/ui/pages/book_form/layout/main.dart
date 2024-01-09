@@ -22,7 +22,7 @@ class BookFormPage extends StatelessWidget {
           child: Text(AppLocalizations.of(context)!.add_book_title),
         ),
       ),
-      body: BookFormWidget(),
+      body: const BookFormWidget(),
     );
   }
 }

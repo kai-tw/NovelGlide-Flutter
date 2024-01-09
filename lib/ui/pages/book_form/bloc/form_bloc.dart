@@ -5,7 +5,7 @@ import 'package:novelglide/core/input_verify.dart';
 
 enum BookFormType { add, edit, multiEdit }
 
-enum BookFormNameErrorCode { nothing, blank, invalid, exists }
+enum BookFormNameState { nothing, blank, invalid, exists }
 
 class BookFormData {
   String oldBookName = '';
@@ -18,24 +18,33 @@ class BookFormData {
 }
 
 class BookFormCubit extends Cubit<BookFormState> {
-  BookFormCubit() : super(const BookFormState(BookFormNameErrorCode.blank));
+  BookFormCubit() : super(BookFormState());
 
   BookFormData data = BookFormData();
 
-  void bookNameVerify(BookFormState state, String? name) async {
+  void oldNameVerify(BookFormState state, String? name) {
+    _bookNameVerify(name).then((result) {
+      emit(state.copyWith(newNameState: result));
+    });
+  }
+
+  void newNameVerify(BookFormState state, String? name) {
+    _bookNameVerify(name).then((result) {
+      emit(state.copyWith(newNameState: result));
+    });
+  }
+
+  Future<BookFormNameState> _bookNameVerify(String? name) async {
     if (name == null || name == '') {
-      emit(state.copyWith(nameErrorCode: BookFormNameErrorCode.blank));
-      return;
+      return BookFormNameState.blank;
     }
     if (!InputVerify.isFolderNameValid(name)) {
-      emit(state.copyWith(nameErrorCode: BookFormNameErrorCode.invalid));
-      return;
+      return BookFormNameState.invalid;
     }
     if (await FileProcess.isBookExists(name)) {
-      emit(state.copyWith(nameErrorCode: BookFormNameErrorCode.exists));
-      return;
+      return BookFormNameState.exists;
     }
-    emit(state.copyWith(nameErrorCode: BookFormNameErrorCode.nothing));
+    return BookFormNameState.nothing;
   }
 
   Future<bool> submitData() async {
@@ -44,14 +53,33 @@ class BookFormCubit extends Cubit<BookFormState> {
 }
 
 class BookFormState extends Equatable {
-  final BookFormNameErrorCode nameErrorCode;
+  late final BookFormType? formType;
+  late final BookFormNameState? oldNameState;
+  late final BookFormNameState? newNameState;
 
-  const BookFormState(this.nameErrorCode);
+  /// Initialization.
+  BookFormState({
+    BookFormType? formType,
+    BookFormNameState? oldNameState,
+    BookFormNameState? newNameState,
+  }) {
+    this.formType = formType ?? BookFormType.add;
+    this.oldNameState = oldNameState ?? BookFormNameState.blank;
+    this.newNameState = newNameState ?? BookFormNameState.blank;
+  }
 
-  BookFormState copyWith({BookFormNameErrorCode? nameErrorCode}) {
-    return BookFormState(nameErrorCode ?? this.nameErrorCode);
+  BookFormState copyWith({
+    BookFormType? formType,
+    BookFormNameState? oldNameState,
+    BookFormNameState? newNameState,
+  }) {
+    return BookFormState(
+      formType: formType ?? this.formType,
+      oldNameState: oldNameState ?? this.oldNameState,
+      newNameState: newNameState ?? this.newNameState,
+    );
   }
 
   @override
-  List<Object?> get props => [nameErrorCode];
+  List<Object?> get props => [newNameState];
 }
