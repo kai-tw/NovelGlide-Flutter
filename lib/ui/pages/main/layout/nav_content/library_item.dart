@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:novelglide/ui/motion/motion_listener.dart';
+import 'package:novelglide/ui/motion/route_slide_transition.dart';
+import 'package:novelglide/ui/pages/book_form/bloc/form_bloc.dart';
+import 'package:novelglide/ui/pages/book_form/layout/main.dart';
 import 'package:novelglide/ui/pages/main/bloc/library_bloc.dart';
 
 class MainPageLibraryItem extends StatelessWidget {
@@ -46,7 +49,9 @@ class MainPageLibraryItem extends StatelessWidget {
               foregroundColor: Theme.of(context).colorScheme.onPrimary,
               icon: Icons.edit_rounded,
               onPressed: (_) {
-
+                Navigator.of(context).push(_routeToEditPage()).then((_) {
+                  BlocProvider.of<LibraryBookListCubit>(context).refresh();
+                });
               },
             ),
             SlidableAction(
@@ -141,6 +146,13 @@ class MainPageLibraryItem extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+
+  Route _routeToEditPage() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => const BookFormPage(BookFormType.edit),
+      transitionsBuilder: routeBottomSlideTransition,
     );
   }
 }

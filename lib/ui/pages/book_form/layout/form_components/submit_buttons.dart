@@ -20,7 +20,7 @@ class BookFormSubmitButton extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(AppLocalizations.of(context)!.processing)),
             );
-            BlocProvider.of<BookFormCubit>(context).submitData(state).then((isSuccessful) {
+            BlocProvider.of<BookFormCubit>(context).submitData().then((isSuccessful) {
               String message = isSuccessful
                   ? AppLocalizations.of(context)!.add_successful
                   : AppLocalizations.of(context)!.add_failed;

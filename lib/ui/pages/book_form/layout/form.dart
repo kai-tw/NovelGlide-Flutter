@@ -11,60 +11,65 @@ class BookFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double paddingHorizontal = 40.0;
-    return BlocProvider(
-      create: (_) => BookFormCubit(),
-      child: Form(
-        child: BlocBuilder<BookFormCubit, BookFormState>(
-          builder: (context, state) {
-            List<Widget> sliverList = [];
+    return Form(
+      child: BlocBuilder<BookFormCubit, BookFormState>(
+        builder: (context, state) {
+          List<Widget> sliverList = [];
 
-            switch (state.formType) {
-              case BookFormType.edit:
-                sliverList.add(const SliverPadding(
-                  padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
-                  sliver: SliverToBoxAdapter(
-                    child: Text('old name'),
-                  ),
-                ));
-                break;
-              case BookFormType.multiEdit:
-              // Multi-Edit pattern input field
-                sliverList.add(SliverPadding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
-                  sliver: SliverToBoxAdapter(
-                    child: BookFormInputBookName(
-                      labelText: AppLocalizations.of(context)!.book_name,
-                    ),
-                  ),
-                ));
-                break;
-              default:
-            }
-
-            // New book name input field
-            sliverList.add(SliverPadding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
-              sliver: SliverToBoxAdapter(
-                child: BookFormInputBookName(
-                  labelText: AppLocalizations.of(context)!.book_name,
-                  validator: (_) => nameStateToString(context, state.newNameState),
-                  onChanged: (value) => BlocProvider.of<BookFormCubit>(context).nameVerify(state, value),
-                  onSave: (value) => BlocProvider.of<BookFormCubit>(context).data.save(newBookName: value),
+          switch (BlocProvider.of<BookFormCubit>(context).formType) {
+            case BookFormType.edit:
+              sliverList.add(const SliverPadding(
+                padding: EdgeInsets.symmetric(
+                    vertical: 12.0, horizontal: paddingHorizontal),
+                sliver: SliverToBoxAdapter(
+                  child: Text('old name'),
                 ),
-              ),
-            ));
+              ));
+              break;
+            case BookFormType.multiEdit:
+              // Multi-Edit pattern input field
+              sliverList.add(SliverPadding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 12.0, horizontal: paddingHorizontal),
+                sliver: SliverToBoxAdapter(
+                  child: BookFormInputBookName(
+                    labelText: AppLocalizations.of(context)!.book_name,
+                  ),
+                ),
+              ));
+              break;
+            default:
+          }
 
-            // Submit button
-            sliverList.add(const SliverPadding(
-              padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
-              sliver: SliverToBoxAdapter(
-                child: BookFormSubmitButton(),
+          // New book name input field
+          sliverList.add(SliverPadding(
+            padding: const EdgeInsets.symmetric(
+                vertical: 12.0, horizontal: paddingHorizontal),
+            sliver: SliverToBoxAdapter(
+              child: BookFormInputBookName(
+                labelText: AppLocalizations.of(context)!.book_name,
+                validator: (_) =>
+                    nameStateToString(context, state.newNameState),
+                onChanged: (value) => BlocProvider.of<BookFormCubit>(context)
+                    .nameVerify(state, value),
+                onSave: (value) => BlocProvider.of<BookFormCubit>(context)
+                    .data
+                    .save(newBookName: value),
               ),
-            ));
+            ),
+          ));
 
-            return CustomScrollView(slivers: sliverList);
-          },
-        ),
+          // Submit button
+          sliverList.add(const SliverPadding(
+            padding: EdgeInsets.symmetric(
+                vertical: 12.0, horizontal: paddingHorizontal),
+            sliver: SliverToBoxAdapter(
+              child: BookFormSubmitButton(),
+            ),
+          ));
+
+          return CustomScrollView(slivers: sliverList);
+        },
       ),
     );
   }

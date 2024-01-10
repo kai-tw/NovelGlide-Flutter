@@ -18,8 +18,10 @@
 
   "title_bookmarks": "Bookmarks",
   "title_settings": "Settings",
+  "title_add_book": "Add a book",
+  "title_edit_book": "Edit the book",
+  "title_multiEdit_book": "Edit the books",
 
-  "add_book_title": "Add a book",
   "book_name": "Book name",
   "book_name_invalid": "Invalid book name",
   "book_name_blank": "The book name cannot be blank.",

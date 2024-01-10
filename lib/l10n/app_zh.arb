@@ -18,8 +18,10 @@
 
   "title_bookmarks": "書籤",
   "title_settings": "設定",
+  "title_add_book": "新增書籍",
+  "title_edit_book": "編輯書籍",
+  "title_multiEdit_book": "編輯多本書籍",
 
-  "add_book_title": "新增書籍",
   "book_name": "書名",
   "book_name_invalid": "書名不符合命名規則",
   "book_name_blank": "書名不能空白",

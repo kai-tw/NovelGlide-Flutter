@@ -18,8 +18,9 @@ class BookFormData {
 }
 
 class BookFormCubit extends Cubit<BookFormState> {
-  BookFormCubit() : super(BookFormState());
+  BookFormCubit(this.formType) : super(BookFormState());
 
+  BookFormType formType;
   BookFormData data = BookFormData();
 
   void patternVerify(BookFormState state, String? name) {
@@ -47,8 +48,8 @@ class BookFormCubit extends Cubit<BookFormState> {
     return BookFormNameState.nothing;
   }
 
-  Future<bool> submitData(BookFormState state) async {
-    switch (state.formType) {
+  Future<bool> submitData() async {
+    switch (formType) {
       case BookFormType.add:
         return await FileProcess.createBook(data.newBookName);
       case BookFormType.edit:
@@ -62,28 +63,23 @@ class BookFormCubit extends Cubit<BookFormState> {
 }
 
 class BookFormState extends Equatable {
-  late final BookFormType? formType;
   late final BookFormNameState? oldNameState;
   late final BookFormNameState? newNameState;
 
   /// Initialization.
   BookFormState({
-    BookFormType? formType,
     BookFormNameState? oldNameState,
     BookFormNameState? newNameState,
   }) {
-    this.formType = formType ?? BookFormType.add;
     this.oldNameState = oldNameState ?? BookFormNameState.blank;
     this.newNameState = newNameState ?? BookFormNameState.blank;
   }
 
   BookFormState copyWith({
-    BookFormType? formType,
     BookFormNameState? oldNameState,
     BookFormNameState? newNameState,
   }) {
     return BookFormState(
-      formType: formType ?? this.formType,
       oldNameState: oldNameState ?? this.oldNameState,
       newNameState: newNameState ?? this.newNameState,
     );

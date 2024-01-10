@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:novelglide/ui/motion/route_slide_transition.dart';
+import 'package:novelglide/ui/pages/book_form/bloc/form_bloc.dart';
 import 'package:novelglide/ui/pages/book_form/layout/main.dart';
 import 'package:novelglide/ui/pages/main/bloc/library_bloc.dart';
 import 'package:novelglide/ui/pages/main/bloc/navigation_bloc.dart';
@@ -29,19 +31,8 @@ class MainPageFab extends StatelessWidget {
 
   Route _routeToAddBookPage() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => const BookFormPage(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, 1.0);
-        const end = Offset.zero;
-        const curve = Curves.ease;
-
-        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
+      pageBuilder: (context, animation, secondaryAnimation) => const BookFormPage(BookFormType.add),
+      transitionsBuilder: routeBottomSlideTransition,
     );
   }
 }
