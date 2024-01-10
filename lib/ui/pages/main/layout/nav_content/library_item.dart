@@ -27,7 +27,7 @@ class MainPageLibraryItem extends StatelessWidget {
         groupTag: 'LibraryBookList',
         closeOnScroll: false,
         endActionPane: ActionPane(
-          extentRatio: 0.2,
+          extentRatio: 0.4,
           motion: MotionListener(
             onOpenEnd: () {
               BlocProvider.of<LibraryBookListCubit>(context).addSlide(state, bookName);
@@ -40,6 +40,15 @@ class MainPageLibraryItem extends StatelessWidget {
             motionWidget: const DrawerMotion(),
           ),
           children: [
+            SlidableAction(
+              padding: const EdgeInsets.all(16.0),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+              icon: Icons.edit_rounded,
+              onPressed: (_) {
+
+              },
+            ),
             SlidableAction(
               padding: const EdgeInsets.all(16.0),
               backgroundColor: Theme.of(context).colorScheme.error,

@@ -31,6 +31,12 @@ class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSi
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.edit_rounded, size: 20.0),
+            onPressed: () {
+
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.delete_rounded, size: 20.0),
             onPressed: () {
               _showConfirmDialog(context).then((isDelete) {
