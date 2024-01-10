@@ -49,7 +49,7 @@ class MainPageLibraryItem extends StatelessWidget {
               foregroundColor: Theme.of(context).colorScheme.onPrimary,
               icon: Icons.edit_rounded,
               onPressed: (_) {
-                Navigator.of(context).push(_routeToEditPage()).then((_) {
+                Navigator.of(context).push(_routeToEditPage(bookName)).then((_) {
                   BlocProvider.of<LibraryBookListCubit>(context).refresh();
                 });
               },
@@ -149,9 +149,9 @@ class MainPageLibraryItem extends StatelessWidget {
     );
   }
 
-  Route _routeToEditPage() {
+  Route _routeToEditPage(String bookName) {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => const BookFormPage(BookFormType.edit),
+      pageBuilder: (context, animation, secondaryAnimation) => BookFormPage(BookFormType.edit, oldBookName: bookName),
       transitionsBuilder: routeBottomSlideTransition,
     );
   }

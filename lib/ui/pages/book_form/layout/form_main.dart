@@ -6,7 +6,9 @@ import 'package:novelglide/ui/pages/book_form/layout/form_components/input_book_
 import 'package:novelglide/ui/pages/book_form/layout/form_components/submit_buttons.dart';
 
 class BookFormWidget extends StatelessWidget {
-  const BookFormWidget({super.key});
+  const BookFormWidget({super.key, this.oldName});
+
+  final String? oldName;
 
   @override
   Widget build(BuildContext context) {
@@ -15,54 +17,60 @@ class BookFormWidget extends StatelessWidget {
       child: BlocBuilder<BookFormCubit, BookFormState>(
         builder: (context, state) {
           List<Widget> sliverList = [];
+          String newNameLabelText = AppLocalizations.of(context)!.book_name;
+          BookFormType formType = BlocProvider.of<BookFormCubit>(context).formType;
 
-          switch (BlocProvider.of<BookFormCubit>(context).formType) {
+          switch (formType) {
             case BookFormType.edit:
-              sliverList.add(const SliverPadding(
-                padding: EdgeInsets.symmetric(
-                    vertical: 12.0, horizontal: paddingHorizontal),
+              newNameLabelText = AppLocalizations.of(context)!.new_book_name;
+
+              // Old name read-only text field
+              sliverList.add(SliverPadding(
+                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
                 sliver: SliverToBoxAdapter(
-                  child: Text('old name'),
+                  child: BookFormInputBookName(
+                    labelText: AppLocalizations.of(context)!.original_book_name,
+                    initialValue: oldName,
+                    isShowHelp: false,
+                    readOnly: true,
+                  ),
                 ),
               ));
+              sliverList.add(const SliverToBoxAdapter(child: Icon(Icons.arrow_downward_rounded)));
               break;
             case BookFormType.multiEdit:
+              newNameLabelText = AppLocalizations.of(context)!.replace_with;
+
               // Multi-Edit pattern input field
               sliverList.add(SliverPadding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 12.0, horizontal: paddingHorizontal),
+                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
                 sliver: SliverToBoxAdapter(
                   child: BookFormInputBookName(
                     labelText: AppLocalizations.of(context)!.book_name,
                   ),
                 ),
               ));
+              sliverList.add(const SliverToBoxAdapter(child: Icon(Icons.arrow_downward_rounded)));
               break;
             default:
           }
 
           // New book name input field
           sliverList.add(SliverPadding(
-            padding: const EdgeInsets.symmetric(
-                vertical: 12.0, horizontal: paddingHorizontal),
+            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
             sliver: SliverToBoxAdapter(
               child: BookFormInputBookName(
-                labelText: AppLocalizations.of(context)!.book_name,
-                validator: (_) =>
-                    nameStateToString(context, state.newNameState),
-                onChanged: (value) => BlocProvider.of<BookFormCubit>(context)
-                    .nameVerify(state, value),
-                onSave: (value) => BlocProvider.of<BookFormCubit>(context)
-                    .data
-                    .save(newBookName: value),
+                labelText: newNameLabelText,
+                validator: (_) => nameStateToString(context, state.newNameState),
+                onChanged: (value) => BlocProvider.of<BookFormCubit>(context).nameVerify(state, value),
+                onSave: (value) => BlocProvider.of<BookFormCubit>(context).data.save(newName: value),
               ),
             ),
           ));
 
           // Submit button
           sliverList.add(const SliverPadding(
-            padding: EdgeInsets.symmetric(
-                vertical: 12.0, horizontal: paddingHorizontal),
+            padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
             sliver: SliverToBoxAdapter(
               child: BookFormSubmitButton(),
             ),

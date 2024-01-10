@@ -30,6 +30,7 @@
   "book_exists": "The book already exists.",
 
   "original_book_name": "Original book name",
+  "new_book_name": "New book name",
   "replace_pattern": "Search for",
   "replace_with": "Replace with"
 }

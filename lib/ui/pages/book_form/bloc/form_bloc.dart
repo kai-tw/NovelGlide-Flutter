@@ -8,12 +8,13 @@ enum BookFormType { add, edit, multiEdit }
 enum BookFormNameState { nothing, blank, invalid, exists }
 
 class BookFormData {
-  String bookNamePattern = '';
-  String newBookName = '';
+  // Share bookNamePattern with oldBookName
+  String oldName = '';
+  String newName = '';
 
-  void save({String? bookNamePattern, String? newBookName}) {
-    this.bookNamePattern = bookNamePattern ?? this.bookNamePattern;
-    this.newBookName = newBookName ?? this.newBookName;
+  void save({String? oldName, String? newName}) {
+    this.oldName = oldName ?? this.oldName;
+    this.newName = newName ?? this.newName;
   }
 }
 
@@ -51,7 +52,7 @@ class BookFormCubit extends Cubit<BookFormState> {
   Future<bool> submitData() async {
     switch (formType) {
       case BookFormType.add:
-        return await FileProcess.createBook(data.newBookName);
+        return await FileProcess.createBook(data.newName);
       case BookFormType.edit:
         return false;
       case BookFormType.multiEdit:
@@ -63,17 +64,11 @@ class BookFormCubit extends Cubit<BookFormState> {
 }
 
 class BookFormState extends Equatable {
-  late final BookFormNameState? oldNameState;
-  late final BookFormNameState? newNameState;
+  final BookFormNameState? oldNameState;
+  final BookFormNameState? newNameState;
 
   /// Initialization.
-  BookFormState({
-    BookFormNameState? oldNameState,
-    BookFormNameState? newNameState,
-  }) {
-    this.oldNameState = oldNameState ?? BookFormNameState.blank;
-    this.newNameState = newNameState ?? BookFormNameState.blank;
-  }
+  const BookFormState({this.oldNameState, this.newNameState});
 
   BookFormState copyWith({
     BookFormNameState? oldNameState,

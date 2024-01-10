@@ -30,6 +30,7 @@
   "book_exists": "書名已存在",
 
   "original_book_name": "原始書名",
+  "new_book_name": "新書名",
   "replace_pattern": "尋找",
   "replace_with": "取代為"
 }

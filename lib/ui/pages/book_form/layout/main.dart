@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:novelglide/ui/pages/book_form/bloc/form_bloc.dart';
-import 'package:novelglide/ui/pages/book_form/layout/form.dart';
+import 'package:novelglide/ui/pages/book_form/layout/form_main.dart';
 
 class BookFormPage extends StatelessWidget {
-  const BookFormPage(this.formType, {super.key});
+  const BookFormPage(this.formType, {super.key, this.oldBookName});
 
   final BookFormType formType;
+  final String? oldBookName;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class BookFormPage extends StatelessWidget {
             child: Text(pageTitle),
           ),
         ),
-        body: const BookFormWidget(),
+        body: BookFormWidget(oldName: oldBookName),
       ),
     );
   }
