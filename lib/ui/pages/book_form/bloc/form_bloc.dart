@@ -54,7 +54,7 @@ class BookFormCubit extends Cubit<BookFormState> {
       case BookFormType.add:
         return await FileProcess.createBook(data.newName);
       case BookFormType.edit:
-        return false;
+        return await FileProcess.renameBook(data.oldName, data.newName);
       case BookFormType.multiEdit:
         return false;
       default:

@@ -11,6 +11,8 @@
   "preview": "預覽",
   "add_successful": "新增成功",
   "add_failed": "新增失敗",
+  "edit_successful": "編輯成功",
+  "edit_failed": "編輯失敗",
 
   "confirm_title": "確定嗎？",
 

@@ -11,6 +11,8 @@
   "preview": "Preview",
   "add_successful": "Add successfully.",
   "add_failed": "Add failed.",
+  "edit_successful": "Edit successfully.",
+  "edit_failed": "Edit failed.",
 
   "confirm_title": "Are you sure?",
 

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -44,12 +45,31 @@ class FileProcess {
   }
 
   static Future<bool> createBook(String name) async {
+    if (name == '') {
+      return false;
+    }
     final folder = Directory('${await libraryRoot}/$name');
     folder.createSync(recursive: true);
     return folder.existsSync();
   }
 
+  static Future<bool> renameBook(String oldName, String newName) async {
+    if (oldName == '' || newName == '') {
+      return false;
+    }
+    if (oldName == newName) {
+      return true;
+    }
+    final oldFolder = Directory('${await libraryRoot}/$oldName');
+    final newFolder = Directory('${await libraryRoot}/$newName');
+    oldFolder.renameSync(newFolder.path);
+    return newFolder.existsSync();
+  }
+
   static Future<bool> deleteBook(String name) async {
+    if (name == '') {
+      return false;
+    }
     final folder = Directory('${await libraryRoot}/$name');
     if (folder.existsSync()) {
       folder.deleteSync(recursive: true);

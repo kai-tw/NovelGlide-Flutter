@@ -20,6 +20,10 @@ class BookFormWidget extends StatelessWidget {
           String newNameLabelText = AppLocalizations.of(context)!.book_name;
           BookFormType formType = BlocProvider.of<BookFormCubit>(context).formType;
 
+          if (oldName != null) {
+            BlocProvider.of<BookFormCubit>(context).data.save(oldName: oldName);
+          }
+
           switch (formType) {
             case BookFormType.edit:
               newNameLabelText = AppLocalizations.of(context)!.new_book_name;
@@ -33,6 +37,8 @@ class BookFormWidget extends StatelessWidget {
                     initialValue: oldName,
                     isShowHelp: false,
                     readOnly: true,
+                    onChanged: (value) => BlocProvider.of<BookFormCubit>(context).nameVerify(state, value),
+                    onSave: (value) => BlocProvider.of<BookFormCubit>(context).data.save(newName: value),
                   ),
                 ),
               ));
