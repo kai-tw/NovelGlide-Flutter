@@ -29,6 +29,7 @@
   "book_name_blank": "The book name cannot be blank.",
   "book_name_rule_title": "Book naming rule",
   "book_name_rule_content": "Accepted symbols: ",
+  "book_name_same": "The book name is same as the original.",
   "book_exists": "The book already exists.",
 
   "original_book_name": "Original book name",

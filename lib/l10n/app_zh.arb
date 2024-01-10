@@ -29,6 +29,7 @@
   "book_name_blank": "書名不能空白",
   "book_name_rule_title": "書籍命名規則",
   "book_name_rule_content": "可用的英文符號：",
+  "book_name_same": "書名相同",
   "book_exists": "書名已存在",
 
   "original_book_name": "原始書名",
