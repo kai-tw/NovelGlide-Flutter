@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:novelglide/ui/motion/route_slide_transition.dart';
+import 'package:novelglide/ui/pages/book_form/bloc/form_bloc.dart';
+import 'package:novelglide/ui/pages/book_form/layout/main.dart';
 import 'package:novelglide/ui/pages/main/bloc/library_bloc.dart';
 
 class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSizeWidget {
@@ -9,7 +12,7 @@ class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSi
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LibraryBookListCubit, LibraryBookListState>(builder: (context, state) {
-      bool isAllSelect = state.bookList.length == state.selectedBook.length;
+      bool isAllSelect = state.bookList.length == state.selectedBooks.length;
       return AppBar(
         leading: IconButton(
           icon: Icon(isAllSelect ? Icons.check_box_rounded : Icons.indeterminate_check_box_rounded, size: 20.0),
@@ -25,7 +28,7 @@ class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSi
         title: Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            state.selectedBook.length.toString(),
+            state.selectedBooks.length.toString(),
             style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
           ),
         ),
@@ -33,7 +36,9 @@ class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSi
           IconButton(
             icon: const Icon(Icons.edit_rounded, size: 20.0),
             onPressed: () {
-
+              Navigator.of(context).push(_routeToEditPage(state.selectedBooks)).then((_) {
+                BlocProvider.of<LibraryBookListCubit>(context).refresh();
+              });
             },
           ),
           IconButton(
@@ -77,6 +82,14 @@ class MainPageAppBarBookSelection extends StatelessWidget implements PreferredSi
           ],
         );
       },
+    );
+  }
+
+  Route _routeToEditPage(Set<String> selectedSet) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          BookFormPage(BookFormType.multiEdit, selectedBooks: selectedSet),
+      transitionsBuilder: routeBottomSlideTransition,
     );
   }
 

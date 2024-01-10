@@ -16,7 +16,7 @@ class MainPageLibraryItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LibraryBookListState state = BlocProvider.of<LibraryBookListCubit>(context).state;
-    bool isSelected = state.selectedBook.contains(bookName);
+    bool isSelected = state.selectedBooks.contains(bookName);
     bool isSlideOpen = false;
     double borderRadius = 16.0;
 

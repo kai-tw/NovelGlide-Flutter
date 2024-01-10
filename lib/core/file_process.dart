@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -64,6 +63,23 @@ class FileProcess {
     final newFolder = Directory('${await libraryRoot}/$newName');
     oldFolder.renameSync(newFolder.path);
     return newFolder.existsSync();
+  }
+
+  static Future<bool> renameBookBatch(Set<String> selectedBooks, String pattern, String newName) async {
+    if (pattern == '' || newName == '' || selectedBooks.isEmpty) {
+      return false;
+    }
+    if (pattern == newName) {
+      return true;
+    }
+    bool isSuccess = true;
+    for (String item in selectedBooks) {
+      final oldFolder = Directory('${await libraryRoot}/$item');
+      final newFolder = Directory('${await libraryRoot}/${item.replaceAll(pattern, newName)}');
+      oldFolder.renameSync(newFolder.path);
+      isSuccess = isSuccess && newFolder.existsSync();
+    }
+    return isSuccess;
   }
 
   static Future<bool> deleteBook(String name) async {

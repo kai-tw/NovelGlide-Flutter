@@ -6,9 +6,10 @@ import 'package:novelglide/ui/pages/book_form/layout/form_components/input_book_
 import 'package:novelglide/ui/pages/book_form/layout/form_components/submit_buttons.dart';
 
 class BookFormWidget extends StatelessWidget {
-  const BookFormWidget({super.key, this.oldName});
+  const BookFormWidget({super.key, this.oldName, this.selectedBooks});
 
   final String? oldName;
+  final Set<String>? selectedBooks;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,9 @@ class BookFormWidget extends StatelessWidget {
 
           if (oldName != null) {
             BlocProvider.of<BookFormCubit>(context).data.save(oldName: oldName);
+          }
+          if (selectedBooks != null) {
+            BlocProvider.of<BookFormCubit>(context).data.save(selectedBooks: selectedBooks);
           }
 
           switch (formType) {
@@ -38,7 +42,7 @@ class BookFormWidget extends StatelessWidget {
                     isShowHelp: false,
                     readOnly: true,
                     onChanged: (value) => BlocProvider.of<BookFormCubit>(context).nameVerify(state, value),
-                    onSave: (value) => BlocProvider.of<BookFormCubit>(context).data.save(newName: value),
+                    onSave: (value) => BlocProvider.of<BookFormCubit>(context).data.save(oldName: value),
                   ),
                 ),
               ));
@@ -52,7 +56,9 @@ class BookFormWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
                 sliver: SliverToBoxAdapter(
                   child: BookFormInputBookName(
-                    labelText: AppLocalizations.of(context)!.book_name,
+                    labelText: AppLocalizations.of(context)!.replace_pattern,
+                    onChanged: (value) => BlocProvider.of<BookFormCubit>(context).nameVerify(state, value),
+                    onSave: (value) => BlocProvider.of<BookFormCubit>(context).data.save(oldName: value),
                   ),
                 ),
               ));

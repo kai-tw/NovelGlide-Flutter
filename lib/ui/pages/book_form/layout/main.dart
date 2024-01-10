@@ -5,10 +5,11 @@ import 'package:novelglide/ui/pages/book_form/bloc/form_bloc.dart';
 import 'package:novelglide/ui/pages/book_form/layout/form_main.dart';
 
 class BookFormPage extends StatelessWidget {
-  const BookFormPage(this.formType, {super.key, this.oldBookName});
+  const BookFormPage(this.formType, {super.key, this.oldBookName, this.selectedBooks});
 
   final BookFormType formType;
   final String? oldBookName;
+  final Set<String>? selectedBooks;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class BookFormPage extends StatelessWidget {
             child: Text(pageTitle),
           ),
         ),
-        body: BookFormWidget(oldName: oldBookName),
+        body: BookFormWidget(oldName: oldBookName, selectedBooks: selectedBooks),
       ),
     );
   }

@@ -11,15 +11,17 @@ class BookFormData {
   // Share bookNamePattern with oldBookName
   String oldName = '';
   String newName = '';
+  Set<String> selectedBooks = <String>{};
 
-  void save({String? oldName, String? newName}) {
+  void save({String? oldName, String? newName, Set<String>? selectedBooks}) {
     this.oldName = oldName ?? this.oldName;
     this.newName = newName ?? this.newName;
+    this.selectedBooks = selectedBooks ?? this.selectedBooks;
   }
 }
 
 class BookFormCubit extends Cubit<BookFormState> {
-  BookFormCubit(this.formType) : super(BookFormState());
+  BookFormCubit(this.formType) : super(const BookFormState());
 
   BookFormType formType;
   BookFormData data = BookFormData();
@@ -56,7 +58,7 @@ class BookFormCubit extends Cubit<BookFormState> {
       case BookFormType.edit:
         return await FileProcess.renameBook(data.oldName, data.newName);
       case BookFormType.multiEdit:
-        return false;
+        return await FileProcess.renameBookBatch(data.selectedBooks, data.oldName, data.newName);
       default:
         return false;
     }

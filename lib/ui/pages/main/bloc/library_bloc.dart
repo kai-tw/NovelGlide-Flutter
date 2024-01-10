@@ -20,37 +20,37 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
 
   /// Add the book into the selected list.
   void addSelect(LibraryBookListState state, String name) {
-    if (state.selectedBook.contains(name)) {
+    if (state.selectedBooks.contains(name)) {
       return;
     }
-    Set<String> selectedSet = Set<String>.from(state.selectedBook);
+    Set<String> selectedSet = Set<String>.from(state.selectedBooks);
     selectedSet.add(name);
-    emit(state.copyWith(code: LibraryBookListStateCode.selecting, selectedBook: selectedSet));
+    emit(state.copyWith(code: LibraryBookListStateCode.selecting, selectedBooks: selectedSet));
   }
 
   /// Select all books except those the slide menu is open.
   void allSelect(LibraryBookListState state) {
     emit(state.copyWith(
       code: LibraryBookListStateCode.selecting,
-      selectedBook: state.bookList.toSet().difference(state.slidedBook),
+      selectedBooks: state.bookList.toSet().difference(state.slidedBook),
     ));
   }
 
   /// Remove the book from the selected list.
   void removeSelect(LibraryBookListState state, String name) {
-    if (!state.selectedBook.contains(name)) {
+    if (!state.selectedBooks.contains(name)) {
       return;
     }
-    Set<String> selectedSet = Set<String>.from(state.selectedBook);
+    Set<String> selectedSet = Set<String>.from(state.selectedBooks);
     selectedSet.remove(name);
     LibraryBookListStateCode stateCode =
         selectedSet.isNotEmpty ? LibraryBookListStateCode.selecting : LibraryBookListStateCode.normal;
-    emit(state.copyWith(code: stateCode, selectedBook: selectedSet));
+    emit(state.copyWith(code: stateCode, selectedBooks: selectedSet));
   }
 
   /// Clear the selected list.
   void clearSelect(LibraryBookListState state) {
-    emit(state.copyWith(code: LibraryBookListStateCode.normal, selectedBook: <String>{}));
+    emit(state.copyWith(code: LibraryBookListStateCode.normal, selectedBooks: <String>{}));
   }
 
   /// Add the book into the sliding set.
@@ -61,8 +61,8 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
 
     // If the book is selected, remove it from the selection set.
     LibraryBookListStateCode code = state.code;
-    Set<String> selectedSet = Set<String>.from(state.selectedBook);
-    if (state.selectedBook.contains(name)) {
+    Set<String> selectedSet = Set<String>.from(state.selectedBooks);
+    if (state.selectedBooks.contains(name)) {
       selectedSet.remove(name);
       code = selectedSet.isEmpty ? LibraryBookListStateCode.normal : LibraryBookListStateCode.selecting;
     }
@@ -70,7 +70,7 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
     // Add the book into the sliding set.
     Set<String> slideSet = Set<String>.from(state.slidedBook);
     slideSet.add(name);
-    emit(state.copyWith(code: code, selectedBook: selectedSet,slidedBook: slideSet));
+    emit(state.copyWith(code: code, selectedBooks: selectedSet,slidedBook: slideSet));
   }
 
   /// Remove the book from the sliding set.
@@ -85,7 +85,7 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
 
   /// Delete all books selected by the user.
   void deleteSelectBook(LibraryBookListState state) {
-    for (var item in state.selectedBook) {
+    for (var item in state.selectedBooks) {
       FileProcess.deleteBook(item);
     }
     refresh();
@@ -107,25 +107,25 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
 class LibraryBookListState extends Equatable {
   final LibraryBookListStateCode code;
   final List<String> bookList;
-  final Set<String> selectedBook;
+  final Set<String> selectedBooks;
   final Set<String> slidedBook;
 
-  const LibraryBookListState(this.code, this.bookList, this.selectedBook, this.slidedBook);
+  const LibraryBookListState(this.code, this.bookList, this.selectedBooks, this.slidedBook);
 
   LibraryBookListState copyWith({
     LibraryBookListStateCode? code,
     List<String>? bookList,
-    Set<String>? selectedBook,
+    Set<String>? selectedBooks,
     Set<String>? slidedBook,
   }) {
     return LibraryBookListState(
       code ?? this.code,
       bookList ?? this.bookList,
-      selectedBook ?? this.selectedBook,
+      selectedBooks ?? this.selectedBooks,
       slidedBook ?? this.slidedBook,
     );
   }
 
   @override
-  List<Object?> get props => [code, bookList, selectedBook, slidedBook];
+  List<Object?> get props => [code, bookList, selectedBooks, slidedBook];
 }
