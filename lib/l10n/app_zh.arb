@@ -25,8 +25,8 @@
   "title_multiEdit_book": "編輯多本書籍",
 
   "book_name": "書名",
-  "book_name_invalid": "書名不符合命名規則",
-  "book_name_blank": "書名不能空白",
+  "input_field_invalid": "不符合命名規則",
+  "input_field_blank": "不能空白",
   "book_name_rule_title": "書籍命名規則",
   "book_name_rule_content": "可用的英文符號：",
   "book_name_same": "書名相同",
@@ -35,5 +35,5 @@
   "original_book_name": "原始書名",
   "new_book_name": "新書名",
   "replace_pattern": "尋找",
-  "replace_with": "取代為"
+  "replace_with": "替換為"
 }

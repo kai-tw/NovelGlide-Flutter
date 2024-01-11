@@ -18,90 +18,18 @@ class BookFormWidget extends StatelessWidget {
       child: BlocBuilder<BookFormCubit, BookFormState>(
         builder: (context, state) {
           List<Widget> sliverList = [];
-          String newNameLabelText = AppLocalizations.of(context)!.book_name;
           BookFormType formType = BlocProvider.of<BookFormCubit>(context).formType;
 
           switch (formType) {
+            case BookFormType.add:
+              sliverList += _addForm(context);
+              break;
             case BookFormType.edit:
-              newNameLabelText = AppLocalizations.of(context)!.new_book_name;
-
-              if (oldName != null) {
-                BlocProvider.of<BookFormCubit>(context).data.oldName = oldName!;
-              }
-
-              /// Old name read-only text field
-              sliverList.add(SliverPadding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
-                sliver: SliverToBoxAdapter(
-                  child: BookFormInputBookName(
-                    labelText: AppLocalizations.of(context)!.original_book_name,
-                    initialValue: oldName,
-                    isShowHelp: false,
-                    readOnly: true,
-                    onChanged: (value) => BlocProvider.of<BookFormCubit>(context).oldNameVerify(state, value),
-                  ),
-                ),
-              ));
-              sliverList.add(const SliverToBoxAdapter(child: Icon(Icons.arrow_downward_rounded)));
+              sliverList += _editForm(context);
               break;
             case BookFormType.multiEdit:
-              newNameLabelText = AppLocalizations.of(context)!.replace_with;
-
-              if (selectedBooks != null) {
-                BlocProvider.of<BookFormCubit>(context).data.selectedBooks = selectedBooks!;
-              }
-
-              // Multi-Edit pattern input field
-              sliverList.add(SliverPadding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
-                sliver: SliverToBoxAdapter(
-                  child: BookFormInputBookName(
-                    labelText: AppLocalizations.of(context)!.replace_pattern,
-                    onChanged: (value) => BlocProvider.of<BookFormCubit>(context).oldNameVerify(state, value),
-                    validator: (_) => nameStateToString(context, state.oldNameState),
-                  ),
-                ),
-              ));
-              sliverList.add(const SliverToBoxAdapter(child: Icon(Icons.arrow_downward_rounded)));
+              sliverList += _multiEditForm(context);
               break;
-            default:
-          }
-
-          /// New book name input field
-          sliverList.add(SliverPadding(
-            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
-            sliver: SliverToBoxAdapter(
-              child: BookFormInputBookName(
-                labelText: newNameLabelText,
-                validator: (_) => nameStateToString(context, state.newNameState),
-                onChanged: (value) => BlocProvider.of<BookFormCubit>(context).newNameVerify(state, value),
-              ),
-            ),
-          ));
-
-          /// Preview box
-          if (formType == BookFormType.multiEdit) {
-            final String namePreview = state.namePreview ?? BlocProvider.of<BookFormCubit>(context).getNamePreview();
-
-            sliverList.add(SliverToBoxAdapter(
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 12.0, horizontal: paddingHorizontal),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Theme.of(context).colorScheme.outline),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(AppLocalizations.of(context)!.preview),
-                      Text(namePreview),
-                    ],
-                  ),
-                ),
-              ),
-            ));
           }
 
           /// Submit button
@@ -122,16 +50,139 @@ class BookFormWidget extends StatelessWidget {
     final localization = AppLocalizations.of(context);
     switch (state) {
       case BookFormNameState.blank:
-      case null:
-        return localization!.book_name_blank;
+        return localization!.input_field_blank;
       case BookFormNameState.invalid:
-        return localization!.book_name_invalid;
+        return localization!.input_field_invalid;
       case BookFormNameState.exists:
         return localization!.book_exists;
       case BookFormNameState.same:
         return localization!.book_name_same;
-      case BookFormNameState.nothing:
+      default:
         return null;
     }
+  }
+
+  /// Add form.
+  List<Widget> _addForm(BuildContext context) {
+    List<Widget> sliverList = [];
+    AppLocalizations? localization = AppLocalizations.of(context);
+    BookFormCubit cubit = BlocProvider.of<BookFormCubit>(context);
+    BookFormState state = cubit.state;
+
+    // New name input field.
+    sliverList.add(SliverPadding(
+      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 40.0),
+      sliver: SliverToBoxAdapter(
+        child: BookFormInputBookName(
+          labelText: localization!.book_name,
+          validator: (_) => nameStateToString(context, state.newNameState),
+          onChanged: (value) => cubit.newNameVerify(state, value),
+        ),
+      ),
+    ));
+
+    return sliverList;
+  }
+
+  /// Edit form.
+  List<Widget> _editForm(BuildContext context) {
+    List<Widget> sliverList = [];
+    AppLocalizations? localization = AppLocalizations.of(context);
+    BookFormCubit cubit = BlocProvider.of<BookFormCubit>(context);
+    BookFormState state = cubit.state;
+
+    // Send the old name to the cubit.
+    cubit.data.oldName = oldName!;
+
+    // Old name text box.
+    sliverList.add(SliverPadding(
+      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 40.0),
+      sliver: SliverToBoxAdapter(
+        child: BookFormInputBookName(
+          labelText: localization!.original_book_name,
+          initialValue: oldName,
+          readOnly: true,
+          isShowHelp: false,
+        ),
+      ),
+    ));
+
+    // Arrow downward icon.
+    sliverList.add(const SliverToBoxAdapter(child: Icon(Icons.arrow_downward_rounded)));
+
+    // New name text field.
+    sliverList.add(SliverPadding(
+      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 40.0),
+      sliver: SliverToBoxAdapter(
+        child: BookFormInputBookName(
+          labelText: localization.book_name,
+          validator: (_) => nameStateToString(context, state.newNameState),
+          onChanged: (value) => cubit.newNameVerify(state, value),
+        ),
+      ),
+    ));
+
+    return sliverList;
+  }
+
+  /// Multi-Edit form.
+  List<Widget> _multiEditForm(BuildContext context) {
+    List<Widget> sliverList = [];
+    AppLocalizations? localization = AppLocalizations.of(context);
+    BookFormCubit cubit = BlocProvider.of<BookFormCubit>(context);
+    BookFormState state = cubit.state;
+
+    // Send the selectedBooks to cubit.
+    cubit.data.selectedBooks = selectedBooks!;
+
+    /// Multi-Edit pattern input field
+    sliverList.add(SliverPadding(
+      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 40.0),
+      sliver: SliverToBoxAdapter(
+        child: BookFormInputBookName(
+          labelText: localization!.replace_pattern,
+          onChanged: (value) => cubit.patternVerify(state, value),
+          validator: (_) => nameStateToString(context, state.patternState),
+        ),
+      ),
+    ));
+
+    /// Arrow downward icon.
+    sliverList.add(const SliverToBoxAdapter(child: Icon(Icons.arrow_downward_rounded)));
+
+    /// New name text field.
+    sliverList.add(SliverPadding(
+      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 40.0),
+      sliver: SliverToBoxAdapter(
+        child: BookFormInputBookName(
+          labelText: localization.replace_with,
+          validator: (_) => nameStateToString(context, state.newNameState),
+          onChanged: (value) => cubit.newNameVerify(state, value),
+        ),
+      ),
+    ));
+
+    /// Preview box
+    sliverList.add(SliverToBoxAdapter(
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 40.0),
+        decoration: BoxDecoration(
+          border: Border.all(color: Theme.of(context).colorScheme.outline),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(localization.preview),
+              Text(state.namePreview ?? cubit.getNamePreview()),
+            ],
+          ),
+        ),
+      ),
+    ));
+
+    return sliverList;
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:collection/collection.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -35,7 +36,9 @@ class FileProcess {
     final folder = Directory(await libraryRoot);
     folder.createSync(recursive: true);
     final entries = folder.listSync().whereType<Directory>().toList();
-    return entries.map((dir) => basename(dir.path)).toList();
+    List<String> list = entries.map((dir) => basename(dir.path)).toList();
+    list.sort(compareNatural);
+    return list;
   }
 
   static Future<bool> isBookExists(String name) async {
@@ -66,7 +69,7 @@ class FileProcess {
   }
 
   static Future<bool> renameBookBatch(Set<String> selectedBooks, String pattern, String newName) async {
-    if (pattern == '' || newName == '' || selectedBooks.isEmpty) {
+    if (pattern == '' || selectedBooks.isEmpty) {
       return false;
     }
     if (pattern == newName) {
