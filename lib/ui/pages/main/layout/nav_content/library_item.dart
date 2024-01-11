@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:novelglide/ui/motion/motion_listener.dart';
 import 'package:novelglide/ui/motion/route_slide_transition.dart';
+import 'package:novelglide/ui/pages/book_chapter_list/layout/main.dart';
 import 'package:novelglide/ui/pages/book_form/bloc/form_bloc.dart';
 import 'package:novelglide/ui/pages/book_form/layout/main.dart';
 import 'package:novelglide/ui/pages/main/bloc/library_bloc.dart';
@@ -49,7 +50,7 @@ class MainPageLibraryItem extends StatelessWidget {
               foregroundColor: Theme.of(context).colorScheme.onPrimary,
               icon: Icons.edit_rounded,
               onPressed: (_) {
-                Navigator.of(context).push(_routeToEditPage(bookName)).then((_) {
+                Navigator.of(context).push(_routeToEditPage()).then((_) {
                   BlocProvider.of<LibraryBookListCubit>(context).refresh();
                 });
               },
@@ -107,7 +108,7 @@ class MainPageLibraryItem extends StatelessWidget {
               }
             } else {
               // Open mode.
-              // TODO Open book.
+              Navigator.of(context).push(_routeToChapterPage());
             }
           },
           onLongPress: () {
@@ -149,9 +150,16 @@ class MainPageLibraryItem extends StatelessWidget {
     );
   }
 
-  Route _routeToEditPage(String bookName) {
+  Route _routeToEditPage() {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => BookFormPage(BookFormType.edit, oldBookName: bookName),
+      transitionsBuilder: routeBottomSlideTransition,
+    );
+  }
+
+  Route _routeToChapterPage() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => BookChapterList(bookName: bookName),
       transitionsBuilder: routeBottomSlideTransition,
     );
   }
