@@ -71,7 +71,7 @@ class MainPageLibraryItem extends StatelessWidget {
         ),
         child: GestureDetector(
           child: AnimatedContainer(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 10.0),
             width: double.infinity,
             duration: const Duration(milliseconds: 200),
             decoration: BoxDecoration(

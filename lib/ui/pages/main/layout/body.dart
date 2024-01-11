@@ -12,10 +12,10 @@ class MainPageBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const List<Widget> tabContents = <Widget>[MainPageLibraryWidget(), BookmarkWidget(), SettingsWidget()];
-    return Container(
-        margin: const EdgeInsets.all(8.0),
-        child: BlocBuilder<NavigationCubit, NavigationState>(builder: (context, state) {
-          return tabContents[state.index];
-        }));
+    return BlocBuilder<NavigationCubit, NavigationState>(
+      builder: (context, state) {
+        return tabContents[state.index];
+      },
+    );
   }
 }

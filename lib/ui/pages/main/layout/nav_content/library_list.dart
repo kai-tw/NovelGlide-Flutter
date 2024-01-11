@@ -13,7 +13,7 @@ class MainPageLibraryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: BlocBuilder<LibraryBookListCubit, LibraryBookListState>(
         builder: (context, state) {
           switch (state.code) {
