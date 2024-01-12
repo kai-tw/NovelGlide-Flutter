@@ -4,20 +4,21 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:novelglide/ui/motion/motion_listener.dart';
 import 'package:novelglide/ui/motion/route_slide_transition.dart';
+import 'package:novelglide/ui/pages/chapter_list/bloc/chapter_list_bloc.dart';
 import 'package:novelglide/ui/pages/chapter_list/layout/chapter_list.dart';
 import 'package:novelglide/ui/pages/book_form/bloc/form_bloc.dart';
 import 'package:novelglide/ui/pages/book_form/layout/main.dart';
 import 'package:novelglide/ui/pages/main/bloc/library_bloc.dart';
 
-class MainPageLibraryItem extends StatelessWidget {
-  const MainPageLibraryItem(this.bookName, {super.key});
+class ChapterItem extends StatelessWidget {
+  const ChapterItem(this.chapterName, {super.key});
 
-  final String bookName;
+  final String chapterName;
 
   @override
   Widget build(BuildContext context) {
     LibraryBookListState state = BlocProvider.of<LibraryBookListCubit>(context).state;
-    bool isSelected = state.selectedBooks.contains(bookName);
+    bool isSelected = state.selectedBooks.contains(chapterName);
     bool isSlideOpen = false;
     double borderRadius = 16.0;
 
@@ -34,11 +35,11 @@ class MainPageLibraryItem extends StatelessWidget {
           extentRatio: 0.4,
           motion: MotionListener(
             onOpenEnd: () {
-              BlocProvider.of<LibraryBookListCubit>(context).addSlide(state, bookName);
+              // BlocProvider.of<ChapterListCubit>(context).addSlide(state, chapterName);
               isSlideOpen = true;
             },
             onClose: () {
-              BlocProvider.of<LibraryBookListCubit>(context).removeSlide(state, bookName);
+              // BlocProvider.of<ChapterListCubit>(context).removeSlide(state, chapterName);
               isSlideOpen = false;
             },
             motionWidget: const DrawerMotion(),
@@ -63,7 +64,7 @@ class MainPageLibraryItem extends StatelessWidget {
               onPressed: (_) {
                 _showConfirmDialog(context).then((isDelete) {
                   if (isDelete != null && isDelete) {
-                    BlocProvider.of<LibraryBookListCubit>(context).deleteBook(state, bookName);
+                    BlocProvider.of<LibraryBookListCubit>(context).deleteBook(state, chapterName);
                   }
                 });
               },
@@ -91,7 +92,7 @@ class MainPageLibraryItem extends StatelessWidget {
                       size: state.code == LibraryBookListStateCode.selecting ? 20.0 : 0.0,
                     ),
                   ),
-                  Expanded(child: Text(bookName)),
+                  Expanded(child: Text(chapterName)),
                 ],
               ),
             ),
@@ -102,9 +103,9 @@ class MainPageLibraryItem extends StatelessWidget {
             if (state.code == LibraryBookListStateCode.selecting) {
               // Selection mode.
               if (isSelected) {
-                BlocProvider.of<LibraryBookListCubit>(context).removeSelect(state, bookName);
+                BlocProvider.of<LibraryBookListCubit>(context).removeSelect(state, chapterName);
               } else {
-                BlocProvider.of<LibraryBookListCubit>(context).addSelect(state, bookName);
+                BlocProvider.of<LibraryBookListCubit>(context).addSelect(state, chapterName);
               }
             } else {
               // Open mode.
@@ -113,7 +114,7 @@ class MainPageLibraryItem extends StatelessWidget {
           },
           onLongPress: () {
             if (!isSlideOpen) {
-              BlocProvider.of<LibraryBookListCubit>(context).addSelect(state, bookName);
+              BlocProvider.of<LibraryBookListCubit>(context).addSelect(state, chapterName);
             }
           },
         ),
@@ -152,14 +153,14 @@ class MainPageLibraryItem extends StatelessWidget {
 
   Route _routeToEditPage() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => BookFormPage(BookFormType.edit, oldBookName: bookName),
+      pageBuilder: (context, animation, secondaryAnimation) => BookFormPage(BookFormType.edit, oldBookName: chapterName),
       transitionsBuilder: routeBottomSlideTransition,
     );
   }
 
   Route _routeToChapterPage() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => ChapterList(bookName: bookName),
+      pageBuilder: (context, animation, secondaryAnimation) => ChapterList(bookName: chapterName),
       transitionsBuilder: routeBottomSlideTransition,
     );
   }

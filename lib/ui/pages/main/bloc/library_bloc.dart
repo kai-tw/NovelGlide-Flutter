@@ -2,16 +2,14 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:novelglide/core/file_process.dart';
 
-enum LibraryBookListStateCode { normal, selecting, unLoad, loading, noBook }
+enum LibraryBookListStateCode { normal, selecting, unload, loading, noBook }
 
 class LibraryBookListCubit extends Cubit<LibraryBookListState> {
-  LibraryBookListCubit()
-      : super(const LibraryBookListState(LibraryBookListStateCode.unLoad, [], <String>{}, <String>{}));
+  LibraryBookListCubit() : super(const LibraryBookListState());
 
   /// Get the list of latest books.
   void refresh() async {
-    LibraryBookListState initState =
-        const LibraryBookListState(LibraryBookListStateCode.loading, [], <String>{}, <String>{});
+    LibraryBookListState initState = const LibraryBookListState(code: LibraryBookListStateCode.loading);
     emit(initState);
     List<String> list = await FileProcess.getLibraryBookList();
     LibraryBookListStateCode code = list.isEmpty ? LibraryBookListStateCode.noBook : LibraryBookListStateCode.normal;
@@ -70,7 +68,7 @@ class LibraryBookListCubit extends Cubit<LibraryBookListState> {
     // Add the book into the sliding set.
     Set<String> slideSet = Set<String>.from(state.slidedBook);
     slideSet.add(name);
-    emit(state.copyWith(code: code, selectedBooks: selectedSet,slidedBook: slideSet));
+    emit(state.copyWith(code: code, selectedBooks: selectedSet, slidedBook: slideSet));
   }
 
   /// Remove the book from the sliding set.
@@ -110,7 +108,12 @@ class LibraryBookListState extends Equatable {
   final Set<String> selectedBooks;
   final Set<String> slidedBook;
 
-  const LibraryBookListState(this.code, this.bookList, this.selectedBooks, this.slidedBook);
+  const LibraryBookListState({
+    this.code = LibraryBookListStateCode.unload,
+    this.bookList = const [],
+    this.selectedBooks = const <String>{},
+    this.slidedBook = const <String>{},
+  });
 
   LibraryBookListState copyWith({
     LibraryBookListStateCode? code,
@@ -119,10 +122,10 @@ class LibraryBookListState extends Equatable {
     Set<String>? slidedBook,
   }) {
     return LibraryBookListState(
-      code ?? this.code,
-      bookList ?? this.bookList,
-      selectedBooks ?? this.selectedBooks,
-      slidedBook ?? this.slidedBook,
+      code: code ?? this.code,
+      bookList: bookList ?? this.bookList,
+      selectedBooks: selectedBooks ?? this.selectedBooks,
+      slidedBook: slidedBook ?? this.slidedBook,
     );
   }
 

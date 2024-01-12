@@ -17,12 +17,12 @@ class MainPageLibraryWidget extends StatelessWidget {
       child: BlocBuilder<LibraryBookListCubit, LibraryBookListState>(
         builder: (context, state) {
           switch (state.code) {
-            case LibraryBookListStateCode.unLoad:
+            case LibraryBookListStateCode.unload:
               BlocProvider.of<LibraryBookListCubit>(context).refresh();
               return CenteredText('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.loading}');
 
             case LibraryBookListStateCode.noBook:
-              return CenteredText('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.no_book}');
+              return CenteredText('${EmoticonCollection.getRandomShock()}\n${AppLocalizations.of(context)!.empty}');
 
             default:
               return SlidableAutoCloseBehavior(
