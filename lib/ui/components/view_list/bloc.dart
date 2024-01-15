@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:novelglide/core/file_process.dart';
 
 enum ViewListStateCode { normal, selecting, unload, loading, empty }
 
@@ -17,14 +16,15 @@ abstract class ViewListCubit extends Cubit<ViewListState> {
     }
     Set<String> selectedSet = Set<String>.from(state.selectedSet);
     selectedSet.add(name);
-    emit(state.copyWith(code: ViewListStateCode.selecting, selectedBooks: selectedSet));
+    emit(state.copyWith(code: ViewListStateCode.selecting, selectedSet: selectedSet));
   }
 
   /// Select all books except those the slide menu is open.
   void allSelect(ViewListState state) {
     emit(state.copyWith(
       code: ViewListStateCode.selecting,
-      selectedBooks: state.bookList.toSet().difference(state.slidedItem),
+      selectedSet: state.list.toSet(),
+      slidedSet: const {},
     ));
   }
 
@@ -37,92 +37,75 @@ abstract class ViewListCubit extends Cubit<ViewListState> {
     selectedSet.remove(name);
     ViewListStateCode stateCode =
     selectedSet.isNotEmpty ? ViewListStateCode.selecting : ViewListStateCode.normal;
-    emit(state.copyWith(code: stateCode, selectedBooks: selectedSet));
+    emit(state.copyWith(code: stateCode, selectedSet: selectedSet));
   }
 
   /// Clear the selected list.
   void clearSelect(ViewListState state) {
-    emit(state.copyWith(code: ViewListStateCode.normal, selectedBooks: <String>{}));
+    emit(state.copyWith(code: ViewListStateCode.normal, selectedSet: {}));
   }
 
-  /// Add the book into the sliding set.
-  void addSlide(ViewListState state, String name) {
-    if (state.slidedItem.contains(name)) {
+  /// Add the item to the sliding set.
+  void addSlide(ViewListState state, String data) {
+    if (state.slidedSet.contains(data)) {
       return;
     }
 
     // If the book is selected, remove it from the selection set.
     ViewListStateCode code = state.code;
     Set<String> selectedSet = Set<String>.from(state.selectedSet);
-    if (state.selectedSet.contains(name)) {
-      selectedSet.remove(name);
+    if (state.selectedSet.contains(data)) {
+      selectedSet.remove(data);
       code = selectedSet.isEmpty ? ViewListStateCode.normal : ViewListStateCode.selecting;
     }
 
-    // Add the book into the sliding set.
-    Set<String> slideSet = Set<String>.from(state.slidedItem);
-    slideSet.add(name);
-    emit(state.copyWith(code: code, selectedBooks: selectedSet, slidedBook: slideSet));
+    Set<String> slidedSet = Set<String>.from(state.slidedSet);
+    slidedSet.add(data);
+
+    emit(state.copyWith(code: code, selectedSet: selectedSet, slidedSet: slidedSet));
   }
 
-  /// Remove the book from the sliding set.
-  void removeSlide(ViewListState state, String name) {
-    if (!state.slidedItem.contains(name)) {
+  /// Remove the item from the sliding set.
+  void removeSlide(ViewListState state, String data) {
+    if (!state.slidedSet.contains(data)) {
       return;
     }
-    Set<String> slideSet = Set<String>.from(state.slidedItem);
-    slideSet.remove(name);
-    emit(state.copyWith(slidedBook: slideSet));
-  }
 
-  /// Delete all books selected by the user.
-  void deleteSelectBook(ViewListState state) {
-    for (var item in state.selectedSet) {
-      FileProcess.deleteBook(item);
-    }
-    refresh();
-  }
+    Set<String> slidedSet = Set<String>.from(state.slidedSet);
+    slidedSet.remove(data);
 
-  /// Delete the book by the user.
-  void deleteBook(ViewListState state, String bookName) {
-    FileProcess.deleteBook(bookName);
-    refresh();
+    emit(state.copyWith(slidedSet: slidedSet));
   }
 }
 
-/// Store the state of the book list of the library in the main page.
-/// @param  isLoaded      Determine if the book list is loaded.
-///         isSelecting   Determine if the user is selecting some books.
-///         bookList      The list stores the names of all books.
-///         selectedBook  The set stores the books selected by the user.
-///         slidedBook    The set stores the books whose sliding menu is open.
-class ViewListState<T> extends Equatable {
+/// Store the state of the list.
+class ViewListState extends Equatable {
   final ViewListStateCode code;
-  final List<String> bookList;
-  final Set<T> selectedSet;
-  final T slidedItem;
+  final List<String> list;
+  final Set<String> selectedSet;
+  final Set<String> slidedSet;
 
   const ViewListState({
     this.code = ViewListStateCode.unload,
-    this.bookList = const [],
+    this.list = const [],
     this.selectedSet = const {},
-    this.slidedItem = T(),
+    this.slidedSet = const {},
   });
 
   ViewListState copyWith({
     ViewListStateCode? code,
-    List<String>? bookList,
+    List<String>? list,
     Set<String>? selectedSet,
-    String? slidedItem,
+    Set<String>? slidedSet,
   }) {
     return ViewListState(
       code: code ?? this.code,
-      bookList: bookList ?? this.bookList,
+      list: list ?? this.list,
       selectedSet: selectedSet ?? this.selectedSet,
-      slidedItem: slidedItem ?? this.slidedItem,
+      slidedSet: slidedSet ?? this.slidedSet,
     );
   }
 
   @override
-  List<Object?> get props => [code, bookList, selectedSet, slidedItem];
+  List<Object?> get props => [code, list, selectedSet, slidedSet];
 }
