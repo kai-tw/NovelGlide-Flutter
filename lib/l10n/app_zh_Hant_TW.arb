@@ -27,12 +27,16 @@
   "title_multiEdit_book": "編輯多本書籍",
 
   "book_name": "書名",
-  "input_field_invalid": "不符合命名規則",
-  "input_field_blank": "不能空白",
+  "book_cover": "封面",
   "book_name_rule_title": "書籍命名規則",
   "book_name_rule_content": "可用的英文符號：",
   "book_name_same": "書名相同",
   "book_exists": "書名已存在",
+
+  "select_image": "選擇圖片",
+  "input_optional": "（選填）",
+  "input_field_invalid": "不符合命名規則",
+  "input_field_blank": "不能空白",
 
   "original_book_name": "原始書名",
   "new_book_name": "新書名",

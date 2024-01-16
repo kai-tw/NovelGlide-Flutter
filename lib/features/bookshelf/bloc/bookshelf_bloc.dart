@@ -14,13 +14,13 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     emit(BookshelfState(code: code, bookList: list));
   }
 
-  void addSelect(BookshelfState state, String name) {
+  void addSelect(String name) {
     Set<String> selectedSet = Set<String>.from(state.selectedSet);
     selectedSet.add(name);
     emit(state.copyWith(code: BookshelfStateCode.selecting, selectedSet: selectedSet));
   }
 
-  void removeSelect(BookshelfState state, String name) {
+  void removeSelect(String name) {
     Set<String> selectedSet = Set<String>.from(state.selectedSet);
     selectedSet.remove(name);
     emit(state.copyWith(
@@ -29,12 +29,12 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     ));
   }
 
-  void allSelect(BookshelfState state) {
+  void allSelect() {
     final Set<String> selectedSet = state.bookList.map((book) => book.name).toSet();
     emit(state.copyWith(code: BookshelfStateCode.selecting, selectedSet: selectedSet));
   }
 
-  void clearSelect(BookshelfState state) {
+  void clearSelect() {
     emit(state.copyWith(code: BookshelfStateCode.normal, selectedSet: const {}));
   }
 }

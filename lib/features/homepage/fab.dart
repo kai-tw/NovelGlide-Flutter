@@ -24,7 +24,7 @@ class HomepageFab extends StatelessWidget {
                   scrollControlDisabledMaxHeightRatio: 1.0,
                   showDragHandle: true,
                   builder: (BuildContext context) {
-                    return const AddBookPage();
+                    return AddBookPage();
                   },
                 );
               },

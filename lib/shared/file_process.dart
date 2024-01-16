@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:collection/collection.dart';
+
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -30,11 +30,6 @@ class FileProcess {
   static Future<String> get libraryRoot async {
     final folder = await supportFolder;
     return join(folder, 'Library');
-  }
-
-  static Future<bool> isBookExists(String name) async {
-    final folder = Directory(join(await libraryRoot, name));
-    return folder.existsSync();
   }
 
   static Future<bool> createBook(String name) async {

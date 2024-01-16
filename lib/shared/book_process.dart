@@ -12,19 +12,26 @@ class BookProcess {
     final Directory folder = Directory(await FileProcess.libraryRoot);
     folder.createSync(recursive: true);
     final List<Directory> entries = folder.listSync().whereType<Directory>().toList();
-    List<BookObject> list = entries
-        .map((item) => BookObject(name: basename(item.path), coverFile: File(join(item.path, 'cover.jpg'))))
-        .toList();
+    List<BookObject> list = entries.map((item) => BookObject.fromPath(item.path)).toList();
     list.sort((BookObject a, BookObject b) {
       return compareNatural(a.name, b.name);
     });
     return list;
   }
+
+  static Future<bool> isExists(String name) async {
+    final folder = Directory(join(await FileProcess.libraryRoot, name));
+    return folder.existsSync();
+  }
 }
 
 class BookObject {
-  String name;
-  File coverFile;
+  String name = '';
+  File? coverFile;
 
-  BookObject({required this.name, required this.coverFile});
+  BookObject();
+  BookObject.fromPath(String path) {
+    name = basename(path);
+    coverFile = File(join(path, 'cover.jpg'));
+  }
 }

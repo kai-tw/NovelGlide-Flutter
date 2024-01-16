@@ -27,12 +27,16 @@
   "title_multiEdit_book": "Edit the books",
 
   "book_name": "Book name",
-  "input_field_invalid": "It's invalid.",
-  "input_field_blank": "It cannot be blank.",
+  "book_cover": "The cover of this book",
   "book_name_rule_title": "Book naming rule",
   "book_name_rule_content": "Accepted symbols: ",
   "book_name_same": "The book name is same as the original.",
   "book_exists": "The book already exists.",
+
+  "select_image": "Select an image",
+  "input_optional": " (Optional)",
+  "input_field_invalid": "It's invalid.",
+  "input_field_blank": "It cannot be blank.",
 
   "original_book_name": "Original book name",
   "new_book_name": "New book name",

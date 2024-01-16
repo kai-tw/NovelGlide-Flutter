@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:novelglide/shared/book_process.dart';
 
+import '../../shared/book_process.dart';
 import '../../shared/emoticon_collection.dart';
 import 'bloc/bookshelf_bloc.dart';
 
@@ -34,9 +34,9 @@ class Bookshelf extends StatelessWidget {
           leading: IconButton(
             onPressed: () {
               if (isSelectedAll) {
-                BlocProvider.of<BookshelfCubit>(context).clearSelect(state);
+                BlocProvider.of<BookshelfCubit>(context).clearSelect();
               } else {
-                BlocProvider.of<BookshelfCubit>(context).allSelect(state);
+                BlocProvider.of<BookshelfCubit>(context).allSelect();
               }
             },
             icon: Icon(isSelectedAll ? Icons.check_box_rounded : Icons.indeterminate_check_box_rounded),
@@ -127,9 +127,9 @@ class Bookshelf extends StatelessWidget {
         switch (state.code) {
           case BookshelfStateCode.selecting:
             if (isSelected) {
-              cubit.removeSelect(state, bookObject.name);
+              cubit.removeSelect(bookObject.name);
             } else {
-              cubit.addSelect(state, bookObject.name);
+              cubit.addSelect(bookObject.name);
             }
             break;
           case BookshelfStateCode.normal:
@@ -141,7 +141,7 @@ class Bookshelf extends StatelessWidget {
         switch (state.code) {
           case BookshelfStateCode.normal:
           case BookshelfStateCode.selecting:
-            cubit.addSelect(state, bookObject.name);
+            cubit.addSelect(bookObject.name);
             break;
           default:
         }
@@ -186,9 +186,9 @@ class Bookshelf extends StatelessWidget {
   }
 
   Widget _getCover(BookObject bookObject) {
-    if (bookObject.coverFile.existsSync()) {
+    if (bookObject.coverFile!.existsSync()) {
       return Image.file(
-        bookObject.coverFile,
+        bookObject.coverFile!,
         fit: BoxFit.cover,
       );
     } else {
