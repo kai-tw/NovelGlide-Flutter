@@ -41,6 +41,15 @@ class AddBookFormCubit extends Cubit<AddBookFormState> {
       emit(state.copyWith(coverStateCode: AddBookCoverStateCode.valid));
     }
   }
+
+  void removeCoverImage() {
+    data.coverFile = null;
+    emit(state.copyWith(coverStateCode: AddBookCoverStateCode.blank));
+  }
+
+  Future<bool> submit() async {
+    return await BookProcess.create(data);
+  }
 }
 
 class AddBookFormState extends Equatable {
@@ -63,5 +72,5 @@ class AddBookFormState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [nameStateCode];
+  List<Object?> get props => [nameStateCode, coverStateCode];
 }

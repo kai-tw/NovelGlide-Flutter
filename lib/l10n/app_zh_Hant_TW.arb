@@ -34,6 +34,7 @@
   "book_exists": "書名已存在",
 
   "select_image": "選擇圖片",
+  "remove_image": "刪除圖片",
   "input_optional": "（選填）",
   "input_field_invalid": "不符合命名規則",
   "input_field_blank": "不能空白",

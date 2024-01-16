@@ -34,6 +34,7 @@
   "book_exists": "The book already exists.",
 
   "select_image": "Select an image",
+  "remove_image": "Remove the image",
   "input_optional": " (Optional)",
   "input_field_invalid": "It's invalid.",
   "input_field_blank": "It cannot be blank.",

@@ -32,15 +32,6 @@ class FileProcess {
     return join(folder, 'Library');
   }
 
-  static Future<bool> createBook(String name) async {
-    if (name == '') {
-      return false;
-    }
-    final folder = Directory(join(await libraryRoot, name));
-    folder.createSync(recursive: true);
-    return folder.existsSync();
-  }
-
   static Future<bool> renameBook(String oldName, String newName) async {
     if (oldName == '' || newName == '') {
       return false;

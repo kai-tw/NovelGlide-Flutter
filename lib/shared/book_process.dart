@@ -23,6 +23,21 @@ class BookProcess {
     final folder = Directory(join(await FileProcess.libraryRoot, name));
     return folder.existsSync();
   }
+
+  static Future<bool> create(BookObject bookObject) async {
+    if (bookObject.name == '') {
+      return false;
+    }
+    bool isSuccess = true;
+    final folder = Directory(join(await FileProcess.libraryRoot, bookObject.name));
+    folder.createSync(recursive: true);
+    isSuccess = isSuccess && folder.existsSync();
+    if (bookObject.coverFile != null) {
+      File coverImage = bookObject.coverFile!.copySync(join(folder.path, 'cover.jpg'));
+      isSuccess = isSuccess && coverImage.existsSync();
+    }
+    return isSuccess;
+  }
 }
 
 class BookObject {

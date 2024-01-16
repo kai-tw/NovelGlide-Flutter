@@ -44,6 +44,7 @@ dependencies:
   flutter_slidable: ^3.0.1
   collection: ^1.18.0
   image_picker: ^1.0.7
+  loading_animation_widget: ^1.2.0+4
 
 dev_dependencies:
   flutter_test:

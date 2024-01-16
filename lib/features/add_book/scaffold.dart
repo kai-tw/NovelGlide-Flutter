@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+import '../../shared/book_process.dart';
 import 'bloc/form_bloc.dart';
 
 class AddBookPage extends StatelessWidget {
@@ -27,6 +29,7 @@ class AddBookPage extends StatelessWidget {
               key: _formKey,
               child: BlocBuilder<AddBookFormCubit, AddBookFormState>(
                 builder: (BuildContext context, AddBookFormState state) {
+                  final BookObject data = BlocProvider.of<AddBookFormCubit>(context).data;
                   return CustomScrollView(
                     controller: controller,
                     slivers: [
@@ -50,11 +53,12 @@ class AddBookPage extends StatelessWidget {
                             suffixIcon: Padding(
                               padding: const EdgeInsets.only(right: 8.0),
                               child: IconButton(
-                                onPressed: () => _showHelpDialog(context),
+                                onPressed: () => showDialog(context: context, builder: _helpDialog),
                                 icon: const Icon(Icons.help_outline_rounded),
                               ),
                             ),
                           ),
+                          initialValue: data.name,
                           onChanged: (String value) {
                             BlocProvider.of<AddBookFormCubit>(context).nameVerify(value);
                           },
@@ -64,6 +68,29 @@ class AddBookPage extends StatelessWidget {
                       const SliverPadding(padding: EdgeInsets.only(bottom: 20.0)),
                       SliverToBoxAdapter(
                         child: FormField(builder: (FormFieldState state) {
+                          List<Widget> buttonList = [
+                            TextButton.icon(
+                              onPressed: () {
+                                BlocProvider.of<AddBookFormCubit>(context).pickCoverImage();
+                              },
+                              icon: const Icon(Icons.image_rounded),
+                              label: Text(AppLocalizations.of(context)!.select_image),
+                            )
+                          ];
+
+                          if (data.coverFile != null) {
+                            buttonList.add(TextButton.icon(
+                              onPressed: () {
+                                BlocProvider.of<AddBookFormCubit>(context).removeCoverImage();
+                              },
+                              style: TextButton.styleFrom(
+                                foregroundColor: Theme.of(context).colorScheme.error,
+                              ),
+                              icon: const Icon(Icons.delete_outline_outlined),
+                              label: Text(AppLocalizations.of(context)!.remove_image),
+                            ));
+                          }
+
                           return InputDecorator(
                             decoration: InputDecoration(
                               labelText: AppLocalizations.of(context)!.book_cover +
@@ -74,12 +101,28 @@ class AddBookPage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                             ),
-                            child: TextButton.icon(
-                              onPressed: () {
-                                BlocProvider.of<AddBookFormCubit>(context).pickCoverImage();
-                              },
-                              icon: const Icon(Icons.image_rounded),
-                              label: Text(AppLocalizations.of(context)!.select_image),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 100 / 1.5,
+                                  height: 100.0,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.surfaceVariant,
+                                    borderRadius: BorderRadius.circular(16.0),
+                                  ),
+                                  clipBehavior: Clip.hardEdge,
+                                  child: data.coverFile != null
+                                      ? Image.file(data.coverFile!)
+                                      : Image.asset(
+                                          BookProcess.defaultCover,
+                                          fit: BoxFit.cover,
+                                        ),
+                                ),
+                                const Padding(padding: EdgeInsets.only(right: 16.0)),
+                                Expanded(
+                                  child: Column(children: buttonList),
+                                ),
+                              ],
                             ),
                           );
                         }),
@@ -101,7 +144,12 @@ class AddBookPage extends StatelessWidget {
                             ),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                debugPrint('Verification passed.');
+                                showDialog(context: context, barrierDismissible: false, builder: _processingDialog);
+                                BlocProvider.of<AddBookFormCubit>(context).submit().then((bool isSuccess) {
+                                  Navigator.of(context).pop();
+                                  showDialog(context: context, builder: isSuccess ? _successDialog : _failedDialog)
+                                      .then((_) => Navigator.of(context).pop());
+                                });
                               }
                             },
                           ),
@@ -118,21 +166,51 @@ class AddBookPage extends StatelessWidget {
     );
   }
 
-  Future<T?> _showHelpDialog<T>(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.book_name_rule_title),
-          content: Text('${AppLocalizations.of(context)!.book_name_rule_content}_ -.,&()@#\$%^+=[{]};\'~`<>?| 和空白'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(AppLocalizations.of(context)!.close),
-            ),
-          ],
-        );
-      },
+  AlertDialog _helpDialog(BuildContext context) {
+    return AlertDialog(
+      title: Text(AppLocalizations.of(context)!.book_name_rule_title),
+      content: Text('${AppLocalizations.of(context)!.book_name_rule_content}_ -.,&()@#\$%^+=[{]};\'~`<>?| 和空白'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(AppLocalizations.of(context)!.close),
+        ),
+      ],
+    );
+  }
+
+  AlertDialog _processingDialog(BuildContext context) {
+    return AlertDialog(
+      icon: LoadingAnimationWidget.beat(
+        color: Theme.of(context).colorScheme.secondary,
+        size: 40.0,
+      ),
+      content: Text(
+        AppLocalizations.of(context)!.processing,
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  AlertDialog _successDialog(BuildContext context) {
+    return AlertDialog(
+      icon: const Icon(Icons.check_rounded, size: 40.0),
+      iconColor: Theme.of(context).colorScheme.secondary,
+      content: Text(
+        AppLocalizations.of(context)!.add_successful,
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  AlertDialog _failedDialog(BuildContext context) {
+    return AlertDialog(
+      icon: const Icon(Icons.error_outline_rounded, size: 40.0),
+      iconColor: Theme.of(context).colorScheme.error,
+      content: Text(
+        AppLocalizations.of(context)!.add_failed,
+        textAlign: TextAlign.center,
+      ),
     );
   }
 
