@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:novelglide/features/bookshelf/bloc/book_process.dart';
+import 'package:novelglide/shared/book_process.dart';
 
 import '../../shared/emoticon_collection.dart';
 import 'bloc/bookshelf_bloc.dart';

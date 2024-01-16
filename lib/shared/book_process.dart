@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:path/path.dart';
 
-import '../../../shared/file_process.dart';
+import 'file_process.dart';
 
 class BookProcess {
   static const String defaultCover = 'assets/images/book_cover_light.jpg';

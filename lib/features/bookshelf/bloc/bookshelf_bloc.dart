@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'book_process.dart';
+import '../../../shared/book_process.dart';
 
 enum BookshelfStateCode { normal, selecting, empty, unload, loading }
 
