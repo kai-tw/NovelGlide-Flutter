@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:novelglide/features/homepage/nav_bar.dart';
 
+import '../bookshelf/bloc/bookshelf_bloc.dart';
 import 'bloc/navigation_bloc.dart';
 import 'body.dart';
 import 'fab.dart';
@@ -14,6 +15,7 @@ class Homepage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => NavigationCubit()),
+        BlocProvider(create: (_) => BookshelfCubit()),
       ],
       child: const Scaffold(
         body: HomepageBody(),

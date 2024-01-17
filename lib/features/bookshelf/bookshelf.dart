@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:novelglide/features/bookshelf/sliver_app_bar_selecting.dart';
 
 import '../../shared/book_process.dart';
 import '../../shared/emoticon_collection.dart';
 import 'bloc/bookshelf_bloc.dart';
+import 'sliver_app_bar_default.dart';
 
 class Bookshelf extends StatelessWidget {
   const Bookshelf({super.key});
@@ -15,11 +17,8 @@ class Bookshelf extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
       ),
-      child: BlocProvider(
-        create: (_) => BookshelfCubit(),
-        child: BlocBuilder<BookshelfCubit, BookshelfState>(
-          builder: _listWidget,
-        ),
+      child: BlocBuilder<BookshelfCubit, BookshelfState>(
+        builder: _listWidget,
       ),
     );
   }
@@ -27,37 +26,12 @@ class Bookshelf extends StatelessWidget {
   Widget _listWidget(BuildContext context, BookshelfState state) {
     List<Widget> sliverList = [];
 
-    final bool isSelectedAll = state.selectedSet.length == state.bookList.length;
     switch (state.code) {
       case BookshelfStateCode.selecting:
-        sliverList.add(SliverAppBar(
-          leading: IconButton(
-            onPressed: () {
-              if (isSelectedAll) {
-                BlocProvider.of<BookshelfCubit>(context).clearSelect();
-              } else {
-                BlocProvider.of<BookshelfCubit>(context).allSelect();
-              }
-            },
-            icon: Icon(isSelectedAll ? Icons.check_box_rounded : Icons.indeterminate_check_box_rounded),
-          ),
-          title: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(state.selectedSet.length.toString()),
-          ),
-        ));
+        sliverList.add(const BookshelfSliverAppBarSelecting());
         break;
       default:
-        sliverList.add(SliverAppBar(
-          leading: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.person),
-          ),
-          title: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(AppLocalizations.of(context)!.app_name),
-          ),
-        ));
+        sliverList.add(const BookshelfSliverAppBarDefault());
     }
 
     final String randomEmoticon = EmoticonCollection.getRandomShock();

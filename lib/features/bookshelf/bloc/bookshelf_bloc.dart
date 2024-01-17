@@ -37,6 +37,14 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   void clearSelect() {
     emit(state.copyWith(code: BookshelfStateCode.normal, selectedSet: const {}));
   }
+
+  void deleteSelect() async {
+    for (String book in state.selectedSet) {
+      BookObject target = BookObject(name: book);
+      await target.delete();
+    }
+    refresh();
+  }
 }
 
 class BookshelfState extends Equatable {

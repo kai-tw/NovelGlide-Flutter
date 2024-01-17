@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:novelglide/features/add_book/scaffold.dart';
 
+import '../bookshelf/bloc/bookshelf_bloc.dart';
 import 'bloc/navigation_bloc.dart';
 
 class HomepageFab extends StatelessWidget {
@@ -26,7 +27,8 @@ class HomepageFab extends StatelessWidget {
                   builder: (BuildContext context) {
                     return AddBookPage();
                   },
-                );
+                ).then((_) =>
+                    BlocProvider.of<BookshelfCubit>(context).refresh());
               },
               shape: const CircleBorder(),
               backgroundColor: Theme.of(context).colorScheme.primary,

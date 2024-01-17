@@ -48,7 +48,7 @@ class AddBookFormCubit extends Cubit<AddBookFormState> {
   }
 
   Future<bool> submit() async {
-    return await BookProcess.create(data);
+    return await data.create();
   }
 }
 

@@ -23,30 +23,39 @@ class BookProcess {
     final folder = Directory(join(await FileProcess.libraryRoot, name));
     return folder.existsSync();
   }
-
-  static Future<bool> create(BookObject bookObject) async {
-    if (bookObject.name == '') {
-      return false;
-    }
-    bool isSuccess = true;
-    final folder = Directory(join(await FileProcess.libraryRoot, bookObject.name));
-    folder.createSync(recursive: true);
-    isSuccess = isSuccess && folder.existsSync();
-    if (bookObject.coverFile != null) {
-      File coverImage = bookObject.coverFile!.copySync(join(folder.path, 'cover.jpg'));
-      isSuccess = isSuccess && coverImage.existsSync();
-    }
-    return isSuccess;
-  }
 }
 
 class BookObject {
   String name = '';
   File? coverFile;
 
-  BookObject();
+  BookObject({this.name = '', this.coverFile});
   BookObject.fromPath(String path) {
     name = basename(path);
     coverFile = File(join(path, 'cover.jpg'));
+  }
+
+  Future<bool> create() async {
+    if (name == '') {
+      return false;
+    }
+    bool isSuccess = true;
+    final folder = Directory(join(await FileProcess.libraryRoot, name));
+    folder.createSync(recursive: true);
+    isSuccess = isSuccess && folder.existsSync();
+    if (coverFile != null) {
+      File coverImage = coverFile!.copySync(join(folder.path, 'cover.jpg'));
+      isSuccess = isSuccess && coverImage.existsSync();
+    }
+    return isSuccess;
+  }
+
+  Future<bool> delete() async {
+    if (name == '') {
+      return false;
+    }
+    final folder = Directory(join(await FileProcess.libraryRoot, name));
+    folder.delete(recursive: true);
+    return !folder.existsSync();
   }
 }

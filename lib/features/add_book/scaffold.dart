@@ -13,8 +13,10 @@ class AddBookPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => AddBookFormCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => AddBookFormCubit()),
+      ],
       child: DraggableScrollableSheet(
         initialChildSize: 0.6,
         minChildSize: 0.25,
