@@ -113,12 +113,7 @@ class AddBookPage extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(16.0),
                                   ),
                                   clipBehavior: Clip.hardEdge,
-                                  child: data.coverFile != null
-                                      ? Image.file(data.coverFile!)
-                                      : Image.asset(
-                                          BookProcess.defaultCover,
-                                          fit: BoxFit.cover,
-                                        ),
+                                  child: data.getCover(),
                                 ),
                                 const Padding(padding: EdgeInsets.only(right: 16.0)),
                                 Expanded(

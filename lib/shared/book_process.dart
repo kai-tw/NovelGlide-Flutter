@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
 import 'file_process.dart';
@@ -30,6 +31,7 @@ class BookObject {
   File? coverFile;
 
   BookObject({this.name = '', this.coverFile});
+
   BookObject.fromPath(String path) {
     name = basename(path);
     coverFile = File(join(path, 'cover.jpg'));
@@ -57,5 +59,13 @@ class BookObject {
     final folder = Directory(join(await FileProcess.libraryRoot, name));
     folder.delete(recursive: true);
     return !folder.existsSync();
+  }
+
+  Widget getCover() {
+    if (coverFile != null && coverFile!.existsSync()) {
+      return Image.file(coverFile!, fit: BoxFit.cover);
+    } else {
+      return Image.asset(BookProcess.defaultCover, fit: BoxFit.cover);
+    }
   }
 }

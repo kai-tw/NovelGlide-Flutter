@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc/bookshelf_bloc.dart';
 
@@ -30,13 +31,41 @@ class BookshelfSliverAppBarSelecting extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () {
-                BlocProvider.of<BookshelfCubit>(context).deleteSelect();
+                showDialog(context: context, builder: _confirmDialog).then((isDelete) {
+                  if (isDelete) {
+                    BlocProvider.of<BookshelfCubit>(context).deleteSelect();
+                  }
+                });
               },
               icon: const Icon(Icons.delete_outline_rounded),
             )
           ],
         );
       },
+    );
+  }
+
+  Widget _confirmDialog(BuildContext context) {
+    return AlertDialog(
+      icon: const Icon(
+        Icons.delete_forever,
+        size: 40.0,
+      ),
+      content: Text(
+        AppLocalizations.of(context)!.confirm_content_delete,
+        textAlign: TextAlign.center,
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(true),
+          style: TextButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
+          child: Text(AppLocalizations.of(context)!.delete),
+        ),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: Text(AppLocalizations.of(context)!.cancel),
+        ),
+      ],
     );
   }
 }

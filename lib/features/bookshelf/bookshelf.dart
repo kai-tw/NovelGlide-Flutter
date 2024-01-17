@@ -1,10 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:novelglide/features/bookshelf/sliver_app_bar_selecting.dart';
+import 'package:novelglide/features/bookshelf/sliver_loading.dart';
 
 import '../../shared/book_process.dart';
 import '../../shared/emoticon_collection.dart';
+import '../table_of_contents/index.dart';
 import 'bloc/bookshelf_bloc.dart';
 import 'sliver_app_bar_default.dart';
 
@@ -40,19 +43,7 @@ class Bookshelf extends StatelessWidget {
         BlocProvider.of<BookshelfCubit>(context).refresh();
         break;
       case BookshelfStateCode.loading:
-        sliverList.add(SliverToBoxAdapter(
-          child: SizedBox(
-            width: double.infinity,
-            height: 300.0,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(randomEmoticon),
-                Text(AppLocalizations.of(context)!.loading),
-              ],
-            ),
-          ),
-        ));
+        sliverList.add(const BookshelfSliverLoading());
         break;
       case BookshelfStateCode.empty:
         sliverList.add(SliverToBoxAdapter(
@@ -107,7 +98,12 @@ class Bookshelf extends StatelessWidget {
             }
             break;
           case BookshelfStateCode.normal:
-          // TODO OPEN MODE.
+            Navigator.of(context).push(PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => TableOfContents(bookObject),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                return child;
+              },
+            ));
           default:
         }
       },
@@ -136,13 +132,16 @@ class Bookshelf extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: AspectRatio(
                   aspectRatio: 1 / 1.5,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surfaceVariant,
-                      borderRadius: BorderRadius.circular(16.0),
+                  child: Hero(
+                    tag: bookObject,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surfaceVariant,
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      clipBehavior: Clip.hardEdge,
+                      child: bookObject.getCover(),
                     ),
-                    clipBehavior: Clip.hardEdge,
-                    child: _getCover(bookObject),
                   ),
                 ),
               ),
@@ -157,19 +156,5 @@ class Bookshelf extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _getCover(BookObject bookObject) {
-    if (bookObject.coverFile!.existsSync()) {
-      return Image.file(
-        bookObject.coverFile!,
-        fit: BoxFit.cover,
-      );
-    } else {
-      return Image.asset(
-        BookProcess.defaultCover,
-        fit: BoxFit.cover,
-      );
-    }
   }
 }
