@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 
 import 'file_process.dart';
@@ -41,15 +42,19 @@ class BookObject {
     if (name == '') {
       return false;
     }
-    bool isSuccess = true;
     final folder = Directory(join(await FileProcess.libraryRoot, name));
-    folder.createSync(recursive: true);
-    isSuccess = isSuccess && folder.existsSync();
-    if (coverFile != null) {
-      File coverImage = coverFile!.copySync(join(folder.path, 'cover.jpg'));
-      isSuccess = isSuccess && coverImage.existsSync();
+    if (folder.existsSync()) {
+      return false;
+    } else {
+      bool isSuccess = true;
+      folder.createSync(recursive: true);
+      isSuccess = isSuccess && folder.existsSync();
+      if (coverFile != null) {
+        File coverImage = coverFile!.copySync(join(folder.path, 'cover.jpg'));
+        isSuccess = isSuccess && coverImage.existsSync();
+      }
+      return isSuccess;
     }
-    return isSuccess;
   }
 
   Future<bool> delete() async {
@@ -57,8 +62,12 @@ class BookObject {
       return false;
     }
     final folder = Directory(join(await FileProcess.libraryRoot, name));
-    folder.delete(recursive: true);
-    return !folder.existsSync();
+    if (folder.existsSync()) {
+      folder.delete(recursive: true);
+      return !folder.existsSync();
+    } else {
+      return false;
+    }
   }
 
   Widget getCover() {
@@ -66,6 +75,24 @@ class BookObject {
       return Image.file(coverFile!, fit: BoxFit.cover);
     } else {
       return Image.asset(BookProcess.defaultCover, fit: BoxFit.cover);
+    }
+  }
+
+  Future<List<String>> getChapters() async {
+    if (name == '') {
+      return [];
+    }
+    final folder = Directory(join(await FileProcess.libraryRoot, name));
+    if (folder.existsSync()) {
+      RegExp regexp = RegExp(r'^\d+\.txt$');
+      return folder
+          .listSync()
+          .whereType<File>()
+          .where((item) => regexp.hasMatch(basename(item.path)) && lookupMimeType(item.path) == 'text/plain')
+          .map<String>((item) => basenameWithoutExtension(item.path))
+          .toList();
+    } else {
+      return [];
     }
   }
 }

@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:novelglide/features/bookshelf/sliver_app_bar_selecting.dart';
-import 'package:novelglide/features/bookshelf/sliver_loading.dart';
+import 'package:novelglide/shared/sliver_loading.dart';
 
 import '../../shared/book_process.dart';
-import '../../shared/emoticon_collection.dart';
 import '../table_of_contents/index.dart';
 import 'bloc/bookshelf_bloc.dart';
 import 'sliver_app_bar_default.dart';
+import '../../shared/sliver_list_empty.dart';
 
 class Bookshelf extends StatelessWidget {
   const Bookshelf({super.key});
@@ -37,28 +36,15 @@ class Bookshelf extends StatelessWidget {
         sliverList.add(const BookshelfSliverAppBarDefault());
     }
 
-    final String randomEmoticon = EmoticonCollection.getRandomShock();
     switch (state.code) {
       case BookshelfStateCode.unload:
         BlocProvider.of<BookshelfCubit>(context).refresh();
         break;
       case BookshelfStateCode.loading:
-        sliverList.add(const BookshelfSliverLoading());
+        sliverList.add(const CommonSliverLoading());
         break;
       case BookshelfStateCode.empty:
-        sliverList.add(SliverToBoxAdapter(
-          child: SizedBox(
-            width: double.infinity,
-            height: 300.0,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(randomEmoticon),
-                Text(AppLocalizations.of(context)!.empty),
-              ],
-            ),
-          ),
-        ));
+        sliverList.add(const CommonSliverListEmpty());
         break;
       case BookshelfStateCode.normal:
       case BookshelfStateCode.selecting:

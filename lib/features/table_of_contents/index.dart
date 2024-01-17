@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/book_process.dart';
+import '../../shared/sliver_list_empty.dart';
+import '../../shared/sliver_loading.dart';
+import 'bloc/toc_bloc.dart';
+import 'sliver_app_bar_default.dart';
 
 class TableOfContents extends StatelessWidget {
   const TableOfContents(this.bookObject, {super.key});
@@ -11,45 +16,46 @@ class TableOfContents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: bookObject,
-      child: Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              leading: IconButton(
-                onPressed: () => Navigator.of(context).pop(),
-                icon: const Icon(Icons.arrow_back_ios_new_rounded),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => TOCCubit(bookObject)),
+        ],
+        child: BlocBuilder<TOCCubit, TOCState>(
+          builder: (BuildContext context, TOCState state) {
+            List<Widget> sliverList = [];
+
+            sliverList.add(TOCSliverAppBar(bookObject));
+
+            switch (state.code) {
+              case TOCStateCode.unload:
+                BlocProvider.of<TOCCubit>(context).refresh();
+                break;
+              case TOCStateCode.loading:
+                sliverList.add(const CommonSliverLoading());
+                break;
+              case TOCStateCode.empty:
+                sliverList.add(const CommonSliverListEmpty());
+                break;
+              case TOCStateCode.normal:
+                sliverList.add(SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return OutlinedButton(
+                      onPressed: () {},
+                      child: Text(int.parse(state.chapterList[index]).toString()),
+                    );
+                  },
+                  childCount: state.chapterList.length,
+                )));
+                break;
+            }
+
+            return Scaffold(
+              body: CustomScrollView(
+                slivers: sliverList,
               ),
-              expandedHeight: 150.0,
-              flexibleSpace: FlexibleSpaceBar(
-                collapseMode: CollapseMode.parallax,
-                background: DecoratedBox(
-                  position: DecorationPosition.foreground,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surface.withOpacity(0.6),
-                  ),
-                  child: bookObject.getCover(),
-                ),
-                title: Text(
-                  bookObject.name,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                centerTitle: false,
-              ),
-              actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.add_rounded),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.edit_rounded),
-                ),
-              ],
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
