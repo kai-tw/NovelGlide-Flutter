@@ -32,19 +32,6 @@ class FileProcess {
     return join(folder, 'Library');
   }
 
-  static Future<bool> renameBook(String oldName, String newName) async {
-    if (oldName == '' || newName == '') {
-      return false;
-    }
-    if (oldName == newName) {
-      return true;
-    }
-    final oldFolder = Directory(join(await libraryRoot, oldName));
-    final newFolder = Directory(join(await libraryRoot, newName));
-    oldFolder.renameSync(newFolder.path);
-    return newFolder.existsSync();
-  }
-
   static Future<bool> renameBookBatch(Set<String> selectedBooks, String pattern, String newName) async {
     if (pattern == '' || selectedBooks.isEmpty) {
       return false;

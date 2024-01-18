@@ -8,13 +8,16 @@ class CommonSliverListEmpty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverFillRemaining(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(EmoticonCollection.getRandomShock()),
-          Text(AppLocalizations.of(context)!.empty),
-        ],
+    return SliverToBoxAdapter(
+      child: SizedBox(
+        height: 100.0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(EmoticonCollection.getRandomShock()),
+            Text(AppLocalizations.of(context)!.empty),
+          ],
+        ),
       ),
     );
   }

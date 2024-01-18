@@ -57,6 +57,27 @@ class BookObject {
     }
   }
 
+  Future<bool> rename(String oldName) async {
+    if (oldName == '' || name == '') {
+      return false;
+    }
+
+    bool isSuccess = true;
+    final folder = Directory(join(await FileProcess.libraryRoot, name));
+
+    if (oldName != name) {
+      final oldFolder = Directory(join(await FileProcess.libraryRoot, oldName));
+      oldFolder.renameSync(folder.path);
+      isSuccess = isSuccess && folder.existsSync();
+    }
+
+    if (coverFile != null && coverFile!.existsSync()) {
+      File coverImage = coverFile!.copySync(join(folder.path, 'cover.jpg'));
+      isSuccess = isSuccess && coverImage.existsSync();
+    }
+    return isSuccess;
+  }
+
   Future<bool> delete() async {
     if (name == '') {
       return false;

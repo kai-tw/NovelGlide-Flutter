@@ -27,7 +27,7 @@ class TableOfContents extends StatelessWidget {
           builder: (BuildContext context, TOCState state) {
             List<Widget> sliverList = [];
 
-            sliverList.add(const TOCSliverAppBar());
+            sliverList.add(TOCSliverAppBar(bookObject));
             sliverList.add(TOCSliverCoverBanner(bookObject));
             sliverList.add(TOCSliverBookName(bookObject));
 

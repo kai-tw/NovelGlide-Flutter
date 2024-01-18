@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../shared/book_process.dart';
+import '../edit_book/scaffold.dart';
+import 'bloc/toc_bloc.dart';
 
 class TOCSliverAppBar extends StatelessWidget {
-  const TOCSliverAppBar({super.key});
+  const TOCSliverAppBar(this.bookObject, {super.key});
+
+  final BookObject bookObject;
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +21,20 @@ class TOCSliverAppBar extends StatelessWidget {
         IconButton(
           onPressed: () {},
           icon: const Icon(Icons.add_rounded),
+        ),
+        IconButton(
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              scrollControlDisabledMaxHeightRatio: 1.0,
+              showDragHandle: true,
+              builder: (BuildContext context) {
+                return EditBookPage(bookObject);
+              },
+            ).then((_) =>
+                BlocProvider.of<TOCCubit>(context).refresh());
+          },
+          icon: const Icon(Icons.edit_rounded),
         ),
       ],
     );
