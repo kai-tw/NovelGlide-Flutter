@@ -42,5 +42,16 @@
   "original_book_name": "原始書名",
   "new_book_name": "新書名",
   "replace_pattern": "尋找",
-  "replace_with": "替換為"
+  "replace_with": "替換為",
+
+  "chapter_label": "第 {number} 章",
+  "@chapter_label": {
+    "description": "Display Chapter %d",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  }
 }

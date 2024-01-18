@@ -6,6 +6,9 @@ import '../../shared/sliver_list_empty.dart';
 import '../../shared/sliver_loading.dart';
 import 'bloc/toc_bloc.dart';
 import 'sliver_app_bar_default.dart';
+import 'sliver_book_name.dart';
+import 'sliver_chapter_list.dart';
+import 'sliver_cover_banner.dart';
 
 class TableOfContents extends StatelessWidget {
   const TableOfContents(this.bookObject, {super.key});
@@ -24,7 +27,9 @@ class TableOfContents extends StatelessWidget {
           builder: (BuildContext context, TOCState state) {
             List<Widget> sliverList = [];
 
-            sliverList.add(TOCSliverAppBar(bookObject));
+            sliverList.add(const TOCSliverAppBar());
+            sliverList.add(TOCSliverCoverBanner(bookObject));
+            sliverList.add(TOCSliverBookName(bookObject));
 
             switch (state.code) {
               case TOCStateCode.unload:
@@ -37,29 +42,7 @@ class TableOfContents extends StatelessWidget {
                 sliverList.add(const CommonSliverListEmpty());
                 break;
               case TOCStateCode.normal:
-                sliverList.add(SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return TextButton(
-                      onPressed: () {},
-                      style: TextButton.styleFrom(
-                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Text(state.chapterMap.keys.elementAt(index).toString()),
-                          ),
-                          Expanded(
-                            child: Text(state.chapterMap.values.elementAt(index)),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  childCount: state.chapterMap.length,
-                )));
+                sliverList.add(TOCSliverChapterList(bookObject));
                 break;
             }
 

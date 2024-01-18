@@ -42,5 +42,16 @@
   "original_book_name": "Original book name",
   "new_book_name": "New book name",
   "replace_pattern": "Search for",
-  "replace_with": "Replace with"
+  "replace_with": "Replace with",
+
+  "chapter_label": "Chapter {number}",
+  "@chapter_label": {
+    "description": "Display Chapter %d",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  }
 }
