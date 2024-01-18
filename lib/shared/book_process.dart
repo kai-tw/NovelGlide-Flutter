@@ -90,6 +90,7 @@ class BookObject {
           .whereType<File>()
           .where((item) => regexp.hasMatch(basename(item.path)) && lookupMimeType(item.path) == 'text/plain')
           .map<String>((item) => item.path).toList();
+      entries.sort(compareNatural);
       Map<int, String> chapterMap = {};
       for (String item in entries) {
         final File file = File(item);
