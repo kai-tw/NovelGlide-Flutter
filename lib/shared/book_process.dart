@@ -78,21 +78,33 @@ class BookObject {
     }
   }
 
-  Future<List<String>> getChapters() async {
+  Future<Map<int, String>> getChapters() async {
     if (name == '') {
-      return [];
+      return {};
     }
     final folder = Directory(join(await FileProcess.libraryRoot, name));
     if (folder.existsSync()) {
       RegExp regexp = RegExp(r'^\d+\.txt$');
-      return folder
+      List<String> entries = folder
           .listSync()
           .whereType<File>()
           .where((item) => regexp.hasMatch(basename(item.path)) && lookupMimeType(item.path) == 'text/plain')
-          .map<String>((item) => basenameWithoutExtension(item.path))
-          .toList();
+          .map<String>((item) => item.path).toList();
+      Map<int, String> chapterMap = {};
+      for (String item in entries) {
+        final File file = File(item);
+        final List<String> content = file.readAsLinesSync();
+        if (content.isNotEmpty) {
+          chapterMap[int.parse(basenameWithoutExtension(file.path))] = content[0];
+        } else {
+          // If content is empty, delete it.
+          file.delete();
+        }
+      }
+
+      return chapterMap;
     } else {
-      return [];
+      return {};
     }
   }
 }

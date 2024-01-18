@@ -40,12 +40,25 @@ class TableOfContents extends StatelessWidget {
                 sliverList.add(SliverList(
                     delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    return OutlinedButton(
+                    return TextButton(
                       onPressed: () {},
-                      child: Text(int.parse(state.chapterList[index]).toString()),
+                      style: TextButton.styleFrom(
+                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                      ),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(state.chapterMap.keys.elementAt(index).toString()),
+                          ),
+                          Expanded(
+                            child: Text(state.chapterMap.values.elementAt(index)),
+                          ),
+                        ],
+                      ),
                     );
                   },
-                  childCount: state.chapterList.length,
+                  childCount: state.chapterMap.length,
                 )));
                 break;
             }

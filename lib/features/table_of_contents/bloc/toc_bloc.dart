@@ -12,21 +12,21 @@ class TOCCubit extends Cubit<TOCState> {
 
   void refresh() async {
     emit(const TOCState(code: TOCStateCode.loading));
-    List<String> chapterList = await bookObject.getChapters();
+    Map<int, String> chapterList = await bookObject.getChapters();
     TOCStateCode code = chapterList.isEmpty ? TOCStateCode.empty : TOCStateCode.normal;
-    emit(TOCState(code: code, chapterList: chapterList));
+    emit(TOCState(code: code, chapterMap: chapterList));
   }
 }
 
 class TOCState extends Equatable {
   final TOCStateCode code;
-  final List<String> chapterList;
+  final Map<int, String> chapterMap;
 
   const TOCState({
     this.code = TOCStateCode.unload,
-    this.chapterList = const [],
+    this.chapterMap = const {},
   });
 
   @override
-  List<Object?> get props => [code, chapterList];
+  List<Object?> get props => [code, chapterMap];
 }
