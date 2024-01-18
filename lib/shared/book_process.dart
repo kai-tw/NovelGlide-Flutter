@@ -32,10 +32,13 @@ class BookObject {
   File? coverFile;
 
   BookObject({this.name = '', this.coverFile});
-
   BookObject.fromPath(String path) {
     name = basename(path);
     coverFile = File(join(path, 'cover.jpg'));
+  }
+  BookObject.fromObject(BookObject bookObject) {
+    name = bookObject.name;
+    coverFile = bookObject.coverFile;
   }
 
   Future<bool> create() async {
@@ -57,23 +60,29 @@ class BookObject {
     }
   }
 
-  Future<bool> rename(String oldName) async {
-    if (oldName == '' || name == '') {
+  Future<bool> rename(BookObject newObject) async {
+    if (newObject.name == '' || name == '') {
       return false;
     }
 
     bool isSuccess = true;
     final folder = Directory(join(await FileProcess.libraryRoot, name));
+    final newFolder = Directory(join(await FileProcess.libraryRoot, newObject.name));
 
-    if (oldName != name) {
-      final oldFolder = Directory(join(await FileProcess.libraryRoot, oldName));
-      oldFolder.renameSync(folder.path);
-      isSuccess = isSuccess && folder.existsSync();
+    if (newObject.name != name) {
+      folder.renameSync(newFolder.path);
+      isSuccess = isSuccess && newFolder.existsSync();
+      name = isSuccess ? newObject.name : name;
     }
 
-    if (coverFile != null && coverFile!.existsSync()) {
-      File coverImage = coverFile!.copySync(join(folder.path, 'cover.jpg'));
-      isSuccess = isSuccess && coverImage.existsSync();
+    if (newObject.coverFile != coverFile) {
+      File newCoverImage = newObject.coverFile!.copySync(join(newFolder.path, 'cover.jpg'));
+      isSuccess = isSuccess && newCoverImage.existsSync();
+    } else {
+      if (coverFile != null && coverFile!.existsSync()) {
+        coverFile!.delete();
+      }
+      coverFile = null;
     }
     return isSuccess;
   }
@@ -93,7 +102,7 @@ class BookObject {
 
   Widget getCover() {
     if (coverFile != null && coverFile!.existsSync()) {
-      return Image.file(coverFile!, fit: BoxFit.cover);
+      return Image.memory(coverFile!.readAsBytesSync(), fit: BoxFit.cover);
     } else {
       return Image.asset(BookProcess.defaultCover, fit: BoxFit.cover);
     }
@@ -128,5 +137,10 @@ class BookObject {
     } else {
       return {};
     }
+  }
+
+  @override
+  String toString() {
+    return '{name: $name, coverFile: $coverFile}';
   }
 }

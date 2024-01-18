@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:novelglide/features/edit_book/sliver_image_picker.dart';
 import 'package:novelglide/features/edit_book/sliver_submit_button.dart';
 
@@ -35,21 +33,17 @@ class EditBookPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Form(
               key: _formKey,
-              child: BlocBuilder<EditBookFormCubit, EditBookFormState>(
-                builder: (BuildContext context, EditBookFormState state) {
-                  return CustomScrollView(
-                    controller: controller,
-                    slivers: [
-                      const EditBookSliverTitle(),
-                      const SliverPadding(padding: EdgeInsets.only(bottom: 16.0)),
-                      const EditBookSliverNameTextField(),
-                      const SliverPadding(padding: EdgeInsets.only(bottom: 20.0)),
-                      const EditBookSliverImagePicker(),
-                      const SliverPadding(padding: EdgeInsets.only(bottom: 16.0)),
-                      EditBookSliverSubmitButton(_formKey),
-                    ],
-                  );
-                },
+              child: CustomScrollView(
+                controller: controller,
+                slivers: [
+                  const EditBookSliverTitle(),
+                  const SliverPadding(padding: EdgeInsets.only(bottom: 16.0)),
+                  const EditBookSliverNameTextField(),
+                  const SliverPadding(padding: EdgeInsets.only(bottom: 20.0)),
+                  const EditBookSliverImagePicker(),
+                  const SliverPadding(padding: EdgeInsets.only(bottom: 16.0)),
+                  EditBookSliverSubmitButton(_formKey),
+                ],
               ),
             ),
           );

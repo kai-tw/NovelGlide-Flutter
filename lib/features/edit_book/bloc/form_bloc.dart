@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -13,17 +12,14 @@ enum EditBookNameStateCode { valid, blank, invalid, exists, same }
 enum EditBookCoverStateCode { blank, valid, same }
 
 class EditBookFormCubit extends Cubit<EditBookFormState> {
-  EditBookFormCubit(this.data) : super(const EditBookFormState()) {
-    oldName = nameValue = data.name;
-  }
+  EditBookFormCubit(this.data)
+      : super(EditBookFormState(formValue: BookObject.fromObject(data)));
 
   BookObject data;
-  late String oldName;
-  late String nameValue;
   final ImagePicker _imagePicker = ImagePicker();
 
   void nameVerify(String name) async {
-    nameValue = name;
+    state.formValue.name = name;
     if (name == '') {
       emit(state.copyWith(nameStateCode: EditBookNameStateCode.blank));
     } else if (!InputVerify.isFolderNameValid(name)) {
@@ -31,37 +27,33 @@ class EditBookFormCubit extends Cubit<EditBookFormState> {
     } else if (await BookProcess.isExists(name)) {
       emit(state.copyWith(nameStateCode: EditBookNameStateCode.exists));
     } else {
-      data.name = name;
       emit(state.copyWith(nameStateCode: EditBookNameStateCode.valid));
     }
   }
 
   void pickCoverImage() async {
     XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
-    if (image == null) {
-      data.coverFile = null;
-      emit(state.copyWith(coverStateCode: EditBookCoverStateCode.blank));
-    } else {
-      data.coverFile = File(image.path);
-      emit(state.copyWith(coverStateCode: EditBookCoverStateCode.valid));
-    }
+    state.formValue.coverFile = image == null ? null : File(image.path);
+    emit(state.copyWith(coverStateCode: image == null ? EditBookCoverStateCode.blank : EditBookCoverStateCode.valid));
   }
 
   void removeCoverImage() {
-    data.coverFile = null;
+    state.formValue.coverFile = null;
     emit(state.copyWith(coverStateCode: EditBookCoverStateCode.blank));
   }
 
   Future<bool> submit() async {
-    return await data.rename(oldName);
+    return await data.rename(state.formValue);
   }
 }
 
 class EditBookFormState extends Equatable {
   final EditBookNameStateCode nameStateCode;
   final EditBookCoverStateCode coverStateCode;
+  final BookObject formValue;
 
   const EditBookFormState({
+    required this.formValue,
     this.nameStateCode = EditBookNameStateCode.same,
     this.coverStateCode = EditBookCoverStateCode.same,
   });
@@ -69,13 +61,15 @@ class EditBookFormState extends Equatable {
   EditBookFormState copyWith({
     EditBookNameStateCode? nameStateCode,
     EditBookCoverStateCode? coverStateCode,
+    BookObject? formValue,
   }) {
     return EditBookFormState(
       nameStateCode: nameStateCode ?? this.nameStateCode,
       coverStateCode: coverStateCode ?? this.coverStateCode,
+      formValue: formValue ?? this.formValue,
     );
   }
 
   @override
-  List<Object?> get props => [nameStateCode, coverStateCode];
+  List<Object?> get props => [nameStateCode, coverStateCode, formValue];
 }

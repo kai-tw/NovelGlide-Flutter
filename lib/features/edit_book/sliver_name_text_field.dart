@@ -11,7 +11,6 @@ class EditBookSliverNameTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<EditBookFormCubit, EditBookFormState>(
       builder: (BuildContext context, EditBookFormState state) {
-        EditBookFormCubit cubit = BlocProvider.of<EditBookFormCubit>(context);
         return SliverToBoxAdapter(
           child: TextFormField(
             decoration: InputDecoration(
@@ -29,7 +28,7 @@ class EditBookSliverNameTextField extends StatelessWidget {
                 ),
               ),
             ),
-            initialValue: cubit.nameValue,
+            initialValue: state.formValue.name,
             onChanged: (String value) {
               BlocProvider.of<EditBookFormCubit>(context).nameVerify(value);
             },

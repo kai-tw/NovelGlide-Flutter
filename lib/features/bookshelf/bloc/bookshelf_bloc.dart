@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/book_process.dart';
@@ -63,6 +62,7 @@ class BookshelfState extends Equatable {
     BookshelfStateCode? code,
     List<BookObject>? bookList,
     Set<String>? selectedSet,
+    bool? refreshTrigger,
   }) {
     return BookshelfState(
       code: code ?? this.code,

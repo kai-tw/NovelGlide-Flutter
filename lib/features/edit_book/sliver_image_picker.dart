@@ -36,34 +36,38 @@ class EditBookSliverImagePicker extends StatelessWidget {
           ));
         }
 
-        return InputDecorator(
-          decoration: InputDecoration(
-            labelText: AppLocalizations.of(context)!.book_cover +
-                AppLocalizations.of(context)!.input_optional,
-            labelStyle: const TextStyle(fontSize: 16),
-            contentPadding: const EdgeInsets.all(24.0),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                width: 100 / 1.5,
-                height: 100.0,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceVariant,
-                  borderRadius: BorderRadius.circular(16.0),
+        return BlocBuilder<EditBookFormCubit, EditBookFormState>(
+          builder: (BuildContext context, EditBookFormState state) {
+            return InputDecorator(
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.book_cover +
+                    AppLocalizations.of(context)!.input_optional,
+                labelStyle: const TextStyle(fontSize: 16),
+                contentPadding: const EdgeInsets.all(24.0),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                clipBehavior: Clip.hardEdge,
-                child: data.getCover(),
               ),
-              const Padding(padding: EdgeInsets.only(right: 16.0)),
-              Expanded(
-                child: Column(children: buttonList),
+              child: Row(
+                children: [
+                  Container(
+                    width: 100 / 1.5,
+                    height: 100.0,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: state.formValue.getCover(),
+                  ),
+                  const Padding(padding: EdgeInsets.only(right: 16.0)),
+                  Expanded(
+                    child: Column(children: buttonList),
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         );
       }),
     );
