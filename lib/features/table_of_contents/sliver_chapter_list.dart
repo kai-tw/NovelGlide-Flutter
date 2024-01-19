@@ -17,8 +17,8 @@ class TOCSliverChapterList extends StatelessWidget {
         return SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
-              int chapterNumber = state.chapterMap.keys.elementAt(index);
-              String chapterTitle = state.chapterMap.values.elementAt(index);
+              int chapterNumber = state.chapterList[index].ordinalNumber;
+              String chapterTitle = state.chapterList[index].title;
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: TextButton(
@@ -35,7 +35,7 @@ class TOCSliverChapterList extends StatelessWidget {
                 ),
               );
             },
-            childCount: state.chapterMap.length,
+            childCount: state.chapterList.length,
           ),
         );
       },

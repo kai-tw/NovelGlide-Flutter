@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/book_object.dart';
+import '../../../shared/chapter_object.dart';
 
 enum TOCStateCode { unload, loading, normal, empty }
 
@@ -12,21 +13,21 @@ class TOCCubit extends Cubit<TOCState> {
 
   void refresh() async {
     emit(const TOCState(code: TOCStateCode.loading));
-    Map<int, String> chapterList = await bookObject.getChapters();
+    List<ChapterObject> chapterList = await bookObject.getChapters();
     TOCStateCode code = chapterList.isEmpty ? TOCStateCode.empty : TOCStateCode.normal;
-    emit(TOCState(code: code, chapterMap: chapterList));
+    emit(TOCState(code: code, chapterList: chapterList));
   }
 }
 
 class TOCState extends Equatable {
   final TOCStateCode code;
-  final Map<int, String> chapterMap;
+  final List<ChapterObject> chapterList;
 
   const TOCState({
     this.code = TOCStateCode.unload,
-    this.chapterMap = const {},
+    this.chapterList = const [],
   });
 
   @override
-  List<Object?> get props => [code, chapterMap];
+  List<Object?> get props => [code, chapterList];
 }

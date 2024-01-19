@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 
+import 'chapter_object.dart';
 import 'file_process.dart';
 import 'verify_utility.dart';
 
@@ -14,7 +15,9 @@ class BookObject {
   FileImage _coverImage;
 
   BookObject({this.name = '', this.coverFile}) : _coverImage = FileImage(coverFile!);
+
   BookObject.fromPath(String path) : this(name: basename(path), coverFile: File(join(path, 'cover.jpg')));
+
   BookObject.fromObject(BookObject bookObject) : this(name: bookObject.name, coverFile: bookObject.coverFile);
 
   Future<bool> create() async {
@@ -100,9 +103,9 @@ class BookObject {
     _coverImage.evict();
   }
 
-  Future<Map<int, String>> getChapters() async {
-    if (name == '') {
-      return {};
+  Future<List<ChapterObject>> getChapters() async {
+    if (!VerifyUtility.isFolderNameValid(name)) {
+      return [];
     }
     final folder = Directory(join(await FileProcess.libraryRoot, name));
     if (folder.existsSync()) {
@@ -114,21 +117,22 @@ class BookObject {
           .map<String>((item) => item.path)
           .toList();
       entries.sort(compareNatural);
-      Map<int, String> chapterMap = {};
+      List<ChapterObject> chapterList = [];
       for (String item in entries) {
         final File file = File(item);
         final List<String> content = file.readAsLinesSync();
         if (content.isNotEmpty) {
-          chapterMap[int.parse(basenameWithoutExtension(file.path))] = content[0];
+          chapterList.add(
+              ChapterObject(ordinalNumber: int.parse(basenameWithoutExtension(item)), title: content[0], file: file));
         } else {
           // If content is empty, delete it.
           file.delete();
         }
       }
 
-      return chapterMap;
+      return chapterList;
     } else {
-      return {};
+      return [];
     }
   }
 }
