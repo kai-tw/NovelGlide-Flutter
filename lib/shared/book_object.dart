@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 
-import 'book_process.dart';
 import 'file_process.dart';
 
 class BookObject {
@@ -76,6 +75,11 @@ class BookObject {
     }
   }
 
+  Future<bool> isExists() async {
+    final folder = Directory(join(await FileProcess.libraryRoot, name));
+    return folder.existsSync();
+  }
+
   Widget getCover() {
     if (coverFile != null && coverFile!.existsSync()) {
       return Image(
@@ -84,7 +88,7 @@ class BookObject {
         gaplessPlayback: true,
       );
     } else {
-      return Image.asset(BookProcess.defaultCover, fit: BoxFit.cover);
+      return Image.asset('assets/images/book_cover_light.jpg', fit: BoxFit.cover);
     }
   }
 

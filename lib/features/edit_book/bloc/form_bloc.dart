@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../shared/book_object.dart';
-import '../../../shared/book_process.dart';
 import '../../../shared/input_verify.dart';
 
 enum EditBookNameStateCode { valid, blank, invalid, exists, same }
@@ -24,7 +23,7 @@ class EditBookFormCubit extends Cubit<EditBookFormState> {
       emit(state.copyWith(nameStateCode: EditBookNameStateCode.blank));
     } else if (!InputVerify.isFolderNameValid(name)) {
       emit(state.copyWith(nameStateCode: EditBookNameStateCode.invalid));
-    } else if (await BookProcess.isExists(name)) {
+    } else if (await state.formValue.isExists()) {
       emit(state.copyWith(nameStateCode: EditBookNameStateCode.exists));
     } else {
       emit(state.copyWith(nameStateCode: EditBookNameStateCode.valid));

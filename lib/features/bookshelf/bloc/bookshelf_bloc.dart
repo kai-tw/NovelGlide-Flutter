@@ -1,16 +1,30 @@
+import 'dart:io';
+
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/book_object.dart';
-import '../../../shared/book_process.dart';
+import '../../../shared/file_process.dart';
 
 enum BookshelfStateCode { normal, selecting, empty, unload, loading }
 
 class BookshelfCubit extends Cubit<BookshelfState> {
   BookshelfCubit() : super(const BookshelfState());
 
+  Future<List<BookObject>> _getList() async {
+    final Directory folder = Directory(await FileProcess.libraryRoot);
+    folder.createSync(recursive: true);
+    final List<Directory> entries = folder.listSync().whereType<Directory>().toList();
+    List<BookObject> list = entries.map((item) => BookObject.fromPath(item.path)).toList();
+    list.sort((BookObject a, BookObject b) {
+      return compareNatural(a.name, b.name);
+    });
+    return list;
+  }
+
   void refresh() async {
-    List<BookObject> list = await BookProcess.getList();
+    List<BookObject> list = await _getList();
     BookshelfStateCode code = list.isEmpty ? BookshelfStateCode.empty : BookshelfStateCode.normal;
     emit(BookshelfState(code: code, bookList: list));
   }

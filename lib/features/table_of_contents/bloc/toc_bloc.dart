@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/book_object.dart';
-import '../../../shared/book_process.dart';
 
 enum TOCStateCode { unload, loading, normal, empty }
 
