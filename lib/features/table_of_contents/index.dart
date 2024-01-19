@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../shared/book_process.dart';
+import '../../shared/book_object.dart';
 import '../../shared/sliver_list_empty.dart';
 import '../../shared/sliver_loading.dart';
 import 'bloc/toc_bloc.dart';

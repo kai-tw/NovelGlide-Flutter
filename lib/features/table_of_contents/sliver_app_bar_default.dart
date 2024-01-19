@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../shared/book_process.dart';
+import '../../shared/book_object.dart';
 import '../edit_book/scaffold.dart';
 
 class TOCSliverAppBar extends StatelessWidget {

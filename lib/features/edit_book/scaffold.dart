@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:novelglide/features/edit_book/sliver_image_picker.dart';
 import 'package:novelglide/features/edit_book/sliver_submit_button.dart';
 
-import '../../shared/book_process.dart';
+import '../../shared/book_object.dart';
 import 'bloc/form_bloc.dart';
 import 'sliver_name_text_field.dart';
 import 'sliver_title.dart';

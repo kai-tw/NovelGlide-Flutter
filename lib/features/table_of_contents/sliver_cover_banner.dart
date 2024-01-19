@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../shared/book_process.dart';
+import '../../shared/book_object.dart';
 
 class TOCSliverCoverBanner extends StatelessWidget {
   const TOCSliverCoverBanner(this.bookObject, {super.key});

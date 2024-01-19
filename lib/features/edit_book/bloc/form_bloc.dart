@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../shared/book_object.dart';
 import '../../../shared/book_process.dart';
 import '../../../shared/input_verify.dart';
 

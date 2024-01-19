@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../shared/book_process.dart';
+import '../../shared/book_object.dart';
 
 class TOCSliverBookName extends StatelessWidget {
   const TOCSliverBookName(this.bookObject, {super.key});

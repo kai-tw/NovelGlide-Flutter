@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../shared/book_process.dart';
+import '../../shared/book_object.dart';
 import '../table_of_contents/index.dart';
 import 'bloc/bookshelf_bloc.dart';
 

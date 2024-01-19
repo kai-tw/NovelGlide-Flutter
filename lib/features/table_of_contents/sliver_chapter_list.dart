@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../shared/book_process.dart';
+import '../../shared/book_object.dart';
 import 'bloc/toc_bloc.dart';
 
 class TOCSliverChapterList extends StatelessWidget {
