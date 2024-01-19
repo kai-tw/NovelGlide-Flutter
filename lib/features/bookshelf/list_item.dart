@@ -5,8 +5,8 @@ import '../../shared/book_process.dart';
 import '../table_of_contents/index.dart';
 import 'bloc/bookshelf_bloc.dart';
 
-class BookshelfBookWidget extends StatelessWidget {
-  const BookshelfBookWidget(this.bookObject, {super.key});
+class BookshelfListItem extends StatelessWidget {
+  const BookshelfListItem(this.bookObject, {super.key});
 
   final BookObject bookObject;
 
