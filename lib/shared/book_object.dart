@@ -6,6 +6,7 @@ import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 
 import 'file_process.dart';
+import 'verify_utility.dart';
 
 class BookObject {
   String name = '';
@@ -17,7 +18,7 @@ class BookObject {
   BookObject.fromObject(BookObject bookObject) : this(name: bookObject.name, coverFile: bookObject.coverFile);
 
   Future<bool> create() async {
-    if (name == '') {
+    if (!VerifyUtility.isFolderNameValid(name)) {
       return false;
     }
     final folder = Directory(join(await FileProcess.libraryRoot, name));
@@ -36,7 +37,7 @@ class BookObject {
   }
 
   Future<bool> rename(BookObject newObject) async {
-    if (newObject.name == '' || name == '') {
+    if (!VerifyUtility.isFolderNameValid(newObject.name) || !VerifyUtility.isFolderNameValid(name)) {
       return false;
     }
 
@@ -63,7 +64,7 @@ class BookObject {
   }
 
   Future<bool> delete() async {
-    if (name == '') {
+    if (!VerifyUtility.isFolderNameValid(name)) {
       return false;
     }
     final folder = Directory(join(await FileProcess.libraryRoot, name));
@@ -76,6 +77,9 @@ class BookObject {
   }
 
   Future<bool> isExists() async {
+    if (!VerifyUtility.isFolderNameValid(name)) {
+      return false;
+    }
     final folder = Directory(join(await FileProcess.libraryRoot, name));
     return folder.existsSync();
   }
