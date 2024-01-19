@@ -17,42 +17,39 @@ class TableOfContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: bookObject,
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (_) => TOCCubit(bookObject)),
-        ],
-        child: BlocBuilder<TOCCubit, TOCState>(
-          builder: (BuildContext context, TOCState state) {
-            List<Widget> sliverList = [];
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => TOCCubit(bookObject)),
+      ],
+      child: BlocBuilder<TOCCubit, TOCState>(
+        builder: (BuildContext context, TOCState state) {
+          List<Widget> sliverList = [];
 
-            sliverList.add(TOCSliverAppBar(bookObject));
-            sliverList.add(TOCSliverCoverBanner(bookObject));
-            sliverList.add(TOCSliverBookName(bookObject));
+          sliverList.add(TOCSliverAppBar(bookObject));
+          sliverList.add(TOCSliverCoverBanner(bookObject));
+          sliverList.add(TOCSliverBookName(bookObject));
 
-            switch (state.code) {
-              case TOCStateCode.unload:
-                BlocProvider.of<TOCCubit>(context).refresh();
-                break;
-              case TOCStateCode.loading:
-                sliverList.add(const CommonSliverLoading());
-                break;
-              case TOCStateCode.empty:
-                sliverList.add(const CommonSliverListEmpty());
-                break;
-              case TOCStateCode.normal:
-                sliverList.add(TOCSliverChapterList(bookObject));
-                break;
-            }
+          switch (state.code) {
+            case TOCStateCode.unload:
+              BlocProvider.of<TOCCubit>(context).refresh();
+              break;
+            case TOCStateCode.loading:
+              sliverList.add(const CommonSliverLoading());
+              break;
+            case TOCStateCode.empty:
+              sliverList.add(const CommonSliverListEmpty());
+              break;
+            case TOCStateCode.normal:
+              sliverList.add(TOCSliverChapterList(bookObject));
+              break;
+          }
 
-            return Scaffold(
-              body: CustomScrollView(
-                slivers: sliverList,
-              ),
-            );
-          },
-        ),
+          return Scaffold(
+            body: CustomScrollView(
+              slivers: sliverList,
+            ),
+          );
+        },
       ),
     );
   }

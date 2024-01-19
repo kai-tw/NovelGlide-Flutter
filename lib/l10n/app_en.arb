@@ -39,11 +39,6 @@
   "input_field_invalid": "It's invalid.",
   "input_field_blank": "It cannot be blank.",
 
-  "original_book_name": "Original book name",
-  "new_book_name": "New book name",
-  "replace_pattern": "Search for",
-  "replace_with": "Replace with",
-
   "chapter_label": "Chapter {number}",
   "@chapter_label": {
     "description": "Display Chapter %d",

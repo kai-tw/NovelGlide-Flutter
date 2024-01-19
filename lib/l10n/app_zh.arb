@@ -39,11 +39,6 @@
   "input_field_invalid": "不符合命名規則",
   "input_field_blank": "不能空白",
 
-  "original_book_name": "原始書名",
-  "new_book_name": "新書名",
-  "replace_pattern": "尋找",
-  "replace_with": "替換為",
-
   "chapter_label": "第 {number} 章",
   "@chapter_label": {
     "description": "Display Chapter %d",

@@ -26,13 +26,7 @@ class BookshelfBookWidget extends StatelessWidget {
                 }
                 break;
               case BookshelfStateCode.normal:
-                Navigator.of(context)
-                    .push(PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) => TableOfContents(bookObject),
-                      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                        return child;
-                      },
-                    ));
+                Navigator.of(context).push(_navigateToTOC());
               default:
             }
           },
@@ -82,6 +76,25 @@ class BookshelfBookWidget extends StatelessWidget {
               ),
             ),
           ),
+        );
+      },
+    );
+  }
+
+  Route _navigateToTOC() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => TableOfContents(bookObject),
+      transitionDuration: const Duration(milliseconds: 500),
+      reverseTransitionDuration: const Duration(milliseconds: 500),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+            CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeInOut,
+            ),
+          ),
+          child: child,
         );
       },
     );
