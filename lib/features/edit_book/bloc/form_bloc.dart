@@ -12,8 +12,7 @@ enum EditBookNameStateCode { valid, blank, invalid, exists, same }
 enum EditBookCoverStateCode { blank, valid, same }
 
 class EditBookFormCubit extends Cubit<EditBookFormState> {
-  EditBookFormCubit(this.data)
-      : super(EditBookFormState(formValue: BookObject.fromObject(data)));
+  EditBookFormCubit(this.data) : super(EditBookFormState(formValue: BookObject.fromObject(data)));
 
   BookObject data;
   final ImagePicker _imagePicker = ImagePicker();
