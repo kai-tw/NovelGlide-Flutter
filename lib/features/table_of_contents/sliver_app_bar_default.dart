@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/book_process.dart';
 import '../edit_book/scaffold.dart';
-import 'bloc/toc_bloc.dart';
 
 class TOCSliverAppBar extends StatelessWidget {
   const TOCSliverAppBar(this.bookObject, {super.key});
@@ -31,8 +29,11 @@ class TOCSliverAppBar extends StatelessWidget {
               builder: (BuildContext context) {
                 return EditBookPage(bookObject);
               },
-            ).then((_) =>
-                BlocProvider.of<TOCCubit>(context).refresh());
+            ).then((isSuccess) {
+              if (isSuccess) {
+                bookObject.refreshCover();
+              }
+            });
           },
           icon: const Icon(Icons.edit_rounded),
         ),

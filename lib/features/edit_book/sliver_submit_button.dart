@@ -30,7 +30,7 @@ class EditBookSliverSubmitButton extends StatelessWidget {
             if (_formKey.currentState!.validate()) {
               showDialog(context: context, barrierDismissible: false, builder: _processingDialog);
               BlocProvider.of<EditBookFormCubit>(context).submit().then((bool isSuccess) {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(isSuccess);
                 showDialog(context: context, builder: isSuccess ? _successDialog : _failedDialog)
                     .then((_) => Navigator.of(context).pop());
               });

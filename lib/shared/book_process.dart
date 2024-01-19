@@ -30,16 +30,11 @@ class BookProcess {
 class BookObject {
   String name = '';
   File? coverFile;
+  FileImage _coverImage;
 
-  BookObject({this.name = '', this.coverFile});
-  BookObject.fromPath(String path) {
-    name = basename(path);
-    coverFile = File(join(path, 'cover.jpg'));
-  }
-  BookObject.fromObject(BookObject bookObject) {
-    name = bookObject.name;
-    coverFile = bookObject.coverFile;
-  }
+  BookObject({this.name = '', this.coverFile}) : _coverImage = FileImage(coverFile!);
+  BookObject.fromPath(String path) : this(name: basename(path), coverFile: File(join(path, 'cover.jpg')));
+  BookObject.fromObject(BookObject bookObject) : this(name: bookObject.name, coverFile: bookObject.coverFile);
 
   Future<bool> create() async {
     if (name == '') {
@@ -102,10 +97,18 @@ class BookObject {
 
   Widget getCover() {
     if (coverFile != null && coverFile!.existsSync()) {
-      return Image.memory(coverFile!.readAsBytesSync(), fit: BoxFit.cover);
+      return Image(
+        image: _coverImage,
+        fit: BoxFit.cover,
+        gaplessPlayback: true,
+      );
     } else {
       return Image.asset(BookProcess.defaultCover, fit: BoxFit.cover);
     }
+  }
+
+  void refreshCover() {
+    _coverImage.evict();
   }
 
   Future<Map<int, String>> getChapters() async {
@@ -119,7 +122,8 @@ class BookObject {
           .listSync()
           .whereType<File>()
           .where((item) => regexp.hasMatch(basename(item.path)) && lookupMimeType(item.path) == 'text/plain')
-          .map<String>((item) => item.path).toList();
+          .map<String>((item) => item.path)
+          .toList();
       entries.sort(compareNatural);
       Map<int, String> chapterMap = {};
       for (String item in entries) {
@@ -137,10 +141,5 @@ class BookObject {
     } else {
       return {};
     }
-  }
-
-  @override
-  String toString() {
-    return '{name: $name, coverFile: $coverFile}';
   }
 }

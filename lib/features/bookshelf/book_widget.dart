@@ -14,7 +14,6 @@ class BookshelfBookWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BookshelfCubit, BookshelfState>(
       builder: (BuildContext context, BookshelfState state) {
-        debugPrint('book_widget: ${state.code}');
         final bool isSelected = state.selectedSet.contains(bookObject.name);
         return GestureDetector(
           onTap: () {
