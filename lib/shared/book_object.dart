@@ -12,9 +12,9 @@ import 'verify_utility.dart';
 class BookObject {
   String name = '';
   File? coverFile;
-  FileImage _coverImage;
+  FileImage? _coverImage;
 
-  BookObject({this.name = '', this.coverFile}) : _coverImage = FileImage(coverFile!);
+  BookObject({this.name = '', this.coverFile}) : _coverImage = coverFile != null ? FileImage(coverFile) : null;
 
   BookObject.fromPath(String path) : this(name: basename(path), coverFile: File(join(path, 'cover.jpg')));
 
@@ -90,7 +90,7 @@ class BookObject {
   Widget getCover() {
     if (coverFile != null && coverFile!.existsSync()) {
       return Image(
-        image: _coverImage,
+        image: _coverImage!,
         fit: BoxFit.cover,
         gaplessPlayback: true,
       );
@@ -100,7 +100,9 @@ class BookObject {
   }
 
   void refreshCover() {
-    _coverImage.evict();
+    if (_coverImage != null) {
+      _coverImage!.evict();
+    }
   }
 
   Future<List<ChapterObject>> getChapters() async {

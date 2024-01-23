@@ -47,6 +47,7 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   mime: ^1.0.4
   hive: ^4.0.0-dev.2
+  isar_flutter_libs: ^4.0.0-dev.14
 
 dev_dependencies:
   flutter_test:

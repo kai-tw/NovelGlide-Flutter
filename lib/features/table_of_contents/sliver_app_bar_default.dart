@@ -30,7 +30,7 @@ class TOCSliverAppBar extends StatelessWidget {
                 return EditBookPage(bookObject);
               },
             ).then((isSuccess) {
-              if (isSuccess) {
+              if (isSuccess != null && isSuccess) {
                 bookObject.refreshCover();
               }
             });

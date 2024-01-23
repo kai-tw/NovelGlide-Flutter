@@ -16,7 +16,7 @@ class HomepageNavBar extends StatelessWidget {
           indicatorColor: Colors.transparent,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
           backgroundColor: Theme.of(context).colorScheme.background,
-          destinations: const <Widget>[
+          destinations: const [
             NavigationDestination(icon: Icon(Icons.shelves), label: ''),
             NavigationDestination(icon: Icon(Icons.bookmark), label: ''),
             NavigationDestination(icon: Icon(Icons.settings), label: ''),
