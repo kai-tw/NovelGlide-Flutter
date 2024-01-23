@@ -3,4 +3,6 @@
 A first attempt to develop a cross-platform app.
 
 TODO-List:
-- [ ] It can read and show the novel file (in text format)
+- [x] Read a novel chapter (in text format).
+- [x] Adjust font size.
+- [ ] Adjust the background of the reader.
