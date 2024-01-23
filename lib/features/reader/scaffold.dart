@@ -17,19 +17,13 @@ class ReaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ReaderCubit(),
-      child: BlocBuilder<ReaderCubit, ReaderState>(
-        builder: (BuildContext context, ReaderState state) {
-          List<Widget> sliverList = [];
-
-          sliverList.add(ReaderSliverAppBar(chapterObject));
-          sliverList.add(ReaderSliverTitle(chapterObject));
-          sliverList.add(ReaderSliverContent(chapterObject));
-
-          return Scaffold(
-            body: CustomScrollView(slivers: sliverList),
-            bottomNavigationBar: const ReaderNavBar(),
-          );
-        },
+      child: Scaffold(
+        body: CustomScrollView(slivers: [
+          ReaderSliverAppBar(chapterObject),
+          ReaderSliverTitle(chapterObject),
+          ReaderSliverContent(chapterObject)
+        ]),
+        bottomNavigationBar: const ReaderNavBar(),
       ),
     );
   }
