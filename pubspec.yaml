@@ -46,6 +46,7 @@ dependencies:
   image_picker: ^1.0.7
   loading_animation_widget: ^1.2.0+4
   mime: ^1.0.4
+  hive: ^4.0.0-dev.2
 
 dev_dependencies:
   flutter_test:

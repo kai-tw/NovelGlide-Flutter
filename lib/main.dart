@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:novelglide/features/homepage/scaffold.dart';
-import 'package:novelglide/features/theme/theme.dart';
+import 'package:hive/hive.dart';
 
-void main() {
+import 'features/homepage/scaffold.dart';
+import 'features/theme/theme.dart';
+import 'shared/file_process.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Hive.defaultDirectory = await FileProcess.hiveRoot;
   runApp(const App());
 }
 

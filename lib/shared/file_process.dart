@@ -32,6 +32,11 @@ class FileProcess {
     return join(folder, 'Library');
   }
 
+  static Future<String> get hiveRoot async {
+    final folder = await supportFolder;
+    return join(folder, 'Hive');
+  }
+
   static Future<bool> renameBookBatch(Set<String> selectedBooks, String pattern, String newName) async {
     if (pattern == '' || selectedBooks.isEmpty) {
       return false;
