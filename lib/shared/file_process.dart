@@ -28,13 +28,19 @@ class FileProcess {
   }
 
   static Future<String> get libraryRoot async {
-    final folder = await supportFolder;
-    return join(folder, 'Library');
+    final Directory folder = Directory(join(await supportFolder, 'Library'));
+    if (!folder.existsSync()) {
+      folder.createSync(recursive: true);
+    }
+    return folder.path;
   }
 
   static Future<String> get hiveRoot async {
-    final folder = await supportFolder;
-    return join(folder, 'Hive');
+    final Directory folder = Directory(join(await supportFolder, 'Hive'));
+    if (!folder.existsSync()) {
+      folder.createSync(recursive: true);
+    }
+    return folder.path;
   }
 
   static Future<bool> renameBookBatch(Set<String> selectedBooks, String pattern, String newName) async {
