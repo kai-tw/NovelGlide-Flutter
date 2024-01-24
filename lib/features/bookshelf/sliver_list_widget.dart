@@ -29,7 +29,7 @@ class BookshelfSliverList extends StatelessWidget {
                 childAspectRatio: 150 / 330,
               ),
               delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
+                (BuildContext context, int index) {
                   return BookshelfListItem(state.bookList[index]);
                 },
                 childCount: state.bookList.length,

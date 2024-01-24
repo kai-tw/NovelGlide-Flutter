@@ -13,6 +13,7 @@ class TOCCubit extends Cubit<TOCState> {
 
   void refresh() async {
     emit(const TOCState(code: TOCStateCode.loading));
+    await Future.delayed(const Duration(seconds: 1));
     List<ChapterObject> chapterList = await bookObject.getChapters();
     TOCStateCode code = chapterList.isEmpty ? TOCStateCode.empty : TOCStateCode.normal;
     emit(TOCState(code: code, chapterList: chapterList));
@@ -27,6 +28,16 @@ class TOCState extends Equatable {
     this.code = TOCStateCode.unload,
     this.chapterList = const [],
   });
+
+  TOCState copyWith({
+    TOCStateCode? code,
+    List<ChapterObject>? chapterList,
+  }) {
+    return TOCState(
+      code: code ?? this.code,
+      chapterList: chapterList ?? this.chapterList,
+    );
+  }
 
   @override
   List<Object?> get props => [code, chapterList];

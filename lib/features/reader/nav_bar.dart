@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../reader_settings/wrapper.dart';
+import 'settings_wrapper.dart';
 import 'bloc/reader_bloc.dart';
 
 class ReaderNavBar extends StatelessWidget {

@@ -5,8 +5,8 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'bloc/form_bloc.dart';
 
-class EditBookSliverSubmitButton extends StatelessWidget {
-  const EditBookSliverSubmitButton({super.key});
+class AddBookSliverSubmitButton extends StatelessWidget {
+  const AddBookSliverSubmitButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +27,10 @@ class EditBookSliverSubmitButton extends StatelessWidget {
           onPressed: () {
             if (Form.of(context).validate()) {
               showDialog(context: context, barrierDismissible: false, builder: _processingDialog);
-              BlocProvider.of<EditBookFormCubit>(context).submit().then((bool isSuccess) {
+              BlocProvider.of<AddBookFormCubit>(context).submit().then((bool isSuccess) {
                 Navigator.of(context).pop();
                 showDialog(context: context, builder: isSuccess ? _successDialog : _failedDialog)
-                    .then((_) => Navigator.of(context).pop(isSuccess));
+                    .then((_) => Navigator.of(context).pop());
               });
             }
           },
@@ -57,7 +57,7 @@ class EditBookSliverSubmitButton extends StatelessWidget {
       icon: const Icon(Icons.check_rounded, size: 40.0),
       iconColor: Theme.of(context).colorScheme.secondary,
       content: Text(
-        AppLocalizations.of(context)!.edit_successful,
+        AppLocalizations.of(context)!.add_successful,
         textAlign: TextAlign.center,
       ),
     );
@@ -68,7 +68,7 @@ class EditBookSliverSubmitButton extends StatelessWidget {
       icon: const Icon(Icons.error_outline_rounded, size: 40.0),
       iconColor: Theme.of(context).colorScheme.error,
       content: Text(
-        AppLocalizations.of(context)!.edit_failed,
+        AppLocalizations.of(context)!.add_failed,
         textAlign: TextAlign.center,
       ),
     );

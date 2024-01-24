@@ -14,7 +14,8 @@ class BookObject {
   File? coverFile;
   FileImage? _coverImage;
 
-  BookObject({this.name = '', this.coverFile}) : _coverImage = coverFile != null ? FileImage(coverFile) : null;
+  BookObject({this.name = '', this.coverFile})
+      : _coverImage = coverFile != null ? FileImage(coverFile) : null;
 
   BookObject.fromPath(String path) : this(name: basename(path), coverFile: File(join(path, 'cover.jpg')));
 

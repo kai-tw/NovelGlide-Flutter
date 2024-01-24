@@ -35,14 +35,14 @@ class EditBookPage extends StatelessWidget {
               key: _formKey,
               child: CustomScrollView(
                 controller: controller,
-                slivers: [
-                  const EditBookSliverTitle(),
-                  const SliverPadding(padding: EdgeInsets.only(bottom: 16.0)),
-                  const EditBookSliverNameTextField(),
-                  const SliverPadding(padding: EdgeInsets.only(bottom: 20.0)),
-                  const EditBookSliverImagePicker(),
-                  const SliverPadding(padding: EdgeInsets.only(bottom: 16.0)),
-                  EditBookSliverSubmitButton(_formKey),
+                slivers: const [
+                  EditBookSliverTitle(),
+                  SliverPadding(padding: EdgeInsets.only(bottom: 16.0)),
+                  EditBookSliverNameTextField(),
+                  SliverPadding(padding: EdgeInsets.only(bottom: 20.0)),
+                  EditBookSliverImagePicker(),
+                  SliverPadding(padding: EdgeInsets.only(bottom: 16.0)),
+                  EditBookSliverSubmitButton(),
                 ],
               ),
             ),

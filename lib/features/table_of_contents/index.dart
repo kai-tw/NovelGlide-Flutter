@@ -23,11 +23,11 @@ class TableOfContents extends StatelessWidget {
       ],
       child: BlocBuilder<TOCCubit, TOCState>(
         builder: (BuildContext context, TOCState state) {
-          List<Widget> sliverList = [];
-
-          sliverList.add(TOCSliverAppBar(bookObject));
-          sliverList.add(TOCSliverCoverBanner(bookObject));
-          sliverList.add(TOCSliverBookName(bookObject));
+          List<Widget> sliverList = [
+            const TOCSliverAppBar(),
+            const TOCSliverCoverBanner(),
+            const TOCSliverBookName(),
+          ];
 
           switch (state.code) {
             case TOCStateCode.unload:
@@ -40,7 +40,7 @@ class TableOfContents extends StatelessWidget {
               sliverList.add(const CommonSliverListEmpty());
               break;
             case TOCStateCode.normal:
-              sliverList.add(TOCSliverChapterList(bookObject));
+              sliverList.add(const TOCSliverChapterList());
               break;
           }
 

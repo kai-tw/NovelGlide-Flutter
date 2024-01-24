@@ -29,7 +29,7 @@
   "book_name": "書名",
   "book_cover": "封面",
   "book_name_rule_title": "書籍命名規則",
-  "book_name_rule_content": "可用的英文符號：",
+  "book_name_rule_content": "可用的英文符號：空白和 ",
   "book_name_same": "書名相同",
   "book_exists": "書名已存在",
 

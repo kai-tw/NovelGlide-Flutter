@@ -22,7 +22,7 @@ class ReaderSliverContent extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
                 child: Text(
                   contentLines[index],
-                  style: TextStyle(fontSize: state.fontSize),
+                  style: TextStyle(fontSize: state.fontSize, height: state.lineHeight),
                 ),
               );
             },

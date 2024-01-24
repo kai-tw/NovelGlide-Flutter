@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../shared/book_object.dart';
 import '../../shared/chapter_object.dart';
 import '../reader/scaffold.dart';
 import 'bloc/toc_bloc.dart';
 
 class TOCSliverChapterList extends StatelessWidget {
-  const TOCSliverChapterList(this.bookObject, {super.key});
-
-  final BookObject bookObject;
+  const TOCSliverChapterList({super.key});
 
   @override
   Widget build(BuildContext context) {

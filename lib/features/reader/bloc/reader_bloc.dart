@@ -7,29 +7,59 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   void loadSettings() {
     Box readerSetting = Hive.box(name: 'reader_settings');
-    double fontSize = readerSetting.get('font_size') ?? 16.0;
+    double? fontSize = readerSetting.get('font_size');
+    double? lineHeight = readerSetting.get('line_height');
     readerSetting.close();
-    emit(ReaderState(fontSize: fontSize));
+    emit(state.copyWith(fontSize: fontSize, lineHeight: lineHeight));
   }
 
-  void applyPreview({double? fontSize}) {
-    emit(state.copyWith(fontSize: fontSize));
+  void set({double? fontSize, double? lineHeight}) {
+    emit(state.copyWith(fontSize: fontSize, lineHeight: lineHeight));
+  }
+
+  void save({double? fontSize, double? lineHeight}) {
+    ReaderState newState = state.copyWith(fontSize: fontSize, lineHeight: lineHeight);
+
+    Box readerSettings = Hive.box(name: 'reader_settings');
+    readerSettings.put('font_size', newState.fontSize);
+    readerSettings.put('line_height', newState.lineHeight);
+    readerSettings.close();
+
+    emit(newState);
+  }
+
+  void reset() {
+    Box readerSettings = Hive.box(name: 'reader_settings');
+    readerSettings.clear();
+    readerSettings.close();
+    emit(const ReaderState());
   }
 }
 
 class ReaderState extends Equatable {
   final double fontSize;
+  static const double minFontSize = 12;
+  static const double maxFontSize = 32;
 
-  const ReaderState({this.fontSize = 16.0});
+  final double lineHeight;
+  static const double minLineHeight = 1;
+  static const double maxLineHeight = 3;
+
+  const ReaderState({
+    this.fontSize = 16,
+    this.lineHeight = 1.2,
+  });
 
   ReaderState copyWith({
     double? fontSize,
+    double? lineHeight,
   }) {
     return ReaderState(
-      fontSize: fontSize ?? this.fontSize,
+      fontSize: (fontSize ?? this.fontSize).clamp(minFontSize, maxFontSize),
+      lineHeight: (lineHeight ?? this.lineHeight).clamp(minLineHeight, maxLineHeight),
     );
   }
 
   @override
-  List<Object?> get props => [fontSize];
+  List<Object?> get props => [fontSize, lineHeight];
 }

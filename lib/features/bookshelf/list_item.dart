@@ -26,7 +26,9 @@ class BookshelfListItem extends StatelessWidget {
                 }
                 break;
               case BookshelfStateCode.normal:
-                Navigator.of(context).push(_navigateToTOC());
+                Navigator.of(context).push(_navigateToTOC()).then((_) {
+                  BlocProvider.of<BookshelfCubit>(context).refresh();
+                });
               default:
             }
           },
@@ -54,7 +56,7 @@ class BookshelfListItem extends StatelessWidget {
                   AspectRatio(
                     aspectRatio: 1 / 1.5,
                     child: Hero(
-                      tag: bookObject,
+                      tag: bookObject.name,
                       child: Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.surfaceVariant,
