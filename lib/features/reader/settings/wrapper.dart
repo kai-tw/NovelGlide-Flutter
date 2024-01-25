@@ -24,7 +24,9 @@ class ReaderSettingsBottomSheet extends StatelessWidget {
             controller: scrollController,
             slivers: const [
               ReaderSettingsSliverFontSize(),
+              SliverPadding(padding: EdgeInsets.only(bottom: 8.0)),
               ReaderSettingsSliverLineHeight(),
+              SliverPadding(padding: EdgeInsets.only(bottom: 8.0)),
               ReaderSettingsSliverResetButton(),
             ],
           ),

@@ -15,7 +15,11 @@ class ReaderSettingsSliverFontSize extends StatelessWidget {
           Container(
             margin: const EdgeInsets.all(8.0),
             width: 32,
-            child: const Icon(Icons.format_size_rounded, size: 12),
+            child: Icon(
+              Icons.format_size_rounded,
+              color: Theme.of(context).colorScheme.primary,
+              size: ReaderState.minFontSize,
+            ),
           ),
           BlocBuilder<ReaderCubit, ReaderState>(
             builder: (BuildContext context, ReaderState state) {
@@ -30,14 +34,17 @@ class ReaderSettingsSliverFontSize extends StatelessWidget {
               );
             },
           ),
-          Container (
+          Container(
             margin: const EdgeInsets.all(8.0),
             width: 32,
-            child: const Icon(Icons.format_size_rounded, size: 32),
+            child: Icon(
+              Icons.format_size_rounded,
+              color: Theme.of(context).colorScheme.primary,
+              size: ReaderState.maxFontSize,
+            ),
           ),
         ],
       ),
     );
   }
-
 }
