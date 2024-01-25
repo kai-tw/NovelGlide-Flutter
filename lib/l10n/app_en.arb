@@ -11,7 +11,7 @@
   "close": "Close",
   "processing": "Processing...",
   "preview": "Preview",
-  "reset": "reset",
+  "reset_settings": "Reset settings",
   "add_successful": "Add successfully.",
   "add_failed": "Add failed.",
   "edit_successful": "Edit successfully.",

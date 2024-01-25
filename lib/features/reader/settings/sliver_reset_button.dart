@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bloc/reader_cubit.dart';
 
@@ -13,7 +14,7 @@ class ReaderSettingsSliverResetButton extends StatelessWidget {
         alignment: Alignment.centerRight,
         child: OutlinedButton.icon(
           icon: const Icon(Icons.restart_alt_rounded),
-          label: Text('Reset'),
+          label: Text(AppLocalizations.of(context)!.reset_settings),
           style: OutlinedButton.styleFrom(
             side: BorderSide(width: 2.0, color: Theme.of(context).colorScheme.primary),
           ),
