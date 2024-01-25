@@ -9,8 +9,6 @@ class ReaderSliverContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<ReaderCubit>(context).loadSettings();
-
     return BlocBuilder<ReaderCubit, ReaderState>(
       builder: (BuildContext context, ReaderState state) {
         List<String> contentLines = state.chapterObject.getLines();
