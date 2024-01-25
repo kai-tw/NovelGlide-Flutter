@@ -14,8 +14,7 @@ class BookObject {
   File? coverFile;
   FileImage? _coverImage;
 
-  BookObject({this.name = '', this.coverFile})
-      : _coverImage = coverFile != null ? FileImage(coverFile) : null;
+  BookObject({this.name = '', this.coverFile}) : _coverImage = coverFile != null ? FileImage(coverFile) : null;
 
   BookObject.fromPath(String path) : this(name: basename(path), coverFile: File(join(path, 'cover.jpg')));
 
@@ -68,24 +67,22 @@ class BookObject {
   }
 
   Future<bool> delete() async {
-    if (!VerifyUtility.isFolderNameValid(name)) {
-      return false;
+    if (VerifyUtility.isFolderNameValid(name)) {
+      final folder = Directory(join(await FileProcess.libraryRoot, name));
+      if (folder.existsSync()) {
+        folder.delete(recursive: true);
+        return !folder.existsSync();
+      }
     }
-    final folder = Directory(join(await FileProcess.libraryRoot, name));
-    if (folder.existsSync()) {
-      folder.delete(recursive: true);
-      return !folder.existsSync();
-    } else {
-      return false;
-    }
+    return false;
   }
 
   Future<bool> isExists() async {
-    if (!VerifyUtility.isFolderNameValid(name)) {
-      return false;
+    if (VerifyUtility.isFolderNameValid(name)) {
+      final folder = Directory(join(await FileProcess.libraryRoot, name));
+      return folder.existsSync();
     }
-    final folder = Directory(join(await FileProcess.libraryRoot, name));
-    return folder.existsSync();
+    return false;
   }
 
   Widget getCover() {
@@ -106,36 +103,48 @@ class BookObject {
     }
   }
 
-  Future<List<ChapterObject>> getChapters() async {
-    if (!VerifyUtility.isFolderNameValid(name)) {
-      return [];
-    }
-    final folder = Directory(join(await FileProcess.libraryRoot, name));
-    if (folder.existsSync()) {
-      RegExp regexp = RegExp(r'^\d+\.txt$');
-      List<String> entries = folder
-          .listSync()
-          .whereType<File>()
-          .where((item) => regexp.hasMatch(basename(item.path)) && lookupMimeType(item.path) == 'text/plain')
-          .map<String>((item) => item.path)
-          .toList();
-      entries.sort(compareNatural);
-      List<ChapterObject> chapterList = [];
+  Future<List<ChapterObject>> getChapterList() async {
+    List<ChapterObject> chapterList = [];
+
+    if (VerifyUtility.isFolderNameValid(name)) {
+      List<String> entries = await _getChapterFiles();
       for (String item in entries) {
         final File file = File(item);
         final List<String> content = file.readAsLinesSync();
         if (content.isNotEmpty) {
-          chapterList.add(
-              ChapterObject(ordinalNumber: int.parse(basenameWithoutExtension(item)), title: content[0], file: file));
+          chapterList.add(ChapterObject(
+            ordinalNumber: int.parse(basenameWithoutExtension(item)),
+            title: content[0],
+            file: file,
+            bookObject: this,
+          ));
         } else {
           // If content is empty, delete it.
           file.delete();
         }
       }
-
-      return chapterList;
-    } else {
-      return [];
     }
+
+    return chapterList;
+  }
+
+  Future<List<String>> _getChapterFiles() async {
+    List<String> entries = [];
+
+    if (VerifyUtility.isFolderNameValid(name)) {
+      final folder = Directory(join(await FileProcess.libraryRoot, name));
+      if (folder.existsSync()) {
+        RegExp regexp = RegExp(r'^\d+\.txt$');
+        entries = folder
+            .listSync()
+            .whereType<File>()
+            .where((item) => regexp.hasMatch(basename(item.path)) && lookupMimeType(item.path) == 'text/plain')
+            .map<String>((item) => item.path)
+            .toList();
+        entries.sort(compareNatural);
+      }
+    }
+
+    return entries;
   }
 }

@@ -1,10 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
+import '../../../shared/chapter_object.dart';
 import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
-  ReaderCubit() : super(const ReaderState());
+  final ChapterObject _chapterObject;
+
+  ReaderCubit(this._chapterObject) : super(ReaderState(chapterObject: _chapterObject));
 
   void loadSettings() {
     Box readerSetting = Hive.box(name: 'reader_settings');
@@ -33,6 +36,6 @@ class ReaderCubit extends Cubit<ReaderState> {
     Box readerSettings = Hive.box(name: 'reader_settings');
     readerSettings.clear();
     readerSettings.close();
-    emit(const ReaderState());
+    emit(ReaderState(chapterObject: _chapterObject));
   }
 }

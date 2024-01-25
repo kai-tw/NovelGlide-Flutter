@@ -9,7 +9,7 @@ class ReaderNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
+    final ReaderCubit readerCubit = BlocProvider.of<ReaderCubit>(context);
     return SizedBox(
       height: 48.0,
       child: Row(
@@ -25,7 +25,7 @@ class ReaderNavBar extends StatelessWidget {
               barrierColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
               builder: (BuildContext context) {
                 return BlocProvider.value(
-                  value: cubit,
+                  value: readerCubit,
                   child: const ReaderSettingsBottomSheet(),
                 );
               },

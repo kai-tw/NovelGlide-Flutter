@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../shared/chapter_object.dart';
-
 class ReaderSliverAppBar extends StatelessWidget {
-  const ReaderSliverAppBar(this.chapterObject, {super.key});
-
-  final ChapterObject chapterObject;
+  const ReaderSliverAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
