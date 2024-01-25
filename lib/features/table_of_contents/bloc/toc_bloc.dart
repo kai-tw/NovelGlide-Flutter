@@ -7,24 +7,25 @@ import '../../../shared/chapter_object.dart';
 enum TOCStateCode { unload, loading, normal, empty }
 
 class TOCCubit extends Cubit<TOCState> {
-  TOCCubit(this.bookObject) : super(const TOCState());
+  final BookObject _bookObject;
 
-  BookObject bookObject;
+  TOCCubit(this._bookObject) : super(TOCState(bookObject: _bookObject));
 
   void refresh() async {
-    emit(const TOCState(code: TOCStateCode.loading));
-    await Future.delayed(const Duration(seconds: 1));
-    List<ChapterObject> chapterList = await bookObject.getChapters();
+    emit(state.copyWith(code: TOCStateCode.loading));
+    List<ChapterObject> chapterList = await state.bookObject.getChapters();
     TOCStateCode code = chapterList.isEmpty ? TOCStateCode.empty : TOCStateCode.normal;
-    emit(TOCState(code: code, chapterList: chapterList));
+    emit(state.copyWith(code: code, chapterList: chapterList));
   }
 }
 
 class TOCState extends Equatable {
   final TOCStateCode code;
+  final BookObject bookObject;
   final List<ChapterObject> chapterList;
 
   const TOCState({
+    required this.bookObject,
     this.code = TOCStateCode.unload,
     this.chapterList = const [],
   });
@@ -34,6 +35,7 @@ class TOCState extends Equatable {
     List<ChapterObject>? chapterList,
   }) {
     return TOCState(
+      bookObject: bookObject,
       code: code ?? this.code,
       chapterList: chapterList ?? this.chapterList,
     );

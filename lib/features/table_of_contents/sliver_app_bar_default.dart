@@ -9,7 +9,7 @@ class TOCSliverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
+    TOCCubit tocCubit = BlocProvider.of<TOCCubit>(context);
     return SliverAppBar(
       leading: IconButton(
         onPressed: () {
@@ -29,11 +29,11 @@ class TOCSliverAppBar extends StatelessWidget {
               scrollControlDisabledMaxHeightRatio: 1.0,
               showDragHandle: true,
               builder: (BuildContext context) {
-                return EditBookPage(cubit.bookObject);
+                return EditBookPage(tocCubit.state.bookObject);
               },
             ).then((isSuccess) {
               if (isSuccess != null && isSuccess) {
-                cubit.refresh();
+                tocCubit.refresh();
               }
             });
           },

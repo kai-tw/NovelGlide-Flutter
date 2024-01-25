@@ -14,7 +14,7 @@ class TOCSliverBookName extends StatelessWidget {
         child: BlocBuilder<TOCCubit, TOCState>(
           builder: (BuildContext context, TOCState state) {
             return Text(
-              BlocProvider.of<TOCCubit>(context).bookObject.name,
+              state.bookObject.name,
               style: const TextStyle(fontSize: 24.0),
             );
           },
