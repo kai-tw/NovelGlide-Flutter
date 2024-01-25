@@ -16,6 +16,10 @@ class TOCSliverChapterList extends StatelessWidget {
         return SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
+              int chapterNumber = state.chapterList[index].ordinalNumber;
+              String chapterTitle = state.chapterList[index].title;
+              String localizedOrdinal = AppLocalizations.of(context)!.chapter_label(chapterNumber);
+
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: TextButton(
@@ -26,7 +30,7 @@ class TOCSliverChapterList extends StatelessWidget {
                     foregroundColor: Theme.of(context).colorScheme.onSurface,
                   ),
                   child: Text(
-                    '${AppLocalizations.of(context)!.chapter_label(state.chapterList[index].ordinalNumber)} - ${state.chapterList[index].title}',
+                    '$localizedOrdinal - $chapterTitle',
                     textAlign: TextAlign.left,
                   ),
                 ),
