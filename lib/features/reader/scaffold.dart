@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:novelglide/features/reader/nav_bar.dart';
 
 import '../../shared/chapter_object.dart';
-import 'bloc/reader_bloc.dart';
+import 'bloc/reader_cubit.dart';
 import 'sliver_app_bar.dart';
 import 'sliver_content.dart';
 import 'sliver_title.dart';

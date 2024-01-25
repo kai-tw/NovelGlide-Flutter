@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'settings_wrapper.dart';
-import 'bloc/reader_bloc.dart';
+import 'settings/wrapper.dart';
+import 'bloc/reader_cubit.dart';
 
 class ReaderNavBar extends StatelessWidget {
   const ReaderNavBar({super.key});

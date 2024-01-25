@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/reader_bloc.dart';
+import '../bloc/reader_cubit.dart';
 
 class ReaderSettingsSliverResetButton extends StatelessWidget {
   const ReaderSettingsSliverResetButton({super.key});
@@ -17,7 +17,7 @@ class ReaderSettingsSliverResetButton extends StatelessWidget {
           style: OutlinedButton.styleFrom(
             side: BorderSide(width: 2.0, color: Theme.of(context).colorScheme.primary),
           ),
-          onPressed: () => BlocProvider.of<ReaderCubit>(context).reset(),
+          onPressed: () => BlocProvider.of<ReaderCubit>(context).resetSettings(),
         ),
       ),
     );

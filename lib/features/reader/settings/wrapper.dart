@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/reader_bloc.dart';
-import 'settings_sliver_font_size.dart';
-import 'settings_sliver_line_height.dart';
-import 'settings_sliver_reset_button.dart';
+import '../bloc/reader_cubit.dart';
+import 'sliver_font_size.dart';
+import 'sliver_line_height.dart';
+import 'sliver_reset_button.dart';
 
 class ReaderSettingsBottomSheet extends StatelessWidget {
   const ReaderSettingsBottomSheet({super.key});

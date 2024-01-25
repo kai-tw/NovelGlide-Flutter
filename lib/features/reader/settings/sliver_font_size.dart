@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/reader_bloc.dart';
+import '../bloc/reader_cubit.dart';
+import '../bloc/reader_state.dart';
 
 class ReaderSettingsSliverFontSize extends StatelessWidget {
   const ReaderSettingsSliverFontSize({super.key});
@@ -23,8 +24,8 @@ class ReaderSettingsSliverFontSize extends StatelessWidget {
                   min: ReaderState.minFontSize,
                   max: ReaderState.maxFontSize,
                   value: state.fontSize,
-                  onChanged: (double value) => BlocProvider.of<ReaderCubit>(context).set(fontSize: value),
-                  onChangeEnd: (double value) => BlocProvider.of<ReaderCubit>(context).save(fontSize: value),
+                  onChanged: (double value) => BlocProvider.of<ReaderCubit>(context).setSettings(fontSize: value),
+                  onChangeEnd: (double value) => BlocProvider.of<ReaderCubit>(context).saveSettings(fontSize: value),
                 ),
               );
             },

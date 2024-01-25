@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/reader_bloc.dart';
+import '../bloc/reader_cubit.dart';
+import '../bloc/reader_state.dart';
 
 class ReaderSettingsSliverLineHeight extends StatelessWidget {
   const ReaderSettingsSliverLineHeight({super.key});
@@ -23,8 +24,8 @@ class ReaderSettingsSliverLineHeight extends StatelessWidget {
                   min: ReaderState.minLineHeight,
                   max: ReaderState.maxLineHeight,
                   value: state.lineHeight,
-                  onChanged: (double value) => BlocProvider.of<ReaderCubit>(context).set(lineHeight: value),
-                  onChangeEnd: (double value) => BlocProvider.of<ReaderCubit>(context).save(lineHeight: value),
+                  onChanged: (double value) => BlocProvider.of<ReaderCubit>(context).setSettings(lineHeight: value),
+                  onChangeEnd: (double value) => BlocProvider.of<ReaderCubit>(context).saveSettings(lineHeight: value),
                 ),
               );
             },

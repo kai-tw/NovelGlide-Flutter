@@ -1,6 +1,7 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+
+import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
   ReaderCubit() : super(const ReaderState());
@@ -13,11 +14,11 @@ class ReaderCubit extends Cubit<ReaderState> {
     emit(state.copyWith(fontSize: fontSize, lineHeight: lineHeight));
   }
 
-  void set({double? fontSize, double? lineHeight}) {
+  void setSettings({double? fontSize, double? lineHeight}) {
     emit(state.copyWith(fontSize: fontSize, lineHeight: lineHeight));
   }
 
-  void save({double? fontSize, double? lineHeight}) {
+  void saveSettings({double? fontSize, double? lineHeight}) {
     ReaderState newState = state.copyWith(fontSize: fontSize, lineHeight: lineHeight);
 
     Box readerSettings = Hive.box(name: 'reader_settings');
@@ -28,38 +29,10 @@ class ReaderCubit extends Cubit<ReaderState> {
     emit(newState);
   }
 
-  void reset() {
+  void resetSettings() {
     Box readerSettings = Hive.box(name: 'reader_settings');
     readerSettings.clear();
     readerSettings.close();
     emit(const ReaderState());
   }
-}
-
-class ReaderState extends Equatable {
-  final double fontSize;
-  static const double minFontSize = 12;
-  static const double maxFontSize = 32;
-
-  final double lineHeight;
-  static const double minLineHeight = 1;
-  static const double maxLineHeight = 3;
-
-  const ReaderState({
-    this.fontSize = 16,
-    this.lineHeight = 1.2,
-  });
-
-  ReaderState copyWith({
-    double? fontSize,
-    double? lineHeight,
-  }) {
-    return ReaderState(
-      fontSize: (fontSize ?? this.fontSize).clamp(minFontSize, maxFontSize),
-      lineHeight: (lineHeight ?? this.lineHeight).clamp(minLineHeight, maxLineHeight),
-    );
-  }
-
-  @override
-  List<Object?> get props => [fontSize, lineHeight];
 }

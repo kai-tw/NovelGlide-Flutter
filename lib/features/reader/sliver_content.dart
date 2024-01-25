@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/chapter_object.dart';
-import 'bloc/reader_bloc.dart';
+import 'bloc/reader_cubit.dart';
+import 'bloc/reader_state.dart';
 
 class ReaderSliverContent extends StatelessWidget {
   const ReaderSliverContent(this.chapterObject, {super.key});
