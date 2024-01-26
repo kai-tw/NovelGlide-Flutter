@@ -1,12 +1,13 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 enum FileProcessType {folder, file}
 
 class FileProcess {
-  // Paths initialization.
+  /// Paths initialization.
   static Future<String> get supportFolder async {
     final folder = await getApplicationSupportDirectory();
     return folder.path;
@@ -39,35 +40,19 @@ class FileProcess {
     final Directory folder = Directory(join(await supportFolder, 'Hive'));
     if (!folder.existsSync()) {
       folder.createSync(recursive: true);
+      _createHiveFolders(folder.path);
     }
     return folder.path;
   }
 
-  static Future<bool> renameBookBatch(Set<String> selectedBooks, String pattern, String newName) async {
-    if (pattern == '' || selectedBooks.isEmpty) {
-      return false;
-    }
-    if (pattern == newName) {
-      return true;
-    }
-    bool isSuccess = true;
-    for (String item in selectedBooks) {
-      final oldFolder = Directory(join(await libraryRoot, item));
-      final newFolder = Directory(join(await libraryRoot, item.replaceAll(pattern, newName)));
-      oldFolder.renameSync(newFolder.path);
-      isSuccess = isSuccess && newFolder.existsSync();
-    }
-    return isSuccess;
-  }
+  static List<String> hiveFolderList = ['reader'];
 
-  static Future<bool> deleteBook(String name) async {
-    if (name == '') {
-      return false;
+  static void _createHiveFolders(String rootPath) {
+    for (var item in hiveFolderList) {
+      Directory itemDir = Directory(join(rootPath, item));
+      if (!itemDir.existsSync()) {
+        itemDir.create();
+      }
     }
-    final folder = Directory(join(await libraryRoot, name));
-    if (folder.existsSync()) {
-      folder.deleteSync(recursive: true);
-    }
-    return !folder.existsSync();
   }
 }
