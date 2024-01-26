@@ -39,19 +39,7 @@ class FileProcess {
     final Directory folder = Directory(join(await supportFolder, 'Hive'));
     if (!folder.existsSync()) {
       folder.createSync(recursive: true);
-      _createHiveFolders(folder.path);
     }
     return folder.path;
-  }
-
-  static List<String> hiveFolderList = ['reader'];
-
-  static void _createHiveFolders(String rootPath) {
-    for (var item in hiveFolderList) {
-      Directory itemDir = Directory(join(rootPath, item));
-      if (!itemDir.existsSync()) {
-        itemDir.create();
-      }
-    }
   }
 }

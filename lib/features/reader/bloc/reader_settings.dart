@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
-import 'package:path/path.dart';
 
 class ReaderSettings extends Equatable {
   final double fontSize;
@@ -27,7 +26,7 @@ class ReaderSettings extends Equatable {
   }
 
   ReaderSettings load() {
-    Box readerSetting = Hive.box(name: join('reader', 'settings'));
+    Box readerSetting = Hive.box(name: 'reader_settings');
     double? fontSize = readerSetting.get('font_size');
     double? lineHeight = readerSetting.get('line_height');
     readerSetting.close();
@@ -35,7 +34,7 @@ class ReaderSettings extends Equatable {
   }
 
   void save() {
-    Box readerSettings = Hive.box(name: join('reader', 'settings'));
+    Box readerSettings = Hive.box(name: 'reader_settings');
     readerSettings.put('font_size', fontSize);
     readerSettings.put('line_height', lineHeight);
     readerSettings.close();
