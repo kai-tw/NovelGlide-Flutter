@@ -12,15 +12,26 @@ class ReaderScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<ReaderCubit>(context).load();
-    return const Scaffold(
-      body: CustomScrollView(slivers: [
-        ReaderSliverAppBar(),
-        ReaderSliverTitle(),
-        ReaderSliverContent(),
-      ]),
-      bottomNavigationBar: ReaderNavBar(),
+    ReaderCubit readerCubit = BlocProvider.of<ReaderCubit>(context)..initialize();
+    return Scaffold(
+      body: NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollNotification) {
+          if (scrollNotification is ScrollEndNotification) {
+            readerCubit.setMaxScrollY(scrollNotification.metrics.extentTotal);
+            readerCubit.setScrollY(scrollNotification.metrics.pixels);
+          }
+          return false;
+        },
+        child: CustomScrollView(
+          controller: readerCubit.scrollController,
+          slivers: const [
+            ReaderSliverAppBar(),
+            ReaderSliverTitle(),
+            ReaderSliverContent(),
+          ],
+        ),
+      ),
+      bottomNavigationBar: const ReaderNavBar(),
     );
   }
-
 }

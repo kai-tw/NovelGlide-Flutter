@@ -17,7 +17,7 @@ class ReaderSettingsBottomSheet extends StatelessWidget {
       maxChildSize: 0.5,
       expand: false,
       builder: (BuildContext context, ScrollController scrollController) {
-        BlocProvider.of<ReaderCubit>(context).loadSettings();
+        BlocProvider.of<ReaderCubit>(context).initialize();
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: CustomScrollView(

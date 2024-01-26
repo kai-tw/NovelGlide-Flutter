@@ -1,56 +1,54 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 
 import '../../../shared/book_object.dart';
 import '../../../shared/chapter_object.dart';
+import 'reader_settings.dart';
 import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
   final ChapterObject _chapterObject;
+  final ScrollController scrollController = ScrollController();
+  double _scrollY = 0.0;
+  double _maxScrollY = 0.0;
 
   ReaderCubit(this._chapterObject) : super(ReaderState(chapterObject: _chapterObject));
 
-  void load() async {
-    emit(_loadSettings().copyWith(
+  void initialize() async {
+    emit(state.copyWith(
       prevChapterObj: await _getPrevChapter(),
       nextChapterObj: await _getNextChapter(),
+      readerSettings: state.readerSettings.load(),
     ));
   }
 
-  ReaderState _loadSettings() {
-    Box readerSetting = Hive.box(name: 'reader_settings');
-    double? fontSize = readerSetting.get('font_size');
-    double? lineHeight = readerSetting.get('line_height');
-    readerSetting.close();
-    return state.copyWith(fontSize: fontSize, lineHeight: lineHeight);
-  }
-
-  void loadSettings() {
-    emit(_loadSettings());
-  }
-
+  /// Settings
   void setSettings({double? fontSize, double? lineHeight}) {
-    emit(state.copyWith(fontSize: fontSize, lineHeight: lineHeight));
+    ReaderSettings newSettings = state.readerSettings.copyWith(
+      fontSize: fontSize,
+      lineHeight: lineHeight,
+    );
+    emit(state.copyWith(readerSettings: newSettings));
   }
 
   void saveSettings({double? fontSize, double? lineHeight}) {
-    ReaderState newState = state.copyWith(fontSize: fontSize, lineHeight: lineHeight);
-
-    Box readerSettings = Hive.box(name: 'reader_settings');
-    readerSettings.put('font_size', newState.fontSize);
-    readerSettings.put('line_height', newState.lineHeight);
-    readerSettings.close();
-
-    emit(newState);
+    ReaderSettings newSettings = state.readerSettings.copyWith(
+      fontSize: fontSize,
+      lineHeight: lineHeight,
+    );
+    emit(state.copyWith(readerSettings: newSettings));
+    newSettings.save();
   }
 
   void resetSettings() {
-    Box readerSettings = Hive.box(name: 'reader_settings');
-    readerSettings.clear();
-    readerSettings.close();
-    emit(ReaderState(chapterObject: _chapterObject));
+    ReaderSettings newSettings = const ReaderSettings();
+    emit(state.copyWith(readerSettings: newSettings));
+    newSettings.save();
   }
 
+  /// Chapter
   Future<ChapterObject?> _getPrevChapter() async {
     final BookObject bookObject = _chapterObject.getBook();
     final List<ChapterObject> chapterList = await bookObject.getChapterList();
@@ -71,5 +69,19 @@ class ReaderCubit extends Cubit<ReaderState> {
       return chapterList[currentIndex + 1];
     }
     return null;
+  }
+
+  /// Bookmarks
+  void setScrollY(double value) {
+    _scrollY = value.clamp(0.0, _maxScrollY);
+    print(_scrollY);
+  }
+
+  void setMaxScrollY(double value) {
+    _maxScrollY = max(_maxScrollY, value);
+  }
+
+  void dispose() {
+    scrollController.dispose();
   }
 }
