@@ -40,6 +40,16 @@ class FileProcess {
     if (!folder.existsSync()) {
       folder.createSync(recursive: true);
     }
+    _createHiveFolders(folder.path);
     return folder.path;
+  }
+
+  static void _createHiveFolders(String rootPath) {
+    for (var item in ['bookmarks']) {
+      Directory itemDir = Directory(join(rootPath, item));
+      if (!itemDir.existsSync()) {
+        itemDir.create();
+      }
+    }
   }
 }
