@@ -2,8 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 
-import '../../../shared/file_process.dart';
-
 class ReaderSettings extends Equatable {
   final double fontSize;
   static const double minFontSize = 12;
