@@ -11,7 +11,6 @@ class ReaderSliverAppBar extends StatelessWidget {
     return SliverAppBar(
       leading: IconButton(
         onPressed: () {
-          BlocProvider.of<ReaderCubit>(context).saveBookmark();
           BlocProvider.of<ReaderCubit>(context).dispose();
           Navigator.of(context).pop();
         },

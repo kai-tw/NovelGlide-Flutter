@@ -24,7 +24,6 @@ class ReaderCubit extends Cubit<ReaderState> {
       nextChapterObj: await _getNextChapter(),
       readerSettings: state.readerSettings.load(),
     ));
-    Future.delayed(const Duration(milliseconds: 300)).then((_) => scrollToLastRead());
   }
 
   void scrollToLastRead() {

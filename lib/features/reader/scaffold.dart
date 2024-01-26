@@ -22,13 +22,17 @@ class ReaderScaffold extends StatelessWidget {
           }
           return false;
         },
-        child: CustomScrollView(
-          controller: readerCubit.scrollController,
-          slivers: const [
-            ReaderSliverAppBar(),
-            ReaderSliverTitle(),
-            ReaderSliverContent(),
-          ],
+        child: Stack(
+          children: [
+            CustomScrollView(
+              controller: readerCubit.scrollController,
+              slivers: const [
+                ReaderSliverAppBar(),
+                ReaderSliverTitle(),
+                ReaderSliverContent(),
+              ],
+            )
+          ]
         ),
       ),
       bottomNavigationBar: const ReaderNavBar(),
