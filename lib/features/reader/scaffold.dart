@@ -21,7 +21,7 @@ class ReaderScaffold extends StatelessWidget {
             double currentScrollY = scrollNotification.metrics.pixels.clamp(0.0, maxScrollHeight);
             readerCubit.area = currentScrollY * MediaQuery.of(context).size.width;
           }
-          return false;
+          return true;
         },
         child: CustomScrollView(
           controller: readerCubit.scrollController,
