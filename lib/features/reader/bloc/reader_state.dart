@@ -13,9 +13,8 @@ class ReaderState extends Equatable {
 
   final bool isBookmarkShow;
   final bool isAddBookmarkDisabled;
-  final BookmarkObject bookmarkObject;
 
-  ReaderState({
+  const ReaderState({
     required this.chapterObject,
     this.prevChapterObj,
     this.nextChapterObj,
@@ -23,8 +22,7 @@ class ReaderState extends Equatable {
     this.isBookmarkShow = false,
     ReaderSettings? readerSettings,
     BookmarkObject? bookmarkObject,
-  })  : readerSettings = readerSettings ?? const ReaderSettings(),
-        bookmarkObject = bookmarkObject ?? chapterObject.getBook().bookmarkObject;
+  })  : readerSettings = readerSettings ?? const ReaderSettings();
 
   ReaderState copyWith({
     ChapterObject? prevChapterObj,
@@ -41,7 +39,6 @@ class ReaderState extends Equatable {
       readerSettings: readerSettings ?? this.readerSettings,
       isBookmarkShow: isBookmarkShow ?? this.isBookmarkShow,
       isAddBookmarkDisabled: isAddBookmarkDisabled ?? this.isAddBookmarkDisabled,
-      bookmarkObject: bookmarkObject ?? this.bookmarkObject,
     );
   }
 
@@ -52,6 +49,5 @@ class ReaderState extends Equatable {
         readerSettings,
         isBookmarkShow,
         isAddBookmarkDisabled,
-        bookmarkObject,
       ];
 }

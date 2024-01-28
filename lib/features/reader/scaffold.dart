@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/reader_cubit.dart';
-import 'bloc/reader_state.dart';
 import 'nav_bar.dart';
 import 'sliver_app_bar.dart';
 import 'sliver_content.dart';

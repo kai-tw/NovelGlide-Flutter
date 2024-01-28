@@ -30,7 +30,6 @@ class BookmarkObject extends Equatable {
       area: area,
       savedTime: savedTime,
     );
-    print(bookmarkObject);
     return bookmarkObject;
   }
 
