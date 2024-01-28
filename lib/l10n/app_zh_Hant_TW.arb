@@ -11,6 +11,8 @@
   "close": "關閉",
   "processing": "處理中...",
   "preview": "預覽",
+  "yes": "是",
+  "no": "否",
   "reset_settings": "重置設定",
   "add_successful": "新增成功",
   "add_failed": "新增失敗",
@@ -49,5 +51,7 @@
         "example": "1"
       }
     }
-  }
+  },
+
+  "continue_reading": "從上次閱讀的進度繼續嗎？"
 }

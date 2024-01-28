@@ -11,6 +11,8 @@
   "close": "Close",
   "processing": "Processing...",
   "preview": "Preview",
+  "yes": "Yes",
+  "no": "No",
   "reset_settings": "Reset settings",
   "add_successful": "Add successfully.",
   "add_failed": "Add failed.",
@@ -49,5 +51,7 @@
         "example": "1"
       }
     }
-  }
+  },
+
+  "continue_reading": "Do you want to start from last reading?"
 }

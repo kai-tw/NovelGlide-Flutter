@@ -21,6 +21,11 @@ class ReaderCubit extends Cubit<ReaderState> {
     ));
   }
 
+  void scrollToLastRead() {
+    double deviceWidth = MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).size.width;
+    scrollController.jumpTo(area / deviceWidth);
+  }
+
   /// Settings
   void setSettings({double? fontSize, double? lineHeight}) {
     ReaderSettings newSettings = state.readerSettings.copyWith(

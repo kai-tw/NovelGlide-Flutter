@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc/reader_cubit.dart';
 import 'nav_bar.dart';
@@ -33,6 +34,27 @@ class ReaderScaffold extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: const ReaderNavBar(),
+    );
+  }
+
+  AlertDialog _continueReadingDialog(BuildContext context) {
+    ReaderCubit readerCubit = BlocProvider.of<ReaderCubit>(context);
+    return AlertDialog(
+      icon: const Icon(Icons.question_mark_rounded),
+      content: Text(AppLocalizations.of(context)!.continue_reading),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(AppLocalizations.of(context)!.no),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+            readerCubit.scrollToLastRead();
+          },
+          child: Text(AppLocalizations.of(context)!.yes),
+        ),
+      ],
     );
   }
 }
