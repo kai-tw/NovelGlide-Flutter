@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/reader_cubit.dart';
+import 'bloc/reader_state.dart';
 import 'nav_bar.dart';
 import 'sliver_app_bar.dart';
 import 'sliver_content.dart';
@@ -17,22 +18,19 @@ class ReaderScaffold extends StatelessWidget {
       body: NotificationListener<ScrollNotification>(
         onNotification: (ScrollNotification scrollNotification) {
           if (scrollNotification is ScrollEndNotification) {
-            readerCubit.setMaxScrollY(scrollNotification.metrics.extentTotal);
-            readerCubit.setScrollY(scrollNotification.metrics.pixels);
+            double maxScrollHeight = scrollNotification.metrics.extentTotal;
+            double currentScrollY = scrollNotification.metrics.pixels.clamp(0.0, maxScrollHeight);
+            readerCubit.area = currentScrollY * MediaQuery.of(context).size.width;
           }
           return false;
         },
-        child: Stack(
-          children: [
-            CustomScrollView(
-              controller: readerCubit.scrollController,
-              slivers: const [
-                ReaderSliverAppBar(),
-                ReaderSliverTitle(),
-                ReaderSliverContent(),
-              ],
-            )
-          ]
+        child: CustomScrollView(
+          controller: readerCubit.scrollController,
+          slivers: const [
+            ReaderSliverAppBar(),
+            ReaderSliverTitle(),
+            ReaderSliverContent(),
+          ],
         ),
       ),
       bottomNavigationBar: const ReaderNavBar(),

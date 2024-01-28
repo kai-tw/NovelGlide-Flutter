@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 
+import 'bookmark_object.dart';
 import 'chapter_object.dart';
 import 'file_process.dart';
 import 'verify_utility.dart';
@@ -13,13 +14,17 @@ class BookObject {
   String name = '';
   File? coverFile;
   FileImage? _coverImage;
+  BookmarkObject bookmarkObject;
 
-  BookObject({this.name = '', this.coverFile}) : _coverImage = coverFile != null ? FileImage(coverFile) : null;
+  BookObject({this.name = '', this.coverFile})
+      : _coverImage = coverFile != null ? FileImage(coverFile) : null,
+        bookmarkObject = BookmarkObject.load(name);
 
   BookObject.fromPath(String path) : this(name: basename(path), coverFile: File(join(path, 'cover.jpg')));
 
   BookObject.fromObject(BookObject bookObject) : this(name: bookObject.name, coverFile: bookObject.coverFile);
 
+  /// File process
   Future<bool> create() async {
     if (!VerifyUtility.isFolderNameValid(name)) {
       return false;
@@ -85,6 +90,7 @@ class BookObject {
     return false;
   }
 
+  /// Cover of this book
   Widget getCover() {
     if (coverFile != null && coverFile!.existsSync()) {
       return Image(
@@ -103,6 +109,7 @@ class BookObject {
     }
   }
 
+  /// Chapters
   Future<List<ChapterObject>> getChapterList() async {
     List<ChapterObject> chapterList = [];
 
@@ -146,5 +153,10 @@ class BookObject {
     }
 
     return entries;
+  }
+
+  /// Bookmark
+  void saveBookmark() {
+    bookmarkObject.save(name);
   }
 }

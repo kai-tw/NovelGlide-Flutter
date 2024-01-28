@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../shared/bookmark_object.dart';
 import '../../../shared/chapter_object.dart';
 import 'reader_settings.dart';
 
@@ -7,32 +8,50 @@ class ReaderState extends Equatable {
   final ChapterObject chapterObject;
   final ChapterObject? prevChapterObj;
   final ChapterObject? nextChapterObj;
-  final ReaderSettings readerSettings;
-  final bool addBookmarkState;
 
-  const ReaderState({
+  final ReaderSettings readerSettings;
+
+  final bool isBookmarkShow;
+  final bool isAddBookmarkDisabled;
+  final BookmarkObject bookmarkObject;
+
+  ReaderState({
     required this.chapterObject,
     this.prevChapterObj,
     this.nextChapterObj,
+    this.isAddBookmarkDisabled = false,
+    this.isBookmarkShow = false,
     ReaderSettings? readerSettings,
-    this.addBookmarkState = false,
-  }) : readerSettings = readerSettings ?? const ReaderSettings();
+    BookmarkObject? bookmarkObject,
+  })  : readerSettings = readerSettings ?? const ReaderSettings(),
+        bookmarkObject = bookmarkObject ?? chapterObject.getBook().bookmarkObject;
 
   ReaderState copyWith({
     ChapterObject? prevChapterObj,
     ChapterObject? nextChapterObj,
     ReaderSettings? readerSettings,
-    bool? addBookmarkState,
+    bool? isBookmarkShow,
+    bool? isAddBookmarkDisabled,
+    BookmarkObject? bookmarkObject,
   }) {
     return ReaderState(
       chapterObject: chapterObject,
       prevChapterObj: prevChapterObj ?? this.prevChapterObj,
       nextChapterObj: nextChapterObj ?? this.nextChapterObj,
       readerSettings: readerSettings ?? this.readerSettings,
-      addBookmarkState: addBookmarkState ?? this.addBookmarkState,
+      isBookmarkShow: isBookmarkShow ?? this.isBookmarkShow,
+      isAddBookmarkDisabled: isAddBookmarkDisabled ?? this.isAddBookmarkDisabled,
+      bookmarkObject: bookmarkObject ?? this.bookmarkObject,
     );
   }
 
   @override
-  List<Object?> get props => [prevChapterObj, nextChapterObj, readerSettings, addBookmarkState];
+  List<Object?> get props => [
+        prevChapterObj,
+        nextChapterObj,
+        readerSettings,
+        isBookmarkShow,
+        isAddBookmarkDisabled,
+        bookmarkObject,
+      ];
 }

@@ -13,9 +13,9 @@ class ReaderNavAddBookmarkButton extends StatelessWidget {
     return BlocBuilder<ReaderCubit, ReaderState>(
       builder: (BuildContext context, ReaderState state) {
         return IconButton(
-          icon: Icon(state.addBookmarkState ? Icons.bookmark_added_rounded : Icons.bookmark_add_rounded),
+          icon: Icon(state.isAddBookmarkDisabled ? Icons.bookmark_added_rounded : Icons.bookmark_add_rounded),
           disabledColor: Colors.green,
-          onPressed: state.addBookmarkState ? null : () {
+          onPressed: state.isAddBookmarkDisabled ? null : () {
             readerCubit.saveBookmark();
           },
         );
