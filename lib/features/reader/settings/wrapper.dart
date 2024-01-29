@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/reader_cubit.dart';
-import 'sliver_font_size.dart';
-import 'sliver_line_height.dart';
-import 'sliver_reset_button.dart';
+import 'auto_save_switch.dart';
+import 'font_size_slider.dart';
+import 'line_height_slider.dart';
+import 'reset_button.dart';
+import 'sliver_divider.dart';
 
 class ReaderSettingsBottomSheet extends StatelessWidget {
   const ReaderSettingsBottomSheet({super.key});
@@ -14,20 +16,24 @@ class ReaderSettingsBottomSheet extends StatelessWidget {
     return DraggableScrollableSheet(
       initialChildSize: 0.5,
       minChildSize: 0.25,
-      maxChildSize: 0.5,
+      maxChildSize: 0.8,
       expand: false,
+      snap: true,
+      snapSizes: const [0.25, 0.5, 0.8],
       builder: (BuildContext context, ScrollController scrollController) {
         BlocProvider.of<ReaderCubit>(context).initialize();
         return Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: CustomScrollView(
             controller: scrollController,
             slivers: const [
-              ReaderSettingsSliverFontSize(),
+              ReaderSettingsFontSizeSlider(),
               SliverPadding(padding: EdgeInsets.only(bottom: 8.0)),
-              ReaderSettingsSliverLineHeight(),
+              ReaderSettingsLineHeightSlider(),
               SliverPadding(padding: EdgeInsets.only(bottom: 8.0)),
-              ReaderSettingsSliverResetButton(),
+              ReaderSettingsResetButton(),
+              ReaderSettingsDivider(),
+              ReaderSettingsAutoSaveSwitch(),
             ],
           ),
         );

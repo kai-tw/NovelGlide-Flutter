@@ -28,7 +28,6 @@ class ReaderState extends Equatable {
     ChapterObject? prevChapterObj,
     ChapterObject? nextChapterObj,
     ReaderSettings? readerSettings,
-    bool? isBookmarkShow,
     bool? isAddBookmarkDisabled,
     BookmarkObject? bookmarkObject,
   }) {

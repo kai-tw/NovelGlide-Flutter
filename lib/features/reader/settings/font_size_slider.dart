@@ -5,17 +5,18 @@ import '../bloc/reader_cubit.dart';
 import '../bloc/reader_settings.dart';
 import '../bloc/reader_state.dart';
 
-class ReaderSettingsSliverFontSize extends StatelessWidget {
-  const ReaderSettingsSliverFontSize({super.key});
+class ReaderSettingsFontSizeSlider extends StatelessWidget {
+  const ReaderSettingsFontSizeSlider({super.key});
 
   @override
   Widget build(BuildContext context) {
     final ReaderCubit readerCubit = BlocProvider.of<ReaderCubit>(context);
     return SliverToBoxAdapter(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            margin: const EdgeInsets.all(8.0),
+            margin: const EdgeInsets.only(right: 8.0),
             width: 32,
             child: Icon(
               Icons.format_size_rounded,
@@ -37,7 +38,7 @@ class ReaderSettingsSliverFontSize extends StatelessWidget {
             },
           ),
           Container(
-            margin: const EdgeInsets.all(8.0),
+            margin: const EdgeInsets.only(left: 8.0),
             width: 32,
             child: Icon(
               Icons.format_size_rounded,

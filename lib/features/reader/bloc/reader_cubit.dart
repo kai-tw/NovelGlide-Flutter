@@ -33,27 +33,21 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   /// Settings
-  void setSettings({double? fontSize, double? lineHeight}) {
+  ReaderSettings setSettings({double? fontSize, double? lineHeight}) {
     ReaderSettings newSettings = state.readerSettings.copyWith(
       fontSize: fontSize,
       lineHeight: lineHeight,
     );
     emit(state.copyWith(readerSettings: newSettings));
+    return newSettings;
   }
 
   void saveSettings({double? fontSize, double? lineHeight}) {
-    ReaderSettings newSettings = state.readerSettings.copyWith(
-      fontSize: fontSize,
-      lineHeight: lineHeight,
-    );
-    emit(state.copyWith(readerSettings: newSettings));
-    newSettings.save();
+    setSettings(fontSize: fontSize, lineHeight: lineHeight).save();
   }
 
   void resetSettings() {
-    ReaderSettings newSettings = const ReaderSettings();
-    emit(state.copyWith(readerSettings: newSettings));
-    newSettings.save();
+    emit(state.copyWith(readerSettings: const ReaderSettings()..save()));
   }
 
   /// Chapter
