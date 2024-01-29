@@ -15,11 +15,13 @@ class ReaderSliverContent extends StatelessWidget {
         return SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
+              double fontSize = state.readerSettings.fontSize;
+              double lineHeight = state.readerSettings.lineHeight;
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 24.0),
+                padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: fontSize),
                 child: Text(
                   contentLines[index],
-                  style: TextStyle(fontSize: state.readerSettings.fontSize, height: state.readerSettings.lineHeight),
+                  style: TextStyle(fontSize: fontSize, height: lineHeight),
                 ),
               );
             },

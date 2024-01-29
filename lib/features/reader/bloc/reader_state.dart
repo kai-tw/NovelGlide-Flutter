@@ -11,6 +11,7 @@ class ReaderState extends Equatable {
 
   final ReaderSettings readerSettings;
 
+  final bool isJumpToBookmarkDisabled;
   final bool isAddBookmarkDisabled;
 
   const ReaderState({
@@ -18,6 +19,7 @@ class ReaderState extends Equatable {
     this.prevChapterObj,
     this.nextChapterObj,
     this.isAddBookmarkDisabled = false,
+    this.isJumpToBookmarkDisabled = false,
     ReaderSettings? readerSettings,
     BookmarkObject? bookmarkObject,
   })  : readerSettings = readerSettings ?? const ReaderSettings();

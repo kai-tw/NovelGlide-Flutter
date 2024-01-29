@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:novelglide/shared/bookmark_object.dart';
 
 import '../../../shared/book_object.dart';
 import '../../../shared/chapter_object.dart';
@@ -22,8 +23,13 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   void scrollToLastRead() {
+    BookmarkObject bookmarkObject = _chapterObject.getBook().bookmarkObject;
     double deviceWidth = MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).size.width;
-    scrollController.jumpTo(area / deviceWidth);
+    scrollController.animateTo(
+      bookmarkObject.area / deviceWidth,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   /// Settings
