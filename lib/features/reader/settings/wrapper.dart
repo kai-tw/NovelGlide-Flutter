@@ -30,10 +30,11 @@ class ReaderSettingsBottomSheet extends StatelessWidget {
               ReaderSettingsFontSizeSlider(),
               SliverPadding(padding: EdgeInsets.only(bottom: 8.0)),
               ReaderSettingsLineHeightSlider(),
-              SliverPadding(padding: EdgeInsets.only(bottom: 8.0)),
-              ReaderSettingsResetButton(),
               ReaderSettingsDivider(),
+              SliverPadding(padding: EdgeInsets.only(bottom: 8.0)),
               ReaderSettingsAutoSaveSwitch(),
+              ReaderSettingsDivider(),
+              ReaderSettingsResetButton(),
             ],
           ),
         );

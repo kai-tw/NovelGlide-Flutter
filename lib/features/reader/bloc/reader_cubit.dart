@@ -117,6 +117,16 @@ class ReaderCubit extends Cubit<ReaderState> {
     );
   }
 
+  // Trigger on the reset button was clicked in the setting page
+  void onClickedRstSettingsBtn() {
+    resetSettings();
+    emit(state.copyWith(buttonState: state.buttonState.copyWith(rstSettingsState: RdrBtnRstSettingsState.clicked)));
+    Future.delayed(const Duration(seconds: 1)).then(
+      (_) => emit(
+          state.copyWith(buttonState: state.buttonState.copyWith(rstSettingsState: RdrBtnRstSettingsState.normal))),
+    );
+  }
+
   /// Dispose
   void dispose() {
     scrollController.dispose();

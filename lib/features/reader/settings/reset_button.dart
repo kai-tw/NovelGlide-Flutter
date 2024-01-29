@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../bloc/reader_button_state.dart';
 import '../bloc/reader_cubit.dart';
 import '../bloc/reader_state.dart';
 
@@ -10,18 +11,42 @@ class ReaderSettingsResetButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ReaderCubit readerCubit = BlocProvider.of<ReaderCubit>(context);
+
     return SliverToBoxAdapter(
       child: Align(
         alignment: Alignment.centerRight,
         child: BlocBuilder<ReaderCubit, ReaderState>(
           builder: (BuildContext context, ReaderState state) {
+            IconData iconData = Icons.restart_alt_rounded;
+            String text = AppLocalizations.of(context)!.reader_settings_reset_button;
+            Color defaultColor = Theme.of(context).colorScheme.error;
+            void Function()? onPressed;
+
+            switch (state.buttonState.rstSettingsState) {
+              case RdrBtnRstSettingsState.normal:
+                onPressed = readerCubit.onClickedRstSettingsBtn;
+                break;
+              case RdrBtnRstSettingsState.clicked:
+                iconData = Icons.check_rounded;
+                text = AppLocalizations.of(context)!.reader_settings_reset_button_done;
+                defaultColor = Colors.green;
+                break;
+              case RdrBtnRstSettingsState.disabled:
+                break;
+            }
+
             return OutlinedButton.icon(
-              icon: const Icon(Icons.restart_alt_rounded),
-              label: Text(AppLocalizations.of(context)!.reader_settings_reset_button),
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(width: 1.0, color: Theme.of(context).colorScheme.primary),
+              icon: Icon(
+                iconData,
+                color: defaultColor,
               ),
-              onPressed: () => BlocProvider.of<ReaderCubit>(context).resetSettings(),
+              label: Text(text, style: TextStyle(color: defaultColor)),
+              style: OutlinedButton.styleFrom(
+                disabledForegroundColor: defaultColor,
+                side: BorderSide(width: 1.0, color: defaultColor),
+              ),
+              onPressed: onPressed,
             );
           },
         ),

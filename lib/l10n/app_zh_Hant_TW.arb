@@ -53,5 +53,6 @@
   },
 
   "reader_settings_reset_button": "重設設定",
+  "reader_settings_reset_button_done": "重設成功",
   "reader_settings_auto_save_switch": "自動插入書籤"
 }
