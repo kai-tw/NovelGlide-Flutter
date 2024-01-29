@@ -6,8 +6,10 @@ import '../bloc/reader_cubit.dart';
 import '../bloc/reader_state.dart';
 import '../wrapper.dart';
 
-class ReaderNavPrevChapterButton extends StatelessWidget {
-  const ReaderNavPrevChapterButton({super.key});
+/// The button that navigate to the previous chapter.
+/// Abbreviation reference: https://www.abbreviations.com/
+class RdrNavPrevChBtn extends StatelessWidget {
+  const RdrNavPrevChBtn({super.key});
 
   @override
   Widget build(BuildContext context) {

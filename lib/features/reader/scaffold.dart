@@ -19,7 +19,11 @@ class ReaderScaffold extends StatelessWidget {
           if (scrollNotification is ScrollEndNotification) {
             double maxScrollHeight = scrollNotification.metrics.extentTotal;
             double currentScrollY = scrollNotification.metrics.pixels.clamp(0.0, maxScrollHeight);
-            readerCubit.area = currentScrollY * MediaQuery.of(context).size.width;
+            readerCubit.currentArea = currentScrollY * MediaQuery.of(context).size.width;
+
+            if (readerCubit.state.readerSettings.autoSave) {
+              readerCubit.saveBookmark();
+            }
           }
           return true;
         },

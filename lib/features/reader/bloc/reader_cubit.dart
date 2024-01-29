@@ -4,46 +4,48 @@ import 'package:novelglide/shared/bookmark_object.dart';
 
 import '../../../shared/book_object.dart';
 import '../../../shared/chapter_object.dart';
+import 'reader_button_state.dart';
 import 'reader_settings.dart';
 import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
   final ChapterObject _chapterObject;
   final ScrollController scrollController = ScrollController();
-  double area = 0.0;
+  double currentArea = 0.0;
 
   ReaderCubit(this._chapterObject) : super(ReaderState(chapterObject: _chapterObject));
 
   void initialize() async {
+    final BookmarkObject bookmarkObject = _chapterObject.getBook().bookmarkObject;
+    final ReaderSettings readerSettings = state.readerSettings.load();
+    final bool isJumpAvailable = bookmarkObject.isValid && bookmarkObject.chapterNumber == _chapterObject.ordinalNumber;
     emit(state.copyWith(
       prevChapterObj: await _getPrevChapter(),
       nextChapterObj: await _getNextChapter(),
-      readerSettings: state.readerSettings.load(),
+      readerSettings: readerSettings,
+      buttonState: state.buttonState.copyWith(
+        addBkmState: readerSettings.autoSave ? RdrBtnAddBkmState.disabled : RdrBtnAddBkmState.normal,
+        jmpToBkmState: isJumpAvailable ? RdrBtnJmpToBkmState.normal : RdrBtnJmpToBkmState.disabled,
+      ),
     ));
   }
 
-  void scrollToLastRead() {
-    BookmarkObject bookmarkObject = _chapterObject.getBook().bookmarkObject;
-    double deviceWidth = MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).size.width;
-    scrollController.animateTo(
-      bookmarkObject.area / deviceWidth,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
-
   /// Settings
-  ReaderSettings setSettings({double? fontSize, double? lineHeight}) {
-    ReaderSettings newSettings = state.readerSettings.copyWith(
+  ReaderSettings setSettings({double? fontSize, double? lineHeight, bool? autoSave}) {
+    final ReaderSettings newSettings = state.readerSettings.copyWith(
       fontSize: fontSize,
       lineHeight: lineHeight,
+      autoSave: autoSave,
     );
-    emit(state.copyWith(readerSettings: newSettings));
+    final RdrBtnState buttonState = state.buttonState.copyWith(
+      addBkmState: newSettings.autoSave ? RdrBtnAddBkmState.disabled : RdrBtnAddBkmState.normal,
+    );
+    emit(state.copyWith(readerSettings: newSettings, buttonState: buttonState));
     return newSettings;
   }
 
-  void saveSettings({double? fontSize, double? lineHeight}) {
-    setSettings(fontSize: fontSize, lineHeight: lineHeight).save();
+  void saveSettings({double? fontSize, double? lineHeight, bool? autoSave}) {
+    setSettings(fontSize: fontSize, lineHeight: lineHeight, autoSave: autoSave).save();
   }
 
   void resetSettings() {
@@ -75,15 +77,44 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// Bookmarks
   void saveBookmark() {
-    emit(state.copyWith(isAddBookmarkDisabled: true));
     final BookObject bookObject = _chapterObject.getBook();
     bookObject.bookmarkObject = bookObject.bookmarkObject.copyWith(
       chapterNumber: _chapterObject.ordinalNumber,
-      area: area,
+      area: currentArea,
       savedTime: DateTime.now(),
     );
     bookObject.saveBookmark();
-    Future.delayed(const Duration(seconds: 1)).then((_) => emit(state.copyWith(isAddBookmarkDisabled: false)));
+  }
+
+  /// Buttons
+  void onClickedAddBkmBtn() {
+    final isAutoSave = state.readerSettings.autoSave;
+    final RdrBtnAddBkmState defaultAddBkmState = isAutoSave ? RdrBtnAddBkmState.disabled : RdrBtnAddBkmState.normal;
+
+    emit(state.copyWith(buttonState: state.buttonState.copyWith(addBkmState: RdrBtnAddBkmState.clicked)));
+
+    saveBookmark();
+
+    // Activate the jump to bookmark button.
+    if (state.buttonState.jmpToBkmState == RdrBtnJmpToBkmState.disabled) {
+      emit(state.copyWith(buttonState: state.buttonState.copyWith(jmpToBkmState: RdrBtnJmpToBkmState.normal)));
+    }
+
+    // Restore the state of the add bookmark button to default state.
+    Future.delayed(const Duration(seconds: 1)).then(
+      (_) => emit(state.copyWith(buttonState: state.buttonState.copyWith(addBkmState: defaultAddBkmState))),
+    );
+  }
+
+  // Trigger on the jump to bookmark button clicked.
+  void onClickedJmpToBkmBtn() {
+    BookmarkObject bookmarkObject = _chapterObject.getBook().bookmarkObject;
+    double deviceWidth = MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).size.width;
+    scrollController.animateTo(
+      bookmarkObject.area / deviceWidth,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   /// Dispose

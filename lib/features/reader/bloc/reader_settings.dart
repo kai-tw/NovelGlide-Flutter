@@ -32,11 +32,11 @@ class ReaderSettings extends Equatable {
 
   ReaderSettings load() {
     Box readerSetting = Hive.box(name: 'reader_settings');
-    final double? fontSize = readerSetting.get('font_size');
-    final double? lineHeight = readerSetting.get('line_height');
-    final bool? autoSave = readerSetting.get('auto_save');
+    final double fontSize = readerSetting.get('font_size', defaultValue: 16.0);
+    final double lineHeight = readerSetting.get('line_height', defaultValue: 1.2);
+    final bool autoSave = readerSetting.get('auto_save', defaultValue: false);
     readerSetting.close();
-    return copyWith(fontSize: fontSize, lineHeight: lineHeight, autoSave: autoSave);
+    return ReaderSettings(fontSize: fontSize, lineHeight: lineHeight, autoSave: autoSave);
   }
 
   void save() {

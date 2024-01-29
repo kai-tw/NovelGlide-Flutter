@@ -5,10 +5,10 @@ import '../bloc/reader_button_state.dart';
 import '../bloc/reader_cubit.dart';
 import '../bloc/reader_state.dart';
 
-/// The button that save current scrolling position to the bookmark.
+/// The button that jump to the bookmark.
 /// Abbreviation reference: https://www.abbreviations.com/
-class RdrNavAddBkmBtn extends StatelessWidget {
-  const RdrNavAddBkmBtn({super.key});
+class RdrNavJmpToBkmBtn extends StatelessWidget {
+  const RdrNavJmpToBkmBtn({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,25 +16,18 @@ class RdrNavAddBkmBtn extends StatelessWidget {
 
     return BlocBuilder<ReaderCubit, ReaderState>(
       builder: (BuildContext context, ReaderState state) {
-        IconData iconData = Icons.bookmark_add_rounded;
-        Color? disabledColor;
         void Function()? onPressed;
 
-        switch (state.buttonState.addBkmState) {
-          case RdrBtnAddBkmState.normal:
-            onPressed = readerCubit.onClickedAddBkmBtn;
+        switch (state.buttonState.jmpToBkmState) {
+          case RdrBtnJmpToBkmState.normal:
+            onPressed = readerCubit.onClickedJmpToBkmBtn;
             break;
-          case RdrBtnAddBkmState.clicked:
-            iconData = Icons.bookmark_added_rounded;
-            disabledColor = Colors.green;
-            break;
-          case RdrBtnAddBkmState.disabled:
+          case RdrBtnJmpToBkmState.disabled:
+            onPressed = null;
         }
-
         return IconButton(
-          icon: Icon(iconData),
-          disabledColor: disabledColor,
           onPressed: onPressed,
+          icon: const Icon(Icons.bookmark_rounded),
         );
       },
     );

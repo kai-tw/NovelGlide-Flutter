@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../shared/bookmark_object.dart';
 import '../../../shared/chapter_object.dart';
+import 'reader_button_state.dart';
 import 'reader_settings.dart';
 
 class ReaderState extends Equatable {
@@ -10,25 +11,23 @@ class ReaderState extends Equatable {
   final ChapterObject? nextChapterObj;
 
   final ReaderSettings readerSettings;
-
-  final bool isJumpToBookmarkDisabled;
-  final bool isAddBookmarkDisabled;
+  final RdrBtnState buttonState;
 
   const ReaderState({
     required this.chapterObject,
     this.prevChapterObj,
     this.nextChapterObj,
-    this.isAddBookmarkDisabled = false,
-    this.isJumpToBookmarkDisabled = false,
     ReaderSettings? readerSettings,
+    RdrBtnState? buttonState,
     BookmarkObject? bookmarkObject,
-  })  : readerSettings = readerSettings ?? const ReaderSettings();
+  })  : readerSettings = readerSettings ?? const ReaderSettings(),
+        buttonState = buttonState ?? const RdrBtnState();
 
   ReaderState copyWith({
     ChapterObject? prevChapterObj,
     ChapterObject? nextChapterObj,
     ReaderSettings? readerSettings,
-    bool? isAddBookmarkDisabled,
+    RdrBtnState? buttonState,
     BookmarkObject? bookmarkObject,
   }) {
     return ReaderState(
@@ -36,7 +35,7 @@ class ReaderState extends Equatable {
       prevChapterObj: prevChapterObj ?? this.prevChapterObj,
       nextChapterObj: nextChapterObj ?? this.nextChapterObj,
       readerSettings: readerSettings ?? this.readerSettings,
-      isAddBookmarkDisabled: isAddBookmarkDisabled ?? this.isAddBookmarkDisabled,
+      buttonState: buttonState ?? this.buttonState,
     );
   }
 
@@ -45,6 +44,6 @@ class ReaderState extends Equatable {
         prevChapterObj,
         nextChapterObj,
         readerSettings,
-        isAddBookmarkDisabled,
+        buttonState,
       ];
 }

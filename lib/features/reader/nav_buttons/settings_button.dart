@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/reader_cubit.dart';
 import '../settings/wrapper.dart';
 
-class ReaderNavSettingsButton extends StatelessWidget {
-  const ReaderNavSettingsButton({super.key});
+/// The button that open the setting page.
+/// Abbreviation reference: https://www.abbreviations.com/
+class RdrNavSettingsBtn extends StatelessWidget {
+  const RdrNavSettingsBtn({super.key});
 
   @override
   Widget build(BuildContext context) {

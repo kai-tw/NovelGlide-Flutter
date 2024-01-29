@@ -13,7 +13,6 @@
   "preview": "Preview",
   "yes": "Yes",
   "no": "No",
-  "reset_settings": "Reset settings",
   "add_successful": "Add successfully.",
   "add_failed": "Add failed.",
   "edit_successful": "Edit successfully.",
@@ -53,5 +52,6 @@
     }
   },
 
-  "continue_reading": "Do you want to start from last reading?"
+  "reader_settings_reset_button": "Reset settings",
+  "reader_settings_auto_save_switch": "Auto add a bookmark"
 }

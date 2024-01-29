@@ -18,7 +18,7 @@ class ReaderSliverContent extends StatelessWidget {
               double fontSize = state.readerSettings.fontSize;
               double lineHeight = state.readerSettings.lineHeight;
               return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: fontSize),
+                padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: fontSize * lineHeight),
                 child: Text(
                   contentLines[index],
                   style: TextStyle(fontSize: fontSize, height: lineHeight),

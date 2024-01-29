@@ -17,9 +17,9 @@ class ReaderSettingsResetButton extends StatelessWidget {
           builder: (BuildContext context, ReaderState state) {
             return OutlinedButton.icon(
               icon: const Icon(Icons.restart_alt_rounded),
-              label: Text(AppLocalizations.of(context)!.reset_settings),
+              label: Text(AppLocalizations.of(context)!.reader_settings_reset_button),
               style: OutlinedButton.styleFrom(
-                side: BorderSide(width: 2.0, color: Theme.of(context).colorScheme.primary),
+                side: BorderSide(width: 1.0, color: Theme.of(context).colorScheme.primary),
               ),
               onPressed: () => BlocProvider.of<ReaderCubit>(context).resetSettings(),
             );

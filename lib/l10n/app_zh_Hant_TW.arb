@@ -13,7 +13,6 @@
   "preview": "預覽",
   "yes": "是",
   "no": "否",
-  "reset_settings": "重置設定",
   "add_successful": "新增成功",
   "add_failed": "新增失敗",
   "edit_successful": "編輯成功",
@@ -53,5 +52,6 @@
     }
   },
 
-  "continue_reading": "從上次閱讀的進度繼續嗎？"
+  "reader_settings_reset_button": "重設設定",
+  "reader_settings_auto_save_switch": "自動插入書籤"
 }
