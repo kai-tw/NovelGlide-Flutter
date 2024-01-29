@@ -31,7 +31,6 @@ class ReaderSettingsBottomSheet extends StatelessWidget {
               SliverPadding(padding: EdgeInsets.only(bottom: 8.0)),
               ReaderSettingsLineHeightSlider(),
               ReaderSettingsDivider(),
-              SliverPadding(padding: EdgeInsets.only(bottom: 8.0)),
               ReaderSettingsAutoSaveSwitch(),
               ReaderSettingsDivider(),
               ReaderSettingsResetButton(),
