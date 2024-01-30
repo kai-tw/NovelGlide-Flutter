@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 
-import 'bookmark_object.dart';
 import 'chapter_object.dart';
 import 'file_process.dart';
 import 'verify_utility.dart';
@@ -14,11 +13,9 @@ class BookObject {
   String name = '';
   File? coverFile;
   FileImage? _coverImage;
-  BookmarkObject bookmarkObject;
 
   BookObject({this.name = '', this.coverFile})
-      : _coverImage = coverFile != null ? FileImage(coverFile) : null,
-        bookmarkObject = BookmarkObject.load(name);
+      : _coverImage = coverFile != null ? FileImage(coverFile) : null;
 
   BookObject.fromPath(String path) : this(name: basename(path), coverFile: File(join(path, 'cover.jpg')));
 
@@ -153,10 +150,5 @@ class BookObject {
     }
 
     return entries;
-  }
-
-  /// Bookmark
-  void saveBookmark() {
-    bookmarkObject.save(name);
   }
 }

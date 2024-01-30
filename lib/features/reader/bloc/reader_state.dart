@@ -10,30 +10,33 @@ class ReaderState extends Equatable {
   final ChapterObject? prevChapterObj;
   final ChapterObject? nextChapterObj;
 
+  final BookmarkObject bookmarkObject;
   final ReaderSettings readerSettings;
   final RdrBtnState buttonState;
 
-  const ReaderState({
+  ReaderState({
     required this.chapterObject,
     this.prevChapterObj,
     this.nextChapterObj,
+    BookmarkObject? bookmarkObject,
     ReaderSettings? readerSettings,
     RdrBtnState? buttonState,
-    BookmarkObject? bookmarkObject,
   })  : readerSettings = readerSettings ?? const ReaderSettings(),
-        buttonState = buttonState ?? const RdrBtnState();
+        buttonState = buttonState ?? const RdrBtnState(),
+        bookmarkObject = bookmarkObject ?? BookmarkObject();
 
   ReaderState copyWith({
     ChapterObject? prevChapterObj,
     ChapterObject? nextChapterObj,
+    BookmarkObject? bookmarkObject,
     ReaderSettings? readerSettings,
     RdrBtnState? buttonState,
-    BookmarkObject? bookmarkObject,
   }) {
     return ReaderState(
       chapterObject: chapterObject,
       prevChapterObj: prevChapterObj ?? this.prevChapterObj,
       nextChapterObj: nextChapterObj ?? this.nextChapterObj,
+      bookmarkObject: bookmarkObject ?? this.bookmarkObject,
       readerSettings: readerSettings ?? this.readerSettings,
       buttonState: buttonState ?? this.buttonState,
     );
@@ -43,6 +46,7 @@ class ReaderState extends Equatable {
   List<Object?> get props => [
         prevChapterObj,
         nextChapterObj,
+        bookmarkObject,
         readerSettings,
         buttonState,
       ];

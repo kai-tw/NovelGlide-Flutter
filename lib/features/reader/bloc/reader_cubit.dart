@@ -16,12 +16,13 @@ class ReaderCubit extends Cubit<ReaderState> {
   ReaderCubit(this._chapterObject) : super(ReaderState(chapterObject: _chapterObject));
 
   void initialize() async {
-    final BookmarkObject bookmarkObject = _chapterObject.getBook().bookmarkObject;
+    final BookmarkObject bookmarkObject = state.bookmarkObject.load(_chapterObject.getBook().name);
     final ReaderSettings readerSettings = state.readerSettings.load();
     final bool isJumpAvailable = bookmarkObject.isValid && bookmarkObject.chapterNumber == _chapterObject.ordinalNumber;
     emit(state.copyWith(
       prevChapterObj: await _getPrevChapter(),
       nextChapterObj: await _getNextChapter(),
+      bookmarkObject: bookmarkObject,
       readerSettings: readerSettings,
       buttonState: state.buttonState.copyWith(
         addBkmState: readerSettings.autoSave ? RdrBtnAddBkmState.disabled : RdrBtnAddBkmState.normal,
@@ -77,53 +78,66 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// Bookmarks
   void saveBookmark() {
-    final BookObject bookObject = _chapterObject.getBook();
-    bookObject.bookmarkObject = bookObject.bookmarkObject.copyWith(
+    final BookmarkObject bookmarkObject = BookmarkObject(
+      isValid: true,
       chapterNumber: _chapterObject.ordinalNumber,
       area: currentArea,
       savedTime: DateTime.now(),
     );
-    bookObject.saveBookmark();
+    bookmarkObject.save(_chapterObject.getBook().name);
+    emit(state.copyWith(bookmarkObject: bookmarkObject));
   }
 
   /// Buttons
+  void _emitButtonState(RdrBtnState buttonState) {
+    emit(state.copyWith(buttonState: buttonState));
+  }
+
   void onClickedAddBkmBtn() {
     final isAutoSave = state.readerSettings.autoSave;
     final RdrBtnAddBkmState defaultAddBkmState = isAutoSave ? RdrBtnAddBkmState.disabled : RdrBtnAddBkmState.normal;
 
-    emit(state.copyWith(buttonState: state.buttonState.copyWith(addBkmState: RdrBtnAddBkmState.clicked)));
+    if (!isAutoSave) {
+      _emitButtonState(state.buttonState.copyWith(addBkmState: RdrBtnAddBkmState.clicked));
 
-    saveBookmark();
+      saveBookmark();
 
-    // Activate the jump to bookmark button.
-    if (state.buttonState.jmpToBkmState == RdrBtnJmpToBkmState.disabled) {
-      emit(state.copyWith(buttonState: state.buttonState.copyWith(jmpToBkmState: RdrBtnJmpToBkmState.normal)));
+      // Activate the jump to bookmark button.
+      if (state.buttonState.jmpToBkmState == RdrBtnJmpToBkmState.disabled) {
+        _emitButtonState(state.buttonState.copyWith(jmpToBkmState: RdrBtnJmpToBkmState.normal));
+      }
+
+      // Restore the state of the add bookmark button to default state.
+      Future.delayed(const Duration(seconds: 1)).then(
+        (_) => _emitButtonState(state.buttonState.copyWith(addBkmState: defaultAddBkmState)),
+      );
+    } else {
+      _emitButtonState(state.buttonState.copyWith(addBkmState: RdrBtnAddBkmState.disabled));
     }
-
-    // Restore the state of the add bookmark button to default state.
-    Future.delayed(const Duration(seconds: 1)).then(
-      (_) => emit(state.copyWith(buttonState: state.buttonState.copyWith(addBkmState: defaultAddBkmState))),
-    );
   }
 
   // Trigger on the jump to bookmark button clicked.
   void onClickedJmpToBkmBtn() {
-    BookmarkObject bookmarkObject = _chapterObject.getBook().bookmarkObject;
-    double deviceWidth = MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).size.width;
-    scrollController.animateTo(
-      bookmarkObject.area / deviceWidth,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
+    BookmarkObject bookmarkObject = state.bookmarkObject;
+
+    if (bookmarkObject.chapterNumber == _chapterObject.ordinalNumber) {
+      double deviceWidth = MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).size.width;
+      scrollController.animateTo(
+        bookmarkObject.area / deviceWidth,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      _emitButtonState(state.buttonState.copyWith(jmpToBkmState: RdrBtnJmpToBkmState.disabled));
+    }
   }
 
   // Trigger on the reset button was clicked in the setting page
   void onClickedRstSettingsBtn() {
     resetSettings();
-    emit(state.copyWith(buttonState: state.buttonState.copyWith(rstSettingsState: RdrBtnRstSettingsState.clicked)));
+    _emitButtonState(state.buttonState.copyWith(rstSettingsState: RdrBtnRstSettingsState.clicked));
     Future.delayed(const Duration(seconds: 1)).then(
-      (_) => emit(
-          state.copyWith(buttonState: state.buttonState.copyWith(rstSettingsState: RdrBtnRstSettingsState.normal))),
+      (_) => _emitButtonState(state.buttonState.copyWith(rstSettingsState: RdrBtnRstSettingsState.normal)),
     );
   }
 

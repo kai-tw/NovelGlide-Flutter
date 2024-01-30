@@ -8,14 +8,14 @@ class BookmarkObject extends Equatable {
   final double area;
   final DateTime savedTime;
 
-  const BookmarkObject({
-    required this.isValid,
-    required this.chapterNumber,
-    required this.area,
-    required this.savedTime,
-  });
+  BookmarkObject({
+    this.isValid = false,
+    this.chapterNumber = 0,
+    this.area = 0,
+    DateTime? savedTime,
+  }) : savedTime = savedTime ?? DateTime.now();
 
-  static BookmarkObject load(String bookName) {
+  BookmarkObject load(String bookName) {
     Box bookmarkBox = Hive.box(name: join('bookmarks', bookName));
     final bool isValid = bookmarkBox.get('isValid', defaultValue: false);
     final int chapterNumber = bookmarkBox.get('chapterNumber', defaultValue: -1);
