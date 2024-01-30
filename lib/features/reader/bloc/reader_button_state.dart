@@ -27,6 +27,10 @@ class RdrBtnState extends Equatable {
     );
   }
 
+  bool isJmpToBkmDisabled() {
+    return jmpToBkmState == RdrBtnJmpToBkmState.disabled;
+  }
+
   @override
   List<Object?> get props => [
         addBkmState,
@@ -36,10 +40,10 @@ class RdrBtnState extends Equatable {
 }
 
 /// The state of the button that add a bookmark.
-enum RdrBtnAddBkmState { normal, disabled, clicked }
+enum RdrBtnAddBkmState { normal, disabled, done }
 
 /// The state of the button that jump to the bookmark.
 enum RdrBtnJmpToBkmState { normal, disabled }
 
 /// The state of the button that reset the settings.
-enum RdrBtnRstSettingsState { normal, disabled, clicked }
+enum RdrBtnRstSettingsState { normal, disabled, done }

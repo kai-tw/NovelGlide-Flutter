@@ -27,7 +27,7 @@ class ReaderSettingsResetButton extends StatelessWidget {
               case RdrBtnRstSettingsState.normal:
                 onPressed = readerCubit.onClickedRstSettingsBtn;
                 break;
-              case RdrBtnRstSettingsState.clicked:
+              case RdrBtnRstSettingsState.done:
                 iconData = Icons.check_rounded;
                 text = AppLocalizations.of(context)!.reader_settings_reset_button_done;
                 defaultColor = Colors.green;

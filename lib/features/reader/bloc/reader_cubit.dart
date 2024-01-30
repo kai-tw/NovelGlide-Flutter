@@ -83,14 +83,25 @@ class ReaderCubit extends Cubit<ReaderState> {
       chapterNumber: _chapterObject.ordinalNumber,
       area: currentArea,
       savedTime: DateTime.now(),
-    );
-    bookmarkObject.save(_chapterObject.getBook().name);
+    )..save(_chapterObject.getBook().name);
     emit(state.copyWith(bookmarkObject: bookmarkObject));
   }
 
   /// Buttons
-  void _emitButtonState(RdrBtnState buttonState) {
-    emit(state.copyWith(buttonState: buttonState));
+  void _emitButtonState({
+    RdrBtnAddBkmState? addBkmState,
+    RdrBtnJmpToBkmState? jmpToBkmState,
+    RdrBtnRstSettingsState? rstSettingsState,
+  }) {
+    emit(
+      state.copyWith(
+        buttonState: state.buttonState.copyWith(
+          addBkmState: addBkmState,
+          jmpToBkmState: jmpToBkmState,
+          rstSettingsState: rstSettingsState,
+        ),
+      ),
+    );
   }
 
   void onClickedAddBkmBtn() {
@@ -98,21 +109,21 @@ class ReaderCubit extends Cubit<ReaderState> {
     final RdrBtnAddBkmState defaultAddBkmState = isAutoSave ? RdrBtnAddBkmState.disabled : RdrBtnAddBkmState.normal;
 
     if (!isAutoSave) {
-      _emitButtonState(state.buttonState.copyWith(addBkmState: RdrBtnAddBkmState.clicked));
+      _emitButtonState(addBkmState: RdrBtnAddBkmState.disabled);
 
       saveBookmark();
 
-      // Activate the jump to bookmark button.
-      if (state.buttonState.jmpToBkmState == RdrBtnJmpToBkmState.disabled) {
-        _emitButtonState(state.buttonState.copyWith(jmpToBkmState: RdrBtnJmpToBkmState.normal));
-      }
+      _emitButtonState(
+        addBkmState: RdrBtnAddBkmState.done,
+        jmpToBkmState: RdrBtnJmpToBkmState.normal,
+      );
 
       // Restore the state of the add bookmark button to default state.
       Future.delayed(const Duration(seconds: 1)).then(
-        (_) => _emitButtonState(state.buttonState.copyWith(addBkmState: defaultAddBkmState)),
+        (_) => _emitButtonState(addBkmState: defaultAddBkmState),
       );
     } else {
-      _emitButtonState(state.buttonState.copyWith(addBkmState: RdrBtnAddBkmState.disabled));
+      _emitButtonState(addBkmState: RdrBtnAddBkmState.disabled);
     }
   }
 
@@ -128,16 +139,16 @@ class ReaderCubit extends Cubit<ReaderState> {
         curve: Curves.easeInOut,
       );
     } else {
-      _emitButtonState(state.buttonState.copyWith(jmpToBkmState: RdrBtnJmpToBkmState.disabled));
+      _emitButtonState(jmpToBkmState: RdrBtnJmpToBkmState.disabled);
     }
   }
 
   // Trigger on the reset button was clicked in the setting page
   void onClickedRstSettingsBtn() {
     resetSettings();
-    _emitButtonState(state.buttonState.copyWith(rstSettingsState: RdrBtnRstSettingsState.clicked));
+    _emitButtonState(rstSettingsState: RdrBtnRstSettingsState.done);
     Future.delayed(const Duration(seconds: 1)).then(
-      (_) => _emitButtonState(state.buttonState.copyWith(rstSettingsState: RdrBtnRstSettingsState.normal)),
+      (_) => _emitButtonState(rstSettingsState: RdrBtnRstSettingsState.normal),
     );
   }
 

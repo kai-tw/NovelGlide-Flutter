@@ -24,8 +24,8 @@ class RdrNavAddBkmBtn extends StatelessWidget {
           case RdrBtnAddBkmState.normal:
             onPressed = readerCubit.onClickedAddBkmBtn;
             break;
-          case RdrBtnAddBkmState.clicked:
-            iconData = Icons.bookmark_added_rounded;
+          case RdrBtnAddBkmState.done:
+            iconData = Icons.check_rounded;
             disabledColor = Colors.green;
             break;
           case RdrBtnAddBkmState.disabled:
