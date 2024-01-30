@@ -5,7 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 
 import 'features/homepage/scaffold.dart';
-import 'features/theme/theme.dart';
+import 'features/theme/light_theme.dart';
 import 'shared/file_process.dart';
 
 void main() async {
