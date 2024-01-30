@@ -1,3 +1,4 @@
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,21 +19,25 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'NovelGlide',
-        theme: lightThemeData(),
-        // darkTheme: darkThemeData(),
-        themeMode: ThemeMode.system,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en'),
-          Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
-        ],
-        home: const Homepage());
+    return ThemeProvider(
+        initTheme: lightThemeData(),
+        builder: (BuildContext context, ThemeData initTheme) {
+          return MaterialApp(
+              title: 'NovelGlide',
+              theme: initTheme,
+              // darkTheme: darkThemeData(),
+              themeMode: ThemeMode.system,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('en'),
+                Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
+              ],
+              home: const Homepage());
+        });
   }
 }
