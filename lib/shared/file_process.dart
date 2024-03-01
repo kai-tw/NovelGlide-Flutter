@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-enum FileProcessType {folder, file}
+import 'book_object.dart';
+import 'bookmark_object.dart';
+
+enum FileProcessType { folder, file }
 
 class FileProcess {
   /// Paths initialization.
@@ -51,5 +55,28 @@ class FileProcess {
         itemDir.create();
       }
     }
+  }
+
+  static Future<List<BookObject>> getBookList() async {
+    final Directory folder = Directory(await FileProcess.libraryRoot);
+    folder.createSync(recursive: true);
+    final List<Directory> entries = folder.listSync().whereType<Directory>().toList();
+    List<BookObject> list = entries.map((item) => BookObject.fromPath(item.path)).toList();
+    list.sort((BookObject a, BookObject b) {
+      return compareNatural(a.name, b.name);
+    });
+    return list;
+  }
+
+  static Future<List<BookmarkObject>> getBookmarkList() async {
+    final Directory folder = Directory(join(await FileProcess.hiveRoot, 'bookmarks'));
+    folder.createSync(recursive: true);
+    return folder
+        .listSync()
+        .whereType<File>()
+        .where((item) => extension(item.path) == '.isar')
+        .map((item) => BookmarkObject.load(basenameWithoutExtension(item.path)))
+        .where((item) => item.isValid)
+        .toList();
   }
 }

@@ -16,7 +16,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   ReaderCubit(this._chapterObject) : super(ReaderState(chapterObject: _chapterObject));
 
   void initialize() async {
-    final BookmarkObject bookmarkObject = state.bookmarkObject.load(_chapterObject.getBook().name);
+    final BookmarkObject bookmarkObject = BookmarkObject.load(_chapterObject.getBook().name);
     final ReaderSettings readerSettings = state.readerSettings.load();
     final bool isJumpAvailable = bookmarkObject.isValid && bookmarkObject.chapterNumber == _chapterObject.ordinalNumber;
     emit(state.copyWith(
