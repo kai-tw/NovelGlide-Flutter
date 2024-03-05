@@ -14,7 +14,6 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
 
     final List<BookmarkObject> bookmarkList = await FileProcess.getBookmarkList();
 
-    print(bookmarkList);
     emit(BookmarkListState(
       code: bookmarkList.isEmpty ? BookmarkListStateCode.empty : BookmarkListStateCode.normal,
       bookmarkList: bookmarkList,

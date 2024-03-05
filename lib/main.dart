@@ -19,25 +19,21 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeProvider(
-        initTheme: lightThemeData(),
-        builder: (BuildContext context, ThemeData initTheme) {
-          return MaterialApp(
-              title: 'NovelGlide',
-              theme: initTheme,
-              // darkTheme: darkThemeData(),
-              themeMode: ThemeMode.system,
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: const [
-                Locale('en'),
-                Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
-              ],
-              home: const Homepage());
-        });
+    return MaterialApp(
+        title: 'NovelGlide',
+        theme: lightThemeData(),
+        // darkTheme: darkThemeData(),
+        themeMode: ThemeMode.system,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en'),
+          Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
+        ],
+        home: const Homepage());
   }
 }

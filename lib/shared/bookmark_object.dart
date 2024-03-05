@@ -2,12 +2,15 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 
+import 'datetime_utility.dart';
+
 class BookmarkObject extends Equatable {
   final bool isValid;
   final String bookName;
   final int chapterNumber;
   final double area;
   final DateTime savedTime;
+  final int daysPassed;
 
   BookmarkObject({
     this.isValid = false,
@@ -15,6 +18,7 @@ class BookmarkObject extends Equatable {
     this.chapterNumber = 0,
     this.area = 0,
     DateTime? savedTime,
+    this.daysPassed = 0,
   }) : savedTime = savedTime ?? DateTime.now();
 
   static BookmarkObject load(String bookName) {
@@ -24,6 +28,7 @@ class BookmarkObject extends Equatable {
     final double area = bookmarkBox.get('area', defaultValue: 0.0);
     final DateTime savedTime =
         DateTime.parse(bookmarkBox.get('savedTime', defaultValue: DateTime.now().toIso8601String()));
+    final int daysPassed = DateTimeUtility.daysPassed(savedTime);
     bookmarkBox.close();
 
     return BookmarkObject(
@@ -32,6 +37,7 @@ class BookmarkObject extends Equatable {
       chapterNumber: chapterNumber,
       area: area,
       savedTime: savedTime,
+      daysPassed: daysPassed,
     );
   }
 
@@ -67,7 +73,7 @@ class BookmarkObject extends Equatable {
 
   @override
   String toString() {
-    return '{isValid: $isValid, chapterNumber: $chapterNumber, area: $area, savedTime: $savedTime}';
+    return '{ isValid: $isValid, bookName: $bookName, chapterNumber: $chapterNumber, area: $area, savedTime: $savedTime, daysPassed: $daysPassed }';
   }
 
   bool _verify() {

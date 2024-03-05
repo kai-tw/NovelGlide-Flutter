@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/bookmark_object.dart';
 import 'bloc/bookmark_list_bloc.dart';
+import 'sliver_list_item.dart';
 
 class BookmarkSliverList extends StatelessWidget {
   const BookmarkSliverList({super.key});
@@ -14,13 +15,7 @@ class BookmarkSliverList extends StatelessWidget {
         return SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
-              final BookmarkObject bookmarkObject = state.bookmarkList[index];
-
-              return Container(
-                margin: const EdgeInsets.all(16.0),
-                padding: const EdgeInsets.all(16.0),
-                child: Text(bookmarkObject.bookName),
-              );
+              return BookmarkSliverListItem(state.bookmarkList[index]);
             },
             childCount: state.bookmarkList.length,
           ),

@@ -42,13 +42,13 @@
   "input_field_blank": "不能空白",
 
   "chapter_label": "第 {number} 章",
-  "@chapter_label": {
-    "description": "Display Chapter %d",
-    "placeholders": {
-      "number": {
-        "type": "int",
-        "example": "1"
-      }
+
+  "last_read_days": "{days} 天前閱讀過",
+  "@last_read_days": {
+    "description": "Display %d days read before.",
+    "placeholder": {
+      "type": "int",
+      "example": "1"
     }
   },
 
