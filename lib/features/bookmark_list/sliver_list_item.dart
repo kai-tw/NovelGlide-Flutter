@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:intl/intl.dart';
 
 import '../../shared/bookmark_object.dart';
 
@@ -33,10 +32,7 @@ class BookmarkSliverListItem extends StatelessWidget {
           ],
         ),
         child: GestureDetector(
-          onTap: () {
-            // Navigate to reader.
-            print(_bookmarkObject);
-          },
+          onTap: _onTap,
           child: Row(
             children: [
               const Icon(Icons.bookmark_rounded),
@@ -75,5 +71,9 @@ class BookmarkSliverListItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onTap() {
+    print(_bookmarkObject);
   }
 }

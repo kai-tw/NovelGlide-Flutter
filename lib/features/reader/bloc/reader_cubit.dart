@@ -59,7 +59,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     final List<ChapterObject> chapterList = await bookObject.getChapterList();
     int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == _chapterObject.ordinalNumber);
 
-    if (currentIndex > 0) {
+    if (currentIndex > 1) {
       return chapterList[currentIndex - 1];
     }
     return null;
