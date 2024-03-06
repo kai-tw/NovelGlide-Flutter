@@ -1,23 +1,25 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../shared/bookmark_object.dart';
-import '../../../shared/chapter_object.dart';
 import 'reader_button_state.dart';
 import 'reader_settings.dart';
 
 class ReaderState extends Equatable {
-  final ChapterObject chapterObject;
-  final ChapterObject? prevChapterObj;
-  final ChapterObject? nextChapterObj;
-
+  final String bookName;
+  final int chapterNumber;
+  final int prevChapterNumber;
+  final int nextChapterNumber;
+  final List<String> contentLines;
   final BookmarkObject bookmarkObject;
   final ReaderSettings readerSettings;
   final RdrBtnState buttonState;
 
-  ReaderState({
-    required this.chapterObject,
-    this.prevChapterObj,
-    this.nextChapterObj,
+  ReaderState(
+    this.bookName,
+    this.chapterNumber, {
+    this.prevChapterNumber = -1,
+    this.nextChapterNumber = -1,
+    this.contentLines = const [],
     BookmarkObject? bookmarkObject,
     ReaderSettings? readerSettings,
     RdrBtnState? buttonState,
@@ -26,16 +28,20 @@ class ReaderState extends Equatable {
         bookmarkObject = bookmarkObject ?? BookmarkObject();
 
   ReaderState copyWith({
-    ChapterObject? prevChapterObj,
-    ChapterObject? nextChapterObj,
+    int? chapterNumber,
+    int? prevChapterNumber,
+    int? nextChapterNumber,
+    List<String>? contentLines,
     BookmarkObject? bookmarkObject,
     ReaderSettings? readerSettings,
     RdrBtnState? buttonState,
   }) {
     return ReaderState(
-      chapterObject: chapterObject,
-      prevChapterObj: prevChapterObj ?? this.prevChapterObj,
-      nextChapterObj: nextChapterObj ?? this.nextChapterObj,
+      bookName,
+      chapterNumber ?? this.chapterNumber,
+      prevChapterNumber: prevChapterNumber ?? this.prevChapterNumber,
+      nextChapterNumber: nextChapterNumber ?? this.nextChapterNumber,
+      contentLines: contentLines ?? this.contentLines,
       bookmarkObject: bookmarkObject ?? this.bookmarkObject,
       readerSettings: readerSettings ?? this.readerSettings,
       buttonState: buttonState ?? this.buttonState,
@@ -44,8 +50,11 @@ class ReaderState extends Equatable {
 
   @override
   List<Object?> get props => [
-        prevChapterObj,
-        nextChapterObj,
+        bookName,
+        chapterNumber,
+        prevChapterNumber,
+        nextChapterNumber,
+        contentLines,
         bookmarkObject,
         readerSettings,
         buttonState,

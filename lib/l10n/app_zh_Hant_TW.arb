@@ -43,14 +43,10 @@
 
   "chapter_label": "第 {number} 章",
 
-  "last_read_days": "{days} 天前閱讀過",
-  "@last_read_days": {
-    "description": "Display %d days read before.",
-    "placeholder": {
-      "type": "int",
-      "example": "1"
-    }
-  },
+  "last_save_days": "{part}儲存",
+  "last_save_days_today": "今天",
+  "last_save_days_yesterday": "昨天",
+  "last_save_days_others": "{days} 天前",
 
   "reader_settings_reset_button": "重設設定",
   "reader_settings_reset_button_done": "重設成功",

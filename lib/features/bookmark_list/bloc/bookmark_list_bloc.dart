@@ -13,11 +13,16 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
     emit(const BookmarkListState(code: BookmarkListStateCode.loading));
 
     final List<BookmarkObject> bookmarkList = await FileProcess.getBookmarkList();
+    bookmarkList.sort(_sortBySavedTime);
 
     emit(BookmarkListState(
       code: bookmarkList.isEmpty ? BookmarkListStateCode.empty : BookmarkListStateCode.normal,
       bookmarkList: bookmarkList,
     ));
+  }
+
+  int _sortBySavedTime(BookmarkObject a, BookmarkObject b) {
+    return b.savedTime.compareTo(a.savedTime);
   }
 }
 

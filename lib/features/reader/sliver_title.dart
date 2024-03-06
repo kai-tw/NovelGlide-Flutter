@@ -14,7 +14,7 @@ class ReaderSliverTitle extends StatelessWidget {
       child: BlocBuilder<ReaderCubit, ReaderState>(
         builder: (BuildContext context, ReaderState state) {
           return Text(
-            AppLocalizations.of(context)!.chapter_label(state.chapterObject.ordinalNumber),
+            AppLocalizations.of(context)!.chapter_label(state.chapterNumber),
             style: TextStyle(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 14.0,

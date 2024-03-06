@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../shared/chapter_object.dart';
 import 'bloc/reader_cubit.dart';
 import 'scaffold.dart';
 
 class ReaderWidget extends StatelessWidget {
-  const ReaderWidget(this.chapterObject, {super.key});
+  const ReaderWidget(this.bookName, this.chapterNumber, {super.key});
 
-  final ChapterObject chapterObject;
+  final String bookName;
+  final int chapterNumber;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ReaderCubit(chapterObject),
+      create: (_) => ReaderCubit(bookName, chapterNumber),
       child: const ReaderScaffold(),
     );
   }

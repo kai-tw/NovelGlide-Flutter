@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../shared/bookmark_object.dart';
+import '../reader/wrapper.dart';
+import 'bloc/bookmark_list_bloc.dart';
 
 class BookmarkSliverListItem extends StatelessWidget {
   const BookmarkSliverListItem(this._bookmarkObject, {super.key});
@@ -11,6 +14,25 @@ class BookmarkSliverListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
+    final String bookName = _bookmarkObject.bookName;
+    final int chapterNumber = _bookmarkObject.chapterNumber;
+    final int daysPassed = _bookmarkObject.daysPassed;
+    String savedTimeString = "";
+
+    switch (daysPassed) {
+      case 0:
+        savedTimeString = AppLocalizations.of(context)!.last_save_days_today;
+        break;
+      case 1:
+        savedTimeString = AppLocalizations.of(context)!.last_save_days_yesterday;
+        break;
+      default:
+        savedTimeString = AppLocalizations.of(context)!.last_save_days_others(daysPassed);
+    }
+
+    savedTimeString = AppLocalizations.of(context)!.last_save_days(savedTimeString);
+
     return Container(
       margin: const EdgeInsets.all(16.0),
       decoration: const BoxDecoration(
@@ -32,7 +54,11 @@ class BookmarkSliverListItem extends StatelessWidget {
           ],
         ),
         child: GestureDetector(
-          onTap: _onTap,
+          onTap: () {
+            Navigator.of(context).push(_navigateToReader(bookName, chapterNumber)).then((_) {
+              cubit.refresh();
+            });
+          },
           child: Row(
             children: [
               const Icon(Icons.bookmark_rounded),
@@ -45,19 +71,19 @@ class BookmarkSliverListItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _bookmarkObject.bookName,
+                        bookName,
                         style: const TextStyle(
                           fontSize: 20.0,
                         ),
                       ),
                       Text(
-                        AppLocalizations.of(context)!.chapter_label(_bookmarkObject.chapterNumber),
+                        AppLocalizations.of(context)!.chapter_label(chapterNumber),
                         style: const TextStyle(
                           fontSize: 14.0,
                         ),
                       ),
                       Text(
-                        AppLocalizations.of(context)!.last_read_days(_bookmarkObject.daysPassed),
+                        savedTimeString,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
                         ),
@@ -73,7 +99,30 @@ class BookmarkSliverListItem extends StatelessWidget {
     );
   }
 
-  void _onTap() {
-    print(_bookmarkObject);
+  Route _navigateToReader(String bookName, int chapterNumber) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => ReaderWidget(bookName, chapterNumber),
+      transitionDuration: const Duration(milliseconds: 300),
+      reverseTransitionDuration: const Duration(milliseconds: 300),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
+            CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeInOut,
+            ),
+          ),
+          child: ScaleTransition(
+            scale: Tween<double>(begin: 0.0, end: 1.0).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeInOut,
+              ),
+            ),
+            child: child,
+          ),
+        );
+      },
+    );
   }
 }

@@ -11,7 +11,7 @@ class ReaderSliverContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ReaderCubit, ReaderState>(
       builder: (BuildContext context, ReaderState state) {
-        List<String> contentLines = state.chapterObject.getLines();
+        List<String> contentLines = state.contentLines;
         return SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {

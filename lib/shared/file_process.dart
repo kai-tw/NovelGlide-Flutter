@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'book_object.dart';
 import 'bookmark_object.dart';
+import 'chapter_object.dart';
+import 'verify_utility.dart';
 
 enum FileProcessType { folder, file }
 
@@ -57,8 +60,10 @@ class FileProcess {
     }
   }
 
+  /// Books related.
+
   static Future<List<BookObject>> getBookList() async {
-    final Directory folder = Directory(await FileProcess.libraryRoot);
+    final Directory folder = Directory(await libraryRoot);
     folder.createSync(recursive: true);
     final List<Directory> entries = folder.listSync().whereType<Directory>().toList();
     List<BookObject> list = entries.map((item) => BookObject.fromPath(item.path)).toList();
@@ -68,8 +73,66 @@ class FileProcess {
     return list;
   }
 
+  static Future<BookObject?> getBookByName(String name) async {
+    final Directory folder = Directory(join(await libraryRoot, name));
+    if (folder.existsSync()) {
+      return BookObject.fromPath(folder.path);
+    }
+    return null;
+  }
+
+  /// Chapters related.
+
+  static Future<List<ChapterObject>> getChapterList(String bookName) async {
+    final Directory folder = Directory(join(await libraryRoot, bookName));
+    final List<ChapterObject> chapterList = [];
+    if (folder.existsSync()) {
+      List<String> entries = [];
+
+      if (VerifyUtility.isFolderNameValid(bookName)) {
+        final folder = Directory(join(await FileProcess.libraryRoot, bookName));
+        if (folder.existsSync()) {
+          RegExp regexp = RegExp(r'^\d+\.txt$');
+          entries = folder
+              .listSync()
+              .whereType<File>()
+              .where((item) => regexp.hasMatch(basename(item.path)) && lookupMimeType(item.path) == 'text/plain')
+              .map<String>((item) => item.path)
+              .toList();
+          entries.sort(compareNatural);
+        }
+      }
+
+      for (String item in entries) {
+        final File file = File(item);
+        final List<String> content = file.readAsLinesSync();
+        if (content.isNotEmpty) {
+          chapterList.add(ChapterObject(
+            bookName: bookName,
+            ordinalNumber: int.parse(basenameWithoutExtension(item)),
+            title: content[0],
+          ));
+        } else {
+          // If content is empty, delete it.
+          file.delete();
+        }
+      }
+    }
+    return chapterList;
+  }
+
+  static Future<List<String>> getChapterContent(String bookName, int chapterNumber) async {
+    final File file = File(join(await libraryRoot, bookName, "$chapterNumber.txt"));
+    if (!file.existsSync()) {
+      return [];
+    }
+    return file.readAsLinesSync().where((line) => line.isNotEmpty).toList();
+  }
+
+  /// Bookmarks related.
+
   static Future<List<BookmarkObject>> getBookmarkList() async {
-    final Directory folder = Directory(join(await FileProcess.hiveRoot, 'bookmarks'));
+    final Directory folder = Directory(join(await hiveRoot, 'bookmarks'));
     folder.createSync(recursive: true);
     return folder
         .listSync()

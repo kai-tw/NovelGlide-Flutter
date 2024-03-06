@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../shared/chapter_object.dart';
 import '../reader/wrapper.dart';
 import 'bloc/toc_bloc.dart';
 
@@ -23,7 +22,7 @@ class TOCSliverChapterList extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: TextButton(
-                  onPressed: () => Navigator.of(context).push(_navigateToReader(state.chapterList[index])),
+                  onPressed: () => Navigator.of(context).push(_navigateToReader(state.bookObject.name, chapterNumber)),
                   style: TextButton.styleFrom(
                     alignment: Alignment.centerLeft,
                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
@@ -43,9 +42,9 @@ class TOCSliverChapterList extends StatelessWidget {
     );
   }
 
-  Route _navigateToReader(ChapterObject chapterObject) {
+  Route _navigateToReader(String bookName, int chapterNumber) {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => ReaderWidget(chapterObject),
+      pageBuilder: (context, animation, secondaryAnimation) => ReaderWidget(bookName, chapterNumber),
       transitionDuration: const Duration(milliseconds: 300),
       reverseTransitionDuration: const Duration(milliseconds: 300),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {

@@ -17,30 +17,24 @@
   "add_failed": "Add failed.",
   "edit_successful": "Edit successfully.",
   "edit_failed": "Edit failed.",
-
   "confirm_title": "Are you sure?",
-
   "confirm_content_delete": "You will delete them forever.",
-
   "title_bookmarks": "Bookmarks",
   "title_settings": "Settings",
   "title_add_book": "Add a book",
   "title_edit_book": "Edit the book",
   "title_multiEdit_book": "Edit the books",
-
   "book_name": "Book name",
   "book_cover": "The cover of this book",
   "book_name_rule_title": "Book naming rule",
   "book_name_rule_content": "Accepted symbols: Blank and ",
   "book_name_same": "The book name is same as the original.",
   "book_exists": "The book already exists.",
-
   "select_image": "Select an image",
   "remove_image": "Remove the image",
   "input_optional": " (Optional)",
   "input_field_invalid": "It's invalid.",
   "input_field_blank": "It cannot be blank.",
-
   "chapter_label": "Chapter {number}",
   "@chapter_label": {
     "description": "Display Chapter %d",
@@ -51,16 +45,28 @@
       }
     }
   },
-
-  "last_read_days": "{days} days read before.",
-  "@last_read_days": {
-    "description": "Display %d days read before.",
+  "last_save_days": "Saved in {part}.",
+  "@last_save_days": {
+    "description": "Display %s days saved before.",
     "placeholder": {
-      "type": "int",
-      "example": "1"
+      "part": {
+        "type": "String",
+        "example": "last_save_days_today"
+      }
     }
   },
-
+  "last_save_days_today": "Today",
+  "last_save_days_yesterday": "Yesterday",
+  "last_save_days_others": "{days} days before",
+  "@last_save_days_others": {
+    "description": "Display %d days.",
+    "placeholder": {
+      "days": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
   "reader_settings_reset_button": "Reset settings",
   "reader_settings_reset_button_done": "Reset done",
   "reader_settings_auto_save_switch": "Auto add a bookmark"

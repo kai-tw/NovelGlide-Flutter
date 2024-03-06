@@ -6,7 +6,6 @@ import 'auto_save_switch.dart';
 import 'font_size_slider.dart';
 import 'line_height_slider.dart';
 import 'reset_button.dart';
-import 'theme_selector.dart';
 
 class ReaderSettingsBottomSheet extends StatelessWidget {
   const ReaderSettingsBottomSheet({super.key});
@@ -31,8 +30,6 @@ class ReaderSettingsBottomSheet extends StatelessWidget {
               SliverPadding(padding: EdgeInsets.only(bottom: 8.0)),
               ReaderSettingsLineHeightSlider(),
               SliverPadding(padding: EdgeInsets.only(bottom: 16.0)),
-              // ReaderSettingsThemeSelector(),
-              // SliverPadding(padding: EdgeInsets.only(bottom: 16.0)),
               ReaderSettingsAutoSaveSwitch(),
               SliverPadding(padding: EdgeInsets.only(bottom: 16.0)),
               ReaderSettingsResetButton(),

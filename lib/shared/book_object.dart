@@ -1,11 +1,8 @@
 import 'dart:io';
 
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 
-import 'chapter_object.dart';
 import 'file_process.dart';
 import 'verify_utility.dart';
 
@@ -104,51 +101,5 @@ class BookObject {
     if (_coverImage != null) {
       _coverImage!.evict();
     }
-  }
-
-  /// Chapters
-  Future<List<ChapterObject>> getChapterList() async {
-    List<ChapterObject> chapterList = [];
-
-    if (VerifyUtility.isFolderNameValid(name)) {
-      List<String> entries = await _getChapterFiles();
-      for (String item in entries) {
-        final File file = File(item);
-        final List<String> content = file.readAsLinesSync();
-        if (content.isNotEmpty) {
-          chapterList.add(ChapterObject(
-            ordinalNumber: int.parse(basenameWithoutExtension(item)),
-            title: content[0],
-            file: file,
-            bookObject: this,
-          ));
-        } else {
-          // If content is empty, delete it.
-          file.delete();
-        }
-      }
-    }
-
-    return chapterList;
-  }
-
-  Future<List<String>> _getChapterFiles() async {
-    List<String> entries = [];
-
-    if (VerifyUtility.isFolderNameValid(name)) {
-      final folder = Directory(join(await FileProcess.libraryRoot, name));
-      if (folder.existsSync()) {
-        RegExp regexp = RegExp(r'^\d+\.txt$');
-        entries = folder
-            .listSync()
-            .whereType<File>()
-            .where((item) => regexp.hasMatch(basename(item.path)) && lookupMimeType(item.path) == 'text/plain')
-            .map<String>((item) => item.path)
-            .toList();
-        entries.sort(compareNatural);
-      }
-    }
-
-    return entries;
   }
 }
