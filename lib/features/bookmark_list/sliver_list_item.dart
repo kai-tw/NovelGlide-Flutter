@@ -61,7 +61,10 @@ class BookmarkSliverListItem extends StatelessWidget {
           },
           child: Row(
             children: [
-              const Icon(Icons.bookmark_rounded),
+              Icon(
+                Icons.bookmark_rounded,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
               Expanded(
                 child: Container(
                   color: Theme.of(context).colorScheme.background,

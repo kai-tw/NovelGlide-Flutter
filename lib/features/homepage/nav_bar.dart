@@ -16,10 +16,37 @@ class HomepageNavBar extends StatelessWidget {
           indicatorColor: Colors.transparent,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
           backgroundColor: Theme.of(context).colorScheme.background,
-          destinations: const [
-            NavigationDestination(icon: Icon(Icons.shelves), label: ''),
-            NavigationDestination(icon: Icon(Icons.bookmark), label: ''),
-            NavigationDestination(icon: Icon(Icons.settings), label: ''),
+          destinations: [
+            NavigationDestination(
+                icon: Icon(
+                  Icons.shelves,
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+                selectedIcon: Icon(
+                  Icons.shelves,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+                label: ''),
+            NavigationDestination(
+                icon: Icon(
+                  Icons.bookmark,
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+                selectedIcon: Icon(
+                  Icons.bookmark,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+                label: ''),
+            NavigationDestination(
+                icon: Icon(
+                  Icons.settings,
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+                selectedIcon: Icon(
+                  Icons.settings,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+                label: ''),
           ],
           onDestinationSelected: (index) => _onDestinationSelected(context, state, index),
         );

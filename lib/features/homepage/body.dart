@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bookmark_list/scaffold.dart';
 import '../bookshelf/bookshelf.dart';
+import '../settings_page/settings_page.dart';
 import 'bloc/navigation_bloc.dart';
 
 class HomepageBody extends StatelessWidget {
@@ -18,7 +19,7 @@ class HomepageBody extends StatelessWidget {
           case NavigationItem.bookmark:
             return const BookmarkList();
           case NavigationItem.settings:
-            return const Bookshelf();
+            return const SettingsPage();
         }
       },
     );

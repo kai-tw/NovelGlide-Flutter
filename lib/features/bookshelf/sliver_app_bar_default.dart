@@ -7,6 +7,7 @@ class BookshelfSliverAppBarDefault extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      backgroundColor: Theme.of(context).colorScheme.background,
       leading: IconButton(
         onPressed: () {},
         icon: const Icon(Icons.person),
