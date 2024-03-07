@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../shared/book_object.dart';
-import 'bloc/form_bloc.dart';
+import 'bloc/add_book_form_bloc.dart';
 
 class AddBookSliverNameTextField extends StatelessWidget {
   const AddBookSliverNameTextField({super.key});
@@ -54,15 +54,15 @@ class AddBookSliverNameTextField extends StatelessWidget {
     );
   }
 
-  String? _nameStateCodeToMessage(BuildContext context, AddBookNameStateCode code) {
+  String? _nameStateCodeToMessage(BuildContext context, AddBookFormNameStateCode code) {
     switch (code) {
-      case AddBookNameStateCode.blank:
+      case AddBookFormNameStateCode.blank:
         return AppLocalizations.of(context)!.input_field_blank;
-      case AddBookNameStateCode.invalid:
+      case AddBookFormNameStateCode.invalid:
         return AppLocalizations.of(context)!.input_field_invalid;
-      case AddBookNameStateCode.exists:
+      case AddBookFormNameStateCode.exists:
         return AppLocalizations.of(context)!.book_exists;
-      case AddBookNameStateCode.valid:
+      case AddBookFormNameStateCode.valid:
         return null;
     }
   }

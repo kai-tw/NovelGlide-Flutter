@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'bloc/form_bloc.dart';
+import 'bloc/edit_book_form_bloc.dart';
 
 class EditBookSliverNameTextField extends StatelessWidget {
   const EditBookSliverNameTextField({super.key});

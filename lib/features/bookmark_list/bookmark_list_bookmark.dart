@@ -7,8 +7,8 @@ import '../../shared/bookmark_object.dart';
 import '../reader/wrapper.dart';
 import 'bloc/bookmark_list_bloc.dart';
 
-class BookmarkSliverListItem extends StatelessWidget {
-  const BookmarkSliverListItem(this._bookmarkObject, {super.key});
+class BookmarkListBookmark extends StatelessWidget {
+  const BookmarkListBookmark(this._bookmarkObject, {super.key});
 
   final BookmarkObject _bookmarkObject;
 

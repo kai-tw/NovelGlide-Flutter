@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import 'bloc/form_bloc.dart';
+import 'bloc/edit_book_form_bloc.dart';
 
 class EditBookSliverSubmitButton extends StatelessWidget {
   const EditBookSliverSubmitButton({super.key});

@@ -7,15 +7,14 @@ class BookshelfSliverAppBarDefault extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      backgroundColor: Theme.of(context).colorScheme.background,
       leading: IconButton(
         onPressed: () {},
         icon: const Icon(Icons.person),
       ),
-      title: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(AppLocalizations.of(context)!.app_name),
-      ),
+      title: Text(AppLocalizations.of(context)!.app_name),
+      centerTitle: false,
+      backgroundColor: Theme.of(context).colorScheme.background,
+      surfaceTintColor: Theme.of(context).colorScheme.background,
     );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class BookmarkSliverAppBar extends StatelessWidget {
-  const BookmarkSliverAppBar({super.key});
+class BookmarkListSliverAppBar extends StatelessWidget {
+  const BookmarkListSliverAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

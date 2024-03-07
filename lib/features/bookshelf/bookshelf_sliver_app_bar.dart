@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/bookshelf_bloc.dart';
-import 'sliver_app_bar_default.dart';
-import 'sliver_app_bar_selecting.dart';
+import 'bookshelf_sliver_app_bar_default.dart';
+import 'bookshelf_sliver_app_bar_selecting.dart';
 
 class BookshelfSliverAppBar extends StatelessWidget {
   const BookshelfSliverAppBar({super.key});

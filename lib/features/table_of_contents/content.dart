@@ -5,7 +5,7 @@ import '../../shared/book_object.dart';
 import '../../shared/sliver_list_empty.dart';
 import '../../shared/sliver_loading.dart';
 import 'bloc/toc_bloc.dart';
-import 'sliver_app_bar_default.dart';
+import 'sliver_app_bar.dart';
 import 'sliver_book_name.dart';
 import 'sliver_chapter_list.dart';
 import 'sliver_cover_banner.dart';

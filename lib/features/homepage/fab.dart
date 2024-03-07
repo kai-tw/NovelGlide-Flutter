@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:novelglide/features/add_book/scaffold.dart';
 
+import '../add_book/add_book_callee_add_button.dart';
 import '../bookshelf/bloc/bookshelf_bloc.dart';
 import 'bloc/navigation_bloc.dart';
 
@@ -10,6 +10,7 @@ class HomepageFab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
     return BlocBuilder<NavigationCubit, NavigationState>(
       builder: (context, state) {
         return AnimatedSlide(
@@ -18,21 +19,8 @@ class HomepageFab extends StatelessWidget {
           child: AnimatedOpacity(
             duration: const Duration(milliseconds: 200),
             opacity: state.showFab ? 1 : 0,
-            child: FloatingActionButton(
-              onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  scrollControlDisabledMaxHeightRatio: 1.0,
-                  showDragHandle: true,
-                  builder: (BuildContext context) {
-                    return AddBookPage();
-                  },
-                ).then((_) =>
-                    BlocProvider.of<BookshelfCubit>(context).refresh());
-              },
-              shape: const CircleBorder(),
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              child: Icon(Icons.add, color: Theme.of(context).colorScheme.onPrimary),
+            child: AddBookCalleeAddButton(
+              callback: (_) => cubit.refresh(),
             ),
           ),
         );

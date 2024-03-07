@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bookmark_list/scaffold.dart';
+import '../bookmark_list/bookmark_list.dart';
 import '../bookshelf/bookshelf.dart';
 import '../settings_page/settings_page.dart';
 import 'bloc/navigation_bloc.dart';

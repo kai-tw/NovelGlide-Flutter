@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/sliver_list_empty.dart';
 import '../../shared/sliver_loading.dart';
-import 'list_item.dart';
+import 'bookshelf_book.dart';
 import 'bloc/bookshelf_bloc.dart';
 
 class BookshelfSliverList extends StatelessWidget {
@@ -17,10 +17,13 @@ class BookshelfSliverList extends StatelessWidget {
           case BookshelfStateCode.unload:
             BlocProvider.of<BookshelfCubit>(context).refresh();
             return const CommonSliverListEmpty();
+
           case BookshelfStateCode.loading:
             return const CommonSliverLoading();
+
           case BookshelfStateCode.empty:
             return const CommonSliverListEmpty();
+
           case BookshelfStateCode.normal:
           case BookshelfStateCode.selecting:
             return SliverGrid(
@@ -30,7 +33,7 @@ class BookshelfSliverList extends StatelessWidget {
               ),
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  return BookshelfListItem(state.bookList[index]);
+                  return BookshelfBook(state.bookList[index]);
                 },
                 childCount: state.bookList.length,
               ),
