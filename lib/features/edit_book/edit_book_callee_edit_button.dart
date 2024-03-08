@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../shared/book_object.dart';
-import 'edit_book_bloc_provider_wrapper.dart';
 import 'edit_book_draggable_scrollable_sheet.dart';
 
 class EditBookCalleeEditButton extends StatelessWidget {
@@ -19,10 +18,7 @@ class EditBookCalleeEditButton extends StatelessWidget {
           scrollControlDisabledMaxHeightRatio: 1.0,
           showDragHandle: true,
           builder: (BuildContext context) {
-            return EditBookBlocProviderWrapper(
-              bookObject: bookObject,
-              child: EditBookDraggableScrollableSheet(bookObject: bookObject),
-            );
+            return EditBookDraggableScrollableSheet(bookObject: bookObject);
           },
         ).then((isSuccess) {
           if (isSuccess != null && isSuccess && onSuccess != null) {

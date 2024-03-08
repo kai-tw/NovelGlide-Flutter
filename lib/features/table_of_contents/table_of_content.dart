@@ -5,10 +5,10 @@ import '../../shared/book_object.dart';
 import '../../shared/sliver_list_empty.dart';
 import '../../shared/sliver_loading.dart';
 import 'bloc/toc_bloc.dart';
-import 'sliver_app_bar.dart';
-import 'sliver_book_name.dart';
-import 'sliver_chapter_list.dart';
-import 'sliver_cover_banner.dart';
+import 'toc_sliver_app_bar.dart';
+import 'toc_sliver_book_name.dart';
+import 'toc_sliver_chapter_list.dart';
+import 'toc_sliver_cover_banner.dart';
 
 class TableOfContents extends StatelessWidget {
   const TableOfContents(this.bookObject, {super.key});

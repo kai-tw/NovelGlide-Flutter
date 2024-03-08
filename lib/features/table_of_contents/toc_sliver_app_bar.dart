@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../common_components/common_back_button.dart';
 import '../edit_book/edit_book_callee_edit_button.dart';
-import '../edit_book/edit_book_scaffold.dart';
 import 'bloc/toc_bloc.dart';
 
 class TOCSliverAppBar extends StatelessWidget {

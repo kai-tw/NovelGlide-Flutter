@@ -20,7 +20,7 @@ class EditBookDraggableScrollableSheet extends StatelessWidget {
       builder: (BuildContext context, ScrollController controller) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: EditBookForm(controller: controller),
+          child: EditBookForm(bookObject: bookObject, controller: controller),
         );
       },
     );

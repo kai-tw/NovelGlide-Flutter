@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'add_book_bloc_provider_wrapper.dart';
 import 'add_book_form.dart';
 
 class AddBookDraggableScrollableSheet extends StatelessWidget {
@@ -18,9 +17,7 @@ class AddBookDraggableScrollableSheet extends StatelessWidget {
       builder: (BuildContext context, ScrollController controller) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: AddBookBlocProviderWrapper(
-            child: AddBookForm(controller: controller),
-          ),
+          child: AddBookForm(controller: controller),
         );
       },
     );

@@ -34,7 +34,10 @@ class BookmarkList extends StatelessWidget {
               sliverList.add(const BookmarkListSliverList());
           }
 
-          return CustomScrollView(slivers: sliverList);
+          return RefreshIndicator(
+            onRefresh: () async => cubit.refresh(),
+            child: CustomScrollView(slivers: sliverList),
+          );
         },
       ),
     );

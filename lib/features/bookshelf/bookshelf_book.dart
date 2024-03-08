@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/book_object.dart';
-import '../table_of_contents/content.dart';
+import '../table_of_contents/table_of_content.dart';
 import 'bloc/bookshelf_bloc.dart';
 import 'bookshelf_book_cover.dart';
 import 'bookshelf_book_title.dart';

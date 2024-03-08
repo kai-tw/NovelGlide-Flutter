@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/reader_cubit.dart';
-import 'nav_bar.dart';
-import 'sliver_app_bar.dart';
-import 'sliver_content.dart';
-import 'sliver_title.dart';
+import 'reader_nav_bar.dart';
+import 'reader_sliver_app_bar.dart';
+import 'reader_sliver_content.dart';
+import 'reader_sliver_title.dart';
 
 class ReaderScaffold extends StatelessWidget {
   const ReaderScaffold({super.key});

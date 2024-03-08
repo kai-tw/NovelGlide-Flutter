@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 
-import 'features/homepage/scaffold.dart';
+import 'features/homepage/homepage_scaffold.dart';
 import 'features/theme/dark_theme.dart';
 import 'features/theme/light_theme.dart';
 import 'shared/file_process.dart';

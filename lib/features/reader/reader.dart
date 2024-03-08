@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/reader_cubit.dart';
-import 'scaffold.dart';
+import 'reader_scaffold.dart';
 
 class ReaderWidget extends StatelessWidget {
   const ReaderWidget(this.bookName, this.chapterNumber, {super.key});

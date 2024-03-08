@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../shared/bookmark_object.dart';
-import '../reader/wrapper.dart';
+import '../reader/reader.dart';
 import 'bloc/bookmark_list_bloc.dart';
 
 class BookmarkListBookmark extends StatelessWidget {
