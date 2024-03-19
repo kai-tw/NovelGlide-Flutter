@@ -1,29 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../shared/book_object.dart';
+import '../common_components/common_draggable_scrollable_sheet.dart';
 import 'edit_book_form.dart';
 
-class EditBookDraggableScrollableSheet extends StatelessWidget {
-  const EditBookDraggableScrollableSheet({required this.bookObject, super.key});
-
-  final BookObject bookObject;
-
-  @override
-  Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      initialChildSize: 0.6,
-      minChildSize: 0.25,
-      maxChildSize: 1.0,
-      expand: false,
-      snap: true,
-      snapSizes: const [0.6],
-      builder: (BuildContext context, ScrollController controller) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: EditBookForm(bookObject: bookObject, controller: controller),
+class EditBookDraggableScrollableSheet extends CommonDraggableScrollableSheet {
+  EditBookDraggableScrollableSheet({
+    required BookObject bookObject,
+    super.key,
+  }) : super(
+          builder: (BuildContext context, ScrollController controller) {
+            return EditBookForm(bookObject: bookObject, controller: controller);
+          },
         );
-      },
-    );
-  }
-
 }

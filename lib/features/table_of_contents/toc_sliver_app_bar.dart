@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../add_chapter/add_chapter_callee_add_button.dart';
 import '../common_components/common_back_button.dart';
 import '../edit_book/edit_book_callee_edit_button.dart';
 import 'bloc/toc_bloc.dart';
@@ -16,10 +17,7 @@ class TOCSliverAppBar extends StatelessWidget {
       surfaceTintColor: Theme.of(context).colorScheme.background,
       leading: const CommonBackButton(),
       actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.add_rounded),
-        ),
+        const AddChapterCalleeAddButton(),
         EditBookCalleeEditButton(
           bookObject: tocCubit.state.bookObject,
           onSuccess: () => tocCubit.refresh(),

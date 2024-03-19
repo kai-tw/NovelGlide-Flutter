@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../shared/book_object.dart';
@@ -13,21 +15,15 @@ class EditBookCalleeEditButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          scrollControlDisabledMaxHeightRatio: 1.0,
-          showDragHandle: true,
-          builder: (BuildContext context) {
-            return EditBookDraggableScrollableSheet(bookObject: bookObject);
-          },
-        ).then((isSuccess) {
-          if (isSuccess != null && isSuccess && onSuccess != null) {
-            onSuccess!();
-          }
-        });
+        EditBookDraggableScrollableSheet(bookObject: bookObject).show(context).then(_onValue);
       },
       icon: const Icon(Icons.edit_rounded),
     );
   }
 
+  FutureOr<void> _onValue(dynamic isSuccess) {
+    if (isSuccess != null && isSuccess && onSuccess != null) {
+      onSuccess!();
+    }
+  }
 }

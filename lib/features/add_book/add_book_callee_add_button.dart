@@ -13,14 +13,7 @@ class AddBookCalleeAddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          scrollControlDisabledMaxHeightRatio: 1.0,
-          showDragHandle: true,
-          builder: (BuildContext context) {
-            return const AddBookDraggableScrollableSheet();
-          },
-        ).then(onValue);
+        const AddBookDraggableScrollableSheet().show(context).then(_onValue);
       },
       shape: const CircleBorder(),
       backgroundColor: Theme.of(context).colorScheme.primary,
@@ -28,7 +21,7 @@ class AddBookCalleeAddButton extends StatelessWidget {
     );
   }
 
-  FutureOr<void> onValue(dynamic retValue) {
+  FutureOr<void> _onValue(dynamic retValue) {
     if (callback != null) {
       callback!(retValue);
     }
