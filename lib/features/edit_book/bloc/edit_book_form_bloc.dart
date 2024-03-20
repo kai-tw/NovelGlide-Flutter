@@ -17,6 +17,10 @@ class EditBookFormCubit extends Cubit<EditBookFormState> {
       return EditBookNameStateCode.blank;
     }
 
+    if (name == oldData.name) {
+      return EditBookNameStateCode.same;
+    }
+
     if (!VerifyUtility.isFolderNameValid(name)) {
       return EditBookNameStateCode.invalid;
     }
