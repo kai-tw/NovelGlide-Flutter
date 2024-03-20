@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/bookshelf_bloc.dart';
-import 'bookshelf_sliver_app_bar_default.dart';
-import 'bookshelf_sliver_app_bar_selecting.dart';
+import 'bookshelf_app_bar_default.dart';
+import 'bookshelf_app_bar_selecting.dart';
 
-class BookshelfSliverAppBar extends StatelessWidget {
-  const BookshelfSliverAppBar({super.key});
+class BookshelfAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const BookshelfAppBar({super.key});
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +17,9 @@ class BookshelfSliverAppBar extends StatelessWidget {
       builder: (BuildContext context, BookshelfState state) {
         switch (state.code) {
           case BookshelfStateCode.selecting:
-            return const BookshelfSliverAppBarSelecting();
+            return const BookshelfAppBarSelecting();
           default:
-            return const BookshelfSliverAppBarDefault();
+            return const BookshelfAppBarDefault();
         }
       },
     );

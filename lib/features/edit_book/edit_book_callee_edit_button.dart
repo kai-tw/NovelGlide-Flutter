@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../shared/book_object.dart';
+import '../common_components/common_draggable_scrollable_sheet.dart';
 import 'edit_book_draggable_scrollable_sheet.dart';
 
 class EditBookCalleeEditButton extends StatelessWidget {
@@ -15,7 +16,12 @@ class EditBookCalleeEditButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        EditBookDraggableScrollableSheet(bookObject: bookObject).show(context).then(_onValue);
+        showModalBottomSheet(
+          context: context,
+          scrollControlDisabledMaxHeightRatio: CommonDraggableScrollableSheet.maxHeightRatio,
+          showDragHandle: CommonDraggableScrollableSheet.showDragHandle,
+          builder: (context) => EditBookDraggableScrollableSheet(bookObject: bookObject),
+        ).then(_onValue);
       },
       icon: const Icon(Icons.edit_rounded),
     );

@@ -12,7 +12,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
   void refresh() async {
     emit(const BookmarkListState(code: BookmarkListStateCode.loading));
 
-    final List<BookmarkObject> bookmarkList = await FileProcess.getBookmarkList();
+    final List<BookmarkObject> bookmarkList = FileProcess.getBookmarkList();
     bookmarkList.sort(_sortBySavedTime);
 
     emit(BookmarkListState(

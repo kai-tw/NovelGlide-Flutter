@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 class CommonDraggableScrollableSheet extends StatelessWidget {
@@ -7,6 +5,8 @@ class CommonDraggableScrollableSheet extends StatelessWidget {
 
   final double padding;
   final Widget Function(BuildContext context, ScrollController controller) builder;
+  static double maxHeightRatio = 1.0;
+  static bool showDragHandle = true;
 
   @override
   Widget build(BuildContext context) {
@@ -17,24 +17,13 @@ class CommonDraggableScrollableSheet extends StatelessWidget {
       expand: false,
       snap: true,
       snapSizes: const [0.6],
-      builder: (BuildContext context, ScrollController controller) {
-        return SizedBox(
-          width: double.infinity,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: padding),
-            child: builder(context, controller),
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> show(BuildContext context) async {
-    showModalBottomSheet(
-      context: context,
-      scrollControlDisabledMaxHeightRatio: 1.0,
-      showDragHandle: true,
-      builder: build,
+      builder: (context, controller) => SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: padding),
+          child: builder(context, controller),
+        ),
+      ),
     );
   }
 }

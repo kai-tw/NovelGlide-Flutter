@@ -6,25 +6,28 @@ import '../../../shared/verify_utility.dart';
 
 enum AddBookFormNameStateCode { valid, blank, invalid, exists }
 
-enum AddBookFormCoverStateCode { blank, valid }
-
 class AddBookFormCubit extends Cubit<AddBookFormState> {
   AddBookFormCubit() : super(const AddBookFormState());
 
   BookObject data = BookObject();
 
-  void nameVerify(String name) async {
-    data.name = name;
-    if (name == '') {
-      emit(const AddBookFormState());
-    } else if (!VerifyUtility.isFolderNameValid(name)) {
-      emit(const AddBookFormState(nameStateCode: AddBookFormNameStateCode.invalid));
-    } else if (await data.isExists()) {
-      emit(const AddBookFormState(nameStateCode: AddBookFormNameStateCode.exists));
-    } else {
-      // Name verification passed.
-      emit(state.copyWith(nameStateCode: AddBookFormNameStateCode.valid));
+  AddBookFormNameStateCode nameVerify(String? name) {
+    if (name == null || name == '') {
+      return AddBookFormNameStateCode.blank;
     }
+
+    if (!VerifyUtility.isFolderNameValid(name)) {
+      return AddBookFormNameStateCode.invalid;
+    }
+
+    final BookObject inputBookObject = BookObject.fromName(name);
+    if (inputBookObject.isExists()) {
+      return AddBookFormNameStateCode.exists;
+    }
+
+    // Name verification passed.
+    data.name = name;
+    return AddBookFormNameStateCode.valid;
   }
 
   Future<bool> submit() async {
@@ -33,20 +36,8 @@ class AddBookFormCubit extends Cubit<AddBookFormState> {
 }
 
 class AddBookFormState extends Equatable {
-  final AddBookFormNameStateCode nameStateCode;
-
-  const AddBookFormState({
-    this.nameStateCode = AddBookFormNameStateCode.blank,
-  });
-
-  AddBookFormState copyWith({
-    AddBookFormNameStateCode? nameStateCode,
-  }) {
-    return AddBookFormState(
-      nameStateCode: nameStateCode ?? this.nameStateCode,
-    );
-  }
+  const AddBookFormState();
 
   @override
-  List<Object?> get props => [nameStateCode];
+  List<Object?> get props => [];
 }

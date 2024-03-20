@@ -23,7 +23,7 @@ class EditBookFormCubit extends Cubit<EditBookFormState> {
       emit(state.copyWith(nameStateCode: EditBookNameStateCode.blank));
     } else if (!VerifyUtility.isFolderNameValid(name)) {
       emit(state.copyWith(nameStateCode: EditBookNameStateCode.invalid));
-    } else if (await state.formValue.isExists()) {
+    } else if (state.formValue.isExists()) {
       emit(state.copyWith(nameStateCode: EditBookNameStateCode.exists));
     } else {
       emit(state.copyWith(nameStateCode: EditBookNameStateCode.valid));
@@ -42,7 +42,7 @@ class EditBookFormCubit extends Cubit<EditBookFormState> {
   }
 
   Future<bool> submit() async {
-    return await data.rename(state.formValue);
+    return data.rename(state.formValue);
   }
 }
 

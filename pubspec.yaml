@@ -50,6 +50,7 @@ dependencies:
   isar_flutter_libs: ^4.0.0-dev.14
   animated_theme_switcher: ^2.0.10
   html: ^0.15.4
+  file_picker: ^6.2.0
 
 dev_dependencies:
   flutter_test:

@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../common_components/common_delete_confirm_dialog.dart';
 import 'bloc/bookshelf_bloc.dart';
 
-class BookshelfSliverAppBarSelecting extends StatelessWidget {
-  const BookshelfSliverAppBarSelecting({super.key});
+class BookshelfAppBarSelecting extends StatelessWidget {
+  const BookshelfAppBarSelecting({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class BookshelfSliverAppBarSelecting extends StatelessWidget {
     return BlocBuilder<BookshelfCubit, BookshelfState>(
       builder: (BuildContext context, BookshelfState state) {
         final bool isSelectedAll = state.selectedSet.length == state.bookList.length;
-        return SliverAppBar(
+        return AppBar(
           leading: IconButton(
             onPressed: () => _onPressedLeadingButton(cubit, isSelectedAll),
             icon: Icon(isSelectedAll ? Icons.check_box_rounded : Icons.indeterminate_check_box_rounded),
@@ -27,7 +27,6 @@ class BookshelfSliverAppBarSelecting extends StatelessWidget {
           ],
           backgroundColor: Theme.of(context).colorScheme.background,
           centerTitle: false,
-          pinned: true,
         );
       },
     );

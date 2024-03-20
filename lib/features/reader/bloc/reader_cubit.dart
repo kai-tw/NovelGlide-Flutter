@@ -24,7 +24,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       chapterNumber: _chapterNumber,
       prevChapterNumber: await _getPrevChapterNumber(),
       nextChapterNumber: await _getNextChapterNumber(),
-      contentLines: await FileProcess.getChapterContent(_bookName, _chapterNumber),
+      contentLines: FileProcess.getChapterContent(_bookName, _chapterNumber),
       bookmarkObject: bookmarkObject,
       readerSettings: readerSettings,
       buttonState: state.buttonState.copyWith(
@@ -64,7 +64,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// Chapter
   Future<int?> _getPrevChapterNumber() async {
-    final List<ChapterObject> chapterList = await FileProcess.getChapterList(_bookName);
+    final List<ChapterObject> chapterList = FileProcess.getChapterList(_bookName);
     int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == _chapterNumber);
 
     if (currentIndex > 0) {
@@ -74,7 +74,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   Future<int?> _getNextChapterNumber() async {
-    final List<ChapterObject> chapterList = await FileProcess.getChapterList(_bookName);
+    final List<ChapterObject> chapterList = FileProcess.getChapterList(_bookName);
     int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == _chapterNumber);
 
     if (0 <= currentIndex && currentIndex < chapterList.length - 1) {

@@ -15,15 +15,15 @@ class BookObject {
       : _coverImage = coverFile != null ? FileImage(coverFile) : null;
 
   BookObject.fromPath(String path) : this(name: basename(path), coverFile: File(join(path, 'cover.jpg')));
-
   BookObject.fromObject(BookObject bookObject) : this(name: bookObject.name, coverFile: bookObject.coverFile);
+  BookObject.fromName(String name) : this.fromPath(FileProcess.getBookPathByName(name));
 
   /// File process
   Future<bool> create() async {
     if (!VerifyUtility.isFolderNameValid(name)) {
       return false;
     }
-    final folder = Directory(join(await FileProcess.libraryRoot, name));
+    final folder = FileProcess.getBookDirectoryByName(name);
     if (folder.existsSync()) {
       return false;
     } else {
@@ -38,14 +38,14 @@ class BookObject {
     }
   }
 
-  Future<bool> rename(BookObject newObject) async {
+  bool rename(BookObject newObject) {
     if (!VerifyUtility.isFolderNameValid(newObject.name) || !VerifyUtility.isFolderNameValid(name)) {
       return false;
     }
 
     bool isSuccess = true;
-    final folder = Directory(join(await FileProcess.libraryRoot, name));
-    final newFolder = Directory(join(await FileProcess.libraryRoot, newObject.name));
+    final folder = FileProcess.getBookDirectoryByName(name);
+    final newFolder = FileProcess.getBookDirectoryByName(newObject.name);
 
     if (newObject.name != name) {
       folder.renameSync(newFolder.path);
@@ -65,9 +65,9 @@ class BookObject {
     return isSuccess;
   }
 
-  Future<bool> delete() async {
+  bool delete() {
     if (VerifyUtility.isFolderNameValid(name)) {
-      final folder = Directory(join(await FileProcess.libraryRoot, name));
+      final folder = FileProcess.getBookDirectoryByName(name);
       if (folder.existsSync()) {
         folder.delete(recursive: true);
         return !folder.existsSync();
@@ -76,12 +76,8 @@ class BookObject {
     return false;
   }
 
-  Future<bool> isExists() async {
-    if (VerifyUtility.isFolderNameValid(name)) {
-      final folder = Directory(join(await FileProcess.libraryRoot, name));
-      return folder.existsSync();
-    }
-    return false;
+  bool isExists() {
+    return VerifyUtility.isFolderNameValid(name) && FileProcess.getBookDirectoryByName(name).existsSync();
   }
 
   /// Cover of this book

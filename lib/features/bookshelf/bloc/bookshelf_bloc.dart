@@ -10,7 +10,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   BookshelfCubit() : super(const BookshelfState());
 
   void refresh() async {
-    List<BookObject> list = await FileProcess.getBookList();
+    List<BookObject> list = FileProcess.getBookList();
     BookshelfStateCode code = list.isEmpty ? BookshelfStateCode.empty : BookshelfStateCode.normal;
     emit(BookshelfState(code: code, bookList: list));
   }
@@ -42,7 +42,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   void deleteSelect() async {
     for (String book in state.selectedSet) {
       BookObject target = BookObject(name: book);
-      await target.delete();
+      target.delete();
     }
     refresh();
   }

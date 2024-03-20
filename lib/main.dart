@@ -6,11 +6,12 @@ import 'package:hive/hive.dart';
 import 'features/homepage/homepage_scaffold.dart';
 import 'features/theme/dark_theme.dart';
 import 'features/theme/light_theme.dart';
-import 'shared/file_process.dart';
+import 'shared/file_path.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Hive.defaultDirectory = await FileProcess.hiveRoot;
+  await filePath.init();
+  Hive.defaultDirectory = filePath.hiveRoot;
   runApp(const App());
 }
 

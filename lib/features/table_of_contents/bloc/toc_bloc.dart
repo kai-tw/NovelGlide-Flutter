@@ -14,7 +14,7 @@ class TOCCubit extends Cubit<TOCState> {
 
   void refresh() async {
     emit(state.copyWith(code: TOCStateCode.loading));
-    List<ChapterObject> chapterList = await FileProcess.getChapterList(_bookObject.name);
+    List<ChapterObject> chapterList = FileProcess.getChapterList(_bookObject.name);
     TOCStateCode code = chapterList.isEmpty ? TOCStateCode.empty : TOCStateCode.normal;
     emit(state.copyWith(code: code, chapterList: chapterList));
   }

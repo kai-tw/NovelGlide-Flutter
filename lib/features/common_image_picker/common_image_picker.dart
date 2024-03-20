@@ -20,26 +20,11 @@ class CommonImagePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => CommonImagePickerCubit(imageFile: imageFile),
-      child: BlocBuilder<CommonImagePickerCubit, CommonImagePickerState>(
-        builder: (BuildContext context, CommonImagePickerState pickerState) {
-          return FormField(
-            validator: (_) => _validator(pickerState.imageFile),
-            builder: (FormFieldState state) {
-              List<Widget> buttonList = [const CommonImagePickerSelectButton()];
-
-              if (pickerState.imageFile != null) {
-                buttonList.add(const CommonImagePickerDeleteButton());
-              }
-
-              return CommonImagePickerContent(
-                labelText: labelText,
-                buttonList: buttonList,
-                aspectRatio: aspectRatio,
-                imageFile: pickerState.imageFile,
-              );
-            },
-          );
-        },
+      child: CommonImagePickerContent(
+        labelText: labelText,
+        aspectRatio: aspectRatio,
+        imageFile: imageFile,
+        onSaved: onSaved,
       ),
     );
   }

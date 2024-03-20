@@ -3,55 +3,15 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'book_object.dart';
 import 'bookmark_object.dart';
 import 'chapter_object.dart';
+import 'file_path.dart';
 import 'verify_utility.dart';
 
-enum FileProcessType { folder, file }
-
 class FileProcess {
-  /// Paths initialization.
-  static Future<String> get supportFolder async {
-    final folder = await getApplicationSupportDirectory();
-    return folder.path;
-  }
-
-  static Future<String> get documentFolder async {
-    final folder = await getApplicationDocumentsDirectory();
-    return folder.path;
-  }
-
-  static Future<String> get cacheFolder async {
-    final folder = await getApplicationCacheDirectory();
-    return folder.path;
-  }
-
-  static Future<String> get tempFolder async {
-    final folder = await getTemporaryDirectory();
-    return folder.path;
-  }
-
-  static Future<String> get libraryRoot async {
-    final Directory folder = Directory(join(await supportFolder, 'Library'));
-    if (!folder.existsSync()) {
-      folder.createSync(recursive: true);
-    }
-    return folder.path;
-  }
-
-  static Future<String> get hiveRoot async {
-    final Directory folder = Directory(join(await supportFolder, 'Hive'));
-    if (!folder.existsSync()) {
-      folder.createSync(recursive: true);
-    }
-    _createHiveFolders(folder.path);
-    return folder.path;
-  }
-
-  static void _createHiveFolders(String rootPath) {
+  static void createHiveFolders(String rootPath) {
     for (var item in ['bookmarks']) {
       Directory itemDir = Directory(join(rootPath, item));
       if (!itemDir.existsSync()) {
@@ -61,9 +21,8 @@ class FileProcess {
   }
 
   /// Books related.
-
-  static Future<List<BookObject>> getBookList() async {
-    final Directory folder = Directory(await libraryRoot);
+  static List<BookObject> getBookList() {
+    final Directory folder = Directory(filePath.libraryRoot);
     folder.createSync(recursive: true);
     final List<Directory> entries = folder.listSync().whereType<Directory>().toList();
     List<BookObject> list = entries.map((item) => BookObject.fromPath(item.path)).toList();
@@ -73,24 +32,27 @@ class FileProcess {
     return list;
   }
 
-  static Future<BookObject?> getBookByName(String name) async {
-    final Directory folder = Directory(join(await libraryRoot, name));
-    if (folder.existsSync()) {
-      return BookObject.fromPath(folder.path);
-    }
-    return null;
+  static BookObject getBookByName(String name) {
+    return BookObject.fromPath(getBookPathByName(name));
+  }
+
+  static String getBookPathByName(String name) {
+    return join(filePath.libraryRoot, name);
+  }
+
+  static Directory getBookDirectoryByName(String name) {
+    return Directory(getBookPathByName(name));
   }
 
   /// Chapters related.
-
-  static Future<List<ChapterObject>> getChapterList(String bookName) async {
-    final Directory folder = Directory(join(await libraryRoot, bookName));
+  static List<ChapterObject> getChapterList(String bookName) {
+    final Directory folder = Directory(join(filePath.libraryRoot, bookName));
     final List<ChapterObject> chapterList = [];
     if (folder.existsSync()) {
       List<String> entries = [];
 
       if (VerifyUtility.isFolderNameValid(bookName)) {
-        final folder = Directory(join(await FileProcess.libraryRoot, bookName));
+        final folder = Directory(join(filePath.libraryRoot, bookName));
         if (folder.existsSync()) {
           RegExp regexp = RegExp(r'^\d+\.txt$');
           entries = folder
@@ -121,8 +83,8 @@ class FileProcess {
     return chapterList;
   }
 
-  static Future<List<String>> getChapterContent(String bookName, int chapterNumber) async {
-    final File file = File(join(await libraryRoot, bookName, "$chapterNumber.txt"));
+  static List<String> getChapterContent(String bookName, int chapterNumber) {
+    final File file = File(join(filePath.libraryRoot, bookName, "$chapterNumber.txt"));
     if (!file.existsSync()) {
       return [];
     }
@@ -130,9 +92,8 @@ class FileProcess {
   }
 
   /// Bookmarks related.
-
-  static Future<List<BookmarkObject>> getBookmarkList() async {
-    final Directory folder = Directory(join(await hiveRoot, 'bookmarks'));
+  static List<BookmarkObject> getBookmarkList() {
+    final Directory folder = Directory(join(filePath.hiveRoot, 'bookmarks'));
     folder.createSync(recursive: true);
     return folder
         .listSync()

@@ -11,18 +11,14 @@ class BookshelfSliverList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
+    cubit.refresh();
+
     return BlocBuilder<BookshelfCubit, BookshelfState>(
       builder: (BuildContext context, BookshelfState state) {
         switch (state.code) {
-          case BookshelfStateCode.unload:
-            BlocProvider.of<BookshelfCubit>(context).refresh();
-            return const CommonSliverListEmpty();
-
           case BookshelfStateCode.loading:
             return const CommonSliverLoading();
-
-          case BookshelfStateCode.empty:
-            return const CommonSliverListEmpty();
 
           case BookshelfStateCode.normal:
           case BookshelfStateCode.selecting:
@@ -38,6 +34,8 @@ class BookshelfSliverList extends StatelessWidget {
                 childCount: state.bookList.length,
               ),
             );
+          default:
+            return const CommonSliverListEmpty();
         }
       },
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../common_components/common_draggable_scrollable_sheet.dart';
 import 'add_chapter_draggable_scrollable_sheet.dart';
 
 class AddChapterCalleeAddButton extends StatelessWidget {
@@ -14,6 +15,11 @@ class AddChapterCalleeAddButton extends StatelessWidget {
   }
 
   void _onPressed(BuildContext context) {
-    const AddChapterDraggableScrollableSheet().show(context);
+    showModalBottomSheet(
+      context: context,
+      scrollControlDisabledMaxHeightRatio: CommonDraggableScrollableSheet.maxHeightRatio,
+      showDragHandle: CommonDraggableScrollableSheet.showDragHandle,
+      builder: (context) => const AddChapterDraggableScrollableSheet(),
+    );
   }
 }
