@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'common_dialog.dart';
+import 'common_dialog/common_dialog.dart';
 
 class CommonConfirmDialog extends StatelessWidget {
   const CommonConfirmDialog({
@@ -45,6 +45,7 @@ class CommonConfirmDialog extends StatelessWidget {
     return CommonDialog(
       iconData: iconData ?? Icons.question_mark_rounded,
       content: content,
+      contentAlign: TextAlign.center,
       actions: actions,
     );
   }

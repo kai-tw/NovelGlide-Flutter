@@ -3,21 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_book_name_help_dialog.dart';
-import 'bloc/add_book_form_bloc.dart';
+import 'bloc/edit_book_form_bloc.dart';
 
-class AddBookNameTextField extends StatelessWidget {
-  const AddBookNameTextField({super.key});
+class EditBookNameTextField extends StatelessWidget {
+  const EditBookNameTextField({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AddBookFormCubit cubit = BlocProvider.of<AddBookFormCubit>(context);
+    final EditBookFormCubit cubit = BlocProvider.of<EditBookFormCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final Map<AddBookFormNameStateCode, String> nameStateStringMap = {
-      AddBookFormNameStateCode.blank: appLocalizations.input_field_blank,
-      AddBookFormNameStateCode.invalid: appLocalizations.input_field_invalid,
-      AddBookFormNameStateCode.exists: appLocalizations.book_exists,
+    final Map<EditBookNameStateCode, String> nameStateStringMap = {
+      EditBookNameStateCode.blank: appLocalizations.input_field_blank,
+      EditBookNameStateCode.invalid: appLocalizations.input_field_invalid,
+      EditBookNameStateCode.exists: appLocalizations.book_exists,
     };
-
     return TextFormField(
       decoration: InputDecoration(
         labelText: appLocalizations.book_name,
@@ -34,6 +33,7 @@ class AddBookNameTextField extends StatelessWidget {
           ),
         ),
       ),
+      initialValue: cubit.oldData.name,
       validator: (value) => nameStateStringMap[cubit.nameVerify(value)],
     );
   }

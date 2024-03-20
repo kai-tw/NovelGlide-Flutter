@@ -6,54 +6,38 @@ import '../../../shared/verify_utility.dart';
 
 enum EditBookNameStateCode { valid, blank, invalid, exists, same }
 
-enum EditBookCoverStateCode { blank, valid, same }
-
 class EditBookFormCubit extends Cubit<EditBookFormState> {
-  EditBookFormCubit(this.data) : super(EditBookFormState(formValue: BookObject.fromObject(data)));
+  EditBookFormCubit(this.oldData) : newData = BookObject.fromObject(oldData), super(const EditBookFormState());
 
-  BookObject data;
+  final BookObject oldData;
+  final BookObject newData;
 
-  void nameVerify(String name) async {
-    state.formValue.name = name;
-    if (name == '') {
-      emit(state.copyWith(nameStateCode: EditBookNameStateCode.blank));
-    } else if (!VerifyUtility.isFolderNameValid(name)) {
-      emit(state.copyWith(nameStateCode: EditBookNameStateCode.invalid));
-    } else if (state.formValue.isExists()) {
-      emit(state.copyWith(nameStateCode: EditBookNameStateCode.exists));
-    } else {
-      emit(state.copyWith(nameStateCode: EditBookNameStateCode.valid));
+  EditBookNameStateCode nameVerify(String? name) {
+    if (name == '' || name == null) {
+      return EditBookNameStateCode.blank;
     }
+
+    if (!VerifyUtility.isFolderNameValid(name)) {
+      return EditBookNameStateCode.invalid;
+    }
+
+    final BookObject inputBookObject = BookObject.fromName(name);
+    if (inputBookObject.isExists()) {
+      return EditBookNameStateCode.exists;
+    }
+
+    newData.name = name;
+    return EditBookNameStateCode.valid;
   }
 
   Future<bool> submit() async {
-    return data.rename(state.formValue);
+    return oldData.rename(newData);
   }
 }
 
 class EditBookFormState extends Equatable {
-  final EditBookNameStateCode nameStateCode;
-  final EditBookCoverStateCode coverStateCode;
-  final BookObject formValue;
-
-  const EditBookFormState({
-    required this.formValue,
-    this.nameStateCode = EditBookNameStateCode.same,
-    this.coverStateCode = EditBookCoverStateCode.same,
-  });
-
-  EditBookFormState copyWith({
-    EditBookNameStateCode? nameStateCode,
-    EditBookCoverStateCode? coverStateCode,
-    BookObject? formValue,
-  }) {
-    return EditBookFormState(
-      nameStateCode: nameStateCode ?? this.nameStateCode,
-      coverStateCode: coverStateCode ?? this.coverStateCode,
-      formValue: formValue ?? this.formValue,
-    );
-  }
+  const EditBookFormState();
 
   @override
-  List<Object?> get props => [nameStateCode, coverStateCode, formValue];
+  List<Object?> get props => [];
 }

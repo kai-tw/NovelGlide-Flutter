@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/common_image_picker_bloc.dart';
-import 'common_image_picker_button_list.dart';
-import 'common_image_picker_preview.dart';
+import '../common_image_picker/common_image_picker_button_list.dart';
+import '../common_image_picker/common_image_picker_preview.dart';
 
 class CommonImagePickerContent extends StatelessWidget {
   const CommonImagePickerContent(

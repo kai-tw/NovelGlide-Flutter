@@ -5,36 +5,34 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import 'bloc/edit_book_form_bloc.dart';
 
-class EditBookSliverSubmitButton extends StatelessWidget {
-  const EditBookSliverSubmitButton({super.key});
+class EditBookSubmitButton extends StatelessWidget {
+  const EditBookSubmitButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
-            foregroundColor: Theme.of(context).colorScheme.onPrimary,
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-          icon: const Icon(Icons.send_rounded),
-          label: Text(
-            AppLocalizations.of(context)!.submit,
-            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-          ),
-          onPressed: () {
-            if (Form.of(context).validate()) {
-              showDialog(context: context, barrierDismissible: false, builder: _processingDialog);
-              BlocProvider.of<EditBookFormCubit>(context).submit().then((bool isSuccess) {
-                Navigator.of(context).pop();
-                showDialog(context: context, builder: isSuccess ? _successDialog : _failedDialog)
-                    .then((_) => Navigator.of(context).pop(isSuccess));
-              });
-            }
-          },
+    return Align(
+      alignment: Alignment.centerRight,
+      child: ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          backgroundColor: Theme.of(context).colorScheme.primary,
         ),
+        icon: const Icon(Icons.send_rounded),
+        label: Text(
+          AppLocalizations.of(context)!.submit,
+          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+        ),
+        onPressed: () {
+          if (Form.of(context).validate()) {
+            showDialog(context: context, barrierDismissible: false, builder: _processingDialog);
+            BlocProvider.of<EditBookFormCubit>(context).submit().then((bool isSuccess) {
+              Navigator.of(context).pop();
+              showDialog(context: context, builder: isSuccess ? _successDialog : _failedDialog)
+                  .then((_) => Navigator.of(context).pop(isSuccess));
+            });
+          }
+        },
       ),
     );
   }

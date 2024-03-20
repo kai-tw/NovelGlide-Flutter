@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/common_image_picker_bloc.dart';
+import '../common_image_picker/bloc/common_image_picker_bloc.dart';
 import 'common_image_picker_delete_button.dart';
 import 'common_image_picker_select_button.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'bloc/common_image_picker_bloc.dart';
+import '../common_image_picker/bloc/common_image_picker_bloc.dart';
 
 class CommonImagePickerDeleteButton extends StatelessWidget {
   const CommonImagePickerDeleteButton({super.key});
