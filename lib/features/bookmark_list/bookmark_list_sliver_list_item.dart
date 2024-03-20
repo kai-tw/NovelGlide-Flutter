@@ -7,14 +7,15 @@ import '../../shared/bookmark_object.dart';
 import '../reader/reader.dart';
 import 'bloc/bookmark_list_bloc.dart';
 
-class BookmarkListBookmark extends StatelessWidget {
-  const BookmarkListBookmark(this._bookmarkObject, {super.key});
+class BookmarkListSliverListItem extends StatelessWidget {
+  const BookmarkListSliverListItem(this._bookmarkObject, {super.key});
 
   final BookmarkObject _bookmarkObject;
 
   @override
   Widget build(BuildContext context) {
     final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final String bookName = _bookmarkObject.bookName;
     final int chapterNumber = _bookmarkObject.chapterNumber;
     final int daysPassed = _bookmarkObject.daysPassed;
@@ -22,16 +23,16 @@ class BookmarkListBookmark extends StatelessWidget {
 
     switch (daysPassed) {
       case 0:
-        savedTimeString = AppLocalizations.of(context)!.last_save_days_today;
+        savedTimeString = appLocalizations.last_save_days_today;
         break;
       case 1:
-        savedTimeString = AppLocalizations.of(context)!.last_save_days_yesterday;
+        savedTimeString = appLocalizations.last_save_days_yesterday;
         break;
       default:
-        savedTimeString = AppLocalizations.of(context)!.last_save_days_others(daysPassed);
+        savedTimeString = appLocalizations.last_save_days_others(daysPassed);
     }
 
-    savedTimeString = AppLocalizations.of(context)!.last_save_days(savedTimeString);
+    savedTimeString = appLocalizations.last_save_days(savedTimeString);
 
     return Container(
       margin: const EdgeInsets.all(16.0),
@@ -80,7 +81,7 @@ class BookmarkListBookmark extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        AppLocalizations.of(context)!.chapter_label(chapterNumber),
+                        appLocalizations.chapter_label(chapterNumber),
                         style: const TextStyle(
                           fontSize: 14.0,
                         ),

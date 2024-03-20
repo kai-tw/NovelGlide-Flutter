@@ -9,9 +9,7 @@ enum BookmarkListStateCode { normal, unload, loading, empty }
 class BookmarkListCubit extends Cubit<BookmarkListState> {
   BookmarkListCubit() : super(const BookmarkListState());
 
-  void refresh() async {
-    emit(const BookmarkListState(code: BookmarkListStateCode.loading));
-
+  void refresh() {
     final List<BookmarkObject> bookmarkList = FileProcess.getBookmarkList();
     bookmarkList.sort(_sortBySavedTime);
 

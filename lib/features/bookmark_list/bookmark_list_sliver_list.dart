@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../shared/sliver_list_empty.dart';
+import '../../shared/sliver_loading.dart';
 import 'bloc/bookmark_list_bloc.dart';
-import 'bookmark_list_bookmark.dart';
+import 'bookmark_list_sliver_list_item.dart';
 
 class BookmarkListSliverList extends StatelessWidget {
   const BookmarkListSliverList({super.key});
@@ -11,14 +13,23 @@ class BookmarkListSliverList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BookmarkListCubit, BookmarkListState>(
       builder: (BuildContext context, BookmarkListState state) {
-        return SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              return BookmarkListBookmark(state.bookmarkList[index]);
-            },
-            childCount: state.bookmarkList.length,
-          ),
-        );
+        switch (state.code) {
+          case BookmarkListStateCode.normal:
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                  return BookmarkListSliverListItem(state.bookmarkList[index]);
+                },
+                childCount: state.bookmarkList.length,
+              ),
+            );
+
+          case BookmarkListStateCode.loading:
+            return const CommonSliverLoading();
+
+          default:
+            return const CommonSliverListEmpty();
+        }
       },
     );
   }

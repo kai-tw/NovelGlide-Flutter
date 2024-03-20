@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class BookmarkListSliverAppBar extends StatelessWidget {
-  const BookmarkListSliverAppBar({super.key});
+class BookmarkListAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const BookmarkListAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar(
+    return AppBar(
       backgroundColor: Theme.of(context).colorScheme.background,
       leading: IconButton(
         onPressed: () {},
@@ -18,4 +18,7 @@ class BookmarkListSliverAppBar extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
