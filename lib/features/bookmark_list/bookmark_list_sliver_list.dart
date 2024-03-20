@@ -12,7 +12,7 @@ class BookmarkListSliverList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BookmarkListCubit, BookmarkListState>(
-      builder: (BuildContext context, BookmarkListState state) {
+      builder: (context, state) {
         switch (state.code) {
           case BookmarkListStateCode.normal:
             return SliverList(
