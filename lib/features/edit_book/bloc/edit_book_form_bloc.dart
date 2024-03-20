@@ -31,7 +31,7 @@ class EditBookFormCubit extends Cubit<EditBookFormState> {
   }
 
   Future<bool> submit() async {
-    return oldData.rename(newData);
+    return oldData.modify(newData);
   }
 }
 

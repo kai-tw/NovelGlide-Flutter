@@ -18,7 +18,9 @@ class AddBookCalleeAddButton extends StatelessWidget {
           context: context,
           scrollControlDisabledMaxHeightRatio: CommonDraggableScrollableSheet.maxHeightRatio,
           showDragHandle: CommonDraggableScrollableSheet.showDragHandle,
-          builder: (context) => const AddBookDraggableScrollableSheet(),
+          builder: (context) {
+            return const AddBookDraggableScrollableSheet();
+          },
         ).then(_onValue);
       },
       shape: const CircleBorder(),

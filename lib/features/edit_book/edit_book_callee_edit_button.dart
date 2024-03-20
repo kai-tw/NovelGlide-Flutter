@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/book_object.dart';
 import '../common_components/common_draggable_scrollable_sheet.dart';
+import 'bloc/edit_book_form_bloc.dart';
 import 'edit_book_draggable_scrollable_sheet.dart';
 
 class EditBookCalleeEditButton extends StatelessWidget {
@@ -20,7 +22,12 @@ class EditBookCalleeEditButton extends StatelessWidget {
           context: context,
           scrollControlDisabledMaxHeightRatio: CommonDraggableScrollableSheet.maxHeightRatio,
           showDragHandle: CommonDraggableScrollableSheet.showDragHandle,
-          builder: (context) => EditBookDraggableScrollableSheet(bookObject: bookObject),
+          builder: (context) {
+            return BlocProvider(
+              create: (_) => EditBookFormCubit(bookObject),
+              child: const EditBookDraggableScrollableSheet()
+            );
+          },
         ).then(_onValue);
       },
       icon: const Icon(Icons.edit_rounded),

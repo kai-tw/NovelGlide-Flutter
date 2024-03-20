@@ -17,10 +17,8 @@ class TableOfContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => TOCCubit(bookObject)),
-      ],
+    return BlocProvider(
+      create: (_) => TOCCubit(bookObject),
       child: BlocBuilder<TOCCubit, TOCState>(
         builder: (BuildContext context, TOCState state) {
           List<Widget> sliverList = [

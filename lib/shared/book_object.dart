@@ -38,30 +38,36 @@ class BookObject {
     }
   }
 
-  bool rename(BookObject newObject) {
+  bool modify(BookObject newObject) {
     if (!VerifyUtility.isFolderNameValid(newObject.name) || !VerifyUtility.isFolderNameValid(name)) {
       return false;
     }
 
     bool isSuccess = true;
-    final folder = FileProcess.getBookDirectoryByName(name);
-    final newFolder = FileProcess.getBookDirectoryByName(newObject.name);
-
-    if (newObject.name != name) {
-      folder.renameSync(newFolder.path);
-      isSuccess = isSuccess && newFolder.existsSync();
-      name = isSuccess ? newObject.name : name;
-    }
+    final Directory oldFolder = FileProcess.getBookDirectoryByName(name);
+    final Directory newFolder = FileProcess.getBookDirectoryByName(newObject.name);
 
     if (newObject.coverFile != coverFile) {
-      File newCoverImage = newObject.coverFile!.copySync(join(newFolder.path, 'cover.jpg'));
-      isSuccess = isSuccess && newCoverImage.existsSync();
-    } else {
-      if (coverFile != null && coverFile!.existsSync()) {
-        coverFile!.delete();
+      if (newObject.coverFile == null) {
+        // Delete cover.
+        if (coverFile != null && coverFile!.existsSync()) {
+          coverFile!.delete();
+        }
+        coverFile = null;
+      } else {
+        // Change cover.
+        File newCoverImage = newObject.coverFile!.copySync(join(newFolder.path, 'cover.jpg'));
+        isSuccess = isSuccess && newCoverImage.existsSync();
       }
-      coverFile = null;
     }
+
+    if (newObject.name != name) {
+      oldFolder.renameSync(newFolder.path);
+      isSuccess = isSuccess && newFolder.existsSync();
+      name = isSuccess ? newObject.name : name;
+      coverFile = coverFile == null ? null : File(join(newFolder.path, 'cover.jpg'));
+    }
+
     return isSuccess;
   }
 
