@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../shared/book_object.dart';
 import '../../../shared/verify_utility.dart';
@@ -15,7 +12,6 @@ class EditBookFormCubit extends Cubit<EditBookFormState> {
   EditBookFormCubit(this.data) : super(EditBookFormState(formValue: BookObject.fromObject(data)));
 
   BookObject data;
-  final ImagePicker _imagePicker = ImagePicker();
 
   void nameVerify(String name) async {
     state.formValue.name = name;
@@ -28,17 +24,6 @@ class EditBookFormCubit extends Cubit<EditBookFormState> {
     } else {
       emit(state.copyWith(nameStateCode: EditBookNameStateCode.valid));
     }
-  }
-
-  void pickCoverImage() async {
-    XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
-    state.formValue.coverFile = image == null ? null : File(image.path);
-    emit(state.copyWith(coverStateCode: image == null ? EditBookCoverStateCode.blank : EditBookCoverStateCode.valid));
-  }
-
-  void removeCoverImage() {
-    state.formValue.coverFile = null;
-    emit(state.copyWith(coverStateCode: EditBookCoverStateCode.blank));
   }
 
   Future<bool> submit() async {

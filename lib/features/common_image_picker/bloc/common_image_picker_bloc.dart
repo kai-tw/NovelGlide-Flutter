@@ -1,11 +1,10 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 
 class CommonImagePickerCubit extends Cubit<CommonImagePickerState> {
-  final ImagePicker _imagePicker = ImagePicker();
   File? imageFile;
 
   CommonImagePickerCubit({this.imageFile})
@@ -15,15 +14,20 @@ class CommonImagePickerCubit extends Cubit<CommonImagePickerState> {
         ));
 
   void pickImage() async {
-    XFile? image = await _imagePicker.pickImage(source: ImageSource.gallery);
+    FilePickerResult? image = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+    );
+
     if (image == null) {
       removeImage();
     } else {
-      emit(CommonImagePickerState(code: CommonImagePickerCubitStateCode.exist, imageFile: File(image.path)));
+      imageFile = File(image.files.single.path!);
+      emit(CommonImagePickerState(code: CommonImagePickerCubitStateCode.exist, imageFile: imageFile));
     }
   }
 
   void removeImage() {
+    imageFile = null;
     emit(const CommonImagePickerState(code: CommonImagePickerCubitStateCode.blank));
   }
 }

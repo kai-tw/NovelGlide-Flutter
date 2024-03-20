@@ -43,7 +43,6 @@ dependencies:
   equatable: ^2.0.5
   flutter_slidable: ^3.0.1
   collection: ^1.18.0
-  image_picker: ^1.0.7
   loading_animation_widget: ^1.2.0+4
   mime: ^1.0.4
   hive: ^4.0.0-dev.2

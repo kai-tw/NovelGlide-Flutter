@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/common_image_picker_bloc.dart';
 import 'common_image_picker_content.dart';
-import 'common_image_picker_delete_button.dart';
-import 'common_image_picker_select_button.dart';
 
 class CommonImagePicker extends StatelessWidget {
   const CommonImagePicker({required this.labelText, this.aspectRatio = 1, this.imageFile, this.onSaved, super.key});
@@ -27,12 +25,5 @@ class CommonImagePicker extends StatelessWidget {
         onSaved: onSaved,
       ),
     );
-  }
-
-  String? _validator(File? imageFile) {
-    if (onSaved != null) {
-      onSaved!(imageFile);
-    }
-    return null;
   }
 }
