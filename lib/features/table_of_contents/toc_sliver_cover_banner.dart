@@ -8,6 +8,7 @@ class TOCSliverCoverBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
     return SliverToBoxAdapter(
       child: Container(
         padding: const EdgeInsets.fromLTRB(24.0, 0, 24.0, 24.0),
@@ -16,14 +17,14 @@ class TOCSliverCoverBanner extends StatelessWidget {
           child: BlocBuilder<TOCCubit, TOCState>(
             builder: (BuildContext context, TOCState state) {
               return Hero(
-                tag: state.bookObject.name,
+                tag: cubit.bookObject.name,
                 child: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.surfaceVariant,
                     borderRadius: const BorderRadius.all(Radius.circular(24.0)),
                   ),
                   clipBehavior: Clip.hardEdge,
-                  child: state.bookObject.getCover(),
+                  child: cubit.bookObject.getCover(),
                 ),
               );
             },

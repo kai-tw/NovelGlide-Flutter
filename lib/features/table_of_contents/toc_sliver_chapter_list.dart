@@ -10,6 +10,7 @@ class TOCSliverChapterList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
     return BlocBuilder<TOCCubit, TOCState>(
       builder: (BuildContext context, TOCState state) {
         return SliverList(
@@ -22,7 +23,7 @@ class TOCSliverChapterList extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: TextButton(
-                  onPressed: () => Navigator.of(context).push(_navigateToReader(state.bookObject.name, chapterNumber)),
+                  onPressed: () => Navigator.of(context).push(_navigateToReader(cubit.bookObject.name, chapterNumber)),
                   style: TextButton.styleFrom(
                     alignment: Alignment.centerLeft,
                     shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),

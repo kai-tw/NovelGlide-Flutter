@@ -8,13 +8,12 @@ import '../../../shared/file_process.dart';
 enum TOCStateCode { unload, loading, normal, empty }
 
 class TOCCubit extends Cubit<TOCState> {
-  final BookObject _bookObject;
+  final BookObject bookObject;
 
-  TOCCubit(this._bookObject) : super(TOCState(bookObject: _bookObject));
+  TOCCubit(this.bookObject) : super(const TOCState());
 
-  void refresh() async {
-    emit(state.copyWith(code: TOCStateCode.loading));
-    List<ChapterObject> chapterList = FileProcess.getChapterList(_bookObject.name);
+  void refresh() {
+    List<ChapterObject> chapterList = FileProcess.getChapterList(bookObject.name);
     TOCStateCode code = chapterList.isEmpty ? TOCStateCode.empty : TOCStateCode.normal;
     emit(state.copyWith(code: code, chapterList: chapterList));
   }
@@ -22,11 +21,9 @@ class TOCCubit extends Cubit<TOCState> {
 
 class TOCState extends Equatable {
   final TOCStateCode code;
-  final BookObject bookObject;
   final List<ChapterObject> chapterList;
 
   const TOCState({
-    required this.bookObject,
     this.code = TOCStateCode.unload,
     this.chapterList = const [],
   });
@@ -36,7 +33,6 @@ class TOCState extends Equatable {
     List<ChapterObject>? chapterList,
   }) {
     return TOCState(
-      bookObject: bookObject,
       code: code ?? this.code,
       chapterList: chapterList ?? this.chapterList,
     );

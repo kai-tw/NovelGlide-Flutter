@@ -14,15 +14,12 @@ class BookshelfScaffold extends StatelessWidget {
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
     return Scaffold(
       appBar: const BookshelfAppBar(),
-      body: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-        ),
-        child: RefreshIndicator(
-          onRefresh: () async => cubit.refresh(),
-          child: const CustomScrollView(slivers: [
-            BookshelfSliverList()
-          ]),
+      body: RefreshIndicator(
+        onRefresh: () async => cubit.refresh(),
+        child: const CustomScrollView(
+          slivers: [
+            BookshelfSliverList(),
+          ],
         ),
       ),
       floatingActionButton: AddBookCalleeAddButton(
@@ -30,5 +27,4 @@ class BookshelfScaffold extends StatelessWidget {
       ),
     );
   }
-
 }

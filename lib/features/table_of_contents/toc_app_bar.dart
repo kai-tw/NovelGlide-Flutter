@@ -6,23 +6,26 @@ import '../common_components/common_back_button.dart';
 import '../edit_book/edit_book_callee_edit_button.dart';
 import 'bloc/toc_bloc.dart';
 
-class TOCSliverAppBar extends StatelessWidget {
-  const TOCSliverAppBar({super.key});
+class TOCAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const TOCAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    TOCCubit tocCubit = BlocProvider.of<TOCCubit>(context);
-    return SliverAppBar(
+    TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
+    return AppBar(
       backgroundColor: Theme.of(context).colorScheme.background,
       surfaceTintColor: Theme.of(context).colorScheme.background,
       leading: const CommonBackButton(),
       actions: [
         const AddChapterCalleeAddButton(),
         EditBookCalleeEditButton(
-          bookObject: tocCubit.state.bookObject,
-          onSuccess: () => tocCubit.refresh(),
+          bookObject: cubit.bookObject,
+          onSuccess: () => cubit.refresh(),
         ),
       ],
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
