@@ -9,7 +9,7 @@ enum BookshelfStateCode { normal, selecting, empty, unload, loading }
 class BookshelfCubit extends Cubit<BookshelfState> {
   BookshelfCubit() : super(const BookshelfState());
 
-  void refresh() async {
+  void refresh() {
     List<BookObject> list = FileProcess.getBookList();
     BookshelfStateCode code = list.isEmpty ? BookshelfStateCode.empty : BookshelfStateCode.normal;
     emit(BookshelfState(code: code, bookList: list));
@@ -39,10 +39,9 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     emit(state.copyWith(code: BookshelfStateCode.normal, selectedSet: const {}));
   }
 
-  void deleteSelect() async {
-    for (String book in state.selectedSet) {
-      BookObject target = BookObject(name: book);
-      target.delete();
+  void deleteSelect() {
+    for (String bookName in state.selectedSet) {
+      BookObject.fromName(bookName).delete();
     }
     refresh();
   }
