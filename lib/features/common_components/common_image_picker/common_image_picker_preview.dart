@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../shared_bloc/common_file_picker_bloc.dart';
+import '../common_file_picker/bloc/common_file_picker_bloc.dart';
 
 class CommonImagePickerPreview extends StatelessWidget {
   const CommonImagePickerPreview({super.key, this.aspectRatio = 1});

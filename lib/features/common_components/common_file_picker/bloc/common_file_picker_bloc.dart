@@ -14,10 +14,10 @@ class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
         ));
 
   void pickImage() async {
-    pickFile(FileType.image);
+    pickFile(type: FileType.image);
   }
 
-  void pickFile(FileType type, {bool allowMultiple = false, List<String>? allowedExtensions}) async {
+  void pickFile({FileType type = FileType.any, bool allowMultiple = false, List<String>? allowedExtensions}) async {
     FilePickerResult? image = await FilePicker.platform.pickFiles(
       type: type,
       allowMultiple: allowMultiple,

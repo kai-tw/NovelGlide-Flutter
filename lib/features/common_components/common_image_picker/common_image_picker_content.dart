@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../shared_bloc/common_file_picker_bloc.dart';
+import '../common_file_picker/bloc/common_file_picker_bloc.dart';
 import '../common_image_picker/common_image_picker_button_list.dart';
 import '../common_image_picker/common_image_picker_preview.dart';
 

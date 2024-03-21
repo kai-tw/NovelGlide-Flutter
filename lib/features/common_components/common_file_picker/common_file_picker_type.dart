@@ -1,0 +1,3 @@
+enum CommonFilePickerType {
+  image, custom
+}
