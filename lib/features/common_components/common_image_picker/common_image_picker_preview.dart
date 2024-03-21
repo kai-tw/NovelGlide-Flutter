@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/common_image_picker_bloc.dart';
+import '../shared_bloc/common_file_picker_bloc.dart';
 
 class CommonImagePickerPreview extends StatelessWidget {
   const CommonImagePickerPreview({super.key, this.aspectRatio = 1});
@@ -18,11 +18,11 @@ class CommonImagePickerPreview extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.0),
       ),
       clipBehavior: Clip.hardEdge,
-      child: BlocBuilder<CommonImagePickerCubit, CommonImagePickerState>(
+      child: BlocBuilder<CommonFilePickerCubit, CommonFilePickerState>(
         builder: (context, state) {
-          if (state.imageFile != null && state.imageFile!.existsSync()) {
+          if (state.file != null && state.file!.existsSync()) {
             return Image(
-              image: FileImage(state.imageFile!),
+              image: FileImage(state.file!),
               fit: BoxFit.cover,
               gaplessPlayback: true,
             );

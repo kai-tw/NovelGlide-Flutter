@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/common_image_picker_bloc.dart';
+import '../shared_bloc/common_file_picker_bloc.dart';
 import '../common_image_picker/common_image_picker_button_list.dart';
 import '../common_image_picker/common_image_picker_preview.dart';
 
@@ -19,9 +19,9 @@ class CommonImagePickerContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CommonImagePickerCubit cubit = BlocProvider.of<CommonImagePickerCubit>(context);
+    final CommonFilePickerCubit cubit = BlocProvider.of<CommonFilePickerCubit>(context);
     return FormField(
-      validator: (_) => _validator(cubit.imageFile),
+      validator: (_) => _validator(cubit.file),
       builder: (_) => InputDecorator(
         decoration: InputDecoration(
           labelText: labelText,

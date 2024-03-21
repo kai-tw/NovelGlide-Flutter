@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/common_image_picker_bloc.dart';
+import '../shared_bloc/common_file_picker_bloc.dart';
 import 'common_image_picker_content.dart';
 
 class CommonImagePicker extends StatelessWidget {
@@ -17,7 +17,7 @@ class CommonImagePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => CommonImagePickerCubit(imageFile: imageFile),
+      create: (_) => CommonFilePickerCubit(file: imageFile),
       child: CommonImagePickerContent(
         labelText: labelText,
         aspectRatio: aspectRatio,
