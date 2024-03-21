@@ -18,37 +18,31 @@
   "add_failed": "新增失敗",
   "edit_successful": "編輯成功",
   "edit_failed": "編輯失敗",
-
-  "confirm_title": "確定嗎？",
-
   "confirm_content_delete": "將會永久刪除。",
-
   "title_bookmarks": "書籤",
   "title_settings": "設定",
   "title_add_book": "新增書籍",
+  "title_add_chapter": "新增章節",
   "title_edit_book": "編輯書籍",
   "title_multiEdit_book": "編輯多本書籍",
-
   "book_name": "書名",
   "book_cover": "封面",
   "book_name_rule_title": "書籍命名規則",
   "book_name_rule_content": "可用的英文符號：空白和 ",
   "book_name_same": "書名相同",
   "book_exists": "書名已存在",
-
+  "chapter_name": "章節名稱",
+  "chapter_number": "第幾章",
   "select_image": "選擇圖片",
   "remove_image": "刪除圖片",
   "input_optional": "（選填）",
   "input_field_invalid": "不符合命名規則",
   "input_field_blank": "不能空白",
-
   "chapter_label": "第 {number} 章",
-
   "last_save_days": "{part}儲存",
   "last_save_days_today": "今天",
   "last_save_days_yesterday": "昨天",
   "last_save_days_others": "{days} 天前",
-
   "reader_settings_reset_button": "重設設定",
   "reader_settings_reset_button_done": "重設成功",
   "reader_settings_auto_save_switch": "自動插入書籤"

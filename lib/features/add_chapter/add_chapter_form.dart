@@ -1,38 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'add_book_image_picker.dart';
-import 'add_book_name_input_field.dart';
-import 'add_book_submit_button.dart';
-import 'add_book_title.dart';
-import 'bloc/add_book_form_bloc.dart';
+import 'add_chapter_name_input_field.dart';
+import 'add_chapter_number_input_field.dart';
+import 'add_chapter_title.dart';
+import 'bloc/add_chapter_form_bloc.dart';
 
-class AddBookForm extends StatelessWidget {
-  const AddBookForm({this.controller, super.key});
+class AddChapterForm extends StatelessWidget {
+  const AddChapterForm({super.key, this.controller});
 
   final ScrollController? controller;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AddBookFormCubit(),
+      create: (_) => AddChapterFormCubit(),
       child: Form(
         child: SingleChildScrollView(
           controller: controller,
           child: const Column(
             children: [
-              AddBookTitle(),
+              AddChapterTitle(),
               Padding(padding: EdgeInsets.only(bottom: 16.0)),
-              AddBookNameInputField(),
-              Padding(padding: EdgeInsets.only(bottom: 20.0)),
-              AddBookImagePicker(),
+              AddChapterNameInputField(),
               Padding(padding: EdgeInsets.only(bottom: 16.0)),
-              AddBookSubmitButton(),
+              AddChapterNumberInputField(),
             ],
           ),
         ),
       ),
     );
   }
-
 }

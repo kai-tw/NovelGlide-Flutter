@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_book_name_help_dialog.dart';
+import '../common_components/common_form_decoration.dart';
 import 'bloc/add_book_form_bloc.dart';
 
-class AddBookNameTextField extends StatelessWidget {
-  const AddBookNameTextField({super.key});
+class AddBookNameInputField extends StatelessWidget {
+  const AddBookNameInputField({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,19 +20,11 @@ class AddBookNameTextField extends StatelessWidget {
     };
 
     return TextFormField(
-      decoration: InputDecoration(
-        labelText: appLocalizations.book_name,
-        labelStyle: const TextStyle(fontSize: 16),
-        contentPadding: const EdgeInsets.all(24.0),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        suffixIcon: Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: IconButton(
-            onPressed: () => showDialog(context: context, builder: (_) => const CommonBookNameHelpDialog()),
-            icon: const Icon(Icons.help_outline_rounded),
-          ),
+      decoration: CommonFormDecoration.inputDecoration(
+        appLocalizations.book_name,
+        suffixIcon: IconButton(
+          onPressed: () => showDialog(context: context, builder: (_) => const CommonBookNameHelpDialog()),
+          icon: const Icon(Icons.help_outline_rounded),
         ),
       ),
       validator: (value) => nameStateStringMap[cubit.nameVerify(value)],

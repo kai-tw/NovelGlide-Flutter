@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../common_components/common_draggable_scrollable_sheet.dart';
+import 'add_chapter_form.dart';
 
-class AddChapterDraggableScrollableSheet extends CommonDraggableScrollableSheet {
-  const AddChapterDraggableScrollableSheet({super.key}) : super(builder: _builder);
+class AddChapterDraggableScrollableSheet extends StatelessWidget {
+  const AddChapterDraggableScrollableSheet({super.key});
 
-  static Widget _builder(BuildContext context, ScrollController controller) {
-    return const Text("ADD FORM");
+  @override
+  Widget build(BuildContext context) {
+    return CommonDraggableScrollableSheet(
+      builder: (context, controller) {
+        return const AddChapterForm();
+      },
+    );
   }
 }
