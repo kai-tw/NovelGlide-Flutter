@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../shared/sliver_list_empty.dart';
-import '../../shared/sliver_loading.dart';
+import '../common_components/common_list_empty.dart';
+import '../common_components/common_loading.dart';
 import 'bookshelf_book.dart';
 import 'bloc/bookshelf_bloc.dart';
 
