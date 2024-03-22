@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../shared/verify_utility.dart';
 import '../common_components/common_book_name_help_dialog.dart';
 import '../common_components/common_form_decoration.dart';
 import 'bloc/edit_book_form_bloc.dart';
@@ -27,6 +29,10 @@ class EditBookNameInputField extends StatelessWidget {
         ),
       ),
       initialValue: cubit.oldData.name,
+      inputFormatters: [
+        FilteringTextInputFormatter.singleLineFormatter,
+        FilteringTextInputFormatter.deny(VerifyUtility.folderNameRegex),
+      ],
       validator: (value) => nameStateStringMap[cubit.nameVerify(value)],
     );
   }
