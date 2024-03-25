@@ -18,6 +18,10 @@ class AddChapterFormCubit extends Cubit<AddChapterFormState> {
     int number = int.parse(numberValue);
     return AddChapterNumberStateCode.blank;
   }
+
+  Future<bool> submit() async {
+    return false;
+  }
 }
 
 class AddChapterFormState extends Equatable {

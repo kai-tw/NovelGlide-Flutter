@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'common_failed_dialog.dart';
+import 'common_processing_dialog.dart';
+import 'common_success_dialog.dart';
+
 class CommonFormSubmitButton extends StatelessWidget {
   const CommonFormSubmitButton({super.key, this.onPressed});
 
-  final void Function()? onPressed;
+  final Future<bool> Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +23,18 @@ class CommonFormSubmitButton extends StatelessWidget {
         AppLocalizations.of(context)!.submit,
         style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
       ),
-      onPressed: onPressed,
+      onPressed: () {
+        if (onPressed != null && Form.of(context).validate()) {
+          showDialog(context: context, barrierDismissible: false, builder: (_) => const CommonProcessingDialog());
+          onPressed!().then((bool isSuccess) {
+            Navigator.of(context).pop();
+            showDialog(
+                context: context,
+                builder: (_) => isSuccess ? const CommonSuccessDialog() : const CommonFailedDialog())
+                .then((_) => Navigator.of(context).pop());
+          });
+        }
+      },
     );
   }
 }
