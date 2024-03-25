@@ -29,6 +29,7 @@ class AddChapterForm extends StatelessWidget {
               AddChapterNumberInputField(),
               Padding(padding: EdgeInsets.only(bottom: 16.0)),
               AddChapterFilePicker(),
+              Padding(padding: EdgeInsets.only(bottom: 16.0)),
             ],
           ),
         ),

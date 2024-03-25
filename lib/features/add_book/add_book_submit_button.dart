@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+import '../common_components/common_form_submit_button.dart';
 import 'bloc/add_book_form_bloc.dart';
 
 class AddBookSubmitButton extends StatelessWidget {
@@ -12,17 +13,7 @@ class AddBookSubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.centerRight,
-      child: ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 24.0),
-          foregroundColor: Theme.of(context).colorScheme.onPrimary,
-          backgroundColor: Theme.of(context).colorScheme.primary,
-        ),
-        icon: const Icon(Icons.send_rounded),
-        label: Text(
-          AppLocalizations.of(context)!.submit,
-          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-        ),
+      child: CommonFormSubmitButton(
         onPressed: () {
           if (Form.of(context).validate()) {
             showDialog(context: context, barrierDismissible: false, builder: _processingDialog);
