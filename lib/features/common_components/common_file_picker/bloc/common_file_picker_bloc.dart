@@ -4,6 +4,8 @@ import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../common_file_picker_type.dart';
+
 class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
   File? file;
 
@@ -14,12 +16,18 @@ class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
         ));
 
   void pickImage() async {
-    pickFile(type: FileType.image);
+    pickFile(type: CommonFilePickerType.image);
   }
 
-  void pickFile({FileType type = FileType.any, bool allowMultiple = false, List<String>? allowedExtensions}) async {
+  void pickFile({CommonFilePickerType? type = CommonFilePickerType.any, bool allowMultiple = false, List<String>? allowedExtensions}) async {
+    final Map<CommonFilePickerType, FileType> map = {
+      CommonFilePickerType.any: FileType.any,
+      CommonFilePickerType.image: FileType.image,
+      CommonFilePickerType.custom: FileType.custom,
+    };
+
     FilePickerResult? image = await FilePicker.platform.pickFiles(
-      type: type,
+      type: map[type] ?? FileType.any,
       allowMultiple: allowMultiple,
       allowedExtensions: allowedExtensions
     );

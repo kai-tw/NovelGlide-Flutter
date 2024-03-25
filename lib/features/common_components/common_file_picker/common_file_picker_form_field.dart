@@ -6,10 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../common_form_decoration.dart';
 import 'bloc/common_file_picker_bloc.dart';
 
-class CommonFilePickerWrapper extends StatelessWidget {
-  const CommonFilePickerWrapper({super.key, required this.child, required this.labelText, this.onSaved});
+class CommonFilePickerFormField extends StatelessWidget {
+  const CommonFilePickerFormField({super.key, required this.child, this.labelText, this.onSaved});
 
-  final String labelText;
+  final String? labelText;
   final Widget child;
   final void Function(File?)? onSaved;
 

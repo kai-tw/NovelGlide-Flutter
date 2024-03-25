@@ -18,7 +18,7 @@ class AddChapterNumberInputField extends StatelessWidget {
       AddChapterNumberStateCode.exists: appLocalizations.book_exists,
     };
     return TextFormField(
-      decoration: CommonFormDecoration.inputDecoration(appLocalizations.chapter_name),
+      decoration: CommonFormDecoration.inputDecoration(appLocalizations.chapter_number),
       keyboardType: TextInputType.number,
       validator: (value) => nameStateStringMap[cubit.numberVerify(value)],
     );

@@ -6,11 +6,12 @@ import 'bloc/common_file_picker_bloc.dart';
 import 'common_file_picker_type.dart';
 
 class CommonFilePickerSelectButton extends StatelessWidget {
-  const CommonFilePickerSelectButton({super.key, this.iconData, this.labelText, this.type});
+  const CommonFilePickerSelectButton({super.key, this.iconData, this.labelText, this.type, this.allowedExtensions});
 
   final CommonFilePickerType? type;
   final IconData? iconData;
   final String? labelText;
+  final List<String>? allowedExtensions;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,7 @@ class CommonFilePickerSelectButton extends StatelessWidget {
     };
     final Map<CommonFilePickerType, void Function()?> typeOnPressedMap = {
       CommonFilePickerType.image: cubit.pickImage,
+      CommonFilePickerType.custom: () => cubit.pickFile(type: type, allowedExtensions: allowedExtensions),
     };
 
     return TextButton.icon(

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../common_file_picker/bloc/common_file_picker_bloc.dart';
-import '../common_file_picker/common_file_picker_wrapper.dart';
+import '../common_file_picker/common_file_picker_form_field.dart';
 import 'common_image_picker_content.dart';
 
 class CommonImagePicker extends StatelessWidget {
@@ -19,7 +19,7 @@ class CommonImagePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => CommonFilePickerCubit(file: imageFile),
-      child: CommonFilePickerWrapper(
+      child: CommonFilePickerFormField(
         labelText: labelText,
         onSaved: onSaved,
         child: CommonImagePickerContent(

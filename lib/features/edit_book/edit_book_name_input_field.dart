@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../shared/verify_utility.dart';
-import '../common_components/common_book_name_help_dialog.dart';
 import '../common_components/common_form_decoration.dart';
+import '../common_components/common_form_help_button.dart';
 import 'bloc/edit_book_form_bloc.dart';
 
 class EditBookNameInputField extends StatelessWidget {
@@ -23,9 +23,9 @@ class EditBookNameInputField extends StatelessWidget {
     return TextFormField(
       decoration: CommonFormDecoration.inputDecoration(
         appLocalizations.book_name,
-        suffixIcon: IconButton(
-          onPressed: () => showDialog(context: context, builder: (_) => const CommonBookNameHelpDialog()),
-          icon: const Icon(Icons.help_outline_rounded),
+        suffixIcon: CommonFormHelpButton(
+          title: appLocalizations.title_book_name_rule,
+          content: '${appLocalizations.book_name_rule_content}${VerifyUtility.folderNamePattern}',
         ),
       ),
       initialValue: cubit.oldData.name,
