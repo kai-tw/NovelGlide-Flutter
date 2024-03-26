@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../shared/bookmark_object.dart';
+import '../common_components/common_delete_confirm_dialog.dart';
 import '../reader/reader.dart';
 import 'bloc/bookmark_list_bloc.dart';
 
@@ -48,8 +49,12 @@ class BookmarkListSliverListItem extends StatelessWidget {
           children: [
             SlidableAction(
               onPressed: (_) {
-                _bookmarkObject.clear();
-                cubit.refresh();
+                showDialog(context: context, builder: (_) => const CommonDeleteConfirmDialog()).then((isDelete) {
+                  if (isDelete) {
+                    _bookmarkObject.clear();
+                    cubit.refresh();
+                  }
+                });
               },
               backgroundColor: Theme.of(context).colorScheme.error,
               foregroundColor: Theme.of(context).colorScheme.onError,
