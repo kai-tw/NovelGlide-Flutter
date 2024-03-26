@@ -1,9 +1,10 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
-import 'file_process.dart';
+import 'file_path.dart';
 import 'verify_utility.dart';
 
 class BookObject {
@@ -16,14 +17,14 @@ class BookObject {
 
   BookObject.fromPath(String path) : this(name: basename(path), coverFile: File(join(path, 'cover.jpg')));
   BookObject.fromObject(BookObject bookObject) : this(name: bookObject.name, coverFile: bookObject.coverFile);
-  BookObject.fromName(String name) : this.fromPath(FileProcess.getBookPathByName(name));
+  BookObject.fromName(String name) : this.fromPath(join(filePath.libraryRoot, name));
 
   /// File process
   Future<bool> create() async {
     if (!VerifyUtility.isFolderNameValid(name)) {
       return false;
     }
-    final folder = FileProcess.getBookDirectoryByName(name);
+    final Directory folder = Directory(join(filePath.libraryRoot, name));
     if (folder.existsSync()) {
       return false;
     } else {
@@ -44,8 +45,8 @@ class BookObject {
     }
 
     bool isSuccess = true;
-    final Directory oldFolder = FileProcess.getBookDirectoryByName(name);
-    final Directory newFolder = FileProcess.getBookDirectoryByName(newObject.name);
+    final Directory oldFolder = Directory(join(filePath.libraryRoot, name));
+    final Directory newFolder = Directory(join(filePath.libraryRoot, newObject.name));
 
     if (newObject.coverFile != coverFile) {
       if (newObject.coverFile == null) {
@@ -73,7 +74,7 @@ class BookObject {
 
   bool delete() {
     if (VerifyUtility.isFolderNameValid(name)) {
-      final folder = FileProcess.getBookDirectoryByName(name);
+      final Directory folder = Directory(join(filePath.libraryRoot, name));
       if (folder.existsSync()) {
         folder.delete(recursive: true);
         return !folder.existsSync();
@@ -83,7 +84,7 @@ class BookObject {
   }
 
   bool isExists() {
-    return VerifyUtility.isFolderNameValid(name) && FileProcess.getBookDirectoryByName(name).existsSync();
+    return VerifyUtility.isFolderNameValid(name) && Directory(join(filePath.libraryRoot, name)).existsSync();
   }
 
   /// Cover of this book
@@ -103,5 +104,17 @@ class BookObject {
     if (_coverImage != null) {
       _coverImage!.evict();
     }
+  }
+
+  String getPath() {
+    return join(filePath.libraryRoot, name);
+  }
+
+  static List<String> getBookList() {
+    final Directory folder = Directory(filePath.libraryRoot);
+    folder.createSync(recursive: true);
+    final List<String> entries = folder.listSync().whereType<Directory>().map((e) => e.path).toList();
+    entries.sort(compareNatural);
+    return entries;
   }
 }

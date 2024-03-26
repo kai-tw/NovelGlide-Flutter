@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:novelglide/shared/bookmark_object.dart';
 
+import '../../../shared/bookmark_object.dart';
 import '../../../shared/chapter_object.dart';
-import '../../../shared/file_process.dart';
 import 'reader_button_state.dart';
 import 'reader_settings.dart';
 import 'reader_state.dart';
@@ -24,7 +23,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       chapterNumber: _chapterNumber,
       prevChapterNumber: await _getPrevChapterNumber(),
       nextChapterNumber: await _getNextChapterNumber(),
-      contentLines: FileProcess.getChapterContent(_bookName, _chapterNumber),
+      contentLines: ChapterObject.getContent(_bookName, _chapterNumber),
       bookmarkObject: bookmarkObject,
       readerSettings: readerSettings,
       buttonState: state.buttonState.copyWith(
@@ -64,7 +63,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// Chapter
   Future<int?> _getPrevChapterNumber() async {
-    final List<ChapterObject> chapterList = FileProcess.getChapterList(_bookName);
+    final List<ChapterObject> chapterList = ChapterObject.getList(_bookName);
     int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == _chapterNumber);
 
     if (currentIndex > 0) {
@@ -74,7 +73,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   Future<int?> _getNextChapterNumber() async {
-    final List<ChapterObject> chapterList = FileProcess.getChapterList(_bookName);
+    final List<ChapterObject> chapterList = ChapterObject.getList(_bookName);
     int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == _chapterNumber);
 
     if (0 <= currentIndex && currentIndex < chapterList.length - 1) {
@@ -87,10 +86,11 @@ class ReaderCubit extends Cubit<ReaderState> {
   void saveBookmark() {
     final BookmarkObject bookmarkObject = BookmarkObject(
       isValid: true,
+      bookName: _bookName,
       chapterNumber: _chapterNumber,
       area: currentArea,
       savedTime: DateTime.now(),
-    )..save(_bookName);
+    )..save();
     emit(state.copyWith(bookmarkObject: bookmarkObject));
   }
 

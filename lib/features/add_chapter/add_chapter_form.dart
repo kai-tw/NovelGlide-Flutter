@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../common_components/common_file_picker/common_file_picker.dart';
 import 'add_chapter_file_picker.dart';
 import 'add_chapter_name_input_field.dart';
 import 'add_chapter_number_input_field.dart';

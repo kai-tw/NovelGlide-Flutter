@@ -11,6 +11,7 @@ import 'shared/file_path.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await filePath.init();
+  debugPrint(filePath.toString());
   Hive.defaultDirectory = filePath.hiveRoot;
   runApp(const App());
 }

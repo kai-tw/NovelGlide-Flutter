@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'file_process.dart';
-
 class FilePath {
   late final String supportFolder;
   late final String documentFolder;
@@ -20,20 +18,22 @@ class FilePath {
     cacheFolder = (await getApplicationCacheDirectory()).path;
     tempFolder = (await getTemporaryDirectory()).path;
 
+    Directory folder;
+
     // Library.
-    final Directory libraryFolder = Directory(join(supportFolder, 'Library'));
-    if (!libraryFolder.existsSync()) {
-      libraryFolder.createSync(recursive: true);
+    folder = Directory(join(documentFolder, 'Library'));
+    if (!folder.existsSync()) {
+      folder.createSync(recursive: true);
     }
-    libraryRoot = libraryFolder.path;
+    libraryRoot = folder.path;
 
     // Hive
-    final Directory hiveFolder = Directory(join(supportFolder, 'Hive'));
-    if (!hiveFolder.existsSync()) {
-      hiveFolder.createSync(recursive: true);
-    }
-    FileProcess.createHiveFolders(hiveFolder.path);
-    hiveRoot = hiveFolder.path;
+    hiveRoot = documentFolder;
+  }
+
+  @override
+  String toString() {
+    return "Sup:\t$supportFolder\nDoc:\t$documentFolder\nCache:\t$cacheFolder\nTemp:\t$tempFolder";
   }
 }
 

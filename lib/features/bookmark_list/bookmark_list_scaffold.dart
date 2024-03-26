@@ -10,7 +10,7 @@ class BookmarkListScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
+    final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context)..refresh();
     return Scaffold(
       appBar: const BookmarkListAppBar(),
       body: RefreshIndicator(

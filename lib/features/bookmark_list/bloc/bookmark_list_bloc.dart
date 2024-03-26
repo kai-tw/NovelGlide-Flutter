@@ -2,15 +2,14 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/bookmark_object.dart';
-import '../../../shared/file_process.dart';
 
-enum BookmarkListStateCode { normal, unload, loading, empty }
+enum BookmarkListStateCode { normal, loading, empty }
 
 class BookmarkListCubit extends Cubit<BookmarkListState> {
   BookmarkListCubit() : super(const BookmarkListState());
 
   void refresh() {
-    final List<BookmarkObject> bookmarkList = FileProcess.getBookmarkList();
+    final List<BookmarkObject> bookmarkList = BookmarkObject.getList();
     bookmarkList.sort(_sortBySavedTime);
 
     emit(BookmarkListState(
@@ -28,8 +27,11 @@ class BookmarkListState extends Equatable {
   final BookmarkListStateCode code;
   final List<BookmarkObject> bookmarkList;
 
+  @override
+  List<Object?> get props => [code, bookmarkList];
+
   const BookmarkListState({
-    this.code = BookmarkListStateCode.unload,
+    this.code = BookmarkListStateCode.loading,
     this.bookmarkList = const [],
   });
 
@@ -42,7 +44,4 @@ class BookmarkListState extends Equatable {
       bookmarkList: bookmarkList ?? this.bookmarkList,
     );
   }
-
-  @override
-  List<Object?> get props => [bookmarkList];
 }

@@ -47,7 +47,10 @@ class BookmarkListSliverListItem extends StatelessWidget {
           motion: const DrawerMotion(),
           children: [
             SlidableAction(
-              onPressed: null,
+              onPressed: (_) {
+                _bookmarkObject.clear();
+                cubit.refresh();
+              },
               backgroundColor: Theme.of(context).colorScheme.error,
               foregroundColor: Theme.of(context).colorScheme.onError,
               icon: Icons.delete_outline_rounded,
@@ -55,11 +58,7 @@ class BookmarkListSliverListItem extends StatelessWidget {
           ],
         ),
         child: GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(_navigateToReader(bookName, chapterNumber)).then((_) {
-              cubit.refresh();
-            });
-          },
+          onTap: () => Navigator.of(context).push(_navigateToReader(bookName, chapterNumber)).then((_) => cubit.refresh()),
           child: Row(
             children: [
               Icon(
