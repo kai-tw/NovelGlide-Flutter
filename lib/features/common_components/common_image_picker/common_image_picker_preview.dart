@@ -20,7 +20,7 @@ class CommonImagePickerPreview extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       child: BlocBuilder<CommonFilePickerCubit, CommonFilePickerState>(
         builder: (context, state) {
-          if (state.file != null && state.file!.existsSync()) {
+          if (state.code == CommonFilePickerStateCode.exist) {
             return Image(
               image: FileImage(state.file!),
               fit: BoxFit.cover,

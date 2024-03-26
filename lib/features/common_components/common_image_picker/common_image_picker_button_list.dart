@@ -17,7 +17,7 @@ class CommonImagePickerButtonList extends StatelessWidget {
           const CommonFilePickerSelectButton(type: CommonFilePickerType.image),
         ];
 
-        if (state.file != null) {
+        if (state.code == CommonFilePickerStateCode.exist) {
           list.add(const CommonFilePickerDeleteButton(type: CommonFilePickerType.image));
         }
 
