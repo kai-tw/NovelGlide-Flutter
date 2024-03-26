@@ -25,6 +25,7 @@ class RdrNavJmpToBkmBtn extends StatelessWidget {
           case RdrBtnJmpToBkmState.disabled:
             onPressed = null;
         }
+
         return IconButton(
           onPressed: onPressed,
           icon: const Icon(Icons.bookmark_rounded),

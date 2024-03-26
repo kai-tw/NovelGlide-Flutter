@@ -109,7 +109,7 @@ class BookmarkListSliverListItem extends StatelessWidget {
 
   Route _navigateToReader(String bookName, int chapterNumber) {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => ReaderWidget(bookName, chapterNumber),
+      pageBuilder: (context, animation, secondaryAnimation) => ReaderWidget(bookName, chapterNumber, isAutoJump: true),
       transitionDuration: const Duration(milliseconds: 300),
       reverseTransitionDuration: const Duration(milliseconds: 300),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {

@@ -10,15 +10,18 @@ import 'reader_state.dart';
 class ReaderCubit extends Cubit<ReaderState> {
   final String _bookName;
   int _chapterNumber;
+  bool isAutoJump;
   final ScrollController scrollController = ScrollController();
   double currentArea = 0.0;
 
-  ReaderCubit(this._bookName, this._chapterNumber) : super(ReaderState(_bookName, _chapterNumber));
+  ReaderCubit(this._bookName, this._chapterNumber, {this.isAutoJump = false})
+      : super(ReaderState(_bookName, _chapterNumber));
 
   void initialize() async {
     final BookmarkObject bookmarkObject = BookmarkObject.load(_bookName);
     final ReaderSettings readerSettings = state.readerSettings.load();
-    final bool isJumpAvailable = bookmarkObject.isValid && bookmarkObject.chapterNumber == _chapterNumber;
+    final bool isJumpAvailable =
+        !readerSettings.autoSave && bookmarkObject.isValid && bookmarkObject.chapterNumber == _chapterNumber;
     emit(state.copyWith(
       chapterNumber: _chapterNumber,
       prevChapterNumber: await _getPrevChapterNumber(),
@@ -31,6 +34,10 @@ class ReaderCubit extends Cubit<ReaderState> {
         jmpToBkmState: isJumpAvailable ? RdrBtnJmpToBkmState.normal : RdrBtnJmpToBkmState.disabled,
       ),
     ));
+
+    if (state.readerSettings.autoSave || isAutoJump) {
+      onClickedJmpToBkmBtn();
+    }
   }
 
   void changeChapter(int chapterNumber) {
@@ -48,6 +55,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     );
     final RdrBtnState buttonState = state.buttonState.copyWith(
       addBkmState: newSettings.autoSave ? RdrBtnAddBkmState.disabled : RdrBtnAddBkmState.normal,
+      jmpToBkmState: newSettings.autoSave ? RdrBtnJmpToBkmState.disabled : RdrBtnJmpToBkmState.normal,
     );
     emit(state.copyWith(readerSettings: newSettings, buttonState: buttonState));
     return newSettings;
@@ -112,7 +120,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   void onClickedAddBkmBtn() {
-    final isAutoSave = state.readerSettings.autoSave;
+    final bool isAutoSave = state.readerSettings.autoSave;
     final RdrBtnAddBkmState defaultAddBkmState = isAutoSave ? RdrBtnAddBkmState.disabled : RdrBtnAddBkmState.normal;
 
     if (!isAutoSave) {
@@ -159,8 +167,10 @@ class ReaderCubit extends Cubit<ReaderState> {
     );
   }
 
-  /// Dispose
-  void dispose() {
+  void onPopInvoked() {
+    if (state.readerSettings.autoSave) {
+      saveBookmark();
+    }
     scrollController.dispose();
   }
 }

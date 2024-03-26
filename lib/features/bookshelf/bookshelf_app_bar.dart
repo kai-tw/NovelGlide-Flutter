@@ -6,10 +6,10 @@ import 'bookshelf_app_bar_default.dart';
 import 'bookshelf_app_bar_selecting.dart';
 
 class BookshelfAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const BookshelfAppBar({super.key});
-
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  const BookshelfAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
