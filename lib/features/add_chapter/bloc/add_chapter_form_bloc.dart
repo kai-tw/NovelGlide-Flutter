@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum AddChapterNameStateCode { blank, invalid, exists }
-enum AddChapterNumberStateCode { blank, invalid, exists }
+enum AddChapterNameStateCode { blank, invalid, normal }
+enum AddChapterNumberStateCode { blank, invalid, normal }
 
 class AddChapterFormCubit extends Cubit<AddChapterFormState> {
   AddChapterFormCubit() : super(const AddChapterFormState());
@@ -15,8 +15,13 @@ class AddChapterFormCubit extends Cubit<AddChapterFormState> {
     if (numberValue == null) {
       return AddChapterNumberStateCode.blank;
     }
-    int number = int.parse(numberValue);
-    return AddChapterNumberStateCode.blank;
+
+    int? number = int.tryParse(numberValue);
+    if (number == null || number <= 0) {
+      return AddChapterNumberStateCode.invalid;
+    }
+
+    return AddChapterNumberStateCode.normal;
   }
 
   Future<bool> submit() async {
