@@ -37,7 +37,7 @@
   "savedTimeFunction": "{part}儲存",
   "savedTimeToday": "今天",
   "savedTimeYesterday": "昨天",
-  "savedTimeOthers": "{days} 天前",
+  "savedTimeOthersFunction": "{days} 天前",
   "readerSettingsResetButton": "重設設定",
   "readerSettingsResetButtonDone": "重設成功",
   "readerSettingsAutoSaveSwitch": "自動插入書籤"
