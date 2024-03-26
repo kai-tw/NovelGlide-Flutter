@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_form_decoration.dart';
+import '../common_components/common_form_help_button.dart';
 import 'bloc/add_chapter_form_bloc.dart';
 
 class AddChapterNumberInputField extends StatelessWidget {
@@ -13,13 +15,19 @@ class AddChapterNumberInputField extends StatelessWidget {
     final AddChapterFormCubit cubit = BlocProvider.of<AddChapterFormCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final Map<AddChapterNumberStateCode, String> nameStateStringMap = {
-      AddChapterNumberStateCode.blank: appLocalizations.input_field_blank,
-      AddChapterNumberStateCode.invalid: appLocalizations.input_field_invalid,
-      AddChapterNumberStateCode.exists: appLocalizations.book_exists,
+      AddChapterNumberStateCode.blank: appLocalizations.fieldBlank,
+      AddChapterNumberStateCode.invalid: appLocalizations.fieldInvalid,
     };
     return TextFormField(
-      decoration: CommonFormDecoration.inputDecoration(appLocalizations.chapter_number),
+      decoration: CommonFormDecoration.inputDecoration(
+        appLocalizations.fieldChapterNumber,
+        suffixIcon: CommonFormHelpButton(
+          title: appLocalizations.ruleDialogChapterNumberTitle,
+          content: appLocalizations.ruleDialogChapterNumberContent,
+        ),
+      ),
       keyboardType: TextInputType.number,
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       validator: (value) => nameStateStringMap[cubit.numberVerify(value)],
     );
   }

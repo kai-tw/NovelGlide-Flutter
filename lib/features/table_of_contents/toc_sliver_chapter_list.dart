@@ -18,7 +18,7 @@ class TOCSliverChapterList extends StatelessWidget {
             (BuildContext context, int index) {
               int chapterNumber = state.chapterList[index].ordinalNumber;
               String chapterTitle = state.chapterList[index].title;
-              String localizedOrdinal = AppLocalizations.of(context)!.chapter_label(chapterNumber);
+              String localizedOrdinal = AppLocalizations.of(context)!.chapterLabelFunction(chapterNumber);
 
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),

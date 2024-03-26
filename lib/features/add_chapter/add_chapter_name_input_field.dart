@@ -13,12 +13,11 @@ class AddChapterNameInputField extends StatelessWidget {
     final AddChapterFormCubit cubit = BlocProvider.of<AddChapterFormCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final Map<AddChapterNameStateCode, String> nameStateStringMap = {
-      AddChapterNameStateCode.blank: appLocalizations.input_field_blank,
-      AddChapterNameStateCode.invalid: appLocalizations.input_field_invalid,
-      AddChapterNameStateCode.exists: appLocalizations.book_exists,
+      AddChapterNameStateCode.blank: appLocalizations.fieldBlank,
+      AddChapterNameStateCode.invalid: appLocalizations.fieldInvalid,
     };
     return TextFormField(
-      decoration: CommonFormDecoration.inputDecoration(appLocalizations.chapter_name),
+      decoration: CommonFormDecoration.inputDecoration(appLocalizations.fieldChapterName),
       validator: (value) => nameStateStringMap[cubit.nameVerify(value)],
     );
   }

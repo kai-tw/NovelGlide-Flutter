@@ -7,7 +7,7 @@ class EditBookTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      AppLocalizations.of(context)!.title_edit_book,
+      AppLocalizations.of(context)!.titleEditBook,
       textAlign: TextAlign.center,
       style: const TextStyle(fontSize: 20),
     );

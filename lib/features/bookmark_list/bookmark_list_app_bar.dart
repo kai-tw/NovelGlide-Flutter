@@ -14,7 +14,7 @@ class BookmarkListAppBar extends StatelessWidget implements PreferredSizeWidget 
       ),
       title: Align(
         alignment: Alignment.centerLeft,
-        child: Text(AppLocalizations.of(context)!.title_bookmarks),
+        child: Text(AppLocalizations.of(context)!.titleBookmarks),
       ),
     );
   }

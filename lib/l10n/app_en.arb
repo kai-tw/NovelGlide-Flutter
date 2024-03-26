@@ -1,8 +1,6 @@
 {
-  "app_name": "NovelGlide",
+  "appName": "NovelGlide",
   "empty": "There's nothing.",
-  "not_loaded": "It didn't loaded yet.",
-  "click_to_load": "Click here to load it.",
   "loading": "Loading",
   "submit": "Submit",
   "confirm": "Confirm",
@@ -14,33 +12,29 @@
   "preview": "Preview",
   "yes": "Yes",
   "no": "No",
-  "add_successful": "Add successfully.",
-  "add_failed": "Add failed.",
-  "edit_successful": "Edit successfully.",
-  "edit_failed": "Edit failed.",
-  "confirm_content_delete": "You will delete them forever.",
-  "title_select_a_file": "Select a file",
-  "title_bookmarks": "Bookmarks",
-  "title_settings": "Settings",
-  "title_add_book": "Add a book",
-  "title_add_chapter": "Add a chapter",
-  "title_edit_book": "Edit the book",
-  "title_multiEdit_book": "Edit the books",
-  "book_name": "Book name",
-  "book_cover": "The cover of this book",
-  "title_book_name_rule": "Book naming rule",
-  "book_name_rule_content": "You can't use these symbols: ",
-  "book_name_same": "The book name is same as the original.",
-  "book_exists": "The book already exists.",
-  "chapter_name": "Chapter Name",
-  "chapter_number": "Chapter #",
-  "select_image": "Select an image",
-  "remove_image": "Remove the image",
-  "input_optional": " (Optional)",
-  "input_field_invalid": "It's invalid.",
-  "input_field_blank": "It cannot be blank.",
-  "chapter_label": "Chapter {number}",
-  "@chapter_label": {
+  "dialogDeleteConfirmation": "You will delete them forever.",
+  "titleSelectFile": "Select a file",
+  "titleBookmarks": "Bookmarks",
+  "titleSettings": "Settings",
+  "titleAddBook": "Add a book",
+  "titleAddChapter": "Add a chapter",
+  "titleEditBook": "Edit the book",
+  "bookName": "Book name",
+  "bookCover": "The cover of this book",
+  "ruleDialogBookNameTitle": "Book naming rule",
+  "ruleDialogBookNameContent": "You can't use these symbols: ",
+  "fieldBookExists": "The book already exists.",
+  "fieldChapterName": "Chapter Name",
+  "fieldChapterNumber": "Chapter #",
+  "ruleDialogChapterNumberTitle": "The rule of number",
+  "ruleDialogChapterNumberContent": "It must be larger than 0.",
+  "selectImage": "Select an image",
+  "removeImage": "Remove the image",
+  "fieldOptional": " (Optional)",
+  "fieldInvalid": "It's invalid.",
+  "fieldBlank": "It cannot be blank.",
+  "chapterLabelFunction": "Chapter {number}",
+  "@chapterLabelFunction": {
     "description": "Display Chapter %d",
     "placeholders": {
       "number": {
@@ -49,20 +43,20 @@
       }
     }
   },
-  "last_save_days": "Saved in {part}.",
-  "@last_save_days": {
+  "savedTimeFunction": "Saved in {part}.",
+  "@savedTimeFunction": {
     "description": "Display %s days saved before.",
     "placeholder": {
       "part": {
         "type": "String",
-        "example": "last_save_days_today"
+        "example": "savedTime_today"
       }
     }
   },
-  "last_save_days_today": "Today",
-  "last_save_days_yesterday": "Yesterday",
-  "last_save_days_others": "{days} days before",
-  "@last_save_days_others": {
+  "savedTimeToday": "Today",
+  "savedTimeYesterday": "Yesterday",
+  "savedTimeOthersFunction": "{days} days before",
+  "@savedTimeOthersFunction": {
     "description": "Display %d days.",
     "placeholder": {
       "days": {
@@ -71,7 +65,7 @@
       }
     }
   },
-  "reader_settings_reset_button": "Reset settings",
-  "reader_settings_reset_button_done": "Reset done",
-  "reader_settings_auto_save_switch": "Auto add a bookmark"
+  "readerSettingsResetButton": "Reset settings",
+  "readerSettingsResetButtonDone": "Reset done",
+  "readerSettingsAutoSaveSwitch": "Auto add a bookmark"
 }

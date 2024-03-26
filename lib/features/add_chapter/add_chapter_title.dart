@@ -7,7 +7,7 @@ class AddChapterTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      AppLocalizations.of(context)!.title_add_chapter,
+      AppLocalizations.of(context)!.titleAddChapter,
       textAlign: TextAlign.center,
       style: const TextStyle(fontSize: 20),
     );

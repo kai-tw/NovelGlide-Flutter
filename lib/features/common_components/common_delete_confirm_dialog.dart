@@ -10,7 +10,7 @@ class CommonDeleteConfirmDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return CommonConfirmDialog(
       iconData: Icons.delete_forever,
-      content: AppLocalizations.of(context)!.confirm_content_delete,
+      content: AppLocalizations.of(context)!.dialogDeleteConfirmation,
       yesString: AppLocalizations.of(context)!.delete,
       yesColor: Theme.of(context).colorScheme.error,
       noString: AppLocalizations.of(context)!.cancel,

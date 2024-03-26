@@ -16,16 +16,16 @@ class EditBookNameInputField extends StatelessWidget {
     final EditBookFormCubit cubit = BlocProvider.of<EditBookFormCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final Map<EditBookNameStateCode, String> nameStateStringMap = {
-      EditBookNameStateCode.blank: appLocalizations.input_field_blank,
-      EditBookNameStateCode.invalid: appLocalizations.input_field_invalid,
-      EditBookNameStateCode.exists: appLocalizations.book_exists,
+      EditBookNameStateCode.blank: appLocalizations.fieldBlank,
+      EditBookNameStateCode.invalid: appLocalizations.fieldInvalid,
+      EditBookNameStateCode.exists: appLocalizations.fieldBookExists,
     };
     return TextFormField(
       decoration: CommonFormDecoration.inputDecoration(
-        appLocalizations.book_name,
+        appLocalizations.bookName,
         suffixIcon: CommonFormHelpButton(
-          title: appLocalizations.title_book_name_rule,
-          content: '${appLocalizations.book_name_rule_content}${VerifyUtility.folderNamePattern}',
+          title: appLocalizations.ruleDialogBookNameTitle,
+          content: '${appLocalizations.ruleDialogBookNameContent}${VerifyUtility.folderNamePattern}',
         ),
       ),
       initialValue: cubit.oldData.name,

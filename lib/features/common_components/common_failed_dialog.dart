@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CommonFailedDialog extends StatelessWidget {
   const CommonFailedDialog({super.key});
@@ -7,12 +6,8 @@ class CommonFailedDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      icon: const Icon(Icons.error_outline_rounded, size: 40.0),
+      icon: const Icon(Icons.close_rounded, size: 40.0),
       iconColor: Theme.of(context).colorScheme.error,
-      content: Text(
-        AppLocalizations.of(context)!.add_failed,
-        textAlign: TextAlign.center,
-      ),
     );
   }
 }

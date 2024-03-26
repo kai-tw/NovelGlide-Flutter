@@ -10,7 +10,7 @@ class AddChapterFilePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CommonFilePicker(
-      labelText: AppLocalizations.of(context)!.title_select_a_file,
+      labelText: AppLocalizations.of(context)!.titleSelectFile,
       type: CommonFilePickerType.custom,
       allowedExtensions: const ["txt"],
     );

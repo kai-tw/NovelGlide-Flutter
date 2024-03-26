@@ -7,7 +7,7 @@ class AddBookTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      AppLocalizations.of(context)!.title_add_book,
+      AppLocalizations.of(context)!.titleAddBook,
       textAlign: TextAlign.center,
       style: const TextStyle(fontSize: 20),
     );

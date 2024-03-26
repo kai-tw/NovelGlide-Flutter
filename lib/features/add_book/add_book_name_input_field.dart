@@ -16,17 +16,17 @@ class AddBookNameInputField extends StatelessWidget {
     final AddBookFormCubit cubit = BlocProvider.of<AddBookFormCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final Map<AddBookFormNameStateCode, String> nameStateStringMap = {
-      AddBookFormNameStateCode.blank: appLocalizations.input_field_blank,
-      AddBookFormNameStateCode.invalid: appLocalizations.input_field_invalid,
-      AddBookFormNameStateCode.exists: appLocalizations.book_exists,
+      AddBookFormNameStateCode.blank: appLocalizations.fieldBlank,
+      AddBookFormNameStateCode.invalid: appLocalizations.fieldInvalid,
+      AddBookFormNameStateCode.exists: appLocalizations.fieldBookExists,
     };
 
     return TextFormField(
       decoration: CommonFormDecoration.inputDecoration(
-        appLocalizations.book_name,
+        appLocalizations.bookName,
         suffixIcon: CommonFormHelpButton(
-          title: appLocalizations.title_book_name_rule,
-          content: '${appLocalizations.book_name_rule_content}${VerifyUtility.folderNamePattern}',
+          title: appLocalizations.ruleDialogBookNameTitle,
+          content: '${appLocalizations.ruleDialogBookNameContent}${VerifyUtility.folderNamePattern}',
         ),
       ),
       inputFormatters: [

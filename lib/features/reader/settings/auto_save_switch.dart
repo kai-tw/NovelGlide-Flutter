@@ -17,7 +17,7 @@ class ReaderSettingsAutoSaveSwitch extends StatelessWidget {
           return Row(
             children: [
               Expanded(
-                child: Text(AppLocalizations.of(context)!.reader_settings_auto_save_switch),
+                child: Text(AppLocalizations.of(context)!.readerSettingsAutoSaveSwitch),
               ),
               Switch(
                 value: state.readerSettings.autoSave,

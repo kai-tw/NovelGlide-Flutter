@@ -24,16 +24,16 @@ class BookmarkListSliverListItem extends StatelessWidget {
 
     switch (daysPassed) {
       case 0:
-        savedTimeString = appLocalizations.last_save_days_today;
+        savedTimeString = appLocalizations.savedTimeToday;
         break;
       case 1:
-        savedTimeString = appLocalizations.last_save_days_yesterday;
+        savedTimeString = appLocalizations.savedTimeYesterday;
         break;
       default:
-        savedTimeString = appLocalizations.last_save_days_others(daysPassed);
+        savedTimeString = appLocalizations.savedTimeOthersFunction(daysPassed);
     }
 
-    savedTimeString = appLocalizations.last_save_days(savedTimeString);
+    savedTimeString = appLocalizations.savedTimeFunction(savedTimeString);
 
     return Container(
       margin: const EdgeInsets.all(16.0),
@@ -85,7 +85,7 @@ class BookmarkListSliverListItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        appLocalizations.chapter_label(chapterNumber),
+                        appLocalizations.chapterLabelFunction(chapterNumber),
                         style: const TextStyle(
                           fontSize: 14.0,
                         ),

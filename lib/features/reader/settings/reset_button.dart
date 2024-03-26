@@ -19,7 +19,7 @@ class ReaderSettingsResetButton extends StatelessWidget {
         child: BlocBuilder<ReaderCubit, ReaderState>(
           builder: (BuildContext context, ReaderState state) {
             IconData iconData = Icons.restart_alt_rounded;
-            String text = AppLocalizations.of(context)!.reader_settings_reset_button;
+            String text = AppLocalizations.of(context)!.readerSettingsResetButton;
             Color defaultColor = Theme.of(context).colorScheme.error;
             void Function()? onPressed;
 
@@ -29,7 +29,7 @@ class ReaderSettingsResetButton extends StatelessWidget {
                 break;
               case RdrBtnRstSettingsState.done:
                 iconData = Icons.check_rounded;
-                text = AppLocalizations.of(context)!.reader_settings_reset_button_done;
+                text = AppLocalizations.of(context)!.readerSettingsResetButtonDone;
                 defaultColor = Colors.green;
                 break;
               case RdrBtnRstSettingsState.disabled:
