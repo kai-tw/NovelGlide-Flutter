@@ -16,6 +16,7 @@ class EditBookImagePicker extends StatelessWidget {
       labelText: appLocalizations.bookCover + appLocalizations.fieldOptional,
       aspectRatio: 1.5,
       imageFile: cubit.oldData.coverFile,
+      isRequired: false,
       onSaved: (imageFile) => cubit.newData.coverFile = imageFile,
     );
   }

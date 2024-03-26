@@ -51,6 +51,9 @@ class BookshelfState extends Equatable {
   final List<BookObject> bookList;
   final Set<String> selectedSet;
 
+  @override
+  List<Object?> get props => [code, bookList, selectedSet];
+
   const BookshelfState({
     this.code = BookshelfStateCode.unload,
     this.bookList = const [],
@@ -69,7 +72,4 @@ class BookshelfState extends Equatable {
       selectedSet: selectedSet ?? this.selectedSet,
     );
   }
-
-  @override
-  List<Object?> get props => [code, bookList, selectedSet];
 }

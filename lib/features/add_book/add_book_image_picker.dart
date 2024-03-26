@@ -15,6 +15,7 @@ class AddBookImagePicker extends StatelessWidget {
     return CommonImagePicker(
       labelText: AppLocalizations.of(context)!.bookCover + AppLocalizations.of(context)!.fieldOptional,
       aspectRatio: 1.5,
+      isRequired: false,
       onSaved: (imageFile) => data.coverFile = imageFile,
     );
   }

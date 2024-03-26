@@ -13,6 +13,7 @@ class AddChapterFilePicker extends StatelessWidget {
       labelText: AppLocalizations.of(context)!.titleSelectFile,
       type: CommonFilePickerType.custom,
       allowedExtensions: const ["txt"],
+      onSaved: (file) {},
     );
   }
 }
