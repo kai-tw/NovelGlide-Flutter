@@ -51,10 +51,6 @@ class CommonFilePickerState extends Equatable {
 
   CommonFilePickerState({this.file})
       : code = file != null && file.existsSync() ? CommonFilePickerStateCode.exist : CommonFilePickerStateCode.blank;
-
-  void debug() {
-    print("code: $code, file: $file");
-  }
 }
 
 enum CommonFilePickerStateCode { blank, exist }

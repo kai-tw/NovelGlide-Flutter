@@ -109,12 +109,4 @@ class BookObject {
   String getPath() {
     return join(filePath.libraryRoot, name);
   }
-
-  static List<String> getBookList() {
-    final Directory folder = Directory(filePath.libraryRoot);
-    folder.createSync(recursive: true);
-    final List<String> entries = folder.listSync().whereType<Directory>().map((e) => e.path).toList();
-    entries.sort(compareNatural);
-    return entries;
-  }
 }

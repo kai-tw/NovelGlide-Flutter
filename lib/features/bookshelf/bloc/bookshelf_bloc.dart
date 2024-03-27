@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/book_object.dart';
+import '../../../shared/book_utility.dart';
 
 enum BookshelfStateCode { normal, selecting, empty, unload, loading }
 
@@ -9,7 +10,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   BookshelfCubit() : super(const BookshelfState());
 
   void refresh() {
-    List<BookObject> list = BookObject.getBookList().map((e) => BookObject.fromPath(e)).toList();
+    List<BookObject> list = BookUtility.getObjectList();
     BookshelfStateCode code = list.isEmpty ? BookshelfStateCode.empty : BookshelfStateCode.normal;
     emit(BookshelfState(code: code, bookList: list));
   }
