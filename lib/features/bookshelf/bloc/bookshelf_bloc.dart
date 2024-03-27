@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../shared/book_object.dart';
 import '../../../shared/book_utility.dart';
 
-enum BookshelfStateCode { normal, selecting, empty, unload, loading }
+enum BookshelfStateCode { normal, selecting, empty, loading }
 
 class BookshelfCubit extends Cubit<BookshelfState> {
   BookshelfCubit() : super(const BookshelfState());
@@ -56,7 +56,7 @@ class BookshelfState extends Equatable {
   List<Object?> get props => [code, bookList, selectedSet];
 
   const BookshelfState({
-    this.code = BookshelfStateCode.unload,
+    this.code = BookshelfStateCode.loading,
     this.bookList = const [],
     this.selectedSet = const {},
   });

@@ -11,8 +11,7 @@ class BookObject {
   File? coverFile;
   FileImage? _coverImage;
 
-  BookObject({this.name = '', this.coverFile})
-      : _coverImage = coverFile != null ? FileImage(coverFile) : null;
+  BookObject({this.name = '', this.coverFile});
 
   BookObject.fromPath(String path) : this(name: basename(path), coverFile: File(join(path, 'cover.jpg')));
   BookObject.fromObject(BookObject bookObject) : this(name: bookObject.name, coverFile: bookObject.coverFile);
@@ -75,7 +74,7 @@ class BookObject {
     if (VerifyUtility.isFolderNameValid(name)) {
       final Directory folder = Directory(join(filePath.libraryRoot, name));
       if (folder.existsSync()) {
-        folder.delete(recursive: true);
+        folder.deleteSync(recursive: true);
         return !folder.existsSync();
       }
     }
@@ -86,15 +85,22 @@ class BookObject {
     return VerifyUtility.isFolderNameValid(name) && Directory(join(filePath.libraryRoot, name)).existsSync();
   }
 
+  String? getCoverPath() {
+    final File file = File(join(getPath(), 'cover.jpg'));
+    return file.existsSync() ? file.path : null;
+  }
+
   /// Cover of this book
   Widget getCover() {
     if (coverFile != null && coverFile!.existsSync()) {
+      _coverImage = FileImage(coverFile!);
       return Image(
         image: _coverImage!,
         fit: BoxFit.cover,
         gaplessPlayback: true,
       );
     } else {
+      _coverImage = null;
       return Image.asset('assets/images/book_cover_light.jpg', fit: BoxFit.cover);
     }
   }

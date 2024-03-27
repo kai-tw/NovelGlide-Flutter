@@ -7,8 +7,8 @@ import 'bloc/bookshelf_bloc.dart';
 import 'bookshelf_book_cover.dart';
 import 'bookshelf_book_title.dart';
 
-class BookshelfBook extends StatelessWidget {
-  const BookshelfBook(this.bookObject, {super.key});
+class BookshelfSliverListItem extends StatelessWidget {
+  const BookshelfSliverListItem(this.bookObject, {super.key});
 
   final BookObject bookObject;
 
