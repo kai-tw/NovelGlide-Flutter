@@ -8,7 +8,11 @@ class AddChapterFormCubit extends Cubit<AddChapterFormState> {
   AddChapterFormCubit() : super(const AddChapterFormState());
 
   AddChapterNameStateCode nameVerify(String? name) {
-    return AddChapterNameStateCode.blank;
+    if (name == null || name == '') {
+      return AddChapterNameStateCode.blank;
+    }
+
+    return AddChapterNameStateCode.normal;
   }
 
   AddChapterNumberStateCode numberVerify(String? numberValue) {
