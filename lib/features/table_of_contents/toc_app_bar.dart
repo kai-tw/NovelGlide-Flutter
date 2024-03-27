@@ -20,7 +20,10 @@ class TOCAppBar extends StatelessWidget implements PreferredSizeWidget {
         const AddChapterCalleeAddButton(),
         EditBookCalleeEditButton(
           bookObject: cubit.bookObject,
-          onSuccess: () => cubit.refresh(),
+          onSuccess: () {
+            cubit.bookObject.refreshCover();
+            cubit.refresh();
+          },
         ),
       ],
     );

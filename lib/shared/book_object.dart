@@ -57,6 +57,7 @@ class BookObject {
         // Change cover.
         File newCoverImage = newObject.coverFile!.copySync(join(newFolder.path, 'cover.jpg'));
         isSuccess = isSuccess && newCoverImage.existsSync();
+        refreshCover();
       }
     }
 
@@ -83,11 +84,6 @@ class BookObject {
 
   bool isExists() {
     return VerifyUtility.isFolderNameValid(name) && Directory(join(filePath.libraryRoot, name)).existsSync();
-  }
-
-  String? getCoverPath() {
-    final File file = File(join(getPath(), 'cover.jpg'));
-    return file.existsSync() ? file.path : null;
   }
 
   /// Cover of this book

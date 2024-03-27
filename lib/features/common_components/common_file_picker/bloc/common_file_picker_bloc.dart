@@ -9,7 +9,7 @@ import '../common_file_picker_type.dart';
 class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
   File? file;
 
-  CommonFilePickerCubit({this.file}) : super(CommonFilePickerState(file: file));
+  CommonFilePickerCubit({this.file}) : super(CommonFilePickerState.fromInitial(file: file));
 
   void pickImage() async {
     pickFile(type: CommonFilePickerType.image);
@@ -32,13 +32,13 @@ class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
       removeFile();
     } else {
       file = File(f.files.single.path!);
-      emit(CommonFilePickerState(file: file));
+      emit(CommonFilePickerState.fromFile(file: file));
     }
   }
 
   void removeFile() {
     file = null;
-    emit(CommonFilePickerState());
+    emit(CommonFilePickerState.fromNull());
   }
 }
 
@@ -49,8 +49,12 @@ class CommonFilePickerState extends Equatable {
   @override
   List<Object?> get props => [code, file];
 
-  CommonFilePickerState({this.file})
+  const CommonFilePickerState(this.code, this.file);
+  CommonFilePickerState.fromInitial({this.file})
+      : code = file != null && file.existsSync() ? CommonFilePickerStateCode.exist : CommonFilePickerStateCode.initial;
+  CommonFilePickerState.fromFile({this.file})
       : code = file != null && file.existsSync() ? CommonFilePickerStateCode.exist : CommonFilePickerStateCode.blank;
+  CommonFilePickerState.fromNull() : this.fromFile();
 }
 
-enum CommonFilePickerStateCode { blank, exist }
+enum CommonFilePickerStateCode { initial, blank, exist }
