@@ -17,7 +17,7 @@ class TOCSliverChapterList extends StatelessWidget {
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
               int chapterNumber = state.chapterList[index].ordinalNumber;
-              String chapterTitle = state.chapterList[index].title;
+              String chapterTitle = state.chapterList[index].getTitle();
               String localizedOrdinal = AppLocalizations.of(context)!.chapterLabelFunction(chapterNumber);
 
               return Padding(

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/bookmark_object.dart';
 import '../../../shared/chapter_object.dart';
+import '../../../shared/chapter_utility.dart';
 import 'reader_button_state.dart';
 import 'reader_settings.dart';
 import 'reader_state.dart';
@@ -26,7 +27,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       chapterNumber: _chapterNumber,
       prevChapterNumber: await _getPrevChapterNumber(),
       nextChapterNumber: await _getNextChapterNumber(),
-      contentLines: ChapterObject.getContent(_bookName, _chapterNumber),
+      contentLines: ChapterObject(bookName: _bookName, ordinalNumber: _chapterNumber).getContent(),
       bookmarkObject: bookmarkObject,
       readerSettings: readerSettings,
       buttonState: state.buttonState.copyWith(
@@ -71,7 +72,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// Chapter
   Future<int?> _getPrevChapterNumber() async {
-    final List<ChapterObject> chapterList = ChapterObject.getList(_bookName);
+    final List<ChapterObject> chapterList = ChapterUtility.getList(_bookName);
     int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == _chapterNumber);
 
     if (currentIndex > 0) {
@@ -81,7 +82,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   Future<int?> _getNextChapterNumber() async {
-    final List<ChapterObject> chapterList = ChapterObject.getList(_bookName);
+    final List<ChapterObject> chapterList = ChapterUtility.getList(_bookName);
     int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == _chapterNumber);
 
     if (0 <= currentIndex && currentIndex < chapterList.length - 1) {
