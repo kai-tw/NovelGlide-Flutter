@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 
-import 'book_utility.dart';
 import 'datetime_utility.dart';
 import 'file_path.dart';
 
@@ -97,25 +96,5 @@ class BookmarkObject extends Equatable {
       area: area,
       savedTime: savedTime,
     );
-  }
-
-  static List<BookmarkObject> getList() {
-    List<BookmarkObject> retList = [];
-    List<String> bookList = BookUtility.getNameList();
-
-    for (String path in bookList) {
-      final File file = File(join(path, "bookmark.isar"));
-      if (file.existsSync()) {
-        final String bookName = basename(path);
-        final BookmarkObject bookmarkObject = load(bookName);
-        if (bookmarkObject.isValid) {
-          retList.add(bookmarkObject);
-        } else {
-          bookmarkObject.clear();
-        }
-      }
-    }
-
-    return retList;
   }
 }
