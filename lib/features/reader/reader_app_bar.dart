@@ -14,7 +14,7 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return AppBar(
-      leading: CommonBackButton(onPressed: () => cubit.onPopInvoked()),
+      leading: CommonBackButton(onPressed: () => cubit.dispose()),
       backgroundColor: Theme.of(context).colorScheme.background,
       surfaceTintColor: Theme.of(context).colorScheme.background,
     );

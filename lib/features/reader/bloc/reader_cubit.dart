@@ -168,10 +168,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     );
   }
 
-  void onPopInvoked() {
-    if (state.readerSettings.autoSave) {
-      saveBookmark();
-    }
+  void dispose() {
     scrollController.dispose();
   }
 }

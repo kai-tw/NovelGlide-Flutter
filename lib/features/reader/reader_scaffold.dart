@@ -12,14 +12,14 @@ class ReaderScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ReaderCubit readerCubit = BlocProvider.of<ReaderCubit>(context)..initialize();
+    ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context)..initialize();
     return PopScope(
-      canPop: !readerCubit.state.readerSettings.autoSave,
+      canPop: !cubit.state.readerSettings.autoSave,
       onPopInvoked: (didPop) {
         if (didPop) {
           return;
         }
-        readerCubit.onPopInvoked();
+        cubit.dispose();
       },
       child: Scaffold(
         appBar: const ReaderAppBar(),
@@ -28,12 +28,17 @@ class ReaderScaffold extends StatelessWidget {
             if (scrollNotification is ScrollEndNotification) {
               double maxScrollHeight = scrollNotification.metrics.extentTotal;
               double currentScrollY = scrollNotification.metrics.pixels.clamp(0.0, maxScrollHeight);
-              readerCubit.currentArea = currentScrollY * MediaQuery.of(context).size.width;
+              cubit.currentArea = currentScrollY * MediaQuery.of(context).size.width;
             }
+
+            if (cubit.state.readerSettings.autoSave) {
+              cubit.saveBookmark();
+            }
+
             return true;
           },
           child: CustomScrollView(
-            controller: readerCubit.scrollController,
+            controller: cubit.scrollController,
             slivers: const [
               ReaderSliverTitle(),
               ReaderSliverContent(),
