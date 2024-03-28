@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'bloc/toc_bloc.dart';
 import 'toc_sliver_book_name.dart';
@@ -13,17 +14,20 @@ class TOCScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
-    return  Scaffold(
+    return Scaffold(
       appBar: const TOCAppBar(),
       body: RefreshIndicator(
-          onRefresh: () async => cubit.refresh(),
-          child: const CustomScrollView(
+        onRefresh: () async => cubit.refresh(),
+        child: const SlidableAutoCloseBehavior(
+          child: CustomScrollView(
             slivers: [
               TOCSliverCoverBanner(),
               TOCSliverBookName(),
               TOCSliverList(),
             ],
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

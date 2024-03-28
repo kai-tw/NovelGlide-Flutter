@@ -18,6 +18,13 @@ class TOCCubit extends Cubit<TOCState> {
     TOCStateCode code = chapterList.isEmpty ? TOCStateCode.empty : TOCStateCode.normal;
     emit(TOCState(flipFlop: isForce ? !state.flipFlop : state.flipFlop,code: code, chapterList: chapterList));
   }
+
+  void deleteChapter(int chapterNumber) async {
+    final bool isSuccess = await ChapterObject(bookName: bookObject.name, ordinalNumber: chapterNumber).delete();
+    if (isSuccess) {
+      refresh();
+    }
+  }
 }
 
 class TOCState extends Equatable {

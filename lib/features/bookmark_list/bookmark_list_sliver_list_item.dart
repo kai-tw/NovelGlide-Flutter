@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../shared/bookmark_object.dart';
-import '../common_components/common_delete_confirm_dialog.dart';
+import '../common_components/common_slidable_action/common_slidable_action_delete.dart';
 import '../reader/reader.dart';
 import 'bloc/bookmark_list_bloc.dart';
 
@@ -47,23 +47,15 @@ class BookmarkListSliverListItem extends StatelessWidget {
           extentRatio: 0.2,
           motion: const DrawerMotion(),
           children: [
-            SlidableAction(
-              onPressed: (_) {
-                showDialog(context: context, builder: (_) => const CommonDeleteConfirmDialog()).then((isDelete) {
-                  if (isDelete) {
-                    _bookmarkObject.clear();
-                    cubit.refresh();
-                  }
-                });
-              },
-              backgroundColor: Theme.of(context).colorScheme.error,
-              foregroundColor: Theme.of(context).colorScheme.onError,
-              icon: Icons.delete_outline_rounded,
-            ),
+            CommonSlidableActionDelete(onDelete: () {
+              _bookmarkObject.clear();
+              cubit.refresh();
+            }),
           ],
         ),
         child: GestureDetector(
-          onTap: () => Navigator.of(context).push(_navigateToReader(bookName, chapterNumber)).then((_) => cubit.refresh()),
+          onTap: () =>
+              Navigator.of(context).push(_navigateToReader(bookName, chapterNumber)).then((_) => cubit.refresh()),
           child: Row(
             children: [
               Icon(

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:path/path.dart';
 
 import 'file_path.dart';
-import 'verify_utility.dart';
 
 class ChapterObject {
   String bookName;
@@ -55,5 +54,17 @@ class ChapterObject {
     }
 
     return await newFile.exists();
+  }
+
+  Future<bool> delete() async {
+    final File file = File(getPath());
+
+    if (!file.existsSync()) {
+      return false;
+    }
+
+    await file.delete();
+
+    return !file.existsSync();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'bloc/bookmark_list_bloc.dart';
 import 'bookmark_list_app_bar.dart';
@@ -15,10 +16,12 @@ class BookmarkListScaffold extends StatelessWidget {
       appBar: const BookmarkListAppBar(),
       body: RefreshIndicator(
         onRefresh: () async => cubit.refresh(),
-        child: const CustomScrollView(
-          slivers: [
-            BookmarkListSliverList(),
-          ],
+        child: const SlidableAutoCloseBehavior(
+          child: CustomScrollView(
+            slivers: [
+              BookmarkListSliverList(),
+            ],
+          ),
         ),
       ),
     );

@@ -31,7 +31,6 @@ class AddChapterFormCubit extends Cubit<AddChapterFormState> {
   }
 
   Future<bool> submit() async {
-    print(chapterNumber);
     return await ChapterObject(bookName: bookName, ordinalNumber: chapterNumber).create(file!, title: title);
   }
 }
