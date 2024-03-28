@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import '../common_image_picker/common_image_picker_button_list.dart';

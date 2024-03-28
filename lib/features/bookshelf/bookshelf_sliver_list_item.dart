@@ -55,9 +55,13 @@ class BookshelfSliverListItem extends StatelessWidget {
         }
         break;
       case BookshelfStateCode.normal:
-        Navigator.of(context).push(_navigateToTOC()).then((_) {
-          cubit.refresh();
-        });
+        Navigator.of(context).push(_navigateToTOC(cubit)).then(
+          (isDirty) {
+            if (isDirty == true) {
+              cubit.refresh();
+            }
+          },
+        );
       default:
     }
   }
@@ -73,7 +77,7 @@ class BookshelfSliverListItem extends StatelessWidget {
     }
   }
 
-  Route _navigateToTOC() {
+  Route _navigateToTOC(BookshelfCubit cubit) {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => TableOfContents(bookObject),
       transitionDuration: const Duration(milliseconds: 500),

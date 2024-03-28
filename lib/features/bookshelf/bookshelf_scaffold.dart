@@ -23,7 +23,11 @@ class BookshelfScaffold extends StatelessWidget {
         ),
       ),
       floatingActionButton: AddBookCalleeAddButton(
-        callback: (_) => cubit.refresh(),
+        onPopBack: (isSuccess) {
+          if (isSuccess == true) {
+            cubit.refresh();
+          }
+        },
       ),
     );
   }

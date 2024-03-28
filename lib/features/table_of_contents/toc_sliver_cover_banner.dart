@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../common_components/common_book_cover_image.dart';
 import 'bloc/toc_bloc.dart';
 
 class TOCSliverCoverBanner extends StatelessWidget {
@@ -15,7 +16,8 @@ class TOCSliverCoverBanner extends StatelessWidget {
         child: AspectRatio(
           aspectRatio: 1,
           child: BlocBuilder<TOCCubit, TOCState>(
-            builder: (BuildContext context, TOCState state) {
+            builder: (context, state) {
+              print(state);
               return Hero(
                 tag: cubit.bookObject.name,
                 child: Container(
@@ -24,7 +26,7 @@ class TOCSliverCoverBanner extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(24.0)),
                   ),
                   clipBehavior: Clip.hardEdge,
-                  child: cubit.bookObject.getCover(),
+                  child: CommonBookCoverImage(path: cubit.bookObject.getCoverPath()),
                 ),
               );
             },

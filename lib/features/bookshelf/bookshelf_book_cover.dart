@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../shared/book_object.dart';
+import '../common_components/common_book_cover_image.dart';
 
 class BookshelfBookCover extends StatelessWidget {
   const BookshelfBookCover(this.bookObject, {super.key});
@@ -19,7 +20,7 @@ class BookshelfBookCover extends StatelessWidget {
             borderRadius: BorderRadius.circular(16.0),
           ),
           clipBehavior: Clip.hardEdge,
-          child: bookObject.getCover(),
+          child: CommonBookCoverImage(path: bookObject.getCoverPath()),
         ),
       ),
     );

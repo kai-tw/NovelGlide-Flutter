@@ -31,7 +31,7 @@ class CommonFormSubmitButton extends StatelessWidget {
             showDialog(
                 context: context,
                 builder: (_) => isSuccess ? const CommonSuccessDialog() : const CommonFailedDialog())
-                .then((_) => Navigator.of(context).pop());
+                .then((_) => Navigator.of(context).pop(isSuccess));
           });
         }
       },

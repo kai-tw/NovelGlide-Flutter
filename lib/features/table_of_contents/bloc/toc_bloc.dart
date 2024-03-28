@@ -9,35 +9,28 @@ enum TOCStateCode { loading, normal, empty }
 
 class TOCCubit extends Cubit<TOCState> {
   final BookObject bookObject;
+  bool isDirty = false;
 
   TOCCubit(this.bookObject) : super(const TOCState());
 
-  void refresh() {
+  void refresh({bool isForce = false}) {
     List<ChapterObject> chapterList = ChapterUtility.getList(bookObject.name);
     TOCStateCode code = chapterList.isEmpty ? TOCStateCode.empty : TOCStateCode.normal;
-    emit(TOCState(code: code, chapterList: chapterList));
+    emit(TOCState(flipFlop: isForce ? !state.flipFlop : state.flipFlop,code: code, chapterList: chapterList));
   }
 }
 
 class TOCState extends Equatable {
+  final bool flipFlop;
   final TOCStateCode code;
   final List<ChapterObject> chapterList;
 
   @override
-  List<Object?> get props => [code, chapterList];
+  List<Object?> get props => [flipFlop, code, chapterList];
 
   const TOCState({
+    this.flipFlop = false,
     this.code = TOCStateCode.loading,
     this.chapterList = const [],
   });
-
-  TOCState copyWith({
-    TOCStateCode? code,
-    List<ChapterObject>? chapterList,
-  }) {
-    return TOCState(
-      code: code ?? this.code,
-      chapterList: chapterList ?? this.chapterList,
-    );
-  }
 }
