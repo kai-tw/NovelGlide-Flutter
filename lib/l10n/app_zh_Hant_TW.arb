@@ -23,7 +23,7 @@
   "bookCover": "封面",
   "ruleDialogBookNameTitle": "書籍命名規則",
   "ruleDialogBookNameContent": "不可用的符號：",
-  "fieldBookExists": "書名已存在",
+  "fieldItemExists": "已存在",
   "fieldChapterName": "章節名稱",
   "fieldChapterNumber": "第幾章",
   "ruleDialogChapterNumberTitle": "章節數規則",

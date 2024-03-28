@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:path/path.dart';
 
 import 'file_path.dart';
+import 'verify_utility.dart';
 
 class ChapterObject {
-  final String bookName;
-  final int ordinalNumber;
+  String bookName;
+  int ordinalNumber;
+  String? _title;
 
-  const ChapterObject({
+  ChapterObject({
     required this.bookName,
     required this.ordinalNumber,
   });
@@ -17,12 +19,12 @@ class ChapterObject {
     return join(filePath.libraryRoot, bookName, "$ordinalNumber.txt");
   }
 
-  String getTitle() {
-    final List<String> content = getContent();
-    if (content.isNotEmpty) {
-      return content[0];
+  String getTitle({bool isForce = false}) {
+    if (_title == null || isForce) {
+      final List<String> content = getContent();
+      _title = content.isNotEmpty ? content[0] : "";
     }
-    return '';
+    return _title!;
   }
 
   List<String> getContent() {
@@ -31,5 +33,27 @@ class ChapterObject {
       return [];
     }
     return file.readAsLinesSync().where((line) => line.isNotEmpty).toList();
+  }
+
+  bool isExist() {
+    return File(getPath()).existsSync();
+  }
+
+  Future<bool> create(File file, {String? title}) async {
+    // Copy file.
+    await file.copy(getPath());
+
+    final File newFile = File(getPath());
+
+    // Write title into file.
+    if (title != null) {
+      String content = await newFile.readAsString();
+
+      // Prepend the title to the content.
+      content = "$title\n\n$content";
+      await newFile.writeAsString(content);
+    }
+
+    return await newFile.exists();
   }
 }

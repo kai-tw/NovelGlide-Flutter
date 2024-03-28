@@ -17,6 +17,7 @@ class AddChapterNumberInputField extends StatelessWidget {
     final Map<AddChapterNumberStateCode, String> nameStateStringMap = {
       AddChapterNumberStateCode.blank: appLocalizations.fieldBlank,
       AddChapterNumberStateCode.invalid: appLocalizations.fieldInvalid,
+      AddChapterNumberStateCode.exists: appLocalizations.fieldItemExists,
     };
     return TextFormField(
       decoration: CommonFormDecoration.inputDecoration(
@@ -29,6 +30,7 @@ class AddChapterNumberInputField extends StatelessWidget {
       keyboardType: TextInputType.number,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       validator: (value) => nameStateStringMap[cubit.numberVerify(value)],
+      onSaved: (value) => cubit.chapterNumber = int.parse(value!),
     );
   }
 }

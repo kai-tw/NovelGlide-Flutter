@@ -18,7 +18,7 @@ class EditBookNameInputField extends StatelessWidget {
     final Map<EditBookNameStateCode, String> nameStateStringMap = {
       EditBookNameStateCode.blank: appLocalizations.fieldBlank,
       EditBookNameStateCode.invalid: appLocalizations.fieldInvalid,
-      EditBookNameStateCode.exists: appLocalizations.fieldBookExists,
+      EditBookNameStateCode.exists: appLocalizations.fieldItemExists,
     };
     return TextFormField(
       decoration: CommonFormDecoration.inputDecoration(

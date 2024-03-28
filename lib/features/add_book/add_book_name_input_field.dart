@@ -18,7 +18,7 @@ class AddBookNameInputField extends StatelessWidget {
     final Map<AddBookFormNameStateCode, String> nameStateStringMap = {
       AddBookFormNameStateCode.blank: appLocalizations.fieldBlank,
       AddBookFormNameStateCode.invalid: appLocalizations.fieldInvalid,
-      AddBookFormNameStateCode.exists: appLocalizations.fieldBookExists,
+      AddBookFormNameStateCode.exists: appLocalizations.fieldItemExists,
     };
 
     return TextFormField(

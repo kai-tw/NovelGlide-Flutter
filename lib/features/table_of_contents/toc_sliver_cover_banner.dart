@@ -17,7 +17,6 @@ class TOCSliverCoverBanner extends StatelessWidget {
           aspectRatio: 1,
           child: BlocBuilder<TOCCubit, TOCState>(
             builder: (context, state) {
-              print(state);
               return Hero(
                 tag: cubit.bookObject.name,
                 child: Container(

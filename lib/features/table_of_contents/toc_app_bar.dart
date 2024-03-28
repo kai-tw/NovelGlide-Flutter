@@ -7,6 +7,9 @@ import '../edit_book/edit_book_callee_edit_button.dart';
 import 'bloc/toc_bloc.dart';
 
 class TOCAppBar extends StatelessWidget implements PreferredSizeWidget {
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
   const TOCAppBar({super.key});
 
   @override
@@ -17,7 +20,14 @@ class TOCAppBar extends StatelessWidget implements PreferredSizeWidget {
       surfaceTintColor: Theme.of(context).colorScheme.background,
       leading: CommonBackButton(popValue: cubit.isDirty),
       actions: [
-        const AddChapterCalleeAddButton(),
+        AddChapterCalleeAddButton(
+          cubit.bookObject.name,
+          onPopBack: (isSuccess) {
+            if (isSuccess == true) {
+              cubit.refresh(isForce: true);
+            }
+          },
+        ),
         EditBookCalleeEditButton(
           bookObject: cubit.bookObject,
           onPopBack: (isSuccess) {
@@ -30,7 +40,4 @@ class TOCAppBar extends StatelessWidget implements PreferredSizeWidget {
       ],
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

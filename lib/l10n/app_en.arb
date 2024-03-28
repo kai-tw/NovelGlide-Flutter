@@ -23,7 +23,7 @@
   "bookCover": "The cover of this book",
   "ruleDialogBookNameTitle": "Book naming rule",
   "ruleDialogBookNameContent": "You can't use these symbols: ",
-  "fieldBookExists": "The book already exists.",
+  "fieldItemExists": "It already exists.",
   "fieldChapterName": "Chapter Name",
   "fieldChapterNumber": "Chapter #",
   "ruleDialogChapterNumberTitle": "The rule of number",
