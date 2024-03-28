@@ -1,16 +1,12 @@
 import 'dart:io';
 
-import 'package:equatable/equatable.dart';
 import 'package:path/path.dart';
 
 import 'file_path.dart';
 
-class ChapterObject extends Equatable {
+class ChapterObject {
   final String bookName;
   final int ordinalNumber;
-
-  @override
-  List<Object?> get props => [bookName, ordinalNumber];
 
   const ChapterObject({
     required this.bookName,

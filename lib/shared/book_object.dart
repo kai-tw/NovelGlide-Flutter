@@ -9,7 +9,6 @@ import 'verify_utility.dart';
 class BookObject {
   String name = '';
   File? coverFile;
-  FileImage? _coverImage;
 
   BookObject({this.name = '', this.coverFile});
 
@@ -37,7 +36,7 @@ class BookObject {
     }
   }
 
-  bool modify(BookObject newObject) {
+  Future<bool> modify(BookObject newObject) async {
     if (!VerifyUtility.isFolderNameValid(newObject.name) || !VerifyUtility.isFolderNameValid(name)) {
       return false;
     }
@@ -55,9 +54,8 @@ class BookObject {
         coverFile = null;
       } else {
         // Change cover.
-        File newCoverImage = newObject.coverFile!.copySync(join(newFolder.path, 'cover.jpg'));
+        File newCoverImage = newObject.coverFile!.copySync(join(oldFolder.path, 'cover.jpg'));
         isSuccess = isSuccess && newCoverImage.existsSync();
-        refreshCover();
       }
     }
 
@@ -65,8 +63,12 @@ class BookObject {
       oldFolder.renameSync(newFolder.path);
       isSuccess = isSuccess && newFolder.existsSync();
       name = isSuccess ? newObject.name : name;
-      coverFile = coverFile == null ? null : File(join(newFolder.path, 'cover.jpg'));
     }
+
+    final File file = File(join(getPath(), 'cover.jpg'));
+    coverFile = file.existsSync() ? file : null;
+    imageCache.clear();
+    imageCache.clearLiveImages();
 
     return isSuccess;
   }
@@ -86,25 +88,8 @@ class BookObject {
     return VerifyUtility.isFolderNameValid(name) && Directory(join(filePath.libraryRoot, name)).existsSync();
   }
 
-  /// Cover of this book
-  Widget getCover() {
-    if (coverFile != null && coverFile!.existsSync()) {
-      _coverImage = FileImage(coverFile!);
-      return Image(
-        image: _coverImage!,
-        fit: BoxFit.cover,
-        gaplessPlayback: true,
-      );
-    } else {
-      _coverImage = null;
-      return Image.asset('assets/images/book_cover_light.jpg', fit: BoxFit.cover);
-    }
-  }
-
-  void refreshCover() {
-    if (_coverImage != null) {
-      _coverImage!.evict();
-    }
+  String getCoverPath() {
+    return join(getPath(), 'cover.jpg');
   }
 
   String getPath() {
