@@ -7,10 +7,9 @@ import '../common_image_picker/common_image_picker_preview.dart';
 
 class CommonImagePickerContent extends StatelessWidget {
   const CommonImagePickerContent(
-      {this.aspectRatio = 1, this.imageFile, super.key});
+      {this.aspectRatio = 1, super.key});
 
   final double aspectRatio;
-  final File? imageFile;
 
   @override
   Widget build(BuildContext context) {

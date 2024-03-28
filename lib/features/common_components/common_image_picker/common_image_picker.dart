@@ -26,7 +26,6 @@ class CommonImagePicker extends StatelessWidget {
         isRequired: isRequired,
         child: CommonImagePickerContent(
           aspectRatio: aspectRatio,
-          imageFile: imageFile,
         ),
       ),
     );
