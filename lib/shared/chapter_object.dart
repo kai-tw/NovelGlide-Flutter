@@ -22,14 +22,20 @@ class ChapterObject {
   }
 
   Future<void> initAsync() async {
-    refreshTitle(isForce: true);
+    await refreshTitle(isForce: true);
   }
 
   Future<void> refreshTitle({bool isForce = false}) async {
     if (title == null || isForce) {
       final Stream<List<int>> inputStream = File(getPath()).openRead();
       final Stream<String> lineStream = inputStream.transform(utf8.decoder).transform(const LineSplitter());
-      title = await lineStream.first;
+      await for (String line in lineStream) {
+        // Get the first not empty line as title.
+        if (line.isNotEmpty) {
+          title = line;
+          break;
+        }
+      }
     }
   }
 
@@ -44,7 +50,9 @@ class ChapterObject {
     final Stream<String> lineStream = inputStream.transform(utf8.decoder).transform(const LineSplitter());
 
     await for (String line in lineStream) {
-      lines.add(line);
+      if (line.isNotEmpty) {
+        lines.add(line);
+      }
     }
 
     return lines;

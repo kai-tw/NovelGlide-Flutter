@@ -8,9 +8,9 @@ import '../reader/reader.dart';
 import 'bloc/toc_bloc.dart';
 
 class TOCSliverChapterListItem extends StatelessWidget {
-  const TOCSliverChapterListItem({super.key, required this.title, required this.chapterNumber});
+  const TOCSliverChapterListItem({super.key, this.title, required this.chapterNumber});
 
-  final String title;
+  final String? title;
   final int chapterNumber;
 
   @override
@@ -43,7 +43,7 @@ class TOCSliverChapterListItem extends StatelessWidget {
                 foregroundColor: Theme.of(context).colorScheme.onSurface,
               ),
               child: Text(
-                '$localizedOrdinalNum - $title',
+                localizedOrdinalNum + (title != null && title!.isNotEmpty ? " - $title" : ""),
                 textAlign: TextAlign.left,
               ),
             ),
