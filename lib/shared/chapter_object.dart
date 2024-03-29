@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:flutter_charset_detector/flutter_charset_detector.dart';
 import 'package:path/path.dart';
 
 import 'file_path.dart';
@@ -39,21 +41,23 @@ class ChapterObject {
   }
 
   Future<bool> create(File file, {String? title}) async {
-    // Copy file.
-    await file.copy(getPath());
+    Uint8List bytes = await file.readAsBytes();
+    DecodingResult result = await CharsetDetector.autoDecode(bytes);
+    String content = result.string;
 
-    final File newFile = File(getPath());
+    // Create chapter file
+    File chapterFile = File(getPath());
+    await chapterFile.create();
 
-    // Write title into file.
+    // Prepend title
     if (title != null) {
-      String content = await newFile.readAsString();
-
-      // Prepend the title to the content.
       content = "$title\n\n$content";
-      await newFile.writeAsString(content);
     }
 
-    return await newFile.exists();
+    // Write to file
+    await chapterFile.writeAsString(content);
+
+    return chapterFile.existsSync();
   }
 
   Future<bool> delete() async {
