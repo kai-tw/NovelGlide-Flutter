@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -9,7 +10,7 @@ import 'file_path.dart';
 class ChapterObject {
   String bookName;
   int ordinalNumber;
-  String? _title;
+  String? title;
 
   ChapterObject({
     required this.bookName,
@@ -20,20 +21,33 @@ class ChapterObject {
     return join(filePath.libraryRoot, bookName, "$ordinalNumber.txt");
   }
 
-  String getTitle({bool isForce = false}) {
-    if (_title == null || isForce) {
-      final List<String> content = getContent();
-      _title = content.isNotEmpty ? content[0] : "";
-    }
-    return _title!;
+  Future<void> initAsync() async {
+    refreshTitle(isForce: true);
   }
 
-  List<String> getContent() {
+  Future<void> refreshTitle({bool isForce = false}) async {
+    if (title == null || isForce) {
+      final Stream<List<int>> inputStream = File(getPath()).openRead();
+      final Stream<String> lineStream = inputStream.transform(utf8.decoder).transform(const LineSplitter());
+      title = await lineStream.first;
+    }
+  }
+
+  Future<List<String>> getContent() async {
     final File file = File(getPath());
     if (!file.existsSync()) {
       return [];
     }
-    return file.readAsLinesSync().where((line) => line.isNotEmpty).toList();
+
+    List<String> lines = [];
+    final Stream<List<int>> inputStream = File(getPath()).openRead();
+    final Stream<String> lineStream = inputStream.transform(utf8.decoder).transform(const LineSplitter());
+
+    await for (String line in lineStream) {
+      lines.add(line);
+    }
+
+    return lines;
   }
 
   bool isExist() {

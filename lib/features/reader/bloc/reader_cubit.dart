@@ -16,18 +16,26 @@ class ReaderCubit extends Cubit<ReaderState> {
   double currentArea = 0.0;
 
   ReaderCubit(this._bookName, this._chapterNumber, {this.isAutoJump = false})
-      : super(ReaderState(_bookName, _chapterNumber));
+      : super(ReaderState(bookName: _bookName, chapterNumber: _chapterNumber));
 
   void initialize() async {
+    emit(state.copyWith(code: ReaderStateCode.loading));
+
     final BookmarkObject bookmarkObject = BookmarkObject.load(_bookName);
     final ReaderSettings readerSettings = state.readerSettings.load();
     final bool isJumpAvailable =
         !readerSettings.autoSave && bookmarkObject.isValid && bookmarkObject.chapterNumber == _chapterNumber;
+    final int prevChapterNumber = await _getPrevChapterNumber();
+    final int nextChapterNumber = await _getNextChapterNumber();
+    final List<String> contentLines =
+        await ChapterObject(bookName: _bookName, ordinalNumber: _chapterNumber).getContent();
+
     emit(state.copyWith(
+      code: ReaderStateCode.loaded,
       chapterNumber: _chapterNumber,
-      prevChapterNumber: await _getPrevChapterNumber(),
-      nextChapterNumber: await _getNextChapterNumber(),
-      contentLines: ChapterObject(bookName: _bookName, ordinalNumber: _chapterNumber).getContent(),
+      prevChapterNumber: prevChapterNumber,
+      nextChapterNumber: nextChapterNumber,
+      contentLines: contentLines,
       bookmarkObject: bookmarkObject,
       readerSettings: readerSettings,
       buttonState: state.buttonState.copyWith(
@@ -71,7 +79,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   /// Chapter
-  Future<int?> _getPrevChapterNumber() async {
+  Future<int> _getPrevChapterNumber() async {
     final List<ChapterObject> chapterList = ChapterUtility.getList(_bookName);
     int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == _chapterNumber);
 
@@ -81,7 +89,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     return -1;
   }
 
-  Future<int?> _getNextChapterNumber() async {
+  Future<int> _getNextChapterNumber() async {
     final List<ChapterObject> chapterList = ChapterUtility.getList(_bookName);
     int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == _chapterNumber);
 

@@ -4,7 +4,10 @@ import '../../../shared/bookmark_object.dart';
 import 'reader_button_state.dart';
 import 'reader_settings.dart';
 
+enum ReaderStateCode { loading, loaded }
+
 class ReaderState extends Equatable {
+  final ReaderStateCode code;
   final String bookName;
   final int chapterNumber;
   final int prevChapterNumber;
@@ -14,9 +17,10 @@ class ReaderState extends Equatable {
   final ReaderSettings readerSettings;
   final RdrBtnState buttonState;
 
-  ReaderState(
-    this.bookName,
-    this.chapterNumber, {
+  ReaderState({
+    this.code = ReaderStateCode.loading,
+    required this.bookName,
+    required this.chapterNumber,
     this.prevChapterNumber = -1,
     this.nextChapterNumber = -1,
     this.contentLines = const [],
@@ -28,6 +32,8 @@ class ReaderState extends Equatable {
         bookmarkObject = bookmarkObject ?? BookmarkObject();
 
   ReaderState copyWith({
+    ReaderStateCode? code,
+    String? bookName,
     int? chapterNumber,
     int? prevChapterNumber,
     int? nextChapterNumber,
@@ -37,8 +43,9 @@ class ReaderState extends Equatable {
     RdrBtnState? buttonState,
   }) {
     return ReaderState(
-      bookName,
-      chapterNumber ?? this.chapterNumber,
+      code: code ?? this.code,
+      bookName: bookName ?? this.bookName,
+      chapterNumber: chapterNumber ?? this.chapterNumber,
       prevChapterNumber: prevChapterNumber ?? this.prevChapterNumber,
       nextChapterNumber: nextChapterNumber ?? this.nextChapterNumber,
       contentLines: contentLines ?? this.contentLines,

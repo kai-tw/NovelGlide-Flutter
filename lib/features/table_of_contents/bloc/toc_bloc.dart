@@ -13,9 +13,12 @@ class TOCCubit extends Cubit<TOCState> {
 
   TOCCubit(this.bookObject) : super(const TOCState());
 
-  void refresh({bool isForce = false}) {
+  void refresh({bool isForce = false}) async {
     List<ChapterObject> chapterList = ChapterUtility.getList(bookObject.name);
     TOCStateCode code = chapterList.isEmpty ? TOCStateCode.empty : TOCStateCode.normal;
+    for (var e in chapterList) {
+      await e.initAsync();
+    }
     emit(TOCState(flipFlop: isForce ? !state.flipFlop : state.flipFlop,code: code, chapterList: chapterList));
   }
 

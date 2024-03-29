@@ -15,7 +15,7 @@ class TOCSliverChapterList extends StatelessWidget {
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
               int chapterNumber = state.chapterList[index].ordinalNumber;
-              String chapterTitle = state.chapterList[index].getTitle();
+              String chapterTitle = state.chapterList[index].title ?? "";
 
               return TOCSliverChapterListItem(title: chapterTitle, chapterNumber: chapterNumber);
             },
