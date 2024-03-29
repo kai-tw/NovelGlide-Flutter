@@ -31,8 +31,9 @@ class ChapterObject {
       final Stream<String> lineStream = inputStream.transform(utf8.decoder).transform(const LineSplitter());
       await for (String line in lineStream) {
         // Get the first not empty line as title.
-        if (line.isNotEmpty) {
-          title = line;
+        String singleLine = line.trim();
+        if (singleLine.isNotEmpty) {
+          title = singleLine;
           break;
         }
       }
@@ -45,17 +46,17 @@ class ChapterObject {
       return [];
     }
 
-    List<String> lines = [];
+    List<String> contentLines = [];
     final Stream<List<int>> inputStream = File(getPath()).openRead();
     final Stream<String> lineStream = inputStream.transform(utf8.decoder).transform(const LineSplitter());
 
     await for (String line in lineStream) {
       if (line.isNotEmpty) {
-        lines.add(line);
+        contentLines.add(line);
       }
     }
 
-    return lines;
+    return contentLines;
   }
 
   bool isExist() {
@@ -65,7 +66,7 @@ class ChapterObject {
   Future<bool> create(File file, {String? title}) async {
     Uint8List bytes = await file.readAsBytes();
     DecodingResult result = await CharsetDetector.autoDecode(bytes);
-    String content = result.string;
+    List<String> contentLines = result.string.split("\n").where((line) => line.isNotEmpty).toList();
 
     // Create chapter file
     File chapterFile = File(getPath());
@@ -73,11 +74,11 @@ class ChapterObject {
 
     // Prepend title
     if (title != null) {
-      content = "$title\n\n$content";
+      contentLines.insert(0, title);
     }
 
     // Write to file
-    await chapterFile.writeAsString(content);
+    await chapterFile.writeAsString(contentLines.join("\n"));
 
     return chapterFile.existsSync();
   }

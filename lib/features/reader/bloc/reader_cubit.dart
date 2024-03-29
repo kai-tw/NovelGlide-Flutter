@@ -19,7 +19,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       : super(ReaderState(bookName: _bookName, chapterNumber: _chapterNumber));
 
   void initialize() async {
-    emit(state.copyWith(code: ReaderStateCode.loading));
+    emit(ReaderState(bookName: _bookName, chapterNumber: _chapterNumber));
 
     final BookmarkObject bookmarkObject = BookmarkObject.load(_bookName);
     final ReaderSettings readerSettings = state.readerSettings.load();
@@ -41,6 +41,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       buttonState: state.buttonState.copyWith(
         addBkmState: readerSettings.autoSave ? RdrBtnAddBkmState.disabled : RdrBtnAddBkmState.normal,
         jmpToBkmState: isJumpAvailable ? RdrBtnJmpToBkmState.normal : RdrBtnJmpToBkmState.disabled,
+        rstSettingsState: RdrBtnRstSettingsState.normal,
       ),
     ));
 
@@ -51,7 +52,8 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   void changeChapter(int chapterNumber) {
     _chapterNumber = chapterNumber;
-    scrollController.animateTo(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    scrollController.jumpTo(0);
+    isAutoJump = false;
     initialize();
   }
 

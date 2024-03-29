@@ -28,7 +28,7 @@ class ReaderState extends Equatable {
     ReaderSettings? readerSettings,
     RdrBtnState? buttonState,
   })  : readerSettings = readerSettings ?? const ReaderSettings(),
-        buttonState = buttonState ?? const RdrBtnState(),
+        buttonState = buttonState ?? const RdrBtnState.disabledAll(),
         bookmarkObject = bookmarkObject ?? BookmarkObject();
 
   ReaderState copyWith({

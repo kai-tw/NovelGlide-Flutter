@@ -20,7 +20,6 @@ class ReaderSettingsBottomSheet extends StatelessWidget {
       snap: true,
       snapSizes: const [0.25, 0.5, 0.8],
       builder: (BuildContext context, ScrollController scrollController) {
-        BlocProvider.of<ReaderCubit>(context).initialize();
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: CustomScrollView(

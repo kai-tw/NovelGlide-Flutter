@@ -15,6 +15,12 @@ class RdrBtnState extends Equatable {
     this.rstSettingsState = RdrBtnRstSettingsState.normal,
   });
 
+  const RdrBtnState.disabledAll({
+    this.addBkmState = RdrBtnAddBkmState.disabled,
+    this.jmpToBkmState = RdrBtnJmpToBkmState.disabled,
+    this.rstSettingsState = RdrBtnRstSettingsState.disabled,
+  });
+
   RdrBtnState copyWith({
     RdrBtnAddBkmState? addBkmState,
     RdrBtnJmpToBkmState? jmpToBkmState,
