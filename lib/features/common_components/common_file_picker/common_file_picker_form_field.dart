@@ -8,12 +8,20 @@ import '../common_form_decoration.dart';
 import 'bloc/common_file_picker_bloc.dart';
 
 class CommonFilePickerFormField extends StatelessWidget {
-  const CommonFilePickerFormField({super.key, required this.child, this.labelText, this.isRequired = true, this.onSaved});
-
   final String? labelText;
   final Widget child;
+  final Widget? suffixIcon;
   final bool isRequired;
   final void Function(File?)? onSaved;
+
+  const CommonFilePickerFormField({
+    super.key,
+    required this.child,
+    this.labelText,
+    this.isRequired = true,
+    this.onSaved,
+    this.suffixIcon,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +42,7 @@ class CommonFilePickerFormField extends StatelessWidget {
               labelText,
               padding: const EdgeInsets.fromLTRB(24.0, 24.0, 0, 24.0),
               errorText: errorText,
+              suffixIcon: suffixIcon,
             ),
             child: child,
           ),
