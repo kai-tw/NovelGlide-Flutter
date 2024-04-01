@@ -13,6 +13,8 @@
   "yes": "是",
   "no": "否",
   "dialogDeleteConfirmation": "將會永久刪除。",
+  "addBookSuccessfully": "新增書本成功",
+  "addBookFailed": "新增書本失敗",
   "titleSelectFile": "選擇一個檔案",
   "titleBookshelf": "書櫃",
   "titleBookmarks": "書籤",

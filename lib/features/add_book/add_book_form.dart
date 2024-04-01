@@ -21,8 +21,6 @@ class AddBookForm extends StatelessWidget {
           controller: controller,
           child: const Column(
             children: [
-              AddBookTitle(),
-              Padding(padding: EdgeInsets.only(bottom: 16.0)),
               AddBookNameInputField(),
               Padding(padding: EdgeInsets.only(bottom: 20.0)),
               AddBookImagePicker(),

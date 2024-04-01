@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:novelglide/features/common_components/common_draggable_scrollable_sheet.dart';
 
-import 'add_book_draggable_scrollable_sheet.dart';
+import 'add_book_scaffold.dart';
+import 'add_book_form.dart';
 
 class AddBookCalleeAddButton extends StatelessWidget {
   const AddBookCalleeAddButton({this.onPopBack, super.key});
@@ -12,13 +13,10 @@ class AddBookCalleeAddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          scrollControlDisabledMaxHeightRatio: CommonDraggableScrollableSheet.maxHeightRatio,
-          showDragHandle: CommonDraggableScrollableSheet.showDragHandle,
-          builder: (context) {
-            return const AddBookDraggableScrollableSheet();
-          },
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => const AddBookScaffold(),
+          ),
         ).then(onPopBack ?? (_) {});
       },
       shape: const CircleBorder(),

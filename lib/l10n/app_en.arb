@@ -13,6 +13,8 @@
   "yes": "Yes",
   "no": "No",
   "dialogDeleteConfirmation": "You will delete them forever.",
+  "addBookSuccessfully": "Successfully added the book",
+  "addBookFailed": "Failed to add the book",
   "titleSelectFile": "Select a file",
   "titleBookshelf": "Bookshelf",
   "titleBookmarks": "Bookmarks",

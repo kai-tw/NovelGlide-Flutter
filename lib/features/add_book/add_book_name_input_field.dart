@@ -34,6 +34,7 @@ class AddBookNameInputField extends StatelessWidget {
         FilteringTextInputFormatter.deny(VerifyUtility.folderNameRegex),
       ],
       validator: (value) => nameStateStringMap[cubit.nameVerify(value)],
+      onSaved: (value) => cubit.data.name = value!,
     );
   }
 }
