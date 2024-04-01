@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../common_components/common_draggable_scrollable_sheet.dart';
-import 'add_chapter_draggable_scrollable_sheet.dart';
+import 'add_chapter_scaffold.dart';
+import 'bloc/add_chapter_form_bloc.dart';
 
 class AddChapterCalleeAddButton extends StatelessWidget {
   const AddChapterCalleeAddButton(this.bookName, {super.key, this.onPopBack});
@@ -13,11 +14,11 @@ class AddChapterCalleeAddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          scrollControlDisabledMaxHeightRatio: CommonDraggableScrollableSheet.maxHeightRatio,
-          showDragHandle: CommonDraggableScrollableSheet.showDragHandle,
-          builder: (context) => AddChapterDraggableScrollableSheet(bookName),
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => BlocProvider(
+            create: (_) => AddChapterFormCubit(bookName),
+            child: const AddChapterScaffold(),
+          ))
         ).then(onPopBack ?? (_) {});
       },
       shape: const CircleBorder(),
