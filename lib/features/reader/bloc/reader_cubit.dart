@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../shared/bookmark_object.dart';
-import '../../../shared/chapter_object.dart';
-import '../../../shared/chapter_utility.dart';
+import '../../../data/bookmark_data.dart';
+import '../../../data/chapter_data.dart';
+import '../../../toolbox/chapter_utility.dart';
 import 'reader_button_state.dart';
 import 'reader_settings.dart';
 import 'reader_state.dart';
@@ -21,14 +21,14 @@ class ReaderCubit extends Cubit<ReaderState> {
   void initialize() async {
     emit(ReaderState(bookName: _bookName, chapterNumber: _chapterNumber));
 
-    final BookmarkObject bookmarkObject = BookmarkObject.load(_bookName);
+    final BookmarkData bookmarkObject = BookmarkData.load(_bookName);
     final ReaderSettings readerSettings = state.readerSettings.load();
     final bool isJumpAvailable =
         !readerSettings.autoSave && bookmarkObject.isValid && bookmarkObject.chapterNumber == _chapterNumber;
     final int prevChapterNumber = await _getPrevChapterNumber();
     final int nextChapterNumber = await _getNextChapterNumber();
     final List<String> contentLines =
-        await ChapterObject(bookName: _bookName, ordinalNumber: _chapterNumber).getContent();
+        await ChapterData(bookName: _bookName, ordinalNumber: _chapterNumber).getContent();
 
     emit(state.copyWith(
       code: ReaderStateCode.loaded,
@@ -82,7 +82,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// Chapter
   Future<int> _getPrevChapterNumber() async {
-    final List<ChapterObject> chapterList = ChapterUtility.getList(_bookName);
+    final List<ChapterData> chapterList = ChapterUtility.getList(_bookName);
     int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == _chapterNumber);
 
     if (currentIndex > 0) {
@@ -92,7 +92,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   Future<int> _getNextChapterNumber() async {
-    final List<ChapterObject> chapterList = ChapterUtility.getList(_bookName);
+    final List<ChapterData> chapterList = ChapterUtility.getList(_bookName);
     int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == _chapterNumber);
 
     if (0 <= currentIndex && currentIndex < chapterList.length - 1) {
@@ -103,7 +103,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// Bookmarks
   void saveBookmark() {
-    final BookmarkObject bookmarkObject = BookmarkObject(
+    final BookmarkData bookmarkObject = BookmarkData(
       isValid: true,
       bookName: _bookName,
       chapterNumber: _chapterNumber,
@@ -155,7 +155,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   // Trigger on the jump to bookmark button clicked.
   void onClickedJmpToBkmBtn() {
-    BookmarkObject bookmarkObject = state.bookmarkObject;
+    BookmarkData bookmarkObject = state.bookmarkObject;
 
     if (bookmarkObject.chapterNumber == _chapterNumber) {
       double deviceWidth = MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).size.width;

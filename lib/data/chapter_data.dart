@@ -7,12 +7,12 @@ import 'package:path/path.dart';
 
 import 'file_path.dart';
 
-class ChapterObject {
+class ChapterData {
   String bookName;
   int ordinalNumber;
   String? title;
 
-  ChapterObject({
+  ChapterData({
     required this.bookName,
     required this.ordinalNumber,
   });

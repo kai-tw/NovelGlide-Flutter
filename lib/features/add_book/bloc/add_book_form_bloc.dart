@@ -1,15 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../shared/book_object.dart';
-import '../../../shared/verify_utility.dart';
+import '../../../data/book_data.dart';
+import '../../../toolbox/verify_utility.dart';
 
 enum AddBookFormNameStateCode { valid, blank, invalid, exists }
 
 class AddBookFormCubit extends Cubit<AddBookFormState> {
   AddBookFormCubit() : super(const AddBookFormState());
 
-  BookObject data = BookObject();
+  BookData data = BookData();
 
   AddBookFormNameStateCode nameVerify(String? name) {
     if (name == null || name == '') {
@@ -20,7 +20,7 @@ class AddBookFormCubit extends Cubit<AddBookFormState> {
       return AddBookFormNameStateCode.invalid;
     }
 
-    final BookObject inputBookObject = BookObject.fromName(name);
+    final BookData inputBookObject = BookData.fromName(name);
     if (inputBookObject.isExists()) {
       return AddBookFormNameStateCode.exists;
     }

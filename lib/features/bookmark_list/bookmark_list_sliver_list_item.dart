@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../../shared/bookmark_object.dart';
+import '../../data/bookmark_data.dart';
 import '../common_components/common_slidable_action/common_slidable_action_delete.dart';
 import '../reader/reader.dart';
 import 'bloc/bookmark_list_bloc.dart';
@@ -11,7 +11,7 @@ import 'bloc/bookmark_list_bloc.dart';
 class BookmarkListSliverListItem extends StatelessWidget {
   const BookmarkListSliverListItem(this._bookmarkObject, {super.key});
 
-  final BookmarkObject _bookmarkObject;
+  final BookmarkData _bookmarkObject;
 
   @override
   Widget build(BuildContext context) {

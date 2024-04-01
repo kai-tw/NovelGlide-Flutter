@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../shared/chapter_object.dart';
+import '../../../data/chapter_data.dart';
 
 enum AddChapterTitleStateCode { blank, invalid, normal }
 enum AddChapterNumberStateCode { blank, invalid, exists, normal }
@@ -24,14 +24,14 @@ class AddChapterFormCubit extends Cubit<AddChapterFormState> {
     if (number == null || number <= 0) {
       return AddChapterNumberStateCode.invalid;
     }
-    if (ChapterObject(bookName: bookName, ordinalNumber: number).isExist()) {
+    if (ChapterData(bookName: bookName, ordinalNumber: number).isExist()) {
       return AddChapterNumberStateCode.exists;
     }
     return AddChapterNumberStateCode.normal;
   }
 
   Future<bool> submit() async {
-    return await ChapterObject(bookName: bookName, ordinalNumber: chapterNumber).create(file!, title: title);
+    return await ChapterData(bookName: bookName, ordinalNumber: chapterNumber).create(file!, title: title);
   }
 }
 

@@ -3,19 +3,19 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 /// Reference:
 /// Source: https://github.com/letsar/flutter_slidable/issues/273#issuecomment-1065014638
-class MotionListener extends StatefulWidget {
+class SlidableMotionListener extends StatefulWidget {
   final Function? onOpenStart;
   final Function? onOpenEnd;
   final Function? onClose;
   final Widget motionWidget;
 
-  const MotionListener({super.key, this.onOpenStart, this.onOpenEnd, this.onClose, required this.motionWidget});
+  const SlidableMotionListener({super.key, this.onOpenStart, this.onOpenEnd, this.onClose, required this.motionWidget});
 
   @override
-  MotionListenerState createState() => MotionListenerState();
+  SlidableMotionListenerState createState() => SlidableMotionListenerState();
 }
 
-class MotionListenerState extends State<MotionListener> {
+class SlidableMotionListenerState extends State<SlidableMotionListener> {
   late SlidableController _controller;
   late void Function() _listener;
   bool _isClosed = true;

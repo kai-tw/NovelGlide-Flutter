@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../shared/book_object.dart';
+import '../../data/book_data.dart';
 import 'bloc/edit_book_form_bloc.dart';
 import 'edit_book_scaffold.dart';
 
 class EditBookCalleeEditButton extends StatelessWidget {
   const EditBookCalleeEditButton({required this.bookObject, this.onPopBack, super.key});
 
-  final BookObject bookObject;
+  final BookData bookObject;
   final void Function(dynamic)? onPopBack;
 
   @override

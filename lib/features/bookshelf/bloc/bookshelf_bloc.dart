@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../shared/book_object.dart';
-import '../../../shared/book_utility.dart';
+import '../../../data/book_data.dart';
+import '../../../toolbox/book_utility.dart';
 
 enum BookshelfStateCode { normal, selecting, empty, loading }
 
@@ -10,7 +10,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   BookshelfCubit() : super(const BookshelfState());
 
   void refresh() {
-    List<BookObject> list = BookUtility.getObjectList();
+    List<BookData> list = BookUtility.getObjectList();
     BookshelfStateCode code = list.isEmpty ? BookshelfStateCode.empty : BookshelfStateCode.normal;
     emit(BookshelfState(code: code, bookList: list));
   }
@@ -41,7 +41,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
 
   void deleteSelect() {
     for (String bookName in state.selectedSet) {
-      BookObject.fromName(bookName).delete();
+      BookData.fromName(bookName).delete();
     }
     refresh();
   }
@@ -49,7 +49,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
 
 class BookshelfState extends Equatable {
   final BookshelfStateCode code;
-  final List<BookObject> bookList;
+  final List<BookData> bookList;
   final Set<String> selectedSet;
 
   @override
@@ -63,7 +63,7 @@ class BookshelfState extends Equatable {
 
   BookshelfState copyWith({
     BookshelfStateCode? code,
-    List<BookObject>? bookList,
+    List<BookData>? bookList,
     Set<String>? selectedSet,
     bool? refreshTrigger,
   }) {

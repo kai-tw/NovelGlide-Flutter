@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 
-import 'book_object.dart';
-import 'file_path.dart';
+import '../data/book_data.dart';
+import '../data/file_path.dart';
 
 class BookUtility {
   static List<String> getNameList() {
@@ -16,7 +16,7 @@ class BookUtility {
     return entries;
   }
 
-  static List<BookObject> getObjectList() {
-    return getNameList().map((e) => BookObject.fromName(e)).toList();
+  static List<BookData> getObjectList() {
+    return getNameList().map((e) => BookData.fromName(e)).toList();
   }
 }

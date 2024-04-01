@@ -8,7 +8,7 @@ import 'package:hive/hive.dart';
 import 'features/homepage/homepage_scaffold.dart';
 import 'features/theme/dark_theme.dart';
 import 'features/theme/light_theme.dart';
-import 'shared/file_path.dart';
+import 'data/file_path.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +31,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'NovelGlide',
       theme: lightThemeData(),
-      // darkTheme: darkThemeData(),
+      darkTheme: darkThemeData(),
       themeMode: ThemeMode.system,
       localizationsDelegates: const [
         AppLocalizations.delegate,

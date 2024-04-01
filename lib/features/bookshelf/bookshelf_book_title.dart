@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../shared/book_object.dart';
+import '../../data/book_data.dart';
 
 class BookshelfBookTitle extends StatelessWidget {
   const BookshelfBookTitle(this.bookObject, {super.key});
 
-  final BookObject bookObject;
+  final BookData bookObject;
 
   @override
   Widget build(BuildContext context) {

@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
 import 'file_path.dart';
-import 'verify_utility.dart';
+import '../toolbox/verify_utility.dart';
 
-class BookObject {
+class BookData {
   String name = '';
   File? coverFile;
 
-  BookObject({this.name = '', this.coverFile});
+  BookData({this.name = '', this.coverFile});
 
-  BookObject.fromPath(String path) : this(name: basename(path), coverFile: File(join(path, 'cover.jpg')));
-  BookObject.fromObject(BookObject bookObject) : this(name: bookObject.name, coverFile: bookObject.coverFile);
-  BookObject.fromName(String name) : this.fromPath(join(filePath.libraryRoot, name));
+  BookData.fromPath(String path) : this(name: basename(path), coverFile: File(join(path, 'cover.jpg')));
+  BookData.fromObject(BookData bookObject) : this(name: bookObject.name, coverFile: bookObject.coverFile);
+  BookData.fromName(String name) : this.fromPath(join(filePath.libraryRoot, name));
 
   /// File process
   Future<bool> create() async {
@@ -36,7 +36,7 @@ class BookObject {
     }
   }
 
-  Future<bool> modify(BookObject newObject) async {
+  Future<bool> modify(BookData newObject) async {
     if (!VerifyUtility.isFolderNameValid(newObject.name) || !VerifyUtility.isFolderNameValid(name)) {
       return false;
     }

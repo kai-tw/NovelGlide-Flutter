@@ -4,10 +4,10 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 
-import 'datetime_utility.dart';
+import '../toolbox/datetime_utility.dart';
 import 'file_path.dart';
 
-class BookmarkObject extends Equatable {
+class BookmarkData extends Equatable {
   final bool isValid;
   final String bookName;
   final int chapterNumber;
@@ -18,7 +18,7 @@ class BookmarkObject extends Equatable {
   @override
   List<Object?> get props => [isValid, bookName, chapterNumber, area, savedTime, daysPassed];
 
-  BookmarkObject({
+  BookmarkData({
     this.isValid = false,
     this.bookName = '',
     this.chapterNumber = 0,
@@ -56,13 +56,13 @@ class BookmarkObject extends Equatable {
     }
   }
 
-  BookmarkObject copyWith({
+  BookmarkData copyWith({
     bool? isValid,
     int? chapterNumber,
     double? area,
     DateTime? savedTime,
   }) {
-    return BookmarkObject(
+    return BookmarkData(
       isValid: isValid ?? this.isValid,
       bookName: bookName,
       chapterNumber: chapterNumber ?? this.chapterNumber,
@@ -80,7 +80,7 @@ class BookmarkObject extends Equatable {
     return bookName != '' && chapterNumber > -1 && area >= 0.0 && savedTime.isBefore(DateTime.now());
   }
 
-  static BookmarkObject load(String bookName) {
+  static BookmarkData load(String bookName) {
     Box bookmarkBox = Hive.box(name: join(filePath.libraryRoot, bookName, 'bookmark'));
     final bool isValid = bookmarkBox.get('isValid', defaultValue: false);
     final int chapterNumber = bookmarkBox.get('chapterNumber', defaultValue: -1);
@@ -89,7 +89,7 @@ class BookmarkObject extends Equatable {
     DateTime.parse(bookmarkBox.get('savedTime', defaultValue: DateTime.now().toIso8601String()));
     bookmarkBox.close();
 
-    return BookmarkObject(
+    return BookmarkData(
       isValid: isValid,
       bookName: bookName,
       chapterNumber: chapterNumber,

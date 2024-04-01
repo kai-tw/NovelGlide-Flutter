@@ -4,12 +4,12 @@ import 'package:collection/collection.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 
-import 'chapter_object.dart';
-import 'file_path.dart';
+import '../data/chapter_data.dart';
+import '../data/file_path.dart';
 import 'verify_utility.dart';
 
 class ChapterUtility {
-  static List<ChapterObject> getList(String bookName) {
+  static List<ChapterData> getList(String bookName) {
     final Directory folder = Directory(join(filePath.libraryRoot, bookName));
 
     if (VerifyUtility.isFolderNameValid(bookName) && folder.existsSync()) {
@@ -23,7 +23,7 @@ class ChapterUtility {
       entries.sort(compareNatural);
 
       return entries
-          .map((e) => ChapterObject(bookName: bookName, ordinalNumber: int.parse(basenameWithoutExtension(e))))
+          .map((e) => ChapterData(bookName: bookName, ordinalNumber: int.parse(basenameWithoutExtension(e))))
           .toList();
     }
 
