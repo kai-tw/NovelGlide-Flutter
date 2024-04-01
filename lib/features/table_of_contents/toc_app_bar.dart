@@ -20,14 +20,6 @@ class TOCAppBar extends StatelessWidget implements PreferredSizeWidget {
       surfaceTintColor: Theme.of(context).colorScheme.background,
       leading: CommonBackButton(popValue: cubit.isDirty),
       actions: [
-        AddChapterCalleeAddButton(
-          cubit.bookObject.name,
-          onPopBack: (isSuccess) {
-            if (isSuccess == true) {
-              cubit.refresh(isForce: true);
-            }
-          },
-        ),
         EditBookCalleeEditButton(
           bookObject: cubit.bookObject,
           onPopBack: (isSuccess) {

@@ -11,7 +11,7 @@ class AddChapterCalleeAddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
+    return FloatingActionButton(
       onPressed: () {
         showModalBottomSheet(
           context: context,
@@ -20,7 +20,9 @@ class AddChapterCalleeAddButton extends StatelessWidget {
           builder: (context) => AddChapterDraggableScrollableSheet(bookName),
         ).then(onPopBack ?? (_) {});
       },
-      icon: const Icon(Icons.add_rounded),
+      shape: const CircleBorder(),
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      child: Icon(Icons.add_rounded, color: Theme.of(context).colorScheme.onPrimary),
     );
   }
 }
