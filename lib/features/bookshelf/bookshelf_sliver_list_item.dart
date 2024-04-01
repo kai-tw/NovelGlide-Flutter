@@ -55,8 +55,9 @@ class BookshelfSliverListItem extends StatelessWidget {
         }
         break;
       case BookshelfStateCode.normal:
-        Navigator.of(context).push(_navigateToTOC(cubit)).then(
+        Navigator.of(context).push(_tocRoute(cubit)).then(
           (isDirty) {
+            print(isDirty);
             if (isDirty == true) {
               cubit.refresh();
             }
@@ -77,7 +78,7 @@ class BookshelfSliverListItem extends StatelessWidget {
     }
   }
 
-  Route _navigateToTOC(BookshelfCubit cubit) {
+  Route _tocRoute(BookshelfCubit cubit) {
     return PageRouteBuilder(
       pageBuilder: (context, animation, secondaryAnimation) => TableOfContents(bookObject),
       transitionDuration: const Duration(milliseconds: 500),

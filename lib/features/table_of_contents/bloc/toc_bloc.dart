@@ -9,7 +9,6 @@ enum TOCStateCode { loading, normal, empty }
 
 class TOCCubit extends Cubit<TOCState> {
   final BookObject bookObject;
-  bool isDirty = false;
 
   TOCCubit(this.bookObject) : super(const TOCState());
 
@@ -19,7 +18,11 @@ class TOCCubit extends Cubit<TOCState> {
     for (var e in chapterList) {
       await e.initAsync();
     }
-    emit(TOCState(flipFlop: isForce ? !state.flipFlop : state.flipFlop,code: code, chapterList: chapterList));
+    emit(state.copyWith(flipFlop: isForce ? !state.flipFlop : state.flipFlop, code: code, chapterList: chapterList));
+  }
+
+  void setDirty() {
+    emit(state.copyWith(isDirty: true));
   }
 
   void deleteChapter(int chapterNumber) async {
@@ -32,15 +35,31 @@ class TOCCubit extends Cubit<TOCState> {
 
 class TOCState extends Equatable {
   final bool flipFlop;
+  final bool isDirty;
   final TOCStateCode code;
   final List<ChapterObject> chapterList;
 
   @override
-  List<Object?> get props => [flipFlop, code, chapterList];
+  List<Object?> get props => [flipFlop, isDirty, code, chapterList];
 
   const TOCState({
     this.flipFlop = false,
+    this.isDirty = false,
     this.code = TOCStateCode.loading,
     this.chapterList = const [],
   });
+
+  TOCState copyWith({
+    bool? flipFlop,
+    bool? isDirty,
+    TOCStateCode? code,
+    List<ChapterObject>? chapterList,
+  }) {
+    return TOCState(
+      flipFlop: flipFlop ?? this.flipFlop,
+      isDirty: isDirty ?? this.isDirty,
+      code: code ?? this.code,
+      chapterList: chapterList ?? this.chapterList,
+    );
+  }
 }

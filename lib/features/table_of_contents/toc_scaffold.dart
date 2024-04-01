@@ -15,27 +15,37 @@ class TOCScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
-    return Scaffold(
-      appBar: const TOCAppBar(),
-      body: RefreshIndicator(
-        onRefresh: () async => cubit.refresh(),
-        child: const SlidableAutoCloseBehavior(
-          child: CustomScrollView(
-            slivers: [
-              TOCSliverCoverBanner(),
-              TOCSliverBookName(),
-              TOCSliverList(),
-            ],
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          return;
+        }
+
+        Navigator.of(context).pop(cubit.state.isDirty);
+      },
+      child: Scaffold(
+        appBar: const TOCAppBar(),
+        body: RefreshIndicator(
+          onRefresh: () async => cubit.refresh(),
+          child: const SlidableAutoCloseBehavior(
+            child: CustomScrollView(
+              slivers: [
+                TOCSliverCoverBanner(),
+                TOCSliverBookName(),
+                TOCSliverList(),
+              ],
+            ),
           ),
         ),
-      ),
-      floatingActionButton: AddChapterCalleeAddButton(
-        cubit.bookObject.name,
-        onPopBack: (isSuccess) {
-          if (isSuccess == true) {
-            cubit.refresh(isForce: true);
-          }
-        },
+        floatingActionButton: AddChapterCalleeAddButton(
+          cubit.bookObject.name,
+          onPopBack: (isSuccess) {
+            if (isSuccess == true) {
+              cubit.refresh(isForce: true);
+            }
+          },
+        ),
       ),
     );
   }

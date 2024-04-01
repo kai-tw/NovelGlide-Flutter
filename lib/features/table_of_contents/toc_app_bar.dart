@@ -19,14 +19,18 @@ class TOCAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.background,
       surfaceTintColor: Theme.of(context).colorScheme.background,
-      leading: CommonBackButton(popValue: cubit.isDirty),
+      leading: BlocBuilder<TOCCubit, TOCState>(builder: (_, state) => CommonBackButton(popValue: state.isDirty)),
       title: Text(appLocalizations.titleTOC),
       actions: [
         EditBookCalleeEditButton(
           bookObject: cubit.bookObject,
           onPopBack: (isSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(isSuccess ? appLocalizations.editBookSuccessfully : appLocalizations.editBookFailed),
+            ));
+
             if (isSuccess == true) {
-              cubit.isDirty = true;
+              cubit.setDirty();
               cubit.refresh(isForce: true);
             }
           },
