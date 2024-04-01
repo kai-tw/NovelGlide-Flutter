@@ -21,8 +21,10 @@ class CommonBookCoverImage extends StatelessWidget {
       }
     }
 
+    final Brightness brightness = MediaQuery.of(context).platformBrightness;
+
     return Image.asset(
-      'assets/images/book_cover_light.jpg',
+      'assets/images/book_cover_${brightness == Brightness.dark ? 'dark' : 'light'}.jpg',
       fit: BoxFit.cover,
       gaplessPlayback: true,
     );
