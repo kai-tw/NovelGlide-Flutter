@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'add_book_image_picker.dart';
 import 'add_book_name_input_field.dart';
 import 'add_book_submit_button.dart';
-import 'add_book_title.dart';
 import 'bloc/add_book_form_bloc.dart';
 
 class AddBookForm extends StatelessWidget {

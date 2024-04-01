@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/book_object.dart';
-import '../common_components/common_draggable_scrollable_sheet.dart';
 import 'bloc/edit_book_form_bloc.dart';
-import 'edit_book_draggable_scrollable_sheet.dart';
+import 'edit_book_scaffold.dart';
 
 class EditBookCalleeEditButton extends StatelessWidget {
   const EditBookCalleeEditButton({required this.bookObject, this.onPopBack, super.key});
@@ -16,16 +15,13 @@ class EditBookCalleeEditButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          scrollControlDisabledMaxHeightRatio: CommonDraggableScrollableSheet.maxHeightRatio,
-          showDragHandle: CommonDraggableScrollableSheet.showDragHandle,
-          builder: (context) {
-            return BlocProvider(
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => BlocProvider(
               create: (_) => EditBookFormCubit(bookObject),
-              child: const EditBookDraggableScrollableSheet()
-            );
-          },
+              child: const EditBookScaffold(),
+            ),
+          ),
         ).then(onPopBack ?? (_) {});
       },
       icon: const Icon(Icons.edit_rounded),
