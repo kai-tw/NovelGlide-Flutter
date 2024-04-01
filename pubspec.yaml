@@ -51,6 +51,7 @@ dependencies:
   html: ^0.15.4
   file_picker: ^6.2.0
   flutter_charset_detector: ^3.0.0
+  firebase_core: ^2.27.2
 
 dev_dependencies:
   flutter_test:

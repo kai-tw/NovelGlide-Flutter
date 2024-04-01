@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "569892023598",
+    "project_id": "novelglide",
+    "storage_bucket": "novelglide.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:569892023598:android:3953d49865cefc345b1ebf",
+        "android_client_info": {
+          "package_name": "com.kai_wu.novelglide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "569892023598-6p7mvi4pki5t8qv3lv6oud1snbt4sdjf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTNquFIAr2at8j6XRiNSDczSp_5nRxnfk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "569892023598-6p7mvi4pki5t8qv3lv6oud1snbt4sdjf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "569892023598-8n0gc07djd8f9no1n7a33e2c6bhiusjs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kaiwu.novelglide"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
