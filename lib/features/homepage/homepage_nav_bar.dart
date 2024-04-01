@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc/navigation_bloc.dart';
 import 'homepage_nav_bar_destination.dart';
@@ -9,18 +10,17 @@ class HomepageNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<NavigationCubit, NavigationState>(
       builder: (BuildContext context, NavigationState state) {
         return NavigationBar(
-          height: 64.0,
           selectedIndex: _getSelectedIndex(state),
-          indicatorColor: Colors.transparent,
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+          indicatorColor: Theme.of(context).colorScheme.primaryContainer,
           backgroundColor: Theme.of(context).colorScheme.background,
-          destinations: const [
-            HomepageNavBarDestination(Icons.shelves),
-            HomepageNavBarDestination(Icons.bookmark),
-            HomepageNavBarDestination(Icons.settings),
+          destinations: [
+            HomepageNavBarDestination(Icons.shelves, label: appLocalizations.titleBookshelf),
+            HomepageNavBarDestination(Icons.bookmark, label: appLocalizations.titleBookmarks),
+            HomepageNavBarDestination(Icons.settings, label: appLocalizations.titleSettings),
           ],
           onDestinationSelected: (index) => _onDestinationSelected(context, state, index),
         );

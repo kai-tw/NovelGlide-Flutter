@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class HomepageNavBarDestination extends StatelessWidget {
-  const HomepageNavBarDestination(this.iconData, {super.key});
+  const HomepageNavBarDestination(this.iconData, {super.key, this.label = ''});
 
   final IconData iconData;
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,6 @@ class HomepageNavBarDestination extends StatelessWidget {
           iconData,
           color: Theme.of(context).colorScheme.onPrimaryContainer,
         ),
-        label: '');
+        label: label);
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/reader_cubit.dart';
 import 'auto_save_switch.dart';
 import 'font_size_slider.dart';
 import 'line_height_slider.dart';
