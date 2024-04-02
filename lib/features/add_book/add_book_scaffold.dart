@@ -12,9 +12,8 @@ class AddBookScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        title: Text(
-          AppLocalizations.of(context)!.titleAddBook,
-        ),
+        title: Text(AppLocalizations.of(context)!.titleAddBook),
+        backgroundColor: Theme.of(context).colorScheme.background,
       ),
       body: const Padding(
         padding: EdgeInsets.all(24.0),

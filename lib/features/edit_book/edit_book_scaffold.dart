@@ -12,9 +12,8 @@ class EditBookScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        title: Text(
-          AppLocalizations.of(context)!.titleEditBook,
-        ),
+        title: Text(AppLocalizations.of(context)!.titleEditBook),
+        backgroundColor: Theme.of(context).colorScheme.background,
       ),
       body: const Padding(
         padding: EdgeInsets.all(24.0),
