@@ -26,12 +26,12 @@ class AddBookNameInputField extends StatelessWidget {
         appLocalizations.bookName,
         suffixIcon: CommonFormHelpButton(
           title: appLocalizations.ruleDialogBookNameTitle,
-          content: '${appLocalizations.ruleDialogBookNameContent}${VerifyUtility.folderNamePattern}',
+          content: '${appLocalizations.ruleDialogBookNameContent}${VerifyUtility.folderNameDenyPattern}',
         ),
       ),
       inputFormatters: [
         FilteringTextInputFormatter.singleLineFormatter,
-        FilteringTextInputFormatter.deny(VerifyUtility.folderNameRegex),
+        FilteringTextInputFormatter.deny(VerifyUtility.folderNameDenyRegex),
       ],
       validator: (value) => nameStateStringMap[cubit.nameVerify(value)],
       onSaved: (value) => cubit.data.name = value!,

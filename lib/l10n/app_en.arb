@@ -12,6 +12,8 @@
   "preview": "Preview",
   "yes": "Yes",
   "no": "No",
+  "register": "Register",
+  "login": "Login",
   "dialogDeleteConfirmation": "You will delete them forever.",
   "addBookSuccessfully": "Successfully added the book",
   "addBookFailed": "Failed to add the book",

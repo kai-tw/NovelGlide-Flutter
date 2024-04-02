@@ -12,6 +12,8 @@
   "preview": "預覽",
   "yes": "是",
   "no": "否",
+  "register": "註冊",
+  "login": "登入",
   "dialogDeleteConfirmation": "將會永久刪除。",
   "addBookSuccessfully": "新增書本成功",
   "addBookFailed": "新增書本失敗",

@@ -1,0 +1,4 @@
+class User {
+
+  const User();
+}
