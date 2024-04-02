@@ -14,6 +14,8 @@
   "no": "否",
   "register": "註冊",
   "login": "登入",
+  "emailAddress": "電子郵件地址",
+  "password": "密碼",
   "dialogDeleteConfirmation": "將會永久刪除。",
   "addBookSuccessfully": "新增書本成功",
   "addBookFailed": "新增書本失敗",

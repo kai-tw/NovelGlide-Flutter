@@ -5,18 +5,21 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../toolbox/verify_utility.dart';
 import '../common_components/common_form_decoration.dart';
 
-class RegisterEmailField extends StatelessWidget {
-  const RegisterEmailField({super.key});
+class RegisterPasswordField extends StatelessWidget {
+  const RegisterPasswordField({super.key});
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return TextFormField(
-      decoration: CommonFormDecoration.inputDecoration(appLocalizations.emailAddress),
-      keyboardType: TextInputType.emailAddress,
+      decoration: CommonFormDecoration.inputDecoration(appLocalizations.password),
+      obscureText: true,
+      autocorrect: false,
+      enableSuggestions: false,
+      enableIMEPersonalizedLearning: false,
       inputFormatters: [
         FilteringTextInputFormatter.singleLineFormatter,
-        FilteringTextInputFormatter.deny(VerifyUtility.emailDenyRegex),
+        FilteringTextInputFormatter.allow(VerifyUtility.passwordAllowRegex),
       ],
     );
   }

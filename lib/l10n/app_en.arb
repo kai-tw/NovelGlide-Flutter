@@ -14,6 +14,8 @@
   "no": "No",
   "register": "Register",
   "login": "Login",
+  "emailAddress": "Email Address",
+  "password": "Password",
   "dialogDeleteConfirmation": "You will delete them forever.",
   "addBookSuccessfully": "Successfully added the book",
   "addBookFailed": "Failed to add the book",

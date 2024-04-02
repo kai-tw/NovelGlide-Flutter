@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../common_components/common_back_button.dart';
 import 'register_email_field.dart';
 import 'register_page_title.dart';
+import 'register_password_field.dart';
+import 'register_submit_button.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -23,6 +25,10 @@ class RegisterPage extends StatelessWidget {
               ),
               Padding(padding: EdgeInsets.only(bottom: 48.0)),
               RegisterEmailField(),
+              Padding(padding: EdgeInsets.only(bottom: 24.0)),
+              RegisterPasswordField(),
+              Padding(padding: EdgeInsets.only(bottom: 24.0)),
+              RegisterSubmitButton(),
             ],
           ),
         ),
