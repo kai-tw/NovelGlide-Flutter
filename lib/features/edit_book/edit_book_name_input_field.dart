@@ -22,10 +22,7 @@ class EditBookNameInputField extends StatelessWidget {
     return TextFormField(
       decoration: InputDecoration(
         labelText: appLocalizations.bookName,
-        suffixIcon: CommonFormHelpButton(
-          title: appLocalizations.ruleDialogBookNameTitle,
-          content: '${appLocalizations.ruleDialogBookNameContent}${VerifyUtility.folderNameDenyPattern}',
-        ),
+        helperText: '${appLocalizations.bookNameHelperText}${VerifyUtility.folderNameDenyPattern}',
       ),
       initialValue: cubit.oldData.name,
       inputFormatters: [
