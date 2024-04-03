@@ -26,16 +26,16 @@ class CommonFilePickerFormField extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<CommonFilePickerCubit, CommonFilePickerState>(
       builder: (context, state) {
-        String? errorText;
+        InputDecoration decoration = inputDecoration ?? const InputDecoration();
 
-        if (isRequired && state.code == CommonFilePickerStateCode.blank) {
-          errorText = appLocalizations.fieldBlank;
+        if (inputDecoration != null && isRequired && state.code == CommonFilePickerStateCode.blank) {
+          decoration = inputDecoration!.copyWith(errorText: appLocalizations.fieldBlank);
         }
 
         return FormField(
           validator: (_) => _validator(cubit.file),
           builder: (_) => InputDecorator(
-            decoration: inputDecoration ?? const InputDecoration(),
+            decoration: decoration,
             child: child,
           ),
         );
