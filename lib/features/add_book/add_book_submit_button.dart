@@ -13,6 +13,7 @@ class AddBookSubmitButton extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: CommonFormSubmitButton(
         onPressed: BlocProvider.of<AddBookFormCubit>(context).submit,
+        onSuccess: () => Navigator.of(context).pop(true),
       ),
     );
   }

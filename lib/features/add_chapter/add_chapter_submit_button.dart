@@ -13,6 +13,7 @@ class AddChapterSubmitButton extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: CommonFormSubmitButton(
         onPressed: BlocProvider.of<AddChapterFormCubit>(context).submit,
+        onSuccess: () => Navigator.of(context).pop(true),
       ),
     );
   }

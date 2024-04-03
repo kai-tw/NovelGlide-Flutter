@@ -13,6 +13,7 @@ class EditBookSubmitButton extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: CommonFormSubmitButton(
         onPressed: BlocProvider.of<EditBookFormCubit>(context).submit,
+        onSuccess: () => Navigator.of(context).pop(true),
       ),
     );
   }
