@@ -40,6 +40,11 @@ class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
     file = null;
     emit(CommonFilePickerState.fromNull());
   }
+
+  String? validator() {
+    emit(CommonFilePickerState.fromFile(file: file));
+    return null;
+  }
 }
 
 class CommonFilePickerState extends Equatable {

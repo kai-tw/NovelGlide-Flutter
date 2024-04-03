@@ -28,25 +28,25 @@ class CommonFilePickerFormField extends StatelessWidget {
       builder: (context, state) {
         InputDecoration decoration = inputDecoration ?? const InputDecoration();
 
-        if (inputDecoration != null && isRequired && state.code == CommonFilePickerStateCode.blank) {
+        if (isRequired && state.code == CommonFilePickerStateCode.blank) {
           decoration = inputDecoration!.copyWith(errorText: appLocalizations.fieldBlank);
+        } else {
+          decoration = inputDecoration!.copyWith(errorText: null);
         }
 
         return FormField(
-          validator: (_) => _validator(cubit.file),
+          validator: (_) => cubit.validator(),
           builder: (_) => InputDecorator(
             decoration: decoration,
             child: child,
           ),
+          onSaved: (_) {
+            if (onSaved != null) {
+              onSaved!(cubit.file);
+            }
+          },
         );
       },
     );
-  }
-
-  String? _validator(File? file) {
-    if (onSaved != null) {
-      onSaved!(file);
-    }
-    return isRequired && file == null ? '' : null;
   }
 }
