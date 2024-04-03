@@ -13,7 +13,10 @@ class RegisterPageEmailField extends StatelessWidget {
     return TextFormField(
       decoration: InputDecoration(
         labelText: appLocalizations.emailAddress,
-        prefixIcon: const Icon(Icons.email_rounded),
+        prefixIcon: const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.email_rounded),
+        ),
       ),
       keyboardType: TextInputType.emailAddress,
       inputFormatters: [

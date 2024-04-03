@@ -13,6 +13,10 @@ class RegisterPagePasswordField extends StatelessWidget {
     return TextFormField(
       decoration: InputDecoration(
         labelText: appLocalizations.password,
+        prefixIcon: const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.key_rounded),
+        ),
       ),
       obscureText: true,
       autocorrect: false,
