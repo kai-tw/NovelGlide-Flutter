@@ -21,10 +21,7 @@ class AddChapterNumberInputField extends StatelessWidget {
     return TextFormField(
       decoration: InputDecoration(
         labelText: appLocalizations.fieldChapterNumber,
-        suffixIcon: CommonFormHelpButton(
-          title: appLocalizations.ruleDialogChapterNumberTitle,
-          content: appLocalizations.ruleDialogChapterNumberContent,
-        ),
+        helperText: appLocalizations.chapterNumberHelperText,
       ),
       keyboardType: TextInputType.number,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],

@@ -4,7 +4,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_file_picker/common_file_picker.dart';
 import '../common_components/common_file_picker/common_file_picker_type.dart';
-import '../common_components/common_form_help_button.dart';
 import 'bloc/add_chapter_form_bloc.dart';
 
 class AddChapterFilePicker extends StatelessWidget {
@@ -17,14 +16,13 @@ class AddChapterFilePicker extends StatelessWidget {
     const List<String> allowedExtensions = ["txt"];
 
     return CommonFilePicker(
-      labelText: appLocalizations.titleSelectFile,
+      inputDecoration: InputDecoration(
+        labelText: appLocalizations.titleSelectFile,
+        helperText: appLocalizations.fileTypeHelperText + allowedExtensions.join(", "),
+      ),
       type: CommonFilePickerType.custom,
       allowedExtensions: allowedExtensions,
       onSaved: (file) => cubit.file = file,
-      suffixIcon: CommonFormHelpButton(
-        title: appLocalizations.ruleDialogFileAcceptedTitle,
-        content: appLocalizations.ruleDialogFileAccepted + allowedExtensions.join(", "),
-      ),
     );
   }
 }

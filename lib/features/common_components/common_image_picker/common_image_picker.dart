@@ -21,7 +21,9 @@ class CommonImagePicker extends StatelessWidget {
     return BlocProvider(
       create: (_) => CommonFilePickerCubit(file: imageFile),
       child: CommonFilePickerFormField(
-        labelText: labelText,
+        inputDecoration: InputDecoration(
+          labelText: labelText,
+        ),
         onSaved: onSaved,
         isRequired: isRequired,
         child: CommonImagePickerContent(
