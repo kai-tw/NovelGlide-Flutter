@@ -17,8 +17,6 @@ class TOCAppBar extends StatelessWidget implements PreferredSizeWidget {
     final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return AppBar(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      surfaceTintColor: Theme.of(context).colorScheme.background,
       leading: BlocBuilder<TOCCubit, TOCState>(builder: (_, state) => CommonBackButton(popValue: state.isDirty)),
       title: Text(appLocalizations.titleTOC),
       actions: [

@@ -19,9 +19,6 @@ class BookshelfAppBarDefault extends StatelessWidget implements PreferredSizeWid
         icon: const Icon(Icons.person),
       ),
       title: Text(AppLocalizations.of(context)!.titleBookshelf),
-      centerTitle: false,
-      backgroundColor: Theme.of(context).colorScheme.background,
-      surfaceTintColor: Theme.of(context).colorScheme.background,
     );
   }
 }

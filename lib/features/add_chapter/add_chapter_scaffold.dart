@@ -14,7 +14,6 @@ class AddChapterScaffold extends StatelessWidget {
       appBar: AppBar(
         leading: const CommonBackButton(),
         title: Text(appLocalizations.titleAddChapter),
-        backgroundColor: Theme.of(context).colorScheme.background,
       ),
       body: const Padding(
         padding: EdgeInsets.all(24.0),

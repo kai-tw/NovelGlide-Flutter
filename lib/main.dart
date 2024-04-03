@@ -30,8 +30,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'NovelGlide',
-      theme: lightThemeData(),
-      darkTheme: darkThemeData(),
+      theme: LightTheme.themeData,
+      darkTheme: DarkTheme.themeData,
       themeMode: ThemeMode.system,
       localizationsDelegates: const [
         AppLocalizations.delegate,

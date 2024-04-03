@@ -4,7 +4,6 @@ import 'add_chapter_file_picker.dart';
 import 'add_chapter_title_input_field.dart';
 import 'add_chapter_number_input_field.dart';
 import 'add_chapter_submit_button.dart';
-import 'add_chapter_title.dart';
 
 class AddChapterForm extends StatelessWidget {
   const AddChapterForm({super.key, this.controller});

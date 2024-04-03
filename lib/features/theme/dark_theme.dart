@@ -1,7 +1,24 @@
 import 'package:flutter/material.dart';
 
-ColorScheme darkColorScheme() {
-  return const ColorScheme(
+import 'common_theme.dart';
+
+class DarkTheme {
+  static final ThemeData themeData = ThemeData(
+    appBarTheme: _appBarTheme,
+    brightness: Brightness.dark,
+    colorScheme: _colorScheme,
+    inputDecorationTheme: CommonTheme.inputDecorationTheme,
+    splashColor: Colors.transparent,
+    useMaterial3: true,
+  );
+
+  static final AppBarTheme _appBarTheme = AppBarTheme(
+    backgroundColor: _colorScheme.background,
+    surfaceTintColor: _colorScheme.background,
+    centerTitle: false,
+  );
+
+  static const ColorScheme _colorScheme = ColorScheme(
     brightness: Brightness.dark,
     primary: Color(0xFFBDBDBD),
     onPrimary: Color(0xFF3F3F3F),
@@ -38,14 +55,5 @@ ColorScheme darkColorScheme() {
     // surfaceContainer: Color(0xFF1B2122),
     // surfaceContainerHigh: Color(0xFF252B2C),
     // surfaceContainerHighest: Color(0xFF303637)
-  );
-}
-
-ThemeData darkThemeData() {
-  return ThemeData(
-    brightness: Brightness.dark,
-    colorScheme: darkColorScheme(),
-    splashColor: Colors.transparent,
-    useMaterial3: true,
   );
 }

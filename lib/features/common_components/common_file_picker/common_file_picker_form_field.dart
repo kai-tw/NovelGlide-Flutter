@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../common_form_decoration.dart';
 import 'bloc/common_file_picker_bloc.dart';
 
 class CommonFilePickerFormField extends StatelessWidget {
@@ -38,9 +37,9 @@ class CommonFilePickerFormField extends StatelessWidget {
         return FormField(
           validator: (_) => _validator(cubit.file),
           builder: (_) => InputDecorator(
-            decoration: CommonFormDecoration.inputDecoration(
-              labelText,
-              padding: const EdgeInsets.fromLTRB(24.0, 24.0, 0, 24.0),
+            decoration: InputDecoration(
+              labelText: labelText,
+              contentPadding: const EdgeInsets.fromLTRB(24.0, 24.0, 0, 24.0),
               errorText: errorText,
               suffixIcon: suffixIcon,
             ),

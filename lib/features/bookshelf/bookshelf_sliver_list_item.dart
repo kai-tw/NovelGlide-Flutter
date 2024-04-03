@@ -57,7 +57,6 @@ class BookshelfSliverListItem extends StatelessWidget {
       case BookshelfStateCode.normal:
         Navigator.of(context).push(_tocRoute(cubit)).then(
           (isDirty) {
-            print(isDirty);
             if (isDirty == true) {
               cubit.refresh();
             }
