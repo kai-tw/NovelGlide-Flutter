@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -14,7 +15,7 @@ class BookshelfAppBarDefault extends StatelessWidget implements PreferredSizeWid
     return AppBar(
       leading: IconButton(
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginPage()));
+          Navigator.of(context).pushNamed(FirebaseAuth.instance.currentUser != null ? "/account" : "/login");
         },
         icon: const Icon(Icons.person),
       ),

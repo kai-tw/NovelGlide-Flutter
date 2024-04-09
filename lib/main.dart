@@ -1,4 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'features/account_page/account_page.dart';
+import 'features/login_page/login_page.dart';
+import 'features/register_page/register_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -46,6 +49,9 @@ class App extends StatelessWidget {
       initialRoute: "/",
       routes: {
         "/": (_) => const Homepage(),
+        "/account": (_) => const AccountPage(),
+        "/login": (_) => const LoginPage(),
+        "/register": (_) => const RegisterPage(),
       },
     );
   }

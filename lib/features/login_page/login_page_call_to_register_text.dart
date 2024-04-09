@@ -18,9 +18,7 @@ class LoginPageCallToRegisterText extends StatelessWidget {
         children: [
           TextSpan(
             text: appLocalizations.register,
-            recognizer: TapGestureRecognizer()..onTap = () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const RegisterPage()),
-            ),
+            recognizer: TapGestureRecognizer()..onTap = () => Navigator.of(context).pushNamed("/register"),
             style: TextStyle(
               decoration: TextDecoration.underline,
               decorationColor: registerTextColor,
