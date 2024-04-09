@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../common_components/common_back_button.dart';
-import 'register_page_confirm_password_field.dart';
-import 'register_page_email_field.dart';
-import 'register_page_error_message.dart';
-import 'register_page_title.dart';
-import 'register_page_password_field.dart';
-import 'register_page_submit_button.dart';
+import 'login_page_call_to_register_text.dart';
+import 'login_page_email_field.dart';
+import 'login_page_title.dart';
+import 'login_page_password_field.dart';
+import 'login_page_submit_button.dart';
 
-class RegisterPageScaffold extends StatelessWidget {
-  const RegisterPageScaffold({super.key});
+class LoginPageScaffold extends StatelessWidget {
+  const LoginPageScaffold({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +22,15 @@ class RegisterPageScaffold extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                RegisterPageTitle(),
+                LoginPageTitle(),
                 Padding(padding: EdgeInsets.only(bottom: 48.0)),
-                RegisterPageErrorMessage(),
-                RegisterPageEmailField(),
+                LoginPageEmailField(),
                 Padding(padding: EdgeInsets.only(bottom: 24.0)),
-                RegisterPagePasswordField(),
+                LoginPagePasswordField(),
                 Padding(padding: EdgeInsets.only(bottom: 24.0)),
-                RegisterPageConfirmPasswordField(),
+                LoginPageCallToRegisterText(),
                 Padding(padding: EdgeInsets.only(bottom: 24.0)),
-                RegisterPageSubmitButton(),
+                LoginPageSubmitButton(),
               ],
             ),
           ),

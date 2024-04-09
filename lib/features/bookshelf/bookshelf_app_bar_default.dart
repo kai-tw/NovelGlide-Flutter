@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../register_page/register_page.dart';
+import '../login_page/login_page.dart';
 
 class BookshelfAppBarDefault extends StatelessWidget implements PreferredSizeWidget {
   const BookshelfAppBarDefault({super.key});
@@ -14,7 +14,7 @@ class BookshelfAppBarDefault extends StatelessWidget implements PreferredSizeWid
     return AppBar(
       leading: IconButton(
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (_) => const RegisterPage()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (_) => const LoginPage()));
         },
         icon: const Icon(Icons.person),
       ),

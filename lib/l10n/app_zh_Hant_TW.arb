@@ -16,18 +16,29 @@
   "login": "登入",
   "book": "書本",
   "chapter": "章節",
+
   "emailAddress": "電子郵件地址",
   "emailUsed": "電子郵件地址已註冊",
   "emailInvalid": "無效的電子郵件地址",
+
   "password": "密碼",
   "passwordWeak": "密碼太弱",
   "passwordNotMatch": "密碼不相同",
+  "passwordWrong": "密碼錯誤",
+
   "registerSuccess": "註冊成功",
+  "loginSuccess": "登入成功",
+
+  "userNotFound": "電子郵件地址尚未註冊",
+  "noAccountGoRegister": "沒有帳號嗎？",
+
   "dialogDeleteConfirmation": "將會永久刪除。",
+
   "addWhatSuccessfully": "新增{name}成功",
   "addWhatFailed": "新增{name}失敗",
   "editWhatSuccessfully": "編輯{name}成功",
   "editWhatFailed": "編輯{name}失敗",
+
   "titleSelectFile": "選擇一個檔案",
   "titleBookshelf": "書櫃",
   "titleBookmarks": "書籤",
@@ -36,20 +47,27 @@
   "titleAddBook": "新增書籍",
   "titleAddChapter": "新增章節",
   "titleEditBook": "編輯書籍",
+  "titleWelcomeBack": "歡迎回來",
+  "titleWelcomeJoin": "歡迎加入",
+
+  "fieldItemExists": "已存在",
+  "fieldOptional": "（選填）",
+  "fieldInvalid": "不符合命名規則",
+  "fieldBlank": "不能空白",
+
   "bookName": "書名",
   "bookCover": "封面",
-  "bookNameHelperText": "不可使用的符號：",
-  "fieldItemExists": "已存在",
+  "bookNameHelperText": "不可用的符號：",
+
   "fieldChapterName": "章節名稱",
   "fieldChapterNumber": "第幾章",
   "chapterNumberHelperText": "數字必須大於 0",
+
   "fileTypeHelperText": "只接受以下檔案類型：",
   "selectImage": "選擇圖片",
   "removeImage": "刪除圖片",
   "fieldFileNotAccepted": "不接受的檔案類型",
-  "fieldOptional": "（選填）",
-  "fieldInvalid": "不符合命名規則",
-  "fieldBlank": "不能空白",
+
   "chapterLabelFunction": "第 {number} 章",
   "savedTimeFunction": "{part}儲存",
   "savedTimeToday": "今天",

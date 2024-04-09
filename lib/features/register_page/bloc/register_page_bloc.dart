@@ -53,6 +53,10 @@ class RegisterPageCubit extends Cubit<RegisterPageState> {
         case 'email-already-in-use':
           emit(state.copyWith(code: RegisterPageStateCode.emailUsed));
           break;
+
+        case 'network-request-failed':
+          emit(state.copyWith(code: RegisterPageStateCode.otherError, errorMessage: e.message));
+          break;
       }
       return false;
     }
@@ -63,27 +67,31 @@ class RegisterPageCubit extends Cubit<RegisterPageState> {
 class RegisterPageState extends Equatable {
   final RegisterPageStateCode code;
   final String? emailAddress;
+  final String? errorMessage;
 
   @override
-  List<Object?> get props => [code, emailAddress];
+  List<Object?> get props => [code, emailAddress, errorMessage];
 
   const RegisterPageState({
     this.code = RegisterPageStateCode.normal,
     this.emailAddress,
+    this.errorMessage,
   });
 
   RegisterPageState copyWith({
     RegisterPageStateCode? code,
     String? emailAddress,
+    String? errorMessage,
   }) {
     return RegisterPageState(
       code: code ?? this.code,
       emailAddress: emailAddress ?? this.emailAddress,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }
 
-enum RegisterPageStateCode { normal, weakPassword, emailUsed }
+enum RegisterPageStateCode { normal, weakPassword, emailUsed, otherError }
 
 enum RegisterPageEmailCode { blank, invalid, normal }
 

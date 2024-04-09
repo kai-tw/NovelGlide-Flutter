@@ -13,17 +13,27 @@
   "yes": "Yes",
   "no": "No",
   "register": "Register",
-  "login": "Login",
+  "login": "Log-in",
   "book": "book",
   "chapter": "chapter",
+
   "emailAddress": "Email Address",
   "emailUsed": "The account already exists for that email.",
   "emailInvalid": "Invalid email address",
+
   "password": "Password",
   "passwordWeak": "The password provided is too weak.",
   "passwordNotMatch": "Passwords don't match.",
+  "passwordWrong": "Wrong password provided for that user.",
+
   "registerSuccess": "Registration is successfully completed.",
+  "loginSuccess": "Log-in successfully.",
+
+  "userNotFound": "No user found for that email.",
+  "noAccountGoRegister": "Don't have an account?",
+
   "dialogDeleteConfirmation": "You will delete them forever.",
+
   "addWhatSuccessfully": "Successfully added the {name}",
   "@addWhatSuccessfully": {
     "description": "Successfully added the %s",
@@ -34,6 +44,7 @@
       }
     }
   },
+
   "addWhatFailed": "Failed to add the {name}",
   "@addWhatFailed": {
     "description": "Failed to add the %s",
@@ -44,6 +55,7 @@
       }
     }
   },
+
   "editWhatSuccessfully": "Successfully edited the {name}",
   "@editWhatSuccessfully": {
     "description": "Successfully edited the %s",
@@ -54,6 +66,7 @@
       }
     }
   },
+
   "editWhatFailed": "Failed to edit the {name}",
   "@editWhatFailed": {
     "description": "Failed to edit the %s",
@@ -64,6 +77,7 @@
       }
     }
   },
+
   "titleSelectFile": "Select a file",
   "titleBookshelf": "Bookshelf",
   "titleBookmarks": "Bookmarks",
@@ -72,20 +86,28 @@
   "titleAddBook": "Add a book",
   "titleAddChapter": "Add a chapter",
   "titleEditBook": "Edit the book",
-  "bookName": "Book name",
-  "bookCover": "The cover of this book",
-  "bookNameHelperText": "You can't use these symbols: ",
+  "titleWelcomeBack": "Welcome back!",
+  "titleWelcomeJoin": "Welcome to join us!",
+
   "fieldItemExists": "It already exists.",
-  "fieldChapterName": "Chapter Name",
-  "fieldChapterNumber": "Chapter #",
-  "chapterNumberHelperText": "It must be larger than 0.",
-  "fileTypeHelperText": "Only accept these type of files: ",
-  "selectImage": "Select an image",
-  "removeImage": "Remove the image",
-  "fieldFileNotAccepted": "Not accepted file type.",
   "fieldOptional": " (Optional)",
   "fieldInvalid": "It's invalid.",
   "fieldBlank": "It cannot be blank.",
+
+  "bookName": "Book name",
+  "bookCover": "The cover of this book",
+
+  "fieldChapterName": "Chapter Name",
+  "fieldChapterNumber": "Chapter #",
+
+  "selectImage": "Select an image",
+  "removeImage": "Remove the image",
+  "fieldFileNotAccepted": "Not accepted file type.",
+
+  "bookNameHelperText": "You can't use these symbols: ",
+  "chapterNumberHelperText": "It must be larger than 0.",
+  "fileTypeHelperText": "Only accept these type of files: ",
+
   "chapterLabelFunction": "Chapter {number}",
   "@chapterLabelFunction": {
     "description": "Display Chapter %d",
@@ -96,6 +118,7 @@
       }
     }
   },
+
   "savedTimeFunction": "Saved in {part}.",
   "@savedTimeFunction": {
     "description": "Display %s days saved before.",
@@ -106,8 +129,10 @@
       }
     }
   },
+
   "savedTimeToday": "Today",
   "savedTimeYesterday": "Yesterday",
+
   "savedTimeOthersFunction": "{days} days before",
   "@savedTimeOthersFunction": {
     "description": "Display %d days.",
@@ -118,6 +143,7 @@
       }
     }
   },
+
   "readerSettingsResetButton": "Reset settings",
   "readerSettingsResetButtonDone": "Reset done",
   "readerSettingsAutoSaveSwitch": "Auto add a bookmark"
