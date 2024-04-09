@@ -42,7 +42,6 @@ class LoginPageCubit extends Cubit<LoginPageState> {
         email: emailAddress!,
         password: password!,
       );
-      print(credential);
     } on FirebaseException catch (e) {
       switch (e.code) {
         case 'wrong-password':
