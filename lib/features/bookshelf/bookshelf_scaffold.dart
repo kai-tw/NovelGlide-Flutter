@@ -27,12 +27,15 @@ class BookshelfScaffold extends StatelessWidget {
       ),
       floatingActionButton: AddBookCalleeAddButton(
         onPopBack: (isSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(isSuccess ? appLocalizations.addBookSuccessfully : appLocalizations.addBookFailed),
-          ));
-
           if (isSuccess == true) {
             cubit.refresh();
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(appLocalizations.addWhatSuccessfully(appLocalizations.book)),
+            ));
+          } else if (isSuccess == false) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(appLocalizations.addWhatFailed(appLocalizations.book)),
+            ));
           }
         },
       ),

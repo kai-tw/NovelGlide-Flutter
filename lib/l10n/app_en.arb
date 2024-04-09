@@ -14,6 +14,8 @@
   "no": "No",
   "register": "Register",
   "login": "Login",
+  "book": "book",
+  "chapter": "chapter",
   "emailAddress": "Email Address",
   "emailUsed": "The account already exists for that email.",
   "emailInvalid": "Invalid email address",
@@ -22,10 +24,46 @@
   "passwordNotMatch": "Passwords don't match.",
   "registerSuccess": "Registration is successfully completed.",
   "dialogDeleteConfirmation": "You will delete them forever.",
-  "addBookSuccessfully": "Successfully added the book",
-  "addBookFailed": "Failed to add the book",
-  "editBookSuccessfully": "Successfully edited the book",
-  "editBookFailed": "Failed to edit the book",
+  "addWhatSuccessfully": "Successfully added the {name}",
+  "@addWhatSuccessfully": {
+    "description": "Successfully added the %s",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "book"
+      }
+    }
+  },
+  "addWhatFailed": "Failed to add the {name}",
+  "@addWhatFailed": {
+    "description": "Failed to add the %s",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "book"
+      }
+    }
+  },
+  "editWhatSuccessfully": "Successfully edited the {name}",
+  "@editWhatSuccessfully": {
+    "description": "Successfully edited the %s",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "book"
+      }
+    }
+  },
+  "editWhatFailed": "Failed to edit the {name}",
+  "@editWhatFailed": {
+    "description": "Failed to edit the %s",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "book"
+      }
+    }
+  },
   "titleSelectFile": "Select a file",
   "titleBookshelf": "Bookshelf",
   "titleBookmarks": "Bookmarks",

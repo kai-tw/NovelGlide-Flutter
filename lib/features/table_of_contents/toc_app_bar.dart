@@ -23,13 +23,16 @@ class TOCAppBar extends StatelessWidget implements PreferredSizeWidget {
         EditBookCalleeEditButton(
           bookObject: cubit.bookObject,
           onPopBack: (isSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(isSuccess ? appLocalizations.editBookSuccessfully : appLocalizations.editBookFailed),
-            ));
-
             if (isSuccess == true) {
               cubit.setDirty();
               cubit.refresh(isForce: true);
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(appLocalizations.editWhatSuccessfully(appLocalizations.book)),
+              ));
+            } else if (isSuccess == false) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(appLocalizations.editWhatFailed(appLocalizations.book)),
+              ));
             }
           },
         ),
