@@ -2,8 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../register_page/register_page.dart';
-
 class LoginPageCallToRegisterText extends StatelessWidget {
   const LoginPageCallToRegisterText({super.key});
 

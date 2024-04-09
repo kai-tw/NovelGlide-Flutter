@@ -31,6 +31,10 @@
 
   "userNotFound": "電子郵件地址尚未註冊",
   "noAccountGoRegister": "沒有帳號嗎？",
+  "alreadySignedInMessage": "已經登入了",
+  "goToAccountPage": "前往帳號頁",
+  "notSignedInMessage": "尚未登入",
+  "goToLoginPage": "前往登入",
 
   "dialogDeleteConfirmation": "將會永久刪除。",
 

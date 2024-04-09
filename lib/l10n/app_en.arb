@@ -31,6 +31,10 @@
 
   "userNotFound": "No user found for that email.",
   "noAccountGoRegister": "Don't have an account?",
+  "alreadySignedInMessage": "You have signed in.",
+  "goToAccountPage": "Go to the account page",
+  "notSignedInMessage": "You have not signed in yet.",
+  "goToLoginPage": "Go to the signed-in page",
 
   "dialogDeleteConfirmation": "You will delete them forever.",
 

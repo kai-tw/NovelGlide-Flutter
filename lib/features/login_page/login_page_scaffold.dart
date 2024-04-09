@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_back_button.dart';
+import '../common_components/common_center_info_cta_body.dart';
 import 'login_page_form.dart';
 
 class LoginPageScaffold extends StatelessWidget {
@@ -9,22 +11,23 @@ class LoginPageScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget body = const Padding(
-      padding: EdgeInsets.all(24.0),
-      child: LoginPageForm(),
-    );
-
-    if (FirebaseAuth.instance.currentUser != null) {
-      body = const Center(
-        child: Text("You have signed in."),
-      );
-    }
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final User? user = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
       ),
-      body: body,
+      body: user != null
+          ? CommonCenterInfoCTABody(
+              content: appLocalizations.alreadySignedInMessage,
+              actionText: appLocalizations.goToAccountPage,
+              onPressed: () => Navigator.of(context).pushReplacementNamed("/account"),
+            )
+          : const Padding(
+              padding: EdgeInsets.all(24.0),
+              child: LoginPageForm(),
+            ),
     );
   }
 }
