@@ -151,5 +151,16 @@
 
   "readerSettingsResetButton": "Reset settings",
   "readerSettingsResetButtonDone": "Reset done",
-  "readerSettingsAutoSaveSwitch": "Auto add a bookmark"
+  "readerSettingsAutoSaveSwitch": "Auto add a bookmark",
+
+  "accountPageGreeting": "Hello {displayName}",
+  "@accountPageGreeting": {
+    "description": "Hello %s",
+    "placeholder": {
+      "days": {
+        "type": "String",
+        "example": "User"
+      }
+    }
+  }
 }

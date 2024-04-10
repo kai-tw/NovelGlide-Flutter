@@ -80,5 +80,7 @@
   "savedTimeOthersFunction": "{days} 天前",
   "readerSettingsResetButton": "重設設定",
   "readerSettingsResetButtonDone": "重設成功",
-  "readerSettingsAutoSaveSwitch": "自動插入書籤"
+  "readerSettingsAutoSaveSwitch": "自動插入書籤",
+
+  "accountPageGreeting": "嗨 {displayName}"
 }
