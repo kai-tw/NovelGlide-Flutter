@@ -38,7 +38,7 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   Future<bool> submit() async {
     emit(SignInPageState(code: SignInPageStateCode.normal, emailAddress: emailAddress));
     try {
-      final UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailAddress!,
         password: password!,
       );

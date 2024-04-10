@@ -40,7 +40,7 @@ class RegisterPageCubit extends Cubit<RegisterPageState> {
   Future<bool> submit() async {
     emit(RegisterPageState(code: RegisterPageStateCode.normal, emailAddress: emailAddress));
     try {
-      final UserCredential credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailAddress!,
         password: password!,
       );
