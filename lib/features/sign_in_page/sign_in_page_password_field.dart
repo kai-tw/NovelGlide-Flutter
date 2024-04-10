@@ -4,17 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../toolbox/verify_utility.dart';
-import 'bloc/login_page_bloc.dart';
+import 'bloc/sign_in_page_bloc.dart';
 
-class LoginPagePasswordField extends StatelessWidget {
-  const LoginPagePasswordField({super.key});
+class SignInPagePasswordField extends StatelessWidget {
+  const SignInPagePasswordField({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final LoginPageCubit cubit = BlocProvider.of<LoginPageCubit>(context);
+    final SignInPageCubit cubit = BlocProvider.of<SignInPageCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
-    return BlocBuilder<LoginPageCubit, LoginPageState>(
+    return BlocBuilder<SignInPageCubit, SignInPageState>(
       builder: (context, state) {
         return TextFormField(
           decoration: InputDecoration(
@@ -23,7 +23,7 @@ class LoginPagePasswordField extends StatelessWidget {
               padding: EdgeInsets.all(16.0),
               child: Icon(Icons.key_rounded),
             ),
-            errorText: state.code == LoginPageStateCode.wrongPassword ? appLocalizations.passwordWrong : null,
+            errorText: state.code == SignInPageStateCode.wrongPassword ? appLocalizations.passwordWrong : null,
           ),
           obscureText: true,
           autocorrect: false,
@@ -40,11 +40,11 @@ class LoginPagePasswordField extends StatelessWidget {
     );
   }
 
-  String? codeToString(LoginPagePasswordCode code, AppLocalizations appLocalizations) {
+  String? codeToString(SignInPagePasswordCode code, AppLocalizations appLocalizations) {
     switch (code) {
-      case LoginPagePasswordCode.blank:
+      case SignInPagePasswordCode.blank:
         return appLocalizations.fieldBlank;
-      case LoginPagePasswordCode.normal:
+      case SignInPagePasswordCode.normal:
         return null;
       default:
         return appLocalizations.fieldInvalid;

@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_form_submit_button.dart';
-import 'bloc/login_page_bloc.dart';
+import 'bloc/sign_in_page_bloc.dart';
 
-class LoginPageSubmitButton extends StatelessWidget {
-  const LoginPageSubmitButton({super.key});
+class SignInPageSubmitButton extends StatelessWidget {
+  const SignInPageSubmitButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final LoginPageCubit cubit = BlocProvider.of<LoginPageCubit>(context);
+    final SignInPageCubit cubit = BlocProvider.of<SignInPageCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Align(
       alignment: Alignment.centerRight,

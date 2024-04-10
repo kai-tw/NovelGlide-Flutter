@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'features/account_page/account_page.dart';
-import 'features/login_page/login_page.dart';
+import 'features/sign_in_page/sign_in_page.dart';
 import 'features/register_page/register_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +50,7 @@ class App extends StatelessWidget {
       routes: {
         "/": (_) => const Homepage(),
         "/account": (_) => const AccountPage(),
-        "/login": (_) => const LoginPage(),
+        "/sign_in": (_) => const SignInPage(),
         "/register": (_) => const RegisterPage(),
       },
     );

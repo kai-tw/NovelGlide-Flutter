@@ -3,17 +3,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'bloc/login_page_bloc.dart';
+import 'bloc/sign_in_page_bloc.dart';
 
 class LoginPageEmailField extends StatelessWidget {
   const LoginPageEmailField({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final LoginPageCubit cubit = BlocProvider.of<LoginPageCubit>(context);
+    final SignInPageCubit cubit = BlocProvider.of<SignInPageCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
-    return BlocBuilder<LoginPageCubit, LoginPageState>(
+    return BlocBuilder<SignInPageCubit, SignInPageState>(
       builder: (context, state) {
         return TextFormField(
           decoration: InputDecoration(
@@ -22,7 +22,7 @@ class LoginPageEmailField extends StatelessWidget {
               padding: EdgeInsets.all(16.0),
               child: Icon(Icons.email_rounded),
             ),
-            errorText: state.code == LoginPageStateCode.userNotFound ? appLocalizations.userNotFound : null,
+            errorText: state.code == SignInPageStateCode.userNotFound ? appLocalizations.userNotFound : null,
           ),
           keyboardType: TextInputType.emailAddress,
           inputFormatters: [
@@ -36,11 +36,11 @@ class LoginPageEmailField extends StatelessWidget {
     );
   }
 
-  String? codeToString(LoginPageEmailCode code, AppLocalizations appLocalizations) {
+  String? codeToString(SignInPageEmailCode code, AppLocalizations appLocalizations) {
     switch (code) {
-      case LoginPageEmailCode.blank:
+      case SignInPageEmailCode.blank:
         return appLocalizations.fieldBlank;
-      case LoginPageEmailCode.normal:
+      case SignInPageEmailCode.normal:
         return null;
       default:
         return appLocalizations.emailInvalid;

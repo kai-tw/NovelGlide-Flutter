@@ -5,38 +5,38 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../toolbox/verify_utility.dart';
 
-class LoginPageCubit extends Cubit<LoginPageState> {
+class SignInPageCubit extends Cubit<SignInPageState> {
   String? emailAddress;
   String? password;
 
-  LoginPageCubit() : super(const LoginPageState());
+  SignInPageCubit() : super(const SignInPageState());
 
-  LoginPageEmailCode emailValidator(String? email) {
+  SignInPageEmailCode emailValidator(String? email) {
     if (email == null || email == '') {
-      return LoginPageEmailCode.blank;
+      return SignInPageEmailCode.blank;
     }
 
     if (!EmailValidator.validate(email)) {
-      return LoginPageEmailCode.invalid;
+      return SignInPageEmailCode.invalid;
     }
 
-    return LoginPageEmailCode.normal;
+    return SignInPageEmailCode.normal;
   }
 
-  LoginPagePasswordCode passwordValidator(String? password) {
+  SignInPagePasswordCode passwordValidator(String? password) {
     if (password == null || password == '') {
-      return LoginPagePasswordCode.blank;
+      return SignInPagePasswordCode.blank;
     }
 
     if (!VerifyUtility.passwordAllowRegex.hasMatch(password)) {
-      return LoginPagePasswordCode.invalid;
+      return SignInPagePasswordCode.invalid;
     }
 
-    return LoginPagePasswordCode.normal;
+    return SignInPagePasswordCode.normal;
   }
 
   Future<bool> submit() async {
-    emit(LoginPageState(code: LoginPageStateCode.normal, emailAddress: emailAddress));
+    emit(SignInPageState(code: SignInPageStateCode.normal, emailAddress: emailAddress));
     try {
       final UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailAddress!,
@@ -45,11 +45,11 @@ class LoginPageCubit extends Cubit<LoginPageState> {
     } on FirebaseException catch (e) {
       switch (e.code) {
         case 'wrong-password':
-          emit(state.copyWith(code: LoginPageStateCode.wrongPassword));
+          emit(state.copyWith(code: SignInPageStateCode.wrongPassword));
           break;
 
         case 'user-not-found':
-          emit(state.copyWith(code: LoginPageStateCode.userNotFound));
+          emit(state.copyWith(code: SignInPageStateCode.userNotFound));
           break;
       }
       return false;
@@ -58,31 +58,31 @@ class LoginPageCubit extends Cubit<LoginPageState> {
   }
 }
 
-class LoginPageState extends Equatable {
-  final LoginPageStateCode code;
+class SignInPageState extends Equatable {
+  final SignInPageStateCode code;
   final String? emailAddress;
 
   @override
   List<Object?> get props => [code, emailAddress];
 
-  const LoginPageState({
-    this.code = LoginPageStateCode.normal,
+  const SignInPageState({
+    this.code = SignInPageStateCode.normal,
     this.emailAddress,
   });
 
-  LoginPageState copyWith({
-    LoginPageStateCode? code,
+  SignInPageState copyWith({
+    SignInPageStateCode? code,
     String? emailAddress,
   }) {
-    return LoginPageState(
+    return SignInPageState(
       code: code ?? this.code,
       emailAddress: emailAddress ?? this.emailAddress,
     );
   }
 }
 
-enum LoginPageStateCode { normal, wrongPassword, userNotFound }
+enum SignInPageStateCode { normal, wrongPassword, userNotFound }
 
-enum LoginPageEmailCode { blank, invalid, normal }
+enum SignInPageEmailCode { blank, invalid, normal }
 
-enum LoginPagePasswordCode { blank, invalid, normal }
+enum SignInPagePasswordCode { blank, invalid, normal }

@@ -23,7 +23,7 @@ class AccountPage extends StatelessWidget {
           ? CommonCenterInfoCTABody(
               content: appLocalizations.notSignedInMessage,
               actionText: appLocalizations.goToLoginPage,
-              onPressed: () => Navigator.of(context).pushReplacementNamed("/login"),
+              onPressed: () => Navigator.of(context).pushReplacementNamed("/sign_in"),
             )
           : const Center(
               child: Text("You are in the account page."),

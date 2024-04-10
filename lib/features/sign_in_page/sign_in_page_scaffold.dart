@@ -4,10 +4,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_back_button.dart';
 import '../common_components/common_center_info_cta_body.dart';
-import 'login_page_form.dart';
+import 'sign_in_page_form.dart';
 
-class LoginPageScaffold extends StatelessWidget {
-  const LoginPageScaffold({super.key});
+class SignInPageScaffold extends StatelessWidget {
+  const SignInPageScaffold({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class LoginPageScaffold extends StatelessWidget {
             )
           : const Padding(
               padding: EdgeInsets.all(24.0),
-              child: LoginPageForm(),
+              child: SignInPageForm(),
             ),
     );
   }

@@ -14,7 +14,7 @@ class BookshelfAppBarDefault extends StatelessWidget implements PreferredSizeWid
       leading: IconButton(
         onPressed: () {
           final User? user = FirebaseAuth.instance.currentUser;
-          Navigator.of(context).pushNamed(user != null ? "/account" : "/login");
+          Navigator.of(context).pushNamed(user != null ? "/account" : "/sign_in");
         },
         icon: const Icon(Icons.person),
       ),
