@@ -2,47 +2,51 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../common_components/common_processing_dialog.dart';
-
 class AccountPageButtonRow extends StatelessWidget {
   const AccountPageButtonRow({super.key});
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final User? user = FirebaseAuth.instance.currentUser;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.edit_rounded),
+          child: TextButton.icon(
+            onPressed: () => _onEditButtonPressed(context),
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.all(20.0),
+            ),
+            icon: const Icon(Icons.edit_rounded, size: 20.0),
+            label: Text(appLocalizations.edit),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: IconButton(
-            onPressed: () {},
-            color: Theme.of(context).colorScheme.error,
-            icon: const Icon(Icons.delete_outline_rounded),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton(
-            onPressed: () async {
-              FirebaseAuth.instance.signOut();
-              Navigator.of(context).popUntil(ModalRoute.withName("/"));
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(appLocalizations.signOutSuccessfully),
-              ));
-            },
+            onPressed: () => _onSignOutButtonPressed(context),
+            padding: const EdgeInsets.all(12.0),
             icon: const Icon(Icons.logout_rounded),
           ),
         ),
       ],
     );
+  }
+
+  void _onEditButtonPressed(BuildContext context) {
+
+  }
+
+  void _onSignOutButtonPressed(BuildContext context) async {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+
+    FirebaseAuth.instance.signOut();
+    Navigator.of(context).popUntil(ModalRoute.withName("/"));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(appLocalizations.signOutSuccessfully),
+    ));
   }
 }
