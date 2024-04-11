@@ -42,11 +42,20 @@ class CommonConfirmDialog extends StatelessWidget {
       actions = actions.reversed.toList();
     }
 
-    return CommonDialog(
-      iconData: iconData ?? Icons.question_mark_rounded,
-      content: content,
-      contentAlign: TextAlign.center,
-      actions: actions,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          return;
+        }
+        Navigator.of(context).pop(false);
+      },
+      child: CommonDialog(
+        iconData: iconData ?? Icons.question_mark_rounded,
+        content: content,
+        contentAlign: TextAlign.center,
+        actions: actions,
+      ),
     );
   }
 }
