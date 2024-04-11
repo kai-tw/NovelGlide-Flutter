@@ -16,6 +16,22 @@
   "login": "登入",
   "book": "書本",
   "chapter": "章節",
+  "nickname": "暱稱",
+  "save": "儲存",
+  "edit": "編輯",
+  "nullValue": "無",
+
+  "greetingWord": "你好",
+  "greetingPhrase": "你好，{displayName}",
+  "@greetingPhrase": {
+    "description": "Hi %s",
+    "placeholder": {
+      "days": {
+        "type": "String",
+        "example": "User"
+      }
+    }
+  },
 
   "emailAddress": "電子郵件地址",
   "emailUsed": "電子郵件地址已註冊",
@@ -27,7 +43,8 @@
   "passwordWrong": "密碼錯誤",
 
   "registerSuccess": "註冊成功",
-  "loginSuccess": "登入成功",
+  "signInSuccess": "登入成功",
+  "signOutSuccessfully": "登出成功",
 
   "userNotFound": "電子郵件地址尚未註冊",
   "noAccountGoRegister": "沒有帳號嗎？",
@@ -80,7 +97,5 @@
   "savedTimeOthersFunction": "{days} 天前",
   "readerSettingsResetButton": "重設設定",
   "readerSettingsResetButtonDone": "重設成功",
-  "readerSettingsAutoSaveSwitch": "自動插入書籤",
-
-  "accountPageGreeting": "嗨 {displayName}"
+  "readerSettingsAutoSaveSwitch": "自動插入書籤"
 }

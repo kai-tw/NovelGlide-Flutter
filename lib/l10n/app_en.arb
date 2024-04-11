@@ -16,6 +16,22 @@
   "login": "Log-in",
   "book": "book",
   "chapter": "chapter",
+  "nickname": "Nickname",
+  "save": "Save",
+  "edit": "Edit",
+  "nullValue": "Blank",
+
+  "greetingWord": "Hi",
+  "greetingPhrase": "Hi {displayName}",
+  "@greetingPhrase": {
+    "description": "Hi %s",
+    "placeholder": {
+      "days": {
+        "type": "String",
+        "example": "User"
+      }
+    }
+  },
 
   "emailAddress": "Email Address",
   "emailUsed": "The account already exists for that email.",
@@ -27,7 +43,8 @@
   "passwordWrong": "Wrong password provided for that user.",
 
   "registerSuccess": "Registration is successfully completed.",
-  "loginSuccess": "Log-in successfully.",
+  "signInSuccess": "Successfully signed in.",
+  "signOutSuccessfully": "Successfully signed out.",
 
   "userNotFound": "No user found for that email.",
   "noAccountGoRegister": "Don't have an account?",
@@ -151,16 +168,5 @@
 
   "readerSettingsResetButton": "Reset settings",
   "readerSettingsResetButtonDone": "Reset done",
-  "readerSettingsAutoSaveSwitch": "Auto add a bookmark",
-
-  "accountPageGreeting": "Hello {displayName}",
-  "@accountPageGreeting": {
-    "description": "Hello %s",
-    "placeholder": {
-      "days": {
-        "type": "String",
-        "example": "User"
-      }
-    }
-  }
+  "readerSettingsAutoSaveSwitch": "Auto add a bookmark"
 }

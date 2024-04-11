@@ -17,7 +17,7 @@ class SignInPageSubmitButton extends StatelessWidget {
       child: CommonFormSubmitButton(
         onPressed: () => cubit.submit(),
         onSuccess: () {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(appLocalizations.registerSuccess)));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(appLocalizations.signInSuccess)));
           Navigator.of(context).pop();
         },
       ),
