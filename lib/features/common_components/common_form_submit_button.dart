@@ -4,8 +4,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'common_processing_dialog.dart';
 
 class CommonFormSubmitButton extends StatelessWidget {
-  const CommonFormSubmitButton({super.key, this.labelText, this.onPressed, this.onSuccess, this.onFailed});
+  const CommonFormSubmitButton({super.key, this.iconData, this.labelText, this.onPressed, this.onSuccess, this.onFailed});
 
+  final IconData? iconData;
   final String? labelText;
   final Future<bool> Function()? onPressed;
   final void Function()? onSuccess;
@@ -20,7 +21,7 @@ class CommonFormSubmitButton extends StatelessWidget {
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      icon: const Icon(Icons.send_rounded),
+      icon: Icon(iconData ?? Icons.send_rounded),
       label: Text(
         labelText ?? appLocalizations.submit,
         style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
