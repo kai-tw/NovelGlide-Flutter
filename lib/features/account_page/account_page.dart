@@ -1,12 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_back_button.dart';
 import '../common_components/common_center_info_cta_body.dart';
 import 'account_page_body.dart';
-import 'bloc/account_page_cubit.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -27,10 +25,7 @@ class AccountPage extends StatelessWidget {
               actionText: appLocalizations.goToLoginPage,
               onPressed: () => Navigator.of(context).pushReplacementNamed("/sign_in"),
             )
-          : BlocProvider(
-              create: (_) => AccountPageCubit(),
-              child: const AccountPageBody(),
-            ),
+          : const AccountPageBody(),
     );
   }
 }

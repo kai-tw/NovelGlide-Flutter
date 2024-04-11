@@ -13,7 +13,6 @@ class AccountPageBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final User? user = FirebaseAuth.instance.currentUser;
 
-    debugPrint(user.toString());
     return Form(
       child: SingleChildScrollView(
         child: Padding(
