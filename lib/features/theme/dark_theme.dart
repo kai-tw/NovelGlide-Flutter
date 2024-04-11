@@ -23,7 +23,7 @@ class DarkTheme {
     primary: Color(0xFFBDBDBD),
     onPrimary: Color(0xFF3F3F3F),
     primaryContainer: Color(0xFF313131),
-    onPrimaryContainer: Color(0xFFFFFFFF),
+    onPrimaryContainer: Color(0xFFB4B4B4),
     secondary: Color(0xFFB1CBD0),
     onSecondary: Color(0xFF1C3438),
     secondaryContainer: Color(0xFF334B4F),

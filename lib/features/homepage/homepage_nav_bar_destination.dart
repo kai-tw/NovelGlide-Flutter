@@ -11,7 +11,7 @@ class HomepageNavBarDestination extends StatelessWidget {
     return NavigationDestination(
         icon: Icon(
           iconData,
-          color: Theme.of(context).colorScheme.onBackground,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
         selectedIcon: Icon(
           iconData,

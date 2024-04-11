@@ -16,7 +16,7 @@ class HomepageNavBar extends StatelessWidget {
         return NavigationBar(
           selectedIndex: _getSelectedIndex(state),
           indicatorColor: Theme.of(context).colorScheme.primaryContainer,
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           destinations: [
             HomepageNavBarDestination(Icons.shelves, label: appLocalizations.titleBookshelf),
             HomepageNavBarDestination(Icons.bookmark, label: appLocalizations.titleBookmarks),

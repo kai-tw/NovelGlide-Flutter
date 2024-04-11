@@ -22,7 +22,7 @@ class LightTheme {
     brightness: Brightness.light,
     primary: Color(0xFF282828),
     onPrimary: Color(0xFFFFFFFF),
-    primaryContainer: Color(0xFF9EEFFD),
+    primaryContainer: Color(0xFFB9E9FF),
     onPrimaryContainer: Color(0xFF001F24),
     secondary: Color(0xFF4A6267),
     onSecondary: Color(0xFFFFFFFF),
