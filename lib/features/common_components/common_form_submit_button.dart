@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'common_processing_dialog.dart';
+import 'common_processing.dart';
 
 class CommonFormSubmitButton extends StatelessWidget {
   const CommonFormSubmitButton({super.key, this.iconData, this.labelText, this.onPressed, this.onSuccess, this.onFailed});
@@ -28,10 +28,10 @@ class CommonFormSubmitButton extends StatelessWidget {
       ),
       onPressed: () {
         if (onPressed != null && Form.of(context).validate()) {
-          showDialog(context: context, barrierDismissible: false, builder: (_) => const CommonProcessingDialog());
+          showDialog(context: context, barrierDismissible: false, builder: (_) => const CommonProcessing());
           Form.of(context).save();
           onPressed!().then((bool isSuccess) {
-            Navigator.of(context).pop();
+            Navigator.of(context, rootNavigator: true).pop();
 
             if (isSuccess && onSuccess != null) {
               onSuccess!();
