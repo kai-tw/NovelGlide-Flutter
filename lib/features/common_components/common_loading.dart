@@ -7,18 +7,15 @@ class CommonLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 100.0,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          LoadingAnimationWidget.staggeredDotsWave(
-            color: Theme.of(context).colorScheme.primary,
-            size: 50.0,
-          ),
-          Text(AppLocalizations.of(context)!.loading),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        LoadingAnimationWidget.staggeredDotsWave(
+          color: Theme.of(context).colorScheme.primary,
+          size: 50.0,
+        ),
+        Text(AppLocalizations.of(context)!.loading),
+      ],
     );
   }
 }
