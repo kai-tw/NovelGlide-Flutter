@@ -17,6 +17,7 @@
   "book": "book",
   "chapter": "chapter",
   "nickname": "Nickname",
+  "phone": "Phone",
   "save": "Save",
   "edit": "Edit",
   "nullValue": "Blank",
@@ -168,5 +169,7 @@
 
   "readerSettingsResetButton": "Reset settings",
   "readerSettingsResetButtonDone": "Reset done",
-  "readerSettingsAutoSaveSwitch": "Auto add a bookmark"
+  "readerSettingsAutoSaveSwitch": "Auto add a bookmark",
+
+  "accountEditGeneral": "General"
 }

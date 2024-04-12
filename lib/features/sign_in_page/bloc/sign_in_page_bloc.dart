@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../services/auth_services.dart';
 import '../../../toolbox/verify_utility.dart';
 
 class SignInPageCubit extends Cubit<SignInPageState> {
@@ -38,10 +39,11 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   Future<bool> submit() async {
     emit(SignInPageState(code: SignInPageStateCode.normal, emailAddress: emailAddress));
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailAddress!,
         password: password!,
       );
+      AuthServices.instance.setCredential(credential);
     } on FirebaseException catch (e) {
       switch (e.code) {
         case 'wrong-password':

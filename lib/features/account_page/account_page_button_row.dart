@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../account_edit/account_edit.dart';
+
 class AccountPageButtonRow extends StatelessWidget {
   const AccountPageButtonRow({super.key});
 
@@ -37,7 +39,7 @@ class AccountPageButtonRow extends StatelessWidget {
   }
 
   void _onEditButtonPressed(BuildContext context) {
-
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AccountEdit()));
   }
 
   void _onSignOutButtonPressed(BuildContext context) async {
