@@ -24,15 +24,6 @@
 
   "greetingWord": "你好",
   "greetingPhrase": "你好，{displayName}",
-  "@greetingPhrase": {
-    "description": "Hi %s",
-    "placeholder": {
-      "days": {
-        "type": "String",
-        "example": "User"
-      }
-    }
-  },
 
   "emailAddress": "電子郵件地址",
   "emailUsed": "電子郵件地址已註冊",
@@ -41,13 +32,14 @@
   "password": "密碼",
   "passwordWeak": "密碼太弱",
   "passwordNotMatch": "密碼不相同",
-  "passwordWrong": "密碼錯誤",
 
   "registerSuccess": "註冊成功",
   "signInSuccess": "登入成功",
+  "signInFailed": "登入失敗",
   "signOutSuccessfully": "登出成功",
 
-  "userNotFound": "電子郵件地址尚未註冊",
+  "invalidCredential": "提供的驗證資訊是無效的",
+
   "noAccountGoRegister": "沒有帳號嗎？",
   "alreadySignedInMessage": "已經登入了",
   "goToAccountPage": "前往帳號頁",

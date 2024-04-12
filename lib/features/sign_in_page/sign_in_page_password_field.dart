@@ -14,29 +14,24 @@ class SignInPagePasswordField extends StatelessWidget {
     final SignInPageCubit cubit = BlocProvider.of<SignInPageCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
-    return BlocBuilder<SignInPageCubit, SignInPageState>(
-      builder: (context, state) {
-        return TextFormField(
-          decoration: InputDecoration(
-            labelText: appLocalizations.password,
-            prefixIcon: const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Icon(Icons.key_rounded),
-            ),
-            errorText: state.code == SignInPageStateCode.wrongPassword ? appLocalizations.passwordWrong : null,
-          ),
-          obscureText: true,
-          autocorrect: false,
-          enableSuggestions: false,
-          enableIMEPersonalizedLearning: false,
-          inputFormatters: [
-            FilteringTextInputFormatter.singleLineFormatter,
-            FilteringTextInputFormatter.allow(VerifyUtility.passwordAllowRegex),
-          ],
-          validator: (value) => codeToString(cubit.passwordValidator(value), appLocalizations),
-          onSaved: (value) => cubit.password = value,
-        );
-      },
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: appLocalizations.password,
+        prefixIcon: const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.key_rounded),
+        ),
+      ),
+      obscureText: true,
+      autocorrect: false,
+      enableSuggestions: false,
+      enableIMEPersonalizedLearning: false,
+      inputFormatters: [
+        FilteringTextInputFormatter.singleLineFormatter,
+        FilteringTextInputFormatter.allow(VerifyUtility.passwordAllowRegex),
+      ],
+      validator: (value) => codeToString(cubit.passwordValidator(value), appLocalizations),
+      onSaved: (value) => cubit.password = value,
     );
   }
 

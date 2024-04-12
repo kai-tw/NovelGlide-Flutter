@@ -13,26 +13,20 @@ class LoginPageEmailField extends StatelessWidget {
     final SignInPageCubit cubit = BlocProvider.of<SignInPageCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
-    return BlocBuilder<SignInPageCubit, SignInPageState>(
-      builder: (context, state) {
-        return TextFormField(
-          decoration: InputDecoration(
-            labelText: appLocalizations.emailAddress,
-            prefixIcon: const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Icon(Icons.email_rounded),
-            ),
-            errorText: state.code == SignInPageStateCode.userNotFound ? appLocalizations.userNotFound : null,
-          ),
-          keyboardType: TextInputType.emailAddress,
-          inputFormatters: [
-            FilteringTextInputFormatter.singleLineFormatter,
-          ],
-          initialValue: state.emailAddress,
-          validator: (value) => codeToString(cubit.emailValidator(value), appLocalizations),
-          onSaved: (value) => cubit.emailAddress = value,
-        );
-      },
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: appLocalizations.emailAddress,
+        prefixIcon: const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Icon(Icons.email_rounded),
+        ),
+      ),
+      keyboardType: TextInputType.emailAddress,
+      inputFormatters: [
+        FilteringTextInputFormatter.singleLineFormatter,
+      ],
+      validator: (value) => codeToString(cubit.emailValidator(value), appLocalizations),
+      onSaved: (value) => cubit.emailAddress = value,
     );
   }
 

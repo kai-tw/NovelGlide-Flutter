@@ -41,13 +41,14 @@
   "password": "Password",
   "passwordWeak": "The password provided is too weak.",
   "passwordNotMatch": "Passwords don't match.",
-  "passwordWrong": "Wrong password provided for that user.",
 
   "registerSuccess": "Registration is successfully completed.",
   "signInSuccess": "Successfully signed in.",
+  "signInFailed": "Failed to sign in",
   "signOutSuccessfully": "Successfully signed out.",
 
-  "userNotFound": "No user found for that email.",
+  "invalidCredential": "The supplied auth credential is invalid.",
+
   "noAccountGoRegister": "Don't have an account?",
   "alreadySignedInMessage": "You have signed in.",
   "goToAccountPage": "Go to the account page",

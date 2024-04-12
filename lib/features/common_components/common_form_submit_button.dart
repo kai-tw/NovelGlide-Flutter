@@ -38,6 +38,10 @@ class CommonFormSubmitButton extends StatelessWidget {
             } else if (onFailed != null) {
               onFailed!();
             }
+          }).catchError((_) {
+            if (onFailed != null) {
+              onFailed!();
+            }
           });
         }
       },

@@ -9,6 +9,7 @@ import '../../../toolbox/verify_utility.dart';
 class SignInPageCubit extends Cubit<SignInPageState> {
   String? emailAddress;
   String? password;
+  FirebaseException? exception;
 
   SignInPageCubit() : super(const SignInPageState());
 
@@ -45,17 +46,10 @@ class SignInPageCubit extends Cubit<SignInPageState> {
       );
       AuthServices.instance.setCredential(credential);
     } on FirebaseException catch (e) {
-      switch (e.code) {
-        case 'wrong-password':
-          emit(state.copyWith(code: SignInPageStateCode.wrongPassword));
-          break;
-
-        case 'user-not-found':
-          emit(state.copyWith(code: SignInPageStateCode.userNotFound));
-          break;
-      }
+      exception = e;
       return false;
     }
+    exception = null;
     return true;
   }
 }
