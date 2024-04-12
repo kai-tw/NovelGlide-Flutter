@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/sign_in_page_bloc.dart';
 import 'sign_in_page_call_to_register_text.dart';
 import 'sign_in_page_email_field.dart';
 import 'sign_in_page_title.dart';
@@ -13,23 +11,20 @@ class SignInPageForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => SignInPageCubit(),
-      child: const Form(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SignInPageTitle(),
-              Padding(padding: EdgeInsets.only(bottom: 48.0)),
-              LoginPageEmailField(),
-              Padding(padding: EdgeInsets.only(bottom: 24.0)),
-              SignInPagePasswordField(),
-              Padding(padding: EdgeInsets.only(bottom: 24.0)),
-              SignInPageCallToRegisterText(),
-              Padding(padding: EdgeInsets.only(bottom: 24.0)),
-              SignInPageSubmitButton(),
-            ],
-          ),
+    return const Form(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SignInPageTitle(),
+            Padding(padding: EdgeInsets.only(bottom: 48.0)),
+            LoginPageEmailField(),
+            Padding(padding: EdgeInsets.only(bottom: 24.0)),
+            SignInPagePasswordField(),
+            Padding(padding: EdgeInsets.only(bottom: 24.0)),
+            SignInPageCallToRegisterText(),
+            Padding(padding: EdgeInsets.only(bottom: 24.0)),
+            SignInPageSubmitButton(),
+          ],
         ),
       ),
     );

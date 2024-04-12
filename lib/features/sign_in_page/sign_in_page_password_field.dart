@@ -11,7 +11,7 @@ class SignInPagePasswordField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SignInPageCubit cubit = BlocProvider.of<SignInPageCubit>(context);
+    final SignInPageCubit cubit = SignInPageCubit();
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return TextFormField(

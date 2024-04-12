@@ -1,17 +1,20 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../services/auth_services.dart';
 import '../../../toolbox/verify_utility.dart';
 
-class SignInPageCubit extends Cubit<SignInPageState> {
+class SignInPageCubit {
+  static final SignInPageCubit instance = SignInPageCubit._init();
   String? emailAddress;
   String? password;
   FirebaseException? exception;
 
-  SignInPageCubit() : super(const SignInPageState());
+  factory SignInPageCubit() {
+    return instance;
+  }
+
+  SignInPageCubit._init();
 
   SignInPageEmailCode emailValidator(String? email) {
     if (email == null || email == '') {
@@ -38,7 +41,6 @@ class SignInPageCubit extends Cubit<SignInPageState> {
   }
 
   Future<bool> submit() async {
-    emit(SignInPageState(code: SignInPageStateCode.normal, emailAddress: emailAddress));
     try {
       final UserCredential credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailAddress!,
@@ -51,29 +53,6 @@ class SignInPageCubit extends Cubit<SignInPageState> {
     }
     exception = null;
     return true;
-  }
-}
-
-class SignInPageState extends Equatable {
-  final SignInPageStateCode code;
-  final String? emailAddress;
-
-  @override
-  List<Object?> get props => [code, emailAddress];
-
-  const SignInPageState({
-    this.code = SignInPageStateCode.normal,
-    this.emailAddress,
-  });
-
-  SignInPageState copyWith({
-    SignInPageStateCode? code,
-    String? emailAddress,
-  }) {
-    return SignInPageState(
-      code: code ?? this.code,
-      emailAddress: emailAddress ?? this.emailAddress,
-    );
   }
 }
 
