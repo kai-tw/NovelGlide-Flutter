@@ -10,7 +10,6 @@ class AccountPageButtonRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final User? user = FirebaseAuth.instance.currentUser;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
