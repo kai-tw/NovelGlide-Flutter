@@ -4,6 +4,8 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FilePath {
+  static final FilePath instance = FilePath._init();
+
   late final String supportFolder;
   late final String documentFolder;
   late final String cacheFolder;
@@ -11,6 +13,12 @@ class FilePath {
 
   late final String libraryRoot;
   late final String hiveRoot;
+
+  factory FilePath() {
+    return instance;
+  }
+
+  FilePath._init();
 
   Future<void> init() async {
     supportFolder = (await getApplicationSupportDirectory()).path;
@@ -36,5 +44,3 @@ class FilePath {
     return "Sup:\t$supportFolder\nDoc:\t$documentFolder\nCache:\t$cacheFolder\nTemp:\t$tempFolder";
   }
 }
-
-FilePath filePath = FilePath();

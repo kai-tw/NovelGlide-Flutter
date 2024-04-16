@@ -7,7 +7,7 @@ import '../data/file_path.dart';
 
 class BookUtility {
   static List<String> getNameList() {
-    final Directory folder = Directory(filePath.libraryRoot);
+    final Directory folder = Directory(FilePath.instance.libraryRoot);
     folder.createSync(recursive: true);
 
     final List<String> entries = folder.listSync().whereType<Directory>().map((e) => e.path).toList();

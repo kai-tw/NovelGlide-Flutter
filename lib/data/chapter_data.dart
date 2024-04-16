@@ -18,7 +18,7 @@ class ChapterData {
   });
 
   String getPath() {
-    return join(filePath.libraryRoot, bookName, "$ordinalNumber.txt");
+    return join(FilePath.instance.libraryRoot, bookName, "$ordinalNumber.txt");
   }
 
   Future<void> initAsync() async {

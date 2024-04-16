@@ -14,14 +14,14 @@ class BookData {
 
   BookData.fromPath(String path) : this(name: basename(path), coverFile: File(join(path, 'cover.jpg')));
   BookData.fromObject(BookData bookObject) : this(name: bookObject.name, coverFile: bookObject.coverFile);
-  BookData.fromName(String name) : this.fromPath(join(filePath.libraryRoot, name));
+  BookData.fromName(String name) : this.fromPath(join(FilePath.instance.libraryRoot, name));
 
   /// File process
   Future<bool> create() async {
     if (!VerifyUtility.isFolderNameValid(name)) {
       return false;
     }
-    final Directory folder = Directory(join(filePath.libraryRoot, name));
+    final Directory folder = Directory(join(FilePath.instance.libraryRoot, name));
     if (folder.existsSync()) {
       return false;
     } else {
@@ -42,8 +42,8 @@ class BookData {
     }
 
     bool isSuccess = true;
-    final Directory oldFolder = Directory(join(filePath.libraryRoot, name));
-    final Directory newFolder = Directory(join(filePath.libraryRoot, newObject.name));
+    final Directory oldFolder = Directory(join(FilePath.instance.libraryRoot, name));
+    final Directory newFolder = Directory(join(FilePath.instance.libraryRoot, newObject.name));
 
     if (newObject.coverFile != coverFile) {
       if (newObject.coverFile == null) {
@@ -75,7 +75,7 @@ class BookData {
 
   bool delete() {
     if (VerifyUtility.isFolderNameValid(name)) {
-      final Directory folder = Directory(join(filePath.libraryRoot, name));
+      final Directory folder = Directory(join(FilePath.instance.libraryRoot, name));
       if (folder.existsSync()) {
         folder.deleteSync(recursive: true);
         return !folder.existsSync();
@@ -85,7 +85,7 @@ class BookData {
   }
 
   bool isExists() {
-    return VerifyUtility.isFolderNameValid(name) && Directory(join(filePath.libraryRoot, name)).existsSync();
+    return VerifyUtility.isFolderNameValid(name) && Directory(join(FilePath.instance.libraryRoot, name)).existsSync();
   }
 
   String getCoverPath() {
@@ -93,6 +93,6 @@ class BookData {
   }
 
   String getPath() {
-    return join(filePath.libraryRoot, name);
+    return join(FilePath.instance.libraryRoot, name);
   }
 }

@@ -10,7 +10,7 @@ import 'verify_utility.dart';
 
 class ChapterUtility {
   static List<ChapterData> getList(String bookName) {
-    final Directory folder = Directory(join(filePath.libraryRoot, bookName));
+    final Directory folder = Directory(join(FilePath.instance.libraryRoot, bookName));
 
     if (VerifyUtility.isFolderNameValid(bookName) && folder.existsSync()) {
       RegExp regexp = RegExp(r'^\d+\.txt$');
