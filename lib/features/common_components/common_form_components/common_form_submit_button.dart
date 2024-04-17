@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'common_processing.dart';
+import '../common_processing.dart';
 
 class CommonFormSubmitButton extends StatelessWidget {
   const CommonFormSubmitButton({super.key, this.iconData, this.labelText, this.onPressed, this.onSuccess, this.onFailed});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../common_components/common_form_submit_button.dart';
+import '../common_components/common_form_components/common_form_submit_button.dart';
 import 'account_edit_name_field.dart';
 import 'account_edit_phone_field.dart';
 

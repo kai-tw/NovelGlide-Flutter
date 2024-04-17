@@ -19,7 +19,7 @@ class AccountEditNameField extends StatelessWidget {
       inputFormatters: [
         FilteringTextInputFormatter.singleLineFormatter,
       ],
-      onSaved: (value) => cubit.displayName = value,
+      onSaved: (value) => cubit.phoneNumber = value,
     );
   }
 }
