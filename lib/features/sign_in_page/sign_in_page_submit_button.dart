@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_dialog/common_dialog.dart';
@@ -10,12 +11,12 @@ class SignInPageSubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SignInPageCubit cubit = SignInPageCubit();
+    final SignInPageCubit cubit = BlocProvider.of<SignInPageCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Align(
       alignment: Alignment.centerRight,
       child: CommonFormSubmitButton(
-        onPressed: () => cubit.submit(),
+        onPressed: cubit.submit,
         onSuccess: () {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(appLocalizations.signInSuccess)));
           Navigator.of(context).pop();

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive/hive.dart';
 
 import 'features/account_page/account_page.dart';
 import 'features/sign_in_page/sign_in_page.dart';
@@ -19,6 +20,7 @@ void main() async {
   );
 
   await FilePath.instance.init();
+  Hive.defaultDirectory = FilePath.instance.hiveRoot;
 
   runApp(const App());
 }
