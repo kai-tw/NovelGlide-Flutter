@@ -13,6 +13,7 @@ class CommonFilePickerTypeMap {
   };
 
   static final Map<CommonFilePickerType, List<String>> mime = {
+    CommonFilePickerType.archive: ['application/zip'],
     CommonFilePickerType.txt: ['text/plain'],
   };
 }
