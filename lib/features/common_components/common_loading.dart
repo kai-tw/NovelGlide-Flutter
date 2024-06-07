@@ -7,15 +7,18 @@ class CommonLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        LoadingAnimationWidget.staggeredDotsWave(
-          color: Theme.of(context).colorScheme.primary,
-          size: 50.0,
-        ),
-        Text(AppLocalizations.of(context)!.loading),
-      ],
+    return SizedBox(
+      height: 100,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          LoadingAnimationWidget.staggeredDotsWave(
+            color: Theme.of(context).colorScheme.primary,
+            size: 50.0,
+          ),
+          Text(AppLocalizations.of(context)!.loading),
+        ],
+      ),
     );
   }
 }
@@ -25,7 +28,7 @@ class CommonSliverLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SliverFillRemaining(
+    return const SliverToBoxAdapter(
       child: CommonLoading(),
     );
   }

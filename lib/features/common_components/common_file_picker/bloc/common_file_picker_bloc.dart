@@ -9,41 +9,47 @@ import '../common_file_picker_type.dart';
 class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
   File? file;
 
-  CommonFilePickerCubit({this.file}) : super(CommonFilePickerState.fromInitial(file: file));
+  CommonFilePickerCubit({this.file}) : super(CommonFilePickerState.fromFile(file));
 
   void pickImage() async {
     pickFile(type: CommonFilePickerType.image);
   }
 
-  void pickFile(
-      {CommonFilePickerType? type = CommonFilePickerType.any,
-      bool allowMultiple = false,
-      List<String>? allowedExtensions}) async {
+  void pickFile({
+    CommonFilePickerType? type = CommonFilePickerType.any,
+    bool allowMultiple = false,
+    List<String>? allowedExtensions,
+  }) async {
     final Map<CommonFilePickerType, FileType> map = {
       CommonFilePickerType.any: FileType.any,
       CommonFilePickerType.image: FileType.image,
+      CommonFilePickerType.txt: FileType.custom,
+      CommonFilePickerType.archive: FileType.custom,
       CommonFilePickerType.custom: FileType.custom,
     };
 
-    FilePickerResult? f = await FilePicker.platform
-        .pickFiles(type: map[type] ?? FileType.any, allowMultiple: allowMultiple, allowedExtensions: allowedExtensions);
+    allowedExtensions = (allowedExtensions ?? []) + (CommonFilePickerTypeMap.extension[type] ?? []);
+
+    FilePickerResult? f = await FilePicker.platform.pickFiles(
+      type: map[type] ?? FileType.any,
+      allowMultiple: allowMultiple,
+      allowedExtensions: allowedExtensions,
+    );
 
     if (f == null) {
       removeFile();
     } else {
       file = File(f.files.single.path!);
-      emit(CommonFilePickerState.fromFile(file: file));
     }
+    validator();
   }
 
   void removeFile() {
     file = null;
-    emit(CommonFilePickerState.fromNull());
   }
 
-  String? validator() {
-    emit(CommonFilePickerState.fromFile(file: file));
-    return null;
+  void validator() {
+    emit(state.changeFile(file));
   }
 }
 
@@ -54,12 +60,19 @@ class CommonFilePickerState extends Equatable {
   @override
   List<Object?> get props => [code, file];
 
-  const CommonFilePickerState(this.code, this.file);
-  CommonFilePickerState.fromInitial({this.file})
-      : code = file != null && file.existsSync() ? CommonFilePickerStateCode.exist : CommonFilePickerStateCode.initial;
-  CommonFilePickerState.fromFile({this.file})
-      : code = file != null && file.existsSync() ? CommonFilePickerStateCode.exist : CommonFilePickerStateCode.blank;
-  CommonFilePickerState.fromNull() : this.fromFile();
+  const CommonFilePickerState({this.code = CommonFilePickerStateCode.initial, this.file});
+
+  factory CommonFilePickerState.fromFile(File? f) {
+    CommonFilePickerStateCode c =
+        f != null && f.existsSync() ? CommonFilePickerStateCode.exist : CommonFilePickerStateCode.initial;
+    return CommonFilePickerState(code: c, file: f);
+  }
+
+  CommonFilePickerState changeFile(File? f) {
+    CommonFilePickerStateCode c =
+        f != null && f.existsSync() ? CommonFilePickerStateCode.exist : CommonFilePickerStateCode.blank;
+    return CommonFilePickerState(code: c, file: f);
+  }
 }
 
 enum CommonFilePickerStateCode { initial, blank, exist }

@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 
 import '../data/chapter_data.dart';
 import '../data/file_path.dart';
+import '../features/common_components/common_file_picker/common_file_picker_type.dart';
 import 'verify_utility.dart';
 
 class ChapterUtility {
@@ -17,7 +18,9 @@ class ChapterUtility {
       List<String> entries = folder
           .listSync()
           .whereType<File>()
-          .where((item) => regexp.hasMatch(basename(item.path)) && lookupMimeType(item.path) == 'text/plain')
+          .where((item) =>
+              regexp.hasMatch(basename(item.path)) &&
+              CommonFilePickerTypeMap.mime[CommonFilePickerType.txt]!.contains(lookupMimeType(item.path)))
           .map<String>((item) => item.path)
           .toList();
       entries.sort(compareNatural);

@@ -13,15 +13,14 @@ class AddChapterFilePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final AddChapterFormCubit cubit = BlocProvider.of<AddChapterFormCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    const List<String> allowedExtensions = ["txt"];
+    List<String> allowedExtensions = CommonFilePickerTypeMap.extension[CommonFilePickerType.txt]!;
 
     return CommonFilePicker(
       inputDecoration: InputDecoration(
         labelText: appLocalizations.titleSelectFile,
         helperText: appLocalizations.fileTypeHelperText + allowedExtensions.join(", "),
       ),
-      type: CommonFilePickerType.custom,
-      allowedExtensions: allowedExtensions,
+      type: CommonFilePickerType.txt,
       onSaved: (file) => cubit.file = file,
     );
   }

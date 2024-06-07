@@ -35,7 +35,10 @@ class CommonFilePickerFormField extends StatelessWidget {
         }
 
         return FormField(
-          validator: (_) => cubit.validator(),
+          validator: (_) {
+            cubit.validator();
+            return isRequired && cubit.file == null ? '' : null;
+          },
           builder: (_) => InputDecorator(
             decoration: decoration,
             child: child,
