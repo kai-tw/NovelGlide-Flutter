@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 
-import 'book_utility.dart';
+import 'book_processor.dart';
 import '../data/bookmark_data.dart';
 
 class BookmarkUtility {
   static List<BookmarkData> getList() {
     List<BookmarkData> retList = [];
-    List<String> bookList = BookUtility.getNameList();
+    List<String> bookList = BookProcessor.getNameList();
 
     for (String path in bookList) {
       final File file = File(join(path, "bookmark.isar"));
