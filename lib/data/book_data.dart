@@ -14,11 +14,9 @@ class BookData {
   BookData.fromPath(String path)
       : this(name: basename(path), coverFile: File(BookProcessor.getCoverPathByBookPath(path)));
 
-  BookData.fromObject(BookData bookData) : this(name: bookData.name, coverFile: bookData.coverFile);
-
   BookData.fromName(String name) : this.fromPath(BookProcessor.getPathByName(name));
 
-  /// File process
+  /// Create the book with the data
   Future<bool> create() async {
     bool isSuccess = BookProcessor.createFolder(name);
 
@@ -29,6 +27,7 @@ class BookData {
     return isSuccess;
   }
 
+  /// Apply the modification to the book
   Future<bool> modify(BookData newObject) async {
     bool isSuccess = true;
 
@@ -49,19 +48,31 @@ class BookData {
     return isSuccess;
   }
 
+  /// Delete the book
   bool delete() {
     return BookProcessor.deleteFolder(name);
   }
 
+  /// Is the book exists
   bool isExists() {
     return Directory(getPath()).existsSync();
   }
 
+  /// Get the cover path
   String getCoverPath() {
     return BookProcessor.getCoverPathByName(name);
   }
 
+  /// Get the book path
   String getPath() {
     return BookProcessor.getPathByName(name);
+  }
+
+  /// Copy the book data with the provided data
+  BookData copyWith({String? name, File? coverFile}) {
+    return BookData(
+      name: name ?? this.name,
+      coverFile: coverFile ?? this.coverFile,
+    );
   }
 }

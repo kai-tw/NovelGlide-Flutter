@@ -7,7 +7,7 @@ import '../../../toolbox/verify_utility.dart';
 enum EditBookNameStateCode { valid, blank, invalid, exists, same }
 
 class EditBookFormCubit extends Cubit<EditBookFormState> {
-  EditBookFormCubit(this.oldData) : newData = BookData.fromObject(oldData), super(const EditBookFormState());
+  EditBookFormCubit(this.oldData) : newData = oldData.copyWith(), super(const EditBookFormState());
 
   final BookData oldData;
   final BookData newData;
