@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../../data/chapter_data.dart';
 import '../common_components/common_slidable_action/common_slidable_action_delete.dart';
 import '../reader/reader.dart';
 import 'bloc/toc_bloc.dart';
+import 'bloc/toc_chapter_title_bloc.dart';
+import 'toc_chapter_title.dart';
 
 class TOCSliverChapterListItem extends StatelessWidget {
-  const TOCSliverChapterListItem({super.key, this.title, required this.chapterNumber});
+  const TOCSliverChapterListItem(this.chapterData, {super.key});
 
-  final String? title;
-  final int chapterNumber;
+  final ChapterData chapterData;
 
   @override
   Widget build(BuildContext context) {
     final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
-    final String localizedOrdinalNum = AppLocalizations.of(context)!.chapterLabelFunction(chapterNumber);
+    final int chapterNumber = chapterData.ordinalNumber;
+    final String bookName = chapterData.bookName;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Container(
@@ -36,15 +38,15 @@ class TOCSliverChapterListItem extends StatelessWidget {
           child: SizedBox(
             width: double.infinity,
             child: TextButton(
-              onPressed: () => Navigator.of(context).push(_navigateToReader(cubit.bookObject.name, chapterNumber)),
+              onPressed: () => Navigator.of(context).push(_navigateToReader(bookName, chapterNumber)),
               style: TextButton.styleFrom(
                 alignment: Alignment.centerLeft,
                 shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
                 foregroundColor: Theme.of(context).colorScheme.onSurface,
               ),
-              child: Text(
-                localizedOrdinalNum + (title != null && title!.isNotEmpty ? " - $title" : ""),
-                textAlign: TextAlign.left,
+              child: BlocProvider(
+                create: (_) => TOCChapterTitleCubit(chapterData),
+                child: TOCChapterTitle(chapterNumber: chapterNumber),
               ),
             ),
           ),

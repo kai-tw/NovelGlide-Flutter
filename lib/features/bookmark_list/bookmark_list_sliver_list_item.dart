@@ -60,11 +60,11 @@ class BookmarkListSliverListItem extends StatelessWidget {
             children: [
               Icon(
                 Icons.bookmark_rounded,
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
               Expanded(
                 child: Container(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).colorScheme.surface,
                   padding: const EdgeInsets.only(left: 20.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -85,7 +85,7 @@ class BookmarkListSliverListItem extends StatelessWidget {
                       Text(
                         savedTimeString,
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
                         ),
                       ),
                     ],

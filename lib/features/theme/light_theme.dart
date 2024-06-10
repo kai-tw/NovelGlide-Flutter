@@ -13,8 +13,8 @@ class LightTheme {
   );
 
   static final AppBarTheme _appBarTheme = AppBarTheme(
-    backgroundColor: _colorScheme.background,
-    surfaceTintColor: _colorScheme.background,
+    backgroundColor: _colorScheme.surface,
+    surfaceTintColor: _colorScheme.surface,
     centerTitle: false,
   );
 
@@ -36,11 +36,8 @@ class LightTheme {
     onError: Color(0xFFFFFFFF),
     errorContainer: Color(0xFFFFDAD6),
     onErrorContainer: Color(0xFF410002),
-    background: Color(0xFFFFFFFF),
-    onBackground: Color(0xFF171717),
     surface: Color(0xFFFFFFFF),
-    onSurface: Color(0xFF171D1E),
-    surfaceVariant: Color(0xFFDBE4E6),
+    onSurface: Color(0xFF171717),
     onSurfaceVariant: Color(0xFF3F484A),
     outline: Color(0xFF6F797A),
     outlineVariant: Color(0xFFBFC8CA),
@@ -48,12 +45,12 @@ class LightTheme {
     inverseSurface: Color(0xFF2B3133),
     // inverseOnSurface: Color(0xFFECF2F3),
     inversePrimary: Color(0xFF82D3E0),
-    // surfaceDim: Color(0xFFD5DBDC),
-    // surfaceBright: Color(0xFFF5FAFB),
-    // surfaceContainerLowest: Color(0xFFFFFFFF),
-    // surfaceContainerLow: Color(0xFFEFF5F6),
-    // surfaceContainer: Color(0xFFE9EFF0),
-    // surfaceContainerHigh: Color(0xFFE3E9EA),
-    // surfaceContainerHighest: Color(0xFFDEE3E5)
+    surfaceDim: Color(0xFFD5DBDC),
+    surfaceBright: Color(0xFFF5FAFB),
+    surfaceContainerLowest: Color(0xFFFFFFFF),
+    surfaceContainerLow: Color(0xFFEFF5F6),
+    surfaceContainer: Color(0xFFE9EFF0),
+    surfaceContainerHigh: Color(0xFFE3E9EA),
+    surfaceContainerHighest: Color(0xFFDEE3E5)
   );
 }

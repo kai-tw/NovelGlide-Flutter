@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/book_data.dart';
-import '../../../toolbox/book_processor.dart';
 import '../../../toolbox/verify_utility.dart';
 
 enum AddBookFormNameStateCode { valid, blank, invalid, exists }

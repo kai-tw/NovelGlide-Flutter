@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/chapter_data.dart';
-import '../../../toolbox/chapter_utility.dart';
+import '../../../toolbox/chapter_processor.dart';
 
 enum TOCStateCode { loading, normal, empty }
 
@@ -13,11 +13,8 @@ class TOCCubit extends Cubit<TOCState> {
   TOCCubit(this.bookObject) : super(const TOCState());
 
   void refresh({bool isForce = false}) async {
-    List<ChapterData> chapterList = ChapterUtility.getList(bookObject.name);
+    List<ChapterData> chapterList = ChapterProcessor.getList(bookObject.name);
     TOCStateCode code = chapterList.isEmpty ? TOCStateCode.empty : TOCStateCode.normal;
-    for (var e in chapterList) {
-      await e.initAsync();
-    }
     emit(state.copyWith(flipFlop: isForce ? !state.flipFlop : state.flipFlop, code: code, chapterList: chapterList));
   }
 

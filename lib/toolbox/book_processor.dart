@@ -21,7 +21,7 @@ class BookProcessor {
 
   /// Get all book data
   static List<BookData> getDataList() {
-    return getNameList().map((e) => BookData.fromName(e)).toList();
+    return getNameList().map((e) => BookData.fromPath(e)).toList();
   }
 
   /// Get the book path by name

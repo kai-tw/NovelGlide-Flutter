@@ -16,7 +16,7 @@ class BookshelfBookCover extends StatelessWidget {
         tag: bookObject.name,
         child: Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceVariant,
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(16.0),
           ),
           clipBehavior: Clip.hardEdge,

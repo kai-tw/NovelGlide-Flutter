@@ -19,7 +19,7 @@ class RdrNavSettingsBtn extends StatelessWidget {
           context: context,
           scrollControlDisabledMaxHeightRatio: 1.0,
           showDragHandle: true,
-          barrierColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
+          barrierColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
           builder: (BuildContext context) {
             return BlocProvider.value(
               value: readerCubit,

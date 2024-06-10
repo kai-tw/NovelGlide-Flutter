@@ -26,7 +26,7 @@ class BookshelfSliverListItem extends StatelessWidget {
             duration: const Duration(milliseconds: 200),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24.0),
-              color: isSelected ? Theme.of(context).colorScheme.surfaceVariant : Colors.transparent,
+              color: isSelected ? Theme.of(context).colorScheme.surfaceContainerHighest : Colors.transparent,
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),

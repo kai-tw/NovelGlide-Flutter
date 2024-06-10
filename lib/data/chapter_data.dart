@@ -1,16 +1,14 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_charset_detector/flutter_charset_detector.dart';
-import 'package:path/path.dart';
 
-import 'file_path.dart';
+import '../toolbox/chapter_processor.dart';
 
 class ChapterData {
   String bookName;
   int ordinalNumber;
-  String? title;
+  String? _title;
 
   ChapterData({
     required this.bookName,
@@ -18,45 +16,22 @@ class ChapterData {
   });
 
   String getPath() {
-    return join(FilePath.instance.libraryRoot, bookName, "$ordinalNumber.txt");
+    return ChapterProcessor.getPath(bookName, ordinalNumber);
   }
 
-  Future<void> initAsync() async {
-    await refreshTitle(isForce: true);
+  Future<String> getTitle() async {
+    return await ChapterProcessor.getTitle(bookName, ordinalNumber);
   }
 
-  Future<void> refreshTitle({bool isForce = false}) async {
-    if (title == null || isForce) {
-      final Stream<List<int>> inputStream = File(getPath()).openRead();
-      final Stream<String> lineStream = inputStream.transform(utf8.decoder).transform(const LineSplitter());
-      await for (String line in lineStream) {
-        // Get the first not empty line as title.
-        String singleLine = line.trim();
-        if (singleLine.isNotEmpty) {
-          title = singleLine;
-          break;
-        }
-      }
+  Future<String> getTitleFromCache({bool isForceUpdate = false}) async {
+    if (_title == null || isForceUpdate) {
+      _title = await getTitle();
     }
+    return _title!;
   }
 
   Future<List<String>> getContent() async {
-    final File file = File(getPath());
-    if (!file.existsSync()) {
-      return [];
-    }
-
-    List<String> contentLines = [];
-    final Stream<List<int>> inputStream = File(getPath()).openRead();
-    final Stream<String> lineStream = inputStream.transform(utf8.decoder).transform(const LineSplitter());
-
-    await for (String line in lineStream) {
-      if (line.isNotEmpty) {
-        contentLines.add(line);
-      }
-    }
-
-    return contentLines;
+    return await ChapterProcessor.getContent(bookName, ordinalNumber);
   }
 
   bool isExist() {

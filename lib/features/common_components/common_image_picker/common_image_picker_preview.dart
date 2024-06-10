@@ -14,7 +14,7 @@ class CommonImagePickerPreview extends StatelessWidget {
       width: 100 / aspectRatio,
       height: 100.0,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(16.0),
       ),
       clipBehavior: Clip.hardEdge,
@@ -30,7 +30,7 @@ class CommonImagePickerPreview extends StatelessWidget {
             return Center(
               child: Icon(
                 Icons.image_not_supported_rounded,
-                color: Theme.of(context).colorScheme.onBackground,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             );
           }

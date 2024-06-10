@@ -25,7 +25,7 @@ class BookshelfAppBarSelecting extends StatelessWidget {
               icon: const Icon(Icons.delete_outline_rounded),
             )
           ],
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           centerTitle: false,
         );
       },

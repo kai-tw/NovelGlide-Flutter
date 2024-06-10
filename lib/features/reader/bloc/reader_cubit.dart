@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/bookmark_data.dart';
 import '../../../data/chapter_data.dart';
-import '../../../toolbox/chapter_utility.dart';
+import '../../../toolbox/chapter_processor.dart';
 import 'reader_button_state.dart';
 import 'reader_settings.dart';
 import 'reader_state.dart';
@@ -82,7 +82,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// Chapter
   Future<int> _getPrevChapterNumber() async {
-    final List<ChapterData> chapterList = ChapterUtility.getList(_bookName);
+    final List<ChapterData> chapterList = ChapterProcessor.getList(_bookName);
     int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == _chapterNumber);
 
     if (currentIndex > 0) {
@@ -92,7 +92,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   Future<int> _getNextChapterNumber() async {
-    final List<ChapterData> chapterList = ChapterUtility.getList(_bookName);
+    final List<ChapterData> chapterList = ChapterProcessor.getList(_bookName);
     int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == _chapterNumber);
 
     if (0 <= currentIndex && currentIndex < chapterList.length - 1) {

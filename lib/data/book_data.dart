@@ -11,10 +11,12 @@ class BookData {
 
   BookData({this.name = '', this.coverFile});
 
-  BookData.fromPath(String path)
-      : this(name: basename(path), coverFile: File(BookProcessor.getCoverPathByBookPath(path)));
+  BookData.fromName(this.name)
+      : coverFile = File(BookProcessor.getCoverPathByName(name)).existsSync()
+            ? File(BookProcessor.getCoverPathByName(name))
+            : null;
 
-  BookData.fromName(String name) : this.fromPath(BookProcessor.getPathByName(name));
+  BookData.fromPath(String path) : this.fromName(basename(path));
 
   /// Create the book with the data
   Future<bool> create() async {

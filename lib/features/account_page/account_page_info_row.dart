@@ -19,7 +19,7 @@ class AccountPageInfoRow extends StatelessWidget {
             padding: const EdgeInsets.only(right: 16.0),
             child: Icon(
               iconData ?? Icons.arrow_forward_rounded,
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           Text(content ?? appLocalizations.nullValue),
