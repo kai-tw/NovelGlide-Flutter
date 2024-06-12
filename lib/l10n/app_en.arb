@@ -119,7 +119,9 @@
   "fieldBlank": "It cannot be blank.",
 
   "bookName": "Book name",
+  "bookNameHelperText": "You can't use these symbols: ",
   "bookCover": "The cover of this book",
+  "bookImporter": "Book Importer",
 
   "fieldChapterName": "Chapter Name",
   "fieldChapterNumber": "Chapter #",
@@ -128,7 +130,6 @@
   "removeImage": "Remove the image",
   "fieldFileNotAccepted": "Not accepted file type.",
 
-  "bookNameHelperText": "You can't use these symbols: ",
   "chapterNumberHelperText": "It must be larger than 0.",
   "fileTypeHelperText": "Only accept these type of files: ",
 

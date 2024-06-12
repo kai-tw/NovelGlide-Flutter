@@ -71,8 +71,9 @@
   "fieldBlank": "不能空白",
 
   "bookName": "書名",
-  "bookCover": "封面",
   "bookNameHelperText": "不可用的符號：",
+  "bookCover": "封面",
+  "bookImporter": "Book Importer",
 
   "fieldChapterName": "章節名稱",
   "fieldChapterNumber": "第幾章",

@@ -10,6 +10,7 @@ import 'common_file_picker_type.dart';
 
 class CommonFilePicker extends StatelessWidget {
   final CommonFilePickerType? type;
+  final bool isRequired;
   final List<String>? allowedExtensions;
   final InputDecoration? inputDecoration;
   final void Function(File?)? onSaved;
@@ -17,6 +18,7 @@ class CommonFilePicker extends StatelessWidget {
   const CommonFilePicker({
     super.key,
     this.type,
+    this.isRequired = true,
     this.allowedExtensions,
     this.inputDecoration,
     this.onSaved,
@@ -29,6 +31,7 @@ class CommonFilePicker extends StatelessWidget {
       child: CommonFilePickerFormField(
         inputDecoration: inputDecoration,
         onSaved: onSaved,
+        isRequired: isRequired,
         child: CommonFilePickerContent(
           type: type,
           allowedExtensions: allowedExtensions,
