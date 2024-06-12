@@ -8,9 +8,9 @@ import '../common_file_picker/common_file_picker_form_field.dart';
 import 'common_image_picker_content.dart';
 
 class CommonImagePicker extends StatelessWidget {
-  const CommonImagePicker({required this.labelText, this.aspectRatio = 1, this.imageFile, this.isRequired = true, this.onSaved, super.key});
+  const CommonImagePicker({required this.inputDecoration, this.aspectRatio = 1, this.imageFile, this.isRequired = true, this.onSaved, super.key});
 
-  final String labelText;
+  final InputDecoration inputDecoration;
   final double aspectRatio;
   final File? imageFile;
   final bool isRequired;
@@ -21,9 +21,7 @@ class CommonImagePicker extends StatelessWidget {
     return BlocProvider(
       create: (_) => CommonFilePickerCubit(file: imageFile),
       child: CommonFilePickerFormField(
-        inputDecoration: InputDecoration(
-          labelText: labelText,
-        ),
+        inputDecoration: inputDecoration,
         onSaved: onSaved,
         isRequired: isRequired,
         child: CommonImagePickerContent(

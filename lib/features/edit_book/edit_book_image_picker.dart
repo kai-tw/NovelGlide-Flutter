@@ -13,7 +13,9 @@ class EditBookImagePicker extends StatelessWidget {
     final EditBookFormCubit cubit = BlocProvider.of<EditBookFormCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return CommonImagePicker(
-      labelText: appLocalizations.bookCover + appLocalizations.fieldOptional,
+      inputDecoration: InputDecoration(
+        labelText: appLocalizations.bookCover + appLocalizations.fieldOptional,
+      ),
       aspectRatio: 1.5,
       imageFile: cubit.oldData.coverFile,
       isRequired: false,
