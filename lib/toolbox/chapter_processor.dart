@@ -13,7 +13,7 @@ import 'book_processor.dart';
 
 /// Process all the operation related to chapters.
 class ChapterProcessor {
-  static final RegExp _chapterRegexp = RegExp(r'^\d+\.txt$');
+  static final RegExp chapterRegexp = RegExp(r'^\d+\.txt$');
 
   /// Get all the chapter data of a book.
   static List<ChapterData> getList(String bookName) {
@@ -25,7 +25,7 @@ class ChapterProcessor {
           .listSync()
           .whereType<File>()
           .where(
-              (item) => _chapterRegexp.hasMatch(basename(item.path)) && mimeTypes.contains(lookupMimeType(item.path)))
+              (item) => chapterRegexp.hasMatch(basename(item.path)) && mimeTypes.contains(lookupMimeType(item.path)))
           .map<String>((item) => item.path)
           .toList();
       entries.sort(compareNatural);

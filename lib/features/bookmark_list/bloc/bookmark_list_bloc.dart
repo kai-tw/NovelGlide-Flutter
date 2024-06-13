@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/bookmark_data.dart';
-import '../../../toolbox/bookmark_utility.dart';
+import '../../../toolbox/bookmark_processor.dart';
 
 enum BookmarkListStateCode { normal, loading, empty }
 
@@ -10,7 +10,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
   BookmarkListCubit() : super(const BookmarkListState());
 
   void refresh() {
-    final List<BookmarkData> bookmarkList = BookmarkUtility.getList();
+    final List<BookmarkData> bookmarkList = BookmarkProcessor.getList();
     bookmarkList.sort(_sortBySavedTime);
 
     emit(BookmarkListState(

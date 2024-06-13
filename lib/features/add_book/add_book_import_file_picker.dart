@@ -12,9 +12,12 @@ class AddBookImportFilePicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AddBookFormCubit cubit = BlocProvider.of<AddBookFormCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final String extensionText = CommonFilePickerTypeMap.extension[CommonFilePickerType.archive]!.join();
     return CommonFilePicker(
       inputDecoration: InputDecoration(
         labelText: AppLocalizations.of(context)!.bookImporter + AppLocalizations.of(context)!.fieldOptional,
+        helperText: appLocalizations.fileTypeHelperText + extensionText,
       ),
       isRequired: false,
       type: CommonFilePickerType.archive,

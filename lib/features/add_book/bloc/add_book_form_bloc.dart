@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/book_data.dart';
+import '../../../toolbox/book_processor.dart';
 import '../../../toolbox/verify_utility.dart';
 
 enum AddBookFormNameStateCode { valid, blank, invalid, exists }
@@ -34,7 +35,13 @@ class AddBookFormCubit extends Cubit<AddBookFormState> {
   }
 
   Future<bool> submit() async {
-    return await data.create();
+    bool isSuccess = await data.create();
+
+    if (importArchiveFile != null) {
+      isSuccess = isSuccess && await BookProcessor.importFromArchive(data.name, importArchiveFile!);
+    }
+
+    return isSuccess;
   }
 }
 

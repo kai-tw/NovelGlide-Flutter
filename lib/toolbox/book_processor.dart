@@ -1,13 +1,20 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:flutter_archive/flutter_archive.dart';
 import 'package:path/path.dart';
 
 import '../data/book_data.dart';
 import '../data/file_path.dart';
+import 'bookmark_processor.dart';
+import 'chapter_processor.dart';
+import 'random_utility.dart';
 
 /// Process all the operation of books.
 class BookProcessor {
+  static const String coverFileName = 'cover.jpg';
+
   /// Get all book names
   static List<String> getNameList() {
     final Directory folder = Directory(FilePath.instance.libraryRoot);
@@ -36,7 +43,7 @@ class BookProcessor {
 
   /// Get the cover path by book path
   static String getCoverPathByBookPath(String path) {
-    return join(path, 'cover.jpg');
+    return join(path, coverFileName);
   }
 
   /// Folder process
@@ -83,8 +90,7 @@ class BookProcessor {
   /// Modify cover
   static bool modifyCover(String name, File coverFile) {
     if (coverFile.existsSync()) {
-      File coverImage = coverFile.copySync(getCoverPathByName(name));
-      return coverImage.existsSync();
+      return createCover(name, coverFile);
     }
     return false;
   }
@@ -96,5 +102,45 @@ class BookProcessor {
       coverFile.deleteSync();
     }
     return !coverFile.existsSync();
+  }
+
+  static bool isCoverExist(String name) {
+    return File(getCoverPathByName(name)).existsSync();
+  }
+
+  /// Import books from an archive file.
+  static Future<bool> importFromArchive(String bookName, File archiveFile) async {
+    Directory tempFolder = Directory(join(FilePath.instance.tempFolder, RandomUtility.getRandomString(8)));
+    while (tempFolder.existsSync()) {
+      tempFolder = Directory(join(FilePath.instance.tempFolder, RandomUtility.getRandomString(8)));
+    }
+    tempFolder.createSync(recursive: true);
+
+    await ZipFile.extractToDirectory(zipFile: archiveFile, destinationDir: tempFolder);
+
+    final List<String> copyList = [
+      BookmarkProcessor.bookmarkFileName,
+      BookmarkProcessor.bookmarkLockFileName,
+    ];
+
+    tempFolder.listSync().whereType<File>().forEach((file) {
+      final String fileName = basename(file.path);
+      final int? chapterNumber = int.tryParse(basenameWithoutExtension(fileName));
+
+      if (chapterNumber != null) {
+        ChapterProcessor.create(bookName, chapterNumber, file);
+      }
+
+      if (!isCoverExist(bookName) && fileName == coverFileName) {
+        BookProcessor.createCover(bookName, file);
+      }
+
+      if (copyList.contains(fileName)) {
+        file.copySync(join(getPathByName(bookName), fileName));
+      }
+    });
+
+    tempFolder.deleteSync(recursive: true);
+    return true;
   }
 }

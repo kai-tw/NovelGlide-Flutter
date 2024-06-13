@@ -22,11 +22,11 @@ class AddBookForm extends StatelessWidget {
           child: const Column(
             children: [
               AddBookNameInputField(),
-              Padding(padding: EdgeInsets.only(bottom: 20.0)),
+              Padding(padding: EdgeInsets.only(bottom: 32.0)),
               AddBookImagePicker(),
-              Padding(padding: EdgeInsets.only(bottom: 16.0)),
+              Padding(padding: EdgeInsets.only(bottom: 32.0)),
               AddBookImportFilePicker(),
-              Padding(padding: EdgeInsets.only(bottom: 16.0)),
+              Padding(padding: EdgeInsets.only(bottom: 32.0)),
               AddBookSubmitButton(),
             ],
           ),
