@@ -30,17 +30,19 @@ class BookData {
   }
 
   /// Apply the modification to the book
-  Future<bool> modify(BookData newObject) async {
+  Future<bool> modify(BookData newData) async {
     bool isSuccess = true;
 
-    if (newObject.coverFile != coverFile) {
+    if (newData.coverFile != coverFile) {
       isSuccess = isSuccess &&
-          (newObject.coverFile == null
+          (newData.coverFile == null
               ? BookProcessor.deleteCover(name)
-              : BookProcessor.modifyCover(name, newObject.coverFile!));
+              : BookProcessor.modifyCover(name, newData.coverFile!));
     }
 
-    isSuccess = isSuccess && BookProcessor.modifyFolder(name, newObject.name);
+    if (newData.name != name) {
+      isSuccess = isSuccess && BookProcessor.modifyFolder(name, newData.name);
+    }
 
     final File file = File(getCoverPath());
     coverFile = file.existsSync() ? file : null;
