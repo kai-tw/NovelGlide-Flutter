@@ -19,8 +19,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await FilePath.instance.init();
-  Hive.defaultDirectory = FilePath.instance.hiveRoot;
+  await FilePath().init();
+  Hive.defaultDirectory = FilePath().hiveRoot;
 
   runApp(const App());
 }

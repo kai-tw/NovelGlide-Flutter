@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_form_components/common_form_submit_button.dart';
 import 'bloc/book_importer_bloc.dart';
@@ -10,7 +11,8 @@ class BookImporterForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<BookImporterCubit>(context);
+    final BookImporterCubit cubit = BlocProvider.of<BookImporterCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Form(
       child: Column(
         children: [
@@ -24,7 +26,9 @@ class BookImporterForm extends StatelessWidget {
               onPressed: cubit.submit,
               onSuccess: () => Navigator.of(context).pop(true),
               onFailed: (e) {
-                print(e);
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(appLocalizations.importWhatFailed(appLocalizations.book)),
+                ));
               },
             ),
           ),

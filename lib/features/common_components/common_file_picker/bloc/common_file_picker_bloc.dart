@@ -4,7 +4,10 @@ import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mime/mime.dart';
+import 'package:path/path.dart';
 
+import '../../../../data/file_path.dart';
+import '../../../../toolbox/advanced_mime_type_resolver.dart';
 import '../common_file_picker_type.dart';
 
 class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
@@ -13,10 +16,16 @@ class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
 
   CommonFilePickerCubit({this.file}) : super(CommonFilePickerState.fromFile(file));
 
-  bool _mimeCheck(String path) {
+  bool _hasMimeMatch() {
+    final RandomAccessFile openFile = file!.openSync(mode: FileMode.read);
+    final List<int> headerBytes = List.generate(AdvancedMimeTypeResolver().magicNumbersMaxLength, (_) => 0);
+
+    openFile.readIntoSync(headerBytes, 0, AdvancedMimeTypeResolver().magicNumbersMaxLength);
+    final String? mimeType = AdvancedMimeTypeResolver().lookup("", headerBytes: headerBytes);
+    openFile.closeSync();
+
     return type == CommonFilePickerType.any ||
-        CommonFilePickerTypeMap.mime[type] != null &&
-            CommonFilePickerTypeMap.mime[type]!.contains(lookupMimeType(path));
+        CommonFilePickerTypeMap.mime[type] != null && CommonFilePickerTypeMap.mime[type]!.contains(mimeType);
   }
 
   void pickImage() async {
@@ -50,7 +59,7 @@ class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
     CommonFilePickerStateCode code = CommonFilePickerStateCode.blank;
     if (file == null) {
       code = CommonFilePickerStateCode.blank;
-    } else if (!_mimeCheck(file!.path)) {
+    } else if (!_hasMimeMatch()) {
       code = CommonFilePickerStateCode.illegalType;
     } else {
       code = CommonFilePickerStateCode.exist;

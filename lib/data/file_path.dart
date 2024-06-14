@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FilePath {
-  static final FilePath instance = FilePath._init();
+  static final FilePath _instance = FilePath._init();
 
   late final String supportFolder;
   late final String documentFolder;
@@ -14,9 +14,7 @@ class FilePath {
   late final String libraryRoot;
   late final String hiveRoot;
 
-  factory FilePath() {
-    return instance;
-  }
+  factory FilePath() => _instance;
 
   FilePath._init();
 

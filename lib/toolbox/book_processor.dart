@@ -16,7 +16,7 @@ class BookProcessor {
 
   /// Get all book names
   static List<String> getNameList() {
-    final Directory folder = Directory(FilePath.instance.libraryRoot);
+    final Directory folder = Directory(FilePath().libraryRoot);
     folder.createSync(recursive: true);
 
     final List<String> entries = folder.listSync().whereType<Directory>().map((e) => e.path).toList();
@@ -32,7 +32,7 @@ class BookProcessor {
 
   /// Get the book path by name
   static String getPathByName(String name) {
-    return join(FilePath.instance.libraryRoot, name);
+    return join(FilePath().libraryRoot, name);
   }
 
   /// Get the cover path by name
@@ -109,9 +109,9 @@ class BookProcessor {
 
   /// Import books from an archive file.
   static Future<bool> importFromArchive(String bookName, File archiveFile) async {
-    Directory tempFolder = Directory(join(FilePath.instance.tempFolder, RandomUtility.getRandomString(8)));
+    Directory tempFolder = Directory(join(FilePath().tempFolder, RandomUtility.getRandomString(8)));
     while (tempFolder.existsSync()) {
-      tempFolder = Directory(join(FilePath.instance.tempFolder, RandomUtility.getRandomString(8)));
+      tempFolder = Directory(join(FilePath().tempFolder, RandomUtility.getRandomString(8)));
     }
     tempFolder.createSync(recursive: true);
 
