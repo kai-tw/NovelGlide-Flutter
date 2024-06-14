@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/toc_bloc.dart';
+import '../bloc/toc_bloc.dart';
 
 class TOCSliverBookName extends StatelessWidget {
   const TOCSliverBookName({super.key});
@@ -15,7 +15,7 @@ class TOCSliverBookName extends StatelessWidget {
         child: BlocBuilder<TOCCubit, TOCState>(
           builder: (BuildContext context, TOCState state) {
             return Text(
-              cubit.bookObject.name,
+              cubit.bookData.name,
               style: const TextStyle(fontSize: 24.0),
             );
           },

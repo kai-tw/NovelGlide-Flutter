@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/toc_bloc.dart';
+import '../bloc/toc_bloc.dart';
 import 'toc_sliver_chapter_list_item.dart';
 
 class TOCSliverChapterList extends StatelessWidget {

@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
@@ -116,19 +115,24 @@ class BookProcessor {
     }
     tempFolder.createSync(recursive: true);
 
-    await ZipFile.extractToDirectory(zipFile: archiveFile, destinationDir: tempFolder);
+    try {
+      await ZipFile.extractToDirectory(zipFile: archiveFile, destinationDir: tempFolder);
+    } catch (e) {
+      tempFolder.deleteSync(recursive: true);
+      rethrow;
+    }
 
     final List<String> copyList = [
       BookmarkProcessor.bookmarkFileName,
       BookmarkProcessor.bookmarkLockFileName,
     ];
 
-    tempFolder.listSync().whereType<File>().forEach((file) {
+    await Future.forEach(tempFolder.listSync().whereType<File>(), (file) async {
       final String fileName = basename(file.path);
       final int? chapterNumber = int.tryParse(basenameWithoutExtension(fileName));
 
       if (chapterNumber != null) {
-        ChapterProcessor.create(bookName, chapterNumber, file);
+        await ChapterProcessor.create(bookName, chapterNumber, file);
       }
 
       if (!isCoverExist(bookName) && fileName == coverFileName) {

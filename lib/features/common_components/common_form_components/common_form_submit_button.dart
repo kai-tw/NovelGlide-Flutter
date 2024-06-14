@@ -4,13 +4,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../common_processing.dart';
 
 class CommonFormSubmitButton extends StatelessWidget {
-  const CommonFormSubmitButton({super.key, this.iconData, this.labelText, this.onPressed, this.onSuccess, this.onFailed});
+  const CommonFormSubmitButton(
+      {super.key, this.iconData, this.labelText, this.onPressed, this.onSuccess, this.onFailed});
 
   final IconData? iconData;
   final String? labelText;
   final Future<bool> Function()? onPressed;
   final void Function()? onSuccess;
-  final void Function()? onFailed;
+  final void Function(dynamic e)? onFailed;
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +37,12 @@ class CommonFormSubmitButton extends StatelessWidget {
             if (isSuccess && onSuccess != null) {
               onSuccess!();
             } else if (onFailed != null) {
-              onFailed!();
+              onFailed!(null);
             }
-          }).catchError((_) {
+          }).catchError((e) {
+            Navigator.of(context, rootNavigator: true).pop();
             if (onFailed != null) {
-              onFailed!();
+              onFailed!(e);
             }
           });
         }

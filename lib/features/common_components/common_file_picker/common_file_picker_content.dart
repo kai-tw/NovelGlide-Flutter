@@ -21,7 +21,7 @@ class CommonFilePickerContent extends StatelessWidget {
           allowedExtensions: allowedExtensions,
         )];
 
-        if (state.code == CommonFilePickerStateCode.exist) {
+        if (state.code != CommonFilePickerStateCode.blank && state.code != CommonFilePickerStateCode.initial) {
           children.add(const CommonFilePickerDeleteButton());
         }
 

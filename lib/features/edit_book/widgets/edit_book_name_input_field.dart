@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../toolbox/verify_utility.dart';
-import 'bloc/edit_book_form_bloc.dart';
+import '../../../toolbox/verify_utility.dart';
+import '../bloc/edit_book_form_bloc.dart';
 
 class EditBookNameInputField extends StatelessWidget {
   const EditBookNameInputField({super.key});

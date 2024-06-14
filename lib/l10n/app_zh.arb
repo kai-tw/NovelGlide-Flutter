@@ -52,8 +52,9 @@
   "addWhatFailed": "新增{name}失敗",
   "editWhatSuccessfully": "編輯{name}成功",
   "editWhatFailed": "編輯{name}失敗",
+  "importWhatSuccessfully": "匯入{name}成功",
+  "importWhatFailed": "匯入{name}失敗",
 
-  "titleSelectFile": "選擇一個檔案",
   "titleBookshelf": "書櫃",
   "titleBookmarks": "書籤",
   "titleSettings": "設定",
@@ -73,16 +74,19 @@
   "bookName": "書名",
   "bookNameHelperText": "不可用的符號：",
   "bookCover": "封面",
-  "bookImporter": "Book Importer",
+  "bookImporter": "匯入書籍",
 
   "fieldChapterName": "章節名稱",
   "fieldChapterNumber": "第幾章",
-  "chapterNumberHelperText": "數字必須大於 0",
 
-  "fileTypeHelperText": "只接受以下檔案類型：",
+  "selectAFile": "選擇一個檔案",
+
   "selectImage": "選擇圖片",
   "removeImage": "刪除圖片",
   "fieldFileNotAccepted": "不接受的檔案類型",
+
+  "chapterNumberHelperText": "數字必須大於 0",
+  "fileTypeHelperText": "只接受以下檔案類型：",
 
   "chapterLabelFunction": "第 {number} 章",
   "savedTimeFunction": "{part}儲存",

@@ -2,26 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../common_components/common_file_picker/common_file_picker.dart';
-import '../common_components/common_file_picker/common_file_picker_type.dart';
-import 'bloc/add_book_form_bloc.dart';
+import '../../common_components/common_file_picker/common_file_picker.dart';
+import '../../common_components/common_file_picker/common_file_picker_type.dart';
+import '../bloc/book_importer_bloc.dart';
 
-class AddBookImportFilePicker extends StatelessWidget {
-  const AddBookImportFilePicker({super.key});
+class BookImporterFilePicker extends StatelessWidget {
+  const BookImporterFilePicker({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AddBookFormCubit cubit = BlocProvider.of<AddBookFormCubit>(context);
+    final cubit = BlocProvider.of<BookImporterCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final String extensionText = CommonFilePickerTypeMap.extension[CommonFilePickerType.archive]!.join();
     return CommonFilePicker(
       inputDecoration: InputDecoration(
-        labelText: AppLocalizations.of(context)!.bookImporter + AppLocalizations.of(context)!.fieldOptional,
+        labelText: appLocalizations.selectAFile,
         helperText: appLocalizations.fileTypeHelperText + extensionText,
       ),
-      isRequired: false,
       type: CommonFilePickerType.archive,
-      onSaved: (file) => cubit.importArchiveFile = file,
+      onSaved: (file) => cubit.importFile = file,
     );
   }
 }

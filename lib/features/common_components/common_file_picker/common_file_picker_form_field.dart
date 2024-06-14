@@ -30,14 +30,15 @@ class CommonFilePickerFormField extends StatelessWidget {
 
         if (isRequired && state.code == CommonFilePickerStateCode.blank) {
           decoration = inputDecoration!.copyWith(errorText: appLocalizations.fieldBlank);
+        } else if (state.code == CommonFilePickerStateCode.illegalType) {
+          decoration = inputDecoration!.copyWith(errorText: appLocalizations.fieldFileNotAccepted);
         } else {
           decoration = inputDecoration!.copyWith(errorText: null);
         }
 
         return FormField(
           validator: (_) {
-            cubit.validator();
-            return isRequired && cubit.file == null ? '' : null;
+            return isRequired && cubit.validator() ? '' : null;
           },
           builder: (_) => InputDecorator(
             decoration: decoration,

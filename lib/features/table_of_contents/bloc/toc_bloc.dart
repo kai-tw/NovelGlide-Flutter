@@ -8,12 +8,12 @@ import '../../../toolbox/chapter_processor.dart';
 enum TOCStateCode { loading, normal, empty }
 
 class TOCCubit extends Cubit<TOCState> {
-  final BookData bookObject;
+  final BookData bookData;
 
-  TOCCubit(this.bookObject) : super(const TOCState());
+  TOCCubit(this.bookData) : super(const TOCState());
 
   void refresh({bool isForce = false}) async {
-    List<ChapterData> chapterList = ChapterProcessor.getList(bookObject.name);
+    List<ChapterData> chapterList = ChapterProcessor.getList(bookData.name);
     TOCStateCode code = chapterList.isEmpty ? TOCStateCode.empty : TOCStateCode.normal;
     emit(state.copyWith(flipFlop: isForce ? !state.flipFlop : state.flipFlop, code: code, chapterList: chapterList));
   }
@@ -23,7 +23,7 @@ class TOCCubit extends Cubit<TOCState> {
   }
 
   void deleteChapter(int chapterNumber) async {
-    final bool isSuccess = await ChapterData(bookName: bookObject.name, ordinalNumber: chapterNumber).delete();
+    final bool isSuccess = await ChapterData(bookName: bookData.name, ordinalNumber: chapterNumber).delete();
     if (isSuccess) {
       refresh();
     }

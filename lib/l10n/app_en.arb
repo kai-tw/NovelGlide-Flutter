@@ -57,9 +57,9 @@
 
   "dialogDeleteConfirmation": "You will delete them forever.",
 
-  "addWhatSuccessfully": "Successfully added the {name}",
+  "addWhatSuccessfully": "Successfully add the {name}",
   "@addWhatSuccessfully": {
-    "description": "Successfully added the %s",
+    "description": "Successfully add the %s",
     "placeholders": {
       "name": {
         "type": "String",
@@ -79,9 +79,9 @@
     }
   },
 
-  "editWhatSuccessfully": "Successfully edited the {name}",
+  "editWhatSuccessfully": "Successfully edit the {name}",
   "@editWhatSuccessfully": {
-    "description": "Successfully edited the %s",
+    "description": "Successfully edit the %s",
     "placeholders": {
       "name": {
         "type": "String",
@@ -101,7 +101,28 @@
     }
   },
 
-  "titleSelectFile": "Select a file",
+  "importWhatSuccessfully": "Successfully import the {name}",
+  "@importWhatSuccessfully": {
+    "description": "Successfully import the %s",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "book"
+      }
+    }
+  },
+
+  "importWhatFailed": "Failed to import the {name}",
+  "@importWhatFailed": {
+    "description": "Failed to import the %s",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "book"
+      }
+    }
+  },
+
   "titleBookshelf": "Bookshelf",
   "titleBookmarks": "Bookmarks",
   "titleSettings": "Settings",
@@ -125,6 +146,8 @@
 
   "fieldChapterName": "Chapter Name",
   "fieldChapterNumber": "Chapter #",
+
+  "selectAFile": "Select a file",
 
   "selectImage": "Select an image",
   "removeImage": "Remove the image",

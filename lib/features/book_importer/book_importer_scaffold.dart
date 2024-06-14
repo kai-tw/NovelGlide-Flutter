@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../data/book_data.dart';
 import '../common_components/common_back_button.dart';
-import 'add_chapter_form.dart';
-import 'bloc/add_chapter_form_bloc.dart';
+import 'bloc/book_importer_bloc.dart';
+import 'book_importer_form.dart';
 
-class AddChapterScaffold extends StatelessWidget {
-  const AddChapterScaffold({super.key, required this.bookName});
+class BookImporterScaffold extends StatelessWidget {
+  const BookImporterScaffold({super.key, required this.bookData});
 
-  final String bookName;
+  final BookData bookData;
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +18,13 @@ class AddChapterScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        title: Text(appLocalizations.titleAddChapter),
+        title: Text(appLocalizations.bookImporter),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(24),
         child: BlocProvider(
-          create: (_) => AddChapterFormCubit(bookName),
-          child: const AddChapterForm(),
+          create: (context) => BookImporterCubit(bookData),
+          child: const BookImporterForm(),
         ),
       ),
     );

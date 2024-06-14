@@ -3,13 +3,21 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mime/mime.dart';
 
 import '../common_file_picker_type.dart';
 
 class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
   File? file;
+  CommonFilePickerType type = CommonFilePickerType.any;
 
   CommonFilePickerCubit({this.file}) : super(CommonFilePickerState.fromFile(file));
+
+  bool _mimeCheck(String path) {
+    return type == CommonFilePickerType.any ||
+        CommonFilePickerTypeMap.mime[type] != null &&
+            CommonFilePickerTypeMap.mime[type]!.contains(lookupMimeType(path));
+  }
 
   void pickImage() async {
     pickFile(type: CommonFilePickerType.image);
@@ -20,36 +28,36 @@ class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
     bool allowMultiple = false,
     List<String>? allowedExtensions,
   }) async {
-    final Map<CommonFilePickerType, FileType> map = {
-      CommonFilePickerType.any: FileType.any,
-      CommonFilePickerType.image: FileType.image,
-      CommonFilePickerType.txt: FileType.custom,
-      CommonFilePickerType.archive: FileType.custom,
-      CommonFilePickerType.custom: FileType.custom,
-    };
-
-    allowedExtensions = (allowedExtensions ?? []) + (CommonFilePickerTypeMap.extension[type] ?? []);
+    this.type = type!;
+    allowedExtensions = (allowedExtensions ?? []) + (CommonFilePickerTypeMap.extension[this.type] ?? []);
 
     FilePickerResult? f = await FilePicker.platform.pickFiles(
-      type: map[type] ?? FileType.any,
+      type: CommonFilePickerTypeMap.fileTypeMap[this.type] ?? FileType.any,
       allowMultiple: allowMultiple,
       allowedExtensions: allowedExtensions,
     );
 
-    if (f == null) {
-      removeFile();
-    } else {
-      file = File(f.files.single.path!);
-    }
-    validator();
+    file = f != null ? File(f.files.single.path!) : null;
+    emit(state.changeFile(file));
   }
 
   void removeFile() {
     file = null;
+    emit(state.changeFile(file));
   }
 
-  void validator() {
-    emit(state.changeFile(file));
+  bool validator() {
+    CommonFilePickerStateCode code = CommonFilePickerStateCode.blank;
+    if (file == null) {
+      code = CommonFilePickerStateCode.blank;
+    } else if (!_mimeCheck(file!.path)) {
+      code = CommonFilePickerStateCode.illegalType;
+    } else {
+      code = CommonFilePickerStateCode.exist;
+    }
+
+    emit(CommonFilePickerState(code: code, file: file));
+    return code != CommonFilePickerStateCode.exist;
   }
 }
 
@@ -75,4 +83,4 @@ class CommonFilePickerState extends Equatable {
   }
 }
 
-enum CommonFilePickerStateCode { initial, blank, exist }
+enum CommonFilePickerStateCode { initial, blank, exist, illegalType }

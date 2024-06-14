@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-import '../add_chapter/add_chapter_callee_add_button.dart';
+import '../add_chapter/add_chapter_scaffold.dart';
+import '../common_components/common_add_floating_action_button.dart';
 import 'bloc/toc_bloc.dart';
-import 'toc_sliver_book_name.dart';
-import 'toc_sliver_cover_banner.dart';
-import 'toc_sliver_list.dart';
+import 'widgets/toc_sliver_book_name.dart';
+import 'widgets/toc_sliver_cover_banner.dart';
 import 'toc_app_bar.dart';
+import 'widgets/toc_sliver_list.dart';
 
 class TOCScaffold extends StatelessWidget {
   const TOCScaffold({super.key});
@@ -16,7 +17,6 @@ class TOCScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
@@ -40,22 +40,29 @@ class TOCScaffold extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: AddChapterCalleeAddButton(
-          cubit.bookObject.name,
-          onPopBack: (isSuccess) {
-            if (isSuccess == true) {
-              cubit.refresh(isForce: true);
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(appLocalizations.addWhatSuccessfully(appLocalizations.chapter)),
-              ));
-            } else if (isSuccess == false) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(appLocalizations.addWhatFailed(appLocalizations.chapter)),
-              ));
-            }
+        floatingActionButton: CommonAddFloatingActionButton(
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => AddChapterScaffold(bookName: cubit.bookData.name)))
+                .then((isSuccess) => _onPopBack(context, isSuccess));
           },
         ),
       ),
     );
+  }
+
+  void _onPopBack(BuildContext context, bool? isSuccess) {
+    final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    if (isSuccess == true) {
+      cubit.refresh(isForce: true);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(appLocalizations.addWhatSuccessfully(appLocalizations.chapter)),
+      ));
+    } else if (isSuccess == false) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(appLocalizations.addWhatFailed(appLocalizations.chapter)),
+      ));
+    }
   }
 }

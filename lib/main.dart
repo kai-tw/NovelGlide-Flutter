@@ -52,6 +52,7 @@ class App extends StatelessWidget {
         "/sign_in": (_) => const SignInPage(),
         "/register": (_) => const RegisterPage(),
       },
+      debugShowCheckedModeBanner: false,
     );
   }
 }

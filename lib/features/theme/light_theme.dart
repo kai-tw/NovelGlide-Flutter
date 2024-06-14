@@ -16,6 +16,10 @@ class LightTheme {
     backgroundColor: _colorScheme.surface,
     surfaceTintColor: _colorScheme.surface,
     centerTitle: false,
+    titleTextStyle: TextStyle(
+      color: _colorScheme.onSurface,
+      fontSize: 18,
+    ),
   );
 
   static const ColorScheme _colorScheme = ColorScheme(

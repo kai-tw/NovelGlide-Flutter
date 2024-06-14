@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'edit_book_image_picker.dart';
-import 'edit_book_name_input_field.dart';
-import 'edit_book_submit_button.dart';
+import 'widgets/edit_book_image_picker.dart';
+import 'widgets/edit_book_name_input_field.dart';
+import 'widgets/edit_book_submit_button.dart';
 
 class EditBookForm extends StatelessWidget {
   const EditBookForm({this.controller, super.key});

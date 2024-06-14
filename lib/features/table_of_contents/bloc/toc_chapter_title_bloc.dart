@@ -8,21 +8,31 @@ class TOCChapterTitleCubit extends Cubit<TOCChapterTitleState> {
 
   TOCChapterTitleCubit(this.chapterData) : super(const TOCChapterTitleState());
 
-  void refresh() async {
+  void initializeAsync() async {
     final String title = await chapterData.getTitleFromCache();
-    emit(state.copyWith(title: title));
+    emit(state.copyWith(chapterNumber: chapterData.ordinalNumber, title: title));
   }
 }
 
 class TOCChapterTitleState extends Equatable {
+  final int chapterNumber;
   final String title;
 
   @override
-  List<Object?> get props => [title];
+  List<Object?> get props => [chapterNumber, title];
 
-  const TOCChapterTitleState({this.title = ""});
+  const TOCChapterTitleState({
+    this.chapterNumber = 0,
+    this.title = "",
+  });
 
-  TOCChapterTitleState copyWith({String? title}) {
-    return TOCChapterTitleState(title: title ?? this.title);
+  TOCChapterTitleState copyWith({
+    int? chapterNumber,
+    String? title,
+  }) {
+    return TOCChapterTitleState(
+      chapterNumber: chapterNumber ?? this.chapterNumber,
+      title: title ?? this.title,
+    );
   }
 }

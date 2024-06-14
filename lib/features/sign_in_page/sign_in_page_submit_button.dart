@@ -21,7 +21,7 @@ class SignInPageSubmitButton extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(appLocalizations.signInSuccess)));
           Navigator.of(context).pop();
         },
-        onFailed: () {
+        onFailed: (_) {
           showDialog(
             context: context,
             builder: (_) => CommonDialog(
