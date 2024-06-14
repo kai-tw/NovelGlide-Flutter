@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../data/chapter_data.dart';
@@ -19,7 +18,6 @@ class TOCSliverChapterListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
     final int chapterNumber = chapterData.ordinalNumber;
-    final String localizedChapterNum = AppLocalizations.of(context)!.chapterLabelFunction(chapterNumber);
     final String bookName = chapterData.bookName;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
