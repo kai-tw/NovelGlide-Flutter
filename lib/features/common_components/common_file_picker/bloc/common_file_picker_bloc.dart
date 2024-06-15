@@ -3,10 +3,7 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mime/mime.dart';
-import 'package:path/path.dart';
 
-import '../../../../data/file_path.dart';
 import '../../../../toolbox/advanced_mime_type_resolver.dart';
 import '../common_file_picker_type.dart';
 
@@ -17,12 +14,7 @@ class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
   CommonFilePickerCubit({this.file}) : super(CommonFilePickerState.fromFile(file));
 
   bool _hasMimeMatch() {
-    final RandomAccessFile openFile = file!.openSync(mode: FileMode.read);
-    final List<int> headerBytes = List.generate(AdvancedMimeTypeResolver().magicNumbersMaxLength, (_) => 0);
-
-    openFile.readIntoSync(headerBytes, 0, AdvancedMimeTypeResolver().magicNumbersMaxLength);
-    final String? mimeType = AdvancedMimeTypeResolver().lookup("", headerBytes: headerBytes);
-    openFile.closeSync();
+    final String? mimeType = AdvancedMimeTypeResolver().lookupByMagicNumber(file!);
 
     return type == CommonFilePickerType.any ||
         CommonFilePickerTypeMap.mime[type] != null && CommonFilePickerTypeMap.mime[type]!.contains(mimeType);

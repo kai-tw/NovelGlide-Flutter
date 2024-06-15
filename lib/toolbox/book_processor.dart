@@ -74,7 +74,7 @@ class BookProcessor {
   static bool deleteFolder(String name) {
     final Directory folder = Directory(getPathByName(name));
     if (folder.existsSync()) {
-      folder.deleteSync();
+      folder.deleteSync(recursive: true);
     }
     return !folder.existsSync();
   }
