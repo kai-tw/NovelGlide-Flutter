@@ -123,6 +123,10 @@
     }
   },
 
+  "importOverwriteChapter": "Do it overwrite the chapters?",
+  "importOverwriteCover": "Do it overwrite the cover?",
+  "importOverwriteBookmark": "Do it overwrite the bookmarks?",
+
   "titleBookshelf": "Bookshelf",
   "titleBookmarks": "Bookmarks",
   "titleSettings": "Settings",

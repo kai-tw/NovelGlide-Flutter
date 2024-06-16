@@ -89,6 +89,13 @@ class BookProcessor {
     return false;
   }
 
+  /// Import cover
+  static void importCover(String name, File coverFile, {bool isOverwrite = false}) {
+    if (isOverwrite || !isCoverExist(name)) {
+      createCover(name, coverFile);
+    }
+  }
+
   /// Delete cover
   static bool deleteCover(String name) {
     final File coverFile = File(getCoverPathByName(name));

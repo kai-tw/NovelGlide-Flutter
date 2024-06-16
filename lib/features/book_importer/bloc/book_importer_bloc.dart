@@ -27,8 +27,20 @@ class BookImporterCubit extends Cubit<BookImporterState> {
     return false;
   }
 
+  void setState({
+    bool? isOverwriteChapter,
+    bool? isOverwriteCover,
+    bool? isOverwriteBookmark,
+  }) {
+    emit(state.copyWith(
+      isOverwriteChapter: isOverwriteChapter ?? state.isOverwriteChapter,
+      isOverwriteCover: isOverwriteCover ?? state.isOverwriteCover,
+      isOverwriteBookmark: isOverwriteBookmark ?? state.isOverwriteBookmark,
+    ));
+  }
+
   /// Import books from an archive file.
-  static Future<bool> importFromArchive(String bookName, File archiveFile) async {
+  Future<bool> importFromArchive(String bookName, File archiveFile) async {
     Directory tempFolder = RandomUtility.getAvailableTempFolder();
 
     try {
@@ -38,32 +50,47 @@ class BookImporterCubit extends Cubit<BookImporterState> {
       rethrow;
     }
 
-    bool isSuccess = true;
-
-    List<File> chapterFiles = tempFolder
+    final List<File> chapterFiles = tempFolder
         .listSync()
         .whereType<File>()
         .where((file) =>
             ChapterProcessor.chapterRegexp.hasMatch(basename(file.path)) &&
             int.tryParse(basenameWithoutExtension(file.path)) != null)
         .toList();
-    ChapterProcessor.import(bookName: bookName, chapterFiles: chapterFiles);
-
     final File coverFile = File(join(tempFolder.path, BookProcessor.coverFileName));
-    if (!BookProcessor.isCoverExist(bookName) && coverFile.existsSync()) {
-      isSuccess = isSuccess && BookProcessor.createCover(bookName, coverFile);
-    }
 
-    BookmarkProcessor.importBookmark(bookName, tempFolder.path);
+    await ChapterProcessor.import(bookName, chapterFiles, isOverwrite: state.isOverwriteChapter);
+    BookProcessor.importCover(bookName, coverFile, isOverwrite: state.isOverwriteCover);
+    BookmarkProcessor.import(bookName, tempFolder.path, isOverwrite: state.isOverwriteBookmark);
 
     tempFolder.deleteSync(recursive: true);
-    return isSuccess;
+    return true;
   }
 }
 
 class BookImporterState extends Equatable {
-  @override
-  List<Object?> get props => [];
+  final bool isOverwriteChapter;
+  final bool isOverwriteCover;
+  final bool isOverwriteBookmark;
 
-  const BookImporterState();
+  @override
+  List<Object?> get props => [isOverwriteChapter, isOverwriteCover, isOverwriteBookmark];
+
+  const BookImporterState({
+    this.isOverwriteChapter = false,
+    this.isOverwriteCover = false,
+    this.isOverwriteBookmark = false,
+  });
+
+  BookImporterState copyWith({
+    bool? isOverwriteChapter,
+    bool? isOverwriteCover,
+    bool? isOverwriteBookmark,
+  }) {
+    return BookImporterState(
+      isOverwriteChapter: isOverwriteChapter ?? this.isOverwriteChapter,
+      isOverwriteCover: isOverwriteCover ?? this.isOverwriteCover,
+      isOverwriteBookmark: isOverwriteBookmark ?? this.isOverwriteBookmark,
+    );
+  }
 }

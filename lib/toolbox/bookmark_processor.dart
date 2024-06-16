@@ -29,9 +29,13 @@ class BookmarkProcessor {
     return retList;
   }
 
-  static void importBookmark(String bookName, String directoryPath) {
-    BookmarkData importData = BookmarkData.loadFromDirectory(directoryPath);
-    importData = importData.copyWith(bookName: bookName);
-    importData.save();
+  /// Import the bookmark
+  static void import(String bookName, String directoryPath, {bool isOverwrite = false}) {
+    BookmarkData originalData = BookmarkData.loadFromBookName(bookName);
+    if (isOverwrite || !originalData.isValid) {
+      BookmarkData importData = BookmarkData.loadFromDirectory(directoryPath);
+      importData = importData.copyWith(bookName: bookName);
+      importData.save();
+    }
   }
 }

@@ -118,11 +118,7 @@ class ChapterProcessor {
   }
 
   /// Import chapters from a list of files.
-  static Future<void> import({
-    required String bookName,
-    required List<File> chapterFiles,
-    bool isOverwrite = false,
-  }) async {
+  static Future<void> import(String bookName, List<File> chapterFiles, {bool isOverwrite = false}) async {
     for (File file in chapterFiles) {
       final String fileName = basename(file.path);
       final int chapterNumber = int.parse(basenameWithoutExtension(fileName));
