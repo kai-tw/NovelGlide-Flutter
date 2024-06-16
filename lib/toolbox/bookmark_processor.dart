@@ -17,7 +17,7 @@ class BookmarkProcessor {
       final File file = File(join(path, bookmarkFileName));
       if (file.existsSync()) {
         final String bookName = basename(path);
-        final BookmarkData bookmarkObject = BookmarkData.load(bookName);
+        final BookmarkData bookmarkObject = BookmarkData.loadFromBookName(bookName);
         if (bookmarkObject.isValid) {
           retList.add(bookmarkObject);
         } else {
@@ -27,5 +27,11 @@ class BookmarkProcessor {
     }
 
     return retList;
+  }
+
+  static void importBookmark(String bookName, String directoryPath) {
+    BookmarkData importData = BookmarkData.loadFromDirectory(directoryPath);
+    importData = importData.copyWith(bookName: bookName);
+    importData.save();
   }
 }

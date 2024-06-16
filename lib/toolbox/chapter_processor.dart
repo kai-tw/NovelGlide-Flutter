@@ -4,11 +4,11 @@ import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
 import 'package:flutter_charset_detector/flutter_charset_detector.dart';
-import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 
 import '../data/chapter_data.dart';
 import '../features/common_components/common_file_picker/common_file_picker_type.dart';
+import 'advanced_mime_type_resolver.dart';
 import 'book_processor.dart';
 
 /// Process all the operation related to chapters.
@@ -24,8 +24,9 @@ class ChapterProcessor {
       final List<String> entries = folder
           .listSync()
           .whereType<File>()
-          .where(
-              (item) => chapterRegexp.hasMatch(basename(item.path)) && mimeTypes.contains(lookupMimeType(item.path)))
+          .where((item) =>
+              chapterRegexp.hasMatch(basename(item.path)) &&
+              mimeTypes.contains(AdvancedMimeTypeResolver().lookupAll(item)))
           .map<String>((item) => item.path)
           .toList();
       entries.sort(compareNatural);
@@ -41,6 +42,11 @@ class ChapterProcessor {
   /// Get the path of a chapter.
   static String getPath(String bookName, int ordinalNumber) {
     return join(BookProcessor.getPathByName(bookName), "$ordinalNumber.txt");
+  }
+
+  /// Is the chapter exist.
+  static bool isExist(String bookName, int ordinalNumber) {
+    return File(getPath(bookName, ordinalNumber)).existsSync();
   }
 
   /// Get the content of a chapter.
@@ -109,5 +115,21 @@ class ChapterProcessor {
       return !file.existsSync();
     }
     return false;
+  }
+
+  /// Import chapters from a list of files.
+  static Future<void> import({
+    required String bookName,
+    required List<File> chapterFiles,
+    bool isOverwrite = false,
+  }) async {
+    for (File file in chapterFiles) {
+      final String fileName = basename(file.path);
+      final int chapterNumber = int.parse(basenameWithoutExtension(fileName));
+
+      if (isOverwrite || !ChapterProcessor.isExist(bookName, chapterNumber)) {
+        await ChapterProcessor.create(bookName, chapterNumber, file);
+      }
+    }
   }
 }

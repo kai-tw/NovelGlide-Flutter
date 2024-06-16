@@ -1,14 +1,10 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:flutter_archive/flutter_archive.dart';
 import 'package:path/path.dart';
 
 import '../data/book_data.dart';
 import '../data/file_path.dart';
-import 'bookmark_processor.dart';
-import 'chapter_processor.dart';
-import 'random_utility.dart';
 
 /// Process all the operation of books.
 class BookProcessor {
@@ -82,8 +78,7 @@ class BookProcessor {
   /// Cover process
   /// Create cover
   static bool createCover(String name, File coverFile) {
-    File coverImage = coverFile.copySync(getCoverPathByName(name));
-    return coverImage.existsSync();
+    return coverFile.existsSync() && coverFile.copySync(getCoverPathByName(name)).existsSync();
   }
 
   /// Modify cover
@@ -105,42 +100,5 @@ class BookProcessor {
 
   static bool isCoverExist(String name) {
     return File(getCoverPathByName(name)).existsSync();
-  }
-
-  /// Import books from an archive file.
-  static Future<bool> importFromArchive(String bookName, File archiveFile) async {
-    Directory tempFolder = RandomUtility.getAvailableTempFolder();
-
-    try {
-      await ZipFile.extractToDirectory(zipFile: archiveFile, destinationDir: tempFolder);
-    } catch (e) {
-      tempFolder.deleteSync(recursive: true);
-      rethrow;
-    }
-
-    final List<String> copyList = [
-      BookmarkProcessor.bookmarkFileName,
-      BookmarkProcessor.bookmarkLockFileName,
-    ];
-
-    await Future.forEach(tempFolder.listSync().whereType<File>(), (file) async {
-      final String fileName = basename(file.path);
-      final int? chapterNumber = int.tryParse(basenameWithoutExtension(fileName));
-
-      if (chapterNumber != null) {
-        await ChapterProcessor.create(bookName, chapterNumber, file);
-      }
-
-      if (!isCoverExist(bookName) && fileName == coverFileName) {
-        BookProcessor.createCover(bookName, file);
-      }
-
-      if (copyList.contains(fileName)) {
-        file.copySync(join(getPathByName(bookName), fileName));
-      }
-    });
-
-    tempFolder.deleteSync(recursive: true);
-    return true;
   }
 }

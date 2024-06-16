@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart';
@@ -26,9 +24,32 @@ class BookmarkData extends Equatable {
     DateTime? savedTime,
   }) : savedTime = savedTime ?? DateTime.now(), daysPassed = DateTimeUtility.daysPassed(savedTime ?? DateTime.now());
 
+  factory BookmarkData.loadFromDirectory(String directory) {
+    Box bookmarkBox = Hive.box(name: 'bookmark', directory: directory);
+    final bool isValid = bookmarkBox.get('isValid', defaultValue: false);
+    final int chapterNumber = bookmarkBox.get('chapterNumber', defaultValue: -1);
+    final double area = bookmarkBox.get('area', defaultValue: 0.0);
+    final DateTime savedTime =
+    DateTime.parse(bookmarkBox.get('savedTime', defaultValue: DateTime.now().toIso8601String()));
+    bookmarkBox.close();
+
+    return BookmarkData(
+      isValid: isValid,
+      bookName: "",
+      chapterNumber: chapterNumber,
+      area: area,
+      savedTime: savedTime,
+    );
+  }
+
+  factory BookmarkData.loadFromBookName(String bookName) {
+    BookmarkData data = BookmarkData.loadFromDirectory(join(FilePath().libraryRoot, bookName));
+    return data.copyWith(bookName: bookName);
+  }
+
   void save() {
     if (_verify()) {
-      Box bookmarkBox = Hive.box(name: join(FilePath().libraryRoot, bookName, 'bookmark'));
+      Box bookmarkBox = Hive.box(name: 'bookmark', directory: join(FilePath().libraryRoot, bookName));
       bookmarkBox.put('isValid', _verify());
       bookmarkBox.put('chapterNumber', chapterNumber);
       bookmarkBox.put('area', area);
@@ -38,33 +59,21 @@ class BookmarkData extends Equatable {
   }
 
   void clear() {
-    final String boxName = join(FilePath().libraryRoot, bookName, 'bookmark');
-    Box bookmarkBox = Hive.box(name: boxName);
+    Box bookmarkBox = Hive.box(name: 'bookmark', directory: join(FilePath().libraryRoot, bookName));
     bookmarkBox.clear();
     bookmarkBox.close();
-
-    // Delete bookmark.isar
-    File file = File('$boxName.isar');
-    if (file.existsSync()) {
-      file.deleteSync();
-    }
-
-    // Delete bookmark.isar.lock
-    file = File('$boxName.isar.lock');
-    if (file.existsSync()) {
-      file.deleteSync();
-    }
   }
 
   BookmarkData copyWith({
     bool? isValid,
+    String? bookName,
     int? chapterNumber,
     double? area,
     DateTime? savedTime,
   }) {
     return BookmarkData(
       isValid: isValid ?? this.isValid,
-      bookName: bookName,
+      bookName: bookName ?? this.bookName,
       chapterNumber: chapterNumber ?? this.chapterNumber,
       area: area ?? this.area,
       savedTime: savedTime ?? this.savedTime,
@@ -78,23 +87,5 @@ class BookmarkData extends Equatable {
 
   bool _verify() {
     return bookName != '' && chapterNumber > -1 && area >= 0.0 && savedTime.isBefore(DateTime.now());
-  }
-
-  static BookmarkData load(String bookName) {
-    Box bookmarkBox = Hive.box(name: join(FilePath().libraryRoot, bookName, 'bookmark'));
-    final bool isValid = bookmarkBox.get('isValid', defaultValue: false);
-    final int chapterNumber = bookmarkBox.get('chapterNumber', defaultValue: -1);
-    final double area = bookmarkBox.get('area', defaultValue: 0.0);
-    final DateTime savedTime =
-    DateTime.parse(bookmarkBox.get('savedTime', defaultValue: DateTime.now().toIso8601String()));
-    bookmarkBox.close();
-
-    return BookmarkData(
-      isValid: isValid,
-      bookName: bookName,
-      chapterNumber: chapterNumber,
-      area: area,
-      savedTime: savedTime,
-    );
   }
 }

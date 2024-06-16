@@ -21,7 +21,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   void initialize() async {
     emit(ReaderState(bookName: _bookName, chapterNumber: _chapterNumber));
 
-    final BookmarkData bookmarkObject = BookmarkData.load(_bookName);
+    final BookmarkData bookmarkObject = BookmarkData.loadFromBookName(_bookName);
     final ReaderSettings readerSettings = state.readerSettings.load();
     final bool isJumpAvailable =
         !readerSettings.autoSave && bookmarkObject.isValid && bookmarkObject.chapterNumber == _chapterNumber;
