@@ -6,7 +6,6 @@ import '../../../data/chapter_data.dart';
 import '../../common_components/common_slidable_action/common_slidable_action_delete.dart';
 import '../../reader/reader.dart';
 import '../bloc/toc_bloc.dart';
-import '../bloc/toc_chapter_title_bloc.dart';
 import 'toc_chapter_title.dart';
 
 class TOCSliverChapterListItem extends StatelessWidget {
@@ -19,6 +18,7 @@ class TOCSliverChapterListItem extends StatelessWidget {
     final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
     final int chapterNumber = chapterData.ordinalNumber;
     final String bookName = chapterData.bookName;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
       child: Container(
@@ -44,10 +44,7 @@ class TOCSliverChapterListItem extends StatelessWidget {
                 shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
                 foregroundColor: Theme.of(context).colorScheme.onSurface,
               ),
-              child: BlocProvider(
-                create: (_) => TOCChapterTitleCubit(chapterData)..initializeAsync(),
-                child: const TOCChapterTitle(),
-              ),
+              child: TOCChapterTitle(chapterData),
             ),
           ),
         ),

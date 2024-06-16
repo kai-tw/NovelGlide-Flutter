@@ -4,12 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/chapter_data.dart';
 
 class TOCChapterTitleCubit extends Cubit<TOCChapterTitleState> {
-  final ChapterData chapterData;
+  TOCChapterTitleCubit() : super(const TOCChapterTitleState());
 
-  TOCChapterTitleCubit(this.chapterData) : super(const TOCChapterTitleState());
-
-  void initializeAsync() async {
-    final String title = await chapterData.getTitleFromCache();
+  void refresh(ChapterData chapterData) async {
+    final String title = await chapterData.getTitle();
     emit(state.copyWith(chapterNumber: chapterData.ordinalNumber, title: title));
   }
 }

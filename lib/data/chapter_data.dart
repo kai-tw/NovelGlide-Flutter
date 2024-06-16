@@ -1,13 +1,17 @@
 import 'dart:io';
 
+import 'package:equatable/equatable.dart';
+
 import '../toolbox/chapter_processor.dart';
 
-class ChapterData {
-  String bookName;
-  int ordinalNumber;
-  String? _title;
+class ChapterData extends Equatable {
+  final String bookName;
+  final int ordinalNumber;
 
-  ChapterData({
+  @override
+  List<Object?> get props => [bookName, ordinalNumber];
+
+  const ChapterData({
     required this.bookName,
     required this.ordinalNumber,
   });
@@ -18,13 +22,6 @@ class ChapterData {
 
   Future<String> getTitle() async {
     return await ChapterProcessor.getTitle(bookName, ordinalNumber);
-  }
-
-  Future<String> getTitleFromCache({bool isForceUpdate = false}) async {
-    if (_title == null || isForceUpdate) {
-      _title = await getTitle();
-    }
-    return _title!;
   }
 
   Future<List<String>> getContent() async {
@@ -41,5 +38,10 @@ class ChapterData {
 
   Future<bool> delete() async {
     return await ChapterProcessor.delete(bookName, ordinalNumber);
+  }
+
+  @override
+  String toString() {
+    return "ChapterData(bookName: $bookName, ordinalNumber: $ordinalNumber)";
   }
 }

@@ -60,7 +60,7 @@ class TOCAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     if (isSuccess == true) {
       cubit.setDirty();
-      cubit.refresh(isForce: true);
+      cubit.refresh();
       _showSnackBar(context, messageOnSuccess);
     } else if (isSuccess == false) {
       _showSnackBar(context, messageOnFailure);

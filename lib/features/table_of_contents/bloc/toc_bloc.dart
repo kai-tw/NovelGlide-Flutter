@@ -12,10 +12,10 @@ class TOCCubit extends Cubit<TOCState> {
 
   TOCCubit(this.bookData) : super(const TOCState());
 
-  void refresh({bool isForce = false}) async {
+  void refresh() async {
     List<ChapterData> chapterList = ChapterProcessor.getList(bookData.name);
     TOCStateCode code = chapterList.isEmpty ? TOCStateCode.empty : TOCStateCode.normal;
-    emit(state.copyWith(flipFlop: isForce ? !state.flipFlop : state.flipFlop, code: code, chapterList: chapterList));
+    emit(state.copyWith(code: code, chapterList: chapterList));
   }
 
   void setDirty() {
@@ -31,16 +31,14 @@ class TOCCubit extends Cubit<TOCState> {
 }
 
 class TOCState extends Equatable {
-  final bool flipFlop;
   final bool isDirty;
   final TOCStateCode code;
   final List<ChapterData> chapterList;
 
   @override
-  List<Object?> get props => [flipFlop, isDirty, code, chapterList];
+  List<Object?> get props => [isDirty, code, chapterList];
 
   const TOCState({
-    this.flipFlop = false,
     this.isDirty = false,
     this.code = TOCStateCode.loading,
     this.chapterList = const [],
@@ -53,7 +51,6 @@ class TOCState extends Equatable {
     List<ChapterData>? chapterList,
   }) {
     return TOCState(
-      flipFlop: flipFlop ?? this.flipFlop,
       isDirty: isDirty ?? this.isDirty,
       code: code ?? this.code,
       chapterList: chapterList ?? this.chapterList,

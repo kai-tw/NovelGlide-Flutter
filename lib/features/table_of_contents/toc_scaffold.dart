@@ -55,7 +55,7 @@ class TOCScaffold extends StatelessWidget {
     final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     if (isSuccess == true) {
-      cubit.refresh(isForce: true);
+      cubit.refresh();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(appLocalizations.addWhatSuccessfully(appLocalizations.chapter)),
       ));
