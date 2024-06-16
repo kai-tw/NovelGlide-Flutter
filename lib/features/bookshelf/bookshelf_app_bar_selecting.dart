@@ -14,9 +14,9 @@ class BookshelfAppBarSelecting extends StatelessWidget {
       builder: (BuildContext context, BookshelfState state) {
         final bool isSelectedAll = state.selectedSet.length == state.bookList.length;
         return AppBar(
-          leading: IconButton(
-            onPressed: () => _onPressedLeadingButton(cubit, isSelectedAll),
-            icon: Icon(isSelectedAll ? Icons.check_box_rounded : Icons.indeterminate_check_box_rounded),
+          leading: Checkbox(
+            onChanged: (_) => _onPressedLeadingButton(cubit, isSelectedAll),
+            value: isSelectedAll,
           ),
           title: Text(state.selectedSet.length.toString()),
           actions: [
