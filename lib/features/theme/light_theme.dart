@@ -9,18 +9,12 @@ class LightTheme {
     colorScheme: _colorScheme,
     inputDecorationTheme: CommonTheme.inputDecorationTheme,
     splashColor: Colors.transparent,
+    switchTheme: _switchTheme,
     useMaterial3: true,
   );
 
-  static final AppBarTheme _appBarTheme = AppBarTheme(
-    backgroundColor: _colorScheme.surface,
-    surfaceTintColor: _colorScheme.surface,
-    centerTitle: false,
-    titleTextStyle: TextStyle(
-      color: _colorScheme.onSurface,
-      fontSize: 18,
-    ),
-  );
+  static final AppBarTheme _appBarTheme = CommonTheme.getAppBarTheme(_colorScheme);
+  static final SwitchThemeData _switchTheme = CommonTheme.getSwitchTheme(_colorScheme);
 
   static const ColorScheme _colorScheme = ColorScheme(
     brightness: Brightness.light,
@@ -55,6 +49,6 @@ class LightTheme {
     surfaceContainerLow: Color(0xFFEFF5F6),
     surfaceContainer: Color(0xFFE9EFF0),
     surfaceContainerHigh: Color(0xFFE3E9EA),
-    surfaceContainerHighest: Color(0xFFDEE3E5)
+    surfaceContainerHighest: Color(0xFFDEE3E5),
   );
 }

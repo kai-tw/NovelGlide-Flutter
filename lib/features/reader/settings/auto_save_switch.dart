@@ -22,13 +22,6 @@ class ReaderSettingsAutoSaveSwitch extends StatelessWidget {
               Switch(
                 value: state.readerSettings.autoSave,
                 onChanged: (bool value) => readerCubit.saveSettings(autoSave: value),
-                inactiveThumbColor: Theme.of(context).colorScheme.primary,
-                inactiveTrackColor: Theme.of(context).colorScheme.surface,
-                activeColor: Theme.of(context).colorScheme.surface,
-                activeTrackColor: Theme.of(context).colorScheme.primary,
-                hoverColor: Colors.transparent,
-                focusColor: Colors.transparent,
-                splashRadius: 0.0,
               ),
             ],
           );
