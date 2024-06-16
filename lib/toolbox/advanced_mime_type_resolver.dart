@@ -17,19 +17,26 @@ class AdvancedMimeTypeResolver extends MimeTypeResolver {
   void init() {
     if (_isInit) return;
 
-    _instance.addMagicNumber([0x50, 0x4B, 0x03, 0x04], "application/zip");
+    addMagicNumber([0x50, 0x4B, 0x03, 0x04], "application/zip");
 
     _isInit = true;
   }
 
-  String? lookupByMagicNumber(File file) {
+  String? lookupByHeaderBytes(File file) {
+    final List<int> headerBytes = _getHeaderBytes(file);
+    return lookup("", headerBytes: headerBytes);
+  }
+
+  String? lookupAll(File file) {
+    final List<int> headerBytes = _getHeaderBytes(file);
+    return lookup(file.path, headerBytes: headerBytes);
+  }
+
+  List<int> _getHeaderBytes(File file) {
     final RandomAccessFile openFile = file.openSync(mode: FileMode.read);
     final List<int> headerBytes = List.generate(magicNumbersMaxLength, (_) => 0);
-
     openFile.readIntoSync(headerBytes, 0, magicNumbersMaxLength);
-    final String? mimeType = AdvancedMimeTypeResolver().lookup("", headerBytes: headerBytes);
     openFile.closeSync();
-
-    return mimeType;
+    return headerBytes;
   }
 }
