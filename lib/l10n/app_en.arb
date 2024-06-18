@@ -200,5 +200,7 @@
   "readerSettingsResetButtonDone": "Reset done",
   "readerSettingsAutoSaveSwitch": "Auto add a bookmark",
 
-  "accountEditGeneral": "General"
+  "accountEditGeneral": "General",
+
+  "settingsTitleThemeSwitcher": "Switch Theme"
 }

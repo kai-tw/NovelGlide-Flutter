@@ -101,5 +101,7 @@
   "readerSettingsResetButtonDone": "重設成功",
   "readerSettingsAutoSaveSwitch": "自動插入書籤",
 
-  "accountEditGeneral": "一般資料"
+  "accountEditGeneral": "一般資料",
+
+  "settingsTitleThemeSwitcher": "主題"
 }

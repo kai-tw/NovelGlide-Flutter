@@ -32,38 +32,34 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return ThemeProvider(
       initTheme: DefaultTheme.lightTheme,
-      builder: (context, initTheme) {
-        return ThemeSwitchingArea(
-          child: Builder(
-            builder: (context) {
-              return MaterialApp(
-                title: 'NovelGlide',
-                theme: initTheme,
-                darkTheme: DefaultTheme.darkTheme,
-                themeMode: ThemeMode.system,
-                localizationsDelegates: const [
-                  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                ],
-                supportedLocales: const [
-                  Locale('en'),
-                  Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
-                ],
-                initialRoute: "/",
-                routes: {
-                  "/": (_) => const Homepage(),
-                  "/account": (_) => const AccountPage(),
-                  "/sign_in": (_) => const SignInPage(),
-                  "/register": (_) => const RegisterPage(),
-                },
-                debugShowCheckedModeBanner: false,
-              );
+      builder: (context, initTheme) => ThemeSwitchingArea(
+        child: Builder(
+          builder: (context) => MaterialApp(
+            title: 'NovelGlide',
+            theme: initTheme,
+            darkTheme: DefaultTheme.darkTheme,
+            themeMode: ThemeMode.system,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('en'),
+              Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
+            ],
+            initialRoute: "/",
+            routes: {
+              "/": (_) => const Homepage(),
+              "/account": (_) => const AccountPage(),
+              "/sign_in": (_) => const SignInPage(),
+              "/register": (_) => const RegisterPage(),
             },
+            debugShowCheckedModeBanner: false,
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
