@@ -204,5 +204,7 @@
 
   "themeTitle": "Theme",
   "themeListTitle": "Theme List",
-  "themeListDescription": "Select a theme"
+  "themeListDescription": "Select a theme",
+  "themeListNameDefault": "Default",
+  "themeListNameReverse": "Reversed"
 }

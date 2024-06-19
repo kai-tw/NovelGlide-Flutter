@@ -21,7 +21,7 @@ class CommonBookCoverImage extends StatelessWidget {
       }
     }
 
-    final Brightness brightness = MediaQuery.of(context).platformBrightness;
+    final Brightness brightness = Theme.of(context).brightness;
 
     return Image.asset(
       'assets/images/book_cover_${brightness == Brightness.dark ? 'dark' : 'light'}.jpg',

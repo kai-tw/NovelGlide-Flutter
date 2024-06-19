@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class DefaultTheme {
-  static const String name = "Default";
   static final ThemeData lightTheme = ThemeData(
     appBarTheme: getAppBarTheme(_lightColorScheme),
     brightness: Brightness.light,

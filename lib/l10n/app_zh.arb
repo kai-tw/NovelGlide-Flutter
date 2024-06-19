@@ -105,5 +105,7 @@
 
   "themeTitle": "主題",
   "themeListTitle": "主題列表",
-  "themeListDescription": "選擇一個主題"
+  "themeListDescription": "選擇一個主題",
+  "themeListNameDefault": "預設",
+  "themeListNameReverse": "反轉"
 }
