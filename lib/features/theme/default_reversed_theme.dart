@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class DefaultTheme {
-  static const String name = "Default";
+class DefaultReversedTheme {
+  static const String name = "Reversed";
   static final ThemeData lightTheme = ThemeData(
     appBarTheme: getAppBarTheme(_lightColorScheme),
-    brightness: Brightness.light,
+    brightness: Brightness.dark,
     colorScheme: _lightColorScheme,
     inputDecorationTheme: inputDecorationTheme,
     splashColor: Colors.transparent,
@@ -14,7 +14,7 @@ class DefaultTheme {
 
   static final ThemeData darkTheme = ThemeData(
     appBarTheme: getAppBarTheme(_darkColorScheme),
-    brightness: Brightness.dark,
+    brightness: Brightness.light,
     colorScheme: _darkColorScheme,
     inputDecorationTheme: inputDecorationTheme,
     splashColor: Colors.transparent,
@@ -24,7 +24,7 @@ class DefaultTheme {
 
   /// The color scheme for light theme
   static const ColorScheme _lightColorScheme = ColorScheme(
-    brightness: Brightness.light,
+    brightness: Brightness.dark,
     primary: Color(0xFF282828),
     onPrimary: Color(0xFFFFFFFF),
     primaryContainer: Color(0xFFB9E9FF),
@@ -61,7 +61,7 @@ class DefaultTheme {
 
   /// The color scheme for dark theme
   static const ColorScheme _darkColorScheme = ColorScheme(
-    brightness: Brightness.dark,
+    brightness: Brightness.light,
     primary: Color(0xFFBDBDBD),
     onPrimary: Color(0xFF3F3F3F),
     primaryContainer: Color(0xFF313131),

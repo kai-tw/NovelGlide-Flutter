@@ -1,3 +1,4 @@
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -9,14 +10,16 @@ class AddBookScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: const CommonBackButton(),
-        title: Text(AppLocalizations.of(context)!.titleAddBook),
-      ),
-      body: const Padding(
-        padding: EdgeInsets.all(24.0),
-        child: AddBookForm(),
+    return ThemeSwitchingArea(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: const CommonBackButton(),
+          title: Text(AppLocalizations.of(context)!.titleAddBook),
+        ),
+        body: const Padding(
+          padding: EdgeInsets.all(24.0),
+          child: AddBookForm(),
+        ),
       ),
     );
   }

@@ -202,5 +202,7 @@
 
   "accountEditGeneral": "General",
 
-  "settingsTitleThemeSwitcher": "Switch Theme"
+  "themeTitle": "Theme",
+  "themeListTitle": "Theme List",
+  "themeListDescription": "Select a theme"
 }

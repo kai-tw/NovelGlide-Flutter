@@ -1,3 +1,4 @@
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,9 +14,11 @@ class ReaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ReaderCubit(bookName, chapterNumber, isAutoJump: isAutoJump),
-      child: const ReaderScaffold(),
+    return ThemeSwitchingArea(
+      child: BlocProvider(
+        create: (_) => ReaderCubit(bookName, chapterNumber, isAutoJump: isAutoJump),
+        child: const ReaderScaffold(),
+      ),
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 
+import '../toolbox/chapter_processor.dart';
 import '../toolbox/datetime_utility.dart';
 import 'file_path.dart';
 
@@ -43,8 +44,9 @@ class BookmarkData extends Equatable {
   }
 
   factory BookmarkData.loadFromBookName(String bookName) {
-    BookmarkData data = BookmarkData.loadFromDirectory(join(FilePath().libraryRoot, bookName));
-    return data.copyWith(bookName: bookName);
+    final BookmarkData data = BookmarkData.loadFromDirectory(join(FilePath().libraryRoot, bookName));
+    final bool isValid = data.isValid && ChapterProcessor.isExist(bookName, data.chapterNumber);
+    return data.copyWith(isValid: isValid,bookName: bookName);
   }
 
   void save() {

@@ -1,3 +1,4 @@
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,16 +15,18 @@ class AddChapterScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: AppBar(
-        leading: const CommonBackButton(),
-        title: Text(appLocalizations.titleAddChapter),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: BlocProvider(
-          create: (_) => AddChapterFormCubit(bookName),
-          child: const AddChapterForm(),
+    return ThemeSwitchingArea(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: const CommonBackButton(),
+          title: Text(appLocalizations.titleAddChapter),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: BlocProvider(
+            create: (_) => AddChapterFormCubit(bookName),
+            child: const AddChapterForm(),
+          ),
         ),
       ),
     );

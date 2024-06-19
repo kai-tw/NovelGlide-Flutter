@@ -1,3 +1,4 @@
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,20 +15,22 @@ class RegisterPageScaffold extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final User? user = FirebaseAuth.instance.currentUser;
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: const CommonBackButton(),
+    return ThemeSwitchingArea(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: const CommonBackButton(),
+        ),
+        body: user == null
+            ? CommonCenterInfoCTABody(
+                content: appLocalizations.alreadySignedInMessage,
+                actionText: appLocalizations.goToAccountPage,
+                onPressed: () => Navigator.of(context).pushReplacementNamed("/account"),
+              )
+            : const Padding(
+                padding: EdgeInsets.all(24.0),
+                child: RegisterPageForm(),
+              ),
       ),
-      body: user == null
-          ? CommonCenterInfoCTABody(
-              content: appLocalizations.alreadySignedInMessage,
-              actionText: appLocalizations.goToAccountPage,
-              onPressed: () => Navigator.of(context).pushReplacementNamed("/account"),
-            )
-          : const Padding(
-              padding: EdgeInsets.all(24.0),
-              child: RegisterPageForm(),
-            ),
     );
   }
 }

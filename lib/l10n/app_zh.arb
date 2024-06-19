@@ -103,5 +103,7 @@
 
   "accountEditGeneral": "一般資料",
 
-  "settingsTitleThemeSwitcher": "主題"
+  "themeTitle": "主題",
+  "themeListTitle": "主題列表",
+  "themeListDescription": "選擇一個主題"
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../theme_switch/theme_switch.dart';
+import 'widgets/theme_setting_button.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -16,25 +16,8 @@ class SettingsPage extends StatelessWidget {
           title: Text(appLocalizations.titleSettings),
           pinned: true,
         ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Text(appLocalizations.settingsTitleThemeSwitcher),
-                    ),
-                    const ThemeSwitch(),
-                  ],
-                )
-              ),
-            ),
-          ),
+        const SliverToBoxAdapter(
+          child: ThemeSettingButton(),
         ),
       ],
     );

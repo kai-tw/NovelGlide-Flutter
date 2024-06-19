@@ -1,3 +1,4 @@
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -26,26 +27,28 @@ class TOCScaffold extends StatelessWidget {
 
         Navigator.of(context).pop(cubit.state.isDirty);
       },
-      child: Scaffold(
-        appBar: const TOCAppBar(),
-        body: RefreshIndicator(
-          onRefresh: () async => cubit.refresh(),
-          child: const SlidableAutoCloseBehavior(
-            child: CustomScrollView(
-              slivers: [
-                TOCSliverCoverBanner(),
-                TOCSliverBookName(),
-                TOCSliverList(),
-              ],
+      child: ThemeSwitchingArea(
+        child: Scaffold(
+          appBar: const TOCAppBar(),
+          body: RefreshIndicator(
+            onRefresh: () async => cubit.refresh(),
+            child: const SlidableAutoCloseBehavior(
+              child: CustomScrollView(
+                slivers: [
+                  TOCSliverCoverBanner(),
+                  TOCSliverBookName(),
+                  TOCSliverList(),
+                ],
+              ),
             ),
           ),
-        ),
-        floatingActionButton: CommonAddFloatingActionButton(
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => AddChapterScaffold(bookName: cubit.bookData.name)))
-                .then((isSuccess) => _onPopBack(context, isSuccess));
-          },
+          floatingActionButton: CommonAddFloatingActionButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => AddChapterScaffold(bookName: cubit.bookData.name)))
+                  .then((isSuccess) => _onPopBack(context, isSuccess));
+            },
+          ),
         ),
       ),
     );

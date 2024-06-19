@@ -14,6 +14,9 @@ class SignInPageCallToRegisterText extends StatelessWidget {
       TextSpan(
         text: appLocalizations.noAccountGoRegister,
         children: [
+          const TextSpan(
+            text: "  ",
+          ),
           TextSpan(
             text: appLocalizations.register,
             recognizer: TapGestureRecognizer()..onTap = () => Navigator.of(context).pushNamed("/register"),
