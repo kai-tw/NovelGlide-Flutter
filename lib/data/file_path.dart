@@ -4,6 +4,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FilePath {
+  static final FilePath instance = _instance;
   static final FilePath _instance = FilePath._init();
 
   late final String supportFolder;

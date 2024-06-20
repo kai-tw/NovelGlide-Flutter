@@ -44,14 +44,14 @@ class BookmarkData extends Equatable {
   }
 
   factory BookmarkData.loadFromBookName(String bookName) {
-    final BookmarkData data = BookmarkData.loadFromDirectory(join(FilePath().libraryRoot, bookName));
+    final BookmarkData data = BookmarkData.loadFromDirectory(join(FilePath.instance.libraryRoot, bookName));
     final bool isValid = data.isValid && ChapterProcessor.isExist(bookName, data.chapterNumber);
     return data.copyWith(isValid: isValid,bookName: bookName);
   }
 
   void save() {
     if (_verify()) {
-      Box bookmarkBox = Hive.box(name: 'bookmark', directory: join(FilePath().libraryRoot, bookName));
+      Box bookmarkBox = Hive.box(name: 'bookmark', directory: join(FilePath.instance.libraryRoot, bookName));
       bookmarkBox.put('isValid', _verify());
       bookmarkBox.put('chapterNumber', chapterNumber);
       bookmarkBox.put('area', area);
@@ -61,7 +61,7 @@ class BookmarkData extends Equatable {
   }
 
   void clear() {
-    Box bookmarkBox = Hive.box(name: 'bookmark', directory: join(FilePath().libraryRoot, bookName));
+    Box bookmarkBox = Hive.box(name: 'bookmark', directory: join(FilePath.instance.libraryRoot, bookName));
     bookmarkBox.clear();
     bookmarkBox.close();
   }

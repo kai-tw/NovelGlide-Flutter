@@ -12,9 +12,9 @@ class RandomUtility {
   }
 
   static Directory getAvailableTempFolder() {
-    Directory tempFolder = Directory(join(FilePath().tempFolder, RandomUtility.getRandomString(8)));
+    Directory tempFolder = Directory(join(FilePath.instance.tempFolder, RandomUtility.getRandomString(8)));
     while (tempFolder.existsSync()) {
-      tempFolder = Directory(join(FilePath().tempFolder, RandomUtility.getRandomString(8)));
+      tempFolder = Directory(join(FilePath.instance.tempFolder, RandomUtility.getRandomString(8)));
     }
     tempFolder.createSync(recursive: true);
     return tempFolder;

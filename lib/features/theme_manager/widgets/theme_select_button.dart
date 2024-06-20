@@ -1,29 +1,25 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../theme/default_theme.dart';
-import '../theme_manager.dart';
+import '../../theme/theme_template.dart';
+import '../bloc/theme_manager_processor.dart';
 
 class ThemeSelectButton extends StatelessWidget {
   const ThemeSelectButton({super.key, required this.theme});
 
-  final ThemeList theme;
+  final ThemeId theme;
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final Map<ThemeList, String> themeNameMap = {
-      ThemeList.defaultTheme: appLocalizations.themeListNameDefault,
-      ThemeList.defaultReversedTheme: appLocalizations.themeListNameReverse,
-    };
-
+    final String? themeName = ThemeManagerProcessor.getThemeNameById(context, theme);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ThemeSwitcher.withTheme(
           builder: (context, switcher, currentTheme) {
-            final ThemeData themeData = _getThemeData(theme, currentTheme.brightness);
+            final ThemeTemplate themeTemplate = ThemeManagerProcessor.themeDataMap[theme] ?? DefaultTheme.instance;
+            final ThemeData themeData = themeTemplate.getThemeByBrightness();
             return OutlinedButton(
               onPressed: () {
                 switcher.changeTheme(theme: themeData);
@@ -42,18 +38,9 @@ class ThemeSelectButton extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: Text(themeNameMap[theme] ?? "Aa", overflow: TextOverflow.ellipsis),
+          child: Text(themeName ?? "Aa", overflow: TextOverflow.ellipsis),
         ),
       ],
     );
-  }
-
-  ThemeData _getThemeData(ThemeList theme, Brightness brightness) {
-    switch (theme) {
-      case ThemeList.defaultReversedTheme:
-        return brightness == Brightness.light ? DefaultTheme.darkTheme : DefaultTheme.lightTheme;
-      default:
-        return brightness == Brightness.light ? DefaultTheme.lightTheme : DefaultTheme.darkTheme;
-    }
   }
 }

@@ -12,7 +12,7 @@ class BookProcessor {
 
   /// Get all book names
   static List<String> getNameList() {
-    final Directory folder = Directory(FilePath().libraryRoot);
+    final Directory folder = Directory(FilePath.instance.libraryRoot);
     folder.createSync(recursive: true);
 
     final List<String> entries = folder.listSync().whereType<Directory>().map((e) => e.path).toList();
@@ -28,7 +28,7 @@ class BookProcessor {
 
   /// Get the book path by name
   static String getPathByName(String name) {
-    return join(FilePath().libraryRoot, name);
+    return join(FilePath.instance.libraryRoot, name);
   }
 
   /// Get the cover path by name

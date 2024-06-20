@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 
+import 'binding_center/binding_center.dart';
 import 'features/account_page/account_page.dart';
 import 'features/sign_in_page/sign_in_page.dart';
 import 'features/register_page/register_page.dart';
@@ -14,13 +15,13 @@ import 'features/theme/default_theme.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  BindingCenter.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await FilePath().init();
-  Hive.defaultDirectory = FilePath().hiveRoot;
+  await FilePath.instance.init();
+  Hive.defaultDirectory = FilePath.instance.hiveRoot;
 
   runApp(const App());
 }
@@ -31,31 +32,31 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeProvider(
-      initTheme: DefaultTheme.lightTheme,
-      builder: (context, initTheme) => MaterialApp(
-        title: 'NovelGlide',
-        theme: initTheme,
-        darkTheme: DefaultTheme.darkTheme,
-        themeMode: ThemeMode.system,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en'),
-          Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
-        ],
-        initialRoute: "/",
-        routes: {
-          "/": (_) => const Homepage(),
-          "/account": (_) => const AccountPage(),
-          "/sign_in": (_) => const SignInPage(),
-          "/register": (_) => const RegisterPage(),
-        },
-        debugShowCheckedModeBanner: false,
-      ),
+      initTheme: DefaultTheme.instance.getThemeByBrightness(),
+      builder: (context, initTheme) {
+        return MaterialApp(
+          title: 'NovelGlide',
+          theme: initTheme,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'),
+            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
+          ],
+          initialRoute: "/",
+          routes: {
+            "/": (_) => const Homepage(),
+            "/account": (_) => const AccountPage(),
+            "/sign_in": (_) => const SignInPage(),
+            "/register": (_) => const RegisterPage(),
+          },
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
   }
 }

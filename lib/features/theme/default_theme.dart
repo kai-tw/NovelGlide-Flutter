@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 
-class DefaultTheme {
-  static final ThemeData lightTheme = ThemeData(
+import 'theme_template.dart';
+
+class DefaultTheme extends ThemeTemplate{
+  static final DefaultTheme instance = _instance;
+  static final DefaultTheme _instance = DefaultTheme._();
+
+  factory DefaultTheme() => instance;
+  DefaultTheme._();
+
+  @override
+  final ThemeData lightTheme = ThemeData(
     appBarTheme: getAppBarTheme(_lightColorScheme),
     brightness: Brightness.light,
     colorScheme: _lightColorScheme,
@@ -11,7 +20,8 @@ class DefaultTheme {
     useMaterial3: true,
   );
 
-  static final ThemeData darkTheme = ThemeData(
+  @override
+  final ThemeData darkTheme = ThemeData(
     appBarTheme: getAppBarTheme(_darkColorScheme),
     brightness: Brightness.dark,
     colorScheme: _darkColorScheme,
