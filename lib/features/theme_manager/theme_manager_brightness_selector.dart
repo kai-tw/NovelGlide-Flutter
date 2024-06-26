@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/theme_data_record.dart';
 import 'bloc/theme_manager_brightness_bloc.dart';
-import 'widgets/theme_brightness_select_button.dart';
+import 'widgets/theme_manager_select_brightness_button.dart';
 import 'widgets/theme_manager_section_card.dart';
 import 'widgets/theme_manager_section_title.dart';
 
@@ -29,9 +29,9 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ThemeBrightnessSelectButton(),
-                ThemeBrightnessSelectButton(brightness: Brightness.light),
-                ThemeBrightnessSelectButton(brightness: Brightness.dark),
+                ThemeManagerSelectBrightnessButton(),
+                ThemeManagerSelectBrightnessButton(brightness: Brightness.light),
+                ThemeManagerSelectBrightnessButton(brightness: Brightness.dark),
               ],
             ),
           )

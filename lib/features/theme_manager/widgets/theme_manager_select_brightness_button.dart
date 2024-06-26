@@ -6,8 +6,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../processor/theme_processor.dart';
 import '../bloc/theme_manager_brightness_bloc.dart';
 
-class ThemeBrightnessSelectButton extends StatelessWidget {
-  const ThemeBrightnessSelectButton({super.key, this.brightness});
+class ThemeManagerSelectBrightnessButton extends StatelessWidget {
+  const ThemeManagerSelectBrightnessButton({super.key, this.brightness});
 
   final Brightness? brightness;
 

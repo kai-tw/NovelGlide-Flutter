@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../data/theme_id.dart';
 import 'widgets/theme_manager_section_card.dart';
 import 'widgets/theme_manager_section_title.dart';
-import 'widgets/theme_select_button.dart';
+import 'widgets/theme_manager_select_theme_button.dart';
 
 class ThemeManagerThemeSelector extends StatelessWidget {
   const ThemeManagerThemeSelector({super.key});
@@ -27,7 +27,7 @@ class ThemeManagerThemeSelector extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 sliver: SliverGrid(
                   delegate: SliverChildBuilderDelegate(
-                        (context, index) => ThemeSelectButton(themeId: ThemeId.values[index]),
+                        (context, index) => ThemeManagerSelectThemeButton(themeId: ThemeId.values[index]),
                     childCount: ThemeId.values.length,
                   ),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

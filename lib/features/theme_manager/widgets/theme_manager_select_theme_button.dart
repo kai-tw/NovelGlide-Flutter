@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../data/theme_id.dart';
 import '../../../processor/theme_processor.dart';
 
-class ThemeSelectButton extends StatelessWidget {
-  const ThemeSelectButton({super.key, required this.themeId});
+class ThemeManagerSelectThemeButton extends StatelessWidget {
+  const ThemeManagerSelectThemeButton({super.key, required this.themeId});
 
   final ThemeId themeId;
 
