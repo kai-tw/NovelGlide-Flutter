@@ -25,17 +25,18 @@ class FilePath {
     cacheFolder = (await getApplicationCacheDirectory()).path;
     tempFolder = (await getTemporaryDirectory()).path;
 
-    Directory folder;
+    libraryRoot = join(documentFolder, 'Library');
+    hiveRoot = join(documentFolder, "Hive");
 
-    // Library.
-    folder = Directory(join(documentFolder, 'Library'));
-    if (!folder.existsSync()) {
-      folder.createSync(recursive: true);
+    _createIfNotExist(libraryRoot);
+    _createIfNotExist(hiveRoot);
+  }
+
+  void _createIfNotExist(String path) {
+    final Directory dir = Directory(path);
+    if (!dir.existsSync()) {
+      dir.createSync(recursive: true);
     }
-    libraryRoot = folder.path;
-
-    // Hive
-    hiveRoot = documentFolder;
   }
 
   @override

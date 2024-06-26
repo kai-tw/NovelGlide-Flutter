@@ -107,5 +107,11 @@
   "themeListTitle": "主題列表",
   "themeListDescription": "選擇一個主題",
   "themeListNameDefault": "預設",
-  "themeListNameReverse": "反轉"
+  "themeListNameReverse": "反轉",
+
+  "brightnessSelectorTitle": "亮度",
+  "brightnessSelectorDescription": "選擇亮度",
+  "brightnessSystem": "系統",
+  "brightnessLight": "明亮",
+  "brightnessDark": "黑暗"
 }

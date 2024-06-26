@@ -6,13 +6,16 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 
 import 'binding_center/binding_center.dart';
+import 'data/theme_data_record.dart';
 import 'features/account_page/account_page.dart';
 import 'features/sign_in_page/sign_in_page.dart';
 import 'features/register_page/register_page.dart';
 import 'features/homepage/homepage_scaffold.dart';
 import 'data/file_path.dart';
 import 'features/theme/default_theme.dart';
+import 'features/theme/theme_template.dart';
 import 'firebase_options.dart';
+import 'processor/theme_processor.dart';
 
 void main() async {
   BindingCenter.ensureInitialized();
@@ -31,8 +34,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeDataRecord themeDataRecord = ThemeDataRecord.fromSettings();
+    final ThemeTemplate themeTemplate = ThemeProcessor.getThemeTemplateById(themeDataRecord.themeId);
+    final ThemeData initTheme = themeTemplate.getThemeByBrightness(brightness: themeDataRecord.brightness);
+
     return ThemeProvider(
-      initTheme: DefaultTheme.instance.getThemeByBrightness(),
+      initTheme: initTheme,
       builder: (context, initTheme) {
         return MaterialApp(
           title: 'NovelGlide',

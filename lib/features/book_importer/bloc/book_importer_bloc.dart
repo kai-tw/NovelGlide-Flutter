@@ -7,9 +7,9 @@ import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 
 import '../../../data/book_data.dart';
-import '../../../toolbox/book_processor.dart';
-import '../../../toolbox/bookmark_processor.dart';
-import '../../../toolbox/chapter_processor.dart';
+import '../../../processor/book_processor.dart';
+import '../../../processor/bookmark_processor.dart';
+import '../../../processor/chapter_processor.dart';
 import '../../../toolbox/random_utility.dart';
 
 class BookImporterCubit extends Cubit<BookImporterState> {

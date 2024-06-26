@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/chapter_data.dart';
-import '../../../toolbox/chapter_processor.dart';
+import '../../../processor/chapter_processor.dart';
 
 enum TOCStateCode { loading, normal, empty }
 

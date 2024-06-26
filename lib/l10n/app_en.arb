@@ -206,5 +206,11 @@
   "themeListTitle": "Theme List",
   "themeListDescription": "Select a theme",
   "themeListNameDefault": "Default",
-  "themeListNameReverse": "Reversed"
+  "themeListNameReverse": "Reversed",
+
+  "brightnessSelectorTitle": "Brightness",
+  "brightnessSelectorDescription": "Select brightness",
+  "brightnessSystem": "System",
+  "brightnessLight": "Light",
+  "brightnessDark": "Dark"
 }

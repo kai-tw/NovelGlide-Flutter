@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../../binding_center/binding_center.dart';
+import '../../data/theme_data_record.dart';
 
 abstract class ThemeTemplate {
   abstract final ThemeData lightTheme;
   abstract final ThemeData darkTheme;
 
   ThemeData getThemeByBrightness({Brightness? brightness}) {
-    return (brightness ?? ThemeBinding.instance.platformDispatcher.platformBrightness) == Brightness.light
-        ? lightTheme
-        : darkTheme;
+    final Brightness platformBrightness = ThemeBinding.instance.platformDispatcher.platformBrightness;
+    return (brightness ?? platformBrightness) == Brightness.light ? lightTheme : darkTheme;
   }
 }

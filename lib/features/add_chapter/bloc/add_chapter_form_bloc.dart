@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../toolbox/chapter_processor.dart';
+import '../../../processor/chapter_processor.dart';
 
 enum AddChapterTitleStateCode { blank, invalid, normal }
 enum AddChapterNumberStateCode { blank, invalid, exists, normal }

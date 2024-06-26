@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 
-import '../toolbox/chapter_processor.dart';
+import '../processor/chapter_processor.dart';
 
 class ChapterData extends Equatable {
   final String bookName;

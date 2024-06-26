@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_back_button.dart';
+import 'theme_manager_brightness_selector.dart';
 import 'theme_manager_theme_selector.dart';
 
 class ThemeManager extends StatelessWidget {
@@ -21,6 +22,7 @@ class ThemeManager extends StatelessWidget {
           child: Column(
             children: [
               ThemeManagerThemeSelector(),
+              ThemeManagerBrightnessSelector(),
             ],
           ),
         ),

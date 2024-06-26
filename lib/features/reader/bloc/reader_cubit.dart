@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/bookmark_data.dart';
 import '../../../data/chapter_data.dart';
-import '../../../toolbox/chapter_processor.dart';
+import '../../../processor/chapter_processor.dart';
 import 'reader_button_state.dart';
 import 'reader_settings.dart';
 import 'reader_state.dart';

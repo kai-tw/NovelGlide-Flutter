@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/bookmark_data.dart';
-import '../../../toolbox/bookmark_processor.dart';
+import '../../../processor/bookmark_processor.dart';
 
 enum BookmarkListStateCode { normal, loading, empty }
 

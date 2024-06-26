@@ -8,7 +8,7 @@ import 'package:path/path.dart';
 
 import '../data/chapter_data.dart';
 import '../features/common_components/common_file_picker/common_file_picker_type.dart';
-import 'advanced_mime_type_resolver.dart';
+import '../toolbox/advanced_mime_type_resolver.dart';
 import 'book_processor.dart';
 
 /// Process all the operation related to chapters.

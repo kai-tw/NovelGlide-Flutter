@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 
-import '../toolbox/chapter_processor.dart';
+import '../processor/chapter_processor.dart';
 import '../toolbox/datetime_utility.dart';
 import 'file_path.dart';
 
