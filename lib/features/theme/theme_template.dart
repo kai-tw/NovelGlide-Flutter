@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../binding_center/binding_center.dart';
-import '../../data/theme_data_record.dart';
 
 abstract class ThemeTemplate {
   abstract final ThemeData lightTheme;

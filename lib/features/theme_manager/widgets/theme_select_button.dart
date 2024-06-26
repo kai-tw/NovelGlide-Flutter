@@ -1,9 +1,7 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 
-import '../../../data/theme_data_record.dart';
 import '../../../data/theme_id.dart';
-import '../../theme/theme_template.dart';
 import '../../../processor/theme_processor.dart';
 
 class ThemeSelectButton extends StatelessWidget {

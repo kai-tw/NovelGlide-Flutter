@@ -13,7 +13,6 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final Brightness? recordBrightness = ThemeDataRecord.fromSettings().brightness;
-    print("Selector: $recordBrightness");
     return BlocProvider(
       create: (context) => ThemeManagerBrightnessCubit(brightness: recordBrightness),
       child: ExpansionTile(

@@ -53,7 +53,6 @@ class ThemeDataRecord extends Equatable {
   void saveToSettings() {
     final Box settingsBox = Hive.box(name: "settings");
     settingsBox.put("theme", toJson());
-    print("save: ${toJson()}");
     settingsBox.close();
   }
 }

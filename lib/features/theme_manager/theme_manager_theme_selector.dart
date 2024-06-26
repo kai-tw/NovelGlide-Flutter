@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../data/theme_data_record.dart';
 import '../../data/theme_id.dart';
-import '../../processor/theme_processor.dart';
 import 'widgets/theme_select_button.dart';
 
 class ThemeManagerThemeSelector extends StatelessWidget {

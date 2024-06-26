@@ -12,7 +12,6 @@ import 'features/sign_in_page/sign_in_page.dart';
 import 'features/register_page/register_page.dart';
 import 'features/homepage/homepage_scaffold.dart';
 import 'data/file_path.dart';
-import 'features/theme/default_theme.dart';
 import 'features/theme/theme_template.dart';
 import 'firebase_options.dart';
 import 'processor/theme_processor.dart';
