@@ -77,7 +77,7 @@ class DefaultTheme extends ThemeTemplate{
     onPrimaryContainer: Color(0xFFB4B4B4),
     secondary: Color(0xFFB1CBD0),
     onSecondary: Color(0xFF1C3438),
-    secondaryContainer: Color(0xFF334B4F),
+    secondaryContainer: Color(0xFF3F5B60),
     onSecondaryContainer: Color(0xFFCDE7EC),
     tertiary: Color(0xFFBAC6EA),
     onTertiary: Color(0xFF24304D),

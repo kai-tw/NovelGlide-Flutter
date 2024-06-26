@@ -10,38 +10,10 @@ class MaterialTheme extends ThemeTemplate{
   MaterialTheme._();
 
   @override
-  final ThemeData lightTheme = ThemeData(
-    appBarTheme: getAppBarTheme(_lightColorScheme),
-    brightness: Brightness.light,
-    colorScheme: _lightColorScheme,
-    inputDecorationTheme: inputDecorationTheme,
-    splashColor: Colors.transparent,
-    switchTheme: getSwitchTheme(_lightColorScheme),
-    useMaterial3: true,
-  );
+  final ThemeData lightTheme = ThemeData.light(useMaterial3: true);
 
   @override
-  final ThemeData darkTheme = ThemeData(
-    appBarTheme: getAppBarTheme(_darkColorScheme),
-    brightness: Brightness.dark,
-    colorScheme: _darkColorScheme,
-    inputDecorationTheme: inputDecorationTheme,
-    splashColor: Colors.transparent,
-    switchTheme: getSwitchTheme(_darkColorScheme),
-    useMaterial3: true,
-  );
-
-  /// The color scheme for light theme
-  static final ColorScheme _lightColorScheme = ColorScheme.fromSeed(
-    seedColor: const Color(0xFF415f91),
-    brightness: Brightness.light,
-  );
-
-  /// The color scheme for dark theme
-  static final ColorScheme _darkColorScheme = ColorScheme.fromSeed(
-    seedColor: const Color(0xFF415f91),
-    brightness: Brightness.dark,
-  );
+  final ThemeData darkTheme = ThemeData.dark(useMaterial3: true);
 
   /// Common themes
   static final InputDecorationTheme inputDecorationTheme = InputDecorationTheme(

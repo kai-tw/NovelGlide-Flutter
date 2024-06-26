@@ -1,10 +1,8 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../data/theme_data_record.dart';
 import '../data/theme_id.dart';
-import '../features/theme/default_theme.dart';
 import '../features/theme/theme_template.dart';
 
 class ThemeProcessor {

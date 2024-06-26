@@ -6,13 +6,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive/hive.dart';
 
 import 'binding_center/binding_center.dart';
-import 'data/theme_data_record.dart';
 import 'features/account_page/account_page.dart';
 import 'features/sign_in_page/sign_in_page.dart';
 import 'features/register_page/register_page.dart';
 import 'features/homepage/homepage_scaffold.dart';
 import 'data/file_path.dart';
-import 'features/theme/theme_template.dart';
 import 'firebase_options.dart';
 import 'processor/theme_processor.dart';
 
@@ -33,6 +31,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(Theme.of(context).colorScheme.primary);
     final ThemeData initTheme = ThemeProcessor.getThemeDataFromSettings();
 
     return ThemeProvider(
