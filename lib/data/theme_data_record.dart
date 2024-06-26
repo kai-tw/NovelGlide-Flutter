@@ -7,14 +7,11 @@ import 'package:hive/hive.dart';
 import 'brightness_extension.dart';
 import 'theme_id.dart';
 
-class ThemeDataRecord extends Equatable {
-  final ThemeId themeId;
-  final Brightness? brightness;
+class ThemeDataRecord {
+  ThemeId themeId;
+  Brightness? brightness;
 
-  @override
-  List<Object?> get props => [themeId, brightness];
-
-  const ThemeDataRecord({
+  ThemeDataRecord({
     this.themeId = ThemeId.defaultTheme,
     this.brightness,
   });
@@ -38,16 +35,6 @@ class ThemeDataRecord extends Equatable {
       "themeId": themeId.toString(),
       "brightness": brightness?.toString(),
     });
-  }
-
-  ThemeDataRecord copyWith({
-    ThemeId? themeId,
-    Brightness? brightness,
-  }) {
-    return ThemeDataRecord(
-      themeId: themeId ?? this.themeId,
-      brightness: brightness,
-    );
   }
 
   void saveToSettings() {

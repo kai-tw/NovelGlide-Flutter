@@ -29,10 +29,8 @@ class ThemeProcessor {
     BuildContext context, {
     ThemeId? id,
   }) {
-    ThemeDataRecord themeDataRecord = ThemeDataRecord.fromSettings();
-    themeDataRecord = themeDataRecord.copyWith(
-      themeId: id ?? themeDataRecord.themeId,
-    );
+    final ThemeDataRecord themeDataRecord = ThemeDataRecord.fromSettings();
+    themeDataRecord.themeId = id ?? themeDataRecord.themeId;
     themeDataRecord.saveToSettings();
 
     _switchTheme(context, themeDataRecord);
@@ -43,10 +41,8 @@ class ThemeProcessor {
     BuildContext context, {
     Brightness? brightness,
   }) {
-    ThemeDataRecord themeDataRecord = ThemeDataRecord.fromSettings();
-    themeDataRecord = themeDataRecord.copyWith(
-      brightness: brightness,
-    );
+    final ThemeDataRecord themeDataRecord = ThemeDataRecord.fromSettings();
+    themeDataRecord.brightness = brightness;
     themeDataRecord.saveToSettings();
 
     _switchTheme(context, themeDataRecord);
