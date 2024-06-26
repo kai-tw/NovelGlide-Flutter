@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -11,7 +13,11 @@ class ThemeManagerThemeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const int crossAxisCount = 3;
+    const double maxAxisExtent = 80.0;
+
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+
     return ThemeManagerSectionCard(
       children: [
         ThemeManagerSectionTitle(
@@ -20,7 +26,7 @@ class ThemeManagerThemeSelector extends StatelessWidget {
           subtitle: appLocalizations.themeListDescription,
         ),
         SizedBox(
-          height: 200,
+          height: min<double>(200, (ThemeId.values.length / crossAxisCount).ceil() * maxAxisExtent),
           child: CustomScrollView(
             slivers: [
               SliverPadding(
@@ -31,10 +37,10 @@ class ThemeManagerThemeSelector extends StatelessWidget {
                     childCount: ThemeId.values.length,
                   ),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+                    crossAxisCount: crossAxisCount,
                     crossAxisSpacing: 8.0,
                     mainAxisSpacing: 8.0,
-                    mainAxisExtent: 80.0,
+                    mainAxisExtent: maxAxisExtent,
                   ),
                 ),
               ),
