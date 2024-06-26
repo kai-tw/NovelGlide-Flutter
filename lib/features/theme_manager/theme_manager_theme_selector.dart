@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/theme_id.dart';
+import 'widgets/theme_manager_section_card.dart';
+import 'widgets/theme_manager_section_title.dart';
 import 'widgets/theme_select_button.dart';
 
 class ThemeManagerThemeSelector extends StatelessWidget {
@@ -10,11 +12,13 @@ class ThemeManagerThemeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return ExpansionTile(
-      leading: const Icon(Icons.imagesearch_roller_outlined),
-      title: Text(appLocalizations.themeListTitle),
-      subtitle: Text(appLocalizations.themeListDescription),
+    return ThemeManagerSectionCard(
       children: [
+        ThemeManagerSectionTitle(
+          leadingIcon: Icons.imagesearch_roller_outlined,
+          title: appLocalizations.themeListTitle,
+          subtitle: appLocalizations.themeListDescription,
+        ),
         SizedBox(
           height: 200,
           child: CustomScrollView(
@@ -23,7 +27,7 @@ class ThemeManagerThemeSelector extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 sliver: SliverGrid(
                   delegate: SliverChildBuilderDelegate(
-                    (context, index) => ThemeSelectButton(themeId: ThemeId.values[index]),
+                        (context, index) => ThemeSelectButton(themeId: ThemeId.values[index]),
                     childCount: ThemeId.values.length,
                   ),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

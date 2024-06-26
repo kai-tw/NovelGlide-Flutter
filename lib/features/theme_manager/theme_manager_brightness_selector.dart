@@ -5,6 +5,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../data/theme_data_record.dart';
 import 'bloc/theme_manager_brightness_bloc.dart';
 import 'widgets/theme_brightness_select_button.dart';
+import 'widgets/theme_manager_section_card.dart';
+import 'widgets/theme_manager_section_title.dart';
 
 class ThemeManagerBrightnessSelector extends StatelessWidget {
   const ThemeManagerBrightnessSelector({super.key});
@@ -15,13 +17,15 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
     final Brightness? recordBrightness = ThemeDataRecord.fromSettings().brightness;
     return BlocProvider(
       create: (context) => ThemeManagerBrightnessCubit(brightness: recordBrightness),
-      child: ExpansionTile(
-        leading: const Icon(Icons.brightness_4_rounded),
-        title: Text(appLocalizations.brightnessSelectorTitle),
-        subtitle: Text(appLocalizations.brightnessSelectorDescription),
-        children: const [
-          Padding(
-            padding: EdgeInsets.only(bottom: 16.0),
+      child: ThemeManagerSectionCard(
+        children: [
+          ThemeManagerSectionTitle(
+            leadingIcon: Icons.brightness_4_rounded,
+            title: appLocalizations.brightnessSelectorTitle,
+            subtitle: appLocalizations.brightnessSelectorDescription,
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -30,7 +34,7 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
                 ThemeBrightnessSelectButton(brightness: Brightness.dark),
               ],
             ),
-          ),
+          )
         ],
       ),
     );
