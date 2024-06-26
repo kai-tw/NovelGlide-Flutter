@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../common_components/common_back_button.dart';
 import 'bloc/reader_cubit.dart';
+import 'widgets/reader_title.dart';
 
 class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -17,6 +18,7 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: CommonBackButton(onPressed: () => cubit.dispose()),
       backgroundColor: Theme.of(context).colorScheme.surface,
       surfaceTintColor: Theme.of(context).colorScheme.surface,
+      title: const ReaderTitle(),
     );
   }
 }
