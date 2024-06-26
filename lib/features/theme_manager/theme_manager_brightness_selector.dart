@@ -25,7 +25,7 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
             subtitle: appLocalizations.brightnessSelectorDescription,
           ),
           const Padding(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
+            padding: EdgeInsets.only(top: 16.0, bottom: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
