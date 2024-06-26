@@ -12,18 +12,19 @@ class ThemeManagerSelectThemeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String? themeName = ThemeProcessor.getThemeNameById(context, themeId);
+    final ThemeData themeData = ThemeProcessor.getThemeDataById(themeId);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ThemeSwitcher.withTheme(
-          builder: (context, _, currentTheme) {
+        ThemeSwitcher(
+          builder: (context) {
             return OutlinedButton(
               onPressed: () => ThemeProcessor.switchTheme(context, id: themeId),
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-                backgroundColor: currentTheme.colorScheme.surface,
-                foregroundColor: currentTheme.colorScheme.onSurface,
+                backgroundColor: themeData.colorScheme.surface,
+                foregroundColor: themeData.colorScheme.onSurface,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),

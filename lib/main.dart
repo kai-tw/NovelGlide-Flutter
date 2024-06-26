@@ -33,9 +33,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeDataRecord themeDataRecord = ThemeDataRecord.fromSettings();
-    final ThemeTemplate themeTemplate = ThemeProcessor.getThemeTemplateById(themeDataRecord.themeId);
-    final ThemeData initTheme = themeTemplate.getThemeByBrightness(brightness: themeDataRecord.brightness);
+    final ThemeData initTheme = ThemeProcessor.getThemeDataFromSettings();
 
     return ThemeProvider(
       initTheme: initTheme,

@@ -18,10 +18,20 @@ class ThemeProcessor {
     return ThemeIdExtension.getThemeNameById(context, id);
   }
 
+  /// Get the theme data by id.
+  static ThemeData getThemeDataById(ThemeId id) {
+    final Brightness? brightness = ThemeDataRecord.fromSettings().brightness;
+    return ThemeIdExtension.getThemeTemplateById(id).getThemeByBrightness(brightness: brightness);
+  }
+
   /// Get the theme data by record.
   static ThemeData getThemeDataByRecord(ThemeDataRecord record) {
-    final ThemeTemplate themeTemplate = getThemeTemplateById(record.themeId);
-    return themeTemplate.getThemeByBrightness(brightness: record.brightness);
+    return getThemeDataById(record.themeId);
+  }
+
+  /// Get the theme from the settings.
+  static ThemeData getThemeDataFromSettings() {
+    return getThemeDataById(ThemeDataRecord.fromSettings().themeId);
   }
 
   /// Only switch theme.
