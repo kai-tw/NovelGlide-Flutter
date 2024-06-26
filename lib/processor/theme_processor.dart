@@ -10,19 +10,12 @@ import '../features/theme/theme_template.dart';
 class ThemeProcessor {
   /// Get the theme template by id.
   static ThemeTemplate getThemeTemplateById(ThemeId id) {
-    final Map<ThemeId, ThemeTemplate> themeDataMap = {
-      ThemeId.defaultTheme: DefaultTheme(),
-    };
-    return themeDataMap[id] ?? DefaultTheme();
+    return ThemeIdExtension.getThemeTemplateById(id);
   }
 
   /// Get the theme name by id.
   static String? getThemeNameById(BuildContext context, ThemeId id) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final Map<ThemeId, String> themeNameMap = {
-      ThemeId.defaultTheme: appLocalizations.themeListNameDefault,
-    };
-    return themeNameMap[id];
+    return ThemeIdExtension.getThemeNameById(context, id);
   }
 
   /// Get the theme data by record.
