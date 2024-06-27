@@ -11,13 +11,14 @@ class BookshelfAppBarDefault extends StatelessWidget implements PreferredSizeWid
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: IconButton(
-        onPressed: () {
-          final User? user = FirebaseAuth.instance.currentUser;
-          Navigator.of(context).pushNamed(user != null ? "/account" : "/sign_in");
-        },
-        icon: const Icon(Icons.person),
-      ),
+      leading: const Icon(Icons.book_outlined),
+      // leading: IconButton(
+      //   onPressed: () {
+      //     final User? user = FirebaseAuth.instance.currentUser;
+      //     Navigator.of(context).pushNamed(user != null ? "/account" : "/sign_in");
+      //   },
+      //   icon: const Icon(Icons.person),
+      // ),
       title: Text(AppLocalizations.of(context)!.titleBookshelf),
     );
   }

@@ -7,10 +7,7 @@ class BookmarkListAppBar extends StatelessWidget implements PreferredSizeWidget 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: IconButton(
-        onPressed: () {},
-        icon: const Icon(Icons.person),
-      ),
+      leading: const Icon(Icons.bookmark_outline_rounded),
       title: Text(AppLocalizations.of(context)!.titleBookmarks),
     );
   }

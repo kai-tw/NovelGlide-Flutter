@@ -12,7 +12,7 @@ class SettingsPage extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
-          leading: const Icon(Icons.settings_rounded),
+          leading: const Icon(Icons.settings_outlined),
           title: Text(appLocalizations.titleSettings),
           pinned: true,
         ),
