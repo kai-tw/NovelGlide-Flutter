@@ -12,7 +12,7 @@ class ThemeManagerSectionTitle extends StatelessWidget {
     return Row(
       children: [
         Padding(
-          padding: const EdgeInsets.only(right: 8.0),
+          padding: const EdgeInsets.only(right: 16.0),
           child: Icon(leadingIcon),
         ),
         Expanded(
