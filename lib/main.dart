@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive/hive.dart';
 
 import 'binding_center/binding_center.dart';
@@ -16,6 +17,7 @@ import 'processor/theme_processor.dart';
 
 void main() async {
   BindingCenter.ensureInitialized();
+  MobileAds.instance.initialize();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -31,7 +33,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(Theme.of(context).colorScheme.primary);
     final ThemeData initTheme = ThemeProcessor.getThemeDataFromSettings();
 
     return ThemeProvider(
