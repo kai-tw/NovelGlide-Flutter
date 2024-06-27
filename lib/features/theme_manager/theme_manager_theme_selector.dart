@@ -13,10 +13,11 @@ class ThemeManagerThemeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const int crossAxisCount = 3;
-    const double maxAxisExtent = 80.0;
+    const double maxAxisExtent = 100.0;
+    const double maxCrossAxisExtent = 100.0;
 
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final int crossAxisCount = (MediaQuery.of(context).size.width / maxCrossAxisExtent).floor();
 
     return ThemeManagerSectionCard(
       children: [
@@ -37,11 +38,11 @@ class ThemeManagerThemeSelector extends StatelessWidget {
                         (context, index) => ThemeManagerSelectThemeButton(themeId: ThemeId.values[index]),
                     childCount: ThemeId.values.length,
                   ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     crossAxisSpacing: 8.0,
                     mainAxisSpacing: 8.0,
                     mainAxisExtent: maxAxisExtent,
+                    maxCrossAxisExtent: maxCrossAxisExtent,
                   ),
                 ),
               ),
