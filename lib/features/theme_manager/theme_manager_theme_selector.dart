@@ -25,7 +25,8 @@ class ThemeManagerThemeSelector extends StatelessWidget {
           title: appLocalizations.themeListTitle,
           subtitle: appLocalizations.themeListDescription,
         ),
-        SizedBox(
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 16.0),
           height: min<double>(200, (ThemeId.values.length / crossAxisCount).ceil() * maxAxisExtent),
           child: CustomScrollView(
             slivers: [
