@@ -2,20 +2,26 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ThemeManagerBrightnessCubit extends Cubit<ThemeManagerBrightnessState> {
-  ThemeManagerBrightnessCubit({Brightness? brightness}) : super(ThemeManagerBrightnessState(brightness: brightness));
+import '../../../data/theme_data_record.dart';
 
-  void setBrightness(Brightness? brightnessType) {
-    emit(ThemeManagerBrightnessState(brightness: brightnessType));
+class ThemeManagerBrightnessCubit extends Cubit<ThemeManagerBrightnessState> {
+  bool isEnabled = false;
+
+  ThemeManagerBrightnessCubit() : super(const ThemeManagerBrightnessState());
+
+  void refresh() async {
+    final Brightness? brightness = ThemeDataRecord.fromSettings().brightness;
+    emit(ThemeManagerBrightnessState(brightness: brightness));
+    isEnabled = false;
+    await Future.delayed(const Duration(milliseconds: 500));
+    isEnabled = true;
   }
 }
 
 class ThemeManagerBrightnessState extends Equatable {
   final Brightness? brightness;
 
-  const ThemeManagerBrightnessState({
-    this.brightness,
-  });
+  const ThemeManagerBrightnessState({this.brightness});
 
   @override
   List<Object?> get props => [brightness];

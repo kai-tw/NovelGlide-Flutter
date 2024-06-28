@@ -32,8 +32,10 @@ class ThemeManagerSelectBrightnessButton extends StatelessWidget {
             builder: (context, _, currentTheme) {
               return OutlinedButton(
                 onPressed: () {
-                  cubit.setBrightness(brightness);
-                  ThemeProcessor.switchBrightness(context, brightness: brightness);
+                  if (cubit.isEnabled) {
+                    ThemeProcessor.switchBrightness(context, brightness: brightness);
+                    cubit.refresh();
+                  }
                 },
                 style: OutlinedButton.styleFrom(
                   disabledForegroundColor: currentTheme.colorScheme.primary,
