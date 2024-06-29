@@ -57,6 +57,7 @@ dependencies:
   email_validator: ^2.1.17
   flutter_archive: ^6.0.3
   google_mobile_ads: ^5.1.0
+  package_info_plus: ^8.0.0
 
 dev_dependencies:
   flutter_test:
@@ -85,6 +86,7 @@ flutter:
   assets:
     - assets/images/book_cover_light.jpg
     - assets/images/book_cover_dark.jpg
+    - assets/images/app_icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
