@@ -32,7 +32,7 @@ class EditBookScaffold extends StatelessWidget {
                 child: Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(bottom: 20.0),
+                      padding: EdgeInsets.only(bottom: 32.0),
                       child: EditBookNameInputField(),
                     ),
                     Padding(
