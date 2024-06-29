@@ -13,11 +13,6 @@ class AddBookNameInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     final AddBookFormCubit cubit = BlocProvider.of<AddBookFormCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final Map<AddBookFormNameStateCode, String> nameStateStringMap = {
-      AddBookFormNameStateCode.blank: appLocalizations.fieldBlank,
-      AddBookFormNameStateCode.invalid: appLocalizations.fieldInvalid,
-      AddBookFormNameStateCode.exists: appLocalizations.fieldItemExists,
-    };
 
     return TextFormField(
       decoration: InputDecoration(
@@ -28,7 +23,18 @@ class AddBookNameInputField extends StatelessWidget {
         FilteringTextInputFormatter.singleLineFormatter,
         FilteringTextInputFormatter.deny(VerifyUtility.folderNameDenyRegex),
       ],
-      validator: (value) => nameStateStringMap[cubit.nameVerify(value)],
+      validator: (value) {
+        switch (cubit.nameVerify(value)) {
+          case AddBookFormNameStateCode.valid:
+            return null;
+          case AddBookFormNameStateCode.blank:
+            return appLocalizations.fieldBlank;
+          case AddBookFormNameStateCode.invalid:
+            return appLocalizations.fieldInvalid;
+          case AddBookFormNameStateCode.exists:
+            return appLocalizations.fieldItemExists;
+        }
+      },
       onSaved: (value) => cubit.data.name = value!,
     );
   }

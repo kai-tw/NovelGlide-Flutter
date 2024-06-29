@@ -7,18 +7,15 @@ import 'widgets/add_book_submit_button.dart';
 import 'bloc/add_book_form_bloc.dart';
 
 class AddBookForm extends StatelessWidget {
-  const AddBookForm({this.controller, super.key});
-
-  final ScrollController? controller;
+  const AddBookForm({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AddBookFormCubit(),
-      child: Form(
+      child: const Form(
         child: SingleChildScrollView(
-          controller: controller,
-          child: const Column(
+          child: Column(
             children: [
               AddBookNameInputField(),
               Padding(padding: EdgeInsets.only(bottom: 32.0)),
