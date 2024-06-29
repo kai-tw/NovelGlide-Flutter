@@ -1,9 +1,13 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_back_button.dart';
-import 'add_book_form.dart';
+import 'bloc/add_book_form_bloc.dart';
+import 'widgets/add_book_image_picker.dart';
+import 'widgets/add_book_name_input_field.dart';
+import 'widgets/add_book_submit_button.dart';
 
 class AddBookScaffold extends StatelessWidget {
   const AddBookScaffold({super.key});
@@ -16,9 +20,28 @@ class AddBookScaffold extends StatelessWidget {
           leading: const CommonBackButton(),
           title: Text(AppLocalizations.of(context)!.titleAddBook),
         ),
-        body: const Padding(
-          padding: EdgeInsets.all(24.0),
-          child: AddBookForm(),
+        body: BlocProvider(
+          create: (_) => AddBookFormCubit(),
+          child: const Padding(
+            padding: EdgeInsets.all(24.0),
+            child: Form(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 32.0),
+                      child: AddBookNameInputField(),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 32.0),
+                      child: AddBookImagePicker(),
+                    ),
+                    AddBookSubmitButton(),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
