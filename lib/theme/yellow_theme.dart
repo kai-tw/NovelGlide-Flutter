@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'theme_template.dart';
 
-class MaterialTheme extends ThemeTemplate{
-  static final MaterialTheme instance = _instance;
-  static final MaterialTheme _instance = MaterialTheme._();
+class YellowTheme extends ThemeTemplate{
+  static final YellowTheme instance = _instance;
+  static final YellowTheme _instance = YellowTheme._();
 
-  factory MaterialTheme() => instance;
-  MaterialTheme._();
+  factory YellowTheme() => instance;
+  YellowTheme._();
 
   @override
   final ThemeData lightTheme = ThemeTemplate.generateThemeByBrightness(_lightColorScheme);
@@ -16,12 +16,12 @@ class MaterialTheme extends ThemeTemplate{
   final ThemeData darkTheme = ThemeTemplate.generateThemeByBrightness(_darkColorScheme);
 
   static final ColorScheme _lightColorScheme = ColorScheme.fromSeed(
-    seedColor: const Color(0xFF6750A4),
+    seedColor: const Color(0xFFFFC107),
     brightness: Brightness.light,
   );
 
   static final ColorScheme _darkColorScheme = ColorScheme.fromSeed(
-    seedColor: const Color(0xFF9F40CF),
+    seedColor: const Color(0xFFFFEB3B),
     brightness: Brightness.dark,
   );
 }

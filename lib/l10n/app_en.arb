@@ -206,7 +206,8 @@
   "themeListTitle": "Theme List",
   "themeListDescription": "Select a theme",
   "themeListNameDefault": "Default",
-  "themeListNameReverse": "Reversed",
+  "themeListNameMaterial": "Material",
+  "themeListNameYellow": "Yellow",
 
   "brightnessSelectorTitle": "Brightness",
   "brightnessSelectorDescription": "Select brightness",
