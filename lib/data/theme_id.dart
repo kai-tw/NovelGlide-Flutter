@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../features/theme/default_theme.dart';
-import '../features/theme/material_theme.dart';
-import '../features/theme/theme_template.dart';
+import '../theme/default_theme.dart';
+import '../theme/material_theme.dart';
+import '../theme/theme_template.dart';
 
 enum ThemeId {
   defaultTheme,
