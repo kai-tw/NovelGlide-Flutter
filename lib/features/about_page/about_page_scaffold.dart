@@ -33,7 +33,7 @@ class AboutPageScaffold extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
-                appLocalizations.appName,
+                AppInfo.instance.appName,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
