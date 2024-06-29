@@ -13,7 +13,7 @@ class BookshelfScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context)..refresh();
+    final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
 
     return Scaffold(
       appBar: const BookshelfAppBar(),
