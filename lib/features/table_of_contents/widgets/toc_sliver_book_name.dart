@@ -8,15 +8,18 @@ class TOCSliverBookName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
     return SliverToBoxAdapter(
       child: Container(
         margin: const EdgeInsets.fromLTRB(36.0, 0, 24.0, 24.0),
         child: BlocBuilder<TOCCubit, TOCState>(
           builder: (BuildContext context, TOCState state) {
-            return Text(
-              cubit.bookData.name,
-              style: const TextStyle(fontSize: 24.0),
+            return BlocBuilder<TOCCubit, TOCState>(
+              builder: (BuildContext context, TOCState state) {
+                return Text(
+                  state.bookName,
+                  style: Theme.of(context).textTheme.titleLarge,
+                );
+              },
             );
           },
         ),

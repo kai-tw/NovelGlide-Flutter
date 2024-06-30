@@ -1,5 +1,4 @@
 {
-  "appName": "NovelGlide",
   "empty": "空空如也",
   "loading": "載入中",
   "submit": "送出",
@@ -69,6 +68,7 @@
   "titleWelcomeBack": "歡迎回來",
   "titleWelcomeJoin": "歡迎加入",
   "titleAccountPage": "我的帳號",
+  "titleAbout": "關於",
 
   "fieldItemExists": "已存在",
   "fieldOptional": "（選填）",
@@ -107,11 +107,12 @@
   "themeListTitle": "主題列表",
   "themeListDescription": "選擇一個主題",
   "themeListNameDefault": "預設",
-  "themeListNameReverse": "反轉",
+  "themeListNameMaterial": "質感",
+  "themeListNameYellow": "黃色",
 
   "brightnessSelectorTitle": "亮度",
   "brightnessSelectorDescription": "選擇亮度",
   "brightnessSystem": "系統",
-  "brightnessLight": "明亮",
-  "brightnessDark": "黑暗"
+  "brightnessLight": "淺色",
+  "brightnessDark": "深色"
 }

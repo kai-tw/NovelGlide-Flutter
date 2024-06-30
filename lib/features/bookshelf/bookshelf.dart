@@ -10,7 +10,7 @@ class Bookshelf extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => BookshelfCubit(),
+      create: (_) => BookshelfCubit()..refresh(),
       child: const BookshelfScaffold(),
     );
   }

@@ -10,26 +10,10 @@ class DefaultTheme extends ThemeTemplate{
   DefaultTheme._();
 
   @override
-  final ThemeData lightTheme = ThemeData(
-    appBarTheme: getAppBarTheme(_lightColorScheme),
-    brightness: Brightness.light,
-    colorScheme: _lightColorScheme,
-    inputDecorationTheme: inputDecorationTheme,
-    splashColor: Colors.transparent,
-    switchTheme: getSwitchTheme(_lightColorScheme),
-    useMaterial3: true,
-  );
+  final ThemeData lightTheme = ThemeTemplate.generateThemeByBrightness(_lightColorScheme);
 
   @override
-  final ThemeData darkTheme = ThemeData(
-    appBarTheme: getAppBarTheme(_darkColorScheme),
-    brightness: Brightness.dark,
-    colorScheme: _darkColorScheme,
-    inputDecorationTheme: inputDecorationTheme,
-    splashColor: Colors.transparent,
-    switchTheme: getSwitchTheme(_darkColorScheme),
-    useMaterial3: true,
-  );
+  final ThemeData darkTheme = ThemeTemplate.generateThemeByBrightness(_darkColorScheme);
 
   /// The color scheme for light theme
   static const ColorScheme _lightColorScheme = ColorScheme(
@@ -104,46 +88,4 @@ class DefaultTheme extends ThemeTemplate{
     surfaceContainerHigh: Color(0xFF252B2C),
     surfaceContainerHighest: Color(0xFF303637),
   );
-
-  /// Common themes
-  static final InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
-    labelStyle: const TextStyle(fontSize: 16),
-    contentPadding: const EdgeInsets.all(24.0),
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(20),
-    ),
-  );
-
-  static AppBarTheme getAppBarTheme(ColorScheme colorScheme) {
-    return AppBarTheme(
-      backgroundColor: colorScheme.surface,
-      surfaceTintColor: colorScheme.surface,
-      centerTitle: false,
-      titleTextStyle: TextStyle(
-        color: colorScheme.onSurface,
-        fontSize: 18,
-      ),
-    );
-  }
-
-  static SwitchThemeData getSwitchTheme(ColorScheme colorScheme) {
-    return SwitchThemeData(
-      thumbColor: WidgetStateColor.resolveWith((Set<WidgetState> states) {
-        if (states.contains(WidgetState.disabled)) {
-          return colorScheme.onSurface.withOpacity(0.38);
-        }
-        if (states.contains(WidgetState.selected)) {
-          return colorScheme.onPrimary;
-        }
-        return colorScheme.primary;
-      }),
-      trackColor: WidgetStateColor.resolveWith((Set<WidgetState> states) {
-        if (states.contains(WidgetState.selected)) {
-          return colorScheme.primary;
-        }
-        return colorScheme.onPrimary;
-      }),
-      splashRadius: 0.0,
-    );
-  }
 }

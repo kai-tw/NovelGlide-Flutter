@@ -42,11 +42,15 @@ class TOCScaffold extends StatelessWidget {
               ),
             ),
           ),
-          floatingActionButton: CommonAddFloatingActionButton(
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => AddChapterScaffold(bookName: cubit.bookData.name)))
-                  .then((isSuccess) => _onPopBack(context, isSuccess));
+          floatingActionButton: BlocBuilder<TOCCubit, TOCState>(
+            builder: (_, state) {
+              return CommonAddFloatingActionButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (_) => AddChapterScaffold(bookName: state.bookName)))
+                      .then((isSuccess) => _onPopBack(context, isSuccess));
+                },
+              );
             },
           ),
         ),

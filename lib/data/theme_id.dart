@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../features/theme/default_theme.dart';
-import '../features/theme/material_theme.dart';
-import '../features/theme/theme_template.dart';
+import '../theme/default_theme.dart';
+import '../theme/material_theme.dart';
+import '../theme/theme_template.dart';
+import '../theme/yellow_theme.dart';
 
 enum ThemeId {
   defaultTheme,
   materialTheme,
+  yellowTheme,
 }
 
 extension ThemeIdExtension on ThemeId {
@@ -16,6 +18,7 @@ extension ThemeIdExtension on ThemeId {
     final Map<ThemeId, ThemeTemplate> themeDataMap = {
       ThemeId.defaultTheme: DefaultTheme(),
       ThemeId.materialTheme: MaterialTheme(),
+      ThemeId.yellowTheme: YellowTheme(),
     };
     return themeDataMap[id] ?? DefaultTheme();
   }
@@ -25,7 +28,8 @@ extension ThemeIdExtension on ThemeId {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final Map<ThemeId, String> themeNameMap = {
       ThemeId.defaultTheme: appLocalizations.themeListNameDefault,
-      ThemeId.materialTheme: "Material",
+      ThemeId.materialTheme: appLocalizations.themeListNameMaterial,
+      ThemeId.yellowTheme: appLocalizations.themeListNameYellow,
     };
     return themeNameMap[id];
   }

@@ -7,6 +7,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive/hive.dart';
 
 import 'binding_center/binding_center.dart';
+import 'data/app_info.dart';
 import 'features/account_page/account_page.dart';
 import 'features/sign_in_page/sign_in_page.dart';
 import 'features/register_page/register_page.dart';
@@ -22,6 +23,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  await AppInfo.instance.init();
   await FilePath.instance.init();
   Hive.defaultDirectory = FilePath.instance.hiveRoot;
 

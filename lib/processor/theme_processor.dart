@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../data/theme_data_record.dart';
 import '../data/theme_id.dart';
-import '../features/theme/theme_template.dart';
+import '../theme/theme_template.dart';
 
 class ThemeProcessor {
   /// Get the theme template by id.

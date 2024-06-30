@@ -1,5 +1,4 @@
 {
-  "appName": "NovelGlide",
   "empty": "There's nothing.",
   "loading": "Loading",
   "submit": "Submit",
@@ -137,6 +136,7 @@
   "titleWelcomeBack": "Welcome back!",
   "titleWelcomeJoin": "Welcome to join us!",
   "titleAccountPage": "My Account",
+  "titleAbout": "About",
 
   "fieldItemExists": "It already exists.",
   "fieldOptional": " (Optional)",
@@ -206,7 +206,8 @@
   "themeListTitle": "Theme List",
   "themeListDescription": "Select a theme",
   "themeListNameDefault": "Default",
-  "themeListNameReverse": "Reversed",
+  "themeListNameMaterial": "Material",
+  "themeListNameYellow": "Yellow",
 
   "brightnessSelectorTitle": "Brightness",
   "brightnessSelectorDescription": "Select brightness",
