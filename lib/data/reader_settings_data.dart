@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 
-class ReaderSettings extends Equatable {
+class ReaderSettingsData extends Equatable {
   final double fontSize;
   static const double minFontSize = 12;
   static const double maxFontSize = 32;
@@ -12,31 +12,38 @@ class ReaderSettings extends Equatable {
 
   final bool autoSave;
 
-  const ReaderSettings({
+  @override
+  List<Object?> get props => [fontSize, lineHeight, autoSave];
+
+  const ReaderSettingsData({
     this.fontSize = 16,
     this.lineHeight = 1.2,
     this.autoSave = false,
   });
 
-  ReaderSettings copyWith({
+  factory ReaderSettingsData.load() {
+    final Box readerSetting = Hive.box(name: 'reader_settings');
+    final double fontSize = readerSetting.get('font_size', defaultValue: 16.0).clamp(minFontSize, maxFontSize);
+    final double lineHeight = readerSetting.get('line_height', defaultValue: 1.2).clamp(minLineHeight, maxLineHeight);
+    final bool autoSave = readerSetting.get('auto_save', defaultValue: false);
+    readerSetting.close();
+    return ReaderSettingsData(
+      fontSize: fontSize,
+      lineHeight: lineHeight,
+      autoSave: autoSave,
+    );
+  }
+
+  ReaderSettingsData copyWith({
     double? fontSize,
     double? lineHeight,
     bool? autoSave,
   }) {
-    return ReaderSettings(
+    return ReaderSettingsData(
       fontSize: (fontSize ?? this.fontSize).clamp(minFontSize, maxFontSize),
       lineHeight: (lineHeight ?? this.lineHeight).clamp(minLineHeight, maxLineHeight),
       autoSave: autoSave ?? this.autoSave,
     );
-  }
-
-  ReaderSettings load() {
-    Box readerSetting = Hive.box(name: 'reader_settings');
-    final double fontSize = readerSetting.get('font_size', defaultValue: 16.0);
-    final double lineHeight = readerSetting.get('line_height', defaultValue: 1.2);
-    final bool autoSave = readerSetting.get('auto_save', defaultValue: false);
-    readerSetting.close();
-    return ReaderSettings(fontSize: fontSize, lineHeight: lineHeight, autoSave: autoSave);
   }
 
   void save() {
@@ -46,7 +53,4 @@ class ReaderSettings extends Equatable {
     readerSettings.put('auto_save', autoSave);
     readerSettings.close();
   }
-
-  @override
-  List<Object?> get props => [fontSize, lineHeight, autoSave];
 }

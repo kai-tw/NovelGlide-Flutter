@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/reader_settings_data.dart';
 import '../bloc/reader_cubit.dart';
-import '../bloc/reader_settings.dart';
 import '../bloc/reader_state.dart';
 
 class ReaderSettingsFontSizeSlider extends StatelessWidget {
@@ -21,15 +21,15 @@ class ReaderSettingsFontSizeSlider extends StatelessWidget {
             child: Icon(
               Icons.format_size_rounded,
               color: Theme.of(context).colorScheme.primary,
-              size: ReaderSettings.minFontSize,
+              size: ReaderSettingsData.minFontSize,
             ),
           ),
           BlocBuilder<ReaderCubit, ReaderState>(
             builder: (BuildContext context, ReaderState state) {
               return Expanded(
                 child: Slider(
-                  min: ReaderSettings.minFontSize,
-                  max: ReaderSettings.maxFontSize,
+                  min: ReaderSettingsData.minFontSize,
+                  max: ReaderSettingsData.maxFontSize,
                   value: state.readerSettings.fontSize,
                   onChanged: (double value) => readerCubit.setSettings(fontSize: value),
                   onChangeEnd: (double value) => readerCubit.saveSettings(fontSize: value),
@@ -43,7 +43,7 @@ class ReaderSettingsFontSizeSlider extends StatelessWidget {
             child: Icon(
               Icons.format_size_rounded,
               color: Theme.of(context).colorScheme.primary,
-              size: ReaderSettings.maxFontSize,
+              size: ReaderSettingsData.maxFontSize,
             ),
           ),
         ],

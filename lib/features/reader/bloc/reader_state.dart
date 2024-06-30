@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../data/bookmark_data.dart';
+import '../../../data/reader_settings_data.dart';
 import 'reader_button_state.dart';
-import 'reader_settings.dart';
 
 enum ReaderStateCode { loading, loaded }
 
@@ -14,7 +14,7 @@ class ReaderState extends Equatable {
   final int nextChapterNumber;
   final List<String> contentLines;
   final BookmarkData bookmarkObject;
-  final ReaderSettings readerSettings;
+  final ReaderSettingsData readerSettings;
   final RdrBtnState buttonState;
 
   ReaderState({
@@ -25,9 +25,9 @@ class ReaderState extends Equatable {
     this.nextChapterNumber = -1,
     this.contentLines = const [],
     BookmarkData? bookmarkObject,
-    ReaderSettings? readerSettings,
+    ReaderSettingsData? readerSettings,
     RdrBtnState? buttonState,
-  })  : readerSettings = readerSettings ?? const ReaderSettings(),
+  })  : readerSettings = readerSettings ?? const ReaderSettingsData(),
         buttonState = buttonState ?? const RdrBtnState.disabledAll(),
         bookmarkObject = bookmarkObject ?? BookmarkData();
 
@@ -39,7 +39,7 @@ class ReaderState extends Equatable {
     int? nextChapterNumber,
     List<String>? contentLines,
     BookmarkData? bookmarkObject,
-    ReaderSettings? readerSettings,
+    ReaderSettingsData? readerSettings,
     RdrBtnState? buttonState,
   }) {
     return ReaderState(

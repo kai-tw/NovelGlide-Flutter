@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/bookmark_data.dart';
 import '../../../data/chapter_data.dart';
+import '../../../data/reader_settings_data.dart';
 import '../../../processor/chapter_processor.dart';
 import 'reader_button_state.dart';
-import 'reader_settings.dart';
 import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
@@ -22,7 +22,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     emit(ReaderState(bookName: _bookName, chapterNumber: _chapterNumber));
 
     final BookmarkData bookmarkObject = BookmarkData.loadFromBookName(_bookName);
-    final ReaderSettings readerSettings = state.readerSettings.load();
+    final ReaderSettingsData readerSettings = ReaderSettingsData.load();
     final bool isJumpAvailable =
         !readerSettings.autoSave && bookmarkObject.isValid && bookmarkObject.chapterNumber == _chapterNumber;
     final int prevChapterNumber = await _getPrevChapterNumber();
@@ -58,8 +58,8 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   /// Settings
-  ReaderSettings setSettings({double? fontSize, double? lineHeight, bool? autoSave}) {
-    final ReaderSettings newSettings = state.readerSettings.copyWith(
+  ReaderSettingsData setSettings({double? fontSize, double? lineHeight, bool? autoSave}) {
+    final ReaderSettingsData newSettings = state.readerSettings.copyWith(
       fontSize: fontSize,
       lineHeight: lineHeight,
       autoSave: autoSave,
@@ -77,7 +77,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   void resetSettings() {
-    emit(state.copyWith(readerSettings: const ReaderSettings()..save()));
+    emit(state.copyWith(readerSettings: const ReaderSettingsData()..save()));
   }
 
   /// Chapter

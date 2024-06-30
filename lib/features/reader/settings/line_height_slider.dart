@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/reader_settings_data.dart';
 import '../bloc/reader_cubit.dart';
-import '../bloc/reader_settings.dart';
 import '../bloc/reader_state.dart';
 
 class ReaderSettingsLineHeightSlider extends StatelessWidget {
@@ -26,8 +26,8 @@ class ReaderSettingsLineHeightSlider extends StatelessWidget {
             builder: (BuildContext context, ReaderState state) {
               return Expanded(
                 child: Slider(
-                  min: ReaderSettings.minLineHeight,
-                  max: ReaderSettings.maxLineHeight,
+                  min: ReaderSettingsData.minLineHeight,
+                  max: ReaderSettingsData.maxLineHeight,
                   value: state.readerSettings.lineHeight,
                   onChanged: (double value) => BlocProvider.of<ReaderCubit>(context).setSettings(lineHeight: value),
                   onChangeEnd: (double value) => BlocProvider.of<ReaderCubit>(context).saveSettings(lineHeight: value),

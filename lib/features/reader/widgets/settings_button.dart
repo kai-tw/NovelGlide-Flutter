@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/reader_cubit.dart';
-import '../settings/wrapper.dart';
+import '../../reader_settings/reader_settings_bottom_sheet.dart';
 
 /// The button that open the setting page.
 /// Abbreviation reference: https://www.abbreviations.com/
