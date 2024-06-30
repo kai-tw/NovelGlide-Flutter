@@ -21,7 +21,12 @@ class ReaderSettingsAutoSaveSwitch extends StatelessWidget {
               ),
               Switch(
                 value: state.readerSettings.autoSave,
-                onChanged: (bool value) => readerCubit.saveSettings(autoSave: value),
+                onChanged: (bool value) {
+                  if (value) {
+                    readerCubit.saveBookmark();
+                  }
+                  readerCubit.saveSettings(autoSave: value);
+                },
               ),
             ],
           );
