@@ -19,6 +19,7 @@ class ReaderScaffold extends StatelessWidget {
           return;
         }
         cubit.dispose();
+        Navigator.of(context).pop();
       },
       child: Scaffold(
         appBar: const ReaderAppBar(),
