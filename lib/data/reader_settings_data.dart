@@ -3,10 +3,12 @@ import 'package:hive/hive.dart';
 
 class ReaderSettingsData extends Equatable {
   final double fontSize;
+  static const double defaultFontSize = 16;
   static const double minFontSize = 12;
   static const double maxFontSize = 32;
 
   final double lineHeight;
+  static const double defaultLineHeight = 1.2;
   static const double minLineHeight = 1;
   static const double maxLineHeight = 3;
 
@@ -16,15 +18,15 @@ class ReaderSettingsData extends Equatable {
   List<Object?> get props => [fontSize, lineHeight, autoSave];
 
   const ReaderSettingsData({
-    this.fontSize = 16,
-    this.lineHeight = 1.2,
+    this.fontSize = defaultFontSize,
+    this.lineHeight = defaultLineHeight,
     this.autoSave = false,
   });
 
   factory ReaderSettingsData.load() {
     final Box readerSetting = Hive.box(name: 'reader_settings');
-    final double fontSize = readerSetting.get('font_size', defaultValue: 16.0).clamp(minFontSize, maxFontSize);
-    final double lineHeight = readerSetting.get('line_height', defaultValue: 1.2).clamp(minLineHeight, maxLineHeight);
+    final double fontSize = readerSetting.get('font_size', defaultValue: defaultFontSize).clamp(minFontSize, maxFontSize);
+    final double lineHeight = readerSetting.get('line_height', defaultValue: defaultLineHeight).clamp(minLineHeight, maxLineHeight);
     final bool autoSave = readerSetting.get('auto_save', defaultValue: false);
     readerSetting.close();
     return ReaderSettingsData(

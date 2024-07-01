@@ -11,7 +11,7 @@ class ReaderScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context)..initialize();
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {

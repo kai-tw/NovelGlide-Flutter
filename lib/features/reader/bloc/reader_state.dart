@@ -7,6 +7,7 @@ import 'reader_button_state.dart';
 enum ReaderStateCode { loading, loaded }
 
 class ReaderState extends Equatable {
+  /// Overall state.
   final ReaderStateCode code;
   final String bookName;
   final int chapterNumber;
@@ -14,8 +15,24 @@ class ReaderState extends Equatable {
   final int nextChapterNumber;
   final List<String> contentLines;
   final BookmarkData bookmarkObject;
+
+  /// Settings state.
   final ReaderSettingsData readerSettings;
+
+  /// Button state.
   final RdrBtnState buttonState;
+
+  @override
+  List<Object?> get props => [
+    bookName,
+    chapterNumber,
+    prevChapterNumber,
+    nextChapterNumber,
+    contentLines,
+    bookmarkObject,
+    readerSettings,
+    buttonState,
+  ];
 
   ReaderState({
     this.code = ReaderStateCode.loading,
@@ -55,15 +72,4 @@ class ReaderState extends Equatable {
     );
   }
 
-  @override
-  List<Object?> get props => [
-        bookName,
-        chapterNumber,
-        prevChapterNumber,
-        nextChapterNumber,
-        contentLines,
-        bookmarkObject,
-        readerSettings,
-        buttonState,
-      ];
 }

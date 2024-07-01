@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../reader/settings/auto_save_switch.dart';
-import '../reader/settings/font_size_slider.dart';
-import '../reader/settings/line_height_slider.dart';
-import '../reader/settings/reset_button.dart';
+import 'widgets/reader_settings_auto_save_switch.dart';
+import 'widgets/reader_settings_font_size_slider.dart';
+import 'widgets/reader_settings_line_height_slider.dart';
+import 'widgets/reader_settings_reset_button.dart';
 import 'widgets/reader_settings_section_container.dart';
 
 class ReaderSettingsBottomSheet extends StatelessWidget {

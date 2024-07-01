@@ -2,40 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/bookmark_data.dart';
-import '../../../data/chapter_data.dart';
 import '../../../data/reader_settings_data.dart';
 import '../../../processor/chapter_processor.dart';
 import 'reader_button_state.dart';
 import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
-  final String _bookName;
-  int _chapterNumber;
   bool isAutoJump;
   final ScrollController scrollController = ScrollController();
   double currentArea = 0.0;
 
-  ReaderCubit(this._bookName, this._chapterNumber, {this.isAutoJump = false})
-      : super(ReaderState(bookName: _bookName, chapterNumber: _chapterNumber));
+  ReaderCubit(String bookName, int chapterNumber, {this.isAutoJump = false})
+      : super(ReaderState(bookName: bookName, chapterNumber: chapterNumber));
 
   void initialize() async {
-    emit(ReaderState(bookName: _bookName, chapterNumber: _chapterNumber));
+    final String bookName = state.bookName;
+    final int chapterNumber = state.chapterNumber;
 
-    final BookmarkData bookmarkObject = BookmarkData.loadFromBookName(_bookName);
+    final BookmarkData bookmarkObject = BookmarkData.loadFromBookName(bookName);
     final ReaderSettingsData readerSettings = ReaderSettingsData.load();
     final bool isJumpAvailable =
-        !readerSettings.autoSave && bookmarkObject.isValid && bookmarkObject.chapterNumber == _chapterNumber;
-    final int prevChapterNumber = await _getPrevChapterNumber();
-    final int nextChapterNumber = await _getNextChapterNumber();
-    final List<String> contentLines =
-        await ChapterData(bookName: _bookName, ordinalNumber: _chapterNumber).getContent();
+        !readerSettings.autoSave && bookmarkObject.isValid && bookmarkObject.chapterNumber == chapterNumber;
 
     emit(state.copyWith(
       code: ReaderStateCode.loaded,
-      chapterNumber: _chapterNumber,
-      prevChapterNumber: prevChapterNumber,
-      nextChapterNumber: nextChapterNumber,
-      contentLines: contentLines,
+      prevChapterNumber: ChapterProcessor.getPrevChapterNumber(bookName, chapterNumber),
+      nextChapterNumber: ChapterProcessor.getNextChapterNumber(bookName, chapterNumber),
+      contentLines: await ChapterProcessor.getContent(bookName, chapterNumber),
       bookmarkObject: bookmarkObject,
       readerSettings: readerSettings,
       buttonState: state.buttonState.copyWith(
@@ -51,7 +44,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   void changeChapter(int chapterNumber) {
-    _chapterNumber = chapterNumber;
+    emit(ReaderState(bookName: state.bookName, chapterNumber: chapterNumber));
     scrollController.jumpTo(0);
     isAutoJump = false;
     initialize();
@@ -80,33 +73,12 @@ class ReaderCubit extends Cubit<ReaderState> {
     emit(state.copyWith(readerSettings: const ReaderSettingsData()..save()));
   }
 
-  /// Chapter
-  Future<int> _getPrevChapterNumber() async {
-    final List<ChapterData> chapterList = ChapterProcessor.getList(_bookName);
-    int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == _chapterNumber);
-
-    if (currentIndex > 0) {
-      return chapterList[currentIndex - 1].ordinalNumber;
-    }
-    return -1;
-  }
-
-  Future<int> _getNextChapterNumber() async {
-    final List<ChapterData> chapterList = ChapterProcessor.getList(_bookName);
-    int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == _chapterNumber);
-
-    if (0 <= currentIndex && currentIndex < chapterList.length - 1) {
-      return chapterList[currentIndex + 1].ordinalNumber;
-    }
-    return -1;
-  }
-
   /// Bookmarks
   void saveBookmark() {
     final BookmarkData bookmarkObject = BookmarkData(
       isValid: true,
-      bookName: _bookName,
-      chapterNumber: _chapterNumber,
+      bookName: state.bookName,
+      chapterNumber: state.chapterNumber,
       area: currentArea,
       savedTime: DateTime.now(),
     )..save();
@@ -157,7 +129,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   void onClickedJmpToBkmBtn() {
     BookmarkData bookmarkObject = state.bookmarkObject;
 
-    if (bookmarkObject.chapterNumber == _chapterNumber) {
+    if (bookmarkObject.chapterNumber == state.chapterNumber) {
       double deviceWidth = MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).size.width;
       scrollController.animateTo(
         bookmarkObject.area / deviceWidth,

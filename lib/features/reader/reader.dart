@@ -16,7 +16,7 @@ class ReaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ThemeSwitchingArea(
       child: BlocProvider(
-        create: (_) => ReaderCubit(bookName, chapterNumber, isAutoJump: isAutoJump),
+        create: (_) => ReaderCubit(bookName, chapterNumber, isAutoJump: isAutoJump)..initialize(),
         child: const ReaderScaffold(),
       ),
     );
