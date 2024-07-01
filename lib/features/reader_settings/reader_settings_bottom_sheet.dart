@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'bloc/reader_settings_bloc.dart';
 import 'widgets/reader_settings_auto_save_switch.dart';
 import 'widgets/reader_settings_font_size_slider.dart';
 import 'widgets/reader_settings_line_height_slider.dart';
@@ -21,29 +23,32 @@ class ReaderSettingsBottomSheet extends StatelessWidget {
       builder: (BuildContext context, ScrollController scrollController) {
         return SingleChildScrollView(
           controller: scrollController,
-          child: const Column(
-            children: [
-              ReaderSettingsSectionContainer(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 8.0),
-                      child: ReaderSettingsFontSizeSlider(),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 8.0),
-                      child: ReaderSettingsLineHeightSlider(),
-                    ),
-                  ],
+          child: BlocProvider(
+            create: (context) => ReaderSettingsCubit(),
+            child: const Column(
+              children: [
+                ReaderSettingsSectionContainer(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 8.0),
+                        child: ReaderSettingsFontSizeSlider(),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 8.0),
+                        child: ReaderSettingsLineHeightSlider(),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              ReaderSettingsSectionContainer(
-                child: ReaderSettingsAutoSaveSwitch(),
-              ),
-              ReaderSettingsSectionContainer(
-                child: ReaderSettingsResetButton(),
-              ),
-            ],
+                ReaderSettingsSectionContainer(
+                  child: ReaderSettingsAutoSaveSwitch(),
+                ),
+                ReaderSettingsSectionContainer(
+                  child: ReaderSettingsResetButton(),
+                ),
+              ],
+            ),
           ),
         );
       },

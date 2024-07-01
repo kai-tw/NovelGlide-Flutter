@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 
 import '../../../data/bookmark_data.dart';
 import '../../../data/reader_settings_data.dart';
-import 'reader_button_state.dart';
 
 enum ReaderStateCode { loading, loaded }
 
@@ -19,9 +18,6 @@ class ReaderState extends Equatable {
   /// Settings state.
   final ReaderSettingsData readerSettings;
 
-  /// Button state.
-  final RdrBtnState buttonState;
-
   @override
   List<Object?> get props => [
     bookName,
@@ -31,7 +27,6 @@ class ReaderState extends Equatable {
     contentLines,
     bookmarkObject,
     readerSettings,
-    buttonState,
   ];
 
   ReaderState({
@@ -43,9 +38,7 @@ class ReaderState extends Equatable {
     this.contentLines = const [],
     BookmarkData? bookmarkObject,
     ReaderSettingsData? readerSettings,
-    RdrBtnState? buttonState,
   })  : readerSettings = readerSettings ?? const ReaderSettingsData(),
-        buttonState = buttonState ?? const RdrBtnState.disabledAll(),
         bookmarkObject = bookmarkObject ?? BookmarkData();
 
   ReaderState copyWith({
@@ -57,7 +50,6 @@ class ReaderState extends Equatable {
     List<String>? contentLines,
     BookmarkData? bookmarkObject,
     ReaderSettingsData? readerSettings,
-    RdrBtnState? buttonState,
   }) {
     return ReaderState(
       code: code ?? this.code,
@@ -68,7 +60,6 @@ class ReaderState extends Equatable {
       contentLines: contentLines ?? this.contentLines,
       bookmarkObject: bookmarkObject ?? this.bookmarkObject,
       readerSettings: readerSettings ?? this.readerSettings,
-      buttonState: buttonState ?? this.buttonState,
     );
   }
 
