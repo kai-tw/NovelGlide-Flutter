@@ -58,6 +58,8 @@ dependencies:
   flutter_archive: ^6.0.3
   google_mobile_ads: ^5.1.0
   package_info_plus: ^8.0.0
+  firebase_analytics: ^10.10.7
+  firebase_crashlytics: ^3.5.7
 
 dev_dependencies:
   flutter_test:
