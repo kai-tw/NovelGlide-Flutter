@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../ad_center/bottom_ad_wrapper.dart';
 import '../common_components/common_back_button.dart';
 import 'bloc/reader_cubit.dart';
 import 'reader_nav_bar.dart';
@@ -29,14 +30,16 @@ class ReaderScaffold extends StatelessWidget {
           surfaceTintColor: Theme.of(context).colorScheme.surface,
           title: const ReaderTitle(),
         ),
-        body: NotificationListener<ScrollNotification>(
-          onNotification: (ScrollNotification scrollNotification) =>
-              _onScrollNotification(context, scrollNotification, cubit),
-          child: CustomScrollView(
-            controller: cubit.scrollController,
-            slivers: const [
-              ReaderSliverContent(),
-            ],
+        body: BottomAdWrapper(
+          child: NotificationListener<ScrollNotification>(
+            onNotification: (ScrollNotification scrollNotification) =>
+                _onScrollNotification(context, scrollNotification, cubit),
+            child: CustomScrollView(
+              controller: cubit.scrollController,
+              slivers: const [
+                ReaderSliverContent(),
+              ],
+            ),
           ),
         ),
         bottomNavigationBar: const ReaderNavBar(),

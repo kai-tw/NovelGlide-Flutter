@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../../ad_center/advertisement.dart';
+import '../../ad_center/advertisement_id.dart';
 import '../add_chapter/add_chapter_scaffold.dart';
 import '../common_components/common_add_floating_action_button.dart';
 import 'bloc/toc_bloc.dart';
@@ -53,6 +55,7 @@ class TOCScaffold extends StatelessWidget {
               );
             },
           ),
+          bottomNavigationBar: Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
         ),
       ),
     );

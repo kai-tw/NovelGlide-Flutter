@@ -8,19 +8,19 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
 
   AdvertisementCubit({required this.adUnitId}) : super(const AdvertisementState());
 
-  void init() async {
+  void init(int width) async {
+    final AnchoredAdaptiveBannerAdSize? size = await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(width);
+
     bannerAd = BannerAd(
       adUnitId: adUnitId,
       request: const AdRequest(),
-      size: AdSize.banner,
+      size: size != null ? AdSize(width: size.width, height: size.height) : AdSize.banner,
       listener: BannerAdListener(
         onAdLoaded: (ad) {
           emit(AdvertisementState(bannerAd: ad as BannerAd));
         },
         onAdFailedToLoad: (ad, err) {
           ad.dispose();
-          // Future.delayed(const Duration(seconds: 60))
-          // .then((_) => loadAd());
         },
       ),
     );
