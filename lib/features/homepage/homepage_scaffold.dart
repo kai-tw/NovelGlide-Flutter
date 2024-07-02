@@ -2,6 +2,8 @@ import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../ad_center/advertisement.dart';
+import '../../ad_center/advertisement_id.dart';
 import '../../binding_center/binding_center.dart';
 import '../../processor/theme_processor.dart';
 import 'bloc/navigation_bloc.dart';
@@ -22,9 +24,16 @@ class Homepage extends StatelessWidget {
 
           return BlocProvider(
             create: (_) => NavigationCubit(),
-            child: const Scaffold(
-              body: HomepageBody(),
-              bottomNavigationBar: HomepageNavBar(),
+            child: Scaffold(
+              body: Column(
+                children: [
+                  const Expanded(
+                    child: HomepageBody(),
+                  ),
+                  Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+                ],
+              ),
+              bottomNavigationBar: const HomepageNavBar(),
             ),
           );
         },
