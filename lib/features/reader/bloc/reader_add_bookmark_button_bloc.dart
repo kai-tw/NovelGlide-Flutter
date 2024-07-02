@@ -12,7 +12,9 @@ class ReaderAddBookmarkButtonCubit extends Cubit<ReaderAddBookmarkButtonState> {
       disabledColor: Colors.green,
     ));
     await Future.delayed(const Duration(seconds: 1));
-    emit(const ReaderAddBookmarkButtonState());
+    if (!isClosed) {
+      emit(const ReaderAddBookmarkButtonState());
+    }
   }
 }
 

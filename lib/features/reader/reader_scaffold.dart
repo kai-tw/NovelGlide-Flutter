@@ -49,7 +49,6 @@ class ReaderScaffold extends StatelessWidget {
     if (cubit.state.readerSettings.autoSave) {
       cubit.saveBookmark();
     }
-    cubit.dispose();
   }
 
   bool _onScrollNotification(BuildContext context, ScrollNotification scrollNotification, ReaderCubit cubit) {

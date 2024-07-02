@@ -18,13 +18,13 @@ class ReaderSettingsResetButtonCubit extends Cubit<ReaderSettingsResetButtonStat
       color: Colors.green,
     ));
     await Future.delayed(const Duration(seconds: 2));
-    try {
+    if (!isClosed) {
       emit(ReaderSettingsResetButtonState(
         isDisabled: false,
         text: defaultText,
         color: defaultColor,
       ));
-    } catch (e) {}
+    }
   }
 }
 

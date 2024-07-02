@@ -80,7 +80,9 @@ class ReaderCubit extends Cubit<ReaderState> {
     }
   }
 
-  void dispose() {
+  @override
+  Future<void> close() async {
+    super.close();
     scrollController.dispose();
   }
 }
