@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../ad_center/bottom_ad_wrapper.dart';
+import '../../ad_center/advertisement.dart';
+import '../../ad_center/advertisement_id.dart';
 import '../common_components/common_back_button.dart';
 import 'bloc/reader_cubit.dart';
+import 'bloc/reader_progress_bar_bloc.dart';
 import 'reader_nav_bar.dart';
 import 'reader_sliver_content.dart';
 import 'widgets/reader_title.dart';
@@ -30,17 +32,31 @@ class ReaderScaffold extends StatelessWidget {
           surfaceTintColor: Theme.of(context).colorScheme.surface,
           title: const ReaderTitle(),
         ),
-        body: BottomAdWrapper(
-          child: NotificationListener<ScrollNotification>(
-            onNotification: (ScrollNotification scrollNotification) =>
-                _onScrollNotification(context, scrollNotification, cubit),
-            child: CustomScrollView(
-              controller: cubit.scrollController,
-              slivers: const [
-                ReaderSliverContent(),
-              ],
+        body: Column(
+          children: [
+            BlocBuilder<ReaderProgressBarCubit, ReaderProgressBarState>(
+              builder: (BuildContext context, ReaderProgressBarState state) {
+                return LinearProgressIndicator(
+                  value: state.currentScrollY / state.maxScrollY,
+                  backgroundColor: Theme.of(context).colorScheme.surface,
+                  valueColor: AlwaysStoppedAnimation(Theme.of(context).colorScheme.primary),
+                );
+              },
             ),
-          ),
+            Expanded(
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (ScrollNotification scrollNotification) =>
+                    _onScrollNotification(context, scrollNotification),
+                child: CustomScrollView(
+                  controller: cubit.scrollController,
+                  slivers: const [
+                    ReaderSliverContent(),
+                  ],
+                ),
+              ),
+            ),
+            Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+          ],
         ),
         bottomNavigationBar: const ReaderNavBar(),
       ),
@@ -54,10 +70,15 @@ class ReaderScaffold extends StatelessWidget {
     }
   }
 
-  bool _onScrollNotification(BuildContext context, ScrollNotification scrollNotification, ReaderCubit cubit) {
-    double maxScrollHeight = scrollNotification.metrics.extentTotal;
-    double currentScrollY = scrollNotification.metrics.pixels.clamp(0.0, maxScrollHeight);
-    cubit.currentArea = currentScrollY * MediaQuery.of(context).size.width;
+  bool _onScrollNotification(BuildContext context, ScrollNotification scrollNotification) {
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
+    final ReaderProgressBarCubit progressBarCubit = BlocProvider.of<ReaderProgressBarCubit>(context);
+    final Size screenSize = MediaQuery.of(context).size;
+    final double maxScrollHeight = scrollNotification.metrics.extentTotal;
+    final double currentScrollY = scrollNotification.metrics.pixels.clamp(0.0, maxScrollHeight);
+
+    cubit.currentArea = currentScrollY * screenSize.width;
+    progressBarCubit.update(currentScrollY, scrollNotification.metrics.maxScrollExtent);
 
     if (scrollNotification is ScrollEndNotification) {
       if (cubit.state.readerSettings.autoSave) {

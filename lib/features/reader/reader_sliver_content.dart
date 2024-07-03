@@ -17,7 +17,7 @@ class ReaderSliverContent extends StatelessWidget {
             List<String> contentLines = state.contentLines;
             return SliverList(
               delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
+                (BuildContext context, int index) {
                   double fontSize = state.readerSettings.fontSize;
                   double lineHeight = state.readerSettings.lineHeight;
                   return Padding(

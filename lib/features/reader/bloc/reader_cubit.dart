@@ -9,6 +9,7 @@ import 'reader_state.dart';
 class ReaderCubit extends Cubit<ReaderState> {
   bool isAutoJump;
   final ScrollController scrollController = ScrollController();
+  double currentScrollY = 0.0;
   double currentArea = 0.0;
 
   ReaderCubit(String bookName, int chapterNumber, {this.isAutoJump = false})
