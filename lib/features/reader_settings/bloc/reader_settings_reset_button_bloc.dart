@@ -3,26 +3,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ReaderSettingsResetButtonCubit extends Cubit<ReaderSettingsResetButtonState> {
-  final Color defaultColor;
+  final Color defaultBackgroundColor;
+  final Color defaultForegroundColor;
   final String defaultText;
   final String doneText;
 
-  ReaderSettingsResetButtonCubit({required this.defaultColor, required this.defaultText, required this.doneText})
-      : super(ReaderSettingsResetButtonState(color: defaultColor, text: defaultText));
+  ReaderSettingsResetButtonCubit({
+    required this.defaultBackgroundColor,
+    required this.defaultForegroundColor,
+    required this.defaultText,
+    required this.doneText,
+  }) : super(
+          ReaderSettingsResetButtonState(
+            backgroundColor: defaultBackgroundColor,
+            foregroundColor: defaultForegroundColor,
+            text: defaultText,
+          ),
+        );
 
   void onPressedHandler() async {
     emit(ReaderSettingsResetButtonState(
       isDisabled: true,
       iconData: Icons.check_rounded,
       text: doneText,
-      color: Colors.green,
+      backgroundColor: Colors.green,
+      foregroundColor: Colors.white,
     ));
     await Future.delayed(const Duration(seconds: 2));
     if (!isClosed) {
       emit(ReaderSettingsResetButtonState(
         isDisabled: false,
         text: defaultText,
-        color: defaultColor,
+        backgroundColor: defaultBackgroundColor,
+        foregroundColor: defaultForegroundColor,
       ));
     }
   }
@@ -32,20 +45,23 @@ class ReaderSettingsResetButtonState extends Equatable {
   final bool isDisabled;
   final IconData iconData;
   final String text;
-  final Color color;
+  final Color backgroundColor;
+  final Color foregroundColor;
 
   @override
   List<Object?> get props => [
         isDisabled,
         iconData,
         text,
-        color,
+        backgroundColor,
+        foregroundColor,
       ];
 
   const ReaderSettingsResetButtonState({
     this.isDisabled = false,
     this.iconData = Icons.restart_alt_rounded,
     required this.text,
-    required this.color,
+    required this.backgroundColor,
+    required this.foregroundColor,
   });
 }

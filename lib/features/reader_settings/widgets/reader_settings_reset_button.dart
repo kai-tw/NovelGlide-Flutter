@@ -19,21 +19,21 @@ class ReaderSettingsResetButton extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: BlocProvider(
         create: (_) => ReaderSettingsResetButtonCubit(
-          defaultColor: Theme.of(context).colorScheme.error,
+          defaultBackgroundColor: Theme.of(context).colorScheme.error,
+          defaultForegroundColor: Theme.of(context).colorScheme.onError,
           defaultText: appLocalizations.readerSettingsResetButton,
           doneText: appLocalizations.readerSettingsResetButtonDone,
         ),
         child: BlocBuilder<ReaderSettingsResetButtonCubit, ReaderSettingsResetButtonState>(
           builder: (context, state) {
-            return OutlinedButton.icon(
-              icon: Icon(
-                state.iconData,
-                color: state.color,
-              ),
-              label: Text(state.text, style: TextStyle(color: state.color)),
+            return FilledButton.tonalIcon(
+              icon: Icon(state.iconData),
+              label: Text(state.text),
               style: OutlinedButton.styleFrom(
-                disabledForegroundColor: state.color,
-                side: BorderSide(width: 1.0, color: state.color),
+                backgroundColor: state.backgroundColor,
+                foregroundColor: state.foregroundColor,
+                disabledBackgroundColor: state.backgroundColor,
+                disabledForegroundColor: state.foregroundColor,
               ),
               onPressed: state.isDisabled
                   ? null
