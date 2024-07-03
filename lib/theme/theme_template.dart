@@ -13,13 +13,14 @@ abstract class ThemeTemplate {
 
   static ThemeData generateThemeByBrightness(ColorScheme colorScheme) {
     return ThemeData(
-    appBarTheme: getAppBarTheme(colorScheme),
-    brightness: colorScheme.brightness,
-    colorScheme: colorScheme,
-    inputDecorationTheme: inputDecorationTheme,
-    splashColor: Colors.transparent,
-    switchTheme: getSwitchTheme(colorScheme),
-    useMaterial3: true,
+      appBarTheme: getAppBarTheme(colorScheme),
+      brightness: colorScheme.brightness,
+      colorScheme: colorScheme,
+      floatingActionButtonTheme: floatingActionButtonTheme(colorScheme),
+      inputDecorationTheme: inputDecorationTheme,
+      splashColor: Colors.transparent,
+      switchTheme: getSwitchTheme(colorScheme),
+      useMaterial3: true,
     );
   }
 
@@ -40,6 +41,14 @@ abstract class ThemeTemplate {
         color: colorScheme.onSurface,
         fontSize: 18,
       ),
+    );
+  }
+
+  static FloatingActionButtonThemeData floatingActionButtonTheme(ColorScheme colorScheme) {
+    return FloatingActionButtonThemeData(
+      backgroundColor: colorScheme.primary,
+      foregroundColor: colorScheme.onPrimary,
+      shape: const CircleBorder(),
     );
   }
 

@@ -213,5 +213,7 @@
   "brightnessSelectorDescription": "Select brightness",
   "brightnessSystem": "System",
   "brightnessLight": "Light",
-  "brightnessDark": "Dark"
+  "brightnessDark": "Dark",
+
+  "accessibilityBookshelfPage": "The bookshelf page"
 }

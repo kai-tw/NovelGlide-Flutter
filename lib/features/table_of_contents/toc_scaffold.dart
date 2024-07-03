@@ -7,7 +7,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../ad_center/advertisement.dart';
 import '../../ad_center/advertisement_id.dart';
 import '../add_chapter/add_chapter_scaffold.dart';
-import '../common_components/common_add_floating_action_button.dart';
 import 'bloc/toc_bloc.dart';
 import 'widgets/toc_sliver_book_name.dart';
 import 'widgets/toc_sliver_cover_banner.dart';
@@ -46,7 +45,8 @@ class TOCScaffold extends StatelessWidget {
           ),
           floatingActionButton: BlocBuilder<TOCCubit, TOCState>(
             builder: (_, state) {
-              return CommonAddFloatingActionButton(
+              return FloatingActionButton(
+                child: const Icon(Icons.add),
                 onPressed: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (_) => AddChapterScaffold(bookName: state.bookName)))
