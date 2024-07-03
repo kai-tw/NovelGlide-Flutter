@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../data/bookmark_data.dart';
-import 'reader_button_state.dart';
-import 'reader_settings.dart';
+import '../../../data/reader_settings_data.dart';
 
 enum ReaderStateCode { loading, loaded }
 
 class ReaderState extends Equatable {
+  /// Overall state.
   final ReaderStateCode code;
   final String bookName;
   final int chapterNumber;
@@ -14,8 +14,20 @@ class ReaderState extends Equatable {
   final int nextChapterNumber;
   final List<String> contentLines;
   final BookmarkData bookmarkObject;
-  final ReaderSettings readerSettings;
-  final RdrBtnState buttonState;
+
+  /// Settings state.
+  final ReaderSettingsData readerSettings;
+
+  @override
+  List<Object?> get props => [
+    bookName,
+    chapterNumber,
+    prevChapterNumber,
+    nextChapterNumber,
+    contentLines,
+    bookmarkObject,
+    readerSettings,
+  ];
 
   ReaderState({
     this.code = ReaderStateCode.loading,
@@ -25,10 +37,8 @@ class ReaderState extends Equatable {
     this.nextChapterNumber = -1,
     this.contentLines = const [],
     BookmarkData? bookmarkObject,
-    ReaderSettings? readerSettings,
-    RdrBtnState? buttonState,
-  })  : readerSettings = readerSettings ?? const ReaderSettings(),
-        buttonState = buttonState ?? const RdrBtnState.disabledAll(),
+    ReaderSettingsData? readerSettings,
+  })  : readerSettings = readerSettings ?? const ReaderSettingsData(),
         bookmarkObject = bookmarkObject ?? BookmarkData();
 
   ReaderState copyWith({
@@ -39,8 +49,7 @@ class ReaderState extends Equatable {
     int? nextChapterNumber,
     List<String>? contentLines,
     BookmarkData? bookmarkObject,
-    ReaderSettings? readerSettings,
-    RdrBtnState? buttonState,
+    ReaderSettingsData? readerSettings,
   }) {
     return ReaderState(
       code: code ?? this.code,
@@ -51,19 +60,7 @@ class ReaderState extends Equatable {
       contentLines: contentLines ?? this.contentLines,
       bookmarkObject: bookmarkObject ?? this.bookmarkObject,
       readerSettings: readerSettings ?? this.readerSettings,
-      buttonState: buttonState ?? this.buttonState,
     );
   }
 
-  @override
-  List<Object?> get props => [
-        bookName,
-        chapterNumber,
-        prevChapterNumber,
-        nextChapterNumber,
-        contentLines,
-        bookmarkObject,
-        readerSettings,
-        buttonState,
-      ];
 }

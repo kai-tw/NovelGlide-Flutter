@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../add_book/add_book_scaffold.dart';
-import '../common_components/common_add_floating_action_button.dart';
 import 'bloc/bookshelf_bloc.dart';
 import 'bookshelf_app_bar.dart';
 import 'bookshelf_sliver_list.dart';
@@ -13,24 +12,29 @@ class BookshelfScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
 
-    return Scaffold(
-      appBar: const BookshelfAppBar(),
-      body: RefreshIndicator(
-        onRefresh: () async => cubit.refresh(),
-        child: const CustomScrollView(
-          slivers: [
-            BookshelfSliverList(),
-          ],
+    return Semantics(
+      label: appLocalizations.accessibilityBookshelfPage,
+      child: Scaffold(
+        appBar: const BookshelfAppBar(),
+        body: RefreshIndicator(
+          onRefresh: () async => cubit.refresh(),
+          child: const CustomScrollView(
+            slivers: [
+              BookshelfSliverList(),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: CommonAddFloatingActionButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (BuildContext context) => const AddBookScaffold()))
-              .then((isSuccess) => _onPopBack(context, isSuccess));
-        },
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (BuildContext context) => const AddBookScaffold()))
+                .then((isSuccess) => _onPopBack(context, isSuccess));
+          },
+        ),
       ),
     );
   }

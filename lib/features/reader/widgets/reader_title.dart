@@ -11,6 +11,7 @@ class ReaderTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ReaderCubit, ReaderState>(
+      buildWhen: (previous, current) => previous.chapterNumber != current.chapterNumber,
       builder: (BuildContext context, ReaderState state) {
         return Text(AppLocalizations.of(context)!.chapterLabelFunction(state.chapterNumber));
       },

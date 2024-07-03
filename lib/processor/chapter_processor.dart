@@ -69,6 +69,26 @@ class ChapterProcessor {
     return contentLines;
   }
 
+  /// Get the previous chapter number.
+  static int getPrevChapterNumber(String bookName, int chapterNumber) {
+    final List<ChapterData> chapterList = getList(bookName);
+    int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == chapterNumber);
+    if (currentIndex > 0) {
+      return chapterList[currentIndex - 1].ordinalNumber;
+    }
+    return -1;
+  }
+
+  /// Get the next chapter number.
+  static int getNextChapterNumber(String bookName, int chapterNumber) {
+    final List<ChapterData> chapterList = getList(bookName);
+    int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == chapterNumber);
+    if (0 <= currentIndex && currentIndex < chapterList.length - 1) {
+      return chapterList[currentIndex + 1].ordinalNumber;
+    }
+    return -1;
+  }
+
   /// Get the title of a chapter.
   static Future<String> getTitle(String bookName, int ordinalNumber) async {
     final File file = File(getPath(bookName, ordinalNumber));

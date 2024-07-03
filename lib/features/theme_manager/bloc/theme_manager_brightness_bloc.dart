@@ -12,9 +12,10 @@ class ThemeManagerBrightnessCubit extends Cubit<ThemeManagerBrightnessState> {
   void refresh() async {
     final Brightness? brightness = ThemeDataRecord.fromSettings().brightness;
     emit(ThemeManagerBrightnessState(brightness: brightness));
-    isEnabled = false;
-    await Future.delayed(const Duration(milliseconds: 500));
-    isEnabled = true;
+  }
+
+  void setBrightness(Brightness? brightness) async {
+    emit(ThemeManagerBrightnessState(brightness: brightness));
   }
 }
 

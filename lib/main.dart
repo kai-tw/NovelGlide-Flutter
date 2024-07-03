@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +20,9 @@ import 'processor/theme_processor.dart';
 
 void main() async {
   BindingCenter.ensureInitialized();
-  MobileAds.instance.initialize();
+
+  unawaited(MobileAds.instance.initialize());
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -61,6 +65,7 @@ class App extends StatelessWidget {
             "/register": (_) => const RegisterPage(),
           },
           // debugShowCheckedModeBanner: false,
+          // showSemanticsDebugger: true,
         );
       },
     );
