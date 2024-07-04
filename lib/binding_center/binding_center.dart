@@ -27,6 +27,10 @@ mixin ThemeBinding on BindingBase {
     _brightnessListeners[key] = listener;
   }
 
+  void removeBrightnessListener(String key) {
+    _brightnessListeners.remove(key);
+  }
+
   void _onPlatformBrightnessChanged () {
     final Brightness brightness = platformDispatcher.platformBrightness;
 
