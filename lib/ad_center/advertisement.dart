@@ -13,7 +13,8 @@ class Advertisement extends StatelessWidget {
   Widget build(BuildContext context) {
     final int width = MediaQuery.of(context).size.width.truncate();
     return BlocProvider(
-      create: (context) => AdvertisementCubit(adUnitId: adUnitId)..init(width),
+      create: (context) => AdvertisementCubit(adUnitId: adUnitId),
+      // create: (context) => AdvertisementCubit(adUnitId: adUnitId)..init(width),
       child: BlocBuilder<AdvertisementCubit, AdvertisementState>(
         builder: (context, state) {
           return state.bannerAd == null ? const SizedBox() : SizedBox(
