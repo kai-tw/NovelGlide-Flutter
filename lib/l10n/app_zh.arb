@@ -116,5 +116,6 @@
   "brightnessLight": "淺色",
   "brightnessDark": "深色",
 
-  "accessibilityBookshelfPage": "書櫃頁面"
+  "accessibilityBookshelfPage": "書櫃頁面",
+  "accessibilityReadingProgressBar": "閱讀進度條"
 }

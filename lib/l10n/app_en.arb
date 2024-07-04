@@ -215,5 +215,6 @@
   "brightnessLight": "Light",
   "brightnessDark": "Dark",
 
-  "accessibilityBookshelfPage": "The bookshelf page"
+  "accessibilityBookshelfPage": "The bookshelf page",
+  "accessibilityReadingProgressBar": "Reading progress bar"
 }
