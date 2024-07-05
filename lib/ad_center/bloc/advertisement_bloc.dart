@@ -24,7 +24,7 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
         },
       ),
     );
-    loadAd();
+    // loadAd();
   }
 
   void loadAd() {

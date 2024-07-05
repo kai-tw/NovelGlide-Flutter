@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/app_info.dart';
+import '../common_components/app_icon.dart';
 import '../common_components/common_back_button.dart';
 
 class AboutPageScaffold extends StatelessWidget {
@@ -19,16 +20,10 @@ class AboutPageScaffold extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 24.0),
+            const AppIcon(
+              margin: EdgeInsets.symmetric(vertical: 24.0),
               width: 100,
               height: 100,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-              ),
-              clipBehavior: Clip.hardEdge,
-              child: Image.asset("assets/images/app_icon.png"),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
