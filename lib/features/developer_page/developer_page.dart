@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../common_components/common_back_button.dart';
 import '../settings_page/widgets/setting_page_button.dart';
+import 'device_info_panel.dart';
 
 class DeveloperPage extends StatelessWidget {
   const DeveloperPage({super.key});
@@ -12,16 +13,17 @@ class DeveloperPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        title: const Text('開發者頁面'),
+        title: const Text('Developer Page'),
       ),
       body: Column(
         children: [
+          const DeviceInfoPanel(),
           SettingPageButton(
             onPressed: () {
               FirebaseCrashlytics.instance.crash();
             },
-            iconData: Icons.bug_report_rounded,
-            label: '強制 Crash',
+            iconData: Icons.error_outline_rounded,
+            label: 'Force crash',
           ),
         ],
       ),
