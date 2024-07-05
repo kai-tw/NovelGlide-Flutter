@@ -1,4 +1,3 @@
-import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -28,35 +27,33 @@ class TOCScaffold extends StatelessWidget {
 
         Navigator.of(context).pop(cubit.state.isDirty);
       },
-      child: ThemeSwitchingArea(
-        child: Scaffold(
-          appBar: const TOCAppBar(),
-          body: RefreshIndicator(
-            onRefresh: () async => cubit.refresh(),
-            child: const SlidableAutoCloseBehavior(
-              child: CustomScrollView(
-                slivers: [
-                  TOCSliverCoverBanner(),
-                  TOCSliverBookName(),
-                  TOCSliverList(),
-                ],
-              ),
+      child: Scaffold(
+        appBar: const TOCAppBar(),
+        body: RefreshIndicator(
+          onRefresh: () async => cubit.refresh(),
+          child: const SlidableAutoCloseBehavior(
+            child: CustomScrollView(
+              slivers: [
+                TOCSliverCoverBanner(),
+                TOCSliverBookName(),
+                TOCSliverList(),
+              ],
             ),
           ),
-          floatingActionButton: BlocBuilder<TOCCubit, TOCState>(
-            builder: (_, state) {
-              return FloatingActionButton(
-                child: const Icon(Icons.add),
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => AddChapterScaffold(bookName: state.bookName)))
-                      .then((isSuccess) => _onPopBack(context, isSuccess));
-                },
-              );
-            },
-          ),
-          bottomNavigationBar: Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
         ),
+        floatingActionButton: BlocBuilder<TOCCubit, TOCState>(
+          builder: (_, state) {
+            return FloatingActionButton(
+              child: const Icon(Icons.add),
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (_) => AddChapterScaffold(bookName: state.bookName)))
+                    .then((isSuccess) => _onPopBack(context, isSuccess));
+              },
+            );
+          },
+        ),
+        bottomNavigationBar: Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
       ),
     );
   }

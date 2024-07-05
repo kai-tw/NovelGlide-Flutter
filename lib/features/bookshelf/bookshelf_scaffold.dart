@@ -12,29 +12,25 @@ class BookshelfScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
 
-    return Semantics(
-      label: appLocalizations.accessibilityBookshelfPage,
-      child: Scaffold(
-        appBar: const BookshelfAppBar(),
-        body: RefreshIndicator(
-          onRefresh: () async => cubit.refresh(),
-          child: const CustomScrollView(
-            slivers: [
-              BookshelfSliverList(),
-            ],
-          ),
+    return Scaffold(
+      appBar: const BookshelfAppBar(),
+      body: RefreshIndicator(
+        onRefresh: () async => cubit.refresh(),
+        child: const CustomScrollView(
+          slivers: [
+            BookshelfSliverList(),
+          ],
         ),
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (BuildContext context) => const AddBookScaffold()))
-                .then((isSuccess) => _onPopBack(context, isSuccess));
-          },
-        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) => const AddBookScaffold()))
+              .then((isSuccess) => _onPopBack(context, isSuccess));
+        },
       ),
     );
   }

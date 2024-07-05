@@ -1,4 +1,3 @@
-import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,18 +14,16 @@ class ReaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeSwitchingArea(
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider<ReaderCubit>(
-            create: (_) => ReaderCubit(bookName, chapterNumber, isAutoJump: isAutoJump)..initialize(),
-          ),
-          BlocProvider<ReaderProgressBarCubit>(
-            create: (_) => ReaderProgressBarCubit(),
-          ),
-        ],
-        child: const ReaderScaffold(),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ReaderCubit>(
+          create: (_) => ReaderCubit(bookName, chapterNumber, isAutoJump: isAutoJump)..initialize(),
+        ),
+        BlocProvider<ReaderProgressBarCubit>(
+          create: (_) => ReaderProgressBarCubit(),
+        ),
+      ],
+      child: const ReaderScaffold(),
     );
   }
 }

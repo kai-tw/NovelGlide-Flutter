@@ -33,7 +33,7 @@ class SettingsPage extends StatelessWidget {
             const SettingPageButton(
               targetPage: DeveloperPage(),
               iconData: Icons.code_rounded,
-              label: '開發者頁面',
+              label: 'Developer Page',
             ),
           ],
         ),
