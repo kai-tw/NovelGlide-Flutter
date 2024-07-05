@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -12,6 +13,29 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final List<Widget> buttonList = [
+      SettingPageButton(
+        targetPage: const ThemeManager(),
+        iconData: Icons.format_paint_rounded,
+        label: appLocalizations.themeTitle,
+      ),
+      SettingPageButton(
+        targetPage: const AboutPageScaffold(),
+        iconData: Icons.info_outline,
+        label: appLocalizations.titleAbout,
+      ),
+    ];
+
+    if (kDebugMode) {
+      buttonList.add(
+        const SettingPageButton(
+          targetPage: DeveloperPage(),
+          iconData: Icons.code_rounded,
+          label: 'Developer Page',
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(Icons.settings_outlined),
@@ -19,23 +43,7 @@ class SettingsPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
-            SettingPageButton(
-              targetPage: const ThemeManager(),
-              iconData: Icons.format_paint_rounded,
-              label: appLocalizations.themeTitle,
-            ),
-            SettingPageButton(
-              targetPage: const AboutPageScaffold(),
-              iconData: Icons.info_outline,
-              label: appLocalizations.titleAbout,
-            ),
-            const SettingPageButton(
-              targetPage: DeveloperPage(),
-              iconData: Icons.code_rounded,
-              label: 'Developer Page',
-            ),
-          ],
+          children: buttonList,
         ),
       ),
     );
