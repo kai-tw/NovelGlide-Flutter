@@ -1,3 +1,4 @@
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -11,17 +12,19 @@ class ThemeManager extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: AppBar(
-        leading: const CommonBackButton(),
-        title: Text(appLocalizations.themeTitle),
-      ),
-      body: const SingleChildScrollView(
-        child: Column(
-          children: [
-            ThemeManagerThemeSelector(),
-            ThemeManagerBrightnessSelector(),
-          ],
+    return ThemeSwitchingArea(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: const CommonBackButton(),
+          title: Text(appLocalizations.themeTitle),
+        ),
+        body: const SingleChildScrollView(
+          child: Column(
+            children: [
+              ThemeManagerThemeSelector(),
+              ThemeManagerBrightnessSelector(),
+            ],
+          ),
         ),
       ),
     );

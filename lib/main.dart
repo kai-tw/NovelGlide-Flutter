@@ -14,7 +14,7 @@ import 'data/file_path.dart';
 import 'features/account_page/account_page.dart';
 import 'features/sign_in_page/sign_in_page.dart';
 import 'features/register_page/register_page.dart';
-import 'features/homepage/homepage_scaffold.dart';
+import 'features/homepage/homepage.dart';
 import 'firebase_options.dart';
 import 'processor/theme_processor.dart';
 

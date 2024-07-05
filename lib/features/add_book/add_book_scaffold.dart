@@ -13,34 +13,50 @@ class AddBookScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: const CommonBackButton(),
-        title: Text(AppLocalizations.of(context)!.titleAddBook),
-      ),
-      body: BlocProvider(
-        create: (_) => AddBookFormCubit(),
-        child: const Padding(
-          padding: EdgeInsets.all(24.0),
-          child: Form(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 32.0),
-                    child: AddBookNameInputField(),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: const CommonBackButton(),
+          title: Text(AppLocalizations.of(context)!.titleAddBook),
+        ),
+        body: BlocProvider(
+          create: (_) => AddBookFormCubit(),
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Form(
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Container(
+                    constraints: const BoxConstraints(maxWidth: 360),
+                    child: const AddBookScaffoldCompactView(),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 32.0),
-                    child: AddBookImagePicker(),
-                  ),
-                  AddBookSubmitButton(),
-                ],
+                ),
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class AddBookScaffoldCompactView extends StatelessWidget {
+  const AddBookScaffoldCompactView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(bottom: 32.0),
+          child: AddBookNameInputField(),
+        ),
+        Padding(
+          padding: EdgeInsets.only(bottom: 32.0),
+          child: AddBookImagePicker(),
+        ),
+        AddBookSubmitButton(),
+      ],
     );
   }
 }
