@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../binding_center/binding_center.dart';
 import '../../data/window_class.dart';
 import '../../processor/theme_processor.dart';
+import '../common_components/common_slidable_action/app_frame.dart';
 import 'bloc/navigation_bloc.dart';
 import 'homepage_body.dart';
 import 'homepage_nav_bar.dart';
@@ -21,10 +22,10 @@ class Homepage extends StatelessWidget {
             ThemeProcessor.onBrightnessChanged(context);
           });
 
-          return BlocProvider(
-            create: (_) => NavigationCubit(),
-            child: const SafeArea(
-              child: HomepageScaffold(),
+          return AppFrame(
+            child: BlocProvider(
+              create: (_) => NavigationCubit(),
+              child: const HomepageScaffold(),
             ),
           );
         },
