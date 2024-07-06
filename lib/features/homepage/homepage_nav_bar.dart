@@ -29,10 +29,10 @@ class HomepageNavBar extends StatelessWidget {
   Widget _createCompactWindow(BuildContext context, NavigationState state) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onSurface,
-        borderRadius: BorderRadius.circular(100),
+        borderRadius: BorderRadius.circular(36.0),
       ),
       clipBehavior: Clip.hardEdge,
       child: NavigationBar(
@@ -66,11 +66,10 @@ class HomepageNavBar extends StatelessWidget {
   Widget _createMediumWindow(BuildContext context, NavigationState state) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Container(
-      margin: const EdgeInsets.all(16.0),
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 24.0),
+      margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onSurface,
-        borderRadius: BorderRadius.circular(100),
+        borderRadius: BorderRadius.circular(24.0),
       ),
       clipBehavior: Clip.hardEdge,
       child: NavigationRail(
