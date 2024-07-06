@@ -216,5 +216,6 @@
   "brightnessDark": "Dark",
 
   "accessibilityBookshelfPage": "The bookshelf page",
-  "accessibilityReadingProgressBar": "Reading progress bar"
+  "accessibilityReadingProgressBar": "Reading progress bar",
+  "accessibilityBackButton": "Go back button"
 }
