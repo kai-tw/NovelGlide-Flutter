@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_back_button.dart';
+import '../common_components/app_frame.dart';
 import 'bloc/add_book_form_bloc.dart';
 import 'widgets/add_book_image_picker.dart';
 import 'widgets/add_book_name_input_field.dart';
@@ -13,7 +14,7 @@ class AddBookScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    return const AppFrame(
       child: AddBookScaffoldCompactView(),
     );
   }
