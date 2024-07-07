@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_file_picker/bloc/common_file_picker_bloc.dart';
 
@@ -28,10 +29,7 @@ class CommonImagePickerPreview extends StatelessWidget {
             );
           } else {
             return Center(
-              child: Icon(
-                Icons.image_not_supported_rounded,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
+              child: Text(AppLocalizations.of(context)!.preview),
             );
           }
         }
