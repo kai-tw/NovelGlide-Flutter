@@ -4,11 +4,13 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../ad_center/advertisement.dart';
 import '../../ad_center/advertisement_id.dart';
+import '../../data/window_class.dart';
 import 'bloc/toc_bloc.dart';
 import 'widgets/toc_add_chapter_button.dart';
-import 'widgets/toc_sliver_book_name.dart';
-import 'widgets/toc_sliver_cover_banner.dart';
+import 'widgets/toc_book_name.dart';
+import 'widgets/toc_cover_banner.dart';
 import 'toc_app_bar.dart';
+import 'widgets/toc_scroll_view.dart';
 import 'widgets/toc_sliver_list.dart';
 
 class TocScaffold extends StatelessWidget {
@@ -17,6 +19,18 @@ class TocScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TocCubit cubit = BlocProvider.of<TocCubit>(context);
+    final WindowClass windowClass = WindowClassExtension.getClassByWidth(MediaQuery.of(context).size.width);
+    final Widget bodyWidget;
+
+    switch (windowClass) {
+      case WindowClass.compact:
+        bodyWidget = const TocScaffoldCompactView();
+        break;
+      default:
+        bodyWidget = const TocScaffoldMediumView();
+        break;
+    }
+
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
@@ -28,20 +42,8 @@ class TocScaffold extends StatelessWidget {
       },
       child: Scaffold(
         appBar: const TocAppBar(),
-        body: RefreshIndicator(
-          onRefresh: () async => cubit.refresh(),
-          child: const SlidableAutoCloseBehavior(
-            child: CustomScrollView(
-              slivers: [
-                TocSliverCoverBanner(),
-                TocSliverBookName(),
-                TocSliverList(),
-
-                /// Prevent the content from being covered by the floating action button.
-                SliverPadding(padding: EdgeInsets.only(bottom: 80.0)),
-              ],
-            ),
-          ),
+        body: SlidableAutoCloseBehavior(
+          child: bodyWidget,
         ),
         floatingActionButton: const TocAddChapterButton(),
         bottomNavigationBar: Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
@@ -55,12 +57,16 @@ class TocScaffoldCompactView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        TocSliverCoverBanner(),
-        TocSliverBookName(),
-        TocSliverList(),
-      ],
+    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
+    return RefreshIndicator(
+      onRefresh: () async => cubit.refresh(),
+      child: const TocScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: TocCoverBanner()),
+          SliverToBoxAdapter(child: TocBookName()),
+          TocSliverList(),
+        ],
+      ),
     );
   }
 }
@@ -70,12 +76,38 @@ class TocScaffoldMediumView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        TocSliverCoverBanner(),
-        TocSliverBookName(),
-        TocSliverList(),
-      ],
-    );
+    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+      double leftWidth = constraints.maxWidth * 0.382;
+      return Row(
+        children: [
+          SizedBox(
+            width: leftWidth,
+            height: constraints.maxHeight,
+            child: Column(
+              children: [
+                TocCoverBanner(aspectRatio: leftWidth / (constraints.maxHeight / 2)),
+                SizedBox(
+                  height: constraints.maxHeight / 2,
+                  child: const SingleChildScrollView(
+                    child: TocBookName(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: () async => cubit.refresh(),
+              child: const TocScrollView(
+                slivers: [
+                  TocSliverList(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+    });
   }
 }
