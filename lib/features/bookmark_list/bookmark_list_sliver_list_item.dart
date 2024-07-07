@@ -44,7 +44,7 @@ class BookmarkListSliverListItem extends StatelessWidget {
       child: Slidable(
         groupTag: "BookmarkSliverListItem",
         endActionPane: ActionPane(
-          extentRatio: 0.2,
+          extentRatio: 0.25,
           motion: const DrawerMotion(),
           children: [
             CommonSlidableActionDelete(onDelete: () {
