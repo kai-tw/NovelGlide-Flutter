@@ -25,7 +25,7 @@ class AppIcon extends StatelessWidget {
               width: width,
               height: height,
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                color: Colors.transparent,
                 borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
               ),
               clipBehavior: Clip.hardEdge,
