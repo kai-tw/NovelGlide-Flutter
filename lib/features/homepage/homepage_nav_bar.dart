@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/window_class.dart';
-import '../common_components/app_icon.dart';
 import 'bloc/navigation_bloc.dart';
 
 class HomepageNavBar extends StatelessWidget {
@@ -84,11 +83,6 @@ class HomepageNavBarMediumView extends StatelessWidget {
             ),
             clipBehavior: Clip.hardEdge,
             child: NavigationRail(
-              leading: const AppIcon(
-                margin: EdgeInsets.all(8.0),
-                width: 40,
-                height: 40,
-              ),
               selectedIndex: NavigationItem.values.indexOf(state.navItem),
               indicatorColor: Colors.transparent,
               unselectedIconTheme: IconThemeData(color: Theme.of(context).colorScheme.surfaceDim),

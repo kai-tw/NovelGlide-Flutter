@@ -13,27 +13,18 @@ class AddBookScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const AddBookScaffoldCompactView();
-  }
-}
-
-class AddBookScaffoldCompactView extends StatelessWidget {
-  const AddBookScaffoldCompactView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
         title: Text(AppLocalizations.of(context)!.titleAddBook),
       ),
-      body: BlocProvider(
-        create: (_) => AddBookFormCubit(),
-        child: const Form(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.all(24.0),
-              child: Column(
+      body: Form(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: BlocProvider(
+              create: (_) => AddBookFormCubit(),
+              child: const Column(
                 children: [
                   Padding(
                     padding: EdgeInsets.only(bottom: 32.0),
