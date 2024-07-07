@@ -31,7 +31,7 @@ class HomepageNavBarCompactView extends StatelessWidget {
     return BlocBuilder<NavigationCubit, NavigationState>(
       builder: (BuildContext context, NavigationState state) {
         return Container(
-          margin: const EdgeInsets.all(8.0),
+          margin: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 8.0),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.onSurface,
             borderRadius: BorderRadius.circular(36.0),
