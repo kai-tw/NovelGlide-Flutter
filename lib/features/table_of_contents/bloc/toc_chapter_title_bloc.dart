@@ -8,7 +8,9 @@ class TOCChapterTitleCubit extends Cubit<TOCChapterTitleState> {
 
   void refresh(ChapterData chapterData) async {
     final String title = await chapterData.getTitle();
-    emit(state.copyWith(chapterNumber: chapterData.ordinalNumber, title: title));
+    if (!isClosed) {
+      emit(state.copyWith(chapterNumber: chapterData.ordinalNumber, title: title));
+    }
   }
 }
 
