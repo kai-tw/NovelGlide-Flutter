@@ -8,14 +8,14 @@ import '../../reader/reader.dart';
 import '../bloc/toc_bloc.dart';
 import 'toc_chapter_title.dart';
 
-class TOCSliverChapterListItem extends StatelessWidget {
-  const TOCSliverChapterListItem(this.chapterData, {super.key});
+class TocSliverChapterListItem extends StatelessWidget {
+  const TocSliverChapterListItem(this.chapterData, {super.key});
 
   final ChapterData chapterData;
 
   @override
   Widget build(BuildContext context) {
-    final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
+    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
     final int chapterNumber = chapterData.ordinalNumber;
     final String bookName = chapterData.bookName;
 
@@ -44,7 +44,7 @@ class TOCSliverChapterListItem extends StatelessWidget {
                 shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
                 foregroundColor: Theme.of(context).colorScheme.onSurface,
               ),
-              child: TOCChapterTitle(chapterData),
+              child: TocChapterTitle(chapterData),
             ),
           ),
         ),

@@ -6,20 +6,20 @@ import '../../common_components/common_loading.dart';
 import '../bloc/toc_bloc.dart';
 import '../chapter_list/toc_sliver_chapter_list.dart';
 
-class TOCSliverList extends StatelessWidget {
-  const TOCSliverList({super.key});
+class TocSliverList extends StatelessWidget {
+  const TocSliverList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<TOCCubit>(context).refresh();
-    return BlocBuilder<TOCCubit, TOCState>(
-      builder: (BuildContext context, TOCState state) {
+    BlocProvider.of<TocCubit>(context).refresh();
+    return BlocBuilder<TocCubit, TocState>(
+      builder: (BuildContext context, TocState state) {
         switch (state.code) {
-          case TOCStateCode.loading:
+          case TocStateCode.loading:
             return const CommonSliverLoading();
 
-          case TOCStateCode.normal:
-            return const TOCSliverChapterList();
+          case TocStateCode.normal:
+            return const TocSliverChapterList();
 
           default:
             return const CommonSliverListEmpty();

@@ -5,8 +5,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../add_chapter/add_chapter_scaffold.dart';
 import '../bloc/toc_bloc.dart';
 
-class TOCAddChapterButton extends StatelessWidget {
-  const TOCAddChapterButton({super.key});
+class TocAddChapterButton extends StatelessWidget {
+  const TocAddChapterButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class TOCAddChapterButton extends StatelessWidget {
       label: AppLocalizations.of(context)!.accessibilityAddChapterButton,
       button: true,
       enabled: true,
-      child: BlocBuilder<TOCCubit, TOCState>(
+      child: BlocBuilder<TocCubit, TocState>(
         buildWhen: (previous, current) => previous.bookName != current.bookName,
         builder: (_, state) {
           return FloatingActionButton(

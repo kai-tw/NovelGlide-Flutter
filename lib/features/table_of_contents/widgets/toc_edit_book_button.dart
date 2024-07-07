@@ -6,15 +6,15 @@ import '../../../data/book_data.dart';
 import '../../edit_book/edit_book_scaffold.dart';
 import '../bloc/toc_bloc.dart';
 
-class TOCEditBookButton extends StatelessWidget {
+class TocEditBookButton extends StatelessWidget {
   final String bookName;
 
-  const TOCEditBookButton({super.key, required this.bookName});
+  const TocEditBookButton({super.key, required this.bookName});
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
+    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
     final BookData bookData = BookData.fromName(bookName);
     return Semantics(
       label: appLocalizations.accessibilityEditBookButton,

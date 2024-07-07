@@ -13,8 +13,8 @@ class TableOfContents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => TOCCubit(bookObject),
-      child: const TOCScaffold(),
+      create: (_) => TocCubit(bookObject),
+      child: const TocScaffold(),
     );
   }
 }

@@ -6,15 +6,15 @@ import '../../../data/chapter_data.dart';
 import '../../../processor/book_processor.dart';
 import '../../../processor/chapter_processor.dart';
 
-enum TOCStateCode { loading, normal, empty }
+enum TocStateCode { loading, normal, empty }
 
-class TOCCubit extends Cubit<TOCState> {
-  TOCCubit(BookData bookData) : super(TOCState(bookName: bookData.name));
+class TocCubit extends Cubit<TocState> {
+  TocCubit(BookData bookData) : super(TocState(bookName: bookData.name));
 
   void refresh({BookData? newData}) async {
     final String bookName = newData?.name ?? state.bookName;
     final List<ChapterData> chapterList = ChapterProcessor.getList(bookName);
-    final TOCStateCode code = chapterList.isEmpty ? TOCStateCode.empty : TOCStateCode.normal;
+    final TocStateCode code = chapterList.isEmpty ? TocStateCode.empty : TocStateCode.normal;
     emit(state.copyWith(
       bookName: bookName,
       isCoverExist: BookProcessor.isCoverExist(bookName),
@@ -35,32 +35,32 @@ class TOCCubit extends Cubit<TOCState> {
   }
 }
 
-class TOCState extends Equatable {
+class TocState extends Equatable {
   final bool isDirty;
   final String bookName;
   final bool isCoverExist;
-  final TOCStateCode code;
+  final TocStateCode code;
   final List<ChapterData> chapterList;
 
   @override
   List<Object?> get props => [isDirty, bookName, isCoverExist, code, chapterList];
 
-  const TOCState({
+  const TocState({
     this.isDirty = false,
     this.bookName = "",
     this.isCoverExist = false,
-    this.code = TOCStateCode.loading,
+    this.code = TocStateCode.loading,
     this.chapterList = const [],
   });
 
-  TOCState copyWith({
+  TocState copyWith({
     bool? isDirty,
     String? bookName,
     bool? isCoverExist,
-    TOCStateCode? code,
+    TocStateCode? code,
     List<ChapterData>? chapterList,
   }) {
-    return TOCState(
+    return TocState(
       isDirty: isDirty ?? this.isDirty,
       bookName: bookName ?? this.bookName,
       isCoverExist: isCoverExist ?? this.isCoverExist,

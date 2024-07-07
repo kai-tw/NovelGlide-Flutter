@@ -7,23 +7,23 @@ import 'bloc/toc_bloc.dart';
 import 'widgets/toc_edit_book_button.dart';
 import 'widgets/toc_import_book_button.dart';
 
-class TOCAppBar extends StatelessWidget implements PreferredSizeWidget {
+class TocAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
-  const TOCAppBar({super.key});
+  const TocAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<TOCCubit, TOCState>(
+    return BlocBuilder<TocCubit, TocState>(
       builder: (_, state) {
         return AppBar(
           leading: CommonBackButton(popValue: state.isDirty),
           title: Text(appLocalizations.titleTOC),
           actions: [
-            TOCEditBookButton(bookName: state.bookName),
-            TOCImportBookButton(bookName: state.bookName),
+            TocEditBookButton(bookName: state.bookName),
+            TocImportBookButton(bookName: state.bookName),
           ],
         );
       },

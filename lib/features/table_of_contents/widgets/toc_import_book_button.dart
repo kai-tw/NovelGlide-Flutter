@@ -6,15 +6,15 @@ import '../../../data/book_data.dart';
 import '../../book_importer/book_importer_scaffold.dart';
 import '../bloc/toc_bloc.dart';
 
-class TOCImportBookButton extends StatelessWidget {
+class TocImportBookButton extends StatelessWidget {
   final String bookName;
 
-  const TOCImportBookButton({super.key, required this.bookName});
+  const TocImportBookButton({super.key, required this.bookName});
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
+    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
     final BookData bookData = BookData.fromName(bookName);
     return Semantics(
       label: appLocalizations.accessibilityImportBookButton,

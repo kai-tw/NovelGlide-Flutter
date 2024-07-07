@@ -11,12 +11,12 @@ import 'widgets/toc_sliver_cover_banner.dart';
 import 'toc_app_bar.dart';
 import 'widgets/toc_sliver_list.dart';
 
-class TOCScaffold extends StatelessWidget {
-  const TOCScaffold({super.key});
+class TocScaffold extends StatelessWidget {
+  const TocScaffold({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final TOCCubit cubit = BlocProvider.of<TOCCubit>(context);
+    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) {
@@ -27,22 +27,52 @@ class TOCScaffold extends StatelessWidget {
         Navigator.of(context).pop(cubit.state.isDirty);
       },
       child: Scaffold(
-        appBar: const TOCAppBar(),
+        appBar: const TocAppBar(),
         body: RefreshIndicator(
           onRefresh: () async => cubit.refresh(),
           child: const SlidableAutoCloseBehavior(
             child: CustomScrollView(
               slivers: [
-                TOCSliverCoverBanner(),
-                TOCSliverBookName(),
-                TOCSliverList(),
+                TocSliverCoverBanner(),
+                TocSliverBookName(),
+                TocSliverList(),
               ],
             ),
           ),
         ),
-        floatingActionButton: const TOCAddChapterButton(),
+        floatingActionButton: const TocAddChapterButton(),
         bottomNavigationBar: Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
       ),
+    );
+  }
+}
+
+class TocScaffoldCompactView extends StatelessWidget {
+  const TocScaffoldCompactView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        TocSliverCoverBanner(),
+        TocSliverBookName(),
+        TocSliverList(),
+      ],
+    );
+  }
+}
+
+class TocScaffoldMediumView extends StatelessWidget {
+  const TocScaffoldMediumView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        TocSliverCoverBanner(),
+        TocSliverBookName(),
+        TocSliverList(),
+      ],
     );
   }
 }

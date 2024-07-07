@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/chapter_data.dart';
 
-class TOCChapterTitleCubit extends Cubit<TOCChapterTitleState> {
-  TOCChapterTitleCubit() : super(const TOCChapterTitleState());
+class TocChapterTitleCubit extends Cubit<TocChapterTitleState> {
+  TocChapterTitleCubit() : super(const TocChapterTitleState());
 
   void refresh(ChapterData chapterData) async {
     final String title = await chapterData.getTitle();
@@ -14,23 +14,23 @@ class TOCChapterTitleCubit extends Cubit<TOCChapterTitleState> {
   }
 }
 
-class TOCChapterTitleState extends Equatable {
+class TocChapterTitleState extends Equatable {
   final int chapterNumber;
   final String title;
 
   @override
   List<Object?> get props => [chapterNumber, title];
 
-  const TOCChapterTitleState({
+  const TocChapterTitleState({
     this.chapterNumber = 0,
     this.title = "",
   });
 
-  TOCChapterTitleState copyWith({
+  TocChapterTitleState copyWith({
     int? chapterNumber,
     String? title,
   }) {
-    return TOCChapterTitleState(
+    return TocChapterTitleState(
       chapterNumber: chapterNumber ?? this.chapterNumber,
       title: title ?? this.title,
     );

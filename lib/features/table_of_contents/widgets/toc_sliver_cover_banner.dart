@@ -5,8 +5,8 @@ import '../../../processor/book_processor.dart';
 import '../../common_components/common_book_cover_image.dart';
 import '../bloc/toc_bloc.dart';
 
-class TOCSliverCoverBanner extends StatelessWidget {
-  const TOCSliverCoverBanner({super.key});
+class TocSliverCoverBanner extends StatelessWidget {
+  const TocSliverCoverBanner({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class TOCSliverCoverBanner extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(24.0, 0, 24.0, 24.0),
         child: AspectRatio(
           aspectRatio: 1,
-          child: BlocBuilder<TOCCubit, TOCState>(
+          child: BlocBuilder<TocCubit, TocState>(
             builder: (context, state) {
               return Hero(
                 tag: state.bookName,

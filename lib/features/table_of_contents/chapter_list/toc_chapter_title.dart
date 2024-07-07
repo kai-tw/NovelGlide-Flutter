@@ -5,18 +5,18 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../data/chapter_data.dart';
 import '../bloc/toc_chapter_title_bloc.dart';
 
-class TOCChapterTitle extends StatelessWidget {
+class TocChapterTitle extends StatelessWidget {
   final ChapterData chapterData;
 
-  const TOCChapterTitle(this.chapterData, {super.key});
+  const TocChapterTitle(this.chapterData, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => TOCChapterTitleCubit(),
-      child: BlocBuilder<TOCChapterTitleCubit, TOCChapterTitleState>(
-        builder: (BuildContext context, TOCChapterTitleState state) {
-          BlocProvider.of<TOCChapterTitleCubit>(context).refresh(chapterData);
+      create: (_) => TocChapterTitleCubit(),
+      child: BlocBuilder<TocChapterTitleCubit, TocChapterTitleState>(
+        builder: (BuildContext context, TocChapterTitleState state) {
+          BlocProvider.of<TocChapterTitleCubit>(context).refresh(chapterData);
           final String localizedOrdinalNum = AppLocalizations.of(context)!.chapterLabelFunction(state.chapterNumber);
           return Text(
             localizedOrdinalNum + (state.title.isNotEmpty ? " - ${state.title}" : ""),
