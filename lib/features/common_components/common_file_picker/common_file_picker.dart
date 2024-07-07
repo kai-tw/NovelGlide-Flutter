@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc/common_file_picker_bloc.dart';
 import 'common_file_picker_content.dart';
@@ -14,6 +15,7 @@ class CommonFilePicker extends StatelessWidget {
   final List<String>? allowedExtensions;
   final InputDecoration? inputDecoration;
   final void Function(File?)? onSaved;
+  final String? semanticLabel;
 
   const CommonFilePicker({
     super.key,
@@ -22,19 +24,23 @@ class CommonFilePicker extends StatelessWidget {
     this.allowedExtensions,
     this.inputDecoration,
     this.onSaved,
+    this.semanticLabel,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => CommonFilePickerCubit(),
-      child: CommonFilePickerFormField(
-        inputDecoration: inputDecoration,
-        onSaved: onSaved,
-        isRequired: isRequired,
-        child: CommonFilePickerContent(
-          type: type,
-          allowedExtensions: allowedExtensions,
+    return Semantics(
+      label: semanticLabel ?? AppLocalizations.of(context)!.accessibilityFilePicker,
+      child: BlocProvider(
+        create: (_) => CommonFilePickerCubit(),
+        child: CommonFilePickerFormField(
+          inputDecoration: inputDecoration,
+          onSaved: onSaved,
+          isRequired: isRequired,
+          child: CommonFilePickerContent(
+            type: type,
+            allowedExtensions: allowedExtensions,
+          ),
         ),
       ),
     );

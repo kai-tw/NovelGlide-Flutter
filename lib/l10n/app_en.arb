@@ -217,5 +217,16 @@
 
   "accessibilityBookshelfPage": "The bookshelf page",
   "accessibilityReadingProgressBar": "Reading progress bar",
-  "accessibilityBackButton": "Go back button"
+  "accessibilityBackButton": "Go back button",
+  "accessibilityAddBookButton": "Add a book button",
+  "accessibilityAddChapterButton": "Add a chapter button",
+  "accessibilityEditBookButton": "Edit this book button",
+  "accessibilityImportBookButton": "Import book button",
+  "accessibilityThemeSelectionButton": "Theme selection button",
+  "accessibilityDeleteButton": "Delete button",
+  "accessibilityBookNameTextField": "Book name text field",
+  "accessibilityFilePicker": "File picker",
+  "accessibilityImagePicker": "Image picker",
+  "accessibilityAppIcon": "NovelGlide icon",
+  "accessibilityBookCover": "The book cover"
 }

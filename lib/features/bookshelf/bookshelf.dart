@@ -24,6 +24,7 @@ class BookshelfScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
 
     return Scaffold(
@@ -36,13 +37,18 @@ class BookshelfScaffold extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (BuildContext context) => const AddBookScaffold()))
-              .then((isSuccess) => _onPopBack(context, isSuccess));
-        },
+      floatingActionButton: Semantics(
+        label: appLocalizations.accessibilityAddBookButton,
+        button: true,
+        enabled: true,
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (BuildContext context) => const AddBookScaffold()))
+                .then((isSuccess) => _onPopBack(context, isSuccess));
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }

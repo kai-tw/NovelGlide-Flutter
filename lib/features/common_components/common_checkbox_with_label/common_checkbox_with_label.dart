@@ -25,6 +25,7 @@ class CommonCheckboxWithLabel extends StatelessWidget {
             builder: (context, state) {
               final CommonCheckboxWithLabelCubit cubit = BlocProvider.of<CommonCheckboxWithLabelCubit>(context);
               return Checkbox(
+                semanticLabel: text,
                 value: state.isChecked,
                 onChanged: (value) {
                   cubit.onClick(value);

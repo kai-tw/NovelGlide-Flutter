@@ -118,5 +118,16 @@
 
   "accessibilityBookshelfPage": "書櫃頁面",
   "accessibilityReadingProgressBar": "閱讀進度條",
-  "accessibilityBackButton": "返回按鈕"
+  "accessibilityBackButton": "返回按鈕",
+  "accessibilityAddBookButton": "新增書籍按鈕",
+  "accessibilityAddChapterButton": "新增章節按鈕",
+  "accessibilityEditBookButton": "編輯書籍按鈕",
+  "accessibilityImportBookButton": "匯入書籍按鈕",
+  "accessibilityThemeSelectionButton": "主題選擇按鈕",
+  "accessibilityDeleteButton": "刪除按鈕",
+  "accessibilityBookNameTextField": "書名欄位",
+  "accessibilityFilePicker": "檔案選擇器",
+  "accessibilityImagePicker": "圖片選擇器",
+  "accessibilityAppIcon": "NovelGlide 圖示",
+  "accessibilityBookCover": "書籍封面"
 }
