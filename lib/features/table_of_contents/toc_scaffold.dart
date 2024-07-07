@@ -36,6 +36,9 @@ class TocScaffold extends StatelessWidget {
                 TocSliverCoverBanner(),
                 TocSliverBookName(),
                 TocSliverList(),
+
+                /// Prevent the content from being covered by the floating action button.
+                SliverPadding(padding: EdgeInsets.only(bottom: 80.0)),
               ],
             ),
           ),
