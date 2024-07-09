@@ -16,7 +16,7 @@ class HomepageBookDeleteDragTarget extends StatelessWidget {
             return Container(
               width: constraints.maxWidth,
               height: constraints.maxHeight,
-              color: Theme.of(context).colorScheme.errorContainer,
+              color: Theme.of(context).colorScheme.error,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -24,13 +24,13 @@ class HomepageBookDeleteDragTarget extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 8.0),
                     child: Icon(
                       Icons.delete_forever_rounded,
-                      color: Theme.of(context).colorScheme.onErrorContainer,
+                      color: Theme.of(context).colorScheme.onError,
                     ),
                   ),
                   Text(
                     appLocalizations.homepageDragHereToDelete,
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onErrorContainer,
+                      color: Theme.of(context).colorScheme.onError,
                     ),
                   ),
                 ],
