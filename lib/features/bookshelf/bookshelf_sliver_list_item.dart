@@ -52,30 +52,29 @@ class BookshelfSliverListItem extends StatelessWidget {
               }
             },
             data: bookObject,
-            feedback: Container(
-              width: constraints.maxWidth,
-              height: constraints.maxHeight,
-              padding: const EdgeInsets.all(14.0),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(24.0),
-              ),
-              child: BookshelfBookWidget(bookObject: bookObject),
+            feedback: Opacity(
+              opacity: 0.7,
+              child: _createBookWidget(context, constraints),
             ),
             childWhenDragging: const SizedBox(),
-            child: Container(
-              width: constraints.maxWidth,
-              height: constraints.maxHeight,
-              padding: const EdgeInsets.all(16.0),
-              child: BookshelfBookWidget(bookObject: bookObject),
-            ),
+            child: _createBookWidget(context, constraints),
           );
         },
       ),
+    );
+  }
+
+  Widget _createBookWidget(BuildContext context, BoxConstraints constraints) {
+    return Container(
+      width: constraints.maxWidth,
+      height: constraints.maxHeight,
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(24.0),
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: BookshelfBookWidget(bookObject: bookObject),
     );
   }
 

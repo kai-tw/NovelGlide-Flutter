@@ -21,15 +21,9 @@ class BookmarkListSliverListItem extends StatelessWidget {
     final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
     final HomepageCubit homepageCubit = BlocProvider.of<HomepageCubit>(context);
 
-    return Container(
-      margin: const EdgeInsets.all(16.0),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(16.0)),
-      ),
-      clipBehavior: Clip.hardEdge,
-      child: GestureDetector(
-        onTap: () => Navigator.of(context).push(_navigateToReader()).then((_) => cubit.refresh()),
-        child: LayoutBuilder(
+    return GestureDetector(
+      onTap: () => Navigator.of(context).push(_navigateToReader()).then((_) => cubit.refresh()),
+      child: LayoutBuilder(
           builder: (context, constraints) {
             return LongPressDraggable(
               onDragStarted: () => homepageCubit.setDragging(true),
@@ -54,17 +48,13 @@ class BookmarkListSliverListItem extends StatelessWidget {
                 );
               },
               data: _bookmarkObject,
-              feedback: Container(
-                width: constraints.maxWidth,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceDim.withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(24.0),
-                ),
-                child: BookmarkListBookmarkWidget(_bookmarkObject),
+              feedback: Opacity(
+                opacity: 0.7,
+                child: _createBookmarkWidget(context, constraints),
               ),
               childWhenDragging: Opacity(
                 opacity: 0,
-                child: BookmarkListBookmarkWidget(_bookmarkObject),
+                child: _createBookmarkWidget(context, constraints),
               ),
               child: Slidable(
                 groupTag: "BookmarkSliverListItem",
@@ -78,12 +68,23 @@ class BookmarkListSliverListItem extends StatelessWidget {
                     }),
                   ],
                 ),
-                child: BookmarkListBookmarkWidget(_bookmarkObject),
+                child: _createBookmarkWidget(context, constraints),
               ),
             );
           }
-        ),
       ),
+    );
+  }
+
+  Widget _createBookmarkWidget(BuildContext context, BoxConstraints constraints) {
+    return Container(
+      width: constraints.maxWidth,
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(24.0),
+      ),
+      child: BookmarkListBookmarkWidget(_bookmarkObject),
     );
   }
 
