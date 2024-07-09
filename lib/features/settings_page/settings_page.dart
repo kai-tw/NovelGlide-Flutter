@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../processor/guide_processor.dart';
 import '../about_page/about_page_scaffold.dart';
 import '../developer_page/developer_page.dart';
 import '../homepage/widgets/homepage_scroll_view.dart';
@@ -19,27 +20,41 @@ class SettingsPage extends StatelessWidget {
         child: SettingPageButton(
           targetPage: const ThemeManager(),
           iconData: Icons.format_paint_rounded,
-          label: appLocalizations.themeTitle,
+          label: appLocalizations.settingsPageTheme,
+        ),
+      ),
+      SliverToBoxAdapter(
+        child: SettingPageButton(
+          onPressed: () {
+            GuideProcessor.create();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(appLocalizations.comingSoon),
+              ),
+            );
+          },
+          iconData: Icons.book_outlined,
+          label: appLocalizations.settingsPageGetGuide,
         ),
       ),
       SliverToBoxAdapter(
         child: SettingPageButton(
           targetPage: const AboutPageScaffold(),
           iconData: Icons.info_outline,
-          label: appLocalizations.titleAbout,
+          label: appLocalizations.settingsPageAbout,
         ),
       ),
     ];
 
     if (kDebugMode) {
       buttonList.add(
-        const SliverToBoxAdapter(
+        SliverToBoxAdapter(
           child: SettingPageButton(
-            targetPage: DeveloperPage(),
+            targetPage: const DeveloperPage(),
             iconData: Icons.code_rounded,
-            label: 'Developer Page',
+            label: appLocalizations.settingsPageDeveloperPage,
           ),
-        )
+        ),
       );
     }
 

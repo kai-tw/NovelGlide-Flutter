@@ -47,7 +47,7 @@ class DeveloperPage extends StatelessWidget {
       final String randomString = RandomUtility.getRandomString(8);
       final String bookName = 'FakeBook_$randomString';
       book = BookData(name: bookName);
-    } while (book.isExists());
+    } while (book.isExist());
     book.create();
 
     final int chapterCount = Random().nextInt(20);

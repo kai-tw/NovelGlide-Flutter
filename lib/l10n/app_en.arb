@@ -20,6 +20,7 @@
   "save": "Save",
   "edit": "Edit",
   "nullValue": "Blank",
+  "comingSoon": "Coming soon",
 
   "homepageDragHereToDelete": "Drag here to delete",
 
@@ -156,6 +157,11 @@
   "readerSettingsAutoSaveSwitch": "Automatically save a bookmark",
 
   "accountEditGeneral": "General",
+
+  "settingsPageTheme": "Theme",
+  "settingsPageGetGuide": "Get the guide",
+  "settingsPageAbout": "About",
+  "settingsPageDeveloperPage": "Developer Page",
 
   "themeTitle": "Theme",
   "themeListTitle": "Theme List",

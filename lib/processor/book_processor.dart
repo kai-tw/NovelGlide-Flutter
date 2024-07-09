@@ -105,6 +105,12 @@ class BookProcessor {
     return !coverFile.existsSync();
   }
 
+  /// Check if the book exists
+  static bool isExist(String name) {
+    return Directory(getPathByName(name)).existsSync();
+  }
+
+  /// Check if the cover exists
   static bool isCoverExist(String name) {
     return File(getCoverPathByName(name)).existsSync();
   }

@@ -20,6 +20,7 @@
   "save": "儲存",
   "edit": "編輯",
   "nullValue": "無",
+  "comingSoon": "即將推出",
 
   "homepageDragHereToDelete": "拖曳到這裡刪除",
 
@@ -116,6 +117,11 @@
   "readerSettingsAutoSaveSwitch": "自動插入書籤",
 
   "accountEditGeneral": "一般資料",
+
+  "settingsPageTheme": "主題",
+  "settingsPageGetGuide": "取得說明書",
+  "settingsPageAbout": "關於",
+  "settingsPageDeveloperPage": "開發者頁面",
 
   "themeTitle": "主題",
   "themeListTitle": "主題列表",
