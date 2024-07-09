@@ -11,6 +11,7 @@ class BookshelfSliverList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<BookshelfCubit>(context).refresh();
     return BlocBuilder<BookshelfCubit, BookshelfState>(
       builder: (BuildContext context, BookshelfState state) {
         switch (state.code) {

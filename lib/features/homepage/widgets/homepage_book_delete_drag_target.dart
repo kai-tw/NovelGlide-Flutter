@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../data/book_data.dart';
+import '../../../data/bookmark_data.dart';
 
 class HomepageBookDeleteDragTarget extends StatelessWidget {
   const HomepageBookDeleteDragTarget({super.key});
@@ -38,7 +39,7 @@ class HomepageBookDeleteDragTarget extends StatelessWidget {
             );
           },
           onWillAcceptWithDetails: (details) {
-            return details.data is BookData;
+            return details.data is BookData || details.data is BookmarkData;
           },
           onLeave: (_) {},
         );

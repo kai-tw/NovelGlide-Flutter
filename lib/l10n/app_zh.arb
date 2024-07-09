@@ -65,6 +65,9 @@
   "deleteChapterSuccessfully": "刪除章節成功",
   "deleteChapterFailed": "刪除章節失敗",
 
+  "deleteBookmarkSuccessfully": "刪除書籤成功",
+  "deleteBookmarkFailed": "刪除書籤失敗",
+
   "importOverwriteChapter": "是否覆蓋既有章節？",
   "importOverwriteCover": "是否覆蓋既有封面？",
   "importOverwriteBookmark": "是否覆蓋既有書籤？",

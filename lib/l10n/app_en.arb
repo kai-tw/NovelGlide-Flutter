@@ -74,6 +74,9 @@
   "deleteChapterSuccessfully": "Successfully delete the chapter",
   "deleteChapterFailed": "Failed to delete the chapter",
 
+  "deleteBookmarkSuccessfully": "Successfully delete the bookmark",
+  "deleteBookmarkFailed": "Failed to delete the bookmark",
+
   "importOverwriteChapter": "Do it overwrite the chapters?",
   "importOverwriteCover": "Do it overwrite the cover?",
   "importOverwriteBookmark": "Do it overwrite the bookmarks?",

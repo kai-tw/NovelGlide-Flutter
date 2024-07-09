@@ -5,8 +5,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../data/bookmark_data.dart';
 import '../common_components/common_slidable_action/common_slidable_action_delete.dart';
+import '../homepage/bloc/homepage_bloc.dart';
 import '../reader/reader.dart';
 import 'bloc/bookmark_list_bloc.dart';
+import 'bookmark_list_bookmark_widget.dart';
 
 class BookmarkListSliverListItem extends StatelessWidget {
   const BookmarkListSliverListItem(this._bookmarkObject, {super.key});
@@ -15,25 +17,9 @@ class BookmarkListSliverListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final String bookName = _bookmarkObject.bookName;
-    final int chapterNumber = _bookmarkObject.chapterNumber;
-    final int daysPassed = _bookmarkObject.daysPassed;
-    String savedTimeString = "";
-
-    switch (daysPassed) {
-      case 0:
-        savedTimeString = appLocalizations.savedTimeToday;
-        break;
-      case 1:
-        savedTimeString = appLocalizations.savedTimeYesterday;
-        break;
-      default:
-        savedTimeString = appLocalizations.savedTimeOthersFunction(daysPassed);
-    }
-
-    savedTimeString = appLocalizations.savedTimeFunction(savedTimeString);
+    final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
+    final HomepageCubit homepageCubit = BlocProvider.of<HomepageCubit>(context);
 
     return Container(
       margin: const EdgeInsets.all(16.0),
@@ -41,67 +27,70 @@ class BookmarkListSliverListItem extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(16.0)),
       ),
       clipBehavior: Clip.hardEdge,
-      child: Slidable(
-        groupTag: "BookmarkSliverListItem",
-        endActionPane: ActionPane(
-          extentRatio: 0.25,
-          motion: const DrawerMotion(),
-          children: [
-            CommonSlidableActionDelete(onDelete: () {
-              _bookmarkObject.clear();
-              cubit.refresh();
-            }),
-          ],
-        ),
-        child: GestureDetector(
-          onTap: () =>
-              Navigator.of(context).push(_navigateToReader(bookName, chapterNumber)).then((_) => cubit.refresh()),
-          child: Row(
-            children: [
-              Icon(
-                Icons.bookmark_rounded,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-              Expanded(
-                child: Container(
-                  color: Theme.of(context).colorScheme.surface,
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        bookName,
-                        style: const TextStyle(
-                          fontSize: 20.0,
-                        ),
-                      ),
-                      Text(
-                        appLocalizations.chapterLabelFunction(chapterNumber),
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                        ),
-                      ),
-                      Text(
-                        savedTimeString,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-                        ),
-                      ),
-                    ],
+      child: GestureDetector(
+        onTap: () => Navigator.of(context).push(_navigateToReader()).then((_) => cubit.refresh()),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return LongPressDraggable(
+              onDragStarted: () => homepageCubit.setDragging(true),
+              onDragEnd: (_) => homepageCubit.setDragging(false),
+              onDragCompleted: () {
+                try {
+                  _bookmarkObject.clear();
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(appLocalizations.deleteBookmarkFailed),
+                    ),
+                  );
+                  return;
+                }
+
+                cubit.refresh();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(appLocalizations.deleteBookmarkSuccessfully),
                   ),
+                );
+              },
+              data: _bookmarkObject,
+              feedback: Container(
+                width: constraints.maxWidth,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceDim.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(24.0),
                 ),
+                child: BookmarkListBookmarkWidget(_bookmarkObject),
               ),
-            ],
-          ),
+              childWhenDragging: Opacity(
+                opacity: 0,
+                child: BookmarkListBookmarkWidget(_bookmarkObject),
+              ),
+              child: Slidable(
+                groupTag: "BookmarkSliverListItem",
+                endActionPane: ActionPane(
+                  extentRatio: 0.25,
+                  motion: const DrawerMotion(),
+                  children: [
+                    CommonSlidableActionDelete(onDelete: () {
+                      _bookmarkObject.clear();
+                      cubit.refresh();
+                    }),
+                  ],
+                ),
+                child: BookmarkListBookmarkWidget(_bookmarkObject),
+              ),
+            );
+          }
         ),
       ),
     );
   }
 
-  Route _navigateToReader(String bookName, int chapterNumber) {
+  Route _navigateToReader() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => ReaderWidget(bookName, chapterNumber, isAutoJump: true),
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          ReaderWidget(_bookmarkObject.bookName, _bookmarkObject.chapterNumber, isAutoJump: true),
       transitionDuration: const Duration(milliseconds: 300),
       reverseTransitionDuration: const Duration(milliseconds: 300),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
