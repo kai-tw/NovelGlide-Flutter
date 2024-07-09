@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../bookmark_list/bookmark_list_app_bar.dart';
-import '../bookshelf/bookshelf_app_bar.dart';
-import '../settings_page/settings_page_app_bar.dart';
 import 'bloc/navigation_bloc.dart';
 
 class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -14,15 +12,25 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<NavigationCubit, NavigationState>(
       builder: (BuildContext context, NavigationState state) {
         switch (state.navItem) {
           case NavigationItem.bookshelf:
-            return const BookshelfAppBar();
+            return AppBar(
+              leading: const Icon(Icons.book_outlined),
+              title: Text(appLocalizations.titleBookshelf),
+            );
           case NavigationItem.bookmark:
-            return const BookmarkListAppBar();
+            return AppBar(
+              leading: const Icon(Icons.bookmark_outline_rounded),
+              title: Text(AppLocalizations.of(context)!.titleBookmarks),
+            );
           case NavigationItem.settings:
-            return const SettingsPageAppBar();
+            return AppBar(
+              leading: const Icon(Icons.settings_outlined),
+              title: Text(AppLocalizations.of(context)!.titleSettings),
+            );
         }
       },
     );

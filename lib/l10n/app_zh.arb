@@ -21,6 +21,8 @@
   "edit": "編輯",
   "nullValue": "無",
 
+  "homepageDragHereToDelete": "拖曳到這裡刪除",
+
   "greetingWord": "你好",
   "greetingPhrase": "你好，{displayName}",
 

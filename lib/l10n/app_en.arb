@@ -21,6 +21,8 @@
   "edit": "Edit",
   "nullValue": "Blank",
 
+  "homepageDragHereToDelete": "Drag here to delete",
+
   "greetingWord": "Hi",
   "greetingPhrase": "Hi {displayName}",
   "@greetingPhrase": {

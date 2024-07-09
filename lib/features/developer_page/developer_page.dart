@@ -59,6 +59,7 @@ class DeveloperPage extends StatelessWidget {
       chapterFile.writeAsStringSync(contentList.join(Platform.lineTerminator));
     }
 
+    ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Fake book ${book.name} created, and $chapterCount chapters created.'),
