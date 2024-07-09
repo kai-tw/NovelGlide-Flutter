@@ -25,11 +25,11 @@ class BookshelfAddBookButton extends StatelessWidget {
             if (isSuccess == true) {
               cubit.refresh();
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(appLocalizations.addWhatSuccessfully(appLocalizations.book)),
+                content: Text(appLocalizations.addBookSuccessfully),
               ));
             } else if (isSuccess == false) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(appLocalizations.addWhatFailed(appLocalizations.book)),
+                content: Text(appLocalizations.addBookFailed),
               ));
             }
           });

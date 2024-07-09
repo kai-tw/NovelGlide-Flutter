@@ -34,11 +34,11 @@ class TocAddChapterButton extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     if (isSuccess == true) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(appLocalizations.addWhatSuccessfully(appLocalizations.chapter)),
+        content: Text(appLocalizations.addChapterSuccessfully),
       ));
     } else if (isSuccess == false) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(appLocalizations.addWhatFailed(appLocalizations.chapter)),
+        content: Text(appLocalizations.addChapterFailed),
       ));
     }
   }

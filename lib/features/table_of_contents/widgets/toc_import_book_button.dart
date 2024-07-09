@@ -28,11 +28,11 @@ class TocImportBookButton extends StatelessWidget {
             if (isSuccess == true) {
               cubit.refresh();
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(appLocalizations.importWhatSuccessfully(appLocalizations.book)),
+                content: Text(appLocalizations.importBookSuccessfully),
               ));
             } else if (isSuccess == false) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(appLocalizations.importWhatFailed(appLocalizations.book)),
+                content: Text(appLocalizations.importBookFailed),
               ));
             }
           });

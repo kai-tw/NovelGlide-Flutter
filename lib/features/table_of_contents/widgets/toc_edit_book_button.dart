@@ -27,11 +27,11 @@ class TocEditBookButton extends StatelessWidget {
               cubit.setDirty();
               cubit.refresh(newData: newData);
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(appLocalizations.editWhatSuccessfully(appLocalizations.book)),
+                content: Text(appLocalizations.editBookSuccessfully),
               ));
             } else if (newData == false) {
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(appLocalizations.editWhatFailed(appLocalizations.book)),
+                content: Text(appLocalizations.editBookFailed),
               ));
             }
           });

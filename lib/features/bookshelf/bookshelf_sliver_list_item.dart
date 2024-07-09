@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/book_data.dart';
 import '../homepage/bloc/homepage_bloc.dart';
@@ -14,6 +15,7 @@ class BookshelfSliverListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
     final HomepageCubit homepageCubit = BlocProvider.of<HomepageCubit>(context);
 
@@ -32,6 +34,23 @@ class BookshelfSliverListItem extends StatelessWidget {
           return LongPressDraggable(
             onDragStarted: () => homepageCubit.setDragging(true),
             onDragEnd: (_) => homepageCubit.setDragging(false),
+            onDragCompleted: () {
+              final bool isSuccess = bookObject.delete();
+              if (isSuccess) {
+                cubit.refresh();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(appLocalizations.deleteBookSuccessfully),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(appLocalizations.deleteBookFailed),
+                  ),
+                );
+              }
+            },
             data: bookObject,
             feedback: Container(
               width: constraints.maxWidth,

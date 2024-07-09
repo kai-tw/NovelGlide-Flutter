@@ -58,71 +58,21 @@
 
   "dialogDeleteConfirmation": "You will delete them forever.",
 
-  "addWhatSuccessfully": "Successfully add the {name}",
-  "@addWhatSuccessfully": {
-    "description": "Successfully add the %s",
-    "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "book"
-      }
-    }
-  },
+  "addBookSuccessfully": "Successfully add the book",
+  "addBookFailed": "Failed to add the book",
+  "editBookSuccessfully": "Successfully edit the book",
+  "editBookFailed": "Failed to edit the book",
+  "importBookSuccessfully": "Successfully import the book",
+  "importBookFailed": "Failed to import the book",
+  "deleteBookSuccessfully": "Successfully delete the book",
+  "deleteBookFailed": "Failed to delete the book",
 
-  "addWhatFailed": "Failed to add the {name}",
-  "@addWhatFailed": {
-    "description": "Failed to add the %s",
-    "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "book"
-      }
-    }
-  },
-
-  "editWhatSuccessfully": "Successfully edit the {name}",
-  "@editWhatSuccessfully": {
-    "description": "Successfully edit the %s",
-    "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "book"
-      }
-    }
-  },
-
-  "editWhatFailed": "Failed to edit the {name}",
-  "@editWhatFailed": {
-    "description": "Failed to edit the %s",
-    "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "book"
-      }
-    }
-  },
-
-  "importWhatSuccessfully": "Successfully import the {name}",
-  "@importWhatSuccessfully": {
-    "description": "Successfully import the %s",
-    "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "book"
-      }
-    }
-  },
-
-  "importWhatFailed": "Failed to import the {name}",
-  "@importWhatFailed": {
-    "description": "Failed to import the %s",
-    "placeholders": {
-      "name": {
-        "type": "String",
-        "example": "book"
-      }
-    }
-  },
+  "addChapterSuccessfully": "Successfully add the chapter",
+  "addChapterFailed": "Failed to add the chapter",
+  "editChapterSuccessfully": "Successfully edit the chapter",
+  "editChapterFailed": "Failed to edit the chapter",
+  "deleteChapterSuccessfully": "Successfully delete the chapter",
+  "deleteChapterFailed": "Failed to delete the chapter",
 
   "importOverwriteChapter": "Do it overwrite the chapters?",
   "importOverwriteCover": "Do it overwrite the cover?",

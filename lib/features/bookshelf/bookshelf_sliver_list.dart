@@ -22,7 +22,7 @@ class BookshelfSliverList extends StatelessWidget {
             return SliverGrid(
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 150.0,
-                childAspectRatio: 150 / 330,
+                childAspectRatio: 150 / 300,
               ),
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
