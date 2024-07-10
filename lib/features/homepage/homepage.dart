@@ -13,6 +13,7 @@ import 'bloc/navigation_bloc.dart';
 import 'homepage_app_bar.dart';
 import 'homepage_nav_bar.dart';
 import 'homepage_scaffold_body.dart';
+import 'widgets/homepage_dragging_bar.dart';
 
 /// The homepage of the app
 class Homepage extends StatelessWidget {
@@ -65,18 +66,25 @@ class HomepageScaffold extends StatelessWidget {
             );
 
           default:
-            return Scaffold(
-              appBar: const HomepageAppBar(),
-              body: const Row(
-                children: [
-                  HomepageNavBar(),
-                  Expanded(
-                    child: HomepageScaffoldBody(),
-                  ),
-                ],
-              ),
-              floatingActionButton: state.navItem == NavigationItem.bookshelf ? const BookshelfAddBookButton() : null,
-            );
+            return BlocBuilder<HomepageCubit, HomepageState>(
+                builder: (BuildContext context, HomepageState homepageState) {
+              return Scaffold(
+                appBar: const HomepageAppBar(),
+                body: const Row(
+                  children: [
+                    HomepageNavBar(),
+                    Expanded(
+                      child: HomepageScaffoldBody(),
+                    ),
+                  ],
+                ),
+                floatingActionButton: homepageState.isDragging
+                    ? const HomepageDraggingBar()
+                    : state.navItem == NavigationItem.bookshelf
+                        ? const BookshelfAddBookButton()
+                        : null,
+              );
+            });
         }
       },
     );

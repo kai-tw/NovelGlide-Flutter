@@ -3,10 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/book_data.dart';
-import '../homepage/bloc/homepage_bloc.dart';
 import '../table_of_contents/table_of_content.dart';
 import 'bloc/bookshelf_bloc.dart';
-import 'bookshelf_book_widget.dart';
+import 'bookshelf_draggable_book.dart';
 
 class BookshelfSliverListItem extends StatelessWidget {
   const BookshelfSliverListItem(this.bookObject, {super.key});
@@ -15,11 +14,10 @@ class BookshelfSliverListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
-    final HomepageCubit homepageCubit = BlocProvider.of<HomepageCubit>(context);
 
-    return GestureDetector(
+    return InkWell(
+      borderRadius: BorderRadius.circular(24.0),
       onTap: () {
         Navigator.of(context).push(_tocRoute(cubit)).then(
           (isDirty) {
@@ -29,52 +27,12 @@ class BookshelfSliverListItem extends StatelessWidget {
           },
         );
       },
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return LongPressDraggable(
-            onDragStarted: () => homepageCubit.setDragging(true),
-            onDragEnd: (_) => homepageCubit.setDragging(false),
-            onDragCompleted: () {
-              final bool isSuccess = bookObject.delete();
-              if (isSuccess) {
-                cubit.refresh();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(appLocalizations.deleteBookSuccessfully),
-                  ),
-                );
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(appLocalizations.deleteBookFailed),
-                  ),
-                );
-              }
-            },
-            data: bookObject,
-            feedback: Opacity(
-              opacity: 0.7,
-              child: _createBookWidget(context, constraints),
-            ),
-            childWhenDragging: const SizedBox(),
-            child: _createBookWidget(context, constraints),
-          );
-        },
+      child: Semantics(
+        label: AppLocalizations.of(context)!.accessibilityBookshelfListItem,
+        onTapHint: AppLocalizations.of(context)!.accessibilityBookshelfListItemOnTap,
+        onLongPressHint: AppLocalizations.of(context)!.accessibilityBookshelfListItemOnLongPress,
+        child: BookshelfDraggableBook(bookObject),
       ),
-    );
-  }
-
-  Widget _createBookWidget(BuildContext context, BoxConstraints constraints) {
-    return Container(
-      width: constraints.maxWidth,
-      height: constraints.maxHeight,
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(24.0),
-      ),
-      clipBehavior: Clip.hardEdge,
-      child: BookshelfBookWidget(bookObject: bookObject),
     );
   }
 

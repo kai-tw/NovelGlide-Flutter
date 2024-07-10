@@ -11,41 +11,44 @@ class BookshelfAddBookButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return Semantics(
-      label: appLocalizations.accessibilityAddBookButton,
-      button: true,
-      enabled: true,
-      child: FloatingActionButton(
-        onPressed: () {
-          final WindowClass windowClass = WindowClassExtension.getClassByWidth(MediaQuery.of(context).size.width);
-          switch (windowClass) {
-            case WindowClass.compact:
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) => const AddBookScaffold()))
-                  .then((isSuccess) => _onBack(context, isSuccess));
-              break;
-            default:
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return const Dialog(
-                    clipBehavior: Clip.hardEdge,
-                    child: SizedBox(
-                      width: 360.0,
-                      child: AddBookScaffold(),
-                    ),
-                  );
-                },
-              ).then((isSuccess) => _onBack(context, isSuccess));
-          }
-        },
-        child: const Icon(Icons.add),
+    return FloatingActionButton(
+      onPressed: () {
+        _navigateToAddBook(context).then((isSuccess) => _onPopBack(context, isSuccess));
+      },
+      child: Icon(
+        Icons.add,
+        semanticLabel: AppLocalizations.of(context)!.accessibilityAddBookButton,
       ),
     );
   }
 
-  void _onBack(BuildContext context, dynamic isSuccess) {
+  /// Based on the window size, navigate to the add book page
+  Future<dynamic> _navigateToAddBook(BuildContext context) async {
+    final WindowClass windowClass = WindowClassExtension.getClassByWidth(MediaQuery.of(context).size.width);
+    switch (windowClass) {
+      /// Push to the add book page
+      case WindowClass.compact:
+        return Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AddBookScaffold()));
+
+      /// Show in a dialog
+      default:
+        return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return const Dialog(
+              clipBehavior: Clip.hardEdge,
+              child: SizedBox(
+                width: 360.0,
+                child: AddBookScaffold(),
+              ),
+            );
+          },
+        );
+    }
+  }
+
+  /// Handle the result of adding a book
+  void _onPopBack(BuildContext context, dynamic isSuccess) {
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     if (isSuccess == true) {

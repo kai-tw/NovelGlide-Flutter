@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bloc/reader_add_bookmark_button_bloc.dart';
 
@@ -16,7 +17,10 @@ class ReaderAddBookmarkButton extends StatelessWidget {
         builder: (context, state) {
           final ReaderAddBookmarkButtonCubit cubit = BlocProvider.of<ReaderAddBookmarkButtonCubit>(context);
           return IconButton(
-            icon: Icon(state.iconData),
+            icon: Icon(
+              state.iconData,
+              semanticLabel: AppLocalizations.of(context)!.accessibilityReaderAddBookmarkButton,
+            ),
             disabledColor: state.disabledColor,
             onPressed: state.isDisabled || onPressed == null
                 ? null

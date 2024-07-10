@@ -136,7 +136,6 @@
   "brightnessLight": "淺色",
   "brightnessDark": "深色",
 
-  "accessibilityBookshelfPage": "書櫃頁面",
   "accessibilityReadingProgressBar": "閱讀進度條",
   "accessibilityBackButton": "返回按鈕",
   "accessibilityAddBookButton": "新增書籍按鈕",
@@ -149,5 +148,16 @@
   "accessibilityFilePicker": "檔案選擇器",
   "accessibilityImagePicker": "圖片選擇器",
   "accessibilityAppIcon": "NovelGlide 圖示",
-  "accessibilityBookCover": "書籍封面"
+  "accessibilityBookCover": "書籍封面",
+  "accessibilityBookmarkListItem": "一個書籤",
+  "accessibilityBookmarkListItemOnTap": "點擊以從書籤位置繼續閱讀",
+  "accessibilityBookmarkListItemOnLongPress": "長按並拖動到底部以刪除書籤",
+  "accessibilityReaderPrevChapterButton": "上一章按鈕",
+  "accessibilityReaderNextChapterButton": "下一章按鈕",
+  "accessibilityReaderBookmarkButton": "跳到書籤按鈕",
+  "accessibilityReaderAddBookmarkButton": "新增書籤按鈕",
+  "accessibilityReaderSettingsButton": "閱讀器設定按鈕",
+  "accessibilityReaderSettingsAutoSaveSwitch": "自動插入書籤開關",
+  "accessibilityReaderSettingsAutoSaveSwitchOn": "開啟",
+  "accessibilityReaderSettingsAutoSaveSwitchOff": "關閉"
 }

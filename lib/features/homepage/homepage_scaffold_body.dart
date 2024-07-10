@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../bookmark_list/bloc/bookmark_list_bloc.dart';
 import '../bookmark_list/bookmark_list_sliver_list.dart';
@@ -34,12 +33,10 @@ class HomepageScaffoldBody extends StatelessWidget {
           case NavigationItem.bookmark:
             return RefreshIndicator(
               onRefresh: () async => bookmarkListCubit.refresh(),
-              child: const SlidableAutoCloseBehavior(
-                child: HomepageScrollView(
-                  slivers: [
-                    BookmarkListSliverList(),
-                  ],
-                ),
+              child: const HomepageScrollView(
+                slivers: [
+                  BookmarkListSliverList(),
+                ],
               ),
             );
 

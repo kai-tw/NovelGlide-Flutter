@@ -21,16 +21,19 @@ class HomepageNavigationRail extends StatelessWidget {
           labelType: NavigationRailLabelType.none,
           destinations: [
             NavigationRailDestination(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
               icon: const Icon(Icons.shelves),
               selectedIcon: const Icon(Icons.shelves),
               label: Text(appLocalizations.titleBookshelf),
             ),
             NavigationRailDestination(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
               icon: const Icon(Icons.bookmark),
               selectedIcon: const Icon(Icons.bookmark),
               label: Text(appLocalizations.titleBookmarks),
             ),
             NavigationRailDestination(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
               icon: const Icon(Icons.settings),
               selectedIcon: const Icon(Icons.settings),
               label: Text(appLocalizations.titleSettings),

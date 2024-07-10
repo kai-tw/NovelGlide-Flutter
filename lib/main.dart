@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,7 @@ class App extends StatelessWidget {
             "/sign_in": (_) => const SignInPage(),
             "/register": (_) => const RegisterPage(),
           },
+          builder: (context, child) => AccessibilityTools(child: child),
           // debugShowCheckedModeBanner: false,
           // showSemanticsDebugger: true,
         );

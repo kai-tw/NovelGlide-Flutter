@@ -18,7 +18,7 @@ abstract class ThemeTemplate {
       colorScheme: colorScheme,
       floatingActionButtonTheme: floatingActionButtonTheme(colorScheme),
       inputDecorationTheme: inputDecorationTheme,
-      splashColor: Colors.transparent,
+      // splashColor: Colors.transparent,
       switchTheme: getSwitchTheme(colorScheme),
       useMaterial3: true,
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../reader_settings/reader_settings_bottom_sheet.dart';
 import 'bloc/reader_cubit.dart';
@@ -22,7 +23,10 @@ class ReaderNavBar extends StatelessWidget {
             buildWhen: (previous, current) => previous.prevChapterNumber != current.prevChapterNumber,
             builder: (BuildContext context, ReaderState state) {
               return IconButton(
-                icon: const Icon(Icons.arrow_back_ios_rounded),
+                icon: Icon(
+                  Icons.arrow_back_ios_rounded,
+                  semanticLabel: AppLocalizations.of(context)!.accessibilityReaderPrevChapterButton,
+                ),
                 onPressed: state.prevChapterNumber == -1 ? null : () => cubit.changeChapter(state.prevChapterNumber),
               );
             },
@@ -33,7 +37,10 @@ class ReaderNavBar extends StatelessWidget {
             buildWhen: (previous, current) => previous.nextChapterNumber != current.nextChapterNumber,
             builder: (BuildContext context, ReaderState state) {
               return IconButton(
-                icon: const Icon(Icons.arrow_forward_ios_rounded),
+                icon: Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  semanticLabel: AppLocalizations.of(context)!.accessibilityReaderNextChapterButton,
+                ),
                 onPressed: state.nextChapterNumber == -1 ? null : () => cubit.changeChapter(state.nextChapterNumber),
               );
             },
@@ -48,7 +55,10 @@ class ReaderNavBar extends StatelessWidget {
               final bool isDisabled =
                   state.bookmarkObject.chapterNumber != state.chapterNumber || state.readerSettings.autoSave;
               return IconButton(
-                icon: const Icon(Icons.bookmark_rounded),
+                icon: Icon(
+                  Icons.bookmark_rounded,
+                  semanticLabel: AppLocalizations.of(context)!.accessibilityReaderBookmarkButton,
+                ),
                 onPressed: isDisabled ? null : cubit.scrollToBookmark,
               );
             },
@@ -66,7 +76,10 @@ class ReaderNavBar extends StatelessWidget {
 
           /// The button that open the setting page of the reader.
           IconButton(
-            icon: const Icon(Icons.settings_rounded),
+            icon: Icon(
+              Icons.settings_rounded,
+              semanticLabel: AppLocalizations.of(context)!.accessibilityReaderSettingsButton,
+            ),
             onPressed: () => _navigateToSettingsPage(context),
           ),
         ],

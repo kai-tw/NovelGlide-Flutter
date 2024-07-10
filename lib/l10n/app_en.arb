@@ -176,7 +176,6 @@
   "brightnessLight": "Light",
   "brightnessDark": "Dark",
 
-  "accessibilityBookshelfPage": "The bookshelf page",
   "accessibilityReadingProgressBar": "Reading progress bar",
   "accessibilityBackButton": "Go back button",
   "accessibilityAddBookButton": "Add a book button",
@@ -189,5 +188,19 @@
   "accessibilityFilePicker": "File picker",
   "accessibilityImagePicker": "Image picker",
   "accessibilityAppIcon": "NovelGlide icon",
-  "accessibilityBookCover": "The book cover"
+  "accessibilityBookCover": "The book cover",
+  "accessibilityBookshelfListItem": "A book",
+  "accessibilityBookshelfListItemOnTap": "Tap to open this book",
+  "accessibilityBookshelfListItemOnLongPress": "Long press and drag to delete the book",
+  "accessibilityBookmarkListItem": "A bookmark",
+  "accessibilityBookmarkListItemOnTap": "Tap to continue reading from the bookmark",
+  "accessibilityBookmarkListItemOnLongPress": "Long press and drag to delete the bookmark",
+  "accessibilityReaderPrevChapterButton": "Previous chapter button",
+  "accessibilityReaderNextChapterButton": "Next chapter button",
+  "accessibilityReaderBookmarkButton": "Jump to the bookmark button",
+  "accessibilityReaderAddBookmarkButton": "Add a bookmark button",
+  "accessibilityReaderSettingsButton": "Reader settings button",
+  "accessibilityReaderSettingsAutoSaveSwitch": "Auto save a bookmark switch",
+  "accessibilityReaderSettingsAutoSaveSwitchOn": "On",
+  "accessibilityReaderSettingsAutoSaveSwitchOff": "Off"
 }
