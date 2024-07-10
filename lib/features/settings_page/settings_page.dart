@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../processor/guide_processor.dart';
 import '../about_page/about_page_scaffold.dart';
 import '../developer_page/developer_page.dart';
 import '../homepage/widgets/homepage_scroll_view.dart';
@@ -16,6 +16,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final List<Widget> buttonList = [
+      /// Theme manager button
       SliverToBoxAdapter(
         child: SettingPageButton(
           targetPage: const ThemeManager(),
@@ -23,20 +24,8 @@ class SettingsPage extends StatelessWidget {
           label: appLocalizations.settingsPageTheme,
         ),
       ),
-      SliverToBoxAdapter(
-        child: SettingPageButton(
-          onPressed: () {
-            GuideProcessor.create();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(appLocalizations.comingSoon),
-              ),
-            );
-          },
-          iconData: Icons.book_outlined,
-          label: appLocalizations.settingsPageGetGuide,
-        ),
-      ),
+
+      /// About page button
       SliverToBoxAdapter(
         child: SettingPageButton(
           targetPage: const AboutPageScaffold(),
@@ -48,6 +37,7 @@ class SettingsPage extends StatelessWidget {
 
     if (kDebugMode) {
       buttonList.add(
+        /// Developer page button
         SliverToBoxAdapter(
           child: SettingPageButton(
             targetPage: const DeveloperPage(),
