@@ -58,8 +58,8 @@ class BookData {
   }
 
   /// Is the book exists
-  bool isExists() {
-    return Directory(getPath()).existsSync();
+  bool isExist() {
+    return BookProcessor.isExist(name);
   }
 
   /// Get the cover path

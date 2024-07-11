@@ -8,6 +8,7 @@ class ReaderSettingsSlider extends StatelessWidget {
   final double value;
   final void Function(double) onChanged;
   final void Function(double) onChangeEnd;
+  final String Function(double)? semanticFormatterCallback;
 
   const ReaderSettingsSlider({
     super.key,
@@ -18,6 +19,7 @@ class ReaderSettingsSlider extends StatelessWidget {
     required this.value,
     required this.onChanged,
     required this.onChangeEnd,
+    this.semanticFormatterCallback,
   });
 
   @override
@@ -37,6 +39,7 @@ class ReaderSettingsSlider extends StatelessWidget {
             value: value,
             onChanged: onChanged,
             onChangeEnd: onChangeEnd,
+            semanticFormatterCallback: semanticFormatterCallback
           ),
         ),
         Container(

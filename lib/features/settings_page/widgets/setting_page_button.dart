@@ -6,20 +6,16 @@ class SettingPageButton extends StatelessWidget {
     required this.iconData,
     required this.label,
     this.onPressed,
-    this.targetPage,
   });
 
   final void Function()? onPressed;
   final IconData iconData;
   final String label;
-  final Widget? targetPage;
 
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
-      onPressed: targetPage == null
-          ? onPressed
-          : () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => targetPage!)),
+      onPressed: onPressed,
       style: TextButton.styleFrom(
         alignment: Alignment.centerLeft,
         minimumSize: const Size.fromHeight(48),

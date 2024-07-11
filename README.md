@@ -15,6 +15,15 @@ A first attempt to develop a cross-platform app.
   - Change the theme and brightness.
 - **Bookmark features**
   - Import books from a zip file.
+- **Tablet Support**
+  - Change the layout to a larger screen such as tablets.
+
+## Testing
+If you are interested in NovelGlide and want to join its closed beta testing,
+you can join the testing by this link: [Google Play Store Invitation Page](https://play.google.com/apps/testing/com.kai_wu.novelglide)
+
+## Download Links
+- [Google Play Store](https://play.google.com/store/apps/details?id=com.kai_wu.novelglide) (still in closed beta testing)
 
 ## TODO-List
 - [ ] Export books

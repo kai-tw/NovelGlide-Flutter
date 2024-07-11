@@ -14,6 +14,7 @@ class BookshelfBookTitle extends StatelessWidget {
       maxLines: 3,
       textAlign: TextAlign.center,
       overflow: TextOverflow.ellipsis,
+      style: Theme.of(context).textTheme.bodyMedium,
     );
   }
 }

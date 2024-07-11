@@ -12,25 +12,22 @@ class TocCoverBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(24.0, 0, 24.0, 24.0),
-      child: AspectRatio(
-        aspectRatio: aspectRatio ?? 1,
-        child: BlocBuilder<TocCubit, TocState>(
-          builder: (context, state) {
-            return Hero(
-              tag: state.bookName,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-                ),
-                clipBehavior: Clip.hardEdge,
-                child: CommonBookCoverImage(path: BookProcessor.getCoverPathByName(state.bookName)),
+    return AspectRatio(
+      aspectRatio: aspectRatio ?? 1,
+      child: BlocBuilder<TocCubit, TocState>(
+        builder: (context, state) {
+          return Hero(
+            tag: state.bookName,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                borderRadius: const BorderRadius.all(Radius.circular(24.0)),
               ),
-            );
-          },
-        ),
+              clipBehavior: Clip.hardEdge,
+              child: CommonBookCoverImage(path: BookProcessor.getCoverPathByName(state.bookName)),
+            ),
+          );
+        },
       ),
     );
   }

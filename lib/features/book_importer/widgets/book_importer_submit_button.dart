@@ -18,7 +18,7 @@ class BookImporterSubmitButton extends StatelessWidget {
       onSuccess: () => Navigator.of(context).pop(true),
       onFailed: (e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(appLocalizations.importWhatFailed(appLocalizations.book)),
+          content: Text(appLocalizations.importBookFailed),
         ));
       },
     );

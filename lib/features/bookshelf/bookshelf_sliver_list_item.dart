@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/book_data.dart';
 import '../table_of_contents/table_of_content.dart';
 import 'bloc/bookshelf_bloc.dart';
-import 'bookshelf_book_cover.dart';
-import 'bookshelf_book_title.dart';
+import 'bookshelf_draggable_book.dart';
 
 class BookshelfSliverListItem extends StatelessWidget {
   const BookshelfSliverListItem(this.bookObject, {super.key});
@@ -14,47 +14,11 @@ class BookshelfSliverListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BookshelfCubit, BookshelfState>(
-      builder: (BuildContext context, BookshelfState state) {
-        final bool isSelected = state.selectedSet.contains(bookObject.name);
-        return GestureDetector(
-          onTap: () => _onTap(context, state.code, isSelected),
-          onLongPress: () => _onLongPress(context, state.code),
-          child: AnimatedContainer(
-            margin: const EdgeInsets.all(8.0),
-            height: 350.0,
-            duration: const Duration(milliseconds: 200),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24.0),
-              color: isSelected ? Theme.of(context).colorScheme.surfaceContainerHighest : Colors.transparent,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  BookshelfBookCover(bookObject),
-                  const Padding(padding: EdgeInsets.only(bottom: 16.0)),
-                  BookshelfBookTitle(bookObject),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void _onTap(BuildContext context, BookshelfStateCode code, bool isSelected) {
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
-    switch (code) {
-      case BookshelfStateCode.selecting:
-        if (isSelected) {
-          cubit.removeSelect(bookObject.name);
-        } else {
-          cubit.addSelect(bookObject.name);
-        }
-        break;
-      case BookshelfStateCode.normal:
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(24.0),
+      onTap: () {
         Navigator.of(context).push(_tocRoute(cubit)).then(
           (isDirty) {
             if (isDirty == true) {
@@ -62,19 +26,14 @@ class BookshelfSliverListItem extends StatelessWidget {
             }
           },
         );
-      default:
-    }
-  }
-
-  void _onLongPress(BuildContext context, BookshelfStateCode code) {
-    final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
-    switch (code) {
-      case BookshelfStateCode.normal:
-      case BookshelfStateCode.selecting:
-        cubit.addSelect(bookObject.name);
-        break;
-      default:
-    }
+      },
+      child: Semantics(
+        label: AppLocalizations.of(context)!.accessibilityBookshelfListItem,
+        onTapHint: AppLocalizations.of(context)!.accessibilityBookshelfListItemOnTap,
+        onLongPressHint: AppLocalizations.of(context)!.accessibilityBookshelfListItemOnLongPress,
+        child: BookshelfDraggableBook(bookObject),
+      ),
+    );
   }
 
   Route _tocRoute(BookshelfCubit cubit) {

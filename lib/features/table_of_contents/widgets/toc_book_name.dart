@@ -11,14 +11,11 @@ class TocBookName extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(36.0, 0, 36.0, 24.0),
       child: BlocBuilder<TocCubit, TocState>(
+        buildWhen: (previous, current) => previous.bookName != current.bookName,
         builder: (BuildContext context, TocState state) {
-          return BlocBuilder<TocCubit, TocState>(
-            builder: (BuildContext context, TocState state) {
-              return Text(
-                state.bookName,
-                style: Theme.of(context).textTheme.titleLarge,
-              );
-            },
+          return Text(
+            state.bookName,
+            style: Theme.of(context).textTheme.titleLarge,
           );
         },
       ),

@@ -11,6 +11,7 @@ class BookmarkListSliverList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<BookmarkListCubit>(context).refresh();
     return BlocBuilder<BookmarkListCubit, BookmarkListState>(
       builder: (context, state) {
         switch (state.code) {

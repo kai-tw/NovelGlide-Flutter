@@ -83,6 +83,9 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   @override
   Future<void> close() async {
+    if (state.readerSettings.autoSave) {
+      saveBookmark();
+    }
     super.close();
     scrollController.dispose();
   }

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../data/window_class.dart';
 import '../about_page/about_page_scaffold.dart';
 import '../developer_page/developer_page.dart';
 import '../homepage/widgets/homepage_scroll_view.dart';
@@ -15,34 +16,59 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final List<Widget> buttonList = [
+      /// Theme manager button
       SliverToBoxAdapter(
         child: SettingPageButton(
-          targetPage: const ThemeManager(),
+          onPressed: () => _navigateToTargetPage(context, const ThemeManager(), dialogWidth: 400.0),
           iconData: Icons.format_paint_rounded,
-          label: appLocalizations.themeTitle,
+          label: appLocalizations.settingsPageTheme,
         ),
       ),
+
+      /// About page button
       SliverToBoxAdapter(
         child: SettingPageButton(
-          targetPage: const AboutPageScaffold(),
+          onPressed: () => _navigateToTargetPage(context, const AboutPageScaffold(), dialogWidth: 360.0),
           iconData: Icons.info_outline,
-          label: appLocalizations.titleAbout,
+          label: appLocalizations.settingsPageAbout,
         ),
       ),
     ];
 
     if (kDebugMode) {
       buttonList.add(
-        const SliverToBoxAdapter(
+        /// Developer page button
+        SliverToBoxAdapter(
           child: SettingPageButton(
-            targetPage: DeveloperPage(),
+            onPressed: () => _navigateToTargetPage(context, const DeveloperPage(), dialogWidth: 360.0),
             iconData: Icons.code_rounded,
-            label: 'Developer Page',
+            label: appLocalizations.settingsPageDeveloperPage,
           ),
-        )
+        ),
       );
     }
 
     return HomepageScrollView(slivers: buttonList);
+  }
+
+  /// Based on the window size, navigate to the target page
+  Future<dynamic> _navigateToTargetPage(BuildContext context, Widget targetPage, {double? dialogWidth}) async {
+    switch (WindowClassExtension.getClassByWidth(MediaQuery.of(context).size.width)) {
+      case WindowClass.compact:
+        return Navigator.of(context).push(MaterialPageRoute(builder: (_) => targetPage));
+      default:
+        return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              clipBehavior: Clip.hardEdge,
+              child: SizedBox(
+                width: dialogWidth ?? WindowClassExtension.mediumConstraints.minWidth,
+                child: targetPage,
+              ),
+            );
+          },
+        );
+    }
   }
 }

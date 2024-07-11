@@ -1,81 +1,89 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../data/chapter_data.dart';
-import '../../common_components/common_slidable_action/common_slidable_action_delete.dart';
-import '../../reader/reader.dart';
+import '../../common_components/common_loading.dart';
 import '../bloc/toc_bloc.dart';
-import 'toc_chapter_title.dart';
+import 'toc_chapter_widget.dart';
 
 class TocSliverChapterListItem extends StatelessWidget {
-  const TocSliverChapterListItem(this.chapterData, {super.key});
-
   final ChapterData chapterData;
+
+  const TocSliverChapterListItem(this.chapterData, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
-    final int chapterNumber = chapterData.ordinalNumber;
-    final String bookName = chapterData.bookName;
+    final double fontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
+    final double verticalPadding = MediaQuery.of(context).textScaler.scale(fontSize) / 2;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      child: Container(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(4.0)),
-        ),
-        clipBehavior: Clip.hardEdge,
-        child: Slidable(
-          groupTag: "TOCSliverChapterList",
-          endActionPane: ActionPane(
-            extentRatio: 0.3,
-            motion: const DrawerMotion(),
-            children: [
-              CommonSlidableActionDelete(onDelete: () => cubit.deleteChapter(chapterNumber)),
-            ],
-          ),
-          child: SizedBox(
-            width: double.infinity,
-            child: TextButton(
-              onPressed: () => Navigator.of(context).push(_navigateToReader(bookName, chapterNumber)),
-              style: TextButton.styleFrom(
-                alignment: Alignment.centerLeft,
-                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                foregroundColor: Theme.of(context).colorScheme.onSurface,
-              ),
-              child: TocChapterTitle(chapterData),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: verticalPadding),
+      child: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          return LongPressDraggable(
+            onDragStarted: () => BlocProvider.of<TocCubit>(context).setDragging(true),
+            onDragEnd: (_) => BlocProvider.of<TocCubit>(context).setDragging(false),
+            onDragCompleted: () {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) => const Dialog(
+                  child: CommonLoading(),
+                ),
+              );
+              chapterData.delete().then((isSuccess) {
+                Navigator.of(context).pop();
+                if (isSuccess) {
+                  BlocProvider.of<TocCubit>(context).refresh();
 
-  Route _navigateToReader(String bookName, int chapterNumber) {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => ReaderWidget(bookName, chapterNumber),
-      transitionDuration: const Duration(milliseconds: 300),
-      reverseTransitionDuration: const Duration(milliseconds: 300),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return FadeTransition(
-          opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
-            CurvedAnimation(
-              parent: animation,
-              curve: Curves.easeInOut,
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)!.deleteChapterSuccessfully),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)!.deleteChapterFailed),
+                    ),
+                  );
+                }
+              });
+            },
+            data: chapterData,
+            feedback: Container(
+              width: constraints.maxWidth,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
+                borderRadius: BorderRadius.circular(16.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
+                    blurRadius: 8.0,
+                    spreadRadius: 0.0,
+                    offset: const Offset(0.0, 4.0),
+                  ),
+                ],
+              ),
+              child: TocChapterWidget(chapterData),
             ),
-          ),
-          child: ScaleTransition(
-            scale: Tween<double>(begin: 0.0, end: 1.0).animate(
-              CurvedAnimation(
-                parent: animation,
-                curve: Curves.easeInOut,
+            childWhenDragging: Opacity(
+              opacity: 0.3,
+              child: Container(
+                width: constraints.maxWidth,
+                color: Theme.of(context).colorScheme.surface,
+                child: TocChapterWidget(chapterData),
               ),
             ),
-            child: child,
-          ),
-        );
-      },
+            child: Container(
+              width: constraints.maxWidth,
+              color: Theme.of(context).colorScheme.surface,
+              child: TocChapterWidget(chapterData),
+            ),
+          );
+        }
+      ),
     );
   }
 }

@@ -26,7 +26,7 @@ class EditBookFormCubit extends Cubit<EditBookFormState> {
     }
 
     final BookData inputBookObject = BookData.fromName(name);
-    if (inputBookObject.isExists()) {
+    if (inputBookObject.isExist()) {
       return EditBookNameStateCode.exists;
     }
 
