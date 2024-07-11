@@ -13,7 +13,7 @@ import 'bloc/navigation_bloc.dart';
 import 'homepage_app_bar.dart';
 import 'homepage_nav_bar.dart';
 import 'homepage_scaffold_body.dart';
-import 'widgets/homepage_dragging_bar.dart';
+import 'widgets/homepage_dragging_target_bar.dart';
 
 /// The homepage of the app
 class Homepage extends StatelessWidget {
@@ -79,7 +79,7 @@ class HomepageScaffold extends StatelessWidget {
                   ],
                 ),
                 floatingActionButton: homepageState.isDragging
-                    ? const HomepageDraggingBar()
+                    ? const HomepageDraggingTargetBar()
                     : state.navItem == NavigationItem.bookshelf
                         ? const BookshelfAddBookButton()
                         : null,

@@ -41,24 +41,42 @@ class BookshelfDraggableBook extends StatelessWidget {
             }
           },
           data: bookObject,
-          feedback: Opacity(
-            opacity: 0.7,
-            child: _createBookWidget(context, constraints),
+          feedback: Container(
+            width: constraints.maxWidth,
+            height: constraints.maxHeight,
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
+              borderRadius: BorderRadius.circular(24.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
+                  blurRadius: 8.0,
+                  spreadRadius: 0.0,
+                  offset: const Offset(0.0, 4.0),
+                ),
+              ],
+            ),
+            child: BookshelfBookWidget(bookObject: bookObject),
           ),
-          childWhenDragging: const SizedBox(),
-          child: _createBookWidget(context, constraints),
+          childWhenDragging: Opacity(
+            opacity: 0.3,
+            child: Container(
+              width: constraints.maxWidth,
+              height: constraints.maxHeight,
+              padding: const EdgeInsets.all(16.0),
+              child: BookshelfBookWidget(bookObject: bookObject),
+            ),
+          ),
+          child: Container(
+            width: constraints.maxWidth,
+            height: constraints.maxHeight,
+            padding: const EdgeInsets.all(16.0),
+            color: Colors.transparent,
+            child: BookshelfBookWidget(bookObject: bookObject),
+          ),
         );
       },
-    );
-  }
-
-  Widget _createBookWidget(BuildContext context, BoxConstraints constraints) {
-    return Container(
-      width: constraints.maxWidth,
-      height: constraints.maxHeight,
-      padding: const EdgeInsets.all(16.0),
-      color: Colors.transparent,
-      child: BookshelfBookWidget(bookObject: bookObject),
     );
   }
 }

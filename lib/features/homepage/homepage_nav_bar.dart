@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/window_class.dart';
 import 'bloc/homepage_bloc.dart';
-import 'widgets/homepage_dragging_bar.dart';
+import 'widgets/homepage_dragging_target_bar.dart';
 import 'widgets/homepage_navigation_bar.dart';
 import 'widgets/homepage_navigation_rail.dart';
 
@@ -37,7 +37,7 @@ class HomepageNavBarCompactView extends StatelessWidget {
           borderRadius: BorderRadius.circular(36.0),
         ),
         clipBehavior: Clip.hardEdge,
-        child: state.isDragging ? const HomepageDraggingBar() : const HomepageNavigationBar(),
+        child: state.isDragging ? const HomepageDraggingTargetBar() : const HomepageNavigationBar(),
       );
     });
   }

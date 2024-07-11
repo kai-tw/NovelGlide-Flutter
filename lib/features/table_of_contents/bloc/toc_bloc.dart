@@ -27,11 +27,8 @@ class TocCubit extends Cubit<TocState> {
     emit(state.copyWith(isDirty: true));
   }
 
-  void deleteChapter(int chapterNumber) async {
-    final bool isSuccess = await ChapterProcessor.delete(state.bookName, chapterNumber);
-    if (isSuccess) {
-      refresh();
-    }
+  void setDragging(bool isDragging) {
+    emit(state.copyWith(isDragging: isDragging));
   }
 }
 
@@ -41,9 +38,10 @@ class TocState extends Equatable {
   final bool isCoverExist;
   final TocStateCode code;
   final List<ChapterData> chapterList;
+  final bool isDragging;
 
   @override
-  List<Object?> get props => [isDirty, bookName, isCoverExist, code, chapterList];
+  List<Object?> get props => [isDirty, bookName, isCoverExist, code, chapterList, isDragging];
 
   const TocState({
     this.isDirty = false,
@@ -51,6 +49,7 @@ class TocState extends Equatable {
     this.isCoverExist = false,
     this.code = TocStateCode.loading,
     this.chapterList = const [],
+    this.isDragging = false,
   });
 
   TocState copyWith({
@@ -59,6 +58,7 @@ class TocState extends Equatable {
     bool? isCoverExist,
     TocStateCode? code,
     List<ChapterData>? chapterList,
+    bool? isDragging,
   }) {
     return TocState(
       isDirty: isDirty ?? this.isDirty,
@@ -66,6 +66,7 @@ class TocState extends Equatable {
       isCoverExist: isCoverExist ?? this.isCoverExist,
       code: code ?? this.code,
       chapterList: chapterList ?? this.chapterList,
+      isDragging: isDragging ?? this.isDragging,
     );
   }
 }

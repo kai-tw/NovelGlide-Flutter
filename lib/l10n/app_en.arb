@@ -22,7 +22,7 @@
   "nullValue": "Blank",
   "comingSoon": "Coming soon",
 
-  "homepageDragHereToDelete": "Drag here to delete",
+  "commonDragHereToDelete": "Drag here to delete",
 
   "greetingWord": "Hi",
   "greetingPhrase": "Hi {displayName}",
@@ -195,6 +195,9 @@
   "accessibilityBookmarkListItem": "A bookmark",
   "accessibilityBookmarkListItemOnTap": "Tap to continue reading from the bookmark",
   "accessibilityBookmarkListItemOnLongPress": "Long press and drag to delete the bookmark",
+  "accessibilityTocListItem": "A chapter",
+  "accessibilityTocListItemOnTap": "Tap to open this chapter",
+  "accessibilityTocListItemOnLongPress": "Long press and drag to delete the chapter",
   "accessibilityReaderPrevChapterButton": "Previous chapter button",
   "accessibilityReaderNextChapterButton": "Next chapter button",
   "accessibilityReaderBookmarkButton": "Jump to the bookmark button",

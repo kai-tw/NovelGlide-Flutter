@@ -44,23 +44,39 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
         data: _bookmarkObject,
         feedback: Opacity(
           opacity: 0.7,
-          child: _createBookmarkWidget(context, constraints),
+          child: Container(
+            width: constraints.maxWidth,
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(24.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
+                  blurRadius: 8.0,
+                  spreadRadius: 0.0,
+                  offset: const Offset(0.0, 4.0),
+                ),
+              ],
+            ),
+            child: BookmarkListBookmarkWidget(_bookmarkObject),
+          ),
         ),
         childWhenDragging: Opacity(
-          opacity: 0,
-          child: _createBookmarkWidget(context, constraints),
+          opacity: 0.3,
+          child: Container(
+            width: constraints.maxWidth,
+            padding: const EdgeInsets.all(16.0),
+            child: BookmarkListBookmarkWidget(_bookmarkObject),
+          ),
         ),
-        child: _createBookmarkWidget(context, constraints),
+        child: Container(
+          width: constraints.maxWidth,
+          color: Colors.transparent,
+          padding: const EdgeInsets.all(16.0),
+          child: BookmarkListBookmarkWidget(_bookmarkObject),
+        ),
       );
     });
-  }
-
-  Widget _createBookmarkWidget(BuildContext context, BoxConstraints constraints) {
-    return Container(
-      width: constraints.maxWidth,
-      padding: const EdgeInsets.all(16.0),
-      color: Colors.transparent,
-      child: BookmarkListBookmarkWidget(_bookmarkObject),
-    );
   }
 }

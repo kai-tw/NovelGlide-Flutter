@@ -44,3 +44,6 @@ app.*.map.json
 
 # Macos
 /macos/build
+
+# Debug files
+app_untranslated.txt
