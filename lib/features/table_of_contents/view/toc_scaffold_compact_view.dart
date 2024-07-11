@@ -27,12 +27,13 @@ class TocScaffoldCompactView extends StatelessWidget {
               onRefresh: () async => cubit.refresh(),
               child: Column(
                 children: [
+                  Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
                   const Expanded(
                     child: TocScrollView(
                       slivers: [
                         SliverToBoxAdapter(
                           child: Padding(
-                            padding: EdgeInsets.only(left: 24.0, right: 24.0, bottom: 24.0),
+                            padding: EdgeInsets.all(24.0),
                             child: TocCoverBanner(),
                           ),
                         ),
@@ -43,7 +44,6 @@ class TocScaffoldCompactView extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
                 ],
               ),
             ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../ad_center/advertisement.dart';
+import '../../ad_center/advertisement_id.dart';
 import '../bookmark_list/bloc/bookmark_list_bloc.dart';
 import '../bookmark_list/bookmark_list_sliver_list.dart';
 import '../bookshelf/bloc/bookshelf_bloc.dart';
@@ -23,9 +25,12 @@ class HomepageScaffoldBody extends StatelessWidget {
           case NavigationItem.bookshelf:
             return RefreshIndicator(
               onRefresh: () async => bookshelfCubit.refresh(),
-              child: const HomepageScrollView(
+              child: HomepageScrollView(
                 slivers: [
-                  BookshelfSliverList(),
+                  SliverToBoxAdapter(
+                    child: Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+                  ),
+                  const BookshelfSliverList(),
                 ],
               ),
             );
