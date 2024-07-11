@@ -25,12 +25,16 @@ class HomepageScaffoldBody extends StatelessWidget {
           case NavigationItem.bookshelf:
             return RefreshIndicator(
               onRefresh: () async => bookshelfCubit.refresh(),
-              child: HomepageScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+              child: Column(
+                children: [
+                  Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+                  const Expanded(
+                    child: HomepageScrollView(
+                      slivers: [
+                        BookshelfSliverList(),
+                      ],
+                    ),
                   ),
-                  const BookshelfSliverList(),
                 ],
               ),
             );
@@ -38,9 +42,16 @@ class HomepageScaffoldBody extends StatelessWidget {
           case NavigationItem.bookmark:
             return RefreshIndicator(
               onRefresh: () async => bookmarkListCubit.refresh(),
-              child: const HomepageScrollView(
-                slivers: [
-                  BookmarkListSliverList(),
+              child: Column(
+                children: [
+                  Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+                  const Expanded(
+                    child: HomepageScrollView(
+                      slivers: [
+                        BookmarkListSliverList(),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             );
