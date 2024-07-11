@@ -165,5 +165,11 @@
   "accessibilityReaderSettingsButton": "閱讀器設定按鈕",
   "accessibilityReaderSettingsAutoSaveSwitch": "自動插入書籤開關",
   "accessibilityReaderSettingsAutoSaveSwitchOn": "開啟",
-  "accessibilityReaderSettingsAutoSaveSwitchOff": "關閉"
+  "accessibilityReaderSettingsAutoSaveSwitchOff": "關閉",
+  "accessibilityFontSizeSliderMinIcon": "最小字型大小圖示",
+  "accessibilityFontSizeSliderMaxIcon": "最大字型大小圖示",
+  "accessibilityFontSizeSlider": "字型大小滑桿",
+  "accessibilityLineHeightSliderMinIcon": "最小行高圖示",
+  "accessibilityLineHeightSliderMaxIcon": "最大行高圖示",
+  "accessibilityLineHeightSlider": "行高滑桿"
 }

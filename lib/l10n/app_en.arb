@@ -205,5 +205,11 @@
   "accessibilityReaderSettingsButton": "Reader settings button",
   "accessibilityReaderSettingsAutoSaveSwitch": "Auto save a bookmark switch",
   "accessibilityReaderSettingsAutoSaveSwitchOn": "On",
-  "accessibilityReaderSettingsAutoSaveSwitchOff": "Off"
+  "accessibilityReaderSettingsAutoSaveSwitchOff": "Off",
+  "accessibilityFontSizeSliderMinIcon": "Minimum font size icon",
+  "accessibilityFontSizeSliderMaxIcon": "Maximum font size icon",
+  "accessibilityFontSizeSlider": "Font size slider",
+  "accessibilityLineHeightSliderMinIcon": "Minimum line height icon",
+  "accessibilityLineHeightSliderMaxIcon": "Maximum line height icon",
+  "accessibilityLineHeightSlider": "Line height slider"
 }
