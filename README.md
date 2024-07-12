@@ -27,6 +27,16 @@ A first attempt to develop a cross-platform app.
       ├── bookmark.isar.lock    // Treat it as the bookmark of the book.
       └── The other files...    // Ignored.
       ```
+  - Import books from a zip file.
+    - The chapters, cover image, and bookmark in the book folder will be imported.
+    - The structure of the zip file should be like this:
+      ```
+      Bookshelf.zip (The name of the zip file is not important.)
+      ├── BookName1         // Treat it as a book named BookName1.
+      ├── BookName2         // Treat it as a book named BookName2.
+      ├── BookName3         // Treat it as a book named BookName3.
+      └── The other files...    // Ignored.
+      ```
 - **Tablet Support**
   - Change the layout to a larger screen such as a tablet.
 
