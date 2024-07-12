@@ -35,7 +35,7 @@ class AboutPageScaffold extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
-                AppInfo.instance.appVersion,
+                '${AppInfo.instance.appVersion} (${AppInfo.instance.buildNumber})',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
