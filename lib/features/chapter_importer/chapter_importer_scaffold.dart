@@ -20,11 +20,13 @@ class ChapterImporterScaffold extends StatelessWidget {
         leading: const CommonBackButton(),
         title: Text(appLocalizations.bookImporter),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: BlocProvider(
-          create: (context) => ChapterImporterCubit(bookData),
-          child: const ChapterImporterForm(),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: BlocProvider(
+            create: (context) => ChapterImporterCubit(bookData),
+            child: const ChapterImporterForm(),
+          ),
         ),
       ),
     );
