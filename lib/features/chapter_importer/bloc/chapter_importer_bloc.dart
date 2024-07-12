@@ -12,8 +12,8 @@ import '../../../processor/bookmark_processor.dart';
 import '../../../processor/chapter_processor.dart';
 import '../../../toolbox/random_utility.dart';
 
-class BookImporterCubit extends Cubit<BookImporterState> {
-  BookImporterCubit(this.bookData) : super(const BookImporterState());
+class ChapterImporterCubit extends Cubit<ChapterImporterState> {
+  ChapterImporterCubit(this.bookData) : super(const ChapterImporterState());
 
   BookData bookData;
   File? importFile;
@@ -61,7 +61,7 @@ class BookImporterCubit extends Cubit<BookImporterState> {
   }
 }
 
-class BookImporterState extends Equatable {
+class ChapterImporterState extends Equatable {
   final bool isOverwriteChapter;
   final bool isOverwriteCover;
   final bool isOverwriteBookmark;
@@ -69,18 +69,18 @@ class BookImporterState extends Equatable {
   @override
   List<Object?> get props => [isOverwriteChapter, isOverwriteCover, isOverwriteBookmark];
 
-  const BookImporterState({
+  const ChapterImporterState({
     this.isOverwriteChapter = false,
     this.isOverwriteCover = false,
     this.isOverwriteBookmark = false,
   });
 
-  BookImporterState copyWith({
+  ChapterImporterState copyWith({
     bool? isOverwriteChapter,
     bool? isOverwriteCover,
     bool? isOverwriteBookmark,
   }) {
-    return BookImporterState(
+    return ChapterImporterState(
       isOverwriteChapter: isOverwriteChapter ?? this.isOverwriteChapter,
       isOverwriteCover: isOverwriteCover ?? this.isOverwriteCover,
       isOverwriteBookmark: isOverwriteBookmark ?? this.isOverwriteBookmark,

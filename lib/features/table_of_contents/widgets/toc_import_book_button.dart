@@ -32,7 +32,7 @@ class TocImportBookButton extends StatelessWidget {
     switch (windowClass) {
       /// Push to the import book page
       case WindowClass.compact:
-        return Navigator.of(context).push(MaterialPageRoute(builder: (_) => BookImporterScaffold(bookData: bookData)));
+        return Navigator.of(context).push(MaterialPageRoute(builder: (_) => ChapterImporterScaffold(bookData: bookData)));
 
       /// Show in a dialog
       default:
@@ -43,7 +43,7 @@ class TocImportBookButton extends StatelessWidget {
               clipBehavior: Clip.hardEdge,
               child: SizedBox(
                 width: 360.0,
-                child: BookImporterScaffold(bookData: bookData),
+                child: ChapterImporterScaffold(bookData: bookData),
               ),
             );
           },

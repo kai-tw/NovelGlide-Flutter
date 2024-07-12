@@ -7,8 +7,8 @@ import '../common_components/common_back_button.dart';
 import 'bloc/chapter_importer_bloc.dart';
 import 'chapter_importer_form.dart';
 
-class BookImporterScaffold extends StatelessWidget {
-  const BookImporterScaffold({super.key, required this.bookData});
+class ChapterImporterScaffold extends StatelessWidget {
+  const ChapterImporterScaffold({super.key, required this.bookData});
 
   final BookData bookData;
 
@@ -23,8 +23,8 @@ class BookImporterScaffold extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: BlocProvider(
-          create: (context) => BookImporterCubit(bookData),
-          child: const BookImporterForm(),
+          create: (context) => ChapterImporterCubit(bookData),
+          child: const ChapterImporterForm(),
         ),
       ),
     );

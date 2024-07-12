@@ -7,19 +7,19 @@ import '../common_components/common_checkbox_with_label/common_checkbox_with_lab
 import 'widgets/chapter_importer_submit_button.dart';
 import 'widgets/chapter_importer_file_picker.dart';
 
-class BookImporterForm extends StatelessWidget {
-  const BookImporterForm({super.key});
+class ChapterImporterForm extends StatelessWidget {
+  const ChapterImporterForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final BookImporterCubit cubit = BlocProvider.of<BookImporterCubit>(context);
+    final ChapterImporterCubit cubit = BlocProvider.of<ChapterImporterCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Form(
       child: Column(
         children: [
           const Padding(
             padding: EdgeInsets.only(bottom: 32.0),
-            child: BookImporterFilePicker(),
+            child: ChapterImporterFilePicker(),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -44,7 +44,7 @@ class BookImporterForm extends StatelessWidget {
           ),
           const Align(
             alignment: Alignment.centerRight,
-            child: BookImporterSubmitButton(),
+            child: ChapterImporterSubmitButton(),
           ),
         ],
       ),
