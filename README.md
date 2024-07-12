@@ -41,10 +41,10 @@ A first attempt to develop a cross-platform app.
   - Change the layout to a larger screen such as a tablet.
 
 ## Testing
-If you are interested in NovelGlide and want to join its closed beta testing,
+If you are interested in NovelGlide and want to join the beta testing,
 you can join the testing by this link: [Google Play Store Invitation Page](https://play.google.com/apps/testing/com.kai_wu.novelglide)
 
-Note: If you join the closed beta testing, I hope you can use it for 14 consecutive days.
+Note: If you join the beta testing, I hope you can use it for 14 consecutive days.
 
 ## Download Links
 - [Google Play Store](https://play.google.com/store/apps/details?id=com.kai_wu.novelglide) (still in closed beta testing)
