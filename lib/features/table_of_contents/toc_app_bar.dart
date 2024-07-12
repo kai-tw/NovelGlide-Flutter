@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../common_components/common_back_button.dart';
 import 'bloc/toc_bloc.dart';
 import 'widgets/toc_edit_book_button.dart';
-import 'widgets/toc_import_book_button.dart';
+import 'widgets/toc_import_chapter_button.dart';
 
 class TocAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -24,7 +24,7 @@ class TocAppBar extends StatelessWidget implements PreferredSizeWidget {
           title: Text(appLocalizations.titleTOC),
           actions: [
             TocEditBookButton(bookName: state.bookName),
-            TocImportBookButton(bookName: state.bookName),
+            TocImportChapterButton(bookName: state.bookName),
           ],
         );
       },

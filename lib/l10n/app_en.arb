@@ -61,23 +61,23 @@
 
   "addBookSuccessfully": "Successfully add the book",
   "addBookFailed": "Failed to add the book",
-  "editBookSuccessfully": "Successfully edit the book",
-  "editBookFailed": "Failed to edit the book",
-  "importBookSuccessfully": "Successfully import the book",
-  "importBookFailed": "Failed to import the book",
-  "deleteBookSuccessfully": "Successfully delete the book",
-  "deleteBookFailed": "Failed to delete the book",
-
   "addChapterSuccessfully": "Successfully add the chapter",
   "addChapterFailed": "Failed to add the chapter",
+
+  "editBookSuccessfully": "Successfully edit the book",
+  "editBookFailed": "Failed to edit the book",
   "editChapterSuccessfully": "Successfully edit the chapter",
   "editChapterFailed": "Failed to edit the chapter",
+
+  "deleteBookSuccessfully": "Successfully delete the book",
+  "deleteBookFailed": "Failed to delete the book",
   "deleteChapterSuccessfully": "Successfully delete the chapter",
   "deleteChapterFailed": "Failed to delete the chapter",
-
   "deleteBookmarkSuccessfully": "Successfully delete the bookmark",
   "deleteBookmarkFailed": "Failed to delete the bookmark",
 
+  "importSuccessfully": "Successfully import the book",
+  "importFailed": "Failed to import the book",
   "importOverwriteChapter": "Do it overwrite the chapters?",
   "importOverwriteCover": "Do it overwrite the cover?",
   "importOverwriteBookmark": "Do it overwrite the bookmarks?",
@@ -103,6 +103,7 @@
   "bookNameHelperText": "You can't use these symbols: ",
   "bookCover": "The cover of this book",
   "bookImporter": "Book Importer",
+  "chapterImporter": "Chapter Importer",
 
   "fieldChapterName": "Chapter Name",
   "fieldChapterNumber": "Chapter #",

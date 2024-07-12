@@ -52,23 +52,23 @@
 
   "addBookSuccessfully": "新增書籍成功",
   "addBookFailed": "新增書籍失敗",
-  "editBookSuccessfully": "編輯書籍成功",
-  "editBookFailed": "編輯書籍失敗",
-  "importBookSuccessfully": "匯入書籍成功",
-  "importBookFailed": "匯入書籍失敗",
-  "deleteBookSuccessfully": "刪除書籍成功",
-  "deleteBookFailed": "刪除書籍失敗",
-
   "addChapterSuccessfully": "新增章節成功",
   "addChapterFailed": "新增章節失敗",
+
+  "editBookSuccessfully": "編輯書籍成功",
+  "editBookFailed": "編輯書籍失敗",
   "editChapterSuccessfully": "編輯章節成功",
   "editChapterFailed": "編輯章節失敗",
+
+  "deleteBookSuccessfully": "刪除書籍成功",
+  "deleteBookFailed": "刪除書籍失敗",
   "deleteChapterSuccessfully": "刪除章節成功",
   "deleteChapterFailed": "刪除章節失敗",
-
   "deleteBookmarkSuccessfully": "刪除書籤成功",
   "deleteBookmarkFailed": "刪除書籤失敗",
 
+  "importSuccessfully": "匯入成功",
+  "importFailed": "匯入失敗",
   "importOverwriteChapter": "是否覆蓋既有章節？",
   "importOverwriteCover": "是否覆蓋既有封面？",
   "importOverwriteBookmark": "是否覆蓋既有書籤？",
@@ -94,6 +94,7 @@
   "bookNameHelperText": "不可用的符號：",
   "bookCover": "封面",
   "bookImporter": "匯入書籍",
+  "chapterImporter": "匯入章節",
 
   "fieldChapterName": "章節名稱",
   "fieldChapterNumber": "第幾章",

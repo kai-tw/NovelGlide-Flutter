@@ -32,8 +32,10 @@ class CommonFormSubmitButton extends StatelessWidget {
           showDialog(
             context: context,
             barrierDismissible: false,
-            builder: (_) => const Dialog(
-              child: CommonProcessing(),
+            builder: (_) => Container(
+              padding: const EdgeInsets.all(24),
+              color: Theme.of(context).colorScheme.surface,
+              child: const CommonProcessing(),
             ),
           );
           Form.of(context).save();
