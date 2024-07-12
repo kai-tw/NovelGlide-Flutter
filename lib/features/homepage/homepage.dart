@@ -61,30 +61,33 @@ class HomepageScaffold extends StatelessWidget {
               extendBody: true,
               appBar: const HomepageAppBar(),
               body: const HomepageScaffoldBody(),
-              bottomNavigationBar: const HomepageNavBar(),
+              bottomNavigationBar: const SafeArea(child: HomepageNavBar()),
               floatingActionButton: state.navItem == NavigationItem.bookshelf ? const BookshelfAddBookButton() : null,
             );
 
           default:
             return BlocBuilder<HomepageCubit, HomepageState>(
-                builder: (BuildContext context, HomepageState homepageState) {
-              return Scaffold(
-                appBar: const HomepageAppBar(),
-                body: const Row(
-                  children: [
-                    HomepageNavBar(),
-                    Expanded(
-                      child: HomepageScaffoldBody(),
+              builder: (BuildContext context, HomepageState homepageState) {
+                return Scaffold(
+                  appBar: const HomepageAppBar(),
+                  body: const SafeArea(
+                    child: Row(
+                      children: [
+                        HomepageNavBar(),
+                        Expanded(
+                          child: HomepageScaffoldBody(),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                floatingActionButton: homepageState.isDragging
-                    ? const HomepageDraggingTargetBar()
-                    : state.navItem == NavigationItem.bookshelf
-                        ? const BookshelfAddBookButton()
-                        : null,
-              );
-            });
+                  ),
+                  floatingActionButton: homepageState.isDragging
+                      ? const HomepageDraggingTargetBar()
+                      : state.navItem == NavigationItem.bookshelf
+                          ? const BookshelfAddBookButton()
+                          : null,
+                );
+              },
+            );
         }
       },
     );

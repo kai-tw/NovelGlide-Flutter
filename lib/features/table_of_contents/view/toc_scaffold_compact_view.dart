@@ -23,28 +23,30 @@ class TocScaffoldCompactView extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             appBar: const TocAppBar(),
-            body: RefreshIndicator(
-              onRefresh: () async => cubit.refresh(),
-              child: Column(
-                children: [
-                  Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-                  const Expanded(
-                    child: TocScrollView(
-                      slivers: [
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: EdgeInsets.all(24.0),
-                            child: TocCoverBanner(),
+            body: SafeArea(
+              child: RefreshIndicator(
+                onRefresh: () async => cubit.refresh(),
+                child: Column(
+                  children: [
+                    Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+                    const Expanded(
+                      child: TocScrollView(
+                        slivers: [
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding: EdgeInsets.all(24.0),
+                              child: TocCoverBanner(),
+                            ),
                           ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: TocBookName(),
-                        ),
-                        TocSliverChapterList(),
-                      ],
+                          SliverToBoxAdapter(
+                            child: TocBookName(),
+                          ),
+                          TocSliverChapterList(),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             floatingActionButton: const TocAddChapterButton(),

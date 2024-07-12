@@ -13,15 +13,15 @@ class ReaderScaffoldMediumView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        surfaceTintColor: Theme.of(context).colorScheme.surface,
         title: const ReaderTitle(),
       ),
-      body: const Row(
-        children: [
-          ReaderNavigation(),
-          Expanded(child: ReaderBody()),
-        ],
+      body: const SafeArea(
+        child: Row(
+          children: [
+            ReaderNavigation(),
+            Expanded(child: ReaderBody()),
+          ],
+        ),
       ),
     );
   }

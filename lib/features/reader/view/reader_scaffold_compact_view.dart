@@ -13,11 +13,11 @@ class ReaderScaffoldCompactView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        // backgroundColor: Theme.of(context).colorScheme.surface,
-        // surfaceTintColor: Theme.of(context).colorScheme.surface,
         title: const ReaderTitle(),
       ),
-      body: const ReaderBody(),
+      body: const SafeArea(
+        child: ReaderBody(),
+      ),
       bottomNavigationBar: const ReaderNavigation(),
     );
   }
