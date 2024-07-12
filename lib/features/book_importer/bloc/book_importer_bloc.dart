@@ -53,9 +53,7 @@ class BookImporterCubit extends Cubit<BookImporterState> {
     final List<File> chapterFiles = tempFolder
         .listSync()
         .whereType<File>()
-        .where((file) =>
-            ChapterProcessor.chapterRegexp.hasMatch(basename(file.path)) &&
-            int.tryParse(basenameWithoutExtension(file.path)) != null)
+        .where((file) => ChapterProcessor.chapterRegexp.hasMatch(basename(file.path)))
         .toList();
     final File coverFile = File(join(tempFolder.path, BookProcessor.coverFileName));
 
