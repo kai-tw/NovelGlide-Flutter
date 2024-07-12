@@ -13,8 +13,20 @@ A first attempt to develop a cross-platform app.
 - **Appearance features**
   - Change the font size and line height.
   - Change the theme and brightness.
-- **Bookmark features**
-  - Import books from a zip file.
+- **Import features**
+  - Import chapters to a book from a zip file.
+    - You can determine whether to overwrite the existing chapter, cover, or bookmark.
+    - The structure of the zip file should be like this:
+      ```
+      BookName.zip (The name of the zip file is not important.)
+      ├── Chapter.1.txt         // Treat it as Chapter 1.
+      ├── Chapter.2.txt         // Treat it as Chapter 2.
+      ├── Chapter.3.txt
+      ├── Cover.jpg             // Treat it as the cover of the book.
+      ├── bookmark.isar         // Treat it as the bookmark of the book.
+      ├── bookmark.isar.lock    // Treat it as the bookmark of the book.
+      └── The other files...    // Ignored.
+      ```
 - **Tablet Support**
   - Change the layout to a larger screen such as a tablet.
 

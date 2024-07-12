@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'bloc/book_importer_bloc.dart';
+import 'bloc/chapter_importer_bloc.dart';
 import '../common_components/common_checkbox_with_label/common_checkbox_with_label.dart';
-import 'widgets/book_importer_submit_button.dart';
-import 'widgets/book_importer_file_picker.dart';
+import 'widgets/chapter_importer_submit_button.dart';
+import 'widgets/chapter_importer_file_picker.dart';
 
 class BookImporterForm extends StatelessWidget {
   const BookImporterForm({super.key});

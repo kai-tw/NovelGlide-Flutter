@@ -142,11 +142,16 @@ class ChapterProcessor {
     return false;
   }
 
-  /// Import chapters from a list of files.
-  static Future<void> import(String bookName, List<File> chapterFiles, {bool isOverwrite = false}) async {
+  /// Import chapters from a folder.
+  static Future<void> importFromFolder(String bookName, Directory folder, {bool isOverwrite = false}) async {
+    final List<File> chapterFiles = folder
+        .listSync()
+        .whereType<File>()
+        .where((file) => ChapterProcessor.chapterRegexp.hasMatch(basename(file.path)))
+        .toList();
+
     for (File file in chapterFiles) {
-      final String fileName = basename(file.path);
-      final int chapterNumber = getOrdinalNumberFromPath(fileName);
+      final int chapterNumber = getOrdinalNumberFromPath(file.path);
 
       if (isOverwrite || !ChapterProcessor.isExist(bookName, chapterNumber)) {
         await ChapterProcessor.create(bookName, chapterNumber, file);

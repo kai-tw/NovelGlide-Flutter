@@ -50,14 +50,9 @@ class BookImporterCubit extends Cubit<BookImporterState> {
       rethrow;
     }
 
-    final List<File> chapterFiles = tempFolder
-        .listSync()
-        .whereType<File>()
-        .where((file) => ChapterProcessor.chapterRegexp.hasMatch(basename(file.path)))
-        .toList();
     final File coverFile = File(join(tempFolder.path, BookProcessor.coverFileName));
 
-    await ChapterProcessor.import(bookName, chapterFiles, isOverwrite: state.isOverwriteChapter);
+    await ChapterProcessor.importFromFolder(bookName, tempFolder, isOverwrite: state.isOverwriteChapter);
     BookProcessor.importCover(bookName, coverFile, isOverwrite: state.isOverwriteCover);
     BookmarkProcessor.import(bookName, tempFolder.path, isOverwrite: state.isOverwriteBookmark);
 

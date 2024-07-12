@@ -4,8 +4,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/book_data.dart';
 import '../common_components/common_back_button.dart';
-import 'bloc/book_importer_bloc.dart';
-import 'book_importer_form.dart';
+import 'bloc/chapter_importer_bloc.dart';
+import 'chapter_importer_form.dart';
 
 class BookImporterScaffold extends StatelessWidget {
   const BookImporterScaffold({super.key, required this.bookData});

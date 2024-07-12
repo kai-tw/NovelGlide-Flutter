@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/window_class.dart';
-import '../../book_importer/book_importer_scaffold.dart';
+import '../../chapter_importer/chapter_importer_scaffold.dart';
 import '../bloc/toc_bloc.dart';
 
 class TocImportBookButton extends StatelessWidget {

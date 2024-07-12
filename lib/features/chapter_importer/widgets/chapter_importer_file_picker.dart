@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../common_components/common_file_picker/common_file_picker.dart';
 import '../../common_components/common_file_picker/common_file_picker_type.dart';
-import '../bloc/book_importer_bloc.dart';
+import '../bloc/chapter_importer_bloc.dart';
 
 class BookImporterFilePicker extends StatelessWidget {
   const BookImporterFilePicker({super.key});
