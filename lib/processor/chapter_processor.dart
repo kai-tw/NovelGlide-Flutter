@@ -13,7 +13,17 @@ import 'book_processor.dart';
 
 /// Process all the operation related to chapters.
 class ChapterProcessor {
-  static final RegExp chapterRegexp = RegExp(r'^\d+\.txt$');
+  static final RegExp chapterRegexp = RegExp(r'^Chapter\.\d+\.txt$');
+
+  /// Get the path of a chapter.
+  static String getPath(String bookName, int ordinalNumber) {
+    return join(BookProcessor.getPathByName(bookName), "Chapter.$ordinalNumber.txt");
+  }
+
+  /// Get the ordinal number of a chapter from its file name.
+  static int getOrdinalNumberFromPath(String path) {
+    return int.parse(basenameWithoutExtension(path).replaceAll("Chapter.", ""));
+  }
 
   /// Get all the chapter data of a book.
   static List<ChapterData> getList(String bookName) {
@@ -32,16 +42,11 @@ class ChapterProcessor {
       entries.sort(compareNatural);
 
       return entries
-          .map((e) => ChapterData(bookName: bookName, ordinalNumber: int.parse(basenameWithoutExtension(e))))
+          .map((e) => ChapterData(bookName: bookName, ordinalNumber: getOrdinalNumberFromPath(e)))
           .toList();
     }
 
     return [];
-  }
-
-  /// Get the path of a chapter.
-  static String getPath(String bookName, int ordinalNumber) {
-    return join(BookProcessor.getPathByName(bookName), "$ordinalNumber.txt");
   }
 
   /// Is the chapter exist.
@@ -137,11 +142,16 @@ class ChapterProcessor {
     return false;
   }
 
-  /// Import chapters from a list of files.
-  static Future<void> import(String bookName, List<File> chapterFiles, {bool isOverwrite = false}) async {
+  /// Import chapters from a folder.
+  static Future<void> importFromFolder(String bookName, Directory folder, {bool isOverwrite = false}) async {
+    final List<File> chapterFiles = folder
+        .listSync()
+        .whereType<File>()
+        .where((file) => ChapterProcessor.chapterRegexp.hasMatch(basename(file.path)))
+        .toList();
+
     for (File file in chapterFiles) {
-      final String fileName = basename(file.path);
-      final int chapterNumber = int.parse(basenameWithoutExtension(fileName));
+      final int chapterNumber = getOrdinalNumberFromPath(file.path);
 
       if (isOverwrite || !ChapterProcessor.isExist(bookName, chapterNumber)) {
         await ChapterProcessor.create(bookName, chapterNumber, file);

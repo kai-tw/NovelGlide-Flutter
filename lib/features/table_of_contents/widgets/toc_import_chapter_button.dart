@@ -4,20 +4,20 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/window_class.dart';
-import '../../book_importer/book_importer_scaffold.dart';
+import '../../chapter_importer/chapter_importer_scaffold.dart';
 import '../bloc/toc_bloc.dart';
 
-class TocImportBookButton extends StatelessWidget {
+class TocImportChapterButton extends StatelessWidget {
   final String bookName;
 
-  const TocImportBookButton({super.key, required this.bookName});
+  const TocImportChapterButton({super.key, required this.bookName});
 
   @override
   Widget build(BuildContext context) {
     final BookData bookData = BookData.fromName(bookName);
     return IconButton(
       onPressed: () {
-        _navigateToImportBook(context, bookData).then((isSuccess) => _onPopBack(context, isSuccess));
+        _navigateToImportChapter(context, bookData).then((isSuccess) => _onPopBack(context, isSuccess));
       },
       icon: Icon(
         Icons.save_alt_rounded,
@@ -27,12 +27,12 @@ class TocImportBookButton extends StatelessWidget {
   }
 
   /// Based on the window size, navigate to the import book page
-  Future<dynamic> _navigateToImportBook(BuildContext context, BookData bookData) async {
+  Future<dynamic> _navigateToImportChapter(BuildContext context, BookData bookData) async {
     final WindowClass windowClass = WindowClassExtension.getClassByWidth(MediaQuery.of(context).size.width);
     switch (windowClass) {
       /// Push to the import book page
       case WindowClass.compact:
-        return Navigator.of(context).push(MaterialPageRoute(builder: (_) => BookImporterScaffold(bookData: bookData)));
+        return Navigator.of(context).push(MaterialPageRoute(builder: (_) => ChapterImporterScaffold(bookData: bookData)));
 
       /// Show in a dialog
       default:
@@ -43,7 +43,7 @@ class TocImportBookButton extends StatelessWidget {
               clipBehavior: Clip.hardEdge,
               child: SizedBox(
                 width: 360.0,
-                child: BookImporterScaffold(bookData: bookData),
+                child: ChapterImporterScaffold(bookData: bookData),
               ),
             );
           },
@@ -58,11 +58,11 @@ class TocImportBookButton extends StatelessWidget {
     if (isSuccess == true) {
       cubit.refresh();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(appLocalizations.importBookSuccessfully),
+        content: Text(appLocalizations.importSuccessfully),
       ));
     } else if (isSuccess == false) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(appLocalizations.importBookFailed),
+        content: Text(appLocalizations.importFailed),
       ));
     }
   }

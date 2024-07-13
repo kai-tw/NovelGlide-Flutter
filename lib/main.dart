@@ -46,7 +46,7 @@ class App extends StatelessWidget {
       initTheme: initTheme,
       builder: (context, initTheme) {
         return MaterialApp(
-          title: 'NovelGlide',
+          title: AppInfo.instance.appName,
           theme: initTheme,
           localizationsDelegates: const [
             AppLocalizations.delegate,
@@ -66,8 +66,6 @@ class App extends StatelessWidget {
             "/register": (_) => const RegisterPage(),
           },
           builder: (context, child) => AccessibilityTools(child: child),
-          // debugShowCheckedModeBanner: false,
-          // showSemanticsDebugger: true,
         );
       },
     );

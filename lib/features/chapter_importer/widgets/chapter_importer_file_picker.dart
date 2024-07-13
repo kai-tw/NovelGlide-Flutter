@@ -4,10 +4,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../common_components/common_file_picker/common_file_picker.dart';
 import '../../common_components/common_file_picker/common_file_picker_type.dart';
-import '../bloc/book_importer_bloc.dart';
+import '../bloc/chapter_importer_bloc.dart';
 
-class BookImporterFilePicker extends StatelessWidget {
-  const BookImporterFilePicker({super.key});
+class ChapterImporterFilePicker extends StatelessWidget {
+  const ChapterImporterFilePicker({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class BookImporterFilePicker extends StatelessWidget {
         helperText: AppLocalizations.of(context)!.fileTypeHelperText + extensionText,
       ),
       type: CommonFilePickerType.archive,
-      onSaved: (file) => BlocProvider.of<BookImporterCubit>(context).importFile = file,
+      onSaved: (file) => BlocProvider.of<ChapterImporterCubit>(context).importFile = file,
     );
   }
 }
