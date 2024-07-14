@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/chapter_data.dart';
 import '../../reader/reader.dart';
+import '../bloc/toc_bloc.dart';
 import 'toc_chapter_title.dart';
 
 class TocChapterWidget extends StatelessWidget {
@@ -16,15 +18,24 @@ class TocChapterWidget extends StatelessWidget {
     final double iconSize = IconTheme.of(context).size ?? 24.0;
 
     return TextButton.icon(
-      onPressed: () => Navigator.of(context).push(_navigateToReader(bookName, chapterNumber)),
+      onPressed: () => Navigator.of(context)
+          .push(_navigateToReader(bookName, chapterNumber))
+          .then((_) => BlocProvider.of<TocCubit>(context).refresh()),
       style: TextButton.styleFrom(
         alignment: Alignment.centerLeft,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
         foregroundColor: Theme.of(context).colorScheme.onSurface,
       ),
-      icon: Icon(
-        Icons.numbers_rounded,
-        size: MediaQuery.of(context).textScaler.scale(iconSize),
+      icon: BlocBuilder<TocCubit, TocState>(
+        buildWhen: (previous, current) => previous.bookmarkData.chapterNumber != current.bookmarkData.chapterNumber,
+        builder: (BuildContext context, TocState state) {
+          final bool isBookmarked = state.bookmarkData.isValid && chapterNumber == state.bookmarkData.chapterNumber;
+          return Icon(
+            isBookmarked ? Icons.bookmark_rounded : Icons.numbers_rounded,
+            size: MediaQuery.of(context).textScaler.scale(iconSize),
+            color: isBookmarked ? Theme.of(context).colorScheme.error : null,
+          );
+        },
       ),
       label: TocChapterTitle(chapterData),
     );
