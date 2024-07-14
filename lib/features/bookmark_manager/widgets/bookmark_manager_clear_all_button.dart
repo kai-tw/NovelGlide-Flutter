@@ -12,35 +12,36 @@ class BookmarkManagerClearAllButton extends StatelessWidget {
     return TextButton.icon(
       onPressed: () async {
         showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(AppLocalizations.of(context)!.alertDialogClearAllBookmarksTitle),
-                content: Text(AppLocalizations.of(context)!.alertDialogClearAllBookmarksDescription),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      _clearAllBookmarks().then((_) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(AppLocalizations.of(context)!.bookmarkManagerClearAllButtonDone),
-                          ),
-                        );
-                      });
-                    },
-                    style: TextButton.styleFrom(
-                      foregroundColor: Theme.of(context).colorScheme.error,
-                    ),
-                    child: Text(AppLocalizations.of(context)!.delete),
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(AppLocalizations.of(context)!.alertDialogClearAllBookmarksTitle),
+              content: Text(AppLocalizations.of(context)!.alertDialogClearAllBookmarksDescription),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _clearAllBookmarks().then((_) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(AppLocalizations.of(context)!.bookmarkManagerClearAllButtonDone),
+                        ),
+                      );
+                    });
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.error,
                   ),
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text(AppLocalizations.of(context)!.cancel),
-                  ),
-                ],
-              );
-            });
+                  child: Text(AppLocalizations.of(context)!.delete),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(AppLocalizations.of(context)!.cancel),
+                ),
+              ],
+            );
+          },
+        );
       },
       style: TextButton.styleFrom(
         backgroundColor: Theme.of(context).colorScheme.error,
