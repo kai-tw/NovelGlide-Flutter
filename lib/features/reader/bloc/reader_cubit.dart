@@ -18,7 +18,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     final String bookName = state.bookName;
     final int chapterNumber = state.chapterNumber;
 
-    final BookmarkData bookmarkObject = BookmarkData.loadFromBookName(bookName);
+    final BookmarkData bookmarkObject = BookmarkData.fromBookName(bookName);
     final ReaderSettingsData readerSettings = ReaderSettingsData.load();
 
     emit(state.copyWith(

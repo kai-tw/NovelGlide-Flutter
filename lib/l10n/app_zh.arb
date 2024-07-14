@@ -48,8 +48,6 @@
   "notSignedInMessage": "尚未登入",
   "goToLoginPage": "前往登入",
 
-  "dialogDeleteConfirmation": "將會永久刪除。",
-
   "addBookSuccessfully": "新增書籍成功",
   "addBookFailed": "新增書籍失敗",
   "addChapterSuccessfully": "新增章節成功",
@@ -89,6 +87,7 @@
   "titleWelcomeJoin": "歡迎加入",
   "titleAccountPage": "我的帳號",
   "titleAbout": "關於",
+  "titleBookmarkManager": "書籤管理員",
 
   "fieldItemExists": "已存在",
   "fieldOptional": "（選填）",
@@ -141,6 +140,12 @@
   "brightnessSystem": "系統",
   "brightnessLight": "淺色",
   "brightnessDark": "深色",
+
+  "bookmarkManagerClearAllButton": "清除所有書籤",
+  "bookmarkManagerClearAllButtonDone": "清除完成",
+
+  "alertDialogClearAllBookmarksTitle": "清除所有書籤？",
+  "alertDialogClearAllBookmarksDescription": "這將永久清除書籤。",
 
   "accessibilityReadingProgressBar": "閱讀進度條",
   "accessibilityBackButton": "返回按鈕",

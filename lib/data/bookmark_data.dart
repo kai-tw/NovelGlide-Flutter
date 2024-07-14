@@ -25,7 +25,7 @@ class BookmarkData extends Equatable {
     DateTime? savedTime,
   }) : savedTime = savedTime ?? DateTime.now(), daysPassed = DateTimeUtility.daysPassed(savedTime ?? DateTime.now());
 
-  factory BookmarkData.loadFromDirectory(String directory) {
+  factory BookmarkData.fromDirectory(String directory) {
     Box bookmarkBox = Hive.box(name: 'bookmark', directory: directory);
     final bool isValid = bookmarkBox.get('isValid', defaultValue: false);
     final int chapterNumber = bookmarkBox.get('chapterNumber', defaultValue: -1);
@@ -43,8 +43,8 @@ class BookmarkData extends Equatable {
     );
   }
 
-  factory BookmarkData.loadFromBookName(String bookName) {
-    final BookmarkData data = BookmarkData.loadFromDirectory(join(FilePath.instance.libraryRoot, bookName));
+  factory BookmarkData.fromBookName(String bookName) {
+    final BookmarkData data = BookmarkData.fromDirectory(join(FilePath.instance.libraryRoot, bookName));
     final bool isValid = data.isValid && ChapterProcessor.isExist(bookName, data.chapterNumber);
     return data.copyWith(isValid: isValid,bookName: bookName);
   }

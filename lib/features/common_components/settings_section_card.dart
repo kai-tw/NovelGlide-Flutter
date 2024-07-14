@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ThemeManagerSectionCard extends StatelessWidget {
-  const ThemeManagerSectionCard({super.key, required this.children});
+class SettingsSectionCard extends StatelessWidget {
+  const SettingsSectionCard({super.key, required this.children});
 
   final List<Widget> children;
 

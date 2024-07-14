@@ -57,8 +57,6 @@
   "notSignedInMessage": "You have not signed in yet.",
   "goToLoginPage": "Go to the signed-in page",
 
-  "dialogDeleteConfirmation": "You will delete them forever.",
-
   "addBookSuccessfully": "Successfully add the book",
   "addBookFailed": "Failed to add the book",
   "addChapterSuccessfully": "Successfully add the chapter",
@@ -98,6 +96,7 @@
   "titleWelcomeJoin": "Welcome to join us!",
   "titleAccountPage": "My Account",
   "titleAbout": "About",
+  "titleBookmarkManager": "Bookmark Manager",
 
   "fieldItemExists": "It already exists.",
   "fieldOptional": " (Optional)",
@@ -181,6 +180,12 @@
   "brightnessSystem": "System",
   "brightnessLight": "Light",
   "brightnessDark": "Dark",
+
+  "bookmarkManagerClearAllButton": "Clear all bookmarks",
+  "bookmarkManagerClearAllButtonDone": "Clear done",
+
+  "alertDialogClearAllBookmarksTitle": "Clear all bookmarks?",
+  "alertDialogClearAllBookmarksDescription": "This will clear all bookmarks in the library forever.",
 
   "accessibilityReadingProgressBar": "Reading progress bar",
   "accessibilityBackButton": "Go back button",

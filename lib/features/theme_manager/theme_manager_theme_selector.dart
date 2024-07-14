@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/theme_id.dart';
 import 'bloc/theme_manager_bloc.dart';
-import 'widgets/theme_manager_section_card.dart';
+import '../common_components/settings_section_card.dart';
 import 'widgets/theme_manager_section_title.dart';
 import 'widgets/theme_manager_select_theme_button.dart';
 
@@ -21,7 +21,7 @@ class ThemeManagerThemeSelector extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final int crossAxisCount = (MediaQuery.of(context).size.width / maxCrossAxisExtent).floor();
 
-    return ThemeManagerSectionCard(
+    return SettingsSectionCard(
       children: [
         ThemeManagerSectionTitle(
           leadingIcon: Icons.imagesearch_roller_outlined,

@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/window_class.dart';
 import '../about_page/about_page_scaffold.dart';
+import '../bookmark_manager/bookmark_manager_scaffold.dart';
 import '../developer_page/developer_page.dart';
 import '../homepage/widgets/homepage_scroll_view.dart';
 import '../theme_manager/theme_manager.dart';
@@ -22,6 +23,15 @@ class SettingsPage extends StatelessWidget {
           onPressed: () => _navigateToTargetPage(context, const ThemeManager(), dialogWidth: 400.0),
           iconData: Icons.format_paint_rounded,
           label: appLocalizations.settingsPageTheme,
+        ),
+      ),
+
+      /// Bookmark manager button
+      SliverToBoxAdapter(
+        child: SettingPageButton(
+          onPressed: () => _navigateToTargetPage(context, const BookmarkManagerScaffold(), dialogWidth: 400.0),
+          iconData: Icons.collections_bookmark_rounded,
+          label: appLocalizations.titleBookmarkManager,
         ),
       ),
 

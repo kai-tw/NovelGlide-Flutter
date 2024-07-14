@@ -16,7 +16,7 @@ class TocCubit extends Cubit<TocState> {
     final String bookName = newData?.name ?? state.bookName;
     final List<ChapterData> chapterList = ChapterProcessor.getList(bookName);
     final TocStateCode code = chapterList.isEmpty ? TocStateCode.empty : TocStateCode.normal;
-    final BookmarkData bookmarkData = BookmarkData.loadFromBookName(bookName);
+    final BookmarkData bookmarkData = BookmarkData.fromBookName(bookName);
     emit(state.copyWith(
       bookName: bookName,
       isCoverExist: BookProcessor.isCoverExist(bookName),
