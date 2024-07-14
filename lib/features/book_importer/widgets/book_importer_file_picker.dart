@@ -18,7 +18,7 @@ class BookImporterFilePicker extends StatelessWidget {
         helperText: AppLocalizations.of(context)!.fileTypeHelperText + extensionText,
       ),
       type: CommonFilePickerType.archive,
-      onSaved: (file) => BlocProvider.of<BookImporterCubit>(context).importFile = file,
+      onSaved: (file) => BlocProvider.of<BookImporterCubit>(context).setImportFile(file),
     );
   }
 }

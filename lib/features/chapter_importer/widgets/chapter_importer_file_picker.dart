@@ -18,7 +18,7 @@ class ChapterImporterFilePicker extends StatelessWidget {
         helperText: AppLocalizations.of(context)!.fileTypeHelperText + extensionText,
       ),
       type: CommonFilePickerType.archive,
-      onSaved: (file) => BlocProvider.of<ChapterImporterCubit>(context).importFile = file,
+      onSaved: (file) => BlocProvider.of<ChapterImporterCubit>(context).setImportFile(file),
     );
   }
 }

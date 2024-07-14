@@ -6,54 +6,47 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 
+import '../../../data/zip_encoding.dart';
 import '../../../processor/book_processor.dart';
 import '../../../processor/chapter_processor.dart';
 import '../../../toolbox/random_utility.dart';
 
 class BookImporterCubit extends Cubit<BookImporterState> {
-  File? importFile;
+  File? _importFile;
+  ZipEncoding? _zipEncoding;
 
   BookImporterCubit() : super(const BookImporterState());
 
   Future<bool> submit() async {
-    String? mimeType = lookupMimeType(importFile!.path);
+    String? mimeType = lookupMimeType(_importFile!.path);
     switch (mimeType) {
       case 'application/zip':
-        return await importFromArchive(importFile!);
+        return await importFromArchive(_importFile!);
     }
     return false;
+  }
+
+  void setImportFile(File? importFile) {
+    _importFile = importFile;
+  }
+
+  void setZipEncoding(ZipEncoding? zipEncoding) {
+    _zipEncoding = zipEncoding;
   }
 
   /// Import books from an archive file.
   Future<bool> importFromArchive(File archiveFile) async {
     Directory tempFolder = RandomUtility.getAvailableTempFolder();
 
-    final List<String> encodingList = [
-      "UTF-8",
-      "Big5",
-      "GBK",
-      "Shift-JIS",
-    ];
-
-    for (String encoding in encodingList) {
-      try {
-        await ZipFile.extractToDirectory(
-          zipFile: archiveFile,
-          destinationDir: tempFolder,
-          zipFileCharset: encoding,
-        );
-      } catch (e) {
-        print(e);
-      }
-
-      if (tempFolder.listSync().isNotEmpty) {
-        break;
-      }
-
-      if (encoding == encodingList.last) {
-        tempFolder.deleteSync(recursive: true);
-        return false;
-      }
+    try {
+      await ZipFile.extractToDirectory(
+        zipFile: archiveFile,
+        destinationDir: tempFolder,
+        zipFileCharset: _zipEncoding?.value ?? ZipEncoding.utf8.value,
+      );
+    } catch (e) {
+      tempFolder.deleteSync(recursive: true);
+      return false;
     }
 
     final List<Directory> bookFolders = tempFolder.listSync().whereType<Directory>().toList();

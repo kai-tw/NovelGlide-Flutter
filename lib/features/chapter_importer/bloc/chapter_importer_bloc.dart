@@ -7,24 +7,34 @@ import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 
 import '../../../data/book_data.dart';
+import '../../../data/zip_encoding.dart';
 import '../../../processor/book_processor.dart';
 import '../../../processor/bookmark_processor.dart';
 import '../../../processor/chapter_processor.dart';
 import '../../../toolbox/random_utility.dart';
 
 class ChapterImporterCubit extends Cubit<ChapterImporterState> {
+  BookData bookData;
+  File? _importFile;
+  ZipEncoding? _zipEncoding;
+
   ChapterImporterCubit(this.bookData) : super(const ChapterImporterState());
 
-  BookData bookData;
-  File? importFile;
-
   Future<bool> submit() async {
-    String? mimeType = lookupMimeType(importFile!.path);
+    String? mimeType = lookupMimeType(_importFile!.path);
     switch (mimeType) {
       case 'application/zip':
-        return await importFromArchive(bookData.name, importFile!);
+        return await importFromArchive(bookData.name, _importFile!);
     }
     return false;
+  }
+
+  void setImportFile(File? importFile) {
+    _importFile = importFile;
+  }
+
+  void setZipEncoding(ZipEncoding? zipEncoding) {
+    _zipEncoding = zipEncoding;
   }
 
   void setState({
@@ -44,7 +54,11 @@ class ChapterImporterCubit extends Cubit<ChapterImporterState> {
     Directory tempFolder = RandomUtility.getAvailableTempFolder();
 
     try {
-      await ZipFile.extractToDirectory(zipFile: archiveFile, destinationDir: tempFolder);
+      await ZipFile.extractToDirectory(
+        zipFile: archiveFile,
+        destinationDir: tempFolder,
+        zipFileCharset: _zipEncoding?.value ?? ZipEncoding.utf8.value,
+      );
     } catch (e) {
       tempFolder.deleteSync(recursive: true);
       rethrow;
