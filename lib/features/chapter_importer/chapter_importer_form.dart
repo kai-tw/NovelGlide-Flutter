@@ -25,7 +25,7 @@ class ChapterImporterForm extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 32.0),
             child: ZipEncodingDropdownMenu(
-              onSelected: (zipEncoding) => BlocProvider.of<ChapterImporterCubit>(context).setZipEncoding(zipEncoding),
+              onSelected: (zipEncoding) => cubit.setZipEncoding(zipEncoding),
             ),
           ),
           Padding(

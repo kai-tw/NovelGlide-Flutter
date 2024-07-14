@@ -21,10 +21,12 @@ class ChapterImporterCubit extends Cubit<ChapterImporterState> {
   ChapterImporterCubit(this.bookData) : super(const ChapterImporterState());
 
   Future<bool> submit() async {
-    String? mimeType = lookupMimeType(_importFile!.path);
-    switch (mimeType) {
-      case 'application/zip':
-        return await importFromArchive(bookData.name, _importFile!);
+    if (_importFile != null) {
+      String? mimeType = lookupMimeType(_importFile!.path);
+      switch (mimeType) {
+        case 'application/zip':
+          return await importFromArchive(bookData.name, _importFile!);
+      }
     }
     return false;
   }

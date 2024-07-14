@@ -10,6 +10,7 @@ import '../data/chapter_data.dart';
 import '../features/common_components/common_file_picker/common_file_picker_type.dart';
 import '../toolbox/advanced_mime_type_resolver.dart';
 import 'book_processor.dart';
+import 'bookmark_processor.dart';
 
 /// Process all the operation related to chapters.
 class ChapterProcessor {
@@ -128,6 +129,8 @@ class ChapterProcessor {
 
     // Write to file
     chapterFile.writeAsStringSync(contentLines.join(Platform.lineTerminator));
+
+    BookmarkProcessor.chapterCreateCheck(bookName, ordinalNumber);
 
     return chapterFile.existsSync();
   }
