@@ -48,7 +48,7 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   /// Based on the window size, navigate to the import book page
   Future<dynamic> _navigateToImportBook(BuildContext context) async {
-    final WindowClass windowClass = WindowClassExtension.getClassByWidth(MediaQuery.of(context).size.width);
+    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
     switch (windowClass) {
       /// Push to the import book page
       case WindowClass.compact:

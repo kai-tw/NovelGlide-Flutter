@@ -28,7 +28,7 @@ class TocEditBookButton extends StatelessWidget {
 
   /// Based on the window size, navigate to the edit book page
   Future<dynamic> _navigateToEditBook(BuildContext context, BookData bookData) async {
-    final WindowClass windowClass = WindowClassExtension.getClassByWidth(MediaQuery.of(context).size.width);
+    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
     switch (windowClass) {
       /// Push to the edit book page
       case WindowClass.compact:

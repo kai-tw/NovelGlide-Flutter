@@ -28,11 +28,32 @@ class BookImporterCubit extends Cubit<BookImporterState> {
   Future<bool> importFromArchive(File archiveFile) async {
     Directory tempFolder = RandomUtility.getAvailableTempFolder();
 
-    try {
-      await ZipFile.extractToDirectory(zipFile: archiveFile, destinationDir: tempFolder);
-    } catch (e) {
-      tempFolder.deleteSync(recursive: true);
-      rethrow;
+    final List<String> encodingList = [
+      "UTF-8",
+      "Big5",
+      "GBK",
+      "Shift-JIS",
+    ];
+
+    for (String encoding in encodingList) {
+      try {
+        await ZipFile.extractToDirectory(
+          zipFile: archiveFile,
+          destinationDir: tempFolder,
+          zipFileCharset: encoding,
+        );
+      } catch (e) {
+        print(e);
+      }
+
+      if (tempFolder.listSync().isNotEmpty) {
+        break;
+      }
+
+      if (encoding == encodingList.last) {
+        tempFolder.deleteSync(recursive: true);
+        return false;
+      }
     }
 
     final List<Directory> bookFolders = tempFolder.listSync().whereType<Directory>().toList();

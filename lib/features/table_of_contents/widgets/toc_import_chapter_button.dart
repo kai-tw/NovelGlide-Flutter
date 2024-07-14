@@ -28,7 +28,7 @@ class TocImportChapterButton extends StatelessWidget {
 
   /// Based on the window size, navigate to the import book page
   Future<dynamic> _navigateToImportChapter(BuildContext context, BookData bookData) async {
-    final WindowClass windowClass = WindowClassExtension.getClassByWidth(MediaQuery.of(context).size.width);
+    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
     switch (windowClass) {
       /// Push to the import book page
       case WindowClass.compact:

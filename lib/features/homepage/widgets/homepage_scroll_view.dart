@@ -11,7 +11,7 @@ class HomepageScrollView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final WindowClass windowClass = WindowClassExtension.getClassByWidth(MediaQuery.of(context).size.width);
+    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
     List<Widget> sliverList = List.from(slivers);
 
     return BlocBuilder<NavigationCubit, NavigationState>(builder: (BuildContext context, NavigationState state) {

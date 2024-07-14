@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../common_processing.dart';
+import 'common_processing/common_processing_dialog.dart';
 
 class CommonFormSubmitButton extends StatelessWidget {
   const CommonFormSubmitButton(
@@ -32,11 +32,7 @@ class CommonFormSubmitButton extends StatelessWidget {
           showDialog(
             context: context,
             barrierDismissible: false,
-            builder: (_) => Container(
-              padding: const EdgeInsets.all(24),
-              color: Theme.of(context).colorScheme.surface,
-              child: const CommonProcessing(),
-            ),
+            builder: (_) => const CommonProcessingDialog(),
           );
           Form.of(context).save();
           onPressed!().then((bool isSuccess) {

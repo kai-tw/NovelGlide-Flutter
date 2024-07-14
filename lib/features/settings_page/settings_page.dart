@@ -53,7 +53,7 @@ class SettingsPage extends StatelessWidget {
 
   /// Based on the window size, navigate to the target page
   Future<dynamic> _navigateToTargetPage(BuildContext context, Widget targetPage, {double? dialogWidth}) async {
-    switch (WindowClassExtension.getClassByWidth(MediaQuery.of(context).size.width)) {
+    switch (WindowClass.getClassByWidth(MediaQuery.of(context).size.width)) {
       case WindowClass.compact:
         return Navigator.of(context).push(MaterialPageRoute(builder: (_) => targetPage));
       default:
@@ -63,7 +63,7 @@ class SettingsPage extends StatelessWidget {
             return Dialog(
               clipBehavior: Clip.hardEdge,
               child: SizedBox(
-                width: dialogWidth ?? WindowClassExtension.mediumConstraints.minWidth,
+                width: dialogWidth ?? WindowClass.medium.constraints.minWidth,
                 child: targetPage,
               ),
             );

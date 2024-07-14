@@ -24,7 +24,7 @@ class BookshelfAddBookButton extends StatelessWidget {
 
   /// Based on the window size, navigate to the add book page
   Future<dynamic> _navigateToAddBook(BuildContext context) async {
-    final WindowClass windowClass = WindowClassExtension.getClassByWidth(MediaQuery.of(context).size.width);
+    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
     switch (windowClass) {
       /// Push to the add book page
       case WindowClass.compact:
