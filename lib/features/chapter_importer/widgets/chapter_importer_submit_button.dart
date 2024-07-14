@@ -12,7 +12,12 @@ class ChapterImporterSubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CommonFormSubmitButton(
       onPressed: BlocProvider.of<ChapterImporterCubit>(context).submit,
-      onSuccess: () => Navigator.of(context).pop(true),
+      onSuccess: () {
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(AppLocalizations.of(context)!.importSuccessfully),
+        ));
+      },
       onFailed: (_) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(AppLocalizations.of(context)!.importFailed),

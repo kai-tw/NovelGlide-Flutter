@@ -10,34 +10,18 @@ class TocAddChapterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TocCubit, TocState>(
-      buildWhen: (previous, current) => previous.bookName != current.bookName,
-      builder: (_, state) {
-        return FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => AddChapterScaffold(bookName: state.bookName)))
-                .then((isSuccess) => _onPopBack(context, isSuccess));
-          },
-          child: Icon(
-            Icons.add,
-            semanticLabel: AppLocalizations.of(context)!.accessibilityAddChapterButton,
-          ),
-        );
+    return FloatingActionButton(
+      onPressed: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(
+              builder: (_) => AddChapterScaffold(bookName: BlocProvider.of<TocCubit>(context).state.bookName),
+            ))
+            .then((_) => BlocProvider.of<TocCubit>(context).refresh());
       },
+      child: Icon(
+        Icons.add,
+        semanticLabel: AppLocalizations.of(context)!.accessibilityAddChapterButton,
+      ),
     );
-  }
-
-  void _onPopBack(BuildContext context, bool? isSuccess) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    if (isSuccess == true) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(appLocalizations.addChapterSuccessfully),
-      ));
-    } else if (isSuccess == false) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(appLocalizations.addChapterFailed),
-      ));
-    }
   }
 }

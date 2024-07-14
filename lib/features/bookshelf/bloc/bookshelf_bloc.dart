@@ -9,7 +9,7 @@ enum BookshelfStateCode { normal, selecting, empty, loading }
 class BookshelfCubit extends Cubit<BookshelfState> {
   BookshelfCubit() : super(const BookshelfState());
 
-  void refresh() {
+  void refresh() async {
     List<BookData> list = BookProcessor.getDataList();
     BookshelfStateCode code = list.isEmpty ? BookshelfStateCode.empty : BookshelfStateCode.normal;
     emit(BookshelfState(code: code, bookList: list));

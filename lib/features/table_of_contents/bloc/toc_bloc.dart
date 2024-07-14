@@ -26,17 +26,12 @@ class TocCubit extends Cubit<TocState> {
     ));
   }
 
-  void setDirty() {
-    emit(state.copyWith(isDirty: true));
-  }
-
   void setDragging(bool isDragging) {
     emit(state.copyWith(isDragging: isDragging));
   }
 }
 
 class TocState extends Equatable {
-  final bool isDirty;
   final String bookName;
   final bool isCoverExist;
   final TocStateCode code;
@@ -46,7 +41,6 @@ class TocState extends Equatable {
 
   @override
   List<Object?> get props => [
-        isDirty,
         bookName,
         isCoverExist,
         code,
@@ -56,7 +50,6 @@ class TocState extends Equatable {
       ];
 
   TocState({
-    this.isDirty = false,
     this.bookName = "",
     this.isCoverExist = false,
     this.code = TocStateCode.loading,
@@ -66,7 +59,6 @@ class TocState extends Equatable {
   }) : bookmarkData = bookmarkData ?? BookmarkData();
 
   TocState copyWith({
-    bool? isDirty,
     String? bookName,
     bool? isCoverExist,
     TocStateCode? code,
@@ -75,7 +67,6 @@ class TocState extends Equatable {
     BookmarkData? bookmarkData,
   }) {
     return TocState(
-      isDirty: isDirty ?? this.isDirty,
       bookName: bookName ?? this.bookName,
       isCoverExist: isCoverExist ?? this.isCoverExist,
       code: code ?? this.code,

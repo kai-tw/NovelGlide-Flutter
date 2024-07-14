@@ -19,13 +19,7 @@ class BookshelfSliverListItem extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(24.0),
       onTap: () {
-        Navigator.of(context).push(_tocRoute(cubit)).then(
-          (isDirty) {
-            if (isDirty == true) {
-              cubit.refresh();
-            }
-          },
-        );
+        Navigator.of(context).push(_tocRoute(cubit)).then((_) => cubit.refresh());
       },
       child: Semantics(
         label: AppLocalizations.of(context)!.accessibilityBookshelfListItem,

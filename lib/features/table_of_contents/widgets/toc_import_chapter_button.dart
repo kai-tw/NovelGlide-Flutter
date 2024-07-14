@@ -17,7 +17,7 @@ class TocImportChapterButton extends StatelessWidget {
     final BookData bookData = BookData.fromName(bookName);
     return IconButton(
       onPressed: () {
-        _navigateToImportChapter(context, bookData).then((isSuccess) => _onPopBack(context, isSuccess));
+        _navigateToImportChapter(context, bookData).then((_) => BlocProvider.of<TocCubit>(context).refresh());
       },
       icon: Icon(
         Icons.save_alt_rounded,
@@ -48,22 +48,6 @@ class TocImportChapterButton extends StatelessWidget {
             );
           },
         );
-    }
-  }
-
-  /// Handle the result of importing a book
-  void _onPopBack(BuildContext context, dynamic isSuccess) {
-    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    if (isSuccess == true) {
-      cubit.refresh();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(appLocalizations.importSuccessfully),
-      ));
-    } else if (isSuccess == false) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(appLocalizations.importFailed),
-      ));
     }
   }
 }

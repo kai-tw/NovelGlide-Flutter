@@ -17,10 +17,10 @@ class TocAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<TocCubit, TocState>(
-      buildWhen: (previous, current) => previous.bookName != current.bookName || previous.isDirty != current.isDirty,
+      buildWhen: (previous, current) => previous.bookName != current.bookName,
       builder: (_, state) {
         return AppBar(
-          leading: CommonBackButton(popValue: state.isDirty),
+          leading: const CommonBackButton(),
           title: Text(appLocalizations.titleTOC),
           actions: [
             TocEditBookButton(bookName: state.bookName),

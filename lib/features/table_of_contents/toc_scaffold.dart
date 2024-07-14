@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/window_class.dart';
-import 'bloc/toc_bloc.dart';
 import 'view/toc_scaffold_compact_view.dart';
 import 'view/toc_scaffold_medium_view.dart';
 
@@ -11,28 +9,14 @@ class TocScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
     final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
-    final Widget scaffold;
 
     switch (windowClass) {
       case WindowClass.compact:
-        scaffold = const TocScaffoldCompactView();
-        break;
+        return const TocScaffoldCompactView();
+
       default:
-        scaffold = const TocScaffoldMediumView();
+        return const TocScaffoldMediumView();
     }
-
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) {
-        if (didPop) {
-          return;
-        }
-
-        Navigator.of(context).pop(cubit.state.isDirty);
-      },
-      child: scaffold,
-    );
   }
 }

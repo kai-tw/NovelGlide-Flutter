@@ -12,8 +12,13 @@ class BookImporterSubmitButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CommonFormSubmitButton(
       onPressed: BlocProvider.of<BookImporterCubit>(context).submit,
-      onSuccess: () => Navigator.of(context).pop(true),
-      onFailed: (e) {
+      onSuccess: () {
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(AppLocalizations.of(context)!.importSuccessfully),
+        ));
+      },
+      onFailed: (_) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(AppLocalizations.of(context)!.importFailed),
         ));
