@@ -19,24 +19,26 @@ class ThemeManagerSelectThemeButton extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Semantics(
-          label: appLocalizations.accessibilityThemeSelectionButton,
-          child: ThemeSwitcher(
-            builder: (context) {
-              return OutlinedButton(
-                onPressed: () => ThemeProcessor.switchTheme(context, id: themeId),
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-                  backgroundColor: themeData.colorScheme.surface,
-                  foregroundColor: themeData.colorScheme.onSurface,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
+        ThemeSwitcher(
+          builder: (context) {
+            return OutlinedButton(
+              onPressed: () => ThemeProcessor.switchTheme(context, id: themeId),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                backgroundColor: themeData.colorScheme.surface,
+                foregroundColor: themeData.colorScheme.onSurface,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(color: themeData.colorScheme.outline),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Text("Aa", overflow: TextOverflow.ellipsis),
-              );
-            },
-          ),
+              ),
+              child: Text(
+                "Aa",
+                overflow: TextOverflow.ellipsis,
+                semanticsLabel: appLocalizations.accessibilityThemeSelectionButton,
+              ),
+            );
+          },
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
