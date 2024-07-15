@@ -15,28 +15,27 @@ class ReaderBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<ReaderCubit>(context).scrollController.addListener(() => _onScroll(context));
     return Column(
       children: [
         const ReaderProgressBar(),
         Expanded(
-          child: NotificationListener<ScrollNotification>(
-            onNotification: (ScrollNotification scrollNotification) =>
-                _onScrollNotification(context, scrollNotification),
+          child: Scrollbar(
             child: CustomScrollView(
               physics: const BouncingScrollPhysics(),
               controller: BlocProvider.of<ReaderCubit>(context).scrollController,
               slivers: [
                 BlocBuilder<ReaderCubit, ReaderState>(
-                    buildWhen: (previous, current) => previous.code != current.code,
-                    builder: (BuildContext context, ReaderState state) {
-                      switch (state.code) {
-                        case ReaderStateCode.loaded:
-                          return const ReaderSliverContent();
-                        default:
-                          return const CommonSliverLoading();
-                      }
+                  buildWhen: (previous, current) => previous.code != current.code,
+                  builder: (BuildContext context, ReaderState state) {
+                    switch (state.code) {
+                      case ReaderStateCode.loaded:
+                        return const ReaderSliverContent();
+                      default:
+                        return const CommonSliverLoading();
                     }
-                )
+                  },
+                ),
               ],
             ),
           ),
@@ -46,27 +45,19 @@ class ReaderBody extends StatelessWidget {
     );
   }
 
-  bool _onScrollNotification(BuildContext context, ScrollNotification scrollNotification) {
+  void _onScroll(BuildContext context) {
     final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     final ReaderProgressBarCubit progressBarCubit = BlocProvider.of<ReaderProgressBarCubit>(context);
 
     if (cubit.state.code != ReaderStateCode.loaded) {
       // The content is not loaded yet.
-      return true;
+      return;
     }
 
-    final Size screenSize = MediaQuery.of(context).size;
-    final double currentScrollY = scrollNotification.metrics.pixels;
+    final double currentScrollY = cubit.scrollController.position.pixels;
+    final double maxScrollExtent = cubit.scrollController.position.maxScrollExtent;
+    progressBarCubit.setState(currentScrollY, maxScrollExtent);
 
-    cubit.currentArea = currentScrollY * screenSize.width;
-    progressBarCubit.setState(currentScrollY, scrollNotification.metrics.maxScrollExtent);
-
-    if (scrollNotification is ScrollEndNotification) {
-      if (cubit.state.readerSettings.autoSave) {
-        cubit.saveBookmark();
-      }
-    }
-
-    return true;
+    return;
   }
 }

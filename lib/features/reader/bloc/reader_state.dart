@@ -13,7 +13,7 @@ class ReaderState extends Equatable {
   final int prevChapterNumber;
   final int nextChapterNumber;
   final List<String> contentLines;
-  final BookmarkData bookmarkObject;
+  final BookmarkData bookmarkData;
 
   /// Settings state.
   final ReaderSettingsData readerSettings;
@@ -25,7 +25,7 @@ class ReaderState extends Equatable {
     prevChapterNumber,
     nextChapterNumber,
     contentLines,
-    bookmarkObject,
+    bookmarkData,
     readerSettings,
   ];
 
@@ -36,10 +36,10 @@ class ReaderState extends Equatable {
     this.prevChapterNumber = -1,
     this.nextChapterNumber = -1,
     this.contentLines = const [],
-    BookmarkData? bookmarkObject,
+    BookmarkData? bookmarkData,
     ReaderSettingsData? readerSettings,
   })  : readerSettings = readerSettings ?? const ReaderSettingsData(),
-        bookmarkObject = bookmarkObject ?? BookmarkData();
+        bookmarkData = bookmarkData ?? BookmarkData();
 
   ReaderState copyWith({
     ReaderStateCode? code,
@@ -48,7 +48,7 @@ class ReaderState extends Equatable {
     int? prevChapterNumber,
     int? nextChapterNumber,
     List<String>? contentLines,
-    BookmarkData? bookmarkObject,
+    BookmarkData? bookmarkData,
     ReaderSettingsData? readerSettings,
   }) {
     return ReaderState(
@@ -58,7 +58,7 @@ class ReaderState extends Equatable {
       prevChapterNumber: prevChapterNumber ?? this.prevChapterNumber,
       nextChapterNumber: nextChapterNumber ?? this.nextChapterNumber,
       contentLines: contentLines ?? this.contentLines,
-      bookmarkObject: bookmarkObject ?? this.bookmarkObject,
+      bookmarkData: bookmarkData ?? this.bookmarkData,
       readerSettings: readerSettings ?? this.readerSettings,
     );
   }
