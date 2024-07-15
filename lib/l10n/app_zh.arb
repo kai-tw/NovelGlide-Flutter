@@ -144,8 +144,10 @@
   "bookmarkManagerClearAllButton": "清除所有書籤",
   "bookmarkManagerClearAllButtonDone": "清除完成",
 
-  "alertDialogClearAllBookmarksTitle": "清除所有書籤？",
+  "alertDialogClearAllBookmarksTitle": "清除所有書籤",
   "alertDialogClearAllBookmarksDescription": "這將永久清除書籤。",
+  "alertDialogResetSettingsTitle": "重置設定",
+  "alertDialogResetSettingsDescription": "確定重製設定嗎？",
 
   "accessibilityReadingProgressBar": "閱讀進度條",
   "accessibilityBackButton": "返回按鈕",

@@ -12,8 +12,6 @@ class ReaderSettingsResetButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final ReaderSettingsCubit settingsCubit = BlocProvider.of<ReaderSettingsCubit>(context);
-    final ReaderCubit readerCubit = BlocProvider.of<ReaderCubit>(context);
 
     return Align(
       alignment: Alignment.centerRight,
@@ -35,16 +33,42 @@ class ReaderSettingsResetButton extends StatelessWidget {
                 disabledBackgroundColor: state.backgroundColor,
                 disabledForegroundColor: state.foregroundColor,
               ),
-              onPressed: state.isDisabled
-                  ? null
-                  : () {
-                      BlocProvider.of<ReaderSettingsResetButtonCubit>(context).onPressedHandler();
-                      settingsCubit.reset();
-                      readerCubit.resetSettings();
-                    },
+              onPressed: state.isDisabled ? null : () => _onPressed(context),
             );
           },
         ),
+      ),
+    );
+  }
+
+  void _onPressed(BuildContext context) {
+    final ReaderSettingsResetButtonCubit buttonCubit = BlocProvider.of<ReaderSettingsResetButtonCubit>(context);
+    final ReaderSettingsCubit settingsCubit = BlocProvider.of<ReaderSettingsCubit>(context);
+    final ReaderCubit readerCubit = BlocProvider.of<ReaderCubit>(context);
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context)!.alertDialogResetSettingsTitle),
+        content: Text(AppLocalizations.of(context)!.alertDialogResetSettingsDescription),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              buttonCubit.onPressedHandler();
+              settingsCubit.reset();
+              readerCubit.resetSettings();
+            },
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.error,
+            ),
+            child: Text(AppLocalizations.of(context)!.yes),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(AppLocalizations.of(context)!.no),
+          ),
+        ],
       ),
     );
   }

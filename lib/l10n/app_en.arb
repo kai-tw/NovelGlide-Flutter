@@ -184,8 +184,10 @@
   "bookmarkManagerClearAllButton": "Clear all bookmarks",
   "bookmarkManagerClearAllButtonDone": "Clear done",
 
-  "alertDialogClearAllBookmarksTitle": "Clear all bookmarks?",
+  "alertDialogClearAllBookmarksTitle": "Clear all bookmarks",
   "alertDialogClearAllBookmarksDescription": "This will clear all bookmarks in the library forever.",
+  "alertDialogResetSettingsTitle": "Reset settings",
+  "alertDialogResetSettingsDescription": "Are you sure to reset settings?",
 
   "accessibilityReadingProgressBar": "Reading progress bar",
   "accessibilityBackButton": "Go back button",
