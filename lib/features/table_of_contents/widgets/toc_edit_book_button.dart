@@ -17,7 +17,7 @@ class TocEditBookButton extends StatelessWidget {
     final BookData bookData = BookData.fromName(bookName);
     return IconButton(
       onPressed: () {
-        _navigateToEditBook(context, bookData).then((newData) => _onPopBack(context, newData));
+        _navigateToEditBook(context, bookData).then((_) => BlocProvider.of<TocCubit>(context).refresh());
       },
       icon: Icon(
         Icons.edit_rounded,
@@ -28,7 +28,7 @@ class TocEditBookButton extends StatelessWidget {
 
   /// Based on the window size, navigate to the edit book page
   Future<dynamic> _navigateToEditBook(BuildContext context, BookData bookData) async {
-    final WindowClass windowClass = WindowClassExtension.getClassByWidth(MediaQuery.of(context).size.width);
+    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
     switch (windowClass) {
       /// Push to the edit book page
       case WindowClass.compact:
@@ -50,23 +50,6 @@ class TocEditBookButton extends StatelessWidget {
             );
           },
         );
-    }
-  }
-
-  /// Handle the result of editing the book
-  void _onPopBack(BuildContext context, dynamic newData) {
-    if (newData is BookData) {
-      /// Refresh the table of contents
-      BlocProvider.of<TocCubit>(context).setDirty();
-      BlocProvider.of<TocCubit>(context).refresh(newData: newData);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(AppLocalizations.of(context)!.editBookSuccessfully),
-      ));
-    } else if (newData == false) {
-      /// Failed to edit the book
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(AppLocalizations.of(context)!.editBookFailed),
-      ));
     }
   }
 }

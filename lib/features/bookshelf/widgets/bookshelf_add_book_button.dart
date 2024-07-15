@@ -13,7 +13,7 @@ class BookshelfAddBookButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        _navigateToAddBook(context).then((isSuccess) => _onPopBack(context, isSuccess));
+        _navigateToAddBook(context).then((_) => BlocProvider.of<BookshelfCubit>(context).refresh());
       },
       child: Icon(
         Icons.add,
@@ -24,7 +24,7 @@ class BookshelfAddBookButton extends StatelessWidget {
 
   /// Based on the window size, navigate to the add book page
   Future<dynamic> _navigateToAddBook(BuildContext context) async {
-    final WindowClass windowClass = WindowClassExtension.getClassByWidth(MediaQuery.of(context).size.width);
+    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
     switch (windowClass) {
       /// Push to the add book page
       case WindowClass.compact:
@@ -44,22 +44,6 @@ class BookshelfAddBookButton extends StatelessWidget {
             );
           },
         );
-    }
-  }
-
-  /// Handle the result of adding a book
-  void _onPopBack(BuildContext context, dynamic isSuccess) {
-    final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    if (isSuccess == true) {
-      cubit.refresh();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(appLocalizations.addBookSuccessfully),
-      ));
-    } else if (isSuccess == false) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(appLocalizations.addBookFailed),
-      ));
     }
   }
 }

@@ -7,7 +7,7 @@
   "delete": "Delete",
   "cancel": "Cancel",
   "close": "Close",
-  "processing": "Processing...",
+  "processing": "Processing",
   "preview": "Preview",
   "yes": "Yes",
   "no": "No",
@@ -57,8 +57,6 @@
   "notSignedInMessage": "You have not signed in yet.",
   "goToLoginPage": "Go to the signed-in page",
 
-  "dialogDeleteConfirmation": "You will delete them forever.",
-
   "addBookSuccessfully": "Successfully add the book",
   "addBookFailed": "Failed to add the book",
   "addChapterSuccessfully": "Successfully add the chapter",
@@ -82,6 +80,11 @@
   "importOverwriteCover": "Do it overwrite the cover?",
   "importOverwriteBookmark": "Do it overwrite the bookmarks?",
 
+  "zipEncodingLabel": "The encoding of the zip file",
+  "zipEncodingLabelHelperText": "Choose the encoding of the selected zip file",
+  "zipEncodingTrailingIconExpand": "Expand this dropdown menu",
+  "zipEncodingTrailingIconCollapse": "Collapse this dropdown menu",
+
   "titleBookshelf": "Bookshelf",
   "titleBookmarks": "Bookmarks",
   "titleSettings": "Settings",
@@ -93,6 +96,7 @@
   "titleWelcomeJoin": "Welcome to join us!",
   "titleAccountPage": "My Account",
   "titleAbout": "About",
+  "titleBookmarkManager": "Bookmark Manager",
 
   "fieldItemExists": "It already exists.",
   "fieldOptional": " (Optional)",
@@ -176,6 +180,14 @@
   "brightnessSystem": "System",
   "brightnessLight": "Light",
   "brightnessDark": "Dark",
+
+  "bookmarkManagerClearAllButton": "Clear all bookmarks",
+  "bookmarkManagerClearAllButtonDone": "Clear done",
+
+  "alertDialogClearAllBookmarksTitle": "Clear all bookmarks",
+  "alertDialogClearAllBookmarksDescription": "This will clear all bookmarks in the library forever.",
+  "alertDialogResetSettingsTitle": "Reset settings",
+  "alertDialogResetSettingsDescription": "Are you sure to reset settings?",
 
   "accessibilityReadingProgressBar": "Reading progress bar",
   "accessibilityBackButton": "Go back button",

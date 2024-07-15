@@ -25,7 +25,8 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
               title: Text(appLocalizations.titleBookshelf),
               actions: [
                 IconButton(
-                  onPressed: () => _navigateToImportBook(context).then((isSuccess) => _onPopBack(context, isSuccess)),
+                  onPressed: () =>
+                      _navigateToImportBook(context).then((_) => BlocProvider.of<BookshelfCubit>(context).refresh()),
                   icon: const Icon(Icons.save_alt_rounded),
                   tooltip: AppLocalizations.of(context)!.bookImporter,
                 ),
@@ -48,11 +49,11 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   /// Based on the window size, navigate to the import book page
   Future<dynamic> _navigateToImportBook(BuildContext context) async {
-    final WindowClass windowClass = WindowClassExtension.getClassByWidth(MediaQuery.of(context).size.width);
+    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
     switch (windowClass) {
       /// Push to the import book page
       case WindowClass.compact:
-        return Navigator.of(context).push(MaterialPageRoute(builder: (_) => BookImporterScaffold()));
+        return Navigator.of(context).push(MaterialPageRoute(builder: (_) => const BookImporterScaffold()));
 
       /// Show in a dialog
       default:
@@ -68,21 +69,6 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
             );
           },
         );
-    }
-  }
-
-  /// Handle the result of importing a book
-  void _onPopBack(BuildContext context, dynamic isSuccess) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    if (isSuccess == true) {
-      BlocProvider.of<BookshelfCubit>(context).refresh();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(appLocalizations.importSuccessfully),
-      ));
-    } else if (isSuccess == false) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(appLocalizations.importFailed),
-      ));
     }
   }
 }

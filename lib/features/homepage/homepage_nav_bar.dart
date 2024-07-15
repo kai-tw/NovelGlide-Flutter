@@ -13,7 +13,7 @@ class HomepageNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    final WindowClass windowClass = WindowClassExtension.getClassByWidth(screenWidth);
+    final WindowClass windowClass = WindowClass.getClassByWidth(screenWidth);
 
     switch (windowClass) {
       case WindowClass.compact:

@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../processor/theme_processor.dart';
 import 'bloc/theme_manager_brightness_bloc.dart';
-import 'widgets/theme_manager_section_card.dart';
+import '../common_components/settings_section_card.dart';
 import 'widgets/theme_manager_section_title.dart';
 
 class ThemeManagerBrightnessSelector extends StatelessWidget {
@@ -16,7 +16,7 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocProvider(
       create: (context) => ThemeManagerBrightnessCubit()..refresh(),
-      child: ThemeManagerSectionCard(
+      child: SettingsSectionCard(
         children: [
           ThemeManagerSectionTitle(
             leadingIcon: Icons.brightness_4_rounded,

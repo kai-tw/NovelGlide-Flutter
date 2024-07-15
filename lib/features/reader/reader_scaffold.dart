@@ -9,7 +9,7 @@ class ReaderScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final WindowClass windowClass = WindowClassExtension.getClassByWidth(MediaQuery.of(context).size.width);
+    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
     final Widget scaffold;
 
     switch (windowClass) {

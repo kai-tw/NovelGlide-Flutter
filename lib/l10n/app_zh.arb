@@ -7,7 +7,7 @@
   "delete": "刪除",
   "cancel": "取消",
   "close": "關閉",
-  "processing": "處理中...",
+  "processing": "處理中",
   "preview": "預覽",
   "yes": "是",
   "no": "否",
@@ -48,8 +48,6 @@
   "notSignedInMessage": "尚未登入",
   "goToLoginPage": "前往登入",
 
-  "dialogDeleteConfirmation": "將會永久刪除。",
-
   "addBookSuccessfully": "新增書籍成功",
   "addBookFailed": "新增書籍失敗",
   "addChapterSuccessfully": "新增章節成功",
@@ -73,6 +71,11 @@
   "importOverwriteCover": "是否覆蓋既有封面？",
   "importOverwriteBookmark": "是否覆蓋既有書籤？",
 
+  "zipEncodingLabel": "匯入壓縮檔的編碼",
+  "zipEncodingLabelHelperText": "選擇匯入壓縮檔的編碼",
+  "zipEncodingTrailingIconExpand": "展開此下拉選單",
+  "zipEncodingTrailingIconCollapse": "收起此下拉選單",
+
   "titleBookshelf": "書櫃",
   "titleBookmarks": "書籤",
   "titleSettings": "設定",
@@ -84,6 +87,7 @@
   "titleWelcomeJoin": "歡迎加入",
   "titleAccountPage": "我的帳號",
   "titleAbout": "關於",
+  "titleBookmarkManager": "書籤管理員",
 
   "fieldItemExists": "已存在",
   "fieldOptional": "（選填）",
@@ -136,6 +140,14 @@
   "brightnessSystem": "系統",
   "brightnessLight": "淺色",
   "brightnessDark": "深色",
+
+  "bookmarkManagerClearAllButton": "清除所有書籤",
+  "bookmarkManagerClearAllButtonDone": "清除完成",
+
+  "alertDialogClearAllBookmarksTitle": "清除所有書籤",
+  "alertDialogClearAllBookmarksDescription": "這將永久清除書籤。",
+  "alertDialogResetSettingsTitle": "重置設定",
+  "alertDialogResetSettingsDescription": "確定重製設定嗎？",
 
   "accessibilityReadingProgressBar": "閱讀進度條",
   "accessibilityBackButton": "返回按鈕",

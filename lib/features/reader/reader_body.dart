@@ -23,6 +23,7 @@ class ReaderBody extends StatelessWidget {
             onNotification: (ScrollNotification scrollNotification) =>
                 _onScrollNotification(context, scrollNotification),
             child: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
               controller: BlocProvider.of<ReaderCubit>(context).scrollController,
               slivers: [
                 BlocBuilder<ReaderCubit, ReaderState>(
@@ -55,11 +56,10 @@ class ReaderBody extends StatelessWidget {
     }
 
     final Size screenSize = MediaQuery.of(context).size;
-    final double maxScrollHeight = scrollNotification.metrics.extentTotal;
-    final double currentScrollY = scrollNotification.metrics.pixels.clamp(0.0, maxScrollHeight);
+    final double currentScrollY = scrollNotification.metrics.pixels;
 
     cubit.currentArea = currentScrollY * screenSize.width;
-    progressBarCubit.update(currentScrollY, scrollNotification.metrics.maxScrollExtent);
+    progressBarCubit.setState(currentScrollY, scrollNotification.metrics.maxScrollExtent);
 
     if (scrollNotification is ScrollEndNotification) {
       if (cubit.state.readerSettings.autoSave) {

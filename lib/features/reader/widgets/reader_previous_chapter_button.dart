@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bloc/reader_cubit.dart';
+import '../bloc/reader_progress_bar_bloc.dart';
 import '../bloc/reader_state.dart';
 
 class ReaderPreviousChapterButton extends StatelessWidget {
@@ -18,11 +19,14 @@ class ReaderPreviousChapterButton extends StatelessWidget {
             Icons.arrow_back_ios_rounded,
             semanticLabel: AppLocalizations.of(context)!.accessibilityReaderPrevChapterButton,
           ),
-          onPressed: state.prevChapterNumber == -1
-              ? null
-              : () => BlocProvider.of<ReaderCubit>(context).changeChapter(state.prevChapterNumber),
+          onPressed: state.prevChapterNumber == -1 ? null : () => _onPressed(context, state.prevChapterNumber),
         );
       },
     );
+  }
+
+  void _onPressed(BuildContext context, int chapterNumber) {
+    BlocProvider.of<ReaderCubit>(context).changeChapter(chapterNumber);
+    BlocProvider.of<ReaderProgressBarCubit>(context).reset();
   }
 }

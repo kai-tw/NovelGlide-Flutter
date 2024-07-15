@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../data/book_data.dart';
-import '../../common_components/common_form_components/common_form_submit_button.dart';
+import '../../common_components/common_form_submit_button.dart';
 import '../bloc/edit_book_form_bloc.dart';
 
 class EditBookSubmitButton extends StatelessWidget {
@@ -15,11 +15,15 @@ class EditBookSubmitButton extends StatelessWidget {
       child: CommonFormSubmitButton(
         onPressed: BlocProvider.of<EditBookFormCubit>(context).submit,
         onSuccess: () {
-          final BookData newData = BlocProvider.of<EditBookFormCubit>(context).newData;
-          Navigator.of(context).pop(newData);
+          Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.editBookSuccessfully),
+          ));
         },
         onFailed: (_) {
-          Navigator.of(context).pop(false);
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.editBookFailed),
+          ));
         }
       ),
     );

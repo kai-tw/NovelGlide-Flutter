@@ -9,7 +9,6 @@ import 'reader_state.dart';
 class ReaderCubit extends Cubit<ReaderState> {
   final ScrollController scrollController = ScrollController();
   bool isAutoJump;
-  double currentScrollY = 0.0;
   double currentArea = 0.0;
 
   ReaderCubit(String bookName, int chapterNumber, {this.isAutoJump = false})
@@ -19,7 +18,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     final String bookName = state.bookName;
     final int chapterNumber = state.chapterNumber;
 
-    final BookmarkData bookmarkObject = BookmarkData.loadFromBookName(bookName);
+    final BookmarkData bookmarkObject = BookmarkData.fromBookName(bookName);
     final ReaderSettingsData readerSettings = ReaderSettingsData.load();
 
     emit(state.copyWith(

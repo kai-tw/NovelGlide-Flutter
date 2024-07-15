@@ -2,35 +2,27 @@ import 'package:flutter/rendering.dart';
 
 enum WindowClass {
   /// The window size is less than 600 pixels
-  compact,
+  compact(0, 600),
   /// The window size is between 600 and 840 pixels
-  medium,
+  medium(600, 840),
   /// The window size is between 840 and 1280 pixels
-  expanded,
+  expanded(840, 1280),
   /// The window size is between 1280 and 1600 pixels
-  large,
+  large(1280, 1600),
   /// The window size is greater than 1600 pixels
-  extraLarge,
-}
+  extraLarge(1600, double.infinity);
 
-extension WindowClassExtension on WindowClass {
-  static BoxConstraints compactConstraints = const BoxConstraints(minWidth: 0, maxWidth: 600);
-  static BoxConstraints mediumConstraints = const BoxConstraints(minWidth: 600, maxWidth: 840);
-  static BoxConstraints expandedConstraints = const BoxConstraints(minWidth: 840, maxWidth: 1280);
-  static BoxConstraints largeConstraints = const BoxConstraints(minWidth: 1280, maxWidth: 1600);
-  static BoxConstraints extraLargeConstraints = const BoxConstraints(minWidth: 1600);
+  const WindowClass(this.minWidth, this.maxWidth);
+  final double minWidth;
+  final double maxWidth;
+  BoxConstraints get constraints => BoxConstraints(minWidth: minWidth, maxWidth: maxWidth);
 
   static WindowClass getClassByWidth(double width) {
-    if (width < compactConstraints.maxWidth) {
-      return WindowClass.compact;
-    } else if (width < mediumConstraints.maxWidth) {
-      return WindowClass.medium;
-    } else if (width < expandedConstraints.maxWidth) {
-      return WindowClass.expanded;
-    } else if (width < largeConstraints.maxWidth) {
-      return WindowClass.large;
-    } else {
-      return WindowClass.extraLarge;
+    for (WindowClass windowClass in WindowClass.values) {
+      if (windowClass.minWidth <= width && width < windowClass.maxWidth) {
+        return windowClass;
+      }
     }
+    return WindowClass.extraLarge;
   }
 }

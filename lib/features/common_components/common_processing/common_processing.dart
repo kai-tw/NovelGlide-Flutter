@@ -9,13 +9,16 @@ class CommonProcessing extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         LoadingAnimationWidget.beat(
           color: Theme.of(context).colorScheme.primary,
-          size: 50.0,
+          size: 48.0,
         ),
-        const Padding(padding: EdgeInsets.only(bottom: 24.0)),
-        Text(AppLocalizations.of(context)!.processing),
+        Padding(
+          padding: const EdgeInsets.only(top: 24.0),
+          child: Text(AppLocalizations.of(context)!.processing),
+        ),
       ],
     );
   }

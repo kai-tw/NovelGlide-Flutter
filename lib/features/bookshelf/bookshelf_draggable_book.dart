@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/book_data.dart';
+import '../common_components/draggable_feedback_widget.dart';
+import '../common_components/draggable_placeholder_widget.dart';
 import '../homepage/bloc/homepage_bloc.dart';
 import 'bloc/bookshelf_bloc.dart';
 import 'bookshelf_book_widget.dart';
@@ -41,32 +43,17 @@ class BookshelfDraggableBook extends StatelessWidget {
             }
           },
           data: bookObject,
-          feedback: Container(
+          feedback: DraggableFeedbackWidget(
             width: constraints.maxWidth,
             height: constraints.maxHeight,
             padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
-              borderRadius: BorderRadius.circular(24.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
-                  blurRadius: 8.0,
-                  spreadRadius: 0.0,
-                  offset: const Offset(0.0, 4.0),
-                ),
-              ],
-            ),
             child: BookshelfBookWidget(bookObject: bookObject),
           ),
-          childWhenDragging: Opacity(
-            opacity: 0.3,
-            child: Container(
-              width: constraints.maxWidth,
-              height: constraints.maxHeight,
-              padding: const EdgeInsets.all(16.0),
-              child: BookshelfBookWidget(bookObject: bookObject),
-            ),
+          childWhenDragging: DraggablePlaceholderWidget(
+            width: constraints.maxWidth,
+            height: constraints.maxHeight,
+            padding: const EdgeInsets.all(16.0),
+            child: BookshelfBookWidget(bookObject: bookObject),
           ),
           child: Container(
             width: constraints.maxWidth,
