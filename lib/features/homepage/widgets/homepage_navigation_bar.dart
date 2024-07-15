@@ -23,16 +23,19 @@ class HomepageNavigationBar extends StatelessWidget {
               icon: Icon(Icons.shelves, color: Theme.of(context).colorScheme.surface.withOpacity(0.5)),
               selectedIcon: Icon(Icons.shelves, color: Theme.of(context).colorScheme.surface),
               label: appLocalizations.titleBookshelf,
+              enabled: state.navItem != NavigationItem.bookshelf,
             ),
             NavigationDestination(
               icon: Icon(Icons.bookmark, color: Theme.of(context).colorScheme.surface.withOpacity(0.5)),
               selectedIcon: Icon(Icons.bookmark, color: Theme.of(context).colorScheme.surface),
               label: appLocalizations.titleBookmarks,
+              enabled: state.navItem != NavigationItem.bookmark,
             ),
             NavigationDestination(
               icon: Icon(Icons.settings, color: Theme.of(context).colorScheme.surface.withOpacity(0.5)),
               selectedIcon: Icon(Icons.settings, color: Theme.of(context).colorScheme.surface),
               label: appLocalizations.titleSettings,
+              enabled: state.navItem != NavigationItem.settings,
             ),
           ],
           onDestinationSelected: (index) {
