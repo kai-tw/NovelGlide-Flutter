@@ -27,24 +27,20 @@ class ChapterProcessor {
   }
 
   /// Get all the chapter data of a book.
-  static List<ChapterData> getList(String bookName) {
+  static Future<List<ChapterData>> getList(String bookName) async {
     final Directory folder = Directory(BookProcessor.getPathByName(bookName));
 
     if (folder.existsSync()) {
-      final List<String> mimeTypes = CommonFilePickerTypeMap.mime[CommonFilePickerType.txt]!;
-      final List<String> entries = folder
-          .listSync()
-          .whereType<File>()
-          .where((item) =>
-              chapterRegexp.hasMatch(basename(item.path)) &&
-              mimeTypes.contains(AdvancedMimeTypeResolver().lookupAll(item)))
-          .map<String>((item) => item.path)
-          .toList();
-      entries.sort(compareNatural);
+      List<ChapterData?> chapterList = List.generate(folder.listSync().length, (_) => null);
 
-      return entries
-          .map((e) => ChapterData(bookName: bookName, ordinalNumber: getOrdinalNumberFromPath(e)))
-          .toList();
+      for (File chapterFile in folder.listSync().whereType<File>()) {
+        if (chapterRegexp.hasMatch(basename(chapterFile.path))) {
+          int ordinalNumber = getOrdinalNumberFromPath(chapterFile.path);
+          chapterList.insert(ordinalNumber, ChapterData(bookName: bookName, ordinalNumber: ordinalNumber));
+        }
+      }
+
+      return chapterList.whereType<ChapterData>().toList();
     }
 
     return [];
@@ -76,8 +72,8 @@ class ChapterProcessor {
   }
 
   /// Get the previous chapter number.
-  static int getPrevChapterNumber(String bookName, int chapterNumber) {
-    final List<ChapterData> chapterList = getList(bookName);
+  static Future<int> getPrevChapterNumber(String bookName, int chapterNumber) async {
+    final List<ChapterData> chapterList = await getList(bookName);
     int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == chapterNumber);
     if (currentIndex > 0) {
       return chapterList[currentIndex - 1].ordinalNumber;
@@ -86,8 +82,8 @@ class ChapterProcessor {
   }
 
   /// Get the next chapter number.
-  static int getNextChapterNumber(String bookName, int chapterNumber) {
-    final List<ChapterData> chapterList = getList(bookName);
+  static Future<int> getNextChapterNumber(String bookName, int chapterNumber) async {
+    final List<ChapterData> chapterList = await getList(bookName);
     int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == chapterNumber);
     if (0 <= currentIndex && currentIndex < chapterList.length - 1) {
       return chapterList[currentIndex + 1].ordinalNumber;
