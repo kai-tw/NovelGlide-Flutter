@@ -29,17 +29,15 @@ class HomepageNavBarCompactView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomepageCubit, HomepageState>(builder: (BuildContext context, HomepageState state) {
-      return Container(
-        height: 64.0,
-        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(36.0),
-        ),
-        clipBehavior: Clip.hardEdge,
-        child: state.isDragging ? const HomepageDraggingTargetBar() : const HomepageNavigationBar(),
-      );
-    });
+    return Container(
+      height: 64.0,
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(36.0),
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: const HomepageNavigationBar(),
+    );
   }
 }
 
@@ -49,7 +47,7 @@ class HomepageNavBarMediumView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 6.0),
+      margin: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.onSurface,
         borderRadius: BorderRadius.circular(24.0),

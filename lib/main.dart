@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,7 +7,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive/hive.dart';
 
-import 'binding_center/binding_center.dart';
 import 'data/app_info.dart';
 import 'data/file_path.dart';
 import 'features/account_page/account_page.dart';
@@ -20,9 +17,8 @@ import 'firebase_options.dart';
 import 'processor/theme_processor.dart';
 
 void main() async {
-  BindingCenter.ensureInitialized();
-
-  unawaited(MobileAds.instance.initialize());
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
