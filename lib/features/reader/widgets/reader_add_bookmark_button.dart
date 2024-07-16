@@ -25,7 +25,7 @@ class ReaderAddBookmarkButton extends StatelessWidget {
                   semanticLabel: AppLocalizations.of(context)!.accessibilityReaderAddBookmarkButton,
                 ),
                 disabledColor: state.disabledColor,
-                onPressed: state.isDisabled
+                onPressed: readerState.readerSettings.autoSave || state.isDisabled
                     ? null
                     : () {
                         cubit.onPressedHandler();
