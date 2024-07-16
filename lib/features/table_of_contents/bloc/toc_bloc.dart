@@ -14,7 +14,7 @@ class TocCubit extends Cubit<TocState> {
 
   Future<void> refresh({BookData? newData}) async {
     final String bookName = newData?.name ?? state.bookName;
-    final List<ChapterData> chapterList = await ChapterProcessor.getList(bookName);
+    final List<ChapterData> chapterList = ChapterProcessor.getList(bookName);
     final TocStateCode code = chapterList.isEmpty ? TocStateCode.empty : TocStateCode.normal;
     final BookmarkData bookmarkData = BookmarkData.fromBookName(bookName);
     emit(state.copyWith(
