@@ -65,4 +65,10 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
   void didChangePlatformBrightness() {
     ThemeProcessor.onBrightnessChanged(_themeContext);
   }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 }
