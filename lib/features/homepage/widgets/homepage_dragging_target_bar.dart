@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
 import '../../../data/window_class.dart';
 import '../../common_components/common_delete_drag_target.dart';
+import '../bloc/homepage_bloc.dart';
 
 class HomepageDraggingTargetBar extends StatelessWidget {
   const HomepageDraggingTargetBar({super.key});
@@ -21,23 +23,39 @@ class HomepageDraggingTargetBar extends StatelessWidget {
         constraints = const BoxConstraints(maxWidth: 360.0);
     }
 
-    return Container(
-      height: 64.0,
-      constraints: constraints,
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(36.0),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).colorScheme.shadow.withOpacity(0.5),
-            offset: const Offset(0.0, 4.0),
-            blurRadius: 16.0,
-          ),
-        ],
-      ),
-      child: CommonDeleteDragTarget(
-        onWillAcceptWithDetails: (details) => details.data is BookData || details.data is BookmarkData,
-      ),
+    return BlocBuilder<HomepageCubit, HomepageState>(
+      builder: (BuildContext context, HomepageState state) {
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0.0, 1.0),
+                end: const Offset(0.0, 0.0),
+              ).chain(CurveTween(curve: Curves.easeInOutCubicEmphasized)).animate(animation),
+              child: child,
+            );
+          },
+          child: state.isDragging ? Container(
+            height: 56.0,
+            constraints: constraints,
+            margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(36.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).colorScheme.shadow.withOpacity(0.5),
+                  offset: const Offset(0.0, 4.0),
+                  blurRadius: 16.0,
+                ),
+              ],
+            ),
+            child: CommonDeleteDragTarget(
+              onWillAcceptWithDetails: (details) => details.data is BookData || details.data is BookmarkData,
+            ),
+          ) : const SizedBox.shrink(),
+        );
+      },
     );
   }
 }

@@ -30,30 +30,8 @@ class HomepageScaffoldMediumView extends StatelessWidget {
                   clipBehavior: Clip.hardEdge,
                   child: const HomepageNavigationRail(),
                 ),
-                Expanded(
-                  child: Stack(
-                    children: [
-                      const HomepageScaffoldBody(),
-                      Positioned.fill(
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 200),
-                            transitionBuilder: (Widget child, Animation<double> animation) {
-                              return SlideTransition(
-                                position: Tween<Offset>(
-                                  begin: const Offset(0.0, 1.0),
-                                  end: const Offset(0.0, 0.0),
-                                ).chain(CurveTween(curve: Curves.easeInOutCubicEmphasized)).animate(animation),
-                                child: child,
-                              );
-                            },
-                            child: homepageState.isDragging ? const HomepageDraggingTargetBar() : null,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                const Expanded(
+                  child: HomepageScaffoldBody(),
                 ),
               ],
             ),
