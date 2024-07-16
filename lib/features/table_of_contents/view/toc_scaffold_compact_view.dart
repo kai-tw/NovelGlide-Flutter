@@ -5,7 +5,6 @@ import '../../../ad_center/advertisement.dart';
 import '../../../ad_center/advertisement_id.dart';
 import '../bloc/toc_bloc.dart';
 import '../toc_app_bar.dart';
-import '../toc_nav_bar.dart';
 import '../widgets/toc_add_chapter_button.dart';
 import '../widgets/toc_book_name.dart';
 import '../widgets/toc_cover_banner.dart';

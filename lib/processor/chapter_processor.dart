@@ -2,13 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:collection/collection.dart';
 import 'package:flutter_charset_detector/flutter_charset_detector.dart';
 import 'package:path/path.dart';
 
 import '../data/chapter_data.dart';
-import '../features/common_components/common_file_picker/common_file_picker_type.dart';
-import '../toolbox/advanced_mime_type_resolver.dart';
 import 'book_processor.dart';
 import 'bookmark_processor.dart';
 
