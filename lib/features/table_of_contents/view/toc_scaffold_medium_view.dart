@@ -18,52 +18,74 @@ class TocScaffoldMediumView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TocCubit, TocState>(
-        buildWhen: (previous, current) => previous.isDragging != current.isDragging,
-        builder: (context, state) {
-          return Scaffold(
-            appBar: const TocAppBar(),
-            body: SafeArea(
-              child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  double leftWidth = constraints.maxWidth * 0.382;
-                  return Row(
-                    children: [
-                      SizedBox(
-                        width: leftWidth,
-                        height: constraints.maxHeight,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20.0, bottom: 16.0),
-                              child: TocCoverBanner(aspectRatio: leftWidth / (constraints.maxHeight / 2)),
+      buildWhen: (previous, current) => previous.isDragging != current.isDragging,
+      builder: (context, state) {
+        return Scaffold(
+          appBar: const TocAppBar(),
+          body: SafeArea(
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                double leftWidth = constraints.maxWidth * 0.382;
+                return Row(
+                  children: [
+                    SizedBox(
+                      width: leftWidth,
+                      height: constraints.maxHeight,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20.0, bottom: 16.0),
+                            child: TocCoverBanner(aspectRatio: leftWidth / (constraints.maxHeight / 2)),
+                          ),
+                          const Expanded(
+                            child: SingleChildScrollView(
+                              child: TocBookName(),
                             ),
-                            const Expanded(
-                              child: SingleChildScrollView(
-                                child: TocBookName(),
+                          ),
+                          Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Stack(
+                        children: [
+                          RefreshIndicator(
+                            onRefresh: () async => BlocProvider.of<TocCubit>(context).refresh(),
+                            child: const TocScrollView(
+                              slivers: [
+                                TocSliverChapterList(),
+                              ],
+                            ),
+                          ),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 200),
+                                transitionBuilder: (Widget child, Animation<double> animation) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(0.0, 1.0),
+                                      end: const Offset(0.0, 0.0),
+                                    ).chain(CurveTween(curve: Curves.easeInOutCubicEmphasized)).animate(animation),
+                                    child: child,
+                                  );
+                                },
+                                child: state.isDragging ? const TocDraggingTargetBar() : null,
                               ),
                             ),
-                            Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: RefreshIndicator(
-                          onRefresh: () async => BlocProvider.of<TocCubit>(context).refresh(),
-                          child: const TocScrollView(
-                            slivers: [
-                              TocSliverChapterList(),
-                            ],
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  );
-                },
-              ),
+                    ),
+                  ],
+                );
+              },
             ),
-            floatingActionButton: state.isDragging ? const TocDraggingTargetBar() : const TocAddChapterButton(),
-          );
-        }
+          ),
+          floatingActionButton: const TocAddChapterButton(),
+        );
+      },
     );
   }
 }

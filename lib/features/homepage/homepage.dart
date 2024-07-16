@@ -6,15 +6,10 @@ import '../../data/window_class.dart';
 import '../../processor/theme_processor.dart';
 import '../bookmark_list/bloc/bookmark_list_bloc.dart';
 import '../bookshelf/bloc/bookshelf_bloc.dart';
-import '../bookshelf/widgets/bookshelf_add_book_button.dart';
 import 'bloc/homepage_bloc.dart';
 import 'bloc/navigation_bloc.dart';
-import 'homepage_app_bar.dart';
-import 'homepage_nav_bar.dart';
-import 'homepage_scaffold_body.dart';
 import 'view/homepage_scaffold_compact_view.dart';
 import 'view/homepage_scaffold_medium_view.dart';
-import 'widgets/homepage_dragging_target_bar.dart';
 
 /// The homepage of the app
 class Homepage extends StatefulWidget {

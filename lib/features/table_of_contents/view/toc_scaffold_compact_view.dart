@@ -5,6 +5,7 @@ import '../../../ad_center/advertisement.dart';
 import '../../../ad_center/advertisement_id.dart';
 import '../bloc/toc_bloc.dart';
 import '../toc_app_bar.dart';
+import '../toc_nav_bar.dart';
 import '../widgets/toc_add_chapter_button.dart';
 import '../widgets/toc_book_name.dart';
 import '../widgets/toc_cover_banner.dart';
@@ -18,13 +19,13 @@ class TocScaffoldCompactView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TocCubit cubit = BlocProvider.of<TocCubit>(context);
-    return BlocBuilder<TocCubit, TocState>(
-      buildWhen: (previous, current) => previous.isDragging != current.isDragging,
-      builder: (context, state) {
-        return Scaffold(
-          appBar: const TocAppBar(),
-          body: SafeArea(
-            child: RefreshIndicator(
+    return Scaffold(
+      extendBody: true,
+      appBar: const TocAppBar(),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            RefreshIndicator(
               onRefresh: () async => cubit.refresh(),
               child: Column(
                 children: [
@@ -48,16 +49,20 @@ class TocScaffoldCompactView extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-          floatingActionButton: const TocAddChapterButton(),
-          bottomNavigationBar: state.isDragging
-              ? const Padding(
-                  padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-                  child: TocDraggingTargetBar(),
-                )
-              : null,
-        );
-      },
+
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width - 72.0,
+                  child: const TocDraggingTargetBar(),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: const TocAddChapterButton(),
     );
   }
 }
