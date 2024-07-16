@@ -18,27 +18,37 @@ class ReaderCubit extends Cubit<ReaderState> {
     final String bookName = state.bookName;
     final int chapterNumber = state.chapterNumber;
 
-    final BookmarkData bookmarkObject = BookmarkData.fromBookName(bookName);
-    final ReaderSettingsData readerSettings = ReaderSettingsData.load();
-
     emit(state.copyWith(
       code: ReaderStateCode.loaded,
-      prevChapterNumber: ChapterProcessor.getPrevChapterNumber(bookName, chapterNumber),
-      nextChapterNumber: ChapterProcessor.getNextChapterNumber(bookName, chapterNumber),
+      prevChapterNumber: await ChapterProcessor.getPrevChapterNumber(bookName, chapterNumber),
+      nextChapterNumber: await ChapterProcessor.getNextChapterNumber(bookName, chapterNumber),
       contentLines: await ChapterProcessor.getContent(bookName, chapterNumber),
-      bookmarkObject: bookmarkObject,
-      readerSettings: readerSettings,
+      bookmarkData: BookmarkData.fromBookName(bookName),
+      readerSettings: ReaderSettingsData.load(),
     ));
 
+    // Scrolling Listener
+    scrollController.addListener(_onScroll);
+    scrollController.position.isScrollingNotifier.addListener(_onScrollEnd);
+
+    // Entering a different chapter from the bookmark.
+    // If the autoSave is enabled, save the bookmark.
+    if (state.chapterNumber != state.bookmarkData.chapterNumber) {
+      autoSaveBookmark();
+    }
+
+    // If the autoSave is enabled or the autoJump is requested,
+    // scroll to the bookmark.
     if (state.readerSettings.autoSave || isAutoJump) {
       scrollToBookmark();
+      isAutoJump = false;
     }
   }
 
   void changeChapter(int chapterNumber) {
     emit(ReaderState(bookName: state.bookName, chapterNumber: chapterNumber));
+    currentArea = 0.0;
     scrollController.jumpTo(0);
-    isAutoJump = false;
     initialize();
   }
 
@@ -65,15 +75,21 @@ class ReaderCubit extends Cubit<ReaderState> {
       area: currentArea,
       savedTime: DateTime.now(),
     )..save();
-    emit(state.copyWith(bookmarkObject: bookmarkObject));
+    emit(state.copyWith(bookmarkData: bookmarkObject));
+  }
+
+  void autoSaveBookmark() {
+    if (state.readerSettings.autoSave) {
+      saveBookmark();
+    }
   }
 
   void scrollToBookmark() {
-    if (state.bookmarkObject.chapterNumber == state.chapterNumber) {
+    if (state.bookmarkData.chapterNumber == state.chapterNumber) {
       final double deviceWidth =
           MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).size.width;
       scrollController.animateTo(
-        state.bookmarkObject.area / deviceWidth,
+        state.bookmarkData.area / deviceWidth,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
@@ -82,10 +98,27 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   @override
   Future<void> close() async {
-    if (state.readerSettings.autoSave) {
-      saveBookmark();
-    }
     super.close();
     scrollController.dispose();
+  }
+
+  void _onScroll() {
+    if (state.code != ReaderStateCode.loaded) {
+      // The content is not loaded yet.
+      return;
+    }
+    final double deviceWidth =
+        MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).size.width;
+    currentArea = scrollController.position.pixels * deviceWidth;
+  }
+
+  void _onScrollEnd() {
+    if (state.code != ReaderStateCode.loaded) {
+      // The content is not loaded yet.
+      return;
+    }
+    if(!scrollController.position.isScrollingNotifier.value) {
+      autoSaveBookmark();
+    }
   }
 }

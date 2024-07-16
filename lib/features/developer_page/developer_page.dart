@@ -18,32 +18,34 @@ class DeveloperPage extends StatelessWidget {
           leading: const CommonBackButton(),
           title: const Text('Developer Page'),
         ),
-        body: Column(
-          children: [
-            const DeviceInfoPanel(),
-            /// Force crash button
-            SettingPageButton(
-              onPressed: () {
-                FirebaseCrashlytics.instance.crash();
-              },
-              iconData: Icons.error_outline_rounded,
-              label: 'Force crash',
-            ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              const DeviceInfoPanel(),
+              /// Force crash button
+              SettingPageButton(
+                onPressed: () {
+                  FirebaseCrashlytics.instance.crash();
+                },
+                iconData: Icons.error_outline_rounded,
+                label: 'Force crash',
+              ),
 
-            /// Generate a fake book button
-            const DeveloperPageFakeBookButton(),
+              /// Generate a fake book button
+              const DeveloperPageFakeBookButton(),
 
-            SettingPageButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => const CommonProcessingDialog(),
-                );
-              },
-              iconData: Icons.open_in_new_rounded,
-              label: 'Open the processing dialog',
-            ),
-          ],
+              SettingPageButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => const CommonProcessingDialog(),
+                  );
+                },
+                iconData: Icons.open_in_new_rounded,
+                label: 'Open the processing dialog',
+              ),
+            ],
+          ),
         ),
       ),
     );

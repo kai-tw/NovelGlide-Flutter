@@ -23,20 +23,23 @@ class HomepageNavigationRail extends StatelessWidget {
             NavigationRailDestination(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               icon: const Icon(Icons.shelves),
-              selectedIcon: const Icon(Icons.shelves),
+              selectedIcon: Icon(Icons.shelves, color: Theme.of(context).colorScheme.surface),
               label: Text(appLocalizations.titleBookshelf),
+              disabled: state.navItem == NavigationItem.bookshelf,
             ),
             NavigationRailDestination(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               icon: const Icon(Icons.bookmark),
-              selectedIcon: const Icon(Icons.bookmark),
+              selectedIcon: Icon(Icons.bookmark, color: Theme.of(context).colorScheme.surface),
               label: Text(appLocalizations.titleBookmarks),
+              disabled: state.navItem == NavigationItem.bookmark,
             ),
             NavigationRailDestination(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               icon: const Icon(Icons.settings),
-              selectedIcon: const Icon(Icons.settings),
+              selectedIcon: Icon(Icons.settings, color: Theme.of(context).colorScheme.surface),
               label: Text(appLocalizations.titleSettings),
+              disabled: state.navItem == NavigationItem.settings,
             ),
           ],
           onDestinationSelected: (index) {

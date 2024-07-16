@@ -7,17 +7,7 @@ class NavigationCubit extends Cubit<NavigationState> {
   NavigationCubit() : super(const NavigationState());
 
   void setItem(NavigationItem item) {
-    switch (item) {
-      case NavigationItem.bookshelf:
-        emit(const NavigationState(navItem: NavigationItem.bookshelf));
-        break;
-      case NavigationItem.bookmark:
-        emit(const NavigationState(navItem: NavigationItem.bookmark));
-        break;
-      case NavigationItem.settings:
-        emit(const NavigationState(navItem: NavigationItem.settings));
-        break;
-    }
+    emit(NavigationState(navItem: item));
   }
 }
 

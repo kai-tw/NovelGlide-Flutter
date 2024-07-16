@@ -18,44 +18,50 @@ class TocScaffoldCompactView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TocCubit cubit = BlocProvider.of<TocCubit>(context);
-    return BlocBuilder<TocCubit, TocState>(
-        buildWhen: (previous, current) => previous.isDragging != current.isDragging,
-        builder: (context, state) {
-          return Scaffold(
-            appBar: const TocAppBar(),
-            body: SafeArea(
-              child: RefreshIndicator(
-                onRefresh: () async => cubit.refresh(),
-                child: Column(
-                  children: [
-                    Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-                    const Expanded(
-                      child: TocScrollView(
-                        slivers: [
-                          SliverToBoxAdapter(
-                            child: Padding(
-                              padding: EdgeInsets.all(24.0),
-                              child: TocCoverBanner(),
-                            ),
+    return Scaffold(
+      extendBody: true,
+      appBar: const TocAppBar(),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            RefreshIndicator(
+              onRefresh: () async => cubit.refresh(),
+              child: Column(
+                children: [
+                  Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+                  const Expanded(
+                    child: TocScrollView(
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.all(24.0),
+                            child: TocCoverBanner(),
                           ),
-                          SliverToBoxAdapter(
-                            child: TocBookName(),
-                          ),
-                          TocSliverChapterList(),
-                        ],
-                      ),
+                        ),
+                        SliverToBoxAdapter(
+                          child: TocBookName(),
+                        ),
+                        TocSliverChapterList(),
+                      ],
                     ),
-                  ],
+                  ),
+                ],
+              ),
+            ),
+
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width - 72.0,
+                  child: const TocDraggingTargetBar(),
                 ),
               ),
             ),
-            floatingActionButton: const TocAddChapterButton(),
-            bottomNavigationBar: state.isDragging ? const Padding(
-              padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-              child: TocDraggingTargetBar(),
-            ) : null,
-          );
-        }
+          ],
+        ),
+      ),
+      floatingActionButton: const TocAddChapterButton(),
     );
   }
 }

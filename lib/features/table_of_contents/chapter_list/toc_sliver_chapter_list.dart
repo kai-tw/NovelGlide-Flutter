@@ -12,7 +12,6 @@ class TocSliverChapterList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<TocCubit>(context).refresh();
     return BlocBuilder<TocCubit, TocState>(
       buildWhen: (previous, current) => previous.code != current.code || previous.chapterList != current.chapterList,
       builder: (BuildContext context, TocState state) {

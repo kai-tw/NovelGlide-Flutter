@@ -12,17 +12,15 @@ class CommonBackButton extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return IconButton(
       onPressed: () {
-        Navigator.of(context).pop(popValue);
-
         if (onPressed != null) {
           onPressed!();
+        } else {
+          Navigator.of(context).pop(popValue);
         }
       },
-      icon: Semantics(
-        label: appLocalizations.accessibilityBackButton,
-        button: true,
-        enabled: true,
-        child: const Icon(Icons.arrow_back_ios_new_rounded),
+      icon: Icon(
+        Icons.arrow_back_ios_new_rounded,
+        semanticLabel: appLocalizations.accessibilityBackButton,
       ),
     );
   }

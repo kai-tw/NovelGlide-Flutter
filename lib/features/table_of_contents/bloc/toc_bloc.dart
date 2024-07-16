@@ -12,9 +12,9 @@ enum TocStateCode { loading, normal, empty }
 class TocCubit extends Cubit<TocState> {
   TocCubit(BookData bookData) : super(TocState(bookName: bookData.name));
 
-  void refresh({BookData? newData}) async {
+  Future<void> refresh({BookData? newData}) async {
     final String bookName = newData?.name ?? state.bookName;
-    final List<ChapterData> chapterList = ChapterProcessor.getList(bookName);
+    final List<ChapterData> chapterList = await ChapterProcessor.getList(bookName);
     final TocStateCode code = chapterList.isEmpty ? TocStateCode.empty : TocStateCode.normal;
     final BookmarkData bookmarkData = BookmarkData.fromBookName(bookName);
     emit(state.copyWith(
