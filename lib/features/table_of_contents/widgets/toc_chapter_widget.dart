@@ -14,13 +14,14 @@ class TocChapterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
     final int chapterNumber = chapterData.ordinalNumber;
     final String bookName = chapterData.bookName;
     final double iconSize = IconTheme.of(context).size ?? 24.0;
     return TextButton.icon(
       onPressed: () => Navigator.of(context)
           .push(_navigateToReader(bookName, chapterNumber))
-          .then((_) => BlocProvider.of<TocCubit>(context).refresh()),
+          .then((_) => cubit.refresh()),
       style: TextButton.styleFrom(
         alignment: Alignment.centerLeft,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
