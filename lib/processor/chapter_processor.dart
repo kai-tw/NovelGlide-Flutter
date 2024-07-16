@@ -29,20 +29,18 @@ class ChapterProcessor {
   /// Get all the chapter data of a book.
   static Future<List<ChapterData>> getList(String bookName) async {
     final Directory folder = Directory(BookProcessor.getPathByName(bookName));
+    List<ChapterData> chapterList = [];
 
-    if (folder.existsSync()) {
-      final List<String> entries = folder
-          .listSync()
-          .whereType<File>()
-          .where((item) =>
-              chapterRegexp.hasMatch(basename(item.path)))
-          .map<String>((item) => item.path)
-          .toList();
-      entries.sort(compareNatural);
+    if (await folder.exists()) {
+      await for (FileSystemEntity entity in folder.list()) {
+        if (entity is File && chapterRegexp.hasMatch(basename(entity.path))) {
+          chapterList.add(ChapterData(bookName: bookName, ordinalNumber: getOrdinalNumberFromPath(entity.path)));
+        }
+      }
 
-      return entries
-          .map((e) => ChapterData(bookName: bookName, ordinalNumber: getOrdinalNumberFromPath(e)))
-          .toList();
+      chapterList.sort((a, b) => a.ordinalNumber - b.ordinalNumber);
+
+      return chapterList;
     }
 
     return [];
