@@ -20,8 +20,8 @@ class ReaderCubit extends Cubit<ReaderState> {
 
     emit(state.copyWith(
       code: ReaderStateCode.loaded,
-      prevChapterNumber: ChapterProcessor.getPrevChapterNumber(bookName, chapterNumber),
-      nextChapterNumber: ChapterProcessor.getNextChapterNumber(bookName, chapterNumber),
+      prevChapterNumber: await ChapterProcessor.getPrevChapterNumber(bookName, chapterNumber),
+      nextChapterNumber: await ChapterProcessor.getNextChapterNumber(bookName, chapterNumber),
       contentLines: await ChapterProcessor.getContent(bookName, chapterNumber),
       bookmarkData: BookmarkData.fromBookName(bookName),
       readerSettings: ReaderSettingsData.load(),
