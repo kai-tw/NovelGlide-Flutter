@@ -10,20 +10,21 @@ class BookmarkData extends Equatable {
   final bool isValid;
   final String bookName;
   final int chapterNumber;
-  final double area;
+  final double scrollRatio;
   final DateTime savedTime;
   final int daysPassed;
 
   @override
-  List<Object?> get props => [isValid, bookName, chapterNumber, area, savedTime, daysPassed];
+  List<Object?> get props => [isValid, bookName, chapterNumber, scrollRatio, savedTime, daysPassed];
 
   BookmarkData({
     this.isValid = false,
     this.bookName = '',
     this.chapterNumber = 0,
-    this.area = 0,
+    this.scrollRatio = 0,
     DateTime? savedTime,
-  }) : savedTime = savedTime ?? DateTime.now(), daysPassed = DateTimeUtility.daysPassed(savedTime ?? DateTime.now());
+  })  : savedTime = savedTime ?? DateTime.now(),
+        daysPassed = DateTimeUtility.daysPassed(savedTime ?? DateTime.now());
 
   factory BookmarkData.fromDirectory(String directory) {
     Box bookmarkBox = Hive.box(name: 'bookmark', directory: directory);
@@ -31,14 +32,14 @@ class BookmarkData extends Equatable {
     final int chapterNumber = bookmarkBox.get('chapterNumber', defaultValue: -1);
     final double area = bookmarkBox.get('area', defaultValue: 0.0);
     final DateTime savedTime =
-    DateTime.parse(bookmarkBox.get('savedTime', defaultValue: DateTime.now().toIso8601String()));
+        DateTime.parse(bookmarkBox.get('savedTime', defaultValue: DateTime.now().toIso8601String()));
     bookmarkBox.close();
 
     return BookmarkData(
       isValid: isValid,
       bookName: "",
       chapterNumber: chapterNumber,
-      area: area,
+      scrollRatio: area,
       savedTime: savedTime,
     );
   }
@@ -46,18 +47,16 @@ class BookmarkData extends Equatable {
   factory BookmarkData.fromBookName(String bookName) {
     final BookmarkData data = BookmarkData.fromDirectory(join(FilePath.instance.libraryRoot, bookName));
     final bool isValid = data.isValid && ChapterProcessor.isExist(bookName, data.chapterNumber);
-    return data.copyWith(isValid: isValid,bookName: bookName);
+    return data.copyWith(isValid: isValid, bookName: bookName);
   }
 
   void save() {
-    if (_verify()) {
-      Box bookmarkBox = Hive.box(name: 'bookmark', directory: join(FilePath.instance.libraryRoot, bookName));
-      bookmarkBox.put('isValid', _verify());
-      bookmarkBox.put('chapterNumber', chapterNumber);
-      bookmarkBox.put('area', area);
-      bookmarkBox.put('savedTime', savedTime.toIso8601String());
-      bookmarkBox.close();
-    }
+    Box bookmarkBox = Hive.box(name: 'bookmark', directory: join(FilePath.instance.libraryRoot, bookName));
+    bookmarkBox.put('isValid', bookName != '' && chapterNumber > -1 && savedTime.isBefore(DateTime.now()));
+    bookmarkBox.put('chapterNumber', chapterNumber);
+    bookmarkBox.put('area', scrollRatio.clamp(0.0, 1.0));
+    bookmarkBox.put('savedTime', savedTime.toIso8601String());
+    bookmarkBox.close();
   }
 
   void clear() {
@@ -77,17 +76,13 @@ class BookmarkData extends Equatable {
       isValid: isValid ?? this.isValid,
       bookName: bookName ?? this.bookName,
       chapterNumber: chapterNumber ?? this.chapterNumber,
-      area: area ?? this.area,
+      scrollRatio: area ?? this.scrollRatio,
       savedTime: savedTime ?? this.savedTime,
     );
   }
 
   @override
   String toString() {
-    return '{ isValid: $isValid, bookName: $bookName, chapterNumber: $chapterNumber, area: $area, savedTime: $savedTime, daysPassed: $daysPassed }';
-  }
-
-  bool _verify() {
-    return bookName != '' && chapterNumber > -1 && area >= 0.0 && savedTime.isBefore(DateTime.now());
+    return '{ isValid: $isValid, bookName: $bookName, chapterNumber: $chapterNumber, area: $scrollRatio, savedTime: $savedTime, daysPassed: $daysPassed }';
   }
 }

@@ -16,18 +16,23 @@ class ReaderCubit extends Cubit<ReaderState> {
       : super(ReaderState(bookName: bookName, chapterNumber: chapterNumber));
 
   void initialize() async {
+    WidgetsBinding.instance.addPostFrameCallback(_postFrameCallback);
+  }
+
+  void _postFrameCallback(_) async {
+    await Future.delayed(const Duration(seconds: 2));
     final String bookName = state.bookName;
     final int chapterNumber = state.chapterNumber;
 
     emit(ReaderState(
-      bookName: bookName,
-      chapterNumber: chapterNumber,
-      code: ReaderStateCode.loaded,
-      prevChapterNumber: await ChapterProcessor.getPrevChapterNumber(bookName, chapterNumber),
-      nextChapterNumber: await ChapterProcessor.getNextChapterNumber(bookName, chapterNumber),
-      contentLines: await ChapterProcessor.getContent(bookName, chapterNumber),
-      bookmarkData: BookmarkData.fromBookName(bookName),
-      readerSettings: ReaderSettingsData.load(),
+        bookName: bookName,
+        chapterNumber: chapterNumber,
+        code: ReaderStateCode.loaded,
+        prevChapterNumber: await ChapterProcessor.getPrevChapterNumber(bookName, chapterNumber),
+        nextChapterNumber: await ChapterProcessor.getNextChapterNumber(bookName, chapterNumber),
+    contentLines: await ChapterProcessor.getContent(bookName, chapterNumber),
+    bookmarkData: BookmarkData.fromBookName(bookName),
+    readerSettings: ReaderSettingsData.load(),
     ));
 
     // Scrolling Listener
@@ -50,7 +55,6 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   void changeChapter(int chapterNumber) {
     emit(ReaderState(bookName: state.bookName, chapterNumber: chapterNumber));
-    currentArea = 0.0;
     scrollController.jumpTo(0);
     initialize();
   }
@@ -75,7 +79,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       isValid: true,
       bookName: state.bookName,
       chapterNumber: state.chapterNumber,
-      area: currentArea,
+      scrollRatio: scrollController.position.pixels / scrollController.position.maxScrollExtent,
       savedTime: DateTime.now(),
     )..save();
     emit(state.copyWith(bookmarkData: bookmarkObject));
@@ -89,10 +93,8 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   void scrollToBookmark() {
     if (state.bookmarkData.chapterNumber == state.chapterNumber) {
-      final double deviceWidth =
-          MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).size.width;
       scrollController.animateTo(
-        state.bookmarkData.area / deviceWidth,
+        state.bookmarkData.scrollRatio * scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
@@ -110,9 +112,6 @@ class ReaderCubit extends Cubit<ReaderState> {
       // The content is not loaded yet.
       return;
     }
-    final double deviceWidth =
-        MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).size.width;
-    currentArea = scrollController.position.pixels * deviceWidth;
     emit(state.copyWith(
       currentScrollY: scrollController.position.pixels,
       maxScrollExtent: scrollController.position.maxScrollExtent,

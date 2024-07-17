@@ -35,7 +35,11 @@ class ReaderBody extends StatelessWidget {
                         case ReaderStateCode.loaded:
                           return const ReaderSliverContent();
                         default:
-                          return const CommonSliverLoading();
+                          return const SliverFillRemaining(
+                            child: Center(
+                              child: CommonLoading(),
+                            ),
+                          );
                       }
                     },
                   ),
