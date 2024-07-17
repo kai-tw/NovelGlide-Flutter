@@ -27,7 +27,8 @@ class HomepageScaffoldBody extends StatelessWidget {
 
         switch (windowClass) {
           case WindowClass.compact:
-            dragTargetBottom = kBottomNavigationBarHeight + 32.0;
+            // dragTargetBottom = kBottomNavigationBarHeight + 32.0;
+            dragTargetBottom = kFloatingActionButtonMargin + MediaQuery.of(context).padding.bottom;
             break;
           default:
             dragTargetBottom = kFloatingActionButtonMargin - 8.0;
