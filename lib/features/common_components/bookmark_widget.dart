@@ -3,10 +3,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/bookmark_data.dart';
 
-class BookmarkListBookmarkWidget extends StatelessWidget {
+class BookmarkWidget extends StatelessWidget {
   final BookmarkData _bookmarkObject;
+  final Widget? leading;
 
-  const BookmarkListBookmarkWidget(this._bookmarkObject, {super.key});
+  const BookmarkWidget(this._bookmarkObject, {super.key, this.leading});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class BookmarkListBookmarkWidget extends StatelessWidget {
 
     return Row(
       children: [
-        Icon(
+        leading ?? Icon(
           Icons.bookmark_rounded,
           color: Theme.of(context).colorScheme.onSurface,
         ),

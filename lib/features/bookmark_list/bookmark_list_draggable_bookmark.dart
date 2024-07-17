@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../data/bookmark_data.dart';
 import '../homepage/bloc/homepage_bloc.dart';
 import 'bloc/bookmark_list_bloc.dart';
-import 'bookmark_list_bookmark_widget.dart';
+import '../common_components/bookmark_widget.dart';
 
 class BookmarkListDraggableBookmark extends StatelessWidget {
   final BookmarkData _bookmarkObject;
@@ -59,7 +59,7 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
                 ),
               ],
             ),
-            child: BookmarkListBookmarkWidget(_bookmarkObject),
+            child: BookmarkWidget(_bookmarkObject),
           ),
         ),
         childWhenDragging: Opacity(
@@ -67,14 +67,14 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
           child: Container(
             width: constraints.maxWidth,
             padding: const EdgeInsets.all(16.0),
-            child: BookmarkListBookmarkWidget(_bookmarkObject),
+            child: BookmarkWidget(_bookmarkObject),
           ),
         ),
         child: Container(
           width: constraints.maxWidth,
           color: Colors.transparent,
           padding: const EdgeInsets.all(16.0),
-          child: BookmarkListBookmarkWidget(_bookmarkObject),
+          child: BookmarkWidget(_bookmarkObject),
         ),
       );
     });

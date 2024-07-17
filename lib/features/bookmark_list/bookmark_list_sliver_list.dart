@@ -18,7 +18,7 @@ class BookmarkListSliverList extends StatelessWidget {
           case BookmarkListStateCode.normal:
             return SliverList(
               delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
+                (BuildContext context, int index) {
                   return BookmarkListSliverListItem(state.bookmarkList[index]);
                 },
                 childCount: state.bookmarkList.length,

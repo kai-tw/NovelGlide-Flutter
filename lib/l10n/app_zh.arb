@@ -141,8 +141,7 @@
   "brightnessLight": "淺色",
   "brightnessDark": "深色",
 
-  "bookmarkManagerClearAllButton": "清除所有書籤",
-  "bookmarkManagerClearAllButtonDone": "清除完成",
+  "bookmarkManagerDeleteNumberOfSelectedBookmarks": "刪除 {number} 個已選擇的書籤",
 
   "alertDialogClearAllBookmarksTitle": "清除所有書籤",
   "alertDialogClearAllBookmarksDescription": "這將永久清除書籤。",
@@ -168,6 +167,7 @@
   "accessibilityBookmarkListItem": "一個書籤",
   "accessibilityBookmarkListItemOnTap": "點擊以從書籤位置繼續閱讀",
   "accessibilityBookmarkListItemOnLongPress": "長按並拖動到底部以刪除書籤",
+  "accessibilityBookmarkManagerCheckbox": "書籤勾選框",
   "accessibilityTocListItem": "章節",
   "accessibilityTocListItemOnTap": "點擊以開啟此章節",
   "accessibilityTocListItemOnLongPress": "長按並拖動到底部以刪除此章節",
