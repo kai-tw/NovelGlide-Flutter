@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/bookmark_data.dart';
@@ -10,17 +11,15 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
   BookmarkListCubit() : super(const BookmarkListState());
 
   void refresh() async {
-    final List<BookmarkData> bookmarkList = BookmarkProcessor.getList();
-    bookmarkList.sort(_sortBySavedTime);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final List<BookmarkData> bookmarkList = BookmarkProcessor.getList();
+      bookmarkList.sort((a, b) => b.savedTime.compareTo(a.savedTime));
 
-    emit(BookmarkListState(
-      code: bookmarkList.isEmpty ? BookmarkListStateCode.empty : BookmarkListStateCode.normal,
-      bookmarkList: bookmarkList,
-    ));
-  }
-
-  int _sortBySavedTime(BookmarkData a, BookmarkData b) {
-    return b.savedTime.compareTo(a.savedTime);
+      emit(BookmarkListState(
+        code: bookmarkList.isEmpty ? BookmarkListStateCode.empty : BookmarkListStateCode.normal,
+        bookmarkList: bookmarkList,
+      ));
+    });
   }
 }
 

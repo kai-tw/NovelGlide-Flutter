@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/book_data.dart';
@@ -10,9 +11,11 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   BookshelfCubit() : super(const BookshelfState());
 
   void refresh() async {
-    List<BookData> list = BookProcessor.getDataList();
-    BookshelfStateCode code = list.isEmpty ? BookshelfStateCode.empty : BookshelfStateCode.normal;
-    emit(BookshelfState(code: code, bookList: list));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      List<BookData> list = BookProcessor.getDataList();
+      BookshelfStateCode code = list.isEmpty ? BookshelfStateCode.empty : BookshelfStateCode.normal;
+      emit(BookshelfState(code: code, bookList: list));
+    });
   }
 }
 

@@ -16,41 +16,38 @@ class ReaderCubit extends Cubit<ReaderState> {
       : super(ReaderState(bookName: bookName, chapterNumber: chapterNumber));
 
   void initialize() async {
-    WidgetsBinding.instance.addPostFrameCallback(_postFrameCallback);
-  }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final String bookName = state.bookName;
+      final int chapterNumber = state.chapterNumber;
 
-  void _postFrameCallback(_) async {
-    await Future.delayed(const Duration(seconds: 2));
-    final String bookName = state.bookName;
-    final int chapterNumber = state.chapterNumber;
-
-    emit(ReaderState(
+      emit(ReaderState(
         bookName: bookName,
         chapterNumber: chapterNumber,
         code: ReaderStateCode.loaded,
         prevChapterNumber: await ChapterProcessor.getPrevChapterNumber(bookName, chapterNumber),
         nextChapterNumber: await ChapterProcessor.getNextChapterNumber(bookName, chapterNumber),
-    contentLines: await ChapterProcessor.getContent(bookName, chapterNumber),
-    bookmarkData: BookmarkData.fromBookName(bookName),
-    readerSettings: ReaderSettingsData.load(),
-    ));
+        contentLines: await ChapterProcessor.getContent(bookName, chapterNumber),
+        bookmarkData: BookmarkData.fromBookName(bookName),
+        readerSettings: ReaderSettingsData.load(),
+      ));
 
-    // Scrolling Listener
-    scrollController.addListener(_onScroll);
-    scrollController.position.isScrollingNotifier.addListener(_onScrollEnd);
+      // Scrolling Listener
+      scrollController.addListener(_onScroll);
+      scrollController.position.isScrollingNotifier.addListener(_onScrollEnd);
 
-    // Entering a different chapter from the bookmark.
-    // If the autoSave is enabled, save the bookmark.
-    if (state.chapterNumber != state.bookmarkData.chapterNumber) {
-      autoSaveBookmark();
-    }
+      // Entering a different chapter from the bookmark.
+      // If the autoSave is enabled, save the bookmark.
+      if (state.chapterNumber != state.bookmarkData.chapterNumber) {
+        autoSaveBookmark();
+      }
 
-    // If the autoSave is enabled or the autoJump is requested,
-    // scroll to the bookmark.
-    if (state.readerSettings.autoSave || isAutoJump) {
-      scrollToBookmark();
-      isAutoJump = false;
-    }
+      // If the autoSave is enabled or the autoJump is requested,
+      // scroll to the bookmark.
+      if (state.readerSettings.autoSave || isAutoJump) {
+        scrollToBookmark();
+        isAutoJump = false;
+      }
+    });
   }
 
   void changeChapter(int chapterNumber) {

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/book_data.dart';
@@ -13,17 +14,20 @@ class TocCubit extends Cubit<TocState> {
   TocCubit(BookData bookData) : super(TocState(bookName: bookData.name));
 
   Future<void> refresh({BookData? newData}) async {
-    final String bookName = newData?.name ?? state.bookName;
-    final List<ChapterData> chapterList = await ChapterProcessor.getList(bookName);
-    final TocStateCode code = chapterList.isEmpty ? TocStateCode.empty : TocStateCode.normal;
-    final BookmarkData bookmarkData = BookmarkData.fromBookName(bookName);
-    emit(state.copyWith(
-      bookName: bookName,
-      isCoverExist: BookProcessor.isCoverExist(bookName),
-      code: code,
-      chapterList: chapterList,
-      bookmarkData: bookmarkData,
-    ));
+    // After the UI is rendered, start to load the data.
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final String bookName = newData?.name ?? state.bookName;
+      final List<ChapterData> chapterList = await ChapterProcessor.getList(bookName);
+      final TocStateCode code = chapterList.isEmpty ? TocStateCode.empty : TocStateCode.normal;
+      final BookmarkData bookmarkData = BookmarkData.fromBookName(bookName);
+      emit(state.copyWith(
+        bookName: bookName,
+        isCoverExist: BookProcessor.isCoverExist(bookName),
+        code: code,
+        chapterList: chapterList,
+        bookmarkData: bookmarkData,
+      ));
+    });
   }
 
   void setDragging(bool isDragging) {
