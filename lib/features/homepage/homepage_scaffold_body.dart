@@ -8,6 +8,7 @@ import '../bookmark_list/bookmark_list_sliver_list.dart';
 import '../bookshelf/bloc/bookshelf_bloc.dart';
 import '../bookshelf/bookshelf_sliver_list.dart';
 import '../settings_page/settings_page.dart';
+import 'bloc/homepage_bloc.dart';
 import 'bloc/navigation_bloc.dart';
 import 'widgets/homepage_dragging_target_bar.dart';
 import 'widgets/homepage_scroll_view.dart';
@@ -31,11 +32,15 @@ class HomepageScaffoldBody extends StatelessWidget {
                   child: Column(
                     children: [
                       Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-                      const Expanded(
-                        child: HomepageScrollView(
-                          slivers: [
-                            BookshelfSliverList(),
-                          ],
+                      Expanded(
+                        child: PageStorage(
+                          bucket: BlocProvider.of<HomepageCubit>(context).bookshelfBucket,
+                          child: const HomepageScrollView(
+                            key: PageStorageKey<String>('homepage-bookshelf'),
+                            slivers: [
+                              BookshelfSliverList(),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -62,11 +67,14 @@ class HomepageScaffoldBody extends StatelessWidget {
                   child: Column(
                     children: [
                       Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-                      const Expanded(
-                        child: HomepageScrollView(
-                          slivers: [
-                            BookmarkListSliverList(),
-                          ],
+                      Expanded(
+                        child: PageStorage(
+                          bucket: BlocProvider.of<HomepageCubit>(context).bookmarkBucket,
+                          child: const HomepageScrollView(
+                            slivers: [
+                              BookmarkListSliverList(),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -76,7 +84,7 @@ class HomepageScaffoldBody extends StatelessWidget {
                   bottom: kFloatingActionButtonMargin - 8.0 + MediaQuery.of(context).padding.bottom,
                   child: const Align(
                     alignment: Alignment.bottomCenter,
-                    child:HomepageDraggingTargetBar(),
+                    child: HomepageDraggingTargetBar(),
                   ),
                 ),
               ],
