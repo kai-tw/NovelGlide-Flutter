@@ -7,6 +7,7 @@ import '../../../processor/chapter_processor.dart';
 import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
+  final PageStorageBucket bucket = PageStorageBucket();
   final ScrollController scrollController = ScrollController();
   bool isAutoJump;
   double currentArea = 0.0;
@@ -18,7 +19,9 @@ class ReaderCubit extends Cubit<ReaderState> {
     final String bookName = state.bookName;
     final int chapterNumber = state.chapterNumber;
 
-    emit(state.copyWith(
+    emit(ReaderState(
+      bookName: bookName,
+      chapterNumber: chapterNumber,
       code: ReaderStateCode.loaded,
       prevChapterNumber: await ChapterProcessor.getPrevChapterNumber(bookName, chapterNumber),
       nextChapterNumber: await ChapterProcessor.getNextChapterNumber(bookName, chapterNumber),
@@ -110,6 +113,10 @@ class ReaderCubit extends Cubit<ReaderState> {
     final double deviceWidth =
         MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).size.width;
     currentArea = scrollController.position.pixels * deviceWidth;
+    emit(state.copyWith(
+      currentScrollY: scrollController.position.pixels,
+      maxScrollExtent: scrollController.position.maxScrollExtent,
+    ));
   }
 
   void _onScrollEnd() {
@@ -117,7 +124,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       // The content is not loaded yet.
       return;
     }
-    if(!scrollController.position.isScrollingNotifier.value) {
+    if (!scrollController.position.isScrollingNotifier.value) {
       autoSaveBookmark();
     }
   }
