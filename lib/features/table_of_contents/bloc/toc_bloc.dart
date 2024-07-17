@@ -11,6 +11,8 @@ import '../../../processor/chapter_processor.dart';
 enum TocStateCode { loading, normal, empty }
 
 class TocCubit extends Cubit<TocState> {
+  final PageStorageBucket bucket = PageStorageBucket();
+
   TocCubit(BookData bookData) : super(TocState(bookName: bookData.name));
 
   Future<void> refresh({BookData? newData}) async {
