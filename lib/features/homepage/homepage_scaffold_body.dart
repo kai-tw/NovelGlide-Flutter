@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../ad_center/advertisement.dart';
 import '../../ad_center/advertisement_id.dart';
-import '../../data/window_class.dart';
 import '../bookmark_list/bloc/bookmark_list_bloc.dart';
 import '../bookmark_list/bookmark_list_sliver_list.dart';
 import '../bookshelf/bloc/bookshelf_bloc.dart';
@@ -22,17 +21,6 @@ class HomepageScaffoldBody extends StatelessWidget {
       builder: (BuildContext context, NavigationState state) {
         final BookshelfCubit bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
         final BookmarkListCubit bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
-        final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
-        double dragTargetBottom;
-
-        switch (windowClass) {
-          case WindowClass.compact:
-            // dragTargetBottom = kBottomNavigationBarHeight + 32.0;
-            dragTargetBottom = kFloatingActionButtonMargin + MediaQuery.of(context).padding.bottom;
-            break;
-          default:
-            dragTargetBottom = kFloatingActionButtonMargin - 8.0;
-        }
 
         switch (state.navItem) {
           case NavigationItem.bookshelf:
@@ -54,7 +42,7 @@ class HomepageScaffoldBody extends StatelessWidget {
                   ),
                 ),
                 Positioned.fill(
-                  bottom: dragTargetBottom,
+                  bottom: kFloatingActionButtonMargin - 8.0 + MediaQuery.of(context).padding.bottom,
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child: SizedBox(
@@ -85,7 +73,7 @@ class HomepageScaffoldBody extends StatelessWidget {
                   ),
                 ),
                 Positioned.fill(
-                  bottom: dragTargetBottom,
+                  bottom: kFloatingActionButtonMargin - 8.0 + MediaQuery.of(context).padding.bottom,
                   child: const Align(
                     alignment: Alignment.bottomCenter,
                     child:HomepageDraggingTargetBar(),
