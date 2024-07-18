@@ -23,7 +23,7 @@ class HomepageScaffoldMediumView extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onSurface,
+                    color: Colors.black87,
                     borderRadius: BorderRadius.circular(24.0),
                   ),
                   clipBehavior: Clip.hardEdge,
