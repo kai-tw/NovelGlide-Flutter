@@ -42,7 +42,7 @@ A first attempt to develop a cross-platform app.
 
 ## Testing
 If you are interested in NovelGlide and want to join the beta testing,
-you can join the testing by this link: [Google Play Store Invitation Page](https://play.google.com/apps/testing/com.kai_wu.novelglide)
+provide your email address and visit [Google Play Store Invitation Page](https://play.google.com/apps/testing/com.kai_wu.novelglide) to join the testing.
 
 Note: If you join the beta testing, I hope you can use it for 14 consecutive days.
 
