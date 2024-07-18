@@ -16,7 +16,6 @@ abstract class ThemeTemplate {
       colorScheme: colorScheme,
       floatingActionButtonTheme: floatingActionButtonTheme(colorScheme),
       inputDecorationTheme: inputDecorationTheme,
-      // splashColor: Colors.transparent,
       switchTheme: getSwitchTheme(colorScheme),
       useMaterial3: true,
     );
@@ -46,7 +45,7 @@ abstract class ThemeTemplate {
     return FloatingActionButtonThemeData(
       backgroundColor: colorScheme.primary,
       foregroundColor: colorScheme.onPrimary,
-      shape: const CircleBorder(),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(36.0))),
     );
   }
 

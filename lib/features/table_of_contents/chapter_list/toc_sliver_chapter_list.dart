@@ -22,12 +22,14 @@ class TocSliverChapterList extends StatelessWidget {
           case TocStateCode.normal:
             return SliverList(
               delegate: SliverChildBuilderDelegate(
-                    (context, index) => Semantics(
-                      label: AppLocalizations.of(context)!.accessibilityTocListItem,
-                      onTapHint: AppLocalizations.of(context)!.accessibilityTocListItemOnTap,
-                      onLongPressHint: AppLocalizations.of(context)!.accessibilityTocListItemOnLongPress,
-                      child: TocSliverChapterListItem(state.chapterList[index]),
-                    ),
+                (context, index) {
+                  return Semantics(
+                    label: AppLocalizations.of(context)!.accessibilityTocListItem,
+                    onTapHint: AppLocalizations.of(context)!.accessibilityTocListItemOnTap,
+                    onLongPressHint: AppLocalizations.of(context)!.accessibilityTocListItemOnLongPress,
+                    child: TocSliverChapterListItem(state.chapterList[index]),
+                  );
+                },
                 childCount: state.chapterList.length,
               ),
             );

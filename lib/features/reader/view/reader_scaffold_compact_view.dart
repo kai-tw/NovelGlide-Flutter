@@ -25,7 +25,7 @@ class ReaderScaffoldCompactView extends StatelessWidget {
       body: const SafeArea(
         child: ReaderBody(),
       ),
-      bottomNavigationBar: const ReaderNavigation(),
+      bottomNavigationBar: const SafeArea(child: ReaderNavigation()),
     );
   }
 }

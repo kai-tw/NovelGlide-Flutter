@@ -19,7 +19,9 @@ class BookshelfSliverListItem extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(24.0),
       onTap: () {
-        Navigator.of(context).push(_tocRoute(cubit)).then((_) => cubit.refresh());
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => TableOfContents(bookObject)))
+            .then((_) => cubit.refresh());
       },
       child: Semantics(
         label: AppLocalizations.of(context)!.accessibilityBookshelfListItem,
@@ -27,25 +29,6 @@ class BookshelfSliverListItem extends StatelessWidget {
         onLongPressHint: AppLocalizations.of(context)!.accessibilityBookshelfListItemOnLongPress,
         child: BookshelfDraggableBook(bookObject),
       ),
-    );
-  }
-
-  Route _tocRoute(BookshelfCubit cubit) {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => TableOfContents(bookObject),
-      transitionDuration: const Duration(milliseconds: 500),
-      reverseTransitionDuration: const Duration(milliseconds: 500),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return FadeTransition(
-          opacity: Tween<double>(begin: 0.0, end: 1.0).animate(
-            CurvedAnimation(
-              parent: animation,
-              curve: Curves.easeInOut,
-            ),
-          ),
-          child: child,
-        );
-      },
     );
   }
 }

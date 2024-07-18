@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../bloc/toc_bloc.dart';
 
 class TocScrollView extends StatelessWidget {
   final List<Widget> slivers;
@@ -12,9 +15,13 @@ class TocScrollView extends StatelessWidget {
     /// Prevent the content from being covered by the floating action button.
     sliverList.add(const SliverPadding(padding: EdgeInsets.only(bottom: 80.0)));
 
-    return Scrollbar(
-      child: CustomScrollView(
-        slivers: sliverList,
+    return PageStorage(
+      bucket: BlocProvider.of<TocCubit>(context).bucket,
+      child: Scrollbar(
+        child: CustomScrollView(
+          key: const PageStorageKey<String>('toc-scroll-view'),
+          slivers: sliverList,
+        ),
       ),
     );
   }

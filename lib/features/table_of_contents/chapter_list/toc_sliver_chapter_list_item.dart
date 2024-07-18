@@ -7,6 +7,7 @@ import '../../../processor/bookmark_processor.dart';
 import '../../common_components/common_loading.dart';
 import '../../common_components/draggable_feedback_widget.dart';
 import '../../common_components/draggable_placeholder_widget.dart';
+import '../../reader/reader.dart';
 import '../bloc/toc_bloc.dart';
 import '../widgets/toc_chapter_widget.dart';
 
@@ -17,13 +18,14 @@ class TocSliverChapterListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
     final double fontSize = Theme.of(context).textTheme.bodyMedium?.fontSize ?? 14.0;
     final double verticalPadding = MediaQuery.of(context).textScaler.scale(fontSize) / 2;
     final int chapterNumber = chapterData.ordinalNumber;
     final String bookName = chapterData.bookName;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: verticalPadding),
+      padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: verticalPadding),
       child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
         return BlocBuilder<TocCubit, TocState>(
           buildWhen: (previous, current) =>
@@ -76,7 +78,15 @@ class TocSliverChapterListItem extends StatelessWidget {
               child: Container(
                 width: constraints.maxWidth,
                 color: Theme.of(context).colorScheme.surface,
-                child: TocChapterWidget(chapterData: chapterData, isBookmarked: isBookmarked),
+                child: TocChapterWidget(
+                  chapterData: chapterData,
+                  isBookmarked: isBookmarked,
+                  onPressed: () => Navigator.of(context)
+                      .push(MaterialPageRoute(
+                    builder: (context) => ReaderWidget(bookName, chapterNumber),
+                  ))
+                      .then((_) => cubit.refresh()),
+                ),
               ),
             );
           },

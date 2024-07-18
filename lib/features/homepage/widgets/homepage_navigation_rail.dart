@@ -15,29 +15,28 @@ class HomepageNavigationRail extends StatelessWidget {
         return NavigationRail(
           selectedIndex: NavigationItem.values.indexOf(state.navItem),
           indicatorColor: Colors.transparent,
-          unselectedIconTheme: IconThemeData(color: Theme.of(context).colorScheme.surfaceDim),
-          selectedIconTheme: IconThemeData(color: Theme.of(context).colorScheme.surface),
+          unselectedIconTheme: IconThemeData(color: Colors.white.withOpacity(0.5)),
           backgroundColor: Colors.transparent,
           labelType: NavigationRailLabelType.none,
           destinations: [
             NavigationRailDestination(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               icon: const Icon(Icons.shelves),
-              selectedIcon: Icon(Icons.shelves, color: Theme.of(context).colorScheme.surface),
+              selectedIcon: const Icon(Icons.shelves, color: Colors.white),
               label: Text(appLocalizations.titleBookshelf),
               disabled: state.navItem == NavigationItem.bookshelf,
             ),
             NavigationRailDestination(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               icon: const Icon(Icons.bookmark),
-              selectedIcon: Icon(Icons.bookmark, color: Theme.of(context).colorScheme.surface),
+              selectedIcon: const Icon(Icons.bookmark, color: Colors.white),
               label: Text(appLocalizations.titleBookmarks),
               disabled: state.navItem == NavigationItem.bookmark,
             ),
             NavigationRailDestination(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               icon: const Icon(Icons.settings),
-              selectedIcon: Icon(Icons.settings, color: Theme.of(context).colorScheme.surface),
+              selectedIcon: const Icon(Icons.settings, color: Colors.white),
               label: Text(appLocalizations.titleSettings),
               disabled: state.navItem == NavigationItem.settings,
             ),

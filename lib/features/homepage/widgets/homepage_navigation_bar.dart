@@ -16,24 +16,24 @@ class HomepageNavigationBar extends StatelessWidget {
         return NavigationBar(
           selectedIndex: NavigationItem.values.indexOf(state.navItem),
           indicatorColor: Colors.transparent,
-          backgroundColor: Theme.of(context).colorScheme.onSurface,
+          backgroundColor: Colors.black87,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
           destinations: [
             NavigationDestination(
-              icon: Icon(Icons.shelves, color: Theme.of(context).colorScheme.surface.withOpacity(0.5)),
-              selectedIcon: Icon(Icons.shelves, color: Theme.of(context).colorScheme.surface),
+              icon: Icon(Icons.shelves, color: Colors.white.withOpacity(0.5)),
+              selectedIcon: const Icon(Icons.shelves, color: Colors.white),
               label: appLocalizations.titleBookshelf,
               enabled: state.navItem != NavigationItem.bookshelf,
             ),
             NavigationDestination(
-              icon: Icon(Icons.bookmark, color: Theme.of(context).colorScheme.surface.withOpacity(0.5)),
-              selectedIcon: Icon(Icons.bookmark, color: Theme.of(context).colorScheme.surface),
+              icon: Icon(Icons.bookmark, color: Colors.white.withOpacity(0.5)),
+              selectedIcon: const Icon(Icons.bookmark, color: Colors.white),
               label: appLocalizations.titleBookmarks,
               enabled: state.navItem != NavigationItem.bookmark,
             ),
             NavigationDestination(
-              icon: Icon(Icons.settings, color: Theme.of(context).colorScheme.surface.withOpacity(0.5)),
-              selectedIcon: Icon(Icons.settings, color: Theme.of(context).colorScheme.surface),
+              icon: Icon(Icons.settings, color: Colors.white.withOpacity(0.5)),
+              selectedIcon: const Icon(Icons.settings, color: Colors.white),
               label: appLocalizations.titleSettings,
               enabled: state.navItem != NavigationItem.settings,
             ),

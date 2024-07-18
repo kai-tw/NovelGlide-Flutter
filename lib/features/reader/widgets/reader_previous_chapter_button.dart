@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bloc/reader_cubit.dart';
-import '../bloc/reader_progress_bar_bloc.dart';
 import '../bloc/reader_state.dart';
 
 class ReaderPreviousChapterButton extends StatelessWidget {
@@ -27,6 +26,5 @@ class ReaderPreviousChapterButton extends StatelessWidget {
 
   void _onPressed(BuildContext context, int chapterNumber) {
     BlocProvider.of<ReaderCubit>(context).changeChapter(chapterNumber);
-    BlocProvider.of<ReaderProgressBarCubit>(context).reset();
   }
 }

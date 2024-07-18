@@ -7,6 +7,7 @@ import '../../../processor/chapter_processor.dart';
 import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
+  final PageStorageBucket bucket = PageStorageBucket();
   final ScrollController scrollController = ScrollController();
   bool isAutoJump;
   double currentArea = 0.0;
@@ -15,39 +16,42 @@ class ReaderCubit extends Cubit<ReaderState> {
       : super(ReaderState(bookName: bookName, chapterNumber: chapterNumber));
 
   void initialize() async {
-    final String bookName = state.bookName;
-    final int chapterNumber = state.chapterNumber;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final String bookName = state.bookName;
+      final int chapterNumber = state.chapterNumber;
 
-    emit(state.copyWith(
-      code: ReaderStateCode.loaded,
-      prevChapterNumber: await ChapterProcessor.getPrevChapterNumber(bookName, chapterNumber),
-      nextChapterNumber: await ChapterProcessor.getNextChapterNumber(bookName, chapterNumber),
-      contentLines: await ChapterProcessor.getContent(bookName, chapterNumber),
-      bookmarkData: BookmarkData.fromBookName(bookName),
-      readerSettings: ReaderSettingsData.load(),
-    ));
+      emit(ReaderState(
+        bookName: bookName,
+        chapterNumber: chapterNumber,
+        code: ReaderStateCode.loaded,
+        prevChapterNumber: await ChapterProcessor.getPrevChapterNumber(bookName, chapterNumber),
+        nextChapterNumber: await ChapterProcessor.getNextChapterNumber(bookName, chapterNumber),
+        contentLines: await ChapterProcessor.getContent(bookName, chapterNumber),
+        bookmarkData: BookmarkData.fromBookName(bookName),
+        readerSettings: ReaderSettingsData.load(),
+      ));
 
-    // Scrolling Listener
-    scrollController.addListener(_onScroll);
-    scrollController.position.isScrollingNotifier.addListener(_onScrollEnd);
+      // Scrolling Listener
+      scrollController.addListener(_onScroll);
+      scrollController.position.isScrollingNotifier.addListener(_onScrollEnd);
 
-    // Entering a different chapter from the bookmark.
-    // If the autoSave is enabled, save the bookmark.
-    if (state.chapterNumber != state.bookmarkData.chapterNumber) {
-      autoSaveBookmark();
-    }
+      // Entering a different chapter from the bookmark.
+      // If the autoSave is enabled, save the bookmark.
+      if (state.chapterNumber != state.bookmarkData.chapterNumber) {
+        autoSaveBookmark();
+      }
 
-    // If the autoSave is enabled or the autoJump is requested,
-    // scroll to the bookmark.
-    if (state.readerSettings.autoSave || isAutoJump) {
-      scrollToBookmark();
-      isAutoJump = false;
-    }
+      // If the autoSave is enabled or the autoJump is requested,
+      // scroll to the bookmark.
+      if (state.readerSettings.autoSave || isAutoJump) {
+        scrollToBookmark();
+        isAutoJump = false;
+      }
+    });
   }
 
   void changeChapter(int chapterNumber) {
     emit(ReaderState(bookName: state.bookName, chapterNumber: chapterNumber));
-    currentArea = 0.0;
     scrollController.jumpTo(0);
     initialize();
   }
@@ -72,7 +76,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       isValid: true,
       bookName: state.bookName,
       chapterNumber: state.chapterNumber,
-      area: currentArea,
+      scrollRatio: scrollController.position.pixels / scrollController.position.maxScrollExtent,
       savedTime: DateTime.now(),
     )..save();
     emit(state.copyWith(bookmarkData: bookmarkObject));
@@ -86,10 +90,8 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   void scrollToBookmark() {
     if (state.bookmarkData.chapterNumber == state.chapterNumber) {
-      final double deviceWidth =
-          MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).size.width;
       scrollController.animateTo(
-        state.bookmarkData.area / deviceWidth,
+        state.bookmarkData.scrollRatio * scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
@@ -107,9 +109,10 @@ class ReaderCubit extends Cubit<ReaderState> {
       // The content is not loaded yet.
       return;
     }
-    final double deviceWidth =
-        MediaQueryData.fromView(WidgetsBinding.instance.platformDispatcher.views.single).size.width;
-    currentArea = scrollController.position.pixels * deviceWidth;
+    emit(state.copyWith(
+      currentScrollY: scrollController.position.pixels,
+      maxScrollExtent: scrollController.position.maxScrollExtent,
+    ));
   }
 
   void _onScrollEnd() {
@@ -117,7 +120,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       // The content is not loaded yet.
       return;
     }
-    if(!scrollController.position.isScrollingNotifier.value) {
+    if (!scrollController.position.isScrollingNotifier.value) {
       autoSaveBookmark();
     }
   }

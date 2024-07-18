@@ -88,7 +88,6 @@
   "titleBookshelf": "Bookshelf",
   "titleBookmarks": "Bookmarks",
   "titleSettings": "Settings",
-  "titleTOC": "Table of Contents",
   "titleAddBook": "Add a book",
   "titleAddChapter": "Add a chapter",
   "titleEditBook": "Edit the book",
@@ -181,8 +180,16 @@
   "brightnessLight": "Light",
   "brightnessDark": "Dark",
 
-  "bookmarkManagerClearAllButton": "Clear all bookmarks",
-  "bookmarkManagerClearAllButtonDone": "Clear done",
+  "bookmarkManagerDeleteNumberOfSelectedBookmarks": "Delete {number} selected bookmarks",
+  "@bookmarkManagerDeleteNumberOfSelectedBookmarks": {
+    "description": "Delete %d selected bookmarks",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
 
   "alertDialogClearAllBookmarksTitle": "Clear all bookmarks",
   "alertDialogClearAllBookmarksDescription": "This will clear all bookmarks in the library forever.",
@@ -208,6 +215,7 @@
   "accessibilityBookmarkListItem": "A bookmark",
   "accessibilityBookmarkListItemOnTap": "Tap to continue reading from the bookmark",
   "accessibilityBookmarkListItemOnLongPress": "Long press and drag to delete the bookmark",
+  "accessibilityBookmarkManagerCheckbox": "Bookmark checkbox",
   "accessibilityTocListItem": "A chapter",
   "accessibilityTocListItemOnTap": "Tap to open this chapter",
   "accessibilityTocListItemOnLongPress": "Long press and drag to delete the chapter",

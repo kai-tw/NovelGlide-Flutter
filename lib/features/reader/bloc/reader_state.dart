@@ -13,6 +13,12 @@ class ReaderState extends Equatable {
   final int prevChapterNumber;
   final int nextChapterNumber;
   final List<String> contentLines;
+
+  /// Progress bar state.
+  final double currentScrollY;
+  final double maxScrollExtent;
+
+  /// Bookmark state.
   final BookmarkData bookmarkData;
 
   /// Settings state.
@@ -27,6 +33,8 @@ class ReaderState extends Equatable {
     contentLines,
     bookmarkData,
     readerSettings,
+    currentScrollY,
+    maxScrollExtent,
   ];
 
   ReaderState({
@@ -38,6 +46,8 @@ class ReaderState extends Equatable {
     this.contentLines = const [],
     BookmarkData? bookmarkData,
     ReaderSettingsData? readerSettings,
+    this.currentScrollY = 0.0,
+    this.maxScrollExtent = 1.0,
   })  : readerSettings = readerSettings ?? const ReaderSettingsData(),
         bookmarkData = bookmarkData ?? BookmarkData();
 
@@ -50,6 +60,8 @@ class ReaderState extends Equatable {
     List<String>? contentLines,
     BookmarkData? bookmarkData,
     ReaderSettingsData? readerSettings,
+    double? currentScrollY,
+    double? maxScrollExtent,
   }) {
     return ReaderState(
       code: code ?? this.code,
@@ -60,6 +72,8 @@ class ReaderState extends Equatable {
       contentLines: contentLines ?? this.contentLines,
       bookmarkData: bookmarkData ?? this.bookmarkData,
       readerSettings: readerSettings ?? this.readerSettings,
+      currentScrollY: currentScrollY ?? this.currentScrollY,
+      maxScrollExtent: maxScrollExtent ?? this.maxScrollExtent,
     );
   }
 

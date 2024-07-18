@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_back_button.dart';
 import 'bloc/toc_bloc.dart';
@@ -15,13 +14,16 @@ class TocAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<TocCubit, TocState>(
       buildWhen: (previous, current) => previous.bookName != current.bookName,
       builder: (_, state) {
         return AppBar(
           leading: const CommonBackButton(),
-          title: Text(appLocalizations.titleTOC),
+          title: Text(
+            state.bookName,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
           actions: [
             TocEditBookButton(bookName: state.bookName),
             TocImportChapterButton(bookName: state.bookName),

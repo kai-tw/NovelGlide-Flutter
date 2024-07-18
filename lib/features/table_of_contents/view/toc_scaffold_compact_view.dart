@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../ad_center/advertisement.dart';
-import '../../../ad_center/advertisement_id.dart';
 import '../bloc/toc_bloc.dart';
 import '../toc_app_bar.dart';
 import '../widgets/toc_add_chapter_button.dart';
@@ -20,35 +18,38 @@ class TocScaffoldCompactView extends StatelessWidget {
     final TocCubit cubit = BlocProvider.of<TocCubit>(context);
     return Scaffold(
       extendBody: true,
+      extendBodyBehindAppBar: true,
       appBar: const TocAppBar(),
       body: SafeArea(
         child: Stack(
           children: [
             RefreshIndicator(
               onRefresh: () async => cubit.refresh(),
-              child: Column(
-                children: [
-                  Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-                  const Expanded(
-                    child: TocScrollView(
-                      slivers: [
-                        SliverToBoxAdapter(
-                          child: Padding(
-                            padding: EdgeInsets.all(24.0),
+              child: const TocScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.all(24.0),
+                      child: Stack(
+                        children: [
+                          AspectRatio(
+                            aspectRatio: 1,
                             child: TocCoverBanner(),
                           ),
-                        ),
-                        SliverToBoxAdapter(
-                          child: TocBookName(),
-                        ),
-                        TocSliverChapterList(),
-                      ],
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: TocBookName(),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                  TocSliverChapterList(),
                 ],
               ),
             ),
-
             Positioned.fill(
               child: Align(
                 alignment: Alignment.bottomLeft,
