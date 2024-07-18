@@ -19,7 +19,11 @@ class TocAppBar extends StatelessWidget implements PreferredSizeWidget {
       builder: (_, state) {
         return AppBar(
           leading: const CommonBackButton(),
-          backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.5),
+          title: Text(
+            state.bookName,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
           actions: [
             TocEditBookButton(bookName: state.bookName),
             TocImportChapterButton(bookName: state.bookName),

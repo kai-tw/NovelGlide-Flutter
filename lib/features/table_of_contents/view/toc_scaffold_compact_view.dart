@@ -23,8 +23,6 @@ class TocScaffoldCompactView extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            // TODO: Think about where to put it.
-            // Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
             RefreshIndicator(
               onRefresh: () async => cubit.refresh(),
               child: const TocScrollView(
