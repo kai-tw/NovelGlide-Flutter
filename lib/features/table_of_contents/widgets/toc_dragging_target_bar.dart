@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../ad_center/advertisement.dart';
+import '../../../ad_center/advertisement_id.dart';
 import '../../../data/chapter_data.dart';
 import '../../../data/window_class.dart';
 import '../../common_components/common_delete_drag_target.dart';
@@ -45,7 +47,7 @@ class TocDraggingTargetBar extends StatelessWidget {
                     onWillAcceptWithDetails: (details) => details.data is ChapterData,
                   ),
                 )
-              : null,
+              : Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
         );
       },
     );

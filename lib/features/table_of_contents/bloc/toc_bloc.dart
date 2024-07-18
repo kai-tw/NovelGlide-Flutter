@@ -52,7 +52,7 @@ class TocState extends Equatable {
         code,
         chapterList,
         isDragging,
-    bookmarkData,
+        bookmarkData,
       ];
 
   TocState({

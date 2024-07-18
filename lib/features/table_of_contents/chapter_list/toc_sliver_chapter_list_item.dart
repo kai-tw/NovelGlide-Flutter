@@ -25,7 +25,7 @@ class TocSliverChapterListItem extends StatelessWidget {
     final String bookName = chapterData.bookName;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: verticalPadding),
+      padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: verticalPadding),
       child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
         return BlocBuilder<TocCubit, TocState>(
           buildWhen: (previous, current) =>

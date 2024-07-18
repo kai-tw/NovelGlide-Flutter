@@ -28,18 +28,23 @@ class TocScaffoldMediumView extends StatelessWidget {
                 double leftWidth = constraints.maxWidth * 0.382;
                 return Row(
                   children: [
-                    SizedBox(
+                    Container(
                       width: leftWidth,
                       height: constraints.maxHeight,
+                      padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20.0, bottom: 16.0),
-                            child: TocCoverBanner(aspectRatio: leftWidth / (constraints.maxHeight / 2)),
-                          ),
                           const Expanded(
-                            child: SingleChildScrollView(
-                              child: TocBookName(),
+                            child: Stack(
+                              children: [
+                                TocCoverBanner(),
+                                Positioned.fill(
+                                  child: Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: TocBookName(),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           Advertisement(adUnitId: AdvertisementId.adaptiveBanner),

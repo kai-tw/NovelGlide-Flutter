@@ -12,16 +12,13 @@ class BookshelfBookCover extends StatelessWidget {
   Widget build(BuildContext context) {
     return AspectRatio(
       aspectRatio: 1 / 1.5,
-      child: Hero(
-        tag: bookObject.name,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-          clipBehavior: Clip.hardEdge,
-          child: CommonBookCoverImage(path: bookObject.getCoverPath()),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(16.0),
         ),
+        clipBehavior: Clip.hardEdge,
+        child: CommonBookCoverImage(path: bookObject.getCoverPath()),
       ),
     );
   }

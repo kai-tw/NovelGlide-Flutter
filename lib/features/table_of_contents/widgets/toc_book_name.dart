@@ -8,14 +8,26 @@ class TocBookName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(36.0, 0, 36.0, 24.0),
+    return Container(
+      margin: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
+        borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+      ),
+      clipBehavior: Clip.hardEdge,
       child: BlocBuilder<TocCubit, TocState>(
         buildWhen: (previous, current) => previous.bookName != current.bookName,
         builder: (BuildContext context, TocState state) {
           return Text(
             state.bookName,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: TextStyle(
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           );
         },
       ),
