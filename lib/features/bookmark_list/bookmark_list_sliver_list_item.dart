@@ -19,10 +19,15 @@ class BookmarkListSliverListItem extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(24.0),
       onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(
-            builder: (context) =>
-                ReaderWidget(_bookmarkObject.bookName, _bookmarkObject.chapterNumber, isAutoJump: true),
-          ))
+          .push(
+            MaterialPageRoute(
+              builder: (context) => ReaderWidget(
+                _bookmarkObject.bookName,
+                _bookmarkObject.chapterNumber,
+                isAutoJump: true,
+              ),
+            ),
+          )
           .then((_) => cubit.refresh()),
       child: Semantics(
         label: AppLocalizations.of(context)!.accessibilityBookmarkListItem,

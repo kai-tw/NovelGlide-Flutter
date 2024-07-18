@@ -12,11 +12,14 @@ class ReaderScaffoldCompactView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return Scaffold(
       appBar: AppBar(
         leading: CommonBackButton(
           onPressed: () {
-            BlocProvider.of<ReaderCubit>(context).autoSaveBookmark();
+            if (cubit.state.readerSettings.autoSave) {
+              cubit.saveBookmark();
+            }
             Navigator.of(context).pop();
           },
         ),

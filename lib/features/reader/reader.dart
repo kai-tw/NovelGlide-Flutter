@@ -16,7 +16,7 @@ class ReaderWidget extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<ReaderCubit>(
-          create: (_) => ReaderCubit(bookName, chapterNumber, isAutoJump: isAutoJump)..initialize(),
+          create: (_) => ReaderCubit(bookName, chapterNumber)..initialize(isAutoJump: isAutoJump),
         ),
       ],
       child: const ReaderScaffold(),

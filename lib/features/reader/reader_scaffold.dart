@@ -11,6 +11,7 @@ class ReaderScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
     final Widget scaffold;
 
@@ -29,7 +30,9 @@ class ReaderScaffold extends StatelessWidget {
         if (didPop) {
           return;
         }
-        BlocProvider.of<ReaderCubit>(context).autoSaveBookmark();
+        if (cubit.state.readerSettings.autoSave) {
+          cubit.saveBookmark();
+        }
         Navigator.of(context).pop();
       },
       child: scaffold,
