@@ -35,7 +35,7 @@ class ThemeManagerSelectThemeButton extends StatelessWidget {
               child: Text(
                 "Aa",
                 overflow: TextOverflow.ellipsis,
-                semanticsLabel: appLocalizations.accessibilityThemeSelectionButton,
+                semanticsLabel: appLocalizations.accessibilityThemeSelectionButton(themeName ?? "Aa"),
               ),
             );
           },

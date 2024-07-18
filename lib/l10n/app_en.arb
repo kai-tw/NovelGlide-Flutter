@@ -202,11 +202,19 @@
 
   "accessibilityReadingProgressBar": "Reading progress bar",
   "accessibilityBackButton": "Go back",
-  "accessibilityAddBookButton": "Add a book button",
-  "accessibilityAddChapterButton": "Add a chapter button",
-  "accessibilityEditBookButton": "Edit this book button",
-  "accessibilityImportBookButton": "Import book button",
-  "accessibilityThemeSelectionButton": "Theme selection button",
+  "accessibilityAddBookButton": "Add a book",
+  "accessibilityAddChapterButton": "Add a chapter",
+  "accessibilityEditBookButton": "Edit this book",
+  "accessibilityImportBookButton": "Import book",
+  "accessibilityThemeSelectionButton": "Use {name} theme",
+  "@accessibilityThemeSelectionButton": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Default"
+      }
+    }
+  },
   "accessibilityDeleteButton": "Delete button",
   "accessibilityBookNameTextField": "Book name text field",
   "accessibilityFilePicker": "File picker",
@@ -223,19 +231,19 @@
   "accessibilityTocListItem": "A chapter",
   "accessibilityTocListItemOnTap": "Tap to open this chapter",
   "accessibilityTocListItemOnLongPress": "Long press and drag to delete the chapter",
-  "accessibilityReaderPrevChapterButton": "Previous chapter button",
-  "accessibilityReaderNextChapterButton": "Next chapter button",
-  "accessibilityReaderBookmarkButton": "Jump to the bookmark button",
-  "accessibilityReaderAddBookmarkButton": "Add a bookmark button",
-  "accessibilityReaderSettingsButton": "Reader settings button",
-  "accessibilityReaderSettingsAutoSaveSwitch": "Auto save a bookmark switch",
+  "accessibilityReaderPrevChapterButton": "Previous chapter",
+  "accessibilityReaderNextChapterButton": "Next chapter",
+  "accessibilityReaderBookmarkButton": "Jump to the bookmark",
+  "accessibilityReaderAddBookmarkButton": "Add a bookmark",
+  "accessibilityReaderSettingsButton": "Reader settings",
+  "accessibilityReaderSettingsAutoSaveSwitch": "Auto save a bookmark",
   "accessibilityReaderSettingsAutoSaveSwitchOn": "On",
   "accessibilityReaderSettingsAutoSaveSwitchOff": "Off",
-  "accessibilityFontSizeSliderMinIcon": "Minimum font size icon",
-  "accessibilityFontSizeSliderMaxIcon": "Maximum font size icon",
+  "accessibilityFontSizeSliderMinIcon": "Minimum font size",
+  "accessibilityFontSizeSliderMaxIcon": "Maximum font size",
   "accessibilityFontSizeSlider": "Font size slider",
-  "accessibilityLineHeightSliderMinIcon": "Minimum line height icon",
-  "accessibilityLineHeightSliderMaxIcon": "Maximum line height icon",
+  "accessibilityLineHeightSliderMinIcon": "Minimum line height",
+  "accessibilityLineHeightSliderMaxIcon": "Maximum line height",
   "accessibilityLineHeightSlider": "Line height slider",
   "accessibilitySelectAllCheckbox": "Select all checkbox"
 }
