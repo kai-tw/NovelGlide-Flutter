@@ -71,6 +71,7 @@ class HomepageScaffoldBody extends StatelessWidget {
                         child: PageStorage(
                           bucket: BlocProvider.of<HomepageCubit>(context).bookmarkBucket,
                           child: const HomepageScrollView(
+                            key: PageStorageKey<String>('homepage-bookmark'),
                             slivers: [
                               BookmarkListSliverList(),
                             ],
