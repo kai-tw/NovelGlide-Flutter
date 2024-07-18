@@ -14,12 +14,24 @@ class BookmarkManagerScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => BookmarkManagerCubit()..refresh(),
-      child: Scaffold(
-        appBar: AppBar(
-          leading: const CommonBackButton(),
-          title: Text(AppLocalizations.of(context)!.titleBookmarkManager),
-        ),
-        body: const Scrollbar(
+      child: _BookmarkManagerScaffold(key: key),
+    );
+  }
+}
+
+class _BookmarkManagerScaffold extends StatelessWidget {
+  const _BookmarkManagerScaffold({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: const CommonBackButton(),
+        title: Text(AppLocalizations.of(context)!.titleBookmarkManager),
+      ),
+      body: RefreshIndicator(
+        onRefresh: () async => BlocProvider.of<BookmarkManagerCubit>(context).refresh(),
+        child: const Scrollbar(
           child: CustomScrollView(
             slivers: [
               BookmarkManagerSliverList(),
@@ -27,8 +39,8 @@ class BookmarkManagerScaffold extends StatelessWidget {
             ],
           ),
         ),
-        floatingActionButton: const BookmarkManagerFloatingActionButton(),
       ),
+      floatingActionButton: const BookmarkManagerFloatingActionButton(),
     );
   }
 }

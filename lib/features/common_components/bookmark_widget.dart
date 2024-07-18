@@ -6,8 +6,9 @@ import '../../data/bookmark_data.dart';
 class BookmarkWidget extends StatelessWidget {
   final BookmarkData _bookmarkObject;
   final Widget? leading;
+  final Color? color;
 
-  const BookmarkWidget(this._bookmarkObject, {super.key, this.leading});
+  const BookmarkWidget(this._bookmarkObject, {super.key, this.leading, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +44,15 @@ class BookmarkWidget extends StatelessWidget {
               children: [
                 Text(
                   _bookmarkObject.bookName,
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: color),
                 ),
                 Text(
                   appLocalizations.chapterLabelFunction(_bookmarkObject.chapterNumber),
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(color: color),
                 ),
                 Text(
                   savedTimeString,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: color),
                 ),
               ],
             ),

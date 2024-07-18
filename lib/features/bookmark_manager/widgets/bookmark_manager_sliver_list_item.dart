@@ -14,35 +14,46 @@ class BookmarkManagerSliverListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final BookmarkManagerCubit cubit = BlocProvider.of<BookmarkManagerCubit>(context);
-    return InkWell(
-      onTap: () {
-        if (cubit.state.selectedBookmarks.contains(bookmarkData.bookName)) {
-          cubit.deselectBookmark(bookmarkData.bookName);
-        } else {
-          cubit.selectBookmark(bookmarkData.bookName);
-        }
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: BookmarkWidget(
-          bookmarkData,
-          leading: BlocBuilder<BookmarkManagerCubit, BookmarkManagerState>(
-            builder: (BuildContext context, BookmarkManagerState state) {
-              return Checkbox(
-                value: state.selectedBookmarks.contains(bookmarkData.bookName),
-                onChanged: (value) {
-                  if (value == true) {
-                    cubit.selectBookmark(bookmarkData.bookName);
-                  } else {
-                    cubit.deselectBookmark(bookmarkData.bookName);
-                  }
-                },
-                semanticLabel: AppLocalizations.of(context)!.accessibilityBookmarkManagerCheckbox,
-              );
-            },
+    final BorderRadius borderRadius = BorderRadius.circular(24.0);
+    return BlocBuilder<BookmarkManagerCubit, BookmarkManagerState>(
+      builder: (context, state) {
+        final bool isSelected = state.selectedBookmarks.contains(bookmarkData.bookName);
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          margin: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: isSelected ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.surfaceContainer,
+            borderRadius: borderRadius,
           ),
-        ),
-      ),
+          clipBehavior: Clip.hardEdge,
+          child: InkWell(
+            onTap: () => _onTap(cubit, !cubit.state.selectedBookmarks.contains(bookmarkData.bookName)),
+            borderRadius: borderRadius,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: BookmarkWidget(
+                bookmarkData,
+                color: isSelected ? Theme.of(context).colorScheme.onError : null,
+                leading: Checkbox(
+                  value: isSelected,
+                  onChanged: (value) => _onTap(cubit, value),
+                  activeColor: Theme.of(context).colorScheme.error,
+                  checkColor: Theme.of(context).colorScheme.onError,
+                  semanticLabel: AppLocalizations.of(context)!.accessibilityBookmarkManagerCheckbox,
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
+  }
+
+  void _onTap(BookmarkManagerCubit cubit, bool? value) {
+    if (value == true) {
+      cubit.selectBookmark(bookmarkData.bookName);
+    } else {
+      cubit.deselectBookmark(bookmarkData.bookName);
+    }
   }
 }

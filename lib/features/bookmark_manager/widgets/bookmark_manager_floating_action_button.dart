@@ -35,6 +35,7 @@ class BookmarkManagerFloatingActionButton extends StatelessWidget {
                         .bookmarkManagerDeleteNumberOfSelectedBookmarks(state.selectedBookmarks.length),
                   ),
                   backgroundColor: Theme.of(context).colorScheme.error,
+                  foregroundColor: Theme.of(context).colorScheme.onError,
                 ),
         );
       },
