@@ -14,33 +14,28 @@ class AddBookNameInputField extends StatelessWidget {
     final AddBookFormCubit cubit = BlocProvider.of<AddBookFormCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
-    return Semantics(
-      label: appLocalizations.accessibilityBookNameTextField,
-      textField: true,
-      enabled: true,
-      child: TextFormField(
-        decoration: InputDecoration(
-          labelText: appLocalizations.bookName,
-          helperText: '${appLocalizations.bookNameHelperText}${VerifyUtility.folderNameDenyPattern}',
-        ),
-        inputFormatters: [
-          FilteringTextInputFormatter.singleLineFormatter,
-          FilteringTextInputFormatter.deny(VerifyUtility.folderNameDenyRegex),
-        ],
-        validator: (value) {
-          switch (cubit.nameVerify(value)) {
-            case AddBookFormNameStateCode.valid:
-              return null;
-            case AddBookFormNameStateCode.blank:
-              return appLocalizations.fieldBlank;
-            case AddBookFormNameStateCode.invalid:
-              return appLocalizations.fieldInvalid;
-            case AddBookFormNameStateCode.exists:
-              return appLocalizations.fieldItemExists;
-          }
-        },
-        onSaved: (value) => cubit.data.name = value!,
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: appLocalizations.bookName,
+        helperText: '${appLocalizations.bookNameHelperText}${VerifyUtility.folderNameDenyPattern}',
       ),
+      inputFormatters: [
+        FilteringTextInputFormatter.singleLineFormatter,
+        FilteringTextInputFormatter.deny(VerifyUtility.folderNameDenyRegex),
+      ],
+      validator: (value) {
+        switch (cubit.nameVerify(value)) {
+          case AddBookFormNameStateCode.valid:
+            return null;
+          case AddBookFormNameStateCode.blank:
+            return appLocalizations.fieldBlank;
+          case AddBookFormNameStateCode.invalid:
+            return appLocalizations.fieldInvalid;
+          case AddBookFormNameStateCode.exists:
+            return appLocalizations.fieldItemExists;
+        }
+      },
+      onSaved: (value) => cubit.data.name = value!,
     );
   }
 }

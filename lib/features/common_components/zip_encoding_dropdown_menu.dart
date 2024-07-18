@@ -17,6 +17,7 @@ class ZipEncodingDropdownMenu extends StatelessWidget {
         initialSelection: ZipEncoding.utf8,
         label: Text(AppLocalizations.of(context)!.zipEncodingLabel),
         helperText: AppLocalizations.of(context)!.zipEncodingLabelHelperText,
+        enableSearch: false,
         trailingIcon: Icon(
           Icons.keyboard_arrow_down_rounded,
           semanticLabel: AppLocalizations.of(context)!.zipEncodingTrailingIconExpand,

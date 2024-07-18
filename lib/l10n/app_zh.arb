@@ -73,7 +73,7 @@
   "importOverwriteBookmark": "是否覆蓋既有書籤？",
 
   "zipEncodingLabel": "匯入壓縮檔的編碼",
-  "zipEncodingLabelHelperText": "選擇匯入壓縮檔的編碼",
+  "zipEncodingLabelHelperText": "選擇壓縮檔的編碼",
   "zipEncodingTrailingIconExpand": "展開此下拉選單",
   "zipEncodingTrailingIconCollapse": "收起此下拉選單",
 
@@ -152,7 +152,7 @@
   "alertDialogResetSettingsDescription": "確定回復預設設定嗎？",
 
   "accessibilityReadingProgressBar": "閱讀進度條",
-  "accessibilityBackButton": "返回按鈕",
+  "accessibilityBackButton": "返回",
   "accessibilityAddBookButton": "新增書籍按鈕",
   "accessibilityAddChapterButton": "新增章節按鈕",
   "accessibilityEditBookButton": "編輯書籍按鈕",

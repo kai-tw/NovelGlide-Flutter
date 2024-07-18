@@ -27,8 +27,10 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
                 IconButton(
                   onPressed: () =>
                       _navigateToImportBook(context).then((_) => BlocProvider.of<BookshelfCubit>(context).refresh()),
-                  icon: const Icon(Icons.save_alt_rounded),
-                  tooltip: AppLocalizations.of(context)!.bookImporter,
+                  icon: Icon(
+                    Icons.save_alt_rounded,
+                    semanticLabel: AppLocalizations.of(context)!.bookImporter,
+                  ),
                 ),
               ],
             );

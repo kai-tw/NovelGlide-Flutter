@@ -82,7 +82,7 @@
   "importOverwriteBookmark": "Do it overwrite the bookmarks?",
 
   "zipEncodingLabel": "The encoding of the zip file",
-  "zipEncodingLabelHelperText": "Choose the encoding of the selected zip file",
+  "zipEncodingLabelHelperText": "Choose the encoding of the zip file",
   "zipEncodingTrailingIconExpand": "Expand this dropdown menu",
   "zipEncodingTrailingIconCollapse": "Collapse this dropdown menu",
 
@@ -201,7 +201,7 @@
   "alertDialogResetSettingsDescription": "Are you sure to reset settings?",
 
   "accessibilityReadingProgressBar": "Reading progress bar",
-  "accessibilityBackButton": "Go back button",
+  "accessibilityBackButton": "Go back",
   "accessibilityAddBookButton": "Add a book button",
   "accessibilityAddChapterButton": "Add a chapter button",
   "accessibilityEditBookButton": "Edit this book button",
