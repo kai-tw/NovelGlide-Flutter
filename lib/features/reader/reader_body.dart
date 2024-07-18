@@ -23,6 +23,7 @@ class ReaderBody extends StatelessWidget {
           child: PageStorage(
             bucket: cubit.bucket,
             child: Scrollbar(
+              controller: cubit.scrollController,
               child: CustomScrollView(
                 key: const PageStorageKey('reader-body-scrollview'),
                 physics: const BouncingScrollPhysics(),
