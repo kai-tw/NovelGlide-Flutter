@@ -26,10 +26,18 @@ class BookmarkListSliverList extends StatelessWidget {
             );
 
           case BookmarkListStateCode.loading:
-            return const CommonSliverLoading();
+            return const SliverFillRemaining(
+              child: SafeArea(
+                child: CommonLoading(),
+              ),
+            );
 
           default:
-            return const CommonSliverListEmpty();
+            return const SliverFillRemaining(
+              child: SafeArea(
+                child: CommonListEmpty(),
+              ),
+            );
         }
       },
     );

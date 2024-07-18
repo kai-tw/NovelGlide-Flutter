@@ -6,6 +6,7 @@ import '../common_components/common_back_button.dart';
 import 'bloc/bookmark_manager_bloc.dart';
 import 'widgets/bookmark_manager_floating_action_button.dart';
 import 'widgets/bookmark_manager_sliver_list.dart';
+import 'widgets/bookmark_manager_top_bar.dart';
 
 class BookmarkManagerScaffold extends StatelessWidget {
   const BookmarkManagerScaffold({super.key});
@@ -34,6 +35,9 @@ class _BookmarkManagerScaffold extends StatelessWidget {
         child: const Scrollbar(
           child: CustomScrollView(
             slivers: [
+              SliverToBoxAdapter(
+                child: BookmarkManagerTopBar(),
+              ),
               BookmarkManagerSliverList(),
               SliverPadding(padding: EdgeInsets.only(bottom: 86.0)),
             ],

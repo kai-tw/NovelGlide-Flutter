@@ -10,7 +10,7 @@ enum BookmarkListStateCode { normal, loading, empty }
 class BookmarkListCubit extends Cubit<BookmarkListState> {
   BookmarkListCubit() : super(const BookmarkListState());
 
-  void refresh() async {
+  void refresh() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final List<BookmarkData> bookmarkList = BookmarkProcessor.getList();
       bookmarkList.sort((a, b) => b.savedTime.compareTo(a.savedTime));

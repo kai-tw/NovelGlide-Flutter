@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common_components/common_list_empty.dart';
+import '../../common_components/common_loading.dart';
 import '../bloc/bookmark_manager_bloc.dart';
 import 'bookmark_manager_sliver_list_item.dart';
 
@@ -25,12 +26,16 @@ class BookmarkManagerSliverList extends StatelessWidget {
             );
 
           case BookmarkManagerStateCode.empty:
-            return const CommonSliverListEmpty();
+            return const SliverFillRemaining(
+              child: Center(
+                child: CommonListEmpty(),
+              ),
+            );
 
           default:
             return const SliverFillRemaining(
               child: Center(
-                child: CircularProgressIndicator(),
+                child: CommonLoading(),
               ),
             );
         }

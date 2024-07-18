@@ -20,9 +20,11 @@ class BookmarkManagerSliverListItem extends StatelessWidget {
         final bool isSelected = state.selectedBookmarks.contains(bookmarkData.bookName);
         return AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          margin: const EdgeInsets.all(16.0),
+          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           decoration: BoxDecoration(
-            color: isSelected ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.surfaceContainer,
+            color: isSelected
+                ? Theme.of(context).colorScheme.errorContainer
+                : Theme.of(context).colorScheme.surfaceContainer,
             borderRadius: borderRadius,
           ),
           clipBehavior: Clip.hardEdge,
@@ -33,12 +35,12 @@ class BookmarkManagerSliverListItem extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: BookmarkWidget(
                 bookmarkData,
-                color: isSelected ? Theme.of(context).colorScheme.onError : null,
+                color: isSelected ? Theme.of(context).colorScheme.onErrorContainer : null,
                 leading: Checkbox(
                   value: isSelected,
                   onChanged: (value) => _onTap(cubit, value),
-                  activeColor: Theme.of(context).colorScheme.error,
-                  checkColor: Theme.of(context).colorScheme.onError,
+                  activeColor: Theme.of(context).colorScheme.errorContainer,
+                  checkColor: Theme.of(context).colorScheme.onErrorContainer,
                   semanticLabel: AppLocalizations.of(context)!.accessibilityBookmarkManagerCheckbox,
                 ),
               ),

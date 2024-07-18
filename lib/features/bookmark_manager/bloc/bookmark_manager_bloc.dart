@@ -27,12 +27,24 @@ class BookmarkManagerCubit extends Cubit<BookmarkManagerState> {
     ));
   }
 
+  void selectAllBookmarks() {
+    emit(state.copyWith(
+      selectedBookmarks: state.bookmarkList.map((e) => e.bookName).toSet(),
+    ));
+  }
+
   void deselectBookmark(String bookName) {
     Set<String> newSet = Set<String>.from(state.selectedBookmarks);
     newSet.remove(bookName);
 
     emit(state.copyWith(
       selectedBookmarks: newSet,
+    ));
+  }
+
+  void deselectAllBookmarks() {
+    emit(state.copyWith(
+      selectedBookmarks: const {},
     ));
   }
 

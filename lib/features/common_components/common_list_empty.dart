@@ -8,15 +8,19 @@ class CommonListEmpty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 100.0,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(EmoticonCollection.getRandomShock()),
-          Text(AppLocalizations.of(context)!.empty),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16.0),
+          child: Text(
+            EmoticonCollection.getRandomShock(),
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ),
+        Text(AppLocalizations.of(context)!.empty),
+      ],
     );
   }
 }

@@ -5,13 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/book_data.dart';
 import '../../../processor/book_processor.dart';
 
-enum BookshelfStateCode { normal, selecting, empty, loading }
+enum BookshelfStateCode { normal, empty, loading }
 
 class BookshelfCubit extends Cubit<BookshelfState> {
   BookshelfCubit() : super(const BookshelfState());
 
-  void refresh() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+  void refresh() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       List<BookData> list = BookProcessor.getDataList();
       BookshelfStateCode code = list.isEmpty ? BookshelfStateCode.empty : BookshelfStateCode.normal;
       emit(BookshelfState(code: code, bookList: list));

@@ -21,6 +21,7 @@
   "edit": "Edit",
   "nullValue": "Blank",
   "comingSoon": "Coming soon",
+  "selectAll": "Select all",
 
   "commonDragHereToDelete": "Drag here to delete",
 
@@ -180,6 +181,7 @@
   "brightnessLight": "Light",
   "brightnessDark": "Dark",
 
+  "bookmarkManagerDeleteAllBookmarks": "Delete all bookmarks",
   "bookmarkManagerDeleteNumberOfSelectedBookmarks": "Delete {number} selected bookmarks",
   "@bookmarkManagerDeleteNumberOfSelectedBookmarks": {
     "description": "Delete %d selected bookmarks",
@@ -191,8 +193,10 @@
     }
   },
 
-  "alertDialogClearAllBookmarksTitle": "Clear all bookmarks",
-  "alertDialogClearAllBookmarksDescription": "This will clear all bookmarks in the library forever.",
+  "alertDialogDeleteBookmarkTitle": "Delete bookmark",
+  "alertDialogDeleteBookmarkDescription": "Are you sure to delete these bookmark(s)?",
+  "alertDialogDeleteAllBookmarksTitle": "Delete all bookmarks",
+  "alertDialogDeleteAllBookmarksDescription": "This will delete all bookmarks in the library forever.",
   "alertDialogResetSettingsTitle": "Reset settings",
   "alertDialogResetSettingsDescription": "Are you sure to reset settings?",
 
@@ -232,5 +236,6 @@
   "accessibilityFontSizeSlider": "Font size slider",
   "accessibilityLineHeightSliderMinIcon": "Minimum line height icon",
   "accessibilityLineHeightSliderMaxIcon": "Maximum line height icon",
-  "accessibilityLineHeightSlider": "Line height slider"
+  "accessibilityLineHeightSlider": "Line height slider",
+  "accessibilitySelectAllCheckbox": "Select all checkbox"
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bloc/bookmark_manager_bloc.dart';
+import 'bookmark_manager_delete_button.dart';
 
 class BookmarkManagerFloatingActionButton extends StatelessWidget {
   const BookmarkManagerFloatingActionButton({super.key});
@@ -17,26 +17,13 @@ class BookmarkManagerFloatingActionButton extends StatelessWidget {
           transitionBuilder: (Widget child, Animation<double> animation) {
             return SlideTransition(
               position: Tween<Offset>(
-                begin: const Offset(1.0, 0.0),
+                begin: const Offset(0.0, 1.0),
                 end: const Offset(0.0, 0.0),
               ).chain(CurveTween(curve: Curves.easeInOutCubicEmphasized)).animate(animation),
               child: child,
             );
           },
-          child: state.selectedBookmarks.isEmpty
-              ? null
-              : FloatingActionButton.extended(
-                  onPressed: () {
-                    BlocProvider.of<BookmarkManagerCubit>(context).deleteSelectedBookmarks();
-                  },
-                  icon: const Icon(Icons.delete),
-                  label: Text(
-                    AppLocalizations.of(context)!
-                        .bookmarkManagerDeleteNumberOfSelectedBookmarks(state.selectedBookmarks.length),
-                  ),
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                  foregroundColor: Theme.of(context).colorScheme.onError,
-                ),
+          child: state.selectedBookmarks.isEmpty ? null : const BookmarkManagerDeleteButton(),
         );
       },
     );

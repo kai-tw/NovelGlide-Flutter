@@ -15,11 +15,7 @@ class BookshelfSliverList extends StatelessWidget {
     return BlocBuilder<BookshelfCubit, BookshelfState>(
       builder: (BuildContext context, BookshelfState state) {
         switch (state.code) {
-          case BookshelfStateCode.loading:
-            return const CommonSliverLoading();
-
           case BookshelfStateCode.normal:
-          case BookshelfStateCode.selecting:
             return SliverGrid(
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 150.0,
@@ -32,8 +28,24 @@ class BookshelfSliverList extends StatelessWidget {
                 childCount: state.bookList.length,
               ),
             );
+
+          case BookshelfStateCode.loading:
+            return const SliverFillRemaining(
+              child: SafeArea(
+                child: Center(
+                  child: CommonLoading(),
+                ),
+              ),
+            );
+
           default:
-            return const CommonSliverListEmpty();
+            return const SliverFillRemaining(
+              child: SafeArea(
+                child: Center(
+                  child: CommonListEmpty(),
+                ),
+              ),
+            );
         }
       },
     );
