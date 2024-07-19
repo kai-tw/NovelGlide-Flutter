@@ -5,6 +5,7 @@ import '../bloc/toc_bloc.dart';
 import '../toc_app_bar.dart';
 import '../widgets/toc_add_chapter_button.dart';
 import '../widgets/toc_book_name.dart';
+import '../widgets/toc_continue_reading_button.dart';
 import '../widgets/toc_cover_banner.dart';
 import '../widgets/toc_dragging_target_bar.dart';
 import '../widgets/toc_scroll_view.dart';
@@ -45,6 +46,9 @@ class TocScaffoldCompactView extends StatelessWidget {
                         ],
                       ),
                     ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: TocContinueReadingButton(),
                   ),
                   TocSliverChapterList(),
                 ],
