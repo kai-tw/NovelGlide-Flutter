@@ -39,7 +39,7 @@ class BookmarkManagerSliverListItem extends StatelessWidget {
                 leading: Checkbox(
                   value: isSelected,
                   onChanged: (value) => _onTap(cubit, value),
-                  activeColor: Theme.of(context).colorScheme.errorContainer,
+                  activeColor: Colors.transparent,
                   checkColor: Theme.of(context).colorScheme.onErrorContainer,
                   semanticLabel: AppLocalizations.of(context)!.accessibilityBookmarkManagerCheckbox,
                 ),

@@ -14,7 +14,7 @@ class SettingPageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton.icon(
+    return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
         alignment: Alignment.centerLeft,
@@ -24,8 +24,15 @@ class SettingPageButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(0),
         ),
       ),
-      icon: Icon(iconData, size: 24),
-      label: Text(label),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 24.0),
+            child: Icon(iconData, semanticLabel: label),
+          ),
+          Text(label),
+        ],
+      ),
     );
   }
 }

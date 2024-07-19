@@ -16,6 +16,9 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final List<Widget> buttonList = [
+      /// Add padding to align with the navigation rail.
+      const SliverPadding(padding: EdgeInsets.only(top: 16.0)),
+
       /// Theme manager button
       SliverToBoxAdapter(
         child: SettingPageButton(
