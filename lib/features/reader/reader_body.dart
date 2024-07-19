@@ -20,31 +20,33 @@ class ReaderBody extends StatelessWidget {
       children: [
         const ReaderProgressBar(),
         Expanded(
-          child: BlocBuilder<ReaderCubit, ReaderState>(
-            buildWhen: (previous, current) => previous.code != current.code,
-            builder: (context, state) {
-              switch (state.code) {
-                case ReaderStateCode.loaded:
-                  return PageStorage(
-                    bucket: cubit.bucket,
-                    child: Scrollbar(
-                      controller: cubit.scrollController,
-                      child: CustomScrollView(
-                        key: const PageStorageKey('reader-body-scrollview'),
-                        physics: const BouncingScrollPhysics(),
-                        controller: cubit.scrollController,
-                        slivers: const [
-                          ReaderSliverContent(),
-                        ],
-                      ),
-                    ),
-                  );
-                default:
-                  return const Center(
-                    child: CommonLoading(),
-                  );
-              }
-            },
+          child: PageStorage(
+            bucket: cubit.bucket,
+            child: Scrollbar(
+              controller: cubit.scrollController,
+              child: CustomScrollView(
+                key: const PageStorageKey('reader-body-scrollview'),
+                physics: const BouncingScrollPhysics(),
+                controller: cubit.scrollController,
+                slivers: [
+                  BlocBuilder<ReaderCubit, ReaderState>(
+                    buildWhen: (previous, current) => previous.code != current.code,
+                    builder: (context, state) {
+                      switch (state.code) {
+                        case ReaderStateCode.loaded:
+                          return const ReaderSliverContent();
+                        default:
+                          return const SliverFillRemaining(
+                            child: Center(
+                              child: CommonLoading(),
+                            ),
+                          );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
         Advertisement(adUnitId: AdvertisementId.adaptiveBanner),

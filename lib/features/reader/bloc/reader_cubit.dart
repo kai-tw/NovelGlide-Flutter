@@ -8,7 +8,7 @@ import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
   final PageStorageBucket bucket = PageStorageBucket();
-  late ScrollController scrollController;
+  final ScrollController scrollController = ScrollController();
 
   ReaderCubit(String bookName, int chapterNumber)
       : super(ReaderState(bookName: bookName, chapterNumber: chapterNumber));
@@ -20,17 +20,9 @@ class ReaderCubit extends Cubit<ReaderState> {
       final BookmarkData bookmarkData = BookmarkData.fromBookName(bookName);
       final ReaderSettingsData readerSettings = ReaderSettingsData.load();
 
-      scrollController = ScrollController(
-        onAttach: (_) {
-          // Scrolling Listener
-          scrollController.addListener(_onScroll);
-          scrollController.position.isScrollingNotifier.addListener(_onScrollEnd);
-        },
-        onDetach: (_) {
-          scrollController.removeListener(_onScroll);
-          scrollController.position.isScrollingNotifier.removeListener(_onScrollEnd);
-        },
-      );
+      // Scrolling Listener
+      scrollController.addListener(_onScroll);
+      scrollController.position.isScrollingNotifier.addListener(_onScrollEnd);
 
       emit(ReaderState(
         bookName: bookName,
