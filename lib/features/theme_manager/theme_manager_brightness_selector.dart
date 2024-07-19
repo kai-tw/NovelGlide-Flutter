@@ -27,35 +27,39 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
             padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
             child: ThemeSwitcher.withTheme(
               builder: (context, _, currentTheme) {
-                return BlocBuilder<ThemeManagerBrightnessCubit, ThemeManagerBrightnessState>(
-                  builder: (context, state) {
-                    return SegmentedButton<Brightness?>(
-                      segments: [
-                        ButtonSegment<Brightness?>(
-                          value: null,
-                          label: Text(appLocalizations.brightnessSystem),
-                          icon: const Icon(Icons.brightness_auto_rounded),
+                return BlocBuilder<ThemeManagerBrightnessCubit, ThemeManagerBrightnessState>(builder: (context, state) {
+                  return SegmentedButton<Brightness?>(
+                    segments: [
+                      ButtonSegment<Brightness?>(
+                        value: null,
+                        icon: Icon(
+                          Icons.brightness_auto_rounded,
+                          semanticLabel: appLocalizations.brightnessSystem,
                         ),
-                        ButtonSegment<Brightness?>(
-                          value: Brightness.light,
-                          label: Text(appLocalizations.brightnessLight),
-                          icon: const Icon(Icons.light_mode_rounded),
+                      ),
+                      ButtonSegment<Brightness?>(
+                        value: Brightness.light,
+                        icon: Icon(
+                          Icons.light_mode_rounded,
+                          semanticLabel: appLocalizations.brightnessLight,
                         ),
-                        ButtonSegment<Brightness?>(
-                          value: Brightness.dark,
-                          label: Text(appLocalizations.brightnessDark),
-                          icon: const Icon(Icons.dark_mode_rounded),
+                      ),
+                      ButtonSegment<Brightness?>(
+                        value: Brightness.dark,
+                        icon: Icon(
+                          Icons.dark_mode_rounded,
+                          semanticLabel: appLocalizations.brightnessDark,
                         ),
-                      ],
-                      selected: {state.brightness},
-                      onSelectionChanged: (brightnessSet) {
-                        final Brightness? brightness = brightnessSet.first;
-                        BlocProvider.of<ThemeManagerBrightnessCubit>(context).setBrightness(brightness);
-                        ThemeProcessor.switchBrightness(context, brightness: brightness);
-                      },
-                    );
-                  }
-                );
+                      ),
+                    ],
+                    selected: {state.brightness},
+                    onSelectionChanged: (brightnessSet) {
+                      final Brightness? brightness = brightnessSet.first;
+                      BlocProvider.of<ThemeManagerBrightnessCubit>(context).setBrightness(brightness);
+                      ThemeProcessor.switchBrightness(context, brightness: brightness);
+                    },
+                  );
+                });
               },
             ),
           )

@@ -28,18 +28,24 @@ class ThemeManagerScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final ThemeManagerCubit cubit = BlocProvider.of<ThemeManagerCubit>(context);
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
         title: Text(appLocalizations.themeTitle),
       ),
       body: SingleChildScrollView(
-        controller: BlocProvider.of<ThemeManagerCubit>(context).scrollController,
-        child: const Column(
-          children: [
-            ThemeManagerThemeSelector(),
-            ThemeManagerBrightnessSelector(),
-          ],
+        controller: cubit.scrollController,
+        child: Center(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 400.0),
+            child: const Column(
+              children: [
+                ThemeManagerThemeSelector(),
+                ThemeManagerBrightnessSelector(),
+              ],
+            ),
+          ),
         ),
       ),
     );

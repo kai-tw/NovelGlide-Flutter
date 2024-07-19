@@ -30,17 +30,19 @@ class _BookmarkManagerScaffold extends StatelessWidget {
         leading: const CommonBackButton(),
         title: Text(AppLocalizations.of(context)!.titleBookmarkManager),
       ),
-      body: RefreshIndicator(
-        onRefresh: () async => BlocProvider.of<BookmarkManagerCubit>(context).refresh(),
-        child: const Scrollbar(
-          child: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: BookmarkManagerTopBar(),
-              ),
-              BookmarkManagerSliverList(),
-              SliverPadding(padding: EdgeInsets.only(bottom: 86.0)),
-            ],
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: () async => BlocProvider.of<BookmarkManagerCubit>(context).refresh(),
+          child: const Scrollbar(
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: BookmarkManagerTopBar(),
+                ),
+                BookmarkManagerSliverList(),
+                SliverPadding(padding: EdgeInsets.only(bottom: 86.0)),
+              ],
+            ),
           ),
         ),
       ),
