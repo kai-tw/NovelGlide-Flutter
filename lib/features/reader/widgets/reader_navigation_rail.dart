@@ -16,11 +16,11 @@ class ReaderNavigationRail extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          ReaderPreviousChapterButton(),
-          ReaderNextChapterButton(),
+          ReaderSettingsButton(),
           ReaderJumpToBookmarkButton(),
           ReaderAddBookmarkButton(),
-          ReaderSettingsButton(),
+          ReaderPreviousChapterButton(),
+          ReaderNextChapterButton(),
         ],
       ),
     );
