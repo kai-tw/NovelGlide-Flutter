@@ -25,8 +25,11 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
               title: Text(appLocalizations.titleBookshelf),
               actions: [
                 IconButton(
-                  onPressed: () =>
-                      _navigateToImportBook(context).then((_) => BlocProvider.of<BookshelfCubit>(context).refresh()),
+                  onPressed: () {
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (_) => const BookImporterScaffold()))
+                        .then((_) => BlocProvider.of<BookshelfCubit>(context).refresh());
+                  },
                   icon: Icon(
                     Icons.save_alt_rounded,
                     semanticLabel: AppLocalizations.of(context)!.bookImporter,
@@ -47,30 +50,5 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
         }
       },
     );
-  }
-
-  /// Based on the window size, navigate to the import book page
-  Future<dynamic> _navigateToImportBook(BuildContext context) async {
-    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
-    switch (windowClass) {
-      /// Push to the import book page
-      case WindowClass.compact:
-        return Navigator.of(context).push(MaterialPageRoute(builder: (_) => const BookImporterScaffold()));
-
-      /// Show in a dialog
-      default:
-        return showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return const Dialog(
-              clipBehavior: Clip.hardEdge,
-              child: SizedBox(
-                width: 360.0,
-                child: BookImporterScaffold(),
-              ),
-            );
-          },
-        );
-    }
   }
 }

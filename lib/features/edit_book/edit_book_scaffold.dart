@@ -21,24 +21,29 @@ class EditBookScaffold extends StatelessWidget {
         leading: const CommonBackButton(),
         title: Text(AppLocalizations.of(context)!.titleEditBook),
       ),
-      body: Form(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: BlocProvider(
-              create: (_) => EditBookFormCubit(bookData),
-              child: const Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 32.0),
-                    child: EditBookNameInputField(),
+      body: SafeArea(
+        child: Form(
+          child: SingleChildScrollView(
+            child: Center(
+              child: Container(
+                padding: const EdgeInsets.all(24.0),
+                constraints: const BoxConstraints(maxWidth: 360.0),
+                child: BlocProvider(
+                  create: (_) => EditBookFormCubit(bookData),
+                  child: const Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 32.0),
+                        child: EditBookNameInputField(),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 32.0),
+                        child: EditBookImagePicker(),
+                      ),
+                      EditBookSubmitButton(),
+                    ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 32.0),
-                    child: EditBookImagePicker(),
-                  ),
-                  EditBookSubmitButton(),
-                ],
+                ),
               ),
             ),
           ),

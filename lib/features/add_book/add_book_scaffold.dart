@@ -18,24 +18,29 @@ class AddBookScaffold extends StatelessWidget {
         leading: const CommonBackButton(),
         title: Text(AppLocalizations.of(context)!.titleAddBook),
       ),
-      body: Form(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: BlocProvider(
-              create: (_) => AddBookFormCubit(),
-              child: const Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 32.0),
-                    child: AddBookNameInputField(),
+      body: SafeArea(
+        child: Form(
+          child: SingleChildScrollView(
+            child: Center(
+              child: Container(
+                padding: const EdgeInsets.all(24.0),
+                constraints: const BoxConstraints(maxWidth: 360.0),
+                child: BlocProvider(
+                  create: (_) => AddBookFormCubit(),
+                  child: const Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 32.0),
+                        child: AddBookNameInputField(),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 32.0),
+                        child: AddBookImagePicker(),
+                      ),
+                      AddBookSubmitButton(),
+                    ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 32.0),
-                    child: AddBookImagePicker(),
-                  ),
-                  AddBookSubmitButton(),
-                ],
+                ),
               ),
             ),
           ),

@@ -17,12 +17,17 @@ class BookImporterScaffold extends StatelessWidget {
         leading: const CommonBackButton(),
         title: Text(appLocalizations.bookImporter),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: BlocProvider(
-            create: (context) => BookImporterCubit(),
-            child: const BookImporterForm(),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              constraints: const BoxConstraints(maxWidth: 360),
+              child: BlocProvider(
+                create: (context) => BookImporterCubit(),
+                child: const BookImporterForm(),
+              ),
+            ),
           ),
         ),
       ),
