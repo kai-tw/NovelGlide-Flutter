@@ -17,7 +17,7 @@ class HomepageFloatingActionButton extends StatelessWidget {
           transitionBuilder: (Widget child, Animation<double> animation) {
             return SlideTransition(
               position: Tween<Offset>(
-                begin: const Offset(1.0, 0.0),
+                begin: const Offset(2.0, 0.0),
                 end: const Offset(0.0, 0.0),
               ).chain(CurveTween(curve: Curves.easeInOutCubicEmphasized)).animate(animation),
               child: child,
