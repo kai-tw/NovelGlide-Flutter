@@ -5,6 +5,7 @@ import '../../../data/chapter_data.dart';
 import '../../../data/window_class.dart';
 import '../../common_components/common_delete_drag_target.dart';
 import '../bloc/toc_bloc.dart';
+import 'toc_continue_reading_button.dart';
 
 class TocDraggingTargetBar extends StatelessWidget {
   const TocDraggingTargetBar({super.key});
@@ -45,7 +46,7 @@ class TocDraggingTargetBar extends StatelessWidget {
                     onWillAcceptWithDetails: (details) => details.data is ChapterData,
                   ),
                 )
-              : null,
+              : const TocContinueReadingButton(),
         );
       },
     );

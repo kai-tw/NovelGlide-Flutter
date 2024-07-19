@@ -47,9 +47,6 @@ class TocScaffoldCompactView extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: TocContinueReadingButton(),
-                  ),
                   TocSliverChapterList(),
                 ],
               ),
