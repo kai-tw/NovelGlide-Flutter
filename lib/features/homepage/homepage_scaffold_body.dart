@@ -10,7 +10,6 @@ import '../bookshelf/bookshelf_sliver_list.dart';
 import '../settings_page/settings_page.dart';
 import 'bloc/homepage_bloc.dart';
 import 'bloc/navigation_bloc.dart';
-import 'widgets/homepage_dragging_target_bar.dart';
 import 'widgets/homepage_scroll_view.dart';
 
 class HomepageScaffoldBody extends StatelessWidget {
@@ -25,70 +24,45 @@ class HomepageScaffoldBody extends StatelessWidget {
 
         switch (state.navItem) {
           case NavigationItem.bookshelf:
-            return Stack(
-              children: [
-                RefreshIndicator(
-                  onRefresh: () async => bookshelfCubit.refresh(),
-                  child: Column(
-                    children: [
-                      Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-                      Expanded(
-                        child: PageStorage(
-                          bucket: BlocProvider.of<HomepageCubit>(context).bookshelfBucket,
-                          child: const HomepageScrollView(
-                            key: PageStorageKey<String>('homepage-bookshelf'),
-                            slivers: [
-                              BookshelfSliverList(),
-                            ],
-                          ),
-                        ),
+            return RefreshIndicator(
+              onRefresh: () async => bookshelfCubit.refresh(),
+              child: Column(
+                children: [
+                  Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+                  Expanded(
+                    child: PageStorage(
+                      bucket: BlocProvider.of<HomepageCubit>(context).bookshelfBucket,
+                      child: const HomepageScrollView(
+                        key: PageStorageKey<String>('homepage-bookshelf'),
+                        slivers: [
+                          BookshelfSliverList(),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                Positioned.fill(
-                  bottom: kFloatingActionButtonMargin - 8.0 + MediaQuery.of(context).padding.bottom,
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width - 72.0,
-                      child: const HomepageDraggingTargetBar(),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
 
           case NavigationItem.bookmark:
-            return Stack(
-              children: [
-                RefreshIndicator(
-                  onRefresh: () async => bookmarkListCubit.refresh(),
-                  child: Column(
-                    children: [
-                      Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-                      Expanded(
-                        child: PageStorage(
-                          bucket: BlocProvider.of<HomepageCubit>(context).bookmarkBucket,
-                          child: const HomepageScrollView(
-                            key: PageStorageKey<String>('homepage-bookmark'),
-                            slivers: [
-                              BookmarkListSliverList(),
-                            ],
-                          ),
-                        ),
+            return RefreshIndicator(
+              onRefresh: () async => bookmarkListCubit.refresh(),
+              child: Column(
+                children: [
+                  Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+                  Expanded(
+                    child: PageStorage(
+                      bucket: BlocProvider.of<HomepageCubit>(context).bookmarkBucket,
+                      child: const HomepageScrollView(
+                        key: PageStorageKey<String>('homepage-bookmark'),
+                        slivers: [
+                          BookmarkListSliverList(),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                Positioned.fill(
-                  bottom: kFloatingActionButtonMargin - 8.0 + MediaQuery.of(context).padding.bottom,
-                  child: const Align(
-                    alignment: Alignment.bottomCenter,
-                    child: HomepageDraggingTargetBar(),
-                  ),
-                ),
-              ],
+                ],
+              ),
             );
 
           case NavigationItem.settings:

@@ -24,7 +24,7 @@ class SettingsPage extends StatelessWidget {
         child: SettingPageButton(
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ThemeManager())),
           iconData: Icons.format_paint_rounded,
-          label: appLocalizations.settingsPageTheme,
+          label: appLocalizations.titleThemeManager,
         ),
       ),
 

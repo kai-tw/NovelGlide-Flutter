@@ -81,6 +81,8 @@
   "importOverwriteChapter": "Do it overwrite the chapters?",
   "importOverwriteCover": "Do it overwrite the cover?",
   "importOverwriteBookmark": "Do it overwrite the bookmarks?",
+  "importFromZip": "Import from zip",
+  "importFromTxt": "Import from txt",
 
   "zipEncodingLabel": "The encoding of the zip file",
   "zipEncodingLabelHelperText": "Choose the encoding of the zip file",
@@ -97,6 +99,7 @@
   "titleWelcomeJoin": "Welcome to join us!",
   "titleAccountPage": "My Account",
   "titleAbout": "About",
+  "titleThemeManager": "Theme Manager",
   "titleBookmarkManager": "Bookmark Manager",
 
   "fieldItemExists": "It already exists.",
@@ -169,7 +172,6 @@
   "settingsPageAbout": "About",
   "settingsPageDeveloperPage": "Developer Page",
 
-  "themeTitle": "Theme",
   "themeListTitle": "Theme List",
   "themeListDescription": "Select a theme",
   "themeListNameDefault": "Default",

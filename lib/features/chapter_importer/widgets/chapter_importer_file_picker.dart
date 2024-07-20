@@ -7,17 +7,19 @@ import '../../common_components/common_file_picker/common_file_picker_type.dart'
 import '../bloc/chapter_importer_bloc.dart';
 
 class ChapterImporterFilePicker extends StatelessWidget {
-  const ChapterImporterFilePicker({super.key});
+  final CommonFilePickerType type;
+
+  const ChapterImporterFilePicker({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {
-    final String extensionText = CommonFilePickerTypeMap.extension[CommonFilePickerType.archive]!.join();
+    final String extensionText = CommonFilePickerTypeMap.extension[type]!.join();
     return CommonFilePicker(
       inputDecoration: InputDecoration(
         labelText: AppLocalizations.of(context)!.selectAFile,
         helperText: AppLocalizations.of(context)!.fileTypeHelperText + extensionText,
       ),
-      type: CommonFilePickerType.archive,
+      type: type,
       onSaved: (file) => BlocProvider.of<ChapterImporterCubit>(context).setImportFile(file),
     );
   }

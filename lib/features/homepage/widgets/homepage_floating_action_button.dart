@@ -23,7 +23,12 @@ class HomepageFloatingActionButton extends StatelessWidget {
               child: child,
             );
           },
-          child: state.navItem == NavigationItem.bookshelf ? const BookshelfAddBookButton() : null,
+          child: state.navItem == NavigationItem.bookshelf
+              ? const Padding(
+                  padding: EdgeInsets.only(left: 16.0),
+                  child: BookshelfAddBookButton(),
+                )
+              : null,
         );
       },
     );

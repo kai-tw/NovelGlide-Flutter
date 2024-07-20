@@ -72,6 +72,8 @@
   "importOverwriteChapter": "是否覆蓋既有章節？",
   "importOverwriteCover": "是否覆蓋既有封面？",
   "importOverwriteBookmark": "是否覆蓋既有書籤？",
+  "importFromZip": "從壓縮檔匯入",
+  "importFromTxt": "從文字檔匯入",
 
   "zipEncodingLabel": "匯入壓縮檔的編碼",
   "zipEncodingLabelHelperText": "選擇壓縮檔的編碼",
@@ -88,6 +90,7 @@
   "titleWelcomeJoin": "歡迎加入",
   "titleAccountPage": "我的帳號",
   "titleAbout": "關於",
+  "titleThemeManager": "主題管理員",
   "titleBookmarkManager": "書籤管理員",
 
   "fieldItemExists": "已存在",
@@ -129,7 +132,6 @@
   "settingsPageAbout": "關於",
   "settingsPageDeveloperPage": "開發者頁面",
 
-  "themeTitle": "主題",
   "themeListTitle": "主題列表",
   "themeListDescription": "選擇一個主題",
   "themeListNameDefault": "預設",

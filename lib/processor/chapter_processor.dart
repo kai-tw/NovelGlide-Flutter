@@ -6,8 +6,10 @@ import 'package:flutter_charset_detector/flutter_charset_detector.dart';
 import 'package:path/path.dart';
 
 import '../data/chapter_data.dart';
+import '../toolbox/random_utility.dart';
 import 'book_processor.dart';
 import 'bookmark_processor.dart';
+import 'chapter_reg_exp.dart';
 
 /// Process all the operation related to chapters.
 class ChapterProcessor {
@@ -54,18 +56,7 @@ class ChapterProcessor {
     if (!file.existsSync()) {
       return [];
     }
-
-    List<String> contentLines = [];
-    final Stream<List<int>> inputStream = file.openRead();
-    final Stream<String> lineStream = inputStream.transform(utf8.decoder).transform(const LineSplitter());
-
-    await for (String line in lineStream) {
-      if (line.isNotEmpty) {
-        contentLines.add(line);
-      }
-    }
-
-    return contentLines;
+    return await getContentFromFile(file);
   }
 
   /// Get the previous chapter number.
@@ -105,11 +96,18 @@ class ChapterProcessor {
     return "";
   }
 
-  /// Create a chapter.
-  static Future<bool> create(String bookName, int ordinalNumber, File file, {String? title}) async {
+  static Future<List<String>> getContentFromFile(File file) async {
     Uint8List bytes = await file.readAsBytes();
     DecodingResult result = await CharsetDetector.autoDecode(bytes);
-    List<String> contentLines = result.string.split(Platform.lineTerminator).where((line) => line.isNotEmpty).toList();
+    return result.string.split(Platform.lineTerminator).where((line) {
+      line = line.trim();
+      return line.isNotEmpty;
+    }).toList();
+  }
+
+  /// Create a chapter.
+  static Future<bool> create(String bookName, int ordinalNumber, File file, {String? title}) async {
+    List<String> contentLines = await getContentFromFile(file);
 
     // Create chapter file
     File chapterFile = File(getPath(bookName, ordinalNumber));
@@ -153,5 +151,46 @@ class ChapterProcessor {
         await ChapterProcessor.create(bookName, chapterNumber, file);
       }
     }
+  }
+
+  /// Import chapters from a txt file.
+  /// Use specific sub-string (e.g. Chapter %d) as the delimiter.
+  static Future<bool> importFromTxt(String bookName, File file, {bool isOverwrite = false}) async {
+    final Directory tempFolder = RandomUtility.getAvailableTempFolder();
+
+    List<String> contentLines = await getContentFromFile(file);
+    final RegExp regExp = RegExp(ChapterRegExp.chinesePattern.pattern);
+
+    int newChapterNumber = 0;
+    int currentChapterNumber = 0;
+    File? chapterFile;
+    for (String line in contentLines) {
+      final Iterable<RegExpMatch> matches = regExp.allMatches(line);
+
+      if (matches.isNotEmpty) {
+        /// Find the chapter number!
+        newChapterNumber = int.parse(matches.first.namedGroup('chapterNumber') ?? "0");
+
+        if (newChapterNumber > 0) {
+          if (newChapterNumber != currentChapterNumber) {
+            chapterFile = File(getPath(bookName, newChapterNumber))..createSync();
+          }
+        } else {
+          chapterFile = null;
+        }
+        currentChapterNumber = newChapterNumber;
+
+        line = matches.first.namedGroup('title')?.trim() ?? "";
+      }
+
+      if (chapterFile != null) {
+        chapterFile.writeAsStringSync(line + Platform.lineTerminator, mode: FileMode.append);
+      }
+    }
+
+    await importFromFolder(bookName, tempFolder, isOverwrite: isOverwrite);
+
+    tempFolder.delete(recursive: true);
+    return true;
   }
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:mime/mime.dart';
 
 class AdvancedMimeTypeResolver extends MimeTypeResolver {
+  static AdvancedMimeTypeResolver get instance => _instance;
   static final AdvancedMimeTypeResolver _instance = AdvancedMimeTypeResolver._internal();
 
   bool _isInit = false;

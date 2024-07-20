@@ -12,13 +12,21 @@ class CommonDeleteDragTarget extends StatelessWidget {
     return DragTarget(
       builder: (context, candidateData, rejectedData) {
         return Container(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.error,
             borderRadius: BorderRadius.circular(36.0),
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).colorScheme.shadow.withOpacity(0.5),
+                offset: const Offset(0.0, 4.0),
+                blurRadius: 8.0,
+              ),
+            ],
           ),
           clipBehavior: Clip.hardEdge,
           child: Row(
+            // mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(

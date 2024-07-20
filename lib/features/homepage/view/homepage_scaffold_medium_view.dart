@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/homepage_bloc.dart';
 import '../homepage_app_bar.dart';
 import '../homepage_scaffold_body.dart';
-import '../widgets/homepage_floating_action_button.dart';
+import '../homepage_tab_section.dart';
 import '../widgets/homepage_navigation_rail.dart';
 
 class HomepageScaffoldMediumView extends StatelessWidget {
@@ -35,7 +35,7 @@ class HomepageScaffoldMediumView extends StatelessWidget {
               ],
             ),
           ),
-          floatingActionButton: const HomepageFloatingActionButton(),
+          floatingActionButton: const HomepageTabSection(),
         );
       },
     );

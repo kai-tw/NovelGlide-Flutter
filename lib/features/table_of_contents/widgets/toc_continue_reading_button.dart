@@ -14,31 +14,27 @@ class TocContinueReadingButton extends StatelessWidget {
     return BlocBuilder<TocCubit, TocState>(
       builder: (BuildContext context, TocState state) {
         return state.bookmarkData.isValid
-            ? Container(
-          margin: const EdgeInsets.all(16.0),
-          height: 56.0,
-          child: ElevatedButton.icon(
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(
-                  builder: (context) => ReaderWidget(
-                    state.bookmarkData.bookName,
-                    state.bookmarkData.chapterNumber,
-                    isAutoJump: true,
-                  )))
-                  .then((_) => cubit.refresh());
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-              fixedSize: const Size.fromHeight(56.0),
-              elevation: 5.0,
-            ),
-            icon: const Icon(Icons.bookmark_rounded),
-            label: Text(AppLocalizations.of(context)!.continueReading),
-          ),
-        )
+            ? ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(
+                          builder: (context) => ReaderWidget(
+                                state.bookmarkData.bookName,
+                                state.bookmarkData.chapterNumber,
+                                isAutoJump: true,
+                              )))
+                      .then((_) => cubit.refresh());
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                  fixedSize: const Size.fromHeight(56.0),
+                  elevation: 5.0,
+                ),
+                icon: const Icon(Icons.bookmark_rounded),
+                label: Text(AppLocalizations.of(context)!.continueReading),
+              )
             : const SizedBox.shrink();
       },
     );

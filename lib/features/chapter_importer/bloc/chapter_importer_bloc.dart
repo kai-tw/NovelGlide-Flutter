@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mime/mime.dart';
 import 'package:path/path.dart';
 
 import '../../../data/book_data.dart';
@@ -11,6 +10,7 @@ import '../../../data/zip_encoding.dart';
 import '../../../processor/book_processor.dart';
 import '../../../processor/bookmark_processor.dart';
 import '../../../processor/chapter_processor.dart';
+import '../../../toolbox/advanced_mime_type_resolver.dart';
 import '../../../toolbox/random_utility.dart';
 
 class ChapterImporterCubit extends Cubit<ChapterImporterState> {
@@ -22,10 +22,12 @@ class ChapterImporterCubit extends Cubit<ChapterImporterState> {
 
   Future<bool> submit() async {
     if (_importFile != null) {
-      String? mimeType = lookupMimeType(_importFile!.path);
+      String? mimeType = AdvancedMimeTypeResolver.instance.lookupAll(_importFile!);
       switch (mimeType) {
         case 'application/zip':
-          return await importFromArchive(bookData.name, _importFile!);
+          return await importFromArchive();
+        case 'text/plain':
+          return await ChapterProcessor.importFromTxt(bookData.name, _importFile!);
       }
     }
     return false;
@@ -52,12 +54,12 @@ class ChapterImporterCubit extends Cubit<ChapterImporterState> {
   }
 
   /// Import books from an archive file.
-  Future<bool> importFromArchive(String bookName, File archiveFile) async {
+  Future<bool> importFromArchive() async {
     Directory tempFolder = RandomUtility.getAvailableTempFolder();
 
     try {
       await ZipFile.extractToDirectory(
-        zipFile: archiveFile,
+        zipFile: _importFile!,
         destinationDir: tempFolder,
         zipFileCharset: _zipEncoding?.value ?? ZipEncoding.utf8.value,
       );
@@ -68,9 +70,9 @@ class ChapterImporterCubit extends Cubit<ChapterImporterState> {
 
     final File coverFile = File(join(tempFolder.path, BookProcessor.coverFileName));
 
-    await ChapterProcessor.importFromFolder(bookName, tempFolder, isOverwrite: state.isOverwriteChapter);
-    BookProcessor.importCover(bookName, coverFile, isOverwrite: state.isOverwriteCover);
-    BookmarkProcessor.import(bookName, tempFolder.path, isOverwrite: state.isOverwriteBookmark);
+    await ChapterProcessor.importFromFolder(bookData.name, tempFolder, isOverwrite: state.isOverwriteChapter);
+    BookProcessor.importCover(bookData.name, coverFile, isOverwrite: state.isOverwriteCover);
+    BookmarkProcessor.import(bookData.name, tempFolder.path, isOverwrite: state.isOverwriteBookmark);
 
     tempFolder.deleteSync(recursive: true);
     return true;

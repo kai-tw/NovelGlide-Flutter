@@ -14,7 +14,7 @@ class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
   CommonFilePickerCubit({this.file}) : super(CommonFilePickerState.fromFile(file));
 
   bool _hasMimeMatch() {
-    final String? mimeType = AdvancedMimeTypeResolver().lookupAll(file!);
+    final String? mimeType = AdvancedMimeTypeResolver.instance.lookupAll(file!);
 
     return type == CommonFilePickerType.any ||
         CommonFilePickerTypeMap.mime[type] != null && CommonFilePickerTypeMap.mime[type]!.contains(mimeType);

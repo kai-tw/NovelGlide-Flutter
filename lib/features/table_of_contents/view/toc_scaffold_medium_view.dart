@@ -5,10 +5,9 @@ import '../../../ad_center/advertisement.dart';
 import '../../../ad_center/advertisement_id.dart';
 import '../bloc/toc_bloc.dart';
 import '../toc_app_bar.dart';
-import '../widgets/toc_add_chapter_button.dart';
+import '../toc_fab_section.dart';
 import '../widgets/toc_book_name.dart';
 import '../widgets/toc_cover_banner.dart';
-import '../widgets/toc_dragging_target_bar.dart';
 import '../widgets/toc_scroll_view.dart';
 import '../chapter_list/toc_sliver_chapter_list.dart';
 
@@ -62,12 +61,6 @@ class TocScaffoldMediumView extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const Positioned.fill(
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child:  TocDraggingTargetBar(),
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -76,7 +69,7 @@ class TocScaffoldMediumView extends StatelessWidget {
               },
             ),
           ),
-          floatingActionButton: const TocAddChapterButton(),
+          floatingActionButton: const TocFabSection(),
         );
       },
     );

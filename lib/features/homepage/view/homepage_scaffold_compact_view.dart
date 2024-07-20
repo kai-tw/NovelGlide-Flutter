@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../homepage_app_bar.dart';
 import '../homepage_nav_bar.dart';
 import '../homepage_scaffold_body.dart';
-import '../widgets/homepage_floating_action_button.dart';
+import '../homepage_tab_section.dart';
 
 class HomepageScaffoldCompactView extends StatelessWidget {
   const HomepageScaffoldCompactView({super.key});
@@ -15,7 +15,7 @@ class HomepageScaffoldCompactView extends StatelessWidget {
       appBar: HomepageAppBar(),
       body: HomepageScaffoldBody(),
       bottomNavigationBar: SafeArea(child: HomepageNavBar()),
-      floatingActionButton: HomepageFloatingActionButton(),
+      floatingActionButton: HomepageTabSection(),
     );
   }
 }

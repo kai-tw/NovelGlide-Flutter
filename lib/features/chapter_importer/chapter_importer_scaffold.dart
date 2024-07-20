@@ -5,7 +5,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../data/book_data.dart';
 import '../common_components/common_back_button.dart';
 import 'bloc/chapter_importer_bloc.dart';
-import 'chapter_importer_form.dart';
+import 'chapter_importer_zip_form.dart';
+import 'widgets/chapter_importer_scroll_view.dart';
+import 'widgets/chapter_importer_txt_form.dart';
 
 class ChapterImporterScaffold extends StatelessWidget {
   const ChapterImporterScaffold({super.key, required this.bookData});
@@ -15,21 +17,31 @@ class ChapterImporterScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: AppBar(
-        leading: const CommonBackButton(),
-        title: Text(appLocalizations.chapterImporter),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              constraints: const BoxConstraints(maxWidth: 360),
-              child: BlocProvider(
-                create: (context) => ChapterImporterCubit(bookData),
-                child: const ChapterImporterForm(),
-              ),
+    return BlocProvider(
+      create: (context) => ChapterImporterCubit(bookData),
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            leading: const CommonBackButton(),
+            title: Text(appLocalizations.chapterImporter),
+            bottom: TabBar(
+              tabs: [
+                Tab(text: appLocalizations.importFromZip),
+                Tab(text: appLocalizations.importFromTxt),
+              ],
+            ),
+          ),
+          body: const SafeArea(
+            child: TabBarView(
+              children: [
+                ChapterImporterScrollView(
+                  child: ChapterImporterZipForm(),
+                ),
+                ChapterImporterScrollView(
+                  child: ChapterImporterTxtForm(),
+                ),
+              ],
             ),
           ),
         ),
