@@ -1,15 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:isolate';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_charset_detector/flutter_charset_detector.dart';
 import 'package:path/path.dart';
 
 import '../data/chapter_data.dart';
-import '../toolbox/random_utility.dart';
+import '../toolbox/chinese_number_parser.dart';
 import 'book_processor.dart';
 import 'bookmark_processor.dart';
-import 'chapter_reg_exp.dart';
+import '../toolbox/chapter_reg_exp.dart';
 
 /// Process all the operation related to chapters.
 class ChapterProcessor {
@@ -56,7 +58,11 @@ class ChapterProcessor {
     if (!file.existsSync()) {
       return [];
     }
-    return await getContentFromFile(file);
+    List<String> contentLines = [];
+    await for (String line in streamContentFromFile(file)) {
+      contentLines.add(line);
+    }
+    return contentLines;
   }
 
   /// Get the previous chapter number.
@@ -96,30 +102,40 @@ class ChapterProcessor {
     return "";
   }
 
-  static Future<List<String>> getContentFromFile(File file) async {
+  static Stream<String> streamContentFromFile(File file) async* {
     Uint8List bytes = await file.readAsBytes();
     DecodingResult result = await CharsetDetector.autoDecode(bytes);
-    return result.string.split(Platform.lineTerminator).where((line) {
+    List<String> lines = result.string.split(Platform.lineTerminator);
+    for (String line in lines) {
       line = line.trim();
-      return line.isNotEmpty;
-    }).toList();
+      if (line.isNotEmpty) {
+        yield line;
+      }
+    }
   }
 
   /// Create a chapter.
-  static Future<bool> create(String bookName, int ordinalNumber, File file, {String? title}) async {
-    List<String> contentLines = await getContentFromFile(file);
-
-    // Create chapter file
-    File chapterFile = File(getPath(bookName, ordinalNumber));
-    chapterFile.createSync();
+  static Future<bool> create(
+    String bookName,
+    int ordinalNumber,
+    File file, {
+    String? title,
+    bool isOverwrite = false,
+  }) async {
+    File? chapterFile = getChapterFileOnCreate(bookName, ordinalNumber, isOverwrite);
+    if (chapterFile == null) {
+      return false;
+    }
 
     // Prepend title
     if (title != null) {
-      contentLines.insert(0, title);
+      chapterFile.writeAsStringSync(title + Platform.lineTerminator, mode: FileMode.append);
     }
 
     // Write to file
-    chapterFile.writeAsStringSync(contentLines.join(Platform.lineTerminator));
+    await for (String line in streamContentFromFile(file)) {
+      chapterFile.writeAsStringSync(line + Platform.lineTerminator, mode: FileMode.append);
+    }
 
     BookmarkProcessor.chapterCreateCheck(bookName, ordinalNumber);
 
@@ -148,7 +164,12 @@ class ChapterProcessor {
       final int chapterNumber = getOrdinalNumberFromPath(file.path);
 
       if (isOverwrite || !ChapterProcessor.isExist(bookName, chapterNumber)) {
-        await ChapterProcessor.create(bookName, chapterNumber, file);
+        await ChapterProcessor.create(
+          bookName,
+          chapterNumber,
+          file,
+          isOverwrite: isOverwrite,
+        );
       }
     }
   }
@@ -156,24 +177,22 @@ class ChapterProcessor {
   /// Import chapters from a txt file.
   /// Use specific sub-string (e.g. Chapter %d) as the delimiter.
   static Future<bool> importFromTxt(String bookName, File file, {bool isOverwrite = false}) async {
-    final Directory tempFolder = RandomUtility.getAvailableTempFolder();
-
-    List<String> contentLines = await getContentFromFile(file);
     final RegExp regExp = RegExp(ChapterRegExp.chinesePattern.pattern);
-
     int newChapterNumber = 0;
     int currentChapterNumber = 0;
     File? chapterFile;
-    for (String line in contentLines) {
+
+    // Todo: Use Isolate to avoid from blocking main thread.
+    await for (String line in streamContentFromFile(file)) {
       final Iterable<RegExpMatch> matches = regExp.allMatches(line);
 
       if (matches.isNotEmpty) {
         /// Find the chapter number!
-        newChapterNumber = int.parse(matches.first.namedGroup('chapterNumber') ?? "0");
+        newChapterNumber = ChineseNumberParser.parse(matches.first.namedGroup('chapterNumber') ?? "0");
 
         if (newChapterNumber > 0) {
           if (newChapterNumber != currentChapterNumber) {
-            chapterFile = File(getPath(bookName, newChapterNumber))..createSync();
+            chapterFile = ChapterProcessor.getChapterFileOnCreate(bookName, newChapterNumber, isOverwrite);
           }
         } else {
           chapterFile = null;
@@ -188,9 +207,18 @@ class ChapterProcessor {
       }
     }
 
-    await importFromFolder(bookName, tempFolder, isOverwrite: isOverwrite);
-
-    tempFolder.delete(recursive: true);
     return true;
+  }
+
+  static File? getChapterFileOnCreate(String bookName, int ordinalNumber, bool isOverwrite) {
+    File chapterFile = File(getPath(bookName, ordinalNumber));
+    if (!isOverwrite && chapterFile.existsSync()) {
+      return null;
+    }
+    if (chapterFile.existsSync()) {
+      chapterFile.deleteSync();
+    }
+    chapterFile.createSync();
+    return chapterFile;
   }
 }

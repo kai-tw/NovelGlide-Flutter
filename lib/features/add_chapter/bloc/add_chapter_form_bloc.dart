@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../processor/chapter_processor.dart';
 
 enum AddChapterTitleStateCode { blank, invalid, normal }
+
 enum AddChapterNumberStateCode { blank, invalid, exists, normal }
 
 class AddChapterFormCubit extends Cubit<AddChapterFormState> {
@@ -31,7 +32,12 @@ class AddChapterFormCubit extends Cubit<AddChapterFormState> {
   }
 
   Future<bool> submit() async {
-    return await ChapterProcessor.create(bookName, chapterNumber, file!, title: title);
+    return await ChapterProcessor.create(
+      bookName,
+      chapterNumber,
+      file!,
+      title: title,
+    );
   }
 }
 

@@ -24,10 +24,6 @@ class ChapterData extends Equatable {
     return await ChapterProcessor.getTitle(bookName, ordinalNumber);
   }
 
-  Future<List<String>> getContent() async {
-    return await ChapterProcessor.getContent(bookName, ordinalNumber);
-  }
-
   bool isExist() {
     return File(getPath()).existsSync();
   }

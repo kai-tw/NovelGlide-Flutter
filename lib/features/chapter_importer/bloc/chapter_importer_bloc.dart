@@ -25,9 +25,9 @@ class ChapterImporterCubit extends Cubit<ChapterImporterState> {
       String? mimeType = AdvancedMimeTypeResolver.instance.lookupAll(_importFile!);
       switch (mimeType) {
         case 'application/zip':
-          return await importFromArchive();
+          return importFromArchive();
         case 'text/plain':
-          return await ChapterProcessor.importFromTxt(bookData.name, _importFile!);
+          return ChapterProcessor.importFromTxt(bookData.name, _importFile!);
       }
     }
     return false;
