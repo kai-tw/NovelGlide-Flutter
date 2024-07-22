@@ -4,7 +4,7 @@ A first attempt to develop a cross-platform app.
 
 ## Development Environment
 
-- Flutter version: 3.22.2
+- Flutter version: 3.22.3
 
 ## Features
 
