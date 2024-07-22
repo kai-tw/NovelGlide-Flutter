@@ -12,7 +12,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
 
   void refresh() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final List<BookmarkData> bookmarkList = BookmarkProcessor.getList();
+      final List<BookmarkData> bookmarkList = await BookmarkProcessor.getList();
       bookmarkList.sort((a, b) => b.savedTime.compareTo(a.savedTime));
 
       emit(BookmarkListState(

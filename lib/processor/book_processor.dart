@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 
 import '../data/book_data.dart';
@@ -11,19 +13,29 @@ class BookProcessor {
   static const String coverFileName = 'cover.jpg';
 
   /// Get all book names
-  static List<String> getNameList() {
-    final Directory folder = Directory(FilePath.instance.libraryRoot);
-    folder.createSync(recursive: true);
+  static Future<List<String>> getNameList() async {
+    final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
+    return await compute<Map<String, dynamic>, List<String>>(_getNameListIsolate, {
+      "rootIsolateToken": rootIsolateToken,
+      "path": FilePath.instance.libraryRoot,
+    });
+  }
 
+  static List<String> _getNameListIsolate(Map<String, dynamic> message) {
+    final RootIsolateToken rootIsolateToken = message["rootIsolateToken"];
+    final String path = message["path"];
+
+    BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+
+    final Directory folder = Directory(path);
     final List<String> entries = folder.listSync().whereType<Directory>().map((e) => e.path).toList();
     entries.sort(compareNatural);
-
     return entries;
   }
 
   /// Get all book data
-  static List<BookData> getDataList() {
-    return getNameList().map((e) => BookData.fromPath(e)).toList();
+  static Future<List<BookData>> getDataList() async {
+    return (await getNameList()).map((e) => BookData.fromPath(e)).toList();
   }
 
   /// Get the book path by name

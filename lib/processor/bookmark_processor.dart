@@ -10,9 +10,9 @@ class BookmarkProcessor {
   static const String bookmarkFileName = "bookmark.isar";
   static const String bookmarkLockFileName = "bookmark.isar.lock";
 
-  static List<BookmarkData> getList() {
+  static Future<List<BookmarkData>> getList() async {
     List<BookmarkData> retList = [];
-    List<String> bookList = BookProcessor.getNameList();
+    List<String> bookList = await BookProcessor.getNameList();
 
     for (String path in bookList) {
       final File file = File(join(path, bookmarkFileName));

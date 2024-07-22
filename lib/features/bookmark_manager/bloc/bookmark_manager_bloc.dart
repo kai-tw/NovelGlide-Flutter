@@ -10,7 +10,7 @@ class BookmarkManagerCubit extends Cubit<BookmarkManagerState> {
 
   void refresh() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final List<BookmarkData> bookmarkList = BookmarkProcessor.getList();
+      final List<BookmarkData> bookmarkList = await BookmarkProcessor.getList();
       emit(BookmarkManagerState(
         code: bookmarkList.isEmpty ? BookmarkManagerStateCode.empty : BookmarkManagerStateCode.normal,
         bookmarkList: bookmarkList,
