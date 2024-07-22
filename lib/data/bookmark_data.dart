@@ -10,18 +10,18 @@ class BookmarkData extends Equatable {
   final bool isValid;
   final String bookName;
   final int chapterNumber;
-  final double scrollRatio;
+  final double scrollPosition;
   final DateTime savedTime;
   final int daysPassed;
 
   @override
-  List<Object?> get props => [isValid, bookName, chapterNumber, scrollRatio, savedTime, daysPassed];
+  List<Object?> get props => [isValid, bookName, chapterNumber, scrollPosition, savedTime, daysPassed];
 
   BookmarkData({
     this.isValid = false,
     this.bookName = '',
     this.chapterNumber = 0,
-    this.scrollRatio = 0,
+    this.scrollPosition = 0,
     DateTime? savedTime,
   })  : savedTime = savedTime ?? DateTime.now(),
         daysPassed = DateTimeUtility.daysPassed(savedTime ?? DateTime.now());
@@ -39,7 +39,7 @@ class BookmarkData extends Equatable {
       isValid: isValid,
       bookName: "",
       chapterNumber: chapterNumber,
-      scrollRatio: area,
+      scrollPosition: area,
       savedTime: savedTime,
     );
   }
@@ -54,7 +54,7 @@ class BookmarkData extends Equatable {
     Box bookmarkBox = Hive.box(name: 'bookmark', directory: join(FilePath.instance.libraryRoot, bookName));
     bookmarkBox.put('isValid', bookName != '' && chapterNumber > -1 && savedTime.isBefore(DateTime.now()));
     bookmarkBox.put('chapterNumber', chapterNumber);
-    bookmarkBox.put('area', scrollRatio.clamp(0.0, 1.0));
+    bookmarkBox.put('area', scrollPosition.clamp(0.0, 1.0));
     bookmarkBox.put('savedTime', savedTime.toIso8601String());
     bookmarkBox.close();
   }
@@ -76,13 +76,13 @@ class BookmarkData extends Equatable {
       isValid: isValid ?? this.isValid,
       bookName: bookName ?? this.bookName,
       chapterNumber: chapterNumber ?? this.chapterNumber,
-      scrollRatio: scrollRatio ?? this.scrollRatio,
+      scrollPosition: scrollRatio ?? this.scrollPosition,
       savedTime: savedTime ?? this.savedTime,
     );
   }
 
   @override
   String toString() {
-    return '{ isValid: $isValid, bookName: $bookName, chapterNumber: $chapterNumber, area: $scrollRatio, savedTime: $savedTime, daysPassed: $daysPassed }';
+    return '{ isValid: $isValid, bookName: $bookName, chapterNumber: $chapterNumber, area: $scrollPosition, savedTime: $savedTime, daysPassed: $daysPassed }';
   }
 }

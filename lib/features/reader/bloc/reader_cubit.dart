@@ -79,7 +79,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       isValid: true,
       bookName: state.bookName,
       chapterNumber: state.chapterNumber,
-      scrollRatio: scrollController.position.pixels / scrollController.position.maxScrollExtent,
+      scrollPosition: scrollController.position.pixels,
       savedTime: DateTime.now(),
     )..save();
     emit(state.copyWith(bookmarkData: bookmarkObject));
@@ -87,7 +87,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   void scrollToBookmark() {
     scrollController.animateTo(
-      state.bookmarkData.scrollRatio * scrollController.position.maxScrollExtent,
+      state.bookmarkData.scrollPosition,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
