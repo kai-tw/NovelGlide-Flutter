@@ -191,5 +191,7 @@
   "accessibilityLineHeightSliderMinIcon": "最小行高",
   "accessibilityLineHeightSliderMaxIcon": "最大行高",
   "accessibilityLineHeightSlider": "行高滑桿",
-  "accessibilitySelectAllCheckbox": "全選勾選框"
+  "accessibilitySelectAllCheckbox": "全選勾選框",
+
+  "exceptionChapterProcessorDuplicate": "第 {number} 章已存在。"
 }

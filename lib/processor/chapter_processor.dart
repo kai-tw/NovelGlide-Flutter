@@ -8,19 +8,25 @@ import 'package:flutter_charset_detector/flutter_charset_detector.dart';
 import 'package:path/path.dart';
 
 import '../data/chapter_data.dart';
+import '../data/file_path.dart';
 import '../toolbox/chinese_number_parser.dart';
-import '../toolbox/isolate_manager.dart';
+import '../toolbox/chapter_reg_exp.dart';
 import 'book_processor.dart';
 import 'bookmark_processor.dart';
-import '../toolbox/chapter_reg_exp.dart';
+import 'chapter_processor_exception.dart';
 
 /// Process all the operation related to chapters.
 class ChapterProcessor {
   static final RegExp chapterRegexp = RegExp(r'^Chapter\.\d+\.txt$');
 
+  /// Get the chapter file name.
+  static String getFileName(int ordinalNumber) {
+    return "Chapter.$ordinalNumber.txt";
+  }
+
   /// Get the path of a chapter.
   static String getPath(String bookName, int ordinalNumber) {
-    return join(BookProcessor.getPathByName(bookName), "Chapter.$ordinalNumber.txt");
+    return join(BookProcessor.getPathByName(bookName), getFileName(ordinalNumber));
   }
 
   /// Get the ordinal number of a chapter from its file name.
@@ -31,21 +37,34 @@ class ChapterProcessor {
   /// Get all the chapter data of a book.
   static Future<List<ChapterData>> getList(String bookName) async {
     final Directory folder = Directory(BookProcessor.getPathByName(bookName));
-    List<ChapterData> chapterList = [];
 
-    if (await folder.exists()) {
-      await for (FileSystemEntity entity in folder.list()) {
-        if (entity is File && chapterRegexp.hasMatch(basename(entity.path))) {
-          chapterList.add(ChapterData(bookName: bookName, ordinalNumber: getOrdinalNumberFromPath(entity.path)));
-        }
-      }
-
-      chapterList.sort((a, b) => a.ordinalNumber - b.ordinalNumber);
-
-      return chapterList;
+    if (!folder.existsSync()) {
+      return [];
     }
 
-    return [];
+    final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
+    return await compute<Map<String, dynamic>, List<ChapterData>>(_getListIsolate, {
+      "rootIsolateToken": rootIsolateToken,
+      "bookName": bookName,
+      "folder": folder,
+    });
+  }
+
+  static Future<List<ChapterData>> _getListIsolate(Map<String, dynamic> message) async {
+    final RootIsolateToken rootIsolateToken = message["rootIsolateToken"];
+    final String bookName = message["bookName"];
+    final Directory folder = message["folder"];
+
+    BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+
+    List<ChapterData> chapterList = [];
+    await for (FileSystemEntity entity in folder.list()) {
+      if (entity is File && chapterRegexp.hasMatch(basename(entity.path))) {
+        chapterList.add(ChapterData(bookName: bookName, ordinalNumber: getOrdinalNumberFromPath(entity.path)));
+      }
+    }
+    chapterList.sort((a, b) => a.ordinalNumber - b.ordinalNumber);
+    return chapterList;
   }
 
   /// Is the chapter exist.
@@ -59,7 +78,20 @@ class ChapterProcessor {
     if (!file.existsSync()) {
       return [];
     }
+    final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
+    return await compute<Map<String, dynamic>, List<String>>(_getContentIsolate, {
+      "rootIsolateToken": rootIsolateToken,
+      "file": file,
+    });
+  }
+
+  static Future<List<String>> _getContentIsolate(Map<String, dynamic> message) async {
+    final RootIsolateToken rootIsolateToken = message["rootIsolateToken"];
+    final File file = message["file"];
     List<String> contentLines = [];
+
+    BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+
     await for (String line in streamContentFromFile(file)) {
       contentLines.add(line);
     }
@@ -123,10 +155,15 @@ class ChapterProcessor {
     String? title,
     bool isOverwrite = false,
   }) async {
-    File? chapterFile = getChapterFileOnCreate(bookName, ordinalNumber, isOverwrite);
-    if (chapterFile == null) {
-      return false;
+    File chapterFile = File(getPath(bookName, ordinalNumber));
+    if (!isOverwrite && chapterFile.existsSync()) {
+      throw ChapterProcessorDuplicateException(ordinalNumber);
     }
+
+    if (chapterFile.existsSync()) {
+      chapterFile.deleteSync();
+    }
+    chapterFile.createSync();
 
     // Prepend title
     if (title != null) {
@@ -179,9 +216,11 @@ class ChapterProcessor {
   /// Use specific sub-string (e.g. Chapter %d) as the delimiter.
   static Future<bool> importFromTxt(String bookName, File file, {bool isOverwrite = false}) async {
     final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
+    final String libraryRoot = FilePath.instance.libraryRoot;
 
     return await compute<Map<String, dynamic>, bool>(_importFromTxtIsolate, {
       "rootIsolateToken": rootIsolateToken,
+      "libraryRoot": libraryRoot,
       "bookName": bookName,
       "file": file,
       "isOverwrite": isOverwrite,
@@ -190,12 +229,12 @@ class ChapterProcessor {
 
   static Future<bool> _importFromTxtIsolate(Map<String, dynamic> message) async {
     final RootIsolateToken rootIsolateToken = message["rootIsolateToken"];
+    final String libraryRoot = message["libraryRoot"];
     final String bookName = message["bookName"];
     final File file = message["file"];
     final bool isOverwrite = message["isOverwrite"];
 
     BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
-    await IsolateManager.ensureInitialized();
 
     final RegExp regExp = RegExp(ChapterRegExp.chinesePattern.pattern);
     int newChapterNumber = 0;
@@ -211,7 +250,17 @@ class ChapterProcessor {
 
         if (newChapterNumber > 0) {
           if (newChapterNumber != currentChapterNumber) {
-            chapterFile = getChapterFileOnCreate(bookName, newChapterNumber, isOverwrite);
+            chapterFile = File(join(libraryRoot, bookName, getFileName(newChapterNumber)));
+
+            if (!isOverwrite && chapterFile.existsSync()) {
+              throw ChapterProcessorDuplicateException(newChapterNumber);
+            }
+
+            if (chapterFile.existsSync()) {
+              chapterFile.deleteSync();
+            }
+
+            chapterFile.createSync();
           }
         } else {
           chapterFile = null;
@@ -226,17 +275,5 @@ class ChapterProcessor {
       }
     }
     return true;
-  }
-
-  static File? getChapterFileOnCreate(String bookName, int ordinalNumber, bool isOverwrite) {
-    File chapterFile = File(getPath(bookName, ordinalNumber));
-    if (!isOverwrite && chapterFile.existsSync()) {
-      return null;
-    }
-    if (chapterFile.existsSync()) {
-      chapterFile.deleteSync();
-    }
-    chapterFile.createSync();
-    return chapterFile;
   }
 }

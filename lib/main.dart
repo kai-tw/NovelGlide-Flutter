@@ -5,15 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:hive/hive.dart';
 
 import 'data/app_info.dart';
+import 'data/file_path.dart';
 import 'features/account_page/account_page.dart';
 import 'features/sign_in_page/sign_in_page.dart';
 import 'features/register_page/register_page.dart';
 import 'features/homepage/homepage.dart';
 import 'firebase_options.dart';
 import 'processor/theme_processor.dart';
-import 'toolbox/isolate_manager.dart';
 
 void main() async {
   // Flutter Initialization
@@ -24,7 +25,9 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Isolate Initialization
-  await IsolateManager.ensureInitialized();
+  await AppInfo.instance.init();
+  await FilePath.instance.init();
+  Hive.defaultDirectory = FilePath.instance.hiveRoot;
 
   runApp(const App());
 }

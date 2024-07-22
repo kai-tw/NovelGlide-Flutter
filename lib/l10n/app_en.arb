@@ -248,5 +248,15 @@
   "accessibilityLineHeightSliderMinIcon": "Minimum line height",
   "accessibilityLineHeightSliderMaxIcon": "Maximum line height",
   "accessibilityLineHeightSlider": "Line height slider",
-  "accessibilitySelectAllCheckbox": "Select all checkbox"
+  "accessibilitySelectAllCheckbox": "Select all checkbox",
+
+  "exceptionChapterProcessorDuplicate": "The {number} chapter already exists.",
+  "@exceptionChapterProcessorDuplicate": {
+    "placeholders": {
+      "number": {
+        "type": "String",
+        "example": "1st"
+      }
+    }
+  }
 }

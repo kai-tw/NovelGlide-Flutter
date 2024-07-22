@@ -27,7 +27,7 @@ class ChapterImporterCubit extends Cubit<ChapterImporterState> {
         case 'application/zip':
           return importFromArchive();
         case 'text/plain':
-          return ChapterProcessor.importFromTxt(bookData.name, _importFile!);
+          return ChapterProcessor.importFromTxt(bookData.name, _importFile!, isOverwrite: state.isOverwriteChapter);
       }
     }
     return false;

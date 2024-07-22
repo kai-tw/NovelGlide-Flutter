@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../data/book_data.dart';
 import '../common_components/common_back_button.dart';
 import 'bloc/chapter_importer_bloc.dart';
-import 'chapter_importer_zip_form.dart';
+import 'widgets/chapter_importer_zip_form.dart';
 import 'widgets/chapter_importer_scroll_view.dart';
 import 'widgets/chapter_importer_txt_form.dart';
 
