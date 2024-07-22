@@ -1,14 +1,15 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:isolate';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_charset_detector/flutter_charset_detector.dart';
 import 'package:path/path.dart';
 
 import '../data/chapter_data.dart';
 import '../toolbox/chinese_number_parser.dart';
+import '../toolbox/isolate_manager.dart';
 import 'book_processor.dart';
 import 'bookmark_processor.dart';
 import '../toolbox/chapter_reg_exp.dart';
@@ -177,12 +178,30 @@ class ChapterProcessor {
   /// Import chapters from a txt file.
   /// Use specific sub-string (e.g. Chapter %d) as the delimiter.
   static Future<bool> importFromTxt(String bookName, File file, {bool isOverwrite = false}) async {
+    final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
+
+    return await compute<Map<String, dynamic>, bool>(_importFromTxtIsolate, {
+      "rootIsolateToken": rootIsolateToken,
+      "bookName": bookName,
+      "file": file,
+      "isOverwrite": isOverwrite,
+    });
+  }
+
+  static Future<bool> _importFromTxtIsolate(Map<String, dynamic> message) async {
+    final RootIsolateToken rootIsolateToken = message["rootIsolateToken"];
+    final String bookName = message["bookName"];
+    final File file = message["file"];
+    final bool isOverwrite = message["isOverwrite"];
+
+    BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+    await IsolateManager.ensureInitialized();
+
     final RegExp regExp = RegExp(ChapterRegExp.chinesePattern.pattern);
     int newChapterNumber = 0;
     int currentChapterNumber = 0;
     File? chapterFile;
 
-    // Todo: Use Isolate to avoid from blocking main thread.
     await for (String line in streamContentFromFile(file)) {
       final Iterable<RegExpMatch> matches = regExp.allMatches(line);
 
@@ -192,7 +211,7 @@ class ChapterProcessor {
 
         if (newChapterNumber > 0) {
           if (newChapterNumber != currentChapterNumber) {
-            chapterFile = ChapterProcessor.getChapterFileOnCreate(bookName, newChapterNumber, isOverwrite);
+            chapterFile = getChapterFileOnCreate(bookName, newChapterNumber, isOverwrite);
           }
         } else {
           chapterFile = null;
@@ -206,7 +225,6 @@ class ChapterProcessor {
         chapterFile.writeAsStringSync(line + Platform.lineTerminator, mode: FileMode.append);
       }
     }
-
     return true;
   }
 
