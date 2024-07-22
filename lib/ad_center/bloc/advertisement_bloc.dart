@@ -17,7 +17,9 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
       size: size != null ? AdSize(width: size.width, height: size.height) : AdSize.banner,
       listener: BannerAdListener(
         onAdLoaded: (ad) {
-          emit(AdvertisementState(bannerAd: ad as BannerAd));
+          if (!isClosed) {
+            emit(AdvertisementState(bannerAd: ad as BannerAd));
+          }
         },
         onAdFailedToLoad: (ad, err) {
           ad.dispose();

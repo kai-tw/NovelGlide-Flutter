@@ -14,7 +14,9 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       List<BookData> list = await BookProcessor.getDataList();
       BookshelfStateCode code = list.isEmpty ? BookshelfStateCode.empty : BookshelfStateCode.normal;
-      emit(BookshelfState(code: code, bookList: list));
+      if (!isClosed) {
+        emit(BookshelfState(code: code, bookList: list));
+      }
     });
   }
 }
