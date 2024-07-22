@@ -18,9 +18,13 @@ class TocChapterTitle extends StatelessWidget {
         builder: (BuildContext context, TocChapterTitleState state) {
           BlocProvider.of<TocChapterTitleCubit>(context).refresh(chapterData);
           final String localizedOrdinalNum = AppLocalizations.of(context)!.chapterLabelFunction(state.chapterNumber);
-          return Text(
-            localizedOrdinalNum + (state.title.isNotEmpty ? " - ${state.title}" : ""),
-            textAlign: TextAlign.left,
+          return AnimatedOpacity(
+            duration: const Duration(milliseconds: 300),
+            opacity: state.chapterNumber == 0 ? 0.0 : 1.0,
+            child: Text(
+              localizedOrdinalNum + (state.title.isNotEmpty ? " - ${state.title}" : ""),
+              textAlign: TextAlign.left,
+            ),
           );
         },
       ),
