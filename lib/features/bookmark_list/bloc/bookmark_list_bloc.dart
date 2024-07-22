@@ -15,10 +15,12 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
       final List<BookmarkData> bookmarkList = await BookmarkProcessor.getList();
       bookmarkList.sort((a, b) => b.savedTime.compareTo(a.savedTime));
 
-      emit(BookmarkListState(
-        code: bookmarkList.isEmpty ? BookmarkListStateCode.empty : BookmarkListStateCode.normal,
-        bookmarkList: bookmarkList,
-      ));
+      if (!isClosed) {
+        emit(BookmarkListState(
+          code: bookmarkList.isEmpty ? BookmarkListStateCode.empty : BookmarkListStateCode.normal,
+          bookmarkList: bookmarkList,
+        ));
+      }
     });
   }
 }
