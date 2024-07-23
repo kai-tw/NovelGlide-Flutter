@@ -25,21 +25,25 @@ class CommonListTile extends StatelessWidget {
       ),
     ];
 
-    List<Widget> rowChildren = [Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: columnChildren,
+    List<Widget> rowChildren = [
+      Expanded(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: columnChildren,
+          ),
         ),
       ),
-    )];
+    ];
 
+    /// Insert leading widget if it is specified.
     if (leading != null) {
       rowChildren.insert(0, leading!);
     }
 
+    /// Add subtitle if it is specified.
     if (subtitle != null) {
       columnChildren.add(Text(
         subtitle!,
@@ -47,6 +51,7 @@ class CommonListTile extends StatelessWidget {
       ));
     }
 
+    /// Add description if it is specified.
     if (description != null) {
       columnChildren.add(Text(
         description!,
