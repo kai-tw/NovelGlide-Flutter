@@ -54,7 +54,7 @@ class BookmarkData extends Equatable {
     Box bookmarkBox = Hive.box(name: 'bookmark', directory: join(FilePath.instance.libraryRoot, bookName));
     bookmarkBox.put('isValid', bookName != '' && chapterNumber > -1 && savedTime.isBefore(DateTime.now()));
     bookmarkBox.put('chapterNumber', chapterNumber);
-    bookmarkBox.put('area', scrollPosition.clamp(0.0, 1.0));
+    bookmarkBox.put('area', scrollPosition);
     bookmarkBox.put('savedTime', savedTime.toIso8601String());
     bookmarkBox.close();
   }
