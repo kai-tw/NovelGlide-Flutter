@@ -69,14 +69,14 @@ class BookmarkData extends Equatable {
     bool? isValid,
     String? bookName,
     int? chapterNumber,
-    double? scrollRatio,
+    double? scrollPosition,
     DateTime? savedTime,
   }) {
     return BookmarkData(
       isValid: isValid ?? this.isValid,
       bookName: bookName ?? this.bookName,
       chapterNumber: chapterNumber ?? this.chapterNumber,
-      scrollPosition: scrollRatio ?? this.scrollPosition,
+      scrollPosition: scrollPosition ?? this.scrollPosition,
       savedTime: savedTime ?? this.savedTime,
     );
   }
