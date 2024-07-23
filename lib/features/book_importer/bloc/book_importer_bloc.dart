@@ -53,7 +53,7 @@ class BookImporterCubit extends Cubit<BookImporterState> {
 
     for (Directory bookFolder in bookFolders) {
       final String bookName = basename(bookFolder.path);
-      BookProcessor.createFolder(bookName);
+      BookProcessor.create(bookName);
       await ChapterProcessor.importFromFolder(bookName, bookFolder);
     }
 

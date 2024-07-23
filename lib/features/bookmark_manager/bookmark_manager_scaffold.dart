@@ -15,13 +15,13 @@ class BookmarkManagerScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => BookmarkManagerCubit()..refresh(),
-      child: _BookmarkManagerScaffold(key: key),
+      child: const _BookmarkManagerScaffold(),
     );
   }
 }
 
 class _BookmarkManagerScaffold extends StatelessWidget {
-  const _BookmarkManagerScaffold({super.key});
+  const _BookmarkManagerScaffold();
 
   @override
   Widget build(BuildContext context) {

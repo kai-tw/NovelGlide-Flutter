@@ -55,7 +55,7 @@ class BookProcessor {
 
   /// Folder process
   /// Create folder
-  static bool createFolder(String name) {
+  static bool create(String name) {
     final Directory folder = Directory(getPathByName(name));
     if (!folder.existsSync()) {
       bool isSuccess = true;
@@ -67,7 +67,7 @@ class BookProcessor {
   }
 
   /// Modify folder
-  static bool modifyFolder(String oldName, String newName) {
+  static bool modify(String oldName, String newName) {
     final Directory oldFolder = Directory(getPathByName(oldName));
     final Directory newFolder = Directory(getPathByName(newName));
 
@@ -79,7 +79,7 @@ class BookProcessor {
   }
 
   /// Delete folder
-  static bool deleteFolder(String name) {
+  static bool delete(String name) {
     final Directory folder = Directory(getPathByName(name));
     if (folder.existsSync()) {
       folder.deleteSync(recursive: true);

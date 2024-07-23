@@ -20,7 +20,7 @@ class BookData {
 
   /// Create the book with the data
   Future<bool> create() async {
-    bool isSuccess = BookProcessor.createFolder(name);
+    bool isSuccess = BookProcessor.create(name);
 
     if (isSuccess && coverFile != null) {
       isSuccess = isSuccess && BookProcessor.createCover(name, coverFile!);
@@ -41,7 +41,7 @@ class BookData {
     }
 
     if (newData.name != name) {
-      isSuccess = isSuccess && BookProcessor.modifyFolder(name, newData.name);
+      isSuccess = isSuccess && BookProcessor.modify(name, newData.name);
     }
 
     final File file = File(getCoverPath());
@@ -54,7 +54,7 @@ class BookData {
 
   /// Delete the book
   bool delete() {
-    return BookProcessor.deleteFolder(name);
+    return BookProcessor.delete(name);
   }
 
   /// Is the book exists

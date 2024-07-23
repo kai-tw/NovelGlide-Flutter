@@ -100,6 +100,7 @@
   "titleAccountPage": "My Account",
   "titleAbout": "About",
   "titleThemeManager": "Theme Manager",
+  "titleBookManager": "Book Manager",
   "titleBookmarkManager": "Bookmark Manager",
 
   "fieldItemExists": "It already exists.",
@@ -184,7 +185,17 @@
   "brightnessLight": "Light",
   "brightnessDark": "Dark",
 
-  "bookmarkManagerDeleteAllBookmarks": "Delete all bookmarks",
+  "bookManagerDeleteNumberOfSelectedBooks": "Delete {number} selected books",
+  "@bookManagerDeleteNumberOfSelectedBooks": {
+    "description": "Delete %d selected books",
+    "placeholders": {
+      "number": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+
   "bookmarkManagerDeleteNumberOfSelectedBookmarks": "Delete {number} selected bookmarks",
   "@bookmarkManagerDeleteNumberOfSelectedBookmarks": {
     "description": "Delete %d selected bookmarks",
@@ -196,6 +207,8 @@
     }
   },
 
+  "alertDialogDeleteBookTitle": "Delete book",
+  "alertDialogDeleteBookDescription": "Are you sure to delete these book(s)?",
   "alertDialogDeleteBookmarkTitle": "Delete bookmark",
   "alertDialogDeleteBookmarkDescription": "Are you sure to delete these bookmark(s)?",
   "alertDialogDeleteAllBookmarksTitle": "Delete all bookmarks",
@@ -249,6 +262,7 @@
   "accessibilityLineHeightSliderMaxIcon": "Maximum line height",
   "accessibilityLineHeightSlider": "Line height slider",
   "accessibilitySelectAllCheckbox": "Select all checkbox",
+  "accessibilityBookManagerCheckbox": "Select this book",
 
   "exceptionChapterProcessorDuplicate": "The {number} chapter already exists.",
   "@exceptionChapterProcessorDuplicate": {
