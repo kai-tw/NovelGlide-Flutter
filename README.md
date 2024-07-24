@@ -41,6 +41,10 @@ A first attempt to develop a cross-platform app.
 - **Tablet Support**
     - Change the layout to a larger screen such as a tablet.
 
+## Guide
+
+- [The Guide of the Book Operation](https://blog.kai-wu.net/2024/07/novelglide-book-guide.html) (Traditional Chinese)
+
 ## Early Access
 
 If you want to join the beta testing or get the early access version, follow the instructions below.
