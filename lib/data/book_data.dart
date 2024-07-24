@@ -46,8 +46,10 @@ class BookData {
 
     final File file = File(getCoverPath());
     coverFile = file.existsSync() ? file : null;
-    imageCache.clear();
-    imageCache.clearLiveImages();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      imageCache.clear();
+      imageCache.clearLiveImages();
+    });
 
     return isSuccess;
   }

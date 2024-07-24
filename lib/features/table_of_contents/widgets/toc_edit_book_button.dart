@@ -18,7 +18,7 @@ class TocEditBookButton extends StatelessWidget {
       onPressed: () {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (_) => EditBookScaffold(bookData: bookData)))
-            .then((_) => BlocProvider.of<TocCubit>(context).refresh());
+            .then((newData) => BlocProvider.of<TocCubit>(context).refresh(newData: newData));
       },
       icon: Icon(
         Icons.edit_rounded,

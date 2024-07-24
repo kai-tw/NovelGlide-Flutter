@@ -15,7 +15,6 @@ class TocCoverBanner extends StatelessWidget {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return BlocBuilder<TocCubit, TocState>(
-          buildWhen: (previous, current) => previous.bookName != current.bookName,
           builder: (context, state) {
             return Hero(
               tag: state.bookName,

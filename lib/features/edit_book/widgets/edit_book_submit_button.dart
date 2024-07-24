@@ -15,7 +15,7 @@ class EditBookSubmitButton extends StatelessWidget {
       child: CommonFormSubmitButton(
         onPressed: BlocProvider.of<EditBookFormCubit>(context).submit,
         onSuccess: () {
-          Navigator.of(context).pop();
+          Navigator.of(context).pop(BlocProvider.of<EditBookFormCubit>(context).newData);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(AppLocalizations.of(context)!.editBookSuccessfully),
           ));

@@ -63,6 +63,7 @@ class App extends StatelessWidget {
             "/register": (_) => const RegisterPage(),
           },
           builder: (context, child) => AccessibilityTools(child: child),
+          // debugShowCheckedModeBanner: false,
         );
       },
     );
