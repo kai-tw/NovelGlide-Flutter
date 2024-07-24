@@ -12,40 +12,49 @@ class DeveloperPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldMessenger(
-      child: Scaffold(
-        appBar: AppBar(
-          leading: const CommonBackButton(),
-          title: const Text('Developer Page'),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              const DeviceInfoPanel(),
-              /// Force crash button
-              SettingPageButton(
-                onPressed: () {
-                  FirebaseCrashlytics.instance.crash();
-                },
-                iconData: Icons.error_outline_rounded,
-                label: 'Force crash',
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        leading: const CommonBackButton(),
+        title: const Text('Developer Page'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const DeviceInfoPanel(),
+            /// Force crash button
+            SettingPageButton(
+              onPressed: () {
+                FirebaseCrashlytics.instance.crash();
+              },
+              iconData: Icons.error_outline_rounded,
+              label: 'Force crash',
+            ),
 
-              /// Generate a fake book button
-              const DeveloperPageFakeBookButton(),
+            /// Generate a fake book button
+            const DeveloperPageFakeBookButton(),
 
-              SettingPageButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (_) => const CommonProcessingDialog(),
-                  );
-                },
-                iconData: Icons.open_in_new_rounded,
-                label: 'Open the processing dialog',
-              ),
-            ],
-          ),
+            SettingPageButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => const CommonProcessingDialog(),
+                );
+              },
+              iconData: Icons.open_in_new_rounded,
+              label: 'Open the processing dialog',
+            ),
+
+            SettingPageButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('It\'s a snack bar.'),
+                  ),
+                );                },
+              iconData: Icons.error_outline_rounded,
+              label: 'Show the snack bar',
+            ),
+          ],
         ),
       ),
     );

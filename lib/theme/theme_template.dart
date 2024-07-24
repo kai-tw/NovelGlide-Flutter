@@ -14,8 +14,9 @@ abstract class ThemeTemplate {
       appBarTheme: getAppBarTheme(colorScheme),
       brightness: colorScheme.brightness,
       colorScheme: colorScheme,
-      floatingActionButtonTheme: floatingActionButtonTheme(colorScheme),
+      floatingActionButtonTheme: getFloatingActionButtonTheme(colorScheme),
       inputDecorationTheme: inputDecorationTheme,
+      snackBarTheme: getSnackBarTheme(colorScheme),
       switchTheme: getSwitchTheme(colorScheme),
       useMaterial3: true,
     );
@@ -41,11 +42,20 @@ abstract class ThemeTemplate {
     );
   }
 
-  static FloatingActionButtonThemeData floatingActionButtonTheme(ColorScheme colorScheme) {
+  static FloatingActionButtonThemeData getFloatingActionButtonTheme(ColorScheme colorScheme) {
     return FloatingActionButtonThemeData(
       backgroundColor: colorScheme.primary,
       foregroundColor: colorScheme.onPrimary,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(36.0))),
+    );
+  }
+
+  static SnackBarThemeData getSnackBarTheme(ColorScheme colorScheme) {
+    return SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24.0),
+      ),
     );
   }
 
