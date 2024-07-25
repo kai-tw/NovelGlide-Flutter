@@ -30,7 +30,7 @@ class ReaderCubit extends Cubit<ReaderState> {
         code: ReaderStateCode.loaded,
         prevChapterNumber: await ChapterProcessor.getPrevChapterNumber(bookName, chapterNumber),
         nextChapterNumber: await ChapterProcessor.getNextChapterNumber(bookName, chapterNumber),
-        contentLines: await ChapterProcessor.getContent(bookName, chapterNumber),
+        contentLines: await ChapterProcessor.getContent(bookName, chapterNumber, isAutoDecode: false),
         bookmarkData: bookmarkData,
         readerSettings: readerSettings,
       ));
@@ -54,7 +54,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       code: ReaderStateCode.loaded,
       prevChapterNumber: await ChapterProcessor.getPrevChapterNumber(state.bookName, chapterNumber),
       nextChapterNumber: await ChapterProcessor.getNextChapterNumber(state.bookName, chapterNumber),
-      contentLines: await ChapterProcessor.getContent(state.bookName, chapterNumber),
+      contentLines: await ChapterProcessor.getContent(state.bookName, chapterNumber, isAutoDecode: false),
       readerSettings: ReaderSettingsData.load(),
     ));
   }

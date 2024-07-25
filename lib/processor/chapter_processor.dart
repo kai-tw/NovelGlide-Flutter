@@ -72,8 +72,7 @@ class ChapterProcessor {
     return File(getPath(bookName, ordinalNumber)).existsSync();
   }
 
-  /// Get the content of a chapter.
-  static Future<List<String>> getContent(String bookName, int ordinalNumber) async {
+  static Future<List<String>> getContent(String bookName, int ordinalNumber, {bool isAutoDecode = true}) async {
     final File file = File(getPath(bookName, ordinalNumber));
     if (!file.existsSync()) {
       return [];
@@ -82,17 +81,19 @@ class ChapterProcessor {
     return await compute<Map<String, dynamic>, List<String>>(_getContentIsolate, {
       "rootIsolateToken": rootIsolateToken,
       "file": file,
+      "isAutoDecode": isAutoDecode,
     });
   }
 
   static Future<List<String>> _getContentIsolate(Map<String, dynamic> message) async {
     final RootIsolateToken rootIsolateToken = message["rootIsolateToken"];
     final File file = message["file"];
+    final bool isAutoDecode = message["isAutoDecode"];
     List<String> contentLines = [];
 
     BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
 
-    await for (String line in streamContentFromFile(file)) {
+    await for (String line in _streamContentFromFile(file, isAutoDecode: isAutoDecode)) {
       contentLines.add(line);
     }
     return contentLines;
@@ -126,22 +127,26 @@ class ChapterProcessor {
       final Stream<String> lineStream = inputStream.transform(utf8.decoder).transform(const LineSplitter());
       await for (String line in lineStream) {
         // Get the first non-empty line as title.
-        String singleLine = line.trim();
-        if (singleLine.isNotEmpty) {
-          return singleLine;
-        }
+        return line;
       }
     }
     return "";
   }
 
-  static Stream<String> streamContentFromFile(File file) async* {
-    Uint8List bytes = await file.readAsBytes();
-    DecodingResult result = await CharsetDetector.autoDecode(bytes);
-    List<String> lines = result.string.split(Platform.lineTerminator);
-    for (String line in lines) {
-      line = line.trim();
-      if (line.isNotEmpty) {
+  static Stream<String> _streamContentFromFile(File file, {bool isAutoDecode = true}) async* {
+    if (isAutoDecode) {
+      Uint8List bytes = await file.readAsBytes();
+      DecodingResult result = await CharsetDetector.autoDecode(bytes);
+      List<String> lines = result.string.split(Platform.lineTerminator);
+      for (String line in lines) {
+        line = line.trim();
+        if (line.isNotEmpty) {
+          yield line;
+        }
+      }
+    } else {
+      Stream<String> inputStream = file.openRead().transform(utf8.decoder).transform(const LineSplitter());
+      await for (String line in inputStream) {
         yield line;
       }
     }
@@ -171,7 +176,7 @@ class ChapterProcessor {
     }
 
     // Write to file
-    await for (String line in streamContentFromFile(file)) {
+    await for (String line in _streamContentFromFile(file)) {
       chapterFile.writeAsStringSync(line + Platform.lineTerminator, mode: FileMode.append);
     }
 
@@ -241,7 +246,7 @@ class ChapterProcessor {
     int currentChapterNumber = 0;
     File? chapterFile;
 
-    await for (String line in streamContentFromFile(file)) {
+    await for (String line in _streamContentFromFile(file)) {
       final Iterable<RegExpMatch> matches = regExp.allMatches(line);
 
       if (matches.isNotEmpty) {
