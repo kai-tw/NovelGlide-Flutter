@@ -54,7 +54,7 @@ abstract class ThemeTemplate {
     return SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24.0),
+        borderRadius: BorderRadius.circular(16.0),
       ),
     );
   }

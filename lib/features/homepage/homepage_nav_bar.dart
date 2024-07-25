@@ -15,9 +15,17 @@ class HomepageNavBar extends StatelessWidget {
       case WindowClass.compact:
         return Container(
           height: 64.0,
-          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          margin: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 8.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(36.0),
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).colorScheme.shadow.withOpacity(0.5),
+                blurRadius: 16.0,
+                spreadRadius: 0.0,
+                offset: const Offset(0.0, 4.0),
+              ),
+            ],
           ),
           clipBehavior: Clip.hardEdge,
           child: const HomepageNavigationBar(),
