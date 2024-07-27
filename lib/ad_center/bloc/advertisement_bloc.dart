@@ -14,7 +14,7 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
     bannerAd = BannerAd(
       adUnitId: adUnitId,
       request: const AdRequest(),
-      size: size != null ? AdSize(width: size.width, height: size.height) : AdSize.banner,
+      size: size ?? AdSize.banner,
       listener: BannerAdListener(
         onAdLoaded: (ad) {
           if (!isClosed) {
