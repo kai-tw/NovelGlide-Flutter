@@ -15,14 +15,12 @@ class Advertisement extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        final double width = min(MediaQuery.of(context).size.width, constraints.maxWidth);
         return BlocProvider(
-          create: (context) => AdvertisementCubit(adUnitId: adUnitId)..init(width.truncate()),
+          create: (context) => AdvertisementCubit(adUnitId: adUnitId)..init(constraints.maxWidth.truncate()),
           child: BlocBuilder<AdvertisementCubit, AdvertisementState>(
             builder: (context, state) {
               return state.bannerAd == null ? const SizedBox() : SizedBox(
-                // width: state.bannerAd!.size.width.toDouble(),
-                width: width,
+                width: constraints.maxWidth,
                 height: state.bannerAd!.size.height.toDouble(),
                 child: AdWidget(ad: state.bannerAd!),
               );
