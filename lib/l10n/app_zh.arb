@@ -93,6 +93,7 @@
   "titleThemeManager": "主題管理員",
   "titleBookManager": "書本管理員",
   "titleBookmarkManager": "書籤管理員",
+  "titleStore": "商店",
 
   "fieldItemExists": "已存在",
   "fieldOptional": "（選填）",
@@ -148,6 +149,8 @@
   "bookManagerDeleteNumberOfSelectedBooks": "刪除 {number} 個已選擇的書籍",
 
   "bookmarkManagerDeleteNumberOfSelectedBookmarks": "刪除 {number} 個已選擇的書籤",
+
+  "storeUnavailable": "商店無法使用",
 
   "alertDialogDeleteBookTitle": "刪除書籍",
   "alertDialogDeleteBookDescription": "確定刪除這些書籍嗎？",

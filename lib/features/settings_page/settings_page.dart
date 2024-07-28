@@ -7,6 +7,7 @@ import '../book_manager/book_manager_scaffold.dart';
 import '../bookmark_manager/bookmark_manager_scaffold.dart';
 import '../developer_page/developer_page.dart';
 import '../homepage/widgets/homepage_scroll_view.dart';
+import '../store/store_scaffold.dart';
 import '../theme_manager/theme_manager.dart';
 import 'widgets/setting_page_button.dart';
 
@@ -45,6 +46,15 @@ class SettingsPage extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(builder: (_) => const BookmarkManagerScaffold())),
           iconData: Icons.collections_bookmark_rounded,
           label: appLocalizations.titleBookmarkManager,
+        ),
+      ),
+
+      /// Store page button
+      SliverToBoxAdapter(
+        child: SettingPageButton(
+          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const StoreScaffold())),
+          iconData: Icons.store_rounded,
+          label: appLocalizations.titleStore,
         ),
       ),
 

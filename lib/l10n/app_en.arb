@@ -102,6 +102,7 @@
   "titleThemeManager": "Theme Manager",
   "titleBookManager": "Book Manager",
   "titleBookmarkManager": "Bookmark Manager",
+  "titleStore": "Store",
 
   "fieldItemExists": "It already exists.",
   "fieldOptional": " (Optional)",
@@ -206,6 +207,8 @@
       }
     }
   },
+
+  "storeUnavailable": "The store is unavailable.",
 
   "alertDialogDeleteBookTitle": "Delete book",
   "alertDialogDeleteBookDescription": "Are you sure to delete these book(s)?",
