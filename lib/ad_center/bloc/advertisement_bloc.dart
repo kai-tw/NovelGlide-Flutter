@@ -1,15 +1,28 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 
 class AdvertisementCubit extends Cubit<AdvertisementState> {
+  late StreamSubscription<List<PurchaseDetails>> _subscription;
+  late int _width;
   final String adUnitId;
   BannerAd? bannerAd;
 
   AdvertisementCubit({required this.adUnitId}) : super(const AdvertisementState());
 
   void init(int width) async {
-    final AnchoredAdaptiveBannerAdSize? size = await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(width);
+    _width = width;
+    _subscription = InAppPurchase.instance.purchaseStream.listen(_purchaseSubscriptionHandler, onDone: () {
+      _subscription.cancel();
+    }, onError: (error) {});
+    InAppPurchase.instance.restorePurchases();
+  }
+
+  void loadAd() async {
+    final AnchoredAdaptiveBannerAdSize? size = await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(_width);
 
     bannerAd = BannerAd(
       adUnitId: adUnitId,
@@ -25,12 +38,23 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
           ad.dispose();
         },
       ),
-    );
-    loadAd();
+    )..load();
   }
 
-  void loadAd() {
-    bannerAd?.load();
+  void _purchaseSubscriptionHandler(List<PurchaseDetails> purchaseDetailsList) {
+    for (PurchaseDetails purchaseDetails in purchaseDetailsList) {
+      switch (purchaseDetails.status) {
+        case PurchaseStatus.restored:
+          final Set<String> noAdIdSet = {"starter.monthly"};
+          if (noAdIdSet.contains(purchaseDetails.productID)) {
+            return;
+          }
+          InAppPurchase.instance.completePurchase(purchaseDetails);
+          break;
+        default:
+      }
+    }
+    loadAd();
   }
 
   @override

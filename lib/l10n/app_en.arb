@@ -209,6 +209,12 @@
   },
 
   "storeUnavailable": "The store is unavailable.",
+  "storePerMonth": "Per month",
+  "storeSubscriptionsPlan": "Subscription Plan",
+  "storeSubscriptionsFreePlan": "Free",
+  "storeSubscriptionsFreePrice": "Free",
+  "storeSubscriptionsFreeDescription": "There are ads, but it doesn't affect your reading experience.",
+  "storeSubscriptionsStarterDescription": "No ads.",
 
   "alertDialogDeleteBookTitle": "Delete book",
   "alertDialogDeleteBookDescription": "Are you sure to delete these book(s)?",
