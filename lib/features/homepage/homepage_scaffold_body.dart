@@ -24,14 +24,14 @@ class HomepageScaffoldBody extends StatelessWidget {
 
         switch (state.navItem) {
           case NavigationItem.bookshelf:
-            return RefreshIndicator(
-              onRefresh: () async => bookshelfCubit.refresh(),
-              child: Column(
-                children: [
-                  Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-                  Expanded(
-                    child: PageStorage(
-                      bucket: BlocProvider.of<HomepageCubit>(context).bookshelfBucket,
+            return Column(
+              children: [
+                Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+                Expanded(
+                  child: PageStorage(
+                    bucket: BlocProvider.of<HomepageCubit>(context).bookshelfBucket,
+                    child: RefreshIndicator(
+                      onRefresh: () async => bookshelfCubit.refresh(),
                       child: const HomepageScrollView(
                         key: PageStorageKey<String>('homepage-bookshelf'),
                         slivers: [
@@ -40,19 +40,19 @@ class HomepageScaffoldBody extends StatelessWidget {
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             );
 
           case NavigationItem.bookmark:
-            return RefreshIndicator(
-              onRefresh: () async => bookmarkListCubit.refresh(),
-              child: Column(
-                children: [
-                  Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-                  Expanded(
-                    child: PageStorage(
-                      bucket: BlocProvider.of<HomepageCubit>(context).bookmarkBucket,
+            return Column(
+              children: [
+                Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+                Expanded(
+                  child: PageStorage(
+                    bucket: BlocProvider.of<HomepageCubit>(context).bookmarkBucket,
+                    child: RefreshIndicator(
+                      onRefresh: () async => bookmarkListCubit.refresh(),
                       child: const HomepageScrollView(
                         key: PageStorageKey<String>('homepage-bookmark'),
                         slivers: [
@@ -61,8 +61,8 @@ class HomepageScaffoldBody extends StatelessWidget {
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             );
 
           case NavigationItem.settings:
