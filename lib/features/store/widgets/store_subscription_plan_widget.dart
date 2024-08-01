@@ -12,7 +12,8 @@ class StoreSubscriptionPlanWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String planTitle = productDetails?.title ?? AppLocalizations.of(context)!.storeSubscriptionsFreePlan;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final String planTitle = productDetails?.title ?? appLocalizations.storeSubscriptionsFreePlan;
     final BorderRadius borderRadius = BorderRadius.circular(24.0);
 
     return BlocBuilder<StoreCubit, StoreState>(
@@ -37,57 +38,55 @@ class StoreSubscriptionPlanWidget extends StatelessWidget {
                   width: 2.0,
                 ),
               ),
-              child: Stack(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        planTitle,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  Text(
+                    planTitle,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text.rich(
-                          TextSpan(
-                            children: [
-                              TextSpan(
-                                text:
-                                "${productDetails?.price ?? AppLocalizations.of(context)!.storeSubscriptionsFreePrice} ${productDetails?.currencyCode ?? ""}",
-                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text:
+                                      "${productDetails?.price ?? appLocalizations.storeSubscriptionsFreePrice} ${productDetails?.currencyCode ?? ""}",
+                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: productDetails != null ? " / ${AppLocalizations.of(context)!.storePerMonth}" : "",
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                                TextSpan(
+                                  text: productDetails != null ? " / ${appLocalizations.storePerMonth}" : "",
+                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                                      ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Text(
-                        getPlanDescription(AppLocalizations.of(context)!, productDetails),
-                      ),
-                    ],
-                  ),
-                  Positioned.fill(
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Checkbox(
-                        value: state.activeSubscriptionId == productDetails?.id,
-                        onChanged: (value) {
-                          if (value == true) {
-                            BlocProvider.of<StoreCubit>(context).planChanged(productDetails);
-                          }
-                        },
-                        semanticLabel: planTitle,
-                      ),
+                        Checkbox(
+                          value: state.activeSubscriptionId == productDetails?.id,
+                          onChanged: (value) {
+                            if (value == true) {
+                              BlocProvider.of<StoreCubit>(context).planChanged(productDetails);
+                            }
+                          },
+                          semanticLabel: planTitle,
+                        ),
+                      ],
                     ),
+                  ),
+                  Text(
+                    getPlanDescription(appLocalizations, productDetails),
                   ),
                 ],
               ),
