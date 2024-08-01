@@ -1,29 +1,37 @@
 import 'package:flutter/material.dart';
 
 class CommonListTile extends StatelessWidget {
-  final String title;
+  final String? title;
   final String? subtitle;
   final String? description;
   final Widget? leading;
+  final TextStyle? titleStyle;
+  final TextStyle? subtitleStyle;
+  final TextStyle? descriptionStyle;
   final Color? color;
 
   const CommonListTile({
     super.key,
-    required this.title,
+    this.title,
     this.subtitle,
     this.description,
     this.leading,
+    this.titleStyle,
+    this.subtitleStyle,
+    this.descriptionStyle,
     this.color,
   });
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> columnChildren = [
-      Text(
-        title,
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(color: color),
-      ),
-    ];
+    List<Widget> columnChildren = [];
+
+    if (title != null) {
+      columnChildren.add(Text(
+        title!,
+        style: titleStyle ?? Theme.of(context).textTheme.titleLarge?.copyWith(color: color),
+      ));
+    }
 
     List<Widget> rowChildren = [
       Expanded(
@@ -47,7 +55,7 @@ class CommonListTile extends StatelessWidget {
     if (subtitle != null) {
       columnChildren.add(Text(
         subtitle!,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: color),
+        style: subtitleStyle ?? Theme.of(context).textTheme.titleMedium?.copyWith(color: color),
       ));
     }
 
@@ -55,7 +63,7 @@ class CommonListTile extends StatelessWidget {
     if (description != null) {
       columnChildren.add(Text(
         description!,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: color),
+        style: descriptionStyle ?? Theme.of(context).textTheme.bodyMedium?.copyWith(color: color),
       ));
     }
 

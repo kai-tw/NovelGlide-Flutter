@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../common_components/common_list_tile.dart';
 import '../bloc/book_manager_bloc.dart';
 
 class BookManagerTopBar extends StatelessWidget {
@@ -23,28 +24,18 @@ class BookManagerTopBar extends StatelessWidget {
           ),
           child: InkWell(
             onTap: () => _onTap(cubit),
-            child: Row(
-              children: [
-                Checkbox(
-                  tristate: true,
-                  value: state.bookList.isNotEmpty && state.bookList.length == state.selectedBooks.length
-                      ? true
-                      : state.selectedBooks.isNotEmpty
-                          ? null
-                          : false,
-                  onChanged: (_) => _onTap(cubit),
-                  semanticLabel: AppLocalizations.of(context)!.accessibilitySelectAllCheckbox,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      AppLocalizations.of(context)!.selectAll,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                ),
-              ],
+            child: CommonListTile(
+              leading: Checkbox(
+                tristate: true,
+                value: state.bookList.isNotEmpty && state.bookList.length == state.selectedBooks.length
+                    ? true
+                    : state.selectedBooks.isNotEmpty
+                        ? null
+                        : false,
+                onChanged: (_) => _onTap(cubit),
+                semanticLabel: AppLocalizations.of(context)!.accessibilitySelectAllCheckbox,
+              ),
+              subtitle: AppLocalizations.of(context)!.selectAll,
             ),
           ),
         );

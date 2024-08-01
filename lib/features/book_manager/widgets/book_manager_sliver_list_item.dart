@@ -43,7 +43,7 @@ class BookManagerSliverListItem extends StatelessWidget {
                   checkColor: Theme.of(context).colorScheme.onErrorContainer,
                   semanticLabel: AppLocalizations.of(context)!.accessibilityBookManagerCheckbox,
                 ),
-                title: bookData.name,
+                subtitle: bookData.name,
               ),
             ),
           ),
