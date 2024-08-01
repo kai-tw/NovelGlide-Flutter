@@ -90,7 +90,7 @@ class BookProcessor {
   /// Cover process
   /// Create cover
   static bool createCover(String name, File coverFile) {
-    return coverFile.existsSync() && coverFile.copySync(getCoverPathByName(name)).existsSync();
+    return coverFile.copySync(getCoverPathByName(name)).existsSync();
   }
 
   /// Modify cover
