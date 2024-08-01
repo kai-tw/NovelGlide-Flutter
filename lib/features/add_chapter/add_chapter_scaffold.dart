@@ -18,99 +18,41 @@ class AddChapterScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
-    final Widget bodyWidget;
-
-    switch (windowClass) {
-      case WindowClass.compact:
-        bodyWidget = const AddChapterScaffoldCompactView();
-        break;
-      default:
-        bodyWidget = const AddChapterScaffoldMediumView();
-        break;
-    }
-
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
         title: Text(appLocalizations.titleAddChapter),
       ),
-      body: Form(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: BlocProvider(
-              create: (_) => AddChapterFormCubit(bookName),
-              child: bodyWidget,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class AddChapterScaffoldCompactView extends StatelessWidget {
-  const AddChapterScaffoldCompactView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(bottom: 32.0),
-          child: AddChapterNumberInputField(),
-        ),
-        Padding(
-          padding: EdgeInsets.only(bottom: 32.0),
-          child: AddChapterTitleInputField(),
-        ),
-        Padding(
-          padding: EdgeInsets.only(bottom: 32.0),
-          child: AddChapterFilePicker(),
-        ),
-        AddChapterSubmitButton(),
-      ],
-    );
-  }
-}
-
-class AddChapterScaffoldMediumView extends StatelessWidget {
-  const AddChapterScaffoldMediumView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 600),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 32.0),
-              child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      body: SafeArea(
+        child: Form(
+          child: SingleChildScrollView(
+            child: Center(
+              child: Container(
+                padding: const EdgeInsets.all(24.0),
+                constraints: const BoxConstraints(maxWidth: 360),
+                child: BlocProvider(
+                  create: (_) => AddChapterFormCubit(bookName),
+                  child: const Column(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.only(right: 16.0),
-                        width: constraints.maxWidth / 2,
-                        child: const AddChapterNumberInputField(),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 32.0),
+                        child: AddChapterNumberInputField(),
                       ),
-                      const Expanded(
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 32.0),
+                        child: AddChapterTitleInputField(),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 32.0),
                         child: AddChapterFilePicker(),
                       ),
+                      AddChapterSubmitButton(),
                     ],
-                  );
-                },
+                  ),
+                ),
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.only(bottom: 32.0),
-              child: AddChapterTitleInputField(),
-            ),
-            const AddChapterSubmitButton(),
-          ],
+          ),
         ),
       ),
     );
