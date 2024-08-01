@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +19,12 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
     _subscription = InAppPurchase.instance.purchaseStream.listen(_purchaseSubscriptionHandler, onDone: () {
       _subscription.cancel();
     }, onError: (error) {});
-    InAppPurchase.instance.restorePurchases();
+
+    if (Platform.isAndroid && await InAppPurchase.instance.isAvailable()) {
+      InAppPurchase.instance.restorePurchases();
+    } else {
+      loadAd();
+    }
   }
 
   void loadAd() async {

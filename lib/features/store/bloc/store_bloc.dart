@@ -9,7 +9,7 @@ import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StoreCubit extends Cubit<StoreState> {
-  late StreamSubscription<List<PurchaseDetails>> _subscription;
+  StreamSubscription<List<PurchaseDetails>>? _subscription;
 
   StoreCubit() : super(const StoreState());
 
@@ -20,7 +20,7 @@ class StoreCubit extends Cubit<StoreState> {
     }
 
     _subscription = InAppPurchase.instance.purchaseStream.listen(_purchaseSubscriptionHandler, onDone: () {
-      _subscription.cancel();
+      _subscription!.cancel();
     }, onError: (error) {});
 
     final bool isAvailable = await InAppPurchase.instance.isAvailable();
@@ -90,7 +90,10 @@ class StoreCubit extends Cubit<StoreState> {
   @override
   Future<void> close() async {
     super.close();
-    _subscription.cancel();
+
+    if (_subscription != null) {
+      _subscription!.cancel();
+    }
   }
 }
 
