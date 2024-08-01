@@ -14,19 +14,22 @@ class HomepageScrollView extends StatelessWidget {
     final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
     List<Widget> sliverList = List.from(slivers);
 
-    return BlocBuilder<NavigationCubit, NavigationState>(builder: (BuildContext context, NavigationState state) {
-      /// Prevent the content from being covered by the floating action button.
-      /// Prevent the content from being covered by the navigation bar.
-      double paddingBottom = (state.navItem == NavigationItem.bookshelf ? 48.0 : 0.0) +
-          (windowClass == WindowClass.compact ? kBottomNavigationBarHeight : 0.0);
+    return BlocBuilder<NavigationCubit, NavigationState>(
+      buildWhen: (NavigationState previous, NavigationState current) => previous.navItem != current.navItem,
+      builder: (BuildContext context, NavigationState state) {
+        /// Prevent the content from being covered by the floating action button.
+        /// Prevent the content from being covered by the navigation bar.
+        double paddingBottom = (state.navItem == NavigationItem.bookshelf ? 48.0 : 0.0) +
+            (windowClass == WindowClass.compact ? kBottomNavigationBarHeight : 0.0);
 
-      sliverList.add(SliverPadding(padding: EdgeInsets.only(bottom: paddingBottom)));
+        sliverList.add(SliverPadding(padding: EdgeInsets.only(bottom: paddingBottom)));
 
-      return Scrollbar(
-        child: CustomScrollView(
-          slivers: sliverList,
-        ),
-      );
-    });
+        return Scrollbar(
+          child: CustomScrollView(
+            slivers: sliverList,
+          ),
+        );
+      },
+    );
   }
 }
