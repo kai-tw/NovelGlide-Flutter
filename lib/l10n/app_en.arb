@@ -104,6 +104,7 @@
   "titleBookmarkManager": "Bookmark Manager",
   "titleStore": "Store",
   "titleImportBook": "Import a book",
+  "titleImportChapter": "Import a chapter",
 
   "fieldItemExists": "It already exists.",
   "fieldOptional": " (Optional)",
@@ -113,7 +114,6 @@
   "bookName": "Book name",
   "bookNameHelperText": "You can't use these symbols: ",
   "bookCover": "The cover of this book",
-  "chapterImporter": "Chapter Importer",
 
   "fieldChapterName": "Chapter Name",
   "fieldChapterNumber": "Chapter #",

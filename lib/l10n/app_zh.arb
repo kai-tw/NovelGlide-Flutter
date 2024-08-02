@@ -95,6 +95,7 @@
   "titleBookmarkManager": "書籤管理員",
   "titleStore": "商店",
   "titleImportBook": "匯入書籍",
+  "titleImportChapter": "匯入章節",
 
   "fieldItemExists": "已存在",
   "fieldOptional": "（選填）",
@@ -104,8 +105,6 @@
   "bookName": "書名",
   "bookNameHelperText": "不可用的符號：",
   "bookCover": "封面",
-  "bookImporter": "匯入書籍",
-  "chapterImporter": "匯入章節",
 
   "fieldChapterName": "章節名稱",
   "fieldChapterNumber": "第幾章",
