@@ -94,6 +94,7 @@
   "titleBookManager": "書本管理員",
   "titleBookmarkManager": "書籤管理員",
   "titleStore": "商店",
+  "titleImportBook": "匯入書籍",
 
   "fieldItemExists": "已存在",
   "fieldOptional": "（選填）",

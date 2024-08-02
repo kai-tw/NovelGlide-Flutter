@@ -22,19 +22,6 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
             return AppBar(
               leading: const Icon(Icons.book_outlined),
               title: Text(appLocalizations.titleBookshelf),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (_) => const BookImporterScaffold()))
-                        .then((_) => BlocProvider.of<BookshelfCubit>(context).refresh());
-                  },
-                  icon: Icon(
-                    Icons.save_alt_rounded,
-                    semanticLabel: AppLocalizations.of(context)!.bookImporter,
-                  ),
-                ),
-              ],
             );
           case NavigationItem.bookmark:
             return AppBar(

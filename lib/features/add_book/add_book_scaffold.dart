@@ -1,48 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../book_importer/book_importer_form.dart';
 import '../common_components/common_back_button.dart';
-import 'bloc/add_book_form_bloc.dart';
-import 'widgets/add_book_image_picker.dart';
-import 'widgets/add_book_name_input_field.dart';
-import 'widgets/add_book_submit_button.dart';
+import 'add_book_form.dart';
 
 class AddBookScaffold extends StatelessWidget {
   const AddBookScaffold({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: const CommonBackButton(),
-        title: Text(AppLocalizations.of(context)!.titleAddBook),
-      ),
-      body: SafeArea(
-        child: Form(
-          child: SingleChildScrollView(
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.all(24.0),
-                constraints: const BoxConstraints(maxWidth: 360.0),
-                child: BlocProvider(
-                  create: (_) => AddBookFormCubit(),
-                  child: const Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 32.0),
-                        child: AddBookNameInputField(),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 32.0),
-                        child: AddBookImagePicker(),
-                      ),
-                      AddBookSubmitButton(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: const CommonBackButton(),
+          title: Text(AppLocalizations.of(context)!.titleAddBook),
+          bottom: TabBar(
+            tabs: [
+              Tab(text: AppLocalizations.of(context)!.titleAddBook),
+              Tab(text: AppLocalizations.of(context)!.importFromZip),
+            ],
+          ),
+        ),
+        body: const SafeArea(
+          child: TabBarView(
+            children: [
+              AddBookForm(),
+              BookImporterForm(),
+            ],
           ),
         ),
       ),

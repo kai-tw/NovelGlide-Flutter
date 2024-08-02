@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_back_button.dart';
-import 'bloc/book_importer_bloc.dart';
 import 'book_importer_form.dart';
 
 class BookImporterScaffold extends StatelessWidget {
@@ -15,21 +13,10 @@ class BookImporterScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        title: Text(appLocalizations.bookImporter),
+        title: Text(appLocalizations.titleImportBook),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              constraints: const BoxConstraints(maxWidth: 360),
-              child: BlocProvider(
-                create: (context) => BookImporterCubit(),
-                child: const BookImporterForm(),
-              ),
-            ),
-          ),
-        ),
+      body: const SafeArea(
+        child: BookImporterForm(),
       ),
     );
   }
