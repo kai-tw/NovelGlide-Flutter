@@ -53,6 +53,7 @@ class App extends StatelessWidget {
           ],
           supportedLocales: const [
             Locale('en'),
+            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
             Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
           ],
           initialRoute: "/",
