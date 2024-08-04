@@ -14,6 +14,9 @@ A first attempt to develop a cross-platform app.
 - **Appearance features**
     - Change the font size and line height.
     - Change the theme and brightness.
+- **Backup features**
+  - Backup your library to Google Drive.
+  - Restore your library from Google Drive.
 - **Import features**
     - Import chapters to a book from a zip file.
         - You can determine whether to overwrite the existing chapter, cover, or bookmark.
