@@ -36,7 +36,7 @@ class _BackupManagerGoogleDrive extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ListTile(
-            leading: const Icon(Icons.backup_rounded),
+            leading: const Icon(Icons.cloud_rounded),
             title: Text(appLocalizations.backupManagerGoogleDriveBackup),
             trailing: BlocBuilder<BackupManagerGoogleDriveCubit, BackupManagerGoogleDriveState>(
               buildWhen: (previous, current) => previous.isEnabled != current.isEnabled,
@@ -75,14 +75,36 @@ class _BackupManagerGoogleDrive extends StatelessWidget {
             buildWhen: (previous, current) =>
                 previous.isEnabled != current.isEnabled || previous.createState != current.createState,
             builder: (context, state) {
-              final bool isIdle = state.createState == BackupManagerGoogleDriveCreateState.idle;
-              final bool isSuccess = state.createState == BackupManagerGoogleDriveCreateState.success;
-              final Color color = isSuccess
-                  ? Colors.green
-                  : Theme.of(context).colorScheme.primary.withOpacity(state.isEnabled && isIdle ? 1 : 0.5);
+              Future<void> Function()? onTap;
+              IconData leadingIcon;
+              Color color;
+
+              switch (state.createState) {
+                case BackupManagerGoogleDriveCreateState.idle:
+                  onTap = () => cubit.createBackup();
+                  leadingIcon = Icons.cloud_upload_rounded;
+                  color = Theme.of(context).colorScheme.primary.withOpacity(state.isEnabled ? 1 : 0.5);
+                  break;
+
+                case BackupManagerGoogleDriveCreateState.creating:
+                  leadingIcon = Icons.cloud_sync_rounded;
+                  color = Theme.of(context).colorScheme.primary.withOpacity(0.5);
+                  break;
+
+                case BackupManagerGoogleDriveCreateState.success:
+                  leadingIcon = Icons.cloud_done_rounded;
+                  color = Colors.green;
+                  break;
+
+                case BackupManagerGoogleDriveCreateState.failed:
+                  leadingIcon = Icons.cloud_off_rounded;
+                  color = Theme.of(context).colorScheme.error;
+                  break;
+              }
+
               return ListTile(
-                onTap: state.isEnabled && isIdle ? () => cubit.createBackup() : null,
-                leading: const Icon(Icons.cloud_upload_rounded),
+                onTap: onTap,
+                leading: Icon(leadingIcon),
                 title: Text(appLocalizations.backupManagerCreateNewBackup),
                 iconColor: color,
                 textColor: color,

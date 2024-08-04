@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 
@@ -20,9 +19,11 @@ class BackupManagerGoogleDriveCubit extends Cubit<BackupManagerGoogleDriveState>
 
   Future<void> refresh() async {
     final Box box = Hive.box(name: 'settings');
-    final bool isSignedIn = await GoogleDriveApi.instance.isSignedIn();
     final bool isEnabled = box.get('isBackupToGoogleDriveEnabled', defaultValue: false);
-    emit(BackupManagerGoogleDriveState(isEnabled: isEnabled && isSignedIn));
+    if (isEnabled && !await GoogleDriveApi.instance.isSignedIn()) {
+      await GoogleDriveApi.instance.signIn();
+    }
+    emit(BackupManagerGoogleDriveState(isEnabled: isEnabled));
     box.close();
   }
 
@@ -50,26 +51,20 @@ class BackupManagerGoogleDriveCubit extends Cubit<BackupManagerGoogleDriveState>
     /// Create zip file.
     final File zipFile = File(join(tempFolder.path, 'Library_${DateTime.now().toIso8601String()}.zip'));
     zipFile.createSync();
-    ZipFile.createFromDirectory(
+    await ZipFile.createFromDirectory(
       sourceDir: Directory(FilePath.instance.libraryRoot),
       zipFile: zipFile,
-      recurseSubDirs: true,
     );
 
-    final drive.File driveFile = drive.File();
-    driveFile.name = 'Library_${DateTime.now().toIso8601String()}.zip';
-    driveFile.parents = ['appDataFolder'];
-    driveFile.mimeType = 'application/zip';
-
     /// Upload zip file.
-    await GoogleDriveApi.instance.driveApi!.files.create(driveFile);
+    await GoogleDriveApi.instance.uploadFile('appDataFolder', zipFile);
 
     tempFolder.deleteSync(recursive: true);
 
     if (!isClosed) {
       emit(state.copyWith(createState: BackupManagerGoogleDriveCreateState.success));
 
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 2));
 
       if (!isClosed) {
         refresh();
