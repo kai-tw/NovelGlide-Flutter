@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../about_page/about_page_scaffold.dart';
+import '../backup_manager/backup_manager_scaffold.dart';
 import '../book_manager/book_manager_scaffold.dart';
 import '../bookmark_manager/bookmark_manager_scaffold.dart';
 import '../developer_page/developer_page.dart';
@@ -46,6 +47,15 @@ class SettingsPage extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(builder: (_) => const BookmarkManagerScaffold())),
           iconData: Icons.collections_bookmark_rounded,
           label: appLocalizations.titleBookmarkManager,
+        ),
+      ),
+
+      /// Google Drive button
+      SliverToBoxAdapter(
+        child: SettingPageButton(
+          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const BackupManagerScaffold())),
+          iconData: Icons.cloud_rounded,
+          label: appLocalizations.backupManagerTitle,
         ),
       ),
 

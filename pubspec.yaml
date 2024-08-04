@@ -64,6 +64,10 @@ dependencies:
   in_app_purchase: ^3.2.0
   in_app_purchase_android: ^0.3.6+4
   url_launcher: ^6.3.0
+  http: ^1.2.2
+  googleapis: ^13.2.0
+  extension_google_sign_in_as_googleapis_auth: ^2.0.12
+  googleapis_auth: ^1.6.0
 
 dev_dependencies:
   flutter_test:
@@ -90,9 +94,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/book_cover_light.jpg
-    - assets/images/book_cover_dark.jpg
-    - assets/images/app_icon.png
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
