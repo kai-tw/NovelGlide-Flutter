@@ -14,6 +14,9 @@ A first attempt to develop a cross-platform app.
 - **Appearance features**
     - Change the font size and line height.
     - Change the theme and brightness.
+- **Backup features**
+    - Backup your library to Google Drive.
+    - Restore your library from Google Drive.
 - **Import features**
     - Import chapters to a book from a zip file.
         - You can determine whether to overwrite the existing chapter, cover, or bookmark.
@@ -44,17 +47,6 @@ A first attempt to develop a cross-platform app.
 ## Guide
 
 - [The Guide of the Book Operation](https://blog.kai-wu.net/2024/07/novelglide-book-guide.html) (Traditional Chinese)
-
-## Early Access
-
-If you want to join the beta testing or get the early access version, follow the instructions below.
-Currently, the early access is available for Android only.
-
-1. Please join the [NovelGlide Google Group](https://groups.google.com/g/novelglide).
-2. Visit [Android App Testing](https://play.google.com/apps/testing/com.kai_wu.novelglide) and join the testing.
-3. Download the [NovelGlide from Google Play](https://play.google.com/store/apps/details?id=com.kai_wu.novelglide).
-
-If there is any problem, you may contact me via [NovelGlide Google Group](https://groups.google.com/g/novelglide) or [GitHub Issues](https://github.com/wuvindu/NovelGlide-Flutter/issues).
 
 ## Download Links
 

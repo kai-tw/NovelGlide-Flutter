@@ -11,24 +11,36 @@ class BookImporterForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final BookImporterCubit cubit = BookImporterCubit();
     return Form(
-      child: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 6.0, bottom: 32.0),
-            child: BookImporterFilePicker(),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 32.0),
-            child: ZipEncodingDropdownMenu(
-              onSelected: (zipEncoding) => BlocProvider.of<BookImporterCubit>(context).setZipEncoding(zipEncoding),
+      child: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            constraints: const BoxConstraints(maxWidth: 360),
+            child: BlocProvider(
+              create: (context) => cubit,
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 6.0, bottom: 32.0),
+                    child: BookImporterFilePicker(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 32.0),
+                    child: ZipEncodingDropdownMenu(
+                      onSelected: (zipEncoding) => cubit.setZipEncoding(zipEncoding),
+                    ),
+                  ),
+                  const Align(
+                    alignment: Alignment.centerRight,
+                    child: BookImporterSubmitButton(),
+                  ),
+                ],
+              ),
             ),
           ),
-          const Align(
-            alignment: Alignment.centerRight,
-            child: BookImporterSubmitButton(),
-          ),
-        ],
+        ),
       ),
     );
   }

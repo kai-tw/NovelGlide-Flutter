@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../book_importer/book_importer_scaffold.dart';
-import '../bookshelf/bloc/bookshelf_bloc.dart';
 import 'bloc/navigation_bloc.dart';
 
 class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -22,19 +20,6 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
             return AppBar(
               leading: const Icon(Icons.book_outlined),
               title: Text(appLocalizations.titleBookshelf),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (_) => const BookImporterScaffold()))
-                        .then((_) => BlocProvider.of<BookshelfCubit>(context).refresh());
-                  },
-                  icon: Icon(
-                    Icons.save_alt_rounded,
-                    semanticLabel: AppLocalizations.of(context)!.bookImporter,
-                  ),
-                ),
-              ],
             );
           case NavigationItem.bookmark:
             return AppBar(

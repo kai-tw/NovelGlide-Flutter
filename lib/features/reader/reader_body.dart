@@ -19,6 +19,7 @@ class ReaderBody extends StatelessWidget {
     return Column(
       children: [
         const ReaderProgressBar(),
+        Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
         Expanded(
           child: PageStorage(
             bucket: cubit.bucket,
@@ -49,7 +50,6 @@ class ReaderBody extends StatelessWidget {
             ),
           ),
         ),
-        Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
       ],
     );
   }

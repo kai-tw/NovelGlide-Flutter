@@ -24,7 +24,12 @@ class StoreCubit extends Cubit<StoreState> {
     }, onError: (error) {});
 
     final bool isAvailable = await InAppPurchase.instance.isAvailable();
-    emit(StoreState(errorCode: isAvailable ? StoreErrorCode.normal : StoreErrorCode.unavailable));
+
+    if (isAvailable) {
+      refreshSubscriptions();
+    } else {
+      emit(const StoreState(errorCode: StoreErrorCode.unavailable));
+    }
   }
 
   Future<void> refreshSubscriptions() async {
@@ -36,7 +41,7 @@ class StoreCubit extends Cubit<StoreState> {
     final Set<String> idSet = {"starter.monthly"};
     final ProductDetailsResponse response = await InAppPurchase.instance.queryProductDetails(idSet);
     final List<ProductDetails> purchaseDetailsList = response.productDetails;
-    emit(state.copyWith(subscriptionList: purchaseDetailsList));
+    emit(StoreState(errorCode: StoreErrorCode.normal, subscriptionList: purchaseDetailsList));
     InAppPurchase.instance.restorePurchases();
   }
 
