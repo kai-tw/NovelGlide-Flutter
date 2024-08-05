@@ -5,8 +5,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../processor/theme_processor.dart';
 import 'bloc/theme_manager_brightness_bloc.dart';
-import '../common_components/settings_section_card.dart';
-import 'widgets/theme_manager_section_title.dart';
 
 class ThemeManagerBrightnessSelector extends StatelessWidget {
   const ThemeManagerBrightnessSelector({super.key});
@@ -16,16 +14,22 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocProvider(
       create: (context) => ThemeManagerBrightnessCubit()..refresh(),
-      child: SettingsSectionCard(
-        children: [
-          ThemeManagerSectionTitle(
-            leadingIcon: Icons.brightness_4_rounded,
-            title: appLocalizations.brightnessSelectorTitle,
-            subtitle: appLocalizations.brightnessSelectorDescription,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
-            child: ThemeSwitcher.withTheme(
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 16.0),
+        padding: const EdgeInsets.fromLTRB(24.0, 8.0, 24.0, 24.0),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainer,
+          borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+        ),
+        child: Column(
+          children: [
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.brightness_4_rounded),
+              title: Text(appLocalizations.brightnessSelectorTitle, style: Theme.of(context).textTheme.titleMedium),
+              subtitle: Text(appLocalizations.brightnessSelectorDescription),
+            ),
+            ThemeSwitcher.withTheme(
               builder: (context, _, currentTheme) {
                 return BlocBuilder<ThemeManagerBrightnessCubit, ThemeManagerBrightnessState>(builder: (context, state) {
                   return SegmentedButton<Brightness?>(
@@ -62,8 +66,8 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
                 });
               },
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
