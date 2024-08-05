@@ -29,7 +29,7 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
           case NavigationItem.settings:
             return AppBar(
               leading: const Icon(Icons.settings_outlined),
-              title: Text(AppLocalizations.of(context)!.titleSettings),
+              title: Text(AppLocalizations.of(context)!.settingsTitle),
             );
         }
       },

@@ -32,7 +32,7 @@ class ThemeManagerScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        title: Text(appLocalizations.titleThemeManager),
+        title: Text(appLocalizations.themeManagerTitle),
       ),
       body: SingleChildScrollView(
         controller: cubit.scrollController,

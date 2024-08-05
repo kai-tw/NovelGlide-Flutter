@@ -28,7 +28,7 @@ class _BookmarkManagerScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        title: Text(AppLocalizations.of(context)!.titleBookmarkManager),
+        title: Text(AppLocalizations.of(context)!.bookmarkManagerTitle),
       ),
       body: SafeArea(
         child: RefreshIndicator(

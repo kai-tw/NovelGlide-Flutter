@@ -14,7 +14,7 @@ class BookImporterFilePicker extends StatelessWidget {
     final String extensionText = CommonFilePickerTypeMap.extension[CommonFilePickerType.archive]!.join();
     return CommonFilePicker(
       inputDecoration: InputDecoration(
-        labelText: AppLocalizations.of(context)!.selectAFile,
+        labelText: AppLocalizations.of(context)!.fieldSelectAFile,
         helperText: AppLocalizations.of(context)!.fileTypeHelperText + extensionText,
       ),
       type: CommonFilePickerType.archive,

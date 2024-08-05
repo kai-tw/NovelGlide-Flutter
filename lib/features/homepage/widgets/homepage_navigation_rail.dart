@@ -37,7 +37,7 @@ class HomepageNavigationRail extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               icon: const Icon(Icons.settings),
               selectedIcon: const Icon(Icons.settings, color: Colors.white),
-              label: Text(appLocalizations.titleSettings),
+              label: Text(appLocalizations.settingsTitle),
               disabled: state.navItem == NavigationItem.settings,
             ),
           ],

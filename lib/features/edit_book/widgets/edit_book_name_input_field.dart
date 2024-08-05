@@ -20,8 +20,8 @@ class EditBookNameInputField extends StatelessWidget {
     };
     return TextFormField(
       decoration: InputDecoration(
-        labelText: appLocalizations.bookName,
-        helperText: '${appLocalizations.bookNameHelperText}${VerifyUtility.folderNameDenyPattern}',
+        labelText: appLocalizations.fieldBookName,
+        helperText: '${appLocalizations.fieldBookNameHelperText}${VerifyUtility.folderNameDenyPattern}',
       ),
       initialValue: cubit.oldData.name,
       inputFormatters: [

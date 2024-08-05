@@ -22,7 +22,7 @@ class CommonFilePickerSelectButton extends StatelessWidget {
       CommonFilePickerType.custom: iconData,
     };
     final Map<CommonFilePickerType, String?> typeLabelMap = {
-      CommonFilePickerType.image: appLocalizations.selectImage,
+      CommonFilePickerType.image: appLocalizations.fieldSelectImage,
       CommonFilePickerType.custom: labelText,
     };
     final Map<CommonFilePickerType, void Function()?> typeOnPressedMap = {

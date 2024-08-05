@@ -19,7 +19,7 @@ class EditBookScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        title: Text(AppLocalizations.of(context)!.titleEditBook),
+        title: Text(AppLocalizations.of(context)!.editBookTitle),
       ),
       body: SafeArea(
         child: Form(

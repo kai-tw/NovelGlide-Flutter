@@ -13,7 +13,7 @@ class BookImporterScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        title: Text(appLocalizations.titleImportBook),
+        title: Text(appLocalizations.importBook),
       ),
       body: const SafeArea(
         child: BookImporterForm(),

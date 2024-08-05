@@ -14,7 +14,7 @@ class AboutPageScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        title: Text(appLocalizations.titleAbout),
+        title: Text(appLocalizations.settingsPageAbout),
       ),
       body: SafeArea(
         child: Center(

@@ -27,7 +27,7 @@ class SettingsPage extends StatelessWidget {
         child: SettingPageButton(
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ThemeManager())),
           iconData: Icons.format_paint_rounded,
-          label: appLocalizations.titleThemeManager,
+          label: appLocalizations.themeManagerTitle,
         ),
       ),
 
@@ -36,7 +36,7 @@ class SettingsPage extends StatelessWidget {
         child: SettingPageButton(
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const BookManagerScaffold())),
           iconData: Icons.shelves,
-          label: appLocalizations.titleBookManager,
+          label: appLocalizations.bookManagerTitle,
         ),
       ),
 
@@ -46,7 +46,7 @@ class SettingsPage extends StatelessWidget {
           onPressed: () =>
               Navigator.of(context).push(MaterialPageRoute(builder: (_) => const BookmarkManagerScaffold())),
           iconData: Icons.collections_bookmark_rounded,
-          label: appLocalizations.titleBookmarkManager,
+          label: appLocalizations.bookmarkManagerTitle,
         ),
       ),
 
@@ -64,7 +64,7 @@ class SettingsPage extends StatelessWidget {
         child: SettingPageButton(
           onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const StoreScaffold())),
           iconData: Icons.store_rounded,
-          label: appLocalizations.titleStore,
+          label: appLocalizations.storeTitle,
         ),
       ),
 
@@ -85,7 +85,7 @@ class SettingsPage extends StatelessWidget {
           child: SettingPageButton(
             onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const DeveloperPage())),
             iconData: Icons.code_rounded,
-            label: appLocalizations.settingsPageDeveloperPage,
+            label: 'Developer Page',
           ),
         ),
       );

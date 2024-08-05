@@ -15,7 +15,7 @@ class ReaderSliverTitle extends StatelessWidget {
         buildWhen: (previous, current) => previous.chapterNumber != current.chapterNumber,
         builder: (BuildContext context, ReaderState state) {
           return Text(
-            AppLocalizations.of(context)!.chapterLabelFunction(state.chapterNumber),
+            AppLocalizations.of(context)!.chapterLabel(state.chapterNumber),
             style: TextStyle(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontSize: 14.0,

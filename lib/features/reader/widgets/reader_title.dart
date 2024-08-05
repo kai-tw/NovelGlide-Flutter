@@ -13,7 +13,7 @@ class ReaderTitle extends StatelessWidget {
     return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) => previous.chapterNumber != current.chapterNumber,
       builder: (BuildContext context, ReaderState state) {
-        return Text(AppLocalizations.of(context)!.chapterLabelFunction(state.chapterNumber));
+        return Text(AppLocalizations.of(context)!.chapterLabel(state.chapterNumber));
       },
     );
   }

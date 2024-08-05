@@ -14,7 +14,7 @@ class AddBookImagePicker extends StatelessWidget {
     final BookData data = BlocProvider.of<AddBookFormCubit>(context).data;
     return CommonImagePicker(
       inputDecoration: InputDecoration(
-        labelText: AppLocalizations.of(context)!.bookCover + AppLocalizations.of(context)!.fieldOptional,
+        labelText: AppLocalizations.of(context)!.fieldBookCover + AppLocalizations.of(context)!.fieldOptional,
       ),
       aspectRatio: 1.5,
       isRequired: false,

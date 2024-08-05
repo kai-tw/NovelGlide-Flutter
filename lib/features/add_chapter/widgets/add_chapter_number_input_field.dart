@@ -20,7 +20,7 @@ class AddChapterNumberInputField extends StatelessWidget {
     return TextFormField(
       decoration: InputDecoration(
         labelText: appLocalizations.fieldChapterNumber,
-        helperText: appLocalizations.chapterNumberHelperText,
+        helperText: appLocalizations.fieldChapterNumberHelperText,
       ),
       keyboardType: TextInputType.number,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],

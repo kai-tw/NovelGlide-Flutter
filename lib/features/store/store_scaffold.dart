@@ -30,7 +30,7 @@ class _StoreScaffold extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: const CommonBackButton(),
-          title: Text(AppLocalizations.of(context)!.titleStore),
+          title: Text(AppLocalizations.of(context)!.storeTitle),
           bottom: TabBar(
             tabs: [
               Tab(text: AppLocalizations.of(context)!.storeSubscriptionsPlan),

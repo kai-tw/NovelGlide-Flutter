@@ -14,7 +14,7 @@ class EditBookImagePicker extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return CommonImagePicker(
       inputDecoration: InputDecoration(
-        labelText: appLocalizations.bookCover + appLocalizations.fieldOptional,
+        labelText: appLocalizations.fieldBookCover + appLocalizations.fieldOptional,
       ),
       aspectRatio: 1.5,
       imageFile: cubit.oldData.coverFile,

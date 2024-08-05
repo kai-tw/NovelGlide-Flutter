@@ -20,12 +20,12 @@ class AddChapterScaffold extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: const CommonBackButton(),
-          title: Text(appLocalizations.titleAddChapter),
+          title: Text(appLocalizations.addChapterTitle),
           bottom: TabBar(
             isScrollable: true,
             tabAlignment: TabAlignment.center,
             tabs: [
-              Tab(text: appLocalizations.titleAddChapter),
+              Tab(text: appLocalizations.addChapterTitle),
               Tab(text: appLocalizations.importFromZip),
               Tab(text: appLocalizations.importFromTxt),
             ],

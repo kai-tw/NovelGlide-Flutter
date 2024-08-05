@@ -17,7 +17,7 @@ class AddChapterFilePicker extends StatelessWidget {
 
     return CommonFilePicker(
       inputDecoration: InputDecoration(
-        labelText: appLocalizations.selectAFile,
+        labelText: appLocalizations.fieldSelectAFile,
         helperText: appLocalizations.fileTypeHelperText + allowedExtensions.join(", "),
       ),
       type: CommonFilePickerType.txt,

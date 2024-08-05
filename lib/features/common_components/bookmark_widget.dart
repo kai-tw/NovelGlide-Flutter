@@ -32,7 +32,7 @@ class BookmarkWidget extends StatelessWidget {
 
     return CommonListTile(
       title: _bookmarkObject.bookName,
-      subtitle: appLocalizations.chapterLabelFunction(_bookmarkObject.chapterNumber),
+      subtitle: appLocalizations.chapterLabel(_bookmarkObject.chapterNumber),
       description: savedTimeString,
       leading: leading ?? Icon(
         Icons.bookmark_rounded,

@@ -34,7 +34,7 @@ class HomepageNavigationBar extends StatelessWidget {
             NavigationDestination(
               icon: Icon(Icons.settings, color: Colors.white.withOpacity(0.5)),
               selectedIcon: const Icon(Icons.settings, color: Colors.white),
-              label: appLocalizations.titleSettings,
+              label: appLocalizations.settingsTitle,
               enabled: state.navItem != NavigationItem.settings,
             ),
           ],

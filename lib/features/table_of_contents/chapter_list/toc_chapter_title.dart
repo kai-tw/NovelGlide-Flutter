@@ -17,7 +17,7 @@ class TocChapterTitle extends StatelessWidget {
       child: BlocBuilder<TocChapterTitleCubit, TocChapterTitleState>(
         builder: (BuildContext context, TocChapterTitleState state) {
           BlocProvider.of<TocChapterTitleCubit>(context).refresh(chapterData);
-          final String localizedOrdinalNum = AppLocalizations.of(context)!.chapterLabelFunction(state.chapterNumber);
+          final String localizedOrdinalNum = AppLocalizations.of(context)!.chapterLabel(state.chapterNumber);
           return AnimatedOpacity(
             duration: const Duration(milliseconds: 300),
             opacity: state.chapterNumber == 0 ? 0.0 : 1.0,

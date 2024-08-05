@@ -19,7 +19,7 @@ class ChapterImporterScaffold extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: const CommonBackButton(),
-          title: Text(appLocalizations.titleImportChapter),
+          title: Text(appLocalizations.importChapter),
           bottom: TabBar(
             tabs: [
               Tab(text: appLocalizations.importFromZip),

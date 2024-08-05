@@ -15,10 +15,10 @@ class AddBookScaffold extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: const CommonBackButton(),
-          title: Text(AppLocalizations.of(context)!.titleAddBook),
+          title: Text(AppLocalizations.of(context)!.addBookTitle),
           bottom: TabBar(
             tabs: [
-              Tab(text: AppLocalizations.of(context)!.titleAddBook),
+              Tab(text: AppLocalizations.of(context)!.addBookTitle),
               Tab(text: AppLocalizations.of(context)!.importFromZip),
             ],
           ),

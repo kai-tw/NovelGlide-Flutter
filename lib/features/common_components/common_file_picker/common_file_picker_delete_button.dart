@@ -20,7 +20,7 @@ class CommonFilePickerDeleteButton extends StatelessWidget {
       CommonFilePickerType.custom: iconData,
     };
     final Map<CommonFilePickerType, String?> typeLabelMap = {
-      CommonFilePickerType.image: appLocalizations.removeImage,
+      CommonFilePickerType.image: appLocalizations.fieldRemoveImage,
       CommonFilePickerType.custom: labelText,
     };
 
