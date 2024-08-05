@@ -14,37 +14,34 @@ class BookmarkManagerTopBar extends StatelessWidget {
       buildWhen: (previous, current) =>
           previous.selectedBookmarks != current.selectedBookmarks || previous.bookmarkList != current.bookmarkList,
       builder: (BuildContext context, BookmarkManagerState state) {
-        return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          padding: const EdgeInsets.all(16.0),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainer,
-            borderRadius: BorderRadius.circular(24.0),
-          ),
-          child: InkWell(
-            onTap: () => _onTap(cubit),
-            child: Row(
-              children: [
-                Checkbox(
-                  tristate: true,
-                  value: state.bookmarkList.isNotEmpty && state.bookmarkList.length == state.selectedBookmarks.length
-                      ? true
-                      : state.selectedBookmarks.isNotEmpty
-                          ? null
-                          : false,
-                  onChanged: (_) => _onTap(cubit),
-                  semanticLabel: AppLocalizations.of(context)!.accessibilitySelectAllCheckbox,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      AppLocalizations.of(context)!.selectAll,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                ),
-              ],
+        bool? checkBoxValue;
+
+        if (state.bookmarkList.isNotEmpty && state.bookmarkList.length == state.selectedBookmarks.length) {
+          checkBoxValue = true;
+        } else if (state.selectedBookmarks.isNotEmpty) {
+          checkBoxValue = null;
+        } else {
+          checkBoxValue = false;
+        }
+
+        return GestureDetector(
+          onTap: () => _onTap(cubit),
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainer,
+              borderRadius: BorderRadius.circular(24.0),
+            ),
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Checkbox(
+                tristate: true,
+                value: checkBoxValue,
+                onChanged: (_) => _onTap(cubit),
+                semanticLabel: AppLocalizations.of(context)!.accessibilitySelectAllCheckbox,
+              ),
+              title: Text(AppLocalizations.of(context)!.selectAll),
             ),
           ),
         );

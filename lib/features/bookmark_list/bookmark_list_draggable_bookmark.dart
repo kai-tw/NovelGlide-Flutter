@@ -46,7 +46,7 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
           opacity: 0.7,
           child: Container(
             width: constraints.maxWidth,
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(24.0),
@@ -66,14 +66,14 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
           opacity: 0.3,
           child: Container(
             width: constraints.maxWidth,
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: BookmarkWidget(_bookmarkObject),
           ),
         ),
         child: Container(
           width: constraints.maxWidth,
           color: Colors.transparent,
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: BookmarkWidget(_bookmarkObject),
         ),
       );

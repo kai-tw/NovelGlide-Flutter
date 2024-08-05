@@ -13,26 +13,25 @@ class BookmarkManagerSliverListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookmarkManagerCubit cubit = BlocProvider.of<BookmarkManagerCubit>(context);
-    final BorderRadius borderRadius = BorderRadius.circular(24.0);
     return BlocBuilder<BookmarkManagerCubit, BookmarkManagerState>(
       builder: (context, state) {
         final bool isSelected = state.selectedBookmarks.contains(bookmarkData.bookName);
-        return AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          decoration: BoxDecoration(
-            color: isSelected
-                ? Theme.of(context).colorScheme.errorContainer
-                : Theme.of(context).colorScheme.surfaceContainer,
-            borderRadius: borderRadius,
-          ),
-          clipBehavior: Clip.hardEdge,
-          child: InkWell(
+        return Semantics(
+          label: appLocalizations.bookmarkManagerAccessibilitySelectItem,
+          child: GestureDetector(
             onTap: () => _onTap(cubit, !cubit.state.selectedBookmarks.contains(bookmarkData.bookName)),
-            borderRadius: borderRadius,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? Theme.of(context).colorScheme.errorContainer
+                    : Theme.of(context).colorScheme.surfaceContainer,
+                borderRadius: BorderRadius.circular(24.0),
+              ),
               child: BookmarkWidget(
                 bookmarkData,
                 color: isSelected ? Theme.of(context).colorScheme.onErrorContainer : null,
@@ -41,7 +40,7 @@ class BookmarkManagerSliverListItem extends StatelessWidget {
                   onChanged: (value) => _onTap(cubit, value),
                   activeColor: Colors.transparent,
                   checkColor: Theme.of(context).colorScheme.onErrorContainer,
-                  semanticLabel: AppLocalizations.of(context)!.accessibilityBookmarkManagerCheckbox,
+                  semanticLabel: appLocalizations.accessibilityBookmarkManagerCheckbox,
                 ),
               ),
             ),

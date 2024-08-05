@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/bookmark_data.dart';
-import 'common_list_tile.dart';
 
 class BookmarkWidget extends StatelessWidget {
   final BookmarkData _bookmarkObject;
@@ -30,15 +29,17 @@ class BookmarkWidget extends StatelessWidget {
 
     savedTimeString = appLocalizations.savedTimeFunction(savedTimeString);
 
-    return CommonListTile(
-      title: _bookmarkObject.bookName,
-      subtitle: appLocalizations.chapterLabel(_bookmarkObject.chapterNumber),
-      description: savedTimeString,
-      leading: leading ?? Icon(
-        Icons.bookmark_rounded,
-        color: Theme.of(context).colorScheme.onSurface,
+    return Card(
+      color: Colors.transparent,
+      shadowColor: Colors.transparent,
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: leading ?? const Icon(Icons.bookmark_rounded),
+        title: Text(_bookmarkObject.bookName),
+        subtitle: Text("${appLocalizations.chapterLabel(_bookmarkObject.chapterNumber)} / $savedTimeString"),
+        textColor: color,
+        iconColor: color,
       ),
-      color: color,
     );
   }
 }
