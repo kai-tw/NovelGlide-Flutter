@@ -88,9 +88,14 @@ class GoogleDriveApi {
     );
   }
 
-  Future<String?> getFileId(String spaces, String fileName) async {
-    final drive.FileList fileList = await driveApi!.files.list(spaces: spaces, q: "name = '$fileName'", pageSize: 1);
-    return fileList.files?.isNotEmpty ?? false ? fileList.files?.first.id : null;
+  Future<String?> getDriveFolderId() async {
+    return (await driveApi!.files.get('root') as drive.File).id;
+  }
+
+  Future<void> copyFile(String fileId, List<String> parents) async {
+    drive.File request = drive.File();
+    request.parents = parents;
+    await driveApi!.files.copy(request, fileId);
   }
 
   Future<void> deleteFile(String fileId) async {
@@ -98,7 +103,9 @@ class GoogleDriveApi {
   }
 
   Future<void> uploadFile(String spaces, File file) async {
-    final String? fileId = await getFileId(spaces, basename(file.path));
+    final drive.FileList fileList =
+        await driveApi!.files.list(spaces: spaces, q: "name = '${basename(file.path)}'", pageSize: 1);
+    final String? fileId = fileList.files?.isNotEmpty ?? false ? fileList.files?.first.id : null;
 
     final drive.File driveFile = drive.File();
     driveFile.name = basename(file.path);
@@ -108,9 +115,9 @@ class GoogleDriveApi {
     final drive.Media media = drive.Media(file.openRead(), file.lengthSync());
 
     if (fileId != null) {
-      await driveApi!.files.update(driveFile, fileId, uploadMedia: media);
+      await driveApi!.files.update(drive.File(), fileId, uploadMedia: media);
     } else {
-      await driveApi!.files.create(driveFile, uploadMedia: media);
+      await driveApi!.files.create(drive.File(), uploadMedia: media);
     }
   }
 

@@ -52,6 +52,17 @@ class BackupManagerGoogleDriveBottomSheet extends StatelessWidget {
               leading: const Icon(Icons.delete_rounded),
               title: Text(appLocalizations.backupManagerDeleteBackup),
             ),
+            ListTile(
+              onTap: () {
+                if (file.id != null) {
+                  cubit.copyToDrive(file.id!);
+                  Navigator.of(sheetContext).pop();
+                }
+              },
+              contentPadding: const EdgeInsets.symmetric(horizontal: 32.0),
+              leading: const Icon(Icons.copy_rounded),
+              title: Text(appLocalizations.backupManagerGoogleDriveCopy),
+            ),
           ],
         );
       },

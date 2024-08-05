@@ -58,7 +58,6 @@ class BackupManagerGoogleDriveSelectCubit extends Cubit<BackupManagerGoogleDrive
   }
 
   Future<void> restoreBackup(String fileId) async {
-    emit(state.copyWith(restoreState: BackupManagerGoogleDriveRestoreState.restoring));
     final Directory tempFolder = RandomUtility.getAvailableTempFolder();
     tempFolder.createSync(recursive: true);
 
@@ -74,25 +73,34 @@ class BackupManagerGoogleDriveSelectCubit extends Cubit<BackupManagerGoogleDrive
 
     tempFolder.deleteSync(recursive: true);
 
-    if (!isClosed) {
-      emit(state.copyWith(restoreState: BackupManagerGoogleDriveRestoreState.success));
-      await Future.delayed(const Duration(seconds: 2));
-
-      if (!isClosed) {
-        state.copyWith(restoreState: BackupManagerGoogleDriveRestoreState.idle);
-      }
-    }
+    _showMessage(BackupManagerGoogleDriveMessage.restoreSuccessfully);
   }
 
   Future<void> deleteFile(String fileId) async {
     await GoogleDriveApi.instance.deleteFile(fileId);
     await refresh();
   }
+
+  Future<void> copyToDrive(String fileId) async {
+    await GoogleDriveApi.instance.copyFile(fileId, ['root']);
+    _showMessage(BackupManagerGoogleDriveMessage.copySuccessfully);
+  }
+
+  Future<void> _showMessage(BackupManagerGoogleDriveMessage message) async {
+    if (!isClosed) {
+      emit(state.copyWith(restoreState: message));
+      await Future.delayed(const Duration(seconds: 2));
+
+      if (!isClosed) {
+        state.copyWith(restoreState: BackupManagerGoogleDriveMessage.blank);
+      }
+    }
+  }
 }
 
 class BackupManagerGoogleDriveSelectState extends Equatable {
   final BackupManagerGoogleDriveErrorCode errorCode;
-  final BackupManagerGoogleDriveRestoreState restoreState;
+  final BackupManagerGoogleDriveMessage restoreState;
   final List<drive.File>? files;
 
   @override
@@ -104,13 +112,13 @@ class BackupManagerGoogleDriveSelectState extends Equatable {
 
   const BackupManagerGoogleDriveSelectState({
     this.errorCode = BackupManagerGoogleDriveErrorCode.unInitialized,
-    this.restoreState = BackupManagerGoogleDriveRestoreState.idle,
+    this.restoreState = BackupManagerGoogleDriveMessage.blank,
     this.files,
   });
 
   BackupManagerGoogleDriveSelectState copyWith({
     BackupManagerGoogleDriveErrorCode? errorCode,
-    BackupManagerGoogleDriveRestoreState? restoreState,
+    BackupManagerGoogleDriveMessage? restoreState,
     List<drive.File>? files,
   }) {
     return BackupManagerGoogleDriveSelectState(
@@ -130,4 +138,8 @@ enum BackupManagerGoogleDriveErrorCode {
   normal,
 }
 
-enum BackupManagerGoogleDriveRestoreState { idle, restoring, success, failed }
+enum BackupManagerGoogleDriveMessage {
+  blank,
+  restoreSuccessfully,
+  copySuccessfully,
+}

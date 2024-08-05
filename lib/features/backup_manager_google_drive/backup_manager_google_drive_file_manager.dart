@@ -41,13 +41,24 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
             child: CustomScrollView(
               slivers: [
                 BlocConsumer<BackupManagerGoogleDriveSelectCubit, BackupManagerGoogleDriveSelectState>(
-                  listenWhen: (previous, current) =>
-                      previous.restoreState == BackupManagerGoogleDriveRestoreState.restoring &&
-                      current.restoreState == BackupManagerGoogleDriveRestoreState.success,
+                  listenWhen: (previous, current) => previous.restoreState != current.restoreState,
                   listener: (context, state) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text(appLocalizations.backupManagerRestoreSuccessfully),
-                    ));
+                    switch (state.restoreState) {
+                      case BackupManagerGoogleDriveMessage.restoreSuccessfully:
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(appLocalizations.backupManagerRestoreSuccessfully),
+                        ));
+                        break;
+
+                      case BackupManagerGoogleDriveMessage.copySuccessfully:
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(appLocalizations.backupManagerGoogleDriveCopySuccessfully),
+                        ));
+                        break;
+
+                      case BackupManagerGoogleDriveMessage.blank:
+                        break;
+                    }
                   },
                   buildWhen: (previous, current) => previous.errorCode != current.errorCode,
                   builder: (context, state) {
@@ -138,9 +149,9 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
                                         ),
                                       );
                                     },
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.more_vert,
-                                      semanticLabel: 'More',
+                                      semanticLabel: appLocalizations.backupManagerAccessibilityMore,
                                     ),
                                   ),
                                 ),
