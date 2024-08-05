@@ -42,7 +42,9 @@ class _BackupManagerGoogleDrive extends StatelessWidget {
               buildWhen: (previous, current) => previous.isEnabled != current.isEnabled,
               builder: (context, state) {
                 return Semantics(
-                  label: state.isEnabled ? appLocalizations.backupManagerGoogleDriveBackupEnable : appLocalizations.backupManagerGoogleDriveBackupDisable,
+                  label: state.isEnabled
+                      ? appLocalizations.backupManagerGoogleDriveBackupEnable
+                      : appLocalizations.backupManagerGoogleDriveBackupDisable,
                   value: state.isEnabled ? appLocalizations.enable : appLocalizations.disable,
                   child: Switch(
                     value: state.isEnabled,
@@ -79,27 +81,33 @@ class _BackupManagerGoogleDrive extends StatelessWidget {
               IconData leadingIcon;
               Color color;
 
-              switch (state.createState) {
-                case BackupManagerGoogleDriveCreateState.idle:
-                  onTap = () => cubit.createBackup();
-                  leadingIcon = Icons.cloud_upload_rounded;
-                  color = Theme.of(context).colorScheme.primary.withOpacity(state.isEnabled ? 1 : 0.5);
-                  break;
+              if (state.isEnabled) {
+                switch (state.createState) {
+                  case BackupManagerGoogleDriveCreateState.idle:
+                    onTap = () => cubit.createBackup();
+                    leadingIcon = Icons.cloud_upload_rounded;
+                    color = Theme.of(context).colorScheme.primary.withOpacity(1);
+                    break;
 
-                case BackupManagerGoogleDriveCreateState.creating:
-                  leadingIcon = Icons.cloud_sync_rounded;
-                  color = Theme.of(context).colorScheme.primary.withOpacity(0.5);
-                  break;
+                  case BackupManagerGoogleDriveCreateState.creating:
+                    leadingIcon = Icons.cloud_sync_rounded;
+                    color = Theme.of(context).colorScheme.primary.withOpacity(0.5);
+                    break;
 
-                case BackupManagerGoogleDriveCreateState.success:
-                  leadingIcon = Icons.cloud_done_rounded;
-                  color = Colors.green;
-                  break;
+                  case BackupManagerGoogleDriveCreateState.success:
+                    leadingIcon = Icons.cloud_done_rounded;
+                    color = Colors.green;
+                    break;
 
-                case BackupManagerGoogleDriveCreateState.failed:
-                  leadingIcon = Icons.cloud_off_rounded;
-                  color = Theme.of(context).colorScheme.error;
-                  break;
+                  case BackupManagerGoogleDriveCreateState.failed:
+                    leadingIcon = Icons.cloud_off_rounded;
+                    color = Theme.of(context).colorScheme.error;
+                    break;
+                }
+              } else {
+                onTap = null;
+                leadingIcon = Icons.cloud_off_rounded;
+                color = Theme.of(context).colorScheme.primary.withOpacity(0.5);
               }
 
               return ListTile(
