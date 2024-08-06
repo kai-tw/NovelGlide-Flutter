@@ -16,16 +16,20 @@ class BookshelfSliverList extends StatelessWidget {
       builder: (BuildContext context, BookshelfState state) {
         switch (state.code) {
           case BookshelfStateCode.normal:
-            return SliverGrid(
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 150.0,
-                childAspectRatio: 150 / 300,
-              ),
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return BookshelfSliverListItem(state.bookList[index]);
-                },
-                childCount: state.bookList.length,
+            final double bottomPadding = MediaQuery.of(context).padding.bottom + 48.0;
+            return SliverPadding(
+              padding: EdgeInsets.only(bottom: bottomPadding),
+              sliver: SliverGrid(
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 150.0,
+                  childAspectRatio: 150 / 300,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return BookshelfSliverListItem(state.bookList[index]);
+                  },
+                  childCount: state.bookList.length,
+                ),
               ),
             );
 

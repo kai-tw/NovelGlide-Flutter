@@ -10,7 +10,6 @@ import '../bookshelf/bookshelf_sliver_list.dart';
 import '../settings_page/settings_page.dart';
 import 'bloc/homepage_bloc.dart';
 import 'bloc/navigation_bloc.dart';
-import 'widgets/homepage_scroll_view.dart';
 
 class HomepageScaffoldBody extends StatelessWidget {
   const HomepageScaffoldBody({super.key});
@@ -32,11 +31,13 @@ class HomepageScaffoldBody extends StatelessWidget {
                     bucket: BlocProvider.of<HomepageCubit>(context).bookshelfBucket,
                     child: RefreshIndicator(
                       onRefresh: () async => bookshelfCubit.refresh(),
-                      child: const HomepageScrollView(
-                        key: PageStorageKey<String>('homepage-bookshelf'),
-                        slivers: [
-                          BookshelfSliverList(),
-                        ],
+                      child: const Scrollbar(
+                        child: CustomScrollView(
+                          key: PageStorageKey<String>('homepage-bookshelf'),
+                          slivers: [
+                            BookshelfSliverList(),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -53,11 +54,13 @@ class HomepageScaffoldBody extends StatelessWidget {
                     bucket: BlocProvider.of<HomepageCubit>(context).bookmarkBucket,
                     child: RefreshIndicator(
                       onRefresh: () async => bookmarkListCubit.refresh(),
-                      child: const HomepageScrollView(
-                        key: PageStorageKey<String>('homepage-bookmark'),
-                        slivers: [
-                          BookmarkListSliverList(),
-                        ],
+                      child: const Scrollbar(
+                        child: CustomScrollView(
+                          key: PageStorageKey<String>('homepage-bookmark'),
+                          slivers: [
+                            BookmarkListSliverList(),
+                          ],
+                        ),
                       ),
                     ),
                   ),

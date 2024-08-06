@@ -16,12 +16,15 @@ class BookmarkListSliverList extends StatelessWidget {
       builder: (context, state) {
         switch (state.code) {
           case BookmarkListStateCode.normal:
-            return SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return BookmarkListSliverListItem(state.bookmarkList[index]);
-                },
-                childCount: state.bookmarkList.length,
+            return SliverPadding(
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                    return BookmarkListSliverListItem(state.bookmarkList[index]);
+                  },
+                  childCount: state.bookmarkList.length,
+                ),
               ),
             );
 
