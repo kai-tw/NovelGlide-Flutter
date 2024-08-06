@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../data/chapter_data.dart';
-import '../chapter_list/toc_chapter_title.dart';
 
 class TocChapterWidget extends StatelessWidget {
   final ChapterData chapterData;
@@ -12,6 +12,7 @@ class TocChapterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String localizedOrdinalNum = AppLocalizations.of(context)!.chapterLabel(chapterData.ordinalNumber);
     final double iconSize = IconTheme.of(context).size ?? 24.0;
     return TextButton.icon(
       onPressed: onPressed,
@@ -26,7 +27,10 @@ class TocChapterWidget extends StatelessWidget {
         size: MediaQuery.of(context).textScaler.scale(iconSize),
         color: isBookmarked ? Theme.of(context).colorScheme.error : null,
       ),
-      label: TocChapterTitle(chapterData),
+      label: Text(
+        "$localizedOrdinalNum - ${chapterData.title}",
+        textAlign: TextAlign.left,
+      ),
     );
   }
 }

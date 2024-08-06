@@ -60,7 +60,9 @@ class ChapterProcessor {
     List<ChapterData> chapterList = [];
     await for (FileSystemEntity entity in folder.list()) {
       if (entity is File && chapterRegexp.hasMatch(basename(entity.path))) {
-        chapterList.add(ChapterData(bookName: bookName, ordinalNumber: getOrdinalNumberFromPath(entity.path)));
+        int ordinalNumber = getOrdinalNumberFromPath(entity.path);
+        String title = await ChapterProcessor.getTitle(folder, ordinalNumber);
+        chapterList.add(ChapterData(bookName: bookName, ordinalNumber: ordinalNumber, title: title));
       }
     }
     chapterList.sort((a, b) => a.ordinalNumber - b.ordinalNumber);
@@ -120,8 +122,8 @@ class ChapterProcessor {
   }
 
   /// Get the title of a chapter.
-  static Future<String> getTitle(String bookName, int ordinalNumber) async {
-    final File file = File(getPath(bookName, ordinalNumber));
+  static Future<String> getTitle(Directory bookFolder, int ordinalNumber) async {
+    final File file = File(join(bookFolder.path, getFileName(ordinalNumber)));
     if (file.existsSync()) {
       final Stream<List<int>> inputStream = file.openRead();
       final Stream<String> lineStream = inputStream.transform(utf8.decoder).transform(const LineSplitter());

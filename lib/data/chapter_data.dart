@@ -7,21 +7,19 @@ import '../processor/chapter_processor.dart';
 class ChapterData extends Equatable {
   final String bookName;
   final int ordinalNumber;
+  final String title;
 
   @override
-  List<Object?> get props => [bookName, ordinalNumber];
+  List<Object?> get props => [bookName, ordinalNumber, title];
 
   const ChapterData({
     required this.bookName,
     required this.ordinalNumber,
+    required this.title,
   });
 
   String getPath() {
     return ChapterProcessor.getPath(bookName, ordinalNumber);
-  }
-
-  Future<String> getTitle() async {
-    return await ChapterProcessor.getTitle(bookName, ordinalNumber);
   }
 
   bool isExist() {
