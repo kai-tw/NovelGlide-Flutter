@@ -22,14 +22,14 @@
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
 	<array>
-	    <dict>
-	        <key>CFBundleTypeRole</key>
-	        <string>Editor</string>
-	        <key>CFBundleURLSchemes</key>
-		    <array>
-		        <string>com.googleusercontent.apps.569892023598-8n0gc07djd8f9no1n7a33e2c6bhiusjs</string>
-		    </array>
-	    </dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.569892023598-8n0gc07djd8f9no1n7a33e2c6bhiusjs</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
@@ -56,7 +56,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>GADApplicationIdentifier</key>
-    <string>ca-app-pub-1579558558142906~3267162019</string>
+	<string>ca-app-pub-1579558558142906~3267162019</string>
 </dict>
 </plist>

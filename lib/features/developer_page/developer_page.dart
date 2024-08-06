@@ -5,6 +5,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/book_data.dart';
+import '../../data/file_path.dart';
 import '../../processor/chapter_processor.dart';
 import '../../toolbox/random_utility.dart';
 import '../common_components/common_back_button.dart';
@@ -62,6 +63,20 @@ class DeveloperPage extends StatelessWidget {
             },
             leading: const Icon(Icons.code_rounded),
             title: const Text('Generate a fake book'),
+          ),
+
+          ListTile(
+            onTap: () {
+              debugPrint(FilePath.instance.supportFolder);
+              debugPrint(FilePath.instance.documentFolder);
+              debugPrint(FilePath.instance.cacheFolder);
+              debugPrint(FilePath.instance.tempFolder);
+              debugPrint(FilePath.instance.downloadFolder);
+              debugPrint(FilePath.instance.libraryFolder);
+              debugPrint(FilePath.instance.libraryRoot);
+            },
+            leading: const Icon(Icons.code_rounded),
+            title: const Text('Print FilePath'),
           ),
         ],
       ),

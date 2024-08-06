@@ -11,6 +11,8 @@ class FilePath {
   late final String documentFolder;
   late final String cacheFolder;
   late final String tempFolder;
+  late final String? downloadFolder;
+  late final String? libraryFolder;
 
   late final String libraryRoot;
   late final String hiveRoot;
@@ -24,9 +26,12 @@ class FilePath {
     documentFolder = (await getApplicationDocumentsDirectory()).path;
     cacheFolder = (await getApplicationCacheDirectory()).path;
     tempFolder = (await getTemporaryDirectory()).path;
+    downloadFolder = (await getDownloadsDirectory())?.path;
+    libraryFolder = Platform.isIOS ? (await getLibraryDirectory()).path : null;
 
-    libraryRoot = join(documentFolder, 'Library');
-    hiveRoot = join(documentFolder, "Hive");
+    final String baseFolder = Platform.isIOS ? libraryFolder! : documentFolder;
+    libraryRoot = join(baseFolder, 'Library');
+    hiveRoot = join(baseFolder, "Hive");
 
     _createIfNotExist(libraryRoot);
     _createIfNotExist(hiveRoot);
@@ -37,10 +42,5 @@ class FilePath {
     if (!dir.existsSync()) {
       dir.createSync(recursive: true);
     }
-  }
-
-  @override
-  String toString() {
-    return "Sup:\t$supportFolder\nDoc:\t$documentFolder\nCache:\t$cacheFolder\nTemp:\t$tempFolder";
   }
 }
