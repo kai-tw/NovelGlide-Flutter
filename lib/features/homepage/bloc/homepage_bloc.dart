@@ -7,19 +7,29 @@ class HomepageCubit extends Cubit<HomepageState> {
   final PageStorageBucket bookmarkBucket = PageStorageBucket();
 
   HomepageCubit() : super(const HomepageState());
-
-  void setDragging(bool isDragging) {
-    emit(HomepageState(isDragging: isDragging));
+  
+  void setItem(HomepageNavigationItem item) {
+    emit(state.copyWith(navItem: item));
   }
 }
 
 class HomepageState extends Equatable {
-  final bool isDragging;
+  final HomepageNavigationItem navItem;
 
   @override
-  List<Object> get props => [isDragging];
+  List<Object> get props => [navItem];
 
   const HomepageState({
-    this.isDragging = false,
+    this.navItem = HomepageNavigationItem.bookshelf,
   });
+  
+  HomepageState copyWith({
+    HomepageNavigationItem? navItem,
+  }) {
+    return HomepageState(
+      navItem: navItem ?? this.navItem,
+    );
+  }
 }
+
+enum HomepageNavigationItem { bookshelf, bookmark, settings }

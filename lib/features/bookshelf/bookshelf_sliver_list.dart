@@ -13,6 +13,7 @@ class BookshelfSliverList extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<BookshelfCubit>(context).refresh();
     return BlocBuilder<BookshelfCubit, BookshelfState>(
+      buildWhen: (previous, current) => previous.code != current.code || previous.bookList != current.bookList,
       builder: (BuildContext context, BookshelfState state) {
         switch (state.code) {
           case BookshelfStateCode.normal:

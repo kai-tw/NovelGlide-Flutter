@@ -5,8 +5,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../data/window_class.dart';
 import '../about_page/about_page_scaffold.dart';
 import '../backup_manager/backup_manager_scaffold.dart';
-import '../book_manager/book_manager_scaffold.dart';
-import '../bookmark_manager/bookmark_manager_scaffold.dart';
 import '../developer_page/developer_page.dart';
 import '../store/store_scaffold.dart';
 import '../theme_manager/theme_manager.dart';
@@ -26,22 +24,6 @@ class SettingsPage extends StatelessWidget {
           child: Icon(Icons.format_paint_rounded),
         ),
         title: Text(appLocalizations.themeManagerTitle),
-      ),
-      ListTile(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const BookManagerScaffold())),
-        leading: const Padding(
-          padding: EdgeInsets.only(right: 12.0),
-          child: Icon(Icons.shelves),
-        ),
-        title: Text(appLocalizations.bookManagerTitle),
-      ),
-      ListTile(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const BookmarkManagerScaffold())),
-        leading: const Padding(
-          padding: EdgeInsets.only(right: 12.0),
-          child: Icon(Icons.collections_bookmark_rounded),
-        ),
-        title: Text(appLocalizations.bookmarkManagerTitle),
       ),
       ListTile(
         onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const BackupManagerScaffold())),

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/bookmark_data.dart';
-import '../homepage/bloc/homepage_bloc.dart';
 import 'bloc/bookmark_list_bloc.dart';
 import '../common_components/bookmark_widget.dart';
 
@@ -16,12 +15,11 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
-    final HomepageCubit homepageCubit = BlocProvider.of<HomepageCubit>(context);
 
     return LayoutBuilder(builder: (context, constraints) {
       return LongPressDraggable(
-        onDragStarted: () => homepageCubit.setDragging(true),
-        onDragEnd: (_) => homepageCubit.setDragging(false),
+        onDragStarted: () => cubit.setDragging(true),
+        onDragEnd: (_) => cubit.setDragging(false),
         onDragCompleted: () {
           try {
             _bookmarkObject.clear();
@@ -46,7 +44,6 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
           opacity: 0.7,
           child: Container(
             width: constraints.maxWidth,
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(24.0),
@@ -64,16 +61,14 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
         ),
         childWhenDragging: Opacity(
           opacity: 0.3,
-          child: Container(
+          child: SizedBox(
             width: constraints.maxWidth,
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: BookmarkWidget(_bookmarkObject),
           ),
         ),
         child: Container(
           width: constraints.maxWidth,
           color: Colors.transparent,
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: BookmarkWidget(_bookmarkObject),
         ),
       );

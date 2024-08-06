@@ -3,14 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/bookmark_data.dart';
+import '../common_components/bookmark_widget.dart';
 import '../reader/reader.dart';
 import 'bloc/bookmark_list_bloc.dart';
 import 'bookmark_list_draggable_bookmark.dart';
 
 class BookmarkListSliverListItem extends StatelessWidget {
-  const BookmarkListSliverListItem(this._bookmarkObject, {super.key});
+  const BookmarkListSliverListItem(this._bookmarkData, {super.key});
 
-  final BookmarkData _bookmarkObject;
+  final BookmarkData _bookmarkData;
 
   @override
   Widget build(BuildContext context) {
@@ -18,23 +19,59 @@ class BookmarkListSliverListItem extends StatelessWidget {
 
     return InkWell(
       borderRadius: BorderRadius.circular(24.0),
-      onTap: () => Navigator.of(context)
-          .push(
-            MaterialPageRoute(
-              builder: (context) => ReaderWidget(
-                _bookmarkObject.bookName,
-                _bookmarkObject.chapterNumber,
-                isAutoJump: true,
-              ),
-            ),
-          )
-          .then((_) => cubit.refresh()),
-      child: Semantics(
-        label: AppLocalizations.of(context)!.accessibilityBookmarkListItem,
-        onTapHint: AppLocalizations.of(context)!.accessibilityBookmarkListItemOnTap,
-        onLongPressHint: AppLocalizations.of(context)!.accessibilityBookmarkListItemOnLongPress,
-        child: BookmarkListDraggableBookmark(_bookmarkObject),
-      ),
+      onTap: () {
+        if (cubit.state.isSelecting) {
+          if (cubit.state.selectedBookmarks.contains(_bookmarkData.bookName)) {
+            cubit.deselectBookmark(_bookmarkData.bookName);
+          } else {
+            cubit.selectBookmark(_bookmarkData.bookName);
+          }
+        } else {
+          Navigator.of(context)
+              .push(
+                MaterialPageRoute(
+                  builder: (context) => ReaderWidget(
+                    _bookmarkData.bookName,
+                    _bookmarkData.chapterNumber,
+                    isAutoJump: true,
+                  ),
+                ),
+              )
+              .then((_) => cubit.refresh());
+        }
+      },
+      child: BlocBuilder<BookmarkListCubit, BookmarkListState>(
+          buildWhen: (previous, current) =>
+              previous.isSelecting != current.isSelecting || previous.selectedBookmarks != current.selectedBookmarks,
+          builder: (BuildContext context, BookmarkListState state) {
+            if (state.isSelecting) {
+              final bool isSelected = state.selectedBookmarks.contains(_bookmarkData.bookName);
+              return BookmarkWidget(
+                _bookmarkData,
+                trailing: Checkbox(
+                  value: isSelected,
+                  activeColor: Colors.transparent,
+                  checkColor: Theme.of(context).colorScheme.onErrorContainer,
+                  onChanged: (bool? value) {
+                    if (value == true) {
+                      cubit.selectBookmark(_bookmarkData.bookName);
+                    } else {
+                      cubit.deselectBookmark(_bookmarkData.bookName);
+                    }
+                  },
+                ),
+                backgroundColor: isSelected ? Theme.of(context).colorScheme.errorContainer : null,
+                color: isSelected ? Theme.of(context).colorScheme.onErrorContainer : null,
+              );
+            } else {
+              return Semantics(
+                label: AppLocalizations.of(context)!.accessibilityBookmarkListItem,
+                onTapHint: AppLocalizations.of(context)!.accessibilityBookmarkListItemOnTap,
+                onLongPressHint: AppLocalizations.of(context)!.accessibilityBookmarkListItemOnLongPress,
+                child: BookmarkListDraggableBookmark(_bookmarkData),
+              );
+            }
+          }),
     );
   }
 }

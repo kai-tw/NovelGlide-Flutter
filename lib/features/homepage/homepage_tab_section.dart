@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/book_data.dart';
-import '../../data/bookmark_data.dart';
 import '../../data/window_class.dart';
-import '../common_components/common_delete_drag_target.dart';
+import '../bookmark_list/widgets/bookmark_list_operation_panel.dart';
+import '../bookshelf/widgets/bookshelf_operation_panel.dart';
 import 'bloc/homepage_bloc.dart';
 import 'widgets/homepage_floating_action_button.dart';
 
@@ -30,26 +29,16 @@ class HomepageTabSection extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(left: 16.0),
               child: BlocBuilder<HomepageCubit, HomepageState>(
-                buildWhen: (previous, current) => previous.isDragging != current.isDragging,
+                buildWhen: (previous, current) => previous.navItem != current.navItem,
                 builder: (context, state) {
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 200),
-                    transitionBuilder: (Widget child, Animation<double> animation) {
-                      return SlideTransition(
-                        position: Tween<Offset>(
-                          begin: const Offset(0.0, 3.0),
-                          end: const Offset(0.0, 0.0),
-                        ).chain(CurveTween(curve: Curves.easeInOutCubicEmphasized)).animate(animation),
-                        child: child,
-                      );
-                    },
-                    child: state.isDragging
-                        ? CommonDeleteDragTarget(
-                            onWillAcceptWithDetails: (details) =>
-                                details.data is BookData || details.data is BookmarkData,
-                          )
-                        : const SizedBox.shrink(),
-                  );
+                  switch (state.navItem) {
+                    case HomepageNavigationItem.bookshelf:
+                      return const BookshelfOperationPanel();
+                    case HomepageNavigationItem.bookmark:
+                      return const BookmarkListOperationPanel();
+                    default:
+                      return const SizedBox.shrink();
+                  }
                 },
               ),
             ),

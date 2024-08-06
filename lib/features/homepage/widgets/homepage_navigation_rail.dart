@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../bloc/navigation_bloc.dart';
+import '../bloc/homepage_bloc.dart';
 
 class HomepageNavigationRail extends StatelessWidget {
   const HomepageNavigationRail({super.key});
@@ -10,10 +10,10 @@ class HomepageNavigationRail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<NavigationCubit, NavigationState>(
-      builder: (BuildContext context, NavigationState state) {
+    return BlocBuilder<HomepageCubit, HomepageState>(
+      builder: (context, state) {
         return NavigationRail(
-          selectedIndex: NavigationItem.values.indexOf(state.navItem),
+          selectedIndex: HomepageNavigationItem.values.indexOf(state.navItem),
           indicatorColor: Colors.transparent,
           unselectedIconTheme: IconThemeData(color: Colors.white.withOpacity(0.5)),
           backgroundColor: Colors.transparent,
@@ -23,27 +23,27 @@ class HomepageNavigationRail extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               icon: const Icon(Icons.shelves),
               selectedIcon: const Icon(Icons.shelves, color: Colors.white),
-              label: Text(appLocalizations.titleBookshelf),
-              disabled: state.navItem == NavigationItem.bookshelf,
+              label: Text(appLocalizations.bookshelfTitle),
+              disabled: state.navItem == HomepageNavigationItem.bookshelf,
             ),
             NavigationRailDestination(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               icon: const Icon(Icons.bookmark),
               selectedIcon: const Icon(Icons.bookmark, color: Colors.white),
-              label: Text(appLocalizations.titleBookmarks),
-              disabled: state.navItem == NavigationItem.bookmark,
+              label: Text(appLocalizations.bookmarkListTitle),
+              disabled: state.navItem == HomepageNavigationItem.bookmark,
             ),
             NavigationRailDestination(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               icon: const Icon(Icons.settings),
               selectedIcon: const Icon(Icons.settings, color: Colors.white),
               label: Text(appLocalizations.settingsTitle),
-              disabled: state.navItem == NavigationItem.settings,
+              disabled: state.navItem == HomepageNavigationItem.settings,
             ),
           ],
           onDestinationSelected: (index) {
-            BlocProvider.of<NavigationCubit>(context)
-                .setItem(NavigationItem.values[index.clamp(0, NavigationItem.values.length - 1)]);
+            BlocProvider.of<HomepageCubit>(context)
+                .setItem(HomepageNavigationItem.values[index.clamp(0, HomepageNavigationItem.values.length - 1)]);
           },
         );
       },

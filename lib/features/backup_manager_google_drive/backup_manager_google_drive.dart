@@ -45,7 +45,7 @@ class _BackupManagerGoogleDrive extends StatelessWidget {
                   label: state.isEnabled
                       ? appLocalizations.backupManagerGoogleDriveBackupEnable
                       : appLocalizations.backupManagerGoogleDriveBackupDisable,
-                  value: state.isEnabled ? appLocalizations.enable : appLocalizations.disable,
+                  value: state.isEnabled ? appLocalizations.generalEnabled : appLocalizations.generalDisabled,
                   child: Switch(
                     value: state.isEnabled,
                     onChanged: cubit.setEnabled,

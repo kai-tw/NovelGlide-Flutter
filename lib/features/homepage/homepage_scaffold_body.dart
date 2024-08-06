@@ -9,20 +9,20 @@ import '../bookshelf/bloc/bookshelf_bloc.dart';
 import '../bookshelf/bookshelf_sliver_list.dart';
 import '../settings_page/settings_page.dart';
 import 'bloc/homepage_bloc.dart';
-import 'bloc/navigation_bloc.dart';
 
 class HomepageScaffoldBody extends StatelessWidget {
   const HomepageScaffoldBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NavigationCubit, NavigationState>(
-      builder: (BuildContext context, NavigationState state) {
+    return BlocBuilder<HomepageCubit, HomepageState>(
+      buildWhen: (previous, current) => previous.navItem != current.navItem,
+      builder: (context, state) {
         final BookshelfCubit bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
         final BookmarkListCubit bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
 
         switch (state.navItem) {
-          case NavigationItem.bookshelf:
+          case HomepageNavigationItem.bookshelf:
             return Column(
               children: [
                 Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
@@ -45,7 +45,7 @@ class HomepageScaffoldBody extends StatelessWidget {
               ],
             );
 
-          case NavigationItem.bookmark:
+          case HomepageNavigationItem.bookmark:
             return Column(
               children: [
                 Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
@@ -68,7 +68,7 @@ class HomepageScaffoldBody extends StatelessWidget {
               ],
             );
 
-          case NavigationItem.settings:
+          case HomepageNavigationItem.settings:
             return const SettingsPage();
         }
       },

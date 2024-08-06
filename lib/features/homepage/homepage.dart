@@ -7,7 +7,6 @@ import '../../processor/theme_processor.dart';
 import '../bookmark_list/bloc/bookmark_list_bloc.dart';
 import '../bookshelf/bloc/bookshelf_bloc.dart';
 import 'bloc/homepage_bloc.dart';
-import 'bloc/navigation_bloc.dart';
 import 'view/homepage_scaffold_compact_view.dart';
 import 'view/homepage_scaffold_medium_view.dart';
 
@@ -30,19 +29,6 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final WindowClass windowClass = WindowClass.getClassByWidth(screenWidth);
-    Widget scaffold;
-
-    /// Display the homepage based on the window size
-    switch (windowClass) {
-      case WindowClass.compact:
-        scaffold = const HomepageScaffoldCompactView();
-
-      default:
-        scaffold = const HomepageScaffoldMediumView();
-    }
-
     return ThemeSwitchingArea(
       child: ThemeSwitcher(
         builder: (context) {
@@ -50,11 +36,10 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (_) => HomepageCubit()),
-              BlocProvider(create: (_) => NavigationCubit()),
-              BlocProvider(create: (_) => BookshelfCubit()..refresh()),
-              BlocProvider(create: (_) => BookmarkListCubit()..refresh()),
+              BlocProvider(create: (_) => BookshelfCubit()..init()),
+              BlocProvider(create: (_) => BookmarkListCubit()..init()),
             ],
-            child: scaffold,
+            child: const _HomepageScaffold(),
           );
         },
       ),
@@ -70,5 +55,24 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+}
+
+class _HomepageScaffold extends StatelessWidget {
+  const _HomepageScaffold();
+
+  @override
+  Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final WindowClass windowClass = WindowClass.getClassByWidth(screenWidth);
+
+    /// Display the homepage based on the window size
+    switch (windowClass) {
+      case WindowClass.compact:
+        return const HomepageScaffoldCompactView();
+
+      default:
+        return const HomepageScaffoldMediumView();
+    }
   }
 }

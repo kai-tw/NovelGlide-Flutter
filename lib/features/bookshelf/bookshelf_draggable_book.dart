@@ -5,7 +5,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../data/book_data.dart';
 import '../common_components/draggable_feedback_widget.dart';
 import '../common_components/draggable_placeholder_widget.dart';
-import '../homepage/bloc/homepage_bloc.dart';
 import 'bloc/bookshelf_bloc.dart';
 import 'bookshelf_book_widget.dart';
 
@@ -18,13 +17,12 @@ class BookshelfDraggableBook extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
-    final HomepageCubit homepageCubit = BlocProvider.of<HomepageCubit>(context);
 
     return LayoutBuilder(
       builder: (context, constraints) {
         return LongPressDraggable(
-          onDragStarted: () => homepageCubit.setDragging(true),
-          onDragEnd: (_) => homepageCubit.setDragging(false),
+          onDragStarted: () => cubit.setDragging(true),
+          onDragEnd: (_) => cubit.setDragging(false),
           onDragCompleted: () {
             final bool isSuccess = bookObject.delete();
             if (isSuccess) {
