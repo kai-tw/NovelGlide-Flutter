@@ -8,12 +8,9 @@ class BookmarkListAppBarPopupMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
-      icon: const Icon(Icons.more_vert_rounded),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
-      clipBehavior: Clip.hardEdge,
-      itemBuilder: (BuildContext context) {
-        final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
+    final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
+    return BlocBuilder<BookmarkListCubit, BookmarkListState>(
+      builder: (context, state) {
         List<PopupMenuEntry<dynamic>> entries = [];
 
         /// Edit mode
@@ -36,7 +33,18 @@ class BookmarkListAppBarPopupMenuButton extends StatelessWidget {
           default:
         }
 
-        return entries;
+        if (entries.isNotEmpty) {
+          return PopupMenuButton(
+            icon: const Icon(Icons.more_vert_rounded),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
+            clipBehavior: Clip.hardEdge,
+            itemBuilder: (BuildContext context) {
+              return entries;
+            },
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
       },
     );
   }
