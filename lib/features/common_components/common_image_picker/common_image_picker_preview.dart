@@ -29,7 +29,7 @@ class CommonImagePickerPreview extends StatelessWidget {
             );
           } else {
             return Center(
-              child: Text(AppLocalizations.of(context)!.preview),
+              child: Text(AppLocalizations.of(context)!.generalPreview),
             );
           }
         }

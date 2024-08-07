@@ -25,7 +25,7 @@ class BookmarkListDeleteButton extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text(appLocalizations.cancel),
+                  child: Text(appLocalizations.generalCancel),
                 ),
                 TextButton(
                   onPressed: () {
@@ -33,7 +33,7 @@ class BookmarkListDeleteButton extends StatelessWidget {
                     cubit.deleteSelectedBookmarks();
                   },
                   child: Text(
-                    appLocalizations.yes,
+                    appLocalizations.generalYes,
                     style: TextStyle(color: Theme.of(context).colorScheme.error),
                   ),
                 ),

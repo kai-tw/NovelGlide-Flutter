@@ -43,7 +43,7 @@ class ChapterImporterSubmitButton extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text(appLocalizations.close),
+                child: Text(appLocalizations.generalClose),
               ),
             ],
           ),

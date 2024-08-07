@@ -9,9 +9,6 @@ import 'package:hive/hive.dart';
 
 import 'data/app_info.dart';
 import 'data/file_path.dart';
-import 'features/account_page/account_page.dart';
-import 'features/sign_in_page/sign_in_page.dart';
-import 'features/register_page/register_page.dart';
 import 'features/homepage/homepage.dart';
 import 'firebase_options.dart';
 import 'processor/theme_processor.dart';
@@ -59,9 +56,6 @@ class App extends StatelessWidget {
           initialRoute: "/",
           routes: {
             "/": (_) => const Homepage(),
-            "/account": (_) => const AccountPage(),
-            "/sign_in": (_) => const SignInPage(),
-            "/register": (_) => const RegisterPage(),
           },
           builder: (context, child) => AccessibilityTools(child: child),
           // debugShowCheckedModeBanner: false,

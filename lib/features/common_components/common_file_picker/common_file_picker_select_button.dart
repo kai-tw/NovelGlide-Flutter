@@ -33,7 +33,7 @@ class CommonFilePickerSelectButton extends StatelessWidget {
     return TextButton.icon(
       onPressed: typeOnPressedMap[type] ?? () => cubit.pickFile(type: type, allowedExtensions: allowedExtensions),
       icon: Icon(typeIconMap[type] ?? Icons.file_upload_rounded),
-      label: Text(typeLabelMap[type] ?? appLocalizations.select),
+      label: Text(typeLabelMap[type] ?? appLocalizations.generalSelect),
     );
   }
 }

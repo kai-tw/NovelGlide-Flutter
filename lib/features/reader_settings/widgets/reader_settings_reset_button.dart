@@ -62,11 +62,11 @@ class ReaderSettingsResetButton extends StatelessWidget {
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
-            child: Text(AppLocalizations.of(context)!.yes),
+            child: Text(AppLocalizations.of(context)!.generalYes),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text(AppLocalizations.of(context)!.no),
+            child: Text(AppLocalizations.of(context)!.generalNo),
           ),
         ],
       ),

@@ -15,6 +15,7 @@ class BookmarkListSliverListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
 
     return InkWell(
@@ -41,12 +42,15 @@ class BookmarkListSliverListItem extends StatelessWidget {
         }
       },
       child: BlocBuilder<BookmarkListCubit, BookmarkListState>(
-          buildWhen: (previous, current) =>
-              previous.isSelecting != current.isSelecting || previous.selectedBookmarks != current.selectedBookmarks,
-          builder: (BuildContext context, BookmarkListState state) {
-            if (state.isSelecting) {
-              final bool isSelected = state.selectedBookmarks.contains(_bookmarkData.bookName);
-              return BookmarkWidget(
+        buildWhen: (previous, current) =>
+            previous.isSelecting != current.isSelecting || previous.selectedBookmarks != current.selectedBookmarks,
+        builder: (BuildContext context, BookmarkListState state) {
+          if (state.isSelecting) {
+            final bool isSelected = state.selectedBookmarks.contains(_bookmarkData.bookName);
+            return Semantics(
+              label: appLocalizations.bookmarkListAccessibilityItem,
+              onTapHint: appLocalizations.bookmarkListAccessibilitySelectOnTap,
+              child: BookmarkWidget(
                 _bookmarkData,
                 trailing: Checkbox(
                   value: isSelected,
@@ -59,19 +63,22 @@ class BookmarkListSliverListItem extends StatelessWidget {
                       cubit.deselectBookmark(_bookmarkData.bookName);
                     }
                   },
+                  semanticLabel: appLocalizations.bookmarkListAccessibilitySelectItem,
                 ),
                 backgroundColor: isSelected ? Theme.of(context).colorScheme.errorContainer : null,
                 color: isSelected ? Theme.of(context).colorScheme.onErrorContainer : null,
-              );
-            } else {
-              return Semantics(
-                label: AppLocalizations.of(context)!.accessibilityBookmarkListItem,
-                onTapHint: AppLocalizations.of(context)!.accessibilityBookmarkListItemOnTap,
-                onLongPressHint: AppLocalizations.of(context)!.accessibilityBookmarkListItemOnLongPress,
-                child: BookmarkListDraggableBookmark(_bookmarkData),
-              );
-            }
-          }),
+              ),
+            );
+          } else {
+            return Semantics(
+              label: appLocalizations.bookmarkListAccessibilityItem,
+              onTapHint: appLocalizations.bookmarkListAccessibilityOnTap,
+              onLongPressHint: appLocalizations.bookmarkListAccessibilityOnLongPress,
+              child: BookmarkListDraggableBookmark(_bookmarkData),
+            );
+          }
+        },
+      ),
     );
   }
 }

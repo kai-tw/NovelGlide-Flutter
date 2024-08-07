@@ -24,7 +24,7 @@ class CommonFormSubmitButton extends StatelessWidget {
       ),
       icon: Icon(iconData ?? Icons.send_rounded),
       label: Text(
-        labelText ?? appLocalizations.submit,
+        labelText ?? appLocalizations.generalSubmit,
         style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
       ),
       onPressed: () {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc/bookshelf_bloc.dart';
 
@@ -8,6 +9,7 @@ class BookshelfAppBarPopupMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
     return BlocBuilder<BookshelfCubit, BookshelfState>(
       builder: (context, state) {
@@ -19,12 +21,12 @@ class BookshelfAppBarPopupMenuButton extends StatelessWidget {
             if (!cubit.state.isSelecting) {
               entries.add(PopupMenuItem(
                 onTap: () => cubit.setSelecting(true),
-                child: const Row(
+                child: Row(
                   children: [
                     Expanded(
-                      child: Text("Edit"),
+                      child: Text(appLocalizations.generalEdit),
                     ),
-                    Icon(Icons.edit_rounded),
+                    const Icon(Icons.edit_rounded),
                   ],
                 ),
               ));

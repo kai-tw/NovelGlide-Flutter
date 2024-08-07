@@ -19,7 +19,7 @@ class CommonListEmpty extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
-        Text(AppLocalizations.of(context)!.empty),
+        Text(AppLocalizations.of(context)!.generalEmpty),
       ],
     );
   }

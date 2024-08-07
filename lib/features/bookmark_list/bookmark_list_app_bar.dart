@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc/bookmark_list_bloc.dart';
-import 'widgets/bookmark_list_app_bar_popup_menu_button.dart';
+import 'bookmark_list_app_bar_popup_menu_button.dart';
 import 'widgets/bookmark_list_select_all_button.dart';
 
 class BookmarkListAppBar extends StatelessWidget implements PreferredSizeWidget {

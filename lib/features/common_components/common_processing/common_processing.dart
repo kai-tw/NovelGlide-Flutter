@@ -17,7 +17,7 @@ class CommonProcessing extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 24.0),
-          child: Text(AppLocalizations.of(context)!.processing),
+          child: Text(AppLocalizations.of(context)!.generalProcessing),
         ),
       ],
     );

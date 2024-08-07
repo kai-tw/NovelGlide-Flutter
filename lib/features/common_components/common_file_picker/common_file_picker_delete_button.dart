@@ -30,7 +30,7 @@ class CommonFilePickerDeleteButton extends StatelessWidget {
         foregroundColor: Theme.of(context).colorScheme.error,
       ),
       icon: Icon(typeIconMap[type] ?? Icons.delete_outline_outlined),
-      label: Text(typeLabelMap[type] ?? AppLocalizations.of(context)!.delete),
+      label: Text(typeLabelMap[type] ?? AppLocalizations.of(context)!.generalDelete),
     );
   }
 }

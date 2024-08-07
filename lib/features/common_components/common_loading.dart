@@ -16,7 +16,7 @@ class CommonLoading extends StatelessWidget {
             color: Theme.of(context).colorScheme.primary,
             size: 50.0,
           ),
-          Text(AppLocalizations.of(context)!.loading),
+          Text(AppLocalizations.of(context)!.generalLoading),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../data/book_data.dart';
 import '../bloc/bookshelf_bloc.dart';
@@ -11,6 +12,7 @@ class BookshelfSelectCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
     return BlocBuilder<BookshelfCubit, BookshelfState>(
       buildWhen: (previous, current) => previous.selectedBooks != current.selectedBooks,
@@ -27,7 +29,7 @@ class BookshelfSelectCheckbox extends StatelessWidget {
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(6.0)),
           ),
-          semanticLabel: 'Select this book to add to the deletion pending list.',
+          semanticLabel: appLocalizations.bookshelfAccessibilityCheckbox,
         );
       },
     );
