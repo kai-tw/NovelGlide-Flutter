@@ -16,7 +16,11 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     List<BookData> list = await BookProcessor.getDataList();
     BookshelfStateCode code = list.isEmpty ? BookshelfStateCode.empty : BookshelfStateCode.normal;
     if (!isClosed) {
-      emit(BookshelfState(code: code, bookList: list));
+      emit(BookshelfState(
+        code: code,
+        bookList: list,
+        isSelecting: state.isSelecting,
+      ));
     }
   }
 
@@ -57,7 +61,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     for (String bookName in state.selectedBooks) {
       BookProcessor.delete(bookName);
     }
-    refresh();
+    await refresh();
     return true;
   }
 }

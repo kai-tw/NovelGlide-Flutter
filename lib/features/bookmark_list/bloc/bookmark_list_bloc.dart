@@ -22,6 +22,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
       emit(BookmarkListState(
         code: bookmarkList.isEmpty ? BookmarkListStateCode.empty : BookmarkListStateCode.normal,
         bookmarkList: bookmarkList,
+        isSelecting: state.isSelecting,
       ));
     }
   }
