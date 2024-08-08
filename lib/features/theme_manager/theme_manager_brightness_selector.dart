@@ -15,7 +15,7 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
     return BlocProvider(
       create: (context) => ThemeManagerBrightnessCubit()..refresh(),
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 16.0),
+        margin: const EdgeInsets.all(16.0),
         padding: const EdgeInsets.fromLTRB(24.0, 8.0, 24.0, 24.0),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainer,

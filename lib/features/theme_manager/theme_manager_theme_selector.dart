@@ -20,7 +20,7 @@ class ThemeManagerThemeSelector extends StatelessWidget {
     final int crossAxisCount = (MediaQuery.of(context).size.width / maxCrossAxisExtent).floor();
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 16.0),
+      margin: const EdgeInsets.all(16.0),
       padding: const EdgeInsets.fromLTRB(24.0, 8.0, 24.0, 16.0),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainer,

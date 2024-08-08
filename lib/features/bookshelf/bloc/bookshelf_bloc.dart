@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,7 +47,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   void _sortBookList(List<BookData> list, BookshelfSortOrder sortOrder, bool isAscending) {
     switch (sortOrder) {
       case BookshelfSortOrder.name:
-        list.sort((a, b) => isAscending ? a.name.compareTo(b.name) : b.name.compareTo(a.name));
+        list.sort((a, b) => isAscending ? compareNatural(a.name, b.name) : compareNatural(b.name, a.name));
         break;
       case BookshelfSortOrder.modifiedDate:
         list.sort((a, b) =>

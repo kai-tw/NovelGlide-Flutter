@@ -36,16 +36,11 @@ class ThemeManagerScaffold extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         controller: cubit.scrollController,
-        child: Center(
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 400.0),
-            child: const Column(
-              children: [
-                ThemeManagerThemeSelector(),
-                ThemeManagerBrightnessSelector(),
-              ],
-            ),
-          ),
+        child: const Column(
+          children: [
+            ThemeManagerThemeSelector(),
+            ThemeManagerBrightnessSelector(),
+          ],
         ),
       ),
     );

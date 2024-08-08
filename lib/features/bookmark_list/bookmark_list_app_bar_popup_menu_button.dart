@@ -20,8 +20,8 @@ class BookmarkListAppBarPopupMenuButton extends StatelessWidget {
         List<PopupMenuEntry<dynamic>> entries = [];
 
         final Map<BookmarkListSortOrder, String> sortMap = {
-          BookmarkListSortOrder.name: 'Name',
-          BookmarkListSortOrder.savedTime: 'Last Saved',
+          BookmarkListSortOrder.name: appLocalizations.bookmarkListSortName,
+          BookmarkListSortOrder.savedTime: appLocalizations.bookmarkListSortSavedTime,
         };
 
         for (MapEntry<BookmarkListSortOrder, String> entry in sortMap.entries) {
@@ -57,8 +57,8 @@ class BookmarkListAppBarPopupMenuButton extends StatelessWidget {
                     contentPadding: EdgeInsets.zero,
                     dense: true,
                     leading: const SizedBox(width: 24.0),
-                    title: Text(appLocalizations.generalEdit),
-                    trailing: const Icon(Icons.edit_rounded),
+                    title: Text(appLocalizations.bookmarkListSelect),
+                    trailing: const Icon(Icons.check_circle_outline_rounded),
                   ),
                 ),
                 const PopupMenuDivider(),

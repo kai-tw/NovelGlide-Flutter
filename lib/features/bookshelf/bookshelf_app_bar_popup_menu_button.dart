@@ -20,8 +20,8 @@ class BookshelfAppBarPopupMenuButton extends StatelessWidget {
         List<PopupMenuEntry<dynamic>> entries = [];
 
         final Map<BookshelfSortOrder, String> sortMap = {
-          BookshelfSortOrder.name: 'Name',
-          BookshelfSortOrder.modifiedDate: 'Last Modified',
+          BookshelfSortOrder.name: appLocalizations.bookshelfSortName,
+          BookshelfSortOrder.modifiedDate: appLocalizations.bookshelfSortLastModified,
         };
 
         for (MapEntry<BookshelfSortOrder, String> entry in sortMap.entries) {
@@ -55,8 +55,8 @@ class BookshelfAppBarPopupMenuButton extends StatelessWidget {
                     contentPadding: EdgeInsets.zero,
                     dense: true,
                     leading: const SizedBox(width: 24.0),
-                    title: Text(appLocalizations.generalEdit),
-                    trailing: const Icon(Icons.edit_rounded),
+                    title: Text(appLocalizations.bookshelfSelect),
+                    trailing: const Icon(Icons.check_circle_outline_rounded),
                   ),
                 ),
                 const PopupMenuDivider(),

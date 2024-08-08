@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,7 +39,8 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
   void _sortBookmarkList(List<BookmarkData> list, BookmarkListSortOrder sortOrder, bool isAscending) {
     switch (sortOrder) {
       case BookmarkListSortOrder.name:
-        list.sort((a, b) => isAscending ? a.bookName.compareTo(b.bookName) : b.bookName.compareTo(a.bookName));
+        list.sort(
+            (a, b) => isAscending ? compareNatural(a.bookName, b.bookName) : compareNatural(b.bookName, a.bookName));
         break;
       case BookmarkListSortOrder.savedTime:
         list.sort((a, b) => isAscending ? a.savedTime.compareTo(b.savedTime) : b.savedTime.compareTo(a.savedTime));
