@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -11,42 +12,63 @@ class BookmarkListAppBarPopupMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
-    return BlocBuilder<BookmarkListCubit, BookmarkListState>(
-      builder: (context, state) {
+    return PopupMenuButton(
+      icon: const Icon(Icons.more_vert_rounded),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
+      clipBehavior: Clip.hardEdge,
+      itemBuilder: (BuildContext context) {
         List<PopupMenuEntry<dynamic>> entries = [];
+
+        final Map<BookmarkListSortOrder, String> sortMap = {
+          BookmarkListSortOrder.name: 'Name',
+          BookmarkListSortOrder.savedTime: 'Last Saved',
+        };
+
+        for (MapEntry<BookmarkListSortOrder, String> entry in sortMap.entries) {
+          bool isSelected = cubit.state.sortOrder == entry.key;
+          entries.add(
+            PopupMenuItem(
+              onTap: () => isSelected ? cubit.setAscending(!cubit.state.isAscending) : cubit.setSortOrder(entry.key),
+              child: SizedBox(
+                child: ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  dense: true,
+                  leading: isSelected ? const Icon(Icons.check_rounded) : const SizedBox(width: 24.0),
+                  title: Text(entry.value),
+                  trailing: isSelected
+                      ? cubit.state.isAscending
+                      ? const Icon(CupertinoIcons.chevron_up)
+                      : const Icon(CupertinoIcons.chevron_down)
+                      : const SizedBox(width: 24.0),
+                ),
+              ),
+            ),
+          );
+        }
 
         /// Edit mode
         switch (cubit.state.code) {
           case BookmarkListStateCode.normal:
             if (!cubit.state.isSelecting) {
-              entries.add(PopupMenuItem(
-                onTap: () => cubit.setSelecting(true),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(appLocalizations.generalEdit),
-                    ),
-                    const Icon(Icons.edit_rounded),
-                  ],
+              entries.insertAll(0, [
+                PopupMenuItem(
+                  onTap: () => cubit.setSelecting(true),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                    leading: const SizedBox(width: 24.0),
+                    title: Text(appLocalizations.generalEdit),
+                    trailing: const Icon(Icons.edit_rounded),
+                  ),
                 ),
-              ));
+                const PopupMenuDivider(),
+              ]);
             }
             break;
           default:
         }
 
-        if (entries.isNotEmpty) {
-          return PopupMenuButton(
-            icon: const Icon(Icons.more_vert_rounded),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
-            clipBehavior: Clip.hardEdge,
-            itemBuilder: (BuildContext context) {
-              return entries;
-            },
-          );
-        } else {
-          return const SizedBox.shrink();
-        }
+        return entries;
       },
     );
   }

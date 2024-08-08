@@ -20,7 +20,7 @@ class BookshelfBookCover extends StatelessWidget {
             borderRadius: BorderRadius.circular(16.0),
           ),
           clipBehavior: Clip.hardEdge,
-          child: CommonBookCoverImage(path: bookObject.getCoverPath()),
+          child: CommonBookCoverImage(path: bookObject.coverPath),
         ),
       ),
     );

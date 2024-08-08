@@ -38,6 +38,11 @@ class BookProcessor {
     return (await getNameList()).map((e) => BookData.fromPath(e)).toList();
   }
 
+  /// Get the book directory
+  static Directory getDirectoryByName(String name) {
+    return Directory(getPathByName(name));
+  }
+
   /// Get the book path by name
   static String getPathByName(String name) {
     return join(FilePath.instance.libraryRoot, name);
@@ -90,6 +95,7 @@ class BookProcessor {
   /// Cover process
   /// Create cover
   static bool createCover(String name, File coverFile) {
+    // TODO: Check the mime type and convert it to JPEG
     return coverFile.copySync(getCoverPathByName(name)).existsSync();
   }
 

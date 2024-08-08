@@ -9,14 +9,17 @@ class BookData {
   String name = '';
   File? coverFile;
 
+  String get coverPath => BookProcessor.getCoverPathByName(name);
+  DateTime get modifiedDate => BookProcessor.getDirectoryByName(name).statSync().modified;
+
   BookData({this.name = '', this.coverFile});
 
-  BookData.fromName(this.name)
-      : coverFile = File(BookProcessor.getCoverPathByName(name)).existsSync()
-            ? File(BookProcessor.getCoverPathByName(name))
-            : null;
+  factory BookData.fromName(String name) {
+    File coverFile = File(BookProcessor.getCoverPathByName(name));
+    return BookData(name: name, coverFile: coverFile.existsSync() ? coverFile : null);
+  }
 
-  BookData.fromPath(String path) : this.fromName(basename(path));
+  factory BookData.fromPath(String path) => BookData.fromName(basename(path));
 
   /// Create the book with the data
   Future<bool> create() async {
@@ -44,7 +47,7 @@ class BookData {
       isSuccess = isSuccess && BookProcessor.modify(name, newData.name);
     }
 
-    final File file = File(getCoverPath());
+    final File file = File(coverPath);
     coverFile = file.existsSync() ? file : null;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       imageCache.clear();
@@ -55,24 +58,10 @@ class BookData {
   }
 
   /// Delete the book
-  bool delete() {
-    return BookProcessor.delete(name);
-  }
+  bool delete() => BookProcessor.delete(name);
 
   /// Is the book exists
-  bool isExist() {
-    return BookProcessor.isExist(name);
-  }
-
-  /// Get the cover path
-  String getCoverPath() {
-    return BookProcessor.getCoverPathByName(name);
-  }
-
-  /// Get the book path
-  String getPath() {
-    return BookProcessor.getPathByName(name);
-  }
+  bool isExist() => BookProcessor.isExist(name);
 
   /// Copy the book data with the provided data
   BookData copyWith({String? name, File? coverFile}) {
