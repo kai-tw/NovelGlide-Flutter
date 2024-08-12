@@ -12,17 +12,20 @@ class ReaderJumpToBookmarkButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) =>
-      previous.readerSettings.autoSave != current.readerSettings.autoSave ||
-          previous.bookmarkData.chapterNumber != current.bookmarkData.chapterNumber,
+          previous.readerSettings.autoSave != current.readerSettings.autoSave ||
+          previous.bookmarkData.chapterNumber != current.bookmarkData.chapterNumber ||
+          previous.code != current.code,
       builder: (BuildContext context, ReaderState state) {
-        final bool isDisabled =
-            state.bookmarkData.chapterNumber != state.chapterNumber || state.readerSettings.autoSave;
+        final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
+        final bool isDisabled = state.bookmarkData.chapterNumber != state.chapterNumber ||
+            state.readerSettings.autoSave ||
+            state.code != ReaderStateCode.loaded;
         return IconButton(
           icon: Icon(
             Icons.bookmark_rounded,
             semanticLabel: AppLocalizations.of(context)!.accessibilityReaderBookmarkButton,
           ),
-          onPressed: isDisabled ? null : BlocProvider.of<ReaderCubit>(context).scrollToBookmark,
+          onPressed: isDisabled ? null : cubit.scrollToBookmark,
         );
       },
     );

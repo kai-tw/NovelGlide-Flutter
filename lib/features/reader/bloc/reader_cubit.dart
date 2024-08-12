@@ -24,22 +24,26 @@ class ReaderCubit extends Cubit<ReaderState> {
       scrollController.addListener(_onScroll);
       scrollController.position.isScrollingNotifier.addListener(_onScrollEnd);
 
-      emit(ReaderState(
-        bookName: bookName,
-        chapterNumber: chapterNumber,
-        code: ReaderStateCode.loaded,
-        prevChapterNumber: await ChapterProcessor.getPrevChapterNumber(bookName, chapterNumber),
-        nextChapterNumber: await ChapterProcessor.getNextChapterNumber(bookName, chapterNumber),
-        contentLines: await ChapterProcessor.getContent(bookName, chapterNumber, isAutoDecode: false),
-        bookmarkData: bookmarkData,
-        readerSettings: readerSettings,
-      ));
+      if (!isClosed) {
+        emit(ReaderState(
+          bookName: bookName,
+          chapterNumber: chapterNumber,
+          code: ReaderStateCode.loaded,
+          prevChapterNumber: await ChapterProcessor.getPrevChapterNumber(bookName, chapterNumber),
+          nextChapterNumber: await ChapterProcessor.getNextChapterNumber(bookName, chapterNumber),
+          contentLines: await ChapterProcessor.getContent(bookName, chapterNumber, isAutoDecode: false),
+          bookmarkData: bookmarkData,
+          readerSettings: readerSettings,
+        ));
+      }
 
       // After the render is completed, scroll to the bookmark.
       if (bookmarkData.chapterNumber == chapterNumber && (readerSettings.autoSave || isAutoJump)) {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           scrollToBookmark();
         });
+      } else if (bookmarkData.chapterNumber != chapterNumber && readerSettings.autoSave) {
+        saveBookmark();
       }
     });
   }
@@ -82,6 +86,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       scrollPosition: scrollController.position.pixels,
       savedTime: DateTime.now(),
     )..save();
+    print('\x1B[34msaveBookmark\x1B[0m');
     emit(state.copyWith(bookmarkData: bookmarkObject));
   }
 

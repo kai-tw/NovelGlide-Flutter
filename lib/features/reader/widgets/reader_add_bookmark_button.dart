@@ -12,32 +12,34 @@ class ReaderAddBookmarkButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) => previous.readerSettings.autoSave != current.readerSettings.autoSave,
+      buildWhen: (previous, current) =>
+          previous.readerSettings.autoSave != current.readerSettings.autoSave || previous.code != current.code,
       builder: (BuildContext context, ReaderState readerState) {
         return BlocProvider(
           create: (_) => ReaderAddBookmarkButtonCubit(),
           child: BlocBuilder<ReaderAddBookmarkButtonCubit, ReaderAddBookmarkButtonState>(
             builder: (BuildContext context, ReaderAddBookmarkButtonState state) {
               final ReaderAddBookmarkButtonCubit cubit = BlocProvider.of<ReaderAddBookmarkButtonCubit>(context);
+              final ReaderCubit readerCubit = BlocProvider.of<ReaderCubit>(context);
+              final bool isDisabled =
+                  readerState.readerSettings.autoSave || state.isDisabled || readerState.code != ReaderStateCode.loaded;
               return IconButton(
                 icon: Icon(
                   state.iconData,
                   semanticLabel: AppLocalizations.of(context)!.accessibilityReaderAddBookmarkButton,
                 ),
                 disabledColor: state.disabledColor,
-                onPressed: readerState.readerSettings.autoSave || state.isDisabled
-                    ? null
-                    : () {
-                        cubit.onPressedHandler();
-                        if (!readerState.readerSettings.autoSave) {
-                          BlocProvider.of<ReaderCubit>(context).saveBookmark();
-                        }
-                      },
+                onPressed: isDisabled ? null : () => _onPressed(readerCubit, cubit),
               );
             },
           ),
         );
       },
     );
+  }
+
+  void _onPressed(ReaderCubit readerCubit, ReaderAddBookmarkButtonCubit cubit) {
+    cubit.onPressedHandler();
+    readerCubit.saveBookmark();
   }
 }
