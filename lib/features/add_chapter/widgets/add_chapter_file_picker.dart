@@ -13,7 +13,7 @@ class AddChapterFilePicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final AddChapterFormCubit cubit = BlocProvider.of<AddChapterFormCubit>(context);
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    List<String> allowedExtensions = CommonFilePickerTypeMap.extension[CommonFilePickerType.txt]!;
+    List<String> allowedExtensions = CommonFilePickerType.txt.extensions!;
 
     return CommonFilePicker(
       inputDecoration: InputDecoration(

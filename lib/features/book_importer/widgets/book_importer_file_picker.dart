@@ -11,13 +11,14 @@ class BookImporterFilePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String extensionText = CommonFilePickerTypeMap.extension[CommonFilePickerType.archive]!.join();
+    final String extensionText = CommonFilePickerType.zip.extensions!.join();
     return CommonFilePicker(
       inputDecoration: InputDecoration(
         labelText: AppLocalizations.of(context)!.fieldSelectAFile,
         helperText: AppLocalizations.of(context)!.fileTypeHelperText + extensionText,
       ),
-      type: CommonFilePickerType.archive,
+      type: CommonFilePickerType.custom,
+      allowedExtensions: const ["zip", "epub"],
       onSaved: (file) => BlocProvider.of<BookImporterCubit>(context).setImportFile(file),
     );
   }

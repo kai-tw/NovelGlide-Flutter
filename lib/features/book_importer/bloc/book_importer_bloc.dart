@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:epubx/epubx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,14 @@ class BookImporterCubit extends Cubit<BookImporterState> {
     switch (mimeType) {
       case 'application/zip':
         return await importFromArchive(_importFile!);
+      case 'application/epub+zip':
+        EpubBook epubBook = await EpubReader.readBook(_importFile!.readAsBytesSync());
+        print(epubBook.Title);
+        print(epubBook.Author);
+        print(epubBook.Content?.Html?["ch01.xhtml"]?.Content);
+        print(epubBook.CoverImage);
+        print(epubBook.Chapters);
+        break;
     }
     return false;
   }

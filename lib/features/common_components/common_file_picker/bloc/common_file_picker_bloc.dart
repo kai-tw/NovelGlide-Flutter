@@ -16,8 +16,8 @@ class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
   bool _hasMimeMatch() {
     final String? mimeType = AdvancedMimeTypeResolver.instance.lookupAll(file!);
 
-    return type == CommonFilePickerType.any ||
-        CommonFilePickerTypeMap.mime[type] != null && CommonFilePickerTypeMap.mime[type]!.contains(mimeType);
+    return type == CommonFilePickerType.any || type == CommonFilePickerType.custom ||
+        (type.mimeTypes?.contains(mimeType) ?? false);
   }
 
   void pickImage() async {
@@ -25,15 +25,15 @@ class CommonFilePickerCubit extends Cubit<CommonFilePickerState> {
   }
 
   void pickFile({
-    CommonFilePickerType? type = CommonFilePickerType.any,
+    CommonFilePickerType? type,
     bool allowMultiple = false,
     List<String>? allowedExtensions,
   }) async {
-    this.type = type!;
-    allowedExtensions = (allowedExtensions ?? []) + (CommonFilePickerTypeMap.extension[this.type] ?? []);
+    this.type = type ?? CommonFilePickerType.any;
+    allowedExtensions = (allowedExtensions ?? []) + (this.type.extensions ?? []);
 
     FilePickerResult? f = await FilePicker.platform.pickFiles(
-      type: CommonFilePickerTypeMap.fileTypeMap[this.type] ?? FileType.any,
+      type: this.type.fileType,
       allowMultiple: allowMultiple,
       allowedExtensions: allowedExtensions,
     );

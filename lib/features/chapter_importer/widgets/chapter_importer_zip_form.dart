@@ -32,7 +32,7 @@ class ChapterImporterZipForm extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.only(top: 6.0, bottom: 32.0),
                     child: ChapterImporterFilePicker(
-                      type: CommonFilePickerType.archive,
+                      type: CommonFilePickerType.zip,
                     ),
                   ),
                   Padding(
