@@ -19,7 +19,7 @@ class ReaderState extends Equatable {
   final double maxScrollExtent;
 
   /// Bookmark state.
-  final BookmarkData bookmarkData;
+  final BookmarkData? bookmarkData;
 
   /// Settings state.
   final ReaderSettingsData readerSettings;
@@ -37,19 +37,18 @@ class ReaderState extends Equatable {
     maxScrollExtent,
   ];
 
-  ReaderState({
+  const ReaderState({
     this.code = ReaderStateCode.loading,
     required this.bookName,
     required this.chapterNumber,
     this.prevChapterNumber = -1,
     this.nextChapterNumber = -1,
     this.contentLines = const [],
-    BookmarkData? bookmarkData,
+    this.bookmarkData,
     ReaderSettingsData? readerSettings,
     this.currentScrollY = 0.0,
     this.maxScrollExtent = 1.0,
-  })  : readerSettings = readerSettings ?? const ReaderSettingsData(),
-        bookmarkData = bookmarkData ?? BookmarkData();
+  })  : readerSettings = readerSettings ?? const ReaderSettingsData();
 
   ReaderState copyWith({
     ReaderStateCode? code,

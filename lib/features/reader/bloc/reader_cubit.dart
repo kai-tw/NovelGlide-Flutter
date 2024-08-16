@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/bookmark_data.dart';
 import '../../../data/reader_settings_data.dart';
+import '../../../processor/bookmark_processor.dart';
 import '../../../processor/chapter_processor.dart';
 import 'reader_state.dart';
 
@@ -17,7 +18,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final String bookName = state.bookName;
       final int chapterNumber = state.chapterNumber;
-      final BookmarkData bookmarkData = BookmarkData.fromBookName(bookName);
+      final BookmarkData? bookmarkData = BookmarkProcessor.get(bookName);
       final ReaderSettingsData readerSettings = ReaderSettingsData.load();
 
       // Scrolling Listener
@@ -38,11 +39,11 @@ class ReaderCubit extends Cubit<ReaderState> {
       }
 
       // After the render is completed, scroll to the bookmark.
-      if (bookmarkData.chapterNumber == chapterNumber && (readerSettings.autoSave || isAutoJump)) {
+      if (bookmarkData?.chapterNumber == chapterNumber && (readerSettings.autoSave || isAutoJump)) {
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           scrollToBookmark();
         });
-      } else if (bookmarkData.chapterNumber != chapterNumber && readerSettings.autoSave) {
+      } else if (bookmarkData?.chapterNumber != chapterNumber && readerSettings.autoSave) {
         saveBookmark();
       }
     });
@@ -80,19 +81,17 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Bookmarks
   void saveBookmark() {
     final BookmarkData bookmarkObject = BookmarkData(
-      isValid: true,
       bookName: state.bookName,
       chapterNumber: state.chapterNumber,
       scrollPosition: scrollController.position.pixels,
       savedTime: DateTime.now(),
     )..save();
-    print('\x1B[34msaveBookmark\x1B[0m');
     emit(state.copyWith(bookmarkData: bookmarkObject));
   }
 
   void scrollToBookmark() {
     scrollController.animateTo(
-      state.bookmarkData.scrollPosition,
+      state.bookmarkData?.scrollPosition ?? 0.0,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );

@@ -28,11 +28,9 @@ class TocSliverChapterListItem extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: verticalPadding),
       child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
         return BlocBuilder<TocCubit, TocState>(
-          buildWhen: (previous, current) =>
-              previous.bookmarkData.isValid != current.bookmarkData.isValid ||
-              previous.bookmarkData.chapterNumber != current.bookmarkData.chapterNumber,
+          buildWhen: (previous, current) => previous.bookmarkData?.chapterNumber != current.bookmarkData?.chapterNumber,
           builder: (BuildContext context, TocState state) {
-            final bool isBookmarked = state.bookmarkData.isValid && chapterNumber == state.bookmarkData.chapterNumber;
+            final bool isBookmarked = chapterNumber == state.bookmarkData?.chapterNumber;
             return LongPressDraggable(
               onDragStarted: () => BlocProvider.of<TocCubit>(context).setDragging(true),
               onDragEnd: (_) => BlocProvider.of<TocCubit>(context).setDragging(false),
@@ -48,7 +46,7 @@ class TocSliverChapterListItem extends StatelessWidget {
                   Navigator.of(context).pop();
                   if (isSuccess) {
                     /// Delete the bookmark
-                    BookmarkProcessor.chapterDeleteCheck(bookName, chapterData.ordinalNumber);
+                    BookmarkProcessor.chapterCheck(bookName, chapterData.ordinalNumber);
 
                     BlocProvider.of<TocCubit>(context).refresh();
 

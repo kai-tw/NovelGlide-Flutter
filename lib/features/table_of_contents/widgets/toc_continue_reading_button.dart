@@ -13,14 +13,14 @@ class TocContinueReadingButton extends StatelessWidget {
     final TocCubit cubit = BlocProvider.of<TocCubit>(context);
     return BlocBuilder<TocCubit, TocState>(
       builder: (BuildContext context, TocState state) {
-        return state.bookmarkData.isValid
+        return state.bookmarkData != null
             ? ElevatedButton.icon(
                 onPressed: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(
                           builder: (context) => ReaderWidget(
-                                state.bookmarkData.bookName,
-                                state.bookmarkData.chapterNumber,
+                                state.bookmarkData!.bookName,
+                                state.bookmarkData!.chapterNumber,
                                 isAutoJump: true,
                               )))
                       .then((_) => cubit.refresh());

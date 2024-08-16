@@ -96,7 +96,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
 
   Future<bool> deleteSelectedBookmarks() async {
     for (String bookName in state.selectedBookmarks) {
-      BookmarkData.fromBookName(bookName).clear();
+      BookmarkProcessor.delete(bookName);
     }
     refresh();
     return true;

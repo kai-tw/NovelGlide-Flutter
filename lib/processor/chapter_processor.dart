@@ -182,7 +182,7 @@ class ChapterProcessor {
       chapterFile.writeAsStringSync(line + Platform.lineTerminator, mode: FileMode.append);
     }
 
-    BookmarkProcessor.chapterCreateCheck(bookName, ordinalNumber);
+    BookmarkProcessor.chapterCheck(bookName, ordinalNumber);
 
     return chapterFile.existsSync();
   }

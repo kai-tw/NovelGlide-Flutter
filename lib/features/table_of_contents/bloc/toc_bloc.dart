@@ -6,6 +6,7 @@ import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
 import '../../../data/chapter_data.dart';
 import '../../../processor/book_processor.dart';
+import '../../../processor/bookmark_processor.dart';
 import '../../../processor/chapter_processor.dart';
 
 enum TocStateCode { loading, normal, empty }
@@ -21,13 +22,12 @@ class TocCubit extends Cubit<TocState> {
       final String bookName = newData?.name ?? state.bookName;
       final List<ChapterData> chapterList = await ChapterProcessor.getList(bookName);
       final TocStateCode code = chapterList.isEmpty ? TocStateCode.empty : TocStateCode.normal;
-      final BookmarkData bookmarkData = BookmarkData.fromBookName(bookName);
-      emit(state.copyWith(
+      emit(TocState(
         bookName: bookName,
         isCoverExist: BookProcessor.isCoverExist(bookName),
         code: code,
         chapterList: chapterList,
-        bookmarkData: bookmarkData,
+        bookmarkData: BookmarkProcessor.get(bookName),
       ));
     });
   }
@@ -43,7 +43,7 @@ class TocState extends Equatable {
   final TocStateCode code;
   final List<ChapterData> chapterList;
   final bool isDragging;
-  final BookmarkData bookmarkData;
+  final BookmarkData? bookmarkData;
 
   @override
   List<Object?> get props => [
@@ -55,14 +55,14 @@ class TocState extends Equatable {
         bookmarkData,
       ];
 
-  TocState({
+  const TocState({
     this.bookName = "",
     this.isCoverExist = false,
     this.code = TocStateCode.loading,
     this.chapterList = const [],
     this.isDragging = false,
-    BookmarkData? bookmarkData,
-  }) : bookmarkData = bookmarkData ?? BookmarkData();
+    this.bookmarkData,
+  });
 
   TocState copyWith({
     String? bookName,
