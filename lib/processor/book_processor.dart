@@ -1,12 +1,17 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:epubx/epubx.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_archive/flutter_archive.dart';
 import 'package:path/path.dart';
 
 import '../data/book_data.dart';
 import '../data/file_path.dart';
+import '../data/zip_encoding.dart';
+import '../toolbox/random_utility.dart';
+import 'chapter_processor.dart';
 
 /// Process all the operation of books.
 class BookProcessor {
@@ -29,7 +34,7 @@ class BookProcessor {
 
     final Directory folder = Directory(path);
     final List<String> entries = folder.listSync().whereType<Directory>().map((e) => e.path).toList();
-    entries.sort(compareNatural);
+    // entries.sort(compareNatural);
     return entries;
   }
 
@@ -131,5 +136,42 @@ class BookProcessor {
   /// Check if the cover exists
   static bool isCoverExist(String name) {
     return File(getCoverPathByName(name)).existsSync();
+  }
+
+  static Future<bool> importFromZip(File zipFile, {ZipEncoding? zipEncoding}) async {
+    Directory tempFolder = RandomUtility.getAvailableTempFolder();
+
+    try {
+      await ZipFile.extractToDirectory(
+        zipFile: zipFile,
+        destinationDir: tempFolder,
+        zipFileCharset: zipEncoding?.value ?? ZipEncoding.utf8.value,
+      );
+    } catch (e) {
+      tempFolder.deleteSync(recursive: true);
+      return false;
+    }
+
+    final List<Directory> bookFolders = tempFolder.listSync().whereType<Directory>().toList();
+
+    for (Directory bookFolder in bookFolders) {
+      final String bookName = basename(bookFolder.path);
+      BookProcessor.create(bookName);
+      await ChapterProcessor.importFromFolder(bookName, bookFolder);
+    }
+
+    tempFolder.deleteSync(recursive: true);
+    return true;
+  }
+
+  static Future<bool> importFromEpub(File epubFile) async {
+    // final EpubBook epubBook = await EpubReader.readBook(epubFile.readAsBytesSync());
+    // TODO: parse the epub book.
+    // print(epubBook.Title);
+    // print(epubBook.Author);
+    // print(epubBook.CoverImage);
+    // print(epubBook.Chapters?.map((e) => "${e.Title ?? "no title"} ${e.ContentFileName ?? ""}").toList());
+
+    return false;
   }
 }

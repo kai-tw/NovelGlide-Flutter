@@ -17,11 +17,11 @@ import 'chapter_processor_exception.dart';
 
 /// Process all the operation related to chapters.
 class ChapterProcessor {
-  static final RegExp chapterRegexp = RegExp(r'^Chapter\.\d+\.txt$');
+  static final RegExp chapterRegexp = RegExp(r'^Chapter\.\d+\.md$');
 
   /// Get the chapter file name.
   static String getFileName(int ordinalNumber) {
-    return "Chapter.$ordinalNumber.txt";
+    return "Chapter.$ordinalNumber.md";
   }
 
   /// Get the path of a chapter.

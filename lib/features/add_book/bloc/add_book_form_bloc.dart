@@ -25,8 +25,6 @@ class AddBookFormCubit extends Cubit<AddBookFormState> {
       return AddBookFormNameStateCode.exists;
     }
 
-    // Name verification passed.
-    data.name = name;
     return AddBookFormNameStateCode.valid;
   }
 
