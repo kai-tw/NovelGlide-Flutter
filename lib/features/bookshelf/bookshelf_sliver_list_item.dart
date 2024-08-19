@@ -21,10 +21,10 @@ class BookshelfSliverListItem extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (cubit.state.isSelecting) {
-          if (cubit.state.selectedBooks.contains(bookData.name)) {
-            cubit.deselectBook(bookData.name);
+          if (cubit.state.selectedBooks.contains(bookData)) {
+            cubit.deselectBook(bookData);
           } else {
-            cubit.selectBook(bookData.name);
+            cubit.selectBook(bookData);
           }
         } else {
           Navigator.of(context)
@@ -41,7 +41,7 @@ class BookshelfSliverListItem extends StatelessWidget {
               if (state.isSelecting) {
                 return Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: BookshelfBookWidget(bookObject: bookData),
+                  child: BookshelfBookWidget(bookData: bookData),
                 );
               } else {
                 return Semantics(

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:epubx/epubx.dart' as epub;
 import 'package:equatable/equatable.dart';
 
 import '../processor/chapter_processor.dart';
@@ -8,22 +9,32 @@ class ChapterData extends Equatable {
   final String bookName;
   final int ordinalNumber;
   final String title;
+  final String? fileName;
+  final String? htmlContent;
+  final List<ChapterData>? subChapterList;
 
   @override
-  List<Object?> get props => [bookName, ordinalNumber, title];
+  List<Object?> get props => [bookName, ordinalNumber, title, fileName, htmlContent];
 
   const ChapterData({
     required this.bookName,
     required this.ordinalNumber,
     required this.title,
+    this.fileName,
+    this.htmlContent,
+    this.subChapterList,
   });
 
-  String getPath() {
-    return ChapterProcessor.getPath(bookName, ordinalNumber);
-  }
-
-  bool isExist() {
-    return File(getPath()).existsSync();
+  factory ChapterData.fromEpubChapter(epub.EpubChapter epubChapter, int ordinalNumber) {
+    return ChapterData(
+      bookName: '',
+      ordinalNumber: ordinalNumber,
+      title: epubChapter.Title ?? "",
+      fileName: epubChapter.ContentFileName ?? "",
+      htmlContent: epubChapter.HtmlContent ?? "",
+      subChapterList:
+          (epubChapter.SubChapters ?? []).map((e) => ChapterData.fromEpubChapter(e, ordinalNumber)).toList(),
+    );
   }
 
   Future<bool> create(File file, {String? title}) async {
@@ -32,10 +43,5 @@ class ChapterData extends Equatable {
 
   Future<bool> delete() async {
     return await ChapterProcessor.delete(bookName, ordinalNumber);
-  }
-
-  @override
-  String toString() {
-    return "ChapterData(bookName: $bookName, ordinalNumber: $ordinalNumber)";
   }
 }

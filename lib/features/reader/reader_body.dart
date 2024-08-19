@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../ad_center/advertisement.dart';
 import '../../ad_center/advertisement_id.dart';
 import '../common_components/common_loading.dart';
+import '../epub_renderer/epub_renderer.dart';
 import 'bloc/reader_cubit.dart';
 import 'bloc/reader_state.dart';
-import 'reader_sliver_content.dart';
 import 'widgets/reader_progress_bar.dart';
 
 class ReaderBody extends StatelessWidget {
@@ -14,40 +14,25 @@ class ReaderBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
-
+    final ReaderCubit cubit = context.read<ReaderCubit>();
     return Column(
       children: [
         const ReaderProgressBar(),
         Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
         Expanded(
-          child: PageStorage(
-            bucket: cubit.bucket,
-            child: Scrollbar(
-              controller: cubit.scrollController,
-              child: CustomScrollView(
-                key: const PageStorageKey('reader-body-scrollview'),
-                physics: const BouncingScrollPhysics(),
-                controller: cubit.scrollController,
-                slivers: [
-                  BlocBuilder<ReaderCubit, ReaderState>(
-                    buildWhen: (previous, current) => previous.code != current.code,
-                    builder: (context, state) {
-                      switch (state.code) {
-                        case ReaderStateCode.loaded:
-                          return const ReaderSliverContent();
-                        default:
-                          return const SliverFillRemaining(
-                            child: Center(
-                              child: CommonLoading(),
-                            ),
-                          );
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
+          child: BlocBuilder<ReaderCubit, ReaderState>(
+            buildWhen: (previous, current) => previous.code != current.code,
+            builder: (context, state) {
+              switch (state.code) {
+                case ReaderStateCode.loaded:
+                  final String htmlContent = state.htmlContent;
+                  return EpubRenderer(epubBook: cubit.bookData.epubBook!, htmlContent: htmlContent);
+                default:
+                  return const Center(
+                    child: CommonLoading(),
+                  );
+              }
+            },
           ),
         ),
       ],

@@ -12,7 +12,7 @@ class ReaderState extends Equatable {
   final int chapterNumber;
   final int prevChapterNumber;
   final int nextChapterNumber;
-  final List<String> contentLines;
+  final String htmlContent;
 
   /// Progress bar state.
   final double currentScrollY;
@@ -25,17 +25,18 @@ class ReaderState extends Equatable {
   final ReaderSettingsData readerSettings;
 
   @override
-  List<Object?> get props => [
-    bookName,
-    chapterNumber,
-    prevChapterNumber,
-    nextChapterNumber,
-    contentLines,
-    bookmarkData,
-    readerSettings,
-    currentScrollY,
-    maxScrollExtent,
-  ];
+  List<Object?> get props =>
+      [
+        bookName,
+        chapterNumber,
+        prevChapterNumber,
+        nextChapterNumber,
+        htmlContent,
+        bookmarkData,
+        readerSettings,
+        currentScrollY,
+        maxScrollExtent,
+      ];
 
   const ReaderState({
     this.code = ReaderStateCode.loading,
@@ -43,12 +44,12 @@ class ReaderState extends Equatable {
     required this.chapterNumber,
     this.prevChapterNumber = -1,
     this.nextChapterNumber = -1,
-    this.contentLines = const [],
+    this.htmlContent = "",
     this.bookmarkData,
     ReaderSettingsData? readerSettings,
     this.currentScrollY = 0.0,
     this.maxScrollExtent = 1.0,
-  })  : readerSettings = readerSettings ?? const ReaderSettingsData();
+  }) : readerSettings = readerSettings ?? const ReaderSettingsData();
 
   ReaderState copyWith({
     ReaderStateCode? code,
@@ -56,7 +57,7 @@ class ReaderState extends Equatable {
     int? chapterNumber,
     int? prevChapterNumber,
     int? nextChapterNumber,
-    List<String>? contentLines,
+    String? htmlContent,
     BookmarkData? bookmarkData,
     ReaderSettingsData? readerSettings,
     double? currentScrollY,
@@ -68,7 +69,7 @@ class ReaderState extends Equatable {
       chapterNumber: chapterNumber ?? this.chapterNumber,
       prevChapterNumber: prevChapterNumber ?? this.prevChapterNumber,
       nextChapterNumber: nextChapterNumber ?? this.nextChapterNumber,
-      contentLines: contentLines ?? this.contentLines,
+      htmlContent: htmlContent ?? this.htmlContent,
       bookmarkData: bookmarkData ?? this.bookmarkData,
       readerSettings: readerSettings ?? this.readerSettings,
       currentScrollY: currentScrollY ?? this.currentScrollY,

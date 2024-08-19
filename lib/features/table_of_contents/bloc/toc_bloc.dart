@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,80 +7,68 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
 import '../../../data/chapter_data.dart';
-import '../../../processor/book_processor.dart';
 import '../../../processor/bookmark_processor.dart';
-import '../../../processor/chapter_processor.dart';
-
-enum TocStateCode { loading, normal, empty }
 
 class TocCubit extends Cubit<TocState> {
   final PageStorageBucket bucket = PageStorageBucket();
+  BookData bookData;
 
-  TocCubit(BookData bookData) : super(TocState(bookName: bookData.name));
+  TocCubit(this.bookData) : super(TocState(bookName: bookData.name, filePath: bookData.filePath));
 
   Future<void> refresh({BookData? newData}) async {
-    // After the UI is rendered, start to load the data.
+    bookData = newData ?? bookData;
+    final List<ChapterData> chapterList = bookData.chapterList ?? [];
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final String bookName = newData?.name ?? state.bookName;
-      final List<ChapterData> chapterList = await ChapterProcessor.getList(bookName);
-      final TocStateCode code = chapterList.isEmpty ? TocStateCode.empty : TocStateCode.normal;
       emit(TocState(
-        bookName: bookName,
-        isCoverExist: BookProcessor.isCoverExist(bookName),
-        code: code,
+        bookName: bookData.name,
+        filePath: bookData.filePath,
+        coverBytes: bookData.coverBytes,
+        code: chapterList.isEmpty ? TocStateCode.empty : TocStateCode.normal,
         chapterList: chapterList,
-        bookmarkData: BookmarkProcessor.get(bookName),
+        bookmarkData: BookmarkProcessor.get(bookData.name),
       ));
     });
-  }
-
-  void setDragging(bool isDragging) {
-    emit(state.copyWith(isDragging: isDragging));
   }
 }
 
 class TocState extends Equatable {
   final String bookName;
-  final bool isCoverExist;
+  final String filePath;
+  final Uint8List? coverBytes;
   final TocStateCode code;
   final List<ChapterData> chapterList;
-  final bool isDragging;
   final BookmarkData? bookmarkData;
 
   @override
-  List<Object?> get props => [
-        bookName,
-        isCoverExist,
-        code,
-        chapterList,
-        isDragging,
-        bookmarkData,
-      ];
+  List<Object?> get props => [bookName, code, chapterList, bookmarkData];
 
   const TocState({
-    this.bookName = "",
-    this.isCoverExist = false,
+    required this.bookName,
+    required this.filePath,
+    this.coverBytes,
     this.code = TocStateCode.loading,
     this.chapterList = const [],
-    this.isDragging = false,
     this.bookmarkData,
   });
 
   TocState copyWith({
     String? bookName,
-    bool? isCoverExist,
+    String? filePath,
+    Uint8List? coverBytes,
     TocStateCode? code,
     List<ChapterData>? chapterList,
-    bool? isDragging,
     BookmarkData? bookmarkData,
   }) {
     return TocState(
       bookName: bookName ?? this.bookName,
-      isCoverExist: isCoverExist ?? this.isCoverExist,
+      filePath: filePath ?? this.filePath,
+      coverBytes: coverBytes ?? this.coverBytes,
       code: code ?? this.code,
       chapterList: chapterList ?? this.chapterList,
-      isDragging: isDragging ?? this.isDragging,
       bookmarkData: bookmarkData ?? this.bookmarkData,
     );
   }
 }
+
+enum TocStateCode { loading, normal, empty }

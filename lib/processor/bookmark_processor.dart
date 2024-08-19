@@ -21,7 +21,7 @@ class BookmarkProcessor {
 
   static void save(BookmarkData data) {
     final Box<String> box = Hive.box(name: 'bookmark');
-    box.put(data.bookName, data.toJson());
+    box.put(data.bookPath, data.toJson());
     box.close();
   }
 

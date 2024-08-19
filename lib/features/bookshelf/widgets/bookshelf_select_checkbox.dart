@@ -18,12 +18,12 @@ class BookshelfSelectCheckbox extends StatelessWidget {
       buildWhen: (previous, current) => previous.selectedBooks != current.selectedBooks,
       builder: (BuildContext context, BookshelfState state) {
         return Checkbox(
-          value: state.selectedBooks.contains(bookData.name),
+          value: state.selectedBooks.contains(bookData),
           onChanged: (_) {
-            if (cubit.state.selectedBooks.contains(bookData.name)) {
-              cubit.deselectBook(bookData.name);
+            if (cubit.state.selectedBooks.contains(bookData)) {
+              cubit.deselectBook(bookData);
             } else {
-              cubit.selectBook(bookData.name);
+              cubit.selectBook(bookData);
             }
           },
           shape: const RoundedRectangleBorder(

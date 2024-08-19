@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../data/book_data.dart';
-import 'bookshelf_book_cover.dart';
-import 'bookshelf_book_title.dart';
+import '../common_components/common_book_cover_image.dart';
 
 class BookshelfBookWidget extends StatelessWidget {
-  final BookData bookObject;
+  final BookData bookData;
 
-  const BookshelfBookWidget({super.key, required this.bookObject});
+  const BookshelfBookWidget({super.key, required this.bookData});
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +14,28 @@ class BookshelfBookWidget extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
-          child: BookshelfBookCover(bookObject),
+          child: AspectRatio(
+            aspectRatio: 1 / 1.5,
+            child: Hero(
+              tag: bookData.filePath,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                clipBehavior: Clip.hardEdge,
+                child: CommonBookCoverImage(bytes: bookData.coverBytes),
+              ),
+            ),
+          ),
         ),
-        BookshelfBookTitle(bookObject),
+        Text(
+          bookData.name,
+          maxLines: 3,
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
       ],
     );
   }

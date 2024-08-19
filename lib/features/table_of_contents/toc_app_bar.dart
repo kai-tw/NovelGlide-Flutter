@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../common_components/common_back_button.dart';
 import 'bloc/toc_bloc.dart';
-import 'widgets/toc_edit_book_button.dart';
 
 class TocAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
@@ -23,13 +22,8 @@ class TocAppBar extends StatelessWidget implements PreferredSizeWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          actions: [
-            TocEditBookButton(bookName: state.bookName),
-          ],
         );
       },
     );
   }
 }
-
-enum TOCAppBarActionType { edit, import }

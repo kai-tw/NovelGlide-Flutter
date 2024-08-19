@@ -45,20 +45,20 @@ class BookshelfDraggableBook extends StatelessWidget {
             width: constraints.maxWidth,
             height: constraints.maxHeight,
             padding: const EdgeInsets.all(16.0),
-            child: BookshelfBookWidget(bookObject: bookObject),
+            child: BookshelfBookWidget(bookData: bookObject),
           ),
           childWhenDragging: DraggablePlaceholderWidget(
             width: constraints.maxWidth,
             height: constraints.maxHeight,
             padding: const EdgeInsets.all(16.0),
-            child: BookshelfBookWidget(bookObject: bookObject),
+            child: BookshelfBookWidget(bookData: bookObject),
           ),
           child: Container(
             width: constraints.maxWidth,
             height: constraints.maxHeight,
             padding: const EdgeInsets.all(16.0),
             color: Colors.transparent,
-            child: BookshelfBookWidget(bookObject: bookObject),
+            child: BookshelfBookWidget(bookData: bookObject),
           ),
         );
       },

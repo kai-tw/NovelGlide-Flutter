@@ -4,7 +4,7 @@ import '../processor/bookmark_processor.dart';
 import '../toolbox/datetime_utility.dart';
 
 class BookmarkData {
-  final String bookName;
+  final String bookPath;
   final int chapterNumber;
   final double scrollPosition;
   final DateTime savedTime;
@@ -12,7 +12,7 @@ class BookmarkData {
   int get daysPassed => DateTimeUtility.daysPassed(savedTime);
 
   BookmarkData({
-    this.bookName = '',
+    this.bookPath = '',
     this.chapterNumber = 0,
     this.scrollPosition = 0.0,
     DateTime? savedTime,
@@ -20,7 +20,7 @@ class BookmarkData {
 
   BookmarkData.fromMap(Map<String, dynamic> map)
       : this(
-          bookName: map['bookName'] ?? '',
+          bookPath: map['bookName'] ?? '',
           chapterNumber: map['chapterNumber'] ?? 0,
           scrollPosition: map['scrollPosition'] ?? 0.0,
           savedTime: DateTime.parse(map['savedTime'] ?? DateTime.now().toIso8601String()),
@@ -33,17 +33,17 @@ class BookmarkData {
   }
 
   void clear() {
-    BookmarkProcessor.delete(bookName);
+    BookmarkProcessor.delete(bookPath);
   }
 
   BookmarkData copyWith({
-    String? bookName,
+    String? bookPath,
     int? chapterNumber,
     double? scrollPosition,
     DateTime? savedTime,
   }) {
     return BookmarkData(
-      bookName: bookName ?? this.bookName,
+      bookPath: bookPath ?? this.bookPath,
       chapterNumber: chapterNumber ?? this.chapterNumber,
       scrollPosition: scrollPosition ?? this.scrollPosition,
       savedTime: savedTime ?? this.savedTime,
@@ -52,12 +52,12 @@ class BookmarkData {
 
   @override
   String toString() {
-    return '{ bookName: $bookName, chapterNumber: $chapterNumber, area: $scrollPosition, savedTime: $savedTime, daysPassed: $daysPassed }';
+    return '{ bookName: $bookPath, chapterNumber: $chapterNumber, area: $scrollPosition, savedTime: $savedTime, daysPassed: $daysPassed }';
   }
 
   String toJson() {
     final Map<String, dynamic> map = {
-      'bookName': bookName,
+      'bookName': bookPath,
       'chapterNumber': chapterNumber,
       'scrollPosition': scrollPosition,
       'savedTime': savedTime.toIso8601String(),

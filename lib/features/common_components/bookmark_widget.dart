@@ -49,7 +49,7 @@ class BookmarkWidget extends StatelessWidget {
                 child: Icon(Icons.bookmark_rounded),
               ),
           trailing: trailing,
-          title: Text(_bookmarkObject.bookName),
+          title: Text(_bookmarkObject.bookPath),
           subtitle: Text("${appLocalizations.chapterLabel(_bookmarkObject.chapterNumber)} / $savedTimeString"),
           textColor: color,
           iconColor: color,

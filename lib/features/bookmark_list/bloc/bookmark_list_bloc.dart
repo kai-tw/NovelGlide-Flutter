@@ -40,7 +40,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
     switch (sortOrder) {
       case BookmarkListSortOrder.name:
         list.sort(
-            (a, b) => isAscending ? compareNatural(a.bookName, b.bookName) : compareNatural(b.bookName, a.bookName));
+            (a, b) => isAscending ? compareNatural(a.bookPath, b.bookPath) : compareNatural(b.bookPath, a.bookPath));
         break;
       case BookmarkListSortOrder.savedTime:
         list.sort((a, b) => isAscending ? a.savedTime.compareTo(b.savedTime) : b.savedTime.compareTo(a.savedTime));
@@ -75,7 +75,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
 
   void selectAllBookmarks() {
     emit(state.copyWith(
-      selectedBookmarks: state.bookmarkList.map((e) => e.bookName).toSet(),
+      selectedBookmarks: state.bookmarkList.map((e) => e.bookPath).toSet(),
     ));
   }
 

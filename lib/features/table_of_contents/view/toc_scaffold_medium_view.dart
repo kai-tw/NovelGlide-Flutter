@@ -16,62 +16,57 @@ class TocScaffoldMediumView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TocCubit, TocState>(
-      buildWhen: (previous, current) => previous.isDragging != current.isDragging,
-      builder: (context, state) {
-        return Scaffold(
-          appBar: const TocAppBar(),
-          body: SafeArea(
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                double leftWidth = constraints.maxWidth * 0.382;
-                return Row(
-                  children: [
-                    Container(
-                      width: leftWidth,
-                      height: constraints.maxHeight,
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          const Expanded(
-                            child: Stack(
-                              children: [
-                                TocCoverBanner(),
-                                Positioned.fill(
-                                  child: Align(
-                                    alignment: Alignment.bottomLeft,
-                                    child: TocBookName(),
-                                  ),
-                                ),
-                              ],
+    return Scaffold(
+      appBar: const TocAppBar(),
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            double leftWidth = constraints.maxWidth * 0.382;
+            return Row(
+              children: [
+                Container(
+                  width: leftWidth,
+                  height: constraints.maxHeight,
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      const Expanded(
+                        child: Stack(
+                          children: [
+                            TocCoverBanner(),
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: TocBookName(),
+                              ),
                             ),
-                          ),
-                          Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: Stack(
-                        children: [
-                          RefreshIndicator(
-                            onRefresh: () async => BlocProvider.of<TocCubit>(context).refresh(),
-                            child: const TocScrollView(
-                              slivers: [
-                                TocSliverChapterList(),
-                              ],
-                            ),
-                          ),
-                        ],
+                      Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Stack(
+                    children: [
+                      RefreshIndicator(
+                        onRefresh: () async => BlocProvider.of<TocCubit>(context).refresh(),
+                        child: const TocScrollView(
+                          slivers: [
+                            TocSliverChapterList(),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-          floatingActionButton: const TocFabSection(),
-        );
-      },
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+      floatingActionButton: const TocFabSection(),
     );
   }
 }

@@ -1,65 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
 import '../../../data/reader_settings_data.dart';
 import '../../../processor/bookmark_processor.dart';
-import '../../../processor/chapter_processor.dart';
 import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
+  final BookData bookData;
   final PageStorageBucket bucket = PageStorageBucket();
   final ScrollController scrollController = ScrollController();
 
-  ReaderCubit(String bookName, int chapterNumber)
-      : super(ReaderState(bookName: bookName, chapterNumber: chapterNumber));
+  ReaderCubit(this.bookData, int chapterNumber)
+      : super(ReaderState(bookName: bookData.name, chapterNumber: chapterNumber));
 
-  void initialize({bool isAutoJump = false}) async {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+  void initialize({bool isAutoJump = false}) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       final String bookName = state.bookName;
       final int chapterNumber = state.chapterNumber;
       final BookmarkData? bookmarkData = BookmarkProcessor.get(bookName);
       final ReaderSettingsData readerSettings = ReaderSettingsData.load();
 
-      // Scrolling Listener
-      scrollController.addListener(_onScroll);
-      scrollController.position.isScrollingNotifier.addListener(_onScrollEnd);
-
-      if (!isClosed) {
-        emit(ReaderState(
-          bookName: bookName,
-          chapterNumber: chapterNumber,
-          code: ReaderStateCode.loaded,
-          prevChapterNumber: await ChapterProcessor.getPrevChapterNumber(bookName, chapterNumber),
-          nextChapterNumber: await ChapterProcessor.getNextChapterNumber(bookName, chapterNumber),
-          contentLines: await ChapterProcessor.getContent(bookName, chapterNumber, isAutoDecode: false),
-          bookmarkData: bookmarkData,
-          readerSettings: readerSettings,
-        ));
-      }
+      emit(ReaderState(
+        bookName: bookName,
+        chapterNumber: chapterNumber,
+        code: ReaderStateCode.loaded,
+        prevChapterNumber: chapterNumber - 1 >= 1 ? chapterNumber - 1 : -1,
+        nextChapterNumber: chapterNumber + 1 <= bookData.chapterList!.length ? chapterNumber + 1 : -1,
+        htmlContent: bookData.chapterList?[chapterNumber - 1].htmlContent ?? "",
+        bookmarkData: bookmarkData,
+        readerSettings: readerSettings,
+      ));
 
       // After the render is completed, scroll to the bookmark.
-      if (bookmarkData?.chapterNumber == chapterNumber && (readerSettings.autoSave || isAutoJump)) {
-        WidgetsBinding.instance.addPostFrameCallback((_) async {
-          scrollToBookmark();
-        });
-      } else if (bookmarkData?.chapterNumber != chapterNumber && readerSettings.autoSave) {
-        saveBookmark();
-      }
+      // if (bookmarkData?.chapterNumber == chapterNumber && (readerSettings.autoSave || isAutoJump)) {
+      //   WidgetsBinding.instance.addPostFrameCallback((_) {
+      //     scrollToBookmark();
+      //   });
+      // } else if (bookmarkData?.chapterNumber != chapterNumber && readerSettings.autoSave) {
+      //   saveBookmark();
+      // }
     });
   }
 
   void changeChapter(int chapterNumber) async {
     emit(ReaderState(bookName: state.bookName, chapterNumber: chapterNumber));
-    scrollController.jumpTo(0);
+    // scrollController.jumpTo(0);
     if (state.readerSettings.autoSave) {
       saveBookmark();
     }
     emit(state.copyWith(
       code: ReaderStateCode.loaded,
-      prevChapterNumber: await ChapterProcessor.getPrevChapterNumber(state.bookName, chapterNumber),
-      nextChapterNumber: await ChapterProcessor.getNextChapterNumber(state.bookName, chapterNumber),
-      contentLines: await ChapterProcessor.getContent(state.bookName, chapterNumber, isAutoDecode: false),
+      prevChapterNumber: chapterNumber - 1 >= 1 ? chapterNumber - 1 : -1,
+      nextChapterNumber: chapterNumber + 1 <= bookData.chapterList!.length ? chapterNumber + 1 : -1,
+      htmlContent: bookData.chapterList![chapterNumber - 1].htmlContent ?? "",
       readerSettings: ReaderSettingsData.load(),
     ));
   }
@@ -81,20 +76,22 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Bookmarks
   void saveBookmark() {
     final BookmarkData bookmarkObject = BookmarkData(
-      bookName: state.bookName,
+      bookPath: state.bookName,
       chapterNumber: state.chapterNumber,
-      scrollPosition: scrollController.position.pixels,
+      // scrollPosition: scrollController.position.pixels,
+      scrollPosition: 0,
       savedTime: DateTime.now(),
-    )..save();
+    )
+      ..save();
     emit(state.copyWith(bookmarkData: bookmarkObject));
   }
 
   void scrollToBookmark() {
-    scrollController.animateTo(
-      state.bookmarkData?.scrollPosition ?? 0.0,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
+    // scrollController.animateTo(
+    //   state.bookmarkData?.scrollPosition ?? 0.0,
+    //   duration: const Duration(milliseconds: 300),
+    //   curve: Curves.easeInOut,
+    // );
   }
 
   @override

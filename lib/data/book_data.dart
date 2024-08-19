@@ -1,35 +1,59 @@
 import 'dart:io';
 
+import 'package:epubx/epubx.dart' as epub;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+import 'package:flutter/services.dart';
 
 import '../processor/book_processor.dart';
+import 'chapter_data.dart';
 
 class BookData {
-  String name = '';
+  String name;
+  Uint8List? coverBytes;
+  String filePath;
+  List<ChapterData>? chapterList = [];
+  epub.EpubBook? epubBook;
+
   File? coverFile;
 
-  String get coverPath => BookProcessor.getCoverPathByName(name);
-  DateTime get modifiedDate => BookProcessor.getDirectoryByName(name).statSync().modified;
+  File get file => File(filePath);
+  bool get isExist => file.existsSync();
 
-  BookData({this.name = '', this.coverFile});
+  DateTime get modifiedDate => file.statSync().modified;
+
+  String get coverPath => BookProcessor.getCoverPathByName(name);
+
+  BookData({
+    this.name = '',
+    this.filePath = '',
+    this.coverBytes,
+    this.chapterList,
+    this.epubBook,
+
+    this.coverFile,
+  });
 
   factory BookData.fromName(String name) {
     File coverFile = File(BookProcessor.getCoverPathByName(name));
     return BookData(name: name, coverFile: coverFile.existsSync() ? coverFile : null);
   }
 
-  factory BookData.fromPath(String path) => BookData.fromName(basename(path));
+  factory BookData.fromEpub(epub.EpubBook epubBook, String filePath) {
+    List<ChapterData> chapterList = [];
 
-  /// Create the book with the data
-  Future<bool> create() async {
-    bool isSuccess = BookProcessor.create(name);
-
-    if (isSuccess && coverFile != null) {
-      isSuccess = isSuccess && BookProcessor.createCover(name, coverFile!);
+    for (int i = 0; i < (epubBook.Chapters ?? []).length; i++) {
+      epub.EpubChapter epubChapter = epubBook.Chapters![i];
+      chapterList.add(ChapterData.fromEpubChapter(epubChapter, i + 1));
     }
 
-    return isSuccess;
+    return BookData(
+      name: epubBook.Title ?? '',
+      filePath: filePath,
+      coverBytes: epubBook.CoverImage?.getBytes(),
+      chapterList: chapterList,
+      epubBook: epubBook,
+    );
   }
 
   /// Apply the modification to the book
@@ -58,10 +82,12 @@ class BookData {
   }
 
   /// Delete the book
-  bool delete() => BookProcessor.delete(name);
-
-  /// Is the book exists
-  bool isExist() => BookProcessor.isExist(name);
+  bool delete() {
+    if (file.existsSync()) {
+      file.deleteSync();
+    }
+    return !file.existsSync();
+  }
 
   /// Copy the book data with the provided data
   BookData copyWith({String? name, File? coverFile}) {

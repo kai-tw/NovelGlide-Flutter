@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_charset_detector/flutter_charset_detector.dart';
 import 'package:path/path.dart';
 
-import '../data/chapter_data.dart';
 import '../data/file_path.dart';
 import '../toolbox/chinese_number_parser.dart';
 import '../toolbox/chapter_reg_exp.dart';
@@ -32,41 +31,6 @@ class ChapterProcessor {
   /// Get the ordinal number of a chapter from its file name.
   static int getOrdinalNumberFromPath(String path) {
     return int.parse(basenameWithoutExtension(path).replaceAll("Chapter.", ""));
-  }
-
-  /// Get all the chapter data of a book.
-  static Future<List<ChapterData>> getList(String bookName) async {
-    final Directory folder = Directory(BookProcessor.getPathByName(bookName));
-
-    if (!folder.existsSync()) {
-      return [];
-    }
-
-    final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
-    return await compute<Map<String, dynamic>, List<ChapterData>>(_getListIsolate, {
-      "rootIsolateToken": rootIsolateToken,
-      "bookName": bookName,
-      "folder": folder,
-    });
-  }
-
-  static Future<List<ChapterData>> _getListIsolate(Map<String, dynamic> message) async {
-    final RootIsolateToken rootIsolateToken = message["rootIsolateToken"];
-    final String bookName = message["bookName"];
-    final Directory folder = message["folder"];
-
-    BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
-
-    List<ChapterData> chapterList = [];
-    await for (FileSystemEntity entity in folder.list()) {
-      if (entity is File && chapterRegexp.hasMatch(basename(entity.path))) {
-        int ordinalNumber = getOrdinalNumberFromPath(entity.path);
-        String title = await ChapterProcessor.getTitle(folder, ordinalNumber);
-        chapterList.add(ChapterData(bookName: bookName, ordinalNumber: ordinalNumber, title: title));
-      }
-    }
-    chapterList.sort((a, b) => a.ordinalNumber - b.ordinalNumber);
-    return chapterList;
   }
 
   /// Is the chapter exist.
@@ -99,26 +63,6 @@ class ChapterProcessor {
       contentLines.add(line);
     }
     return contentLines;
-  }
-
-  /// Get the previous chapter number.
-  static Future<int> getPrevChapterNumber(String bookName, int chapterNumber) async {
-    final List<ChapterData> chapterList = await getList(bookName);
-    int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == chapterNumber);
-    if (currentIndex > 0) {
-      return chapterList[currentIndex - 1].ordinalNumber;
-    }
-    return -1;
-  }
-
-  /// Get the next chapter number.
-  static Future<int> getNextChapterNumber(String bookName, int chapterNumber) async {
-    final List<ChapterData> chapterList = await getList(bookName);
-    int currentIndex = chapterList.indexWhere((obj) => obj.ordinalNumber == chapterNumber);
-    if (0 <= currentIndex && currentIndex < chapterList.length - 1) {
-      return chapterList[currentIndex + 1].ordinalNumber;
-    }
-    return -1;
   }
 
   /// Get the title of a chapter.

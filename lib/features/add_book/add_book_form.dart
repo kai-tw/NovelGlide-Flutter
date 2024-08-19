@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'bloc/add_book_form_bloc.dart';
-import 'widgets/add_book_image_picker.dart';
-import 'widgets/add_book_name_input_field.dart';
+import 'bloc/add_book_bloc.dart';
+import 'widgets/add_book_file_info_widget.dart';
+import 'widgets/add_book_file_picking_button.dart';
 import 'widgets/add_book_submit_button.dart';
 
 class AddBookForm extends StatelessWidget {
@@ -15,21 +16,23 @@ class AddBookForm extends StatelessWidget {
       child: SingleChildScrollView(
         child: Center(
           child: Container(
-            padding: const EdgeInsets.all(24.0),
-            constraints: const BoxConstraints(maxWidth: 360.0),
+            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 48.0),
             child: BlocProvider(
-              create: (_) => AddBookFormCubit(),
-              child: const Column(
+              create: (context) => AddBookCubit(),
+              child: Column(
                 children: [
+                  const AddBookFileInfoWidget(),
                   Padding(
-                    padding: EdgeInsets.only(bottom: 32.0),
-                    child: AddBookNameInputField(),
+                    padding: const EdgeInsets.only(bottom: 48.0),
+                    child: Text('${AppLocalizations.of(context)!.fileTypeHelperText} epub'),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 32.0),
-                    child: AddBookImagePicker(),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AddBookFilePickingButton(),
+                      AddBookSubmitButton(),
+                    ],
                   ),
-                  AddBookSubmitButton(),
                 ],
               ),
             ),
