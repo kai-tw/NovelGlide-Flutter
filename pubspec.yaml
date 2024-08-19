@@ -69,7 +69,6 @@ dependencies:
   googleapis_auth: ^1.6.0
   epubx: ^4.0.0
   xml: ^6.5.0
-  csslib: ^1.0.0
 
 dev_dependencies:
   flutter_test:
