@@ -1,6 +1,6 @@
 import 'package:xml/xml.dart';
 
-class EpubRendererXmlHelper {
+class XmlHelper {
   static void treeShake(XmlDocument document) {
     _treeShake(document.rootElement);
   }

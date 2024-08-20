@@ -2,8 +2,9 @@ import 'package:epubx/epubx.dart' as epub;
 import 'package:flutter/material.dart';
 import 'package:xml/xml.dart' as xml;
 
-import 'helper/epub_renderer_css.dart';
-import 'helper/epub_renderer_xml_helper.dart';
+import '../../toolbox/css_helper.dart';
+import '../../toolbox/xml_helper.dart';
+import 'css/epub_renderer_css_node.dart';
 import 'epub_renderer_element.dart';
 
 class EpubRenderer extends StatelessWidget {
@@ -16,21 +17,15 @@ class EpubRenderer extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, epub.EpubTextContentFile> epubCssFiles = epubBook.Content?.Css ?? {};
     final Map<String, String> cssFiles = epubCssFiles.map((key, value) => MapEntry(key, value.Content ?? ''));
-    final Map<String, Map<String, EpubRendererCSS>> epubRendererCSS = cssFiles.map((key, value) {
-      value = EpubRendererCSS.removeComments(value);
-      Map<String, EpubRendererCSS> map = {};
-      for (String itemValue in value.split('}').where((e) => e.isNotEmpty && e.contains('{')).toList()) {
-        itemValue += '}';
-        EpubRendererCSS css = EpubRendererCSS.fromCSS(itemValue);
-        map[css.selector] = css;
-      }
-      return MapEntry(key, map);
+
+    cssFiles.forEach((key, value) {
+      print("----------");
+      value = CSSHelper.removeComments(value);
+      EpubRendererCSSNode node = EpubRendererCSSNode.fromCSS(value);
     });
 
-    // print(epubRendererCSS);
-
     final xml.XmlDocument document = xml.XmlDocument.parse(htmlContent);
-    EpubRendererXmlHelper.treeShake(document);
+    XmlHelper.treeShake(document);
 
     return SingleChildScrollView(
       child: Padding(

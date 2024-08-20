@@ -2,8 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-class EpubRendererCSS {
-  String selector;
+class EpubRendererCSSData {
   String marginTop;
   String marginBottom;
   String marginLeft;
@@ -16,12 +15,12 @@ class EpubRendererCSS {
   FontWeight fontWeight;
   FontStyle fontStyle;
   String fontFamily;
+  EpubRendererCSSFontVariant fontVariant;
   TextAlign textAlign;
   double lineHeight;
   double letterSpacing;
 
-  EpubRendererCSS({
-    required this.selector,
+  EpubRendererCSSData({
     this.marginTop = '0',
     this.marginBottom = '0',
     this.marginLeft = '0',
@@ -34,26 +33,15 @@ class EpubRendererCSS {
     this.fontWeight = FontWeight.w400,
     this.fontStyle = FontStyle.normal,
     this.fontFamily = "",
+    this.fontVariant = EpubRendererCSSFontVariant.normal,
     this.textAlign = TextAlign.start,
     this.lineHeight = 1.2,
     this.letterSpacing = 0,
   });
 
-  factory EpubRendererCSS.fromCSS(String css) {
-    // Get the '{' and '}' index
-    final int openBraceIndex = css.indexOf('{');
-    final int closeBraceIndex = css.indexOf('}');
-
-    // Get the selector and initialize the margin and padding
-    final String selector = css.substring(0, openBraceIndex).trim();
-
-    // Get the CSS properties
-    final String cssProperties = css.substring(openBraceIndex + 1, closeBraceIndex);
-
+  factory EpubRendererCSSData.fromCSSProperties(String cssProperties) {
     // Initialize variables
-    EpubRendererCSS epubRendererCSS = EpubRendererCSS(selector: selector);
-
-    print(selector);
+    EpubRendererCSSData epubRendererCSS = EpubRendererCSSData();
 
     // Split the CSS properties by ';'
     final Iterable<RegExpMatch> propMatches = RegExp(r'([a-z-]+)\s*:\s*([^;]+)').allMatches(cssProperties);
@@ -108,7 +96,6 @@ class EpubRendererCSS {
           epubRendererCSS.marginRight = propertyValue;
           break;
         case 'padding':
-
           break;
         case 'padding-top':
           epubRendererCSS.paddingTop = propertyValue;
@@ -134,6 +121,10 @@ class EpubRendererCSS {
         case 'font-family':
           epubRendererCSS.fontFamily = propertyValue;
           break;
+        case 'font-variant':
+          epubRendererCSS.fontVariant =
+              propertyValue == 'small-caps' ? EpubRendererCSSFontVariant.smallCaps : EpubRendererCSSFontVariant.normal;
+          break;
         case 'text-align':
           epubRendererCSS.textAlign = _parseTextAlign(propertyValue);
           break;
@@ -147,10 +138,6 @@ class EpubRendererCSS {
     }
 
     return epubRendererCSS;
-  }
-
-  static String removeComments(String css) {
-    return css.replaceAll(RegExp(r'\/\*[\S\s]*\*\/', multiLine: true), '');
   }
 
   static TextAlign _parseTextAlign(String textAlign) {
@@ -179,9 +166,8 @@ class EpubRendererCSS {
     }
   }
 
-  String toJson() {
-    return json.encode({
-      'selector': selector,
+  Map<String, dynamic> toJson() {
+    return {
       'marginTop': marginTop,
       'marginBottom': marginBottom,
       'marginLeft': marginLeft,
@@ -194,14 +180,17 @@ class EpubRendererCSS {
       'fontWeight': fontWeight.toString(),
       'fontStyle': fontStyle.toString(),
       'fontFamily': fontFamily,
+      'fontVariant': fontVariant.toString(),
       'textAlign': textAlign.toString(),
       'lineHeight': lineHeight,
       'letterSpacing': letterSpacing,
-    });
+    };
   }
 
   @override
   String toString() {
-    return toJson();
+    return json.encode(toJson());
   }
 }
+
+enum EpubRendererCSSFontVariant { normal, smallCaps }
