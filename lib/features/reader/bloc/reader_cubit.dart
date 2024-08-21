@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shelf/shelf.dart';
+import 'package:shelf/shelf_io.dart' as shelf_io;
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
@@ -8,45 +13,59 @@ import '../../../processor/bookmark_processor.dart';
 import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
+  final String host = 'localhost';
+  final int port = 8080;
   final BookData bookData;
-  final PageStorageBucket bucket = PageStorageBucket();
-  final ScrollController scrollController = ScrollController();
+  final WebViewController webViewController = WebViewController();
+  HttpServer? server;
 
   ReaderCubit(this.bookData, int chapterNumber)
       : super(ReaderState(bookName: bookData.name, chapterNumber: chapterNumber));
 
-  void initialize({bool isAutoJump = false}) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final String bookName = state.bookName;
-      final int chapterNumber = state.chapterNumber;
-      final BookmarkData? bookmarkData = BookmarkProcessor.get(bookName);
-      final ReaderSettingsData readerSettings = ReaderSettingsData.load();
+  Future<void> initialize({bool isAutoJump = false}) async {
+    webViewController.setJavaScriptMode(JavaScriptMode.unrestricted);
+    webViewController.setBackgroundColor(Colors.transparent);
+    webViewController.setNavigationDelegate(NavigationDelegate(
+      onPageStarted: (String url) {
+        print('Page started loading: $url');
+      },
+      onPageFinished: (String url) {
+        print('Page finished loading: $url');
+      },
+      onHttpError: (HttpResponseError error) {
+        final int statusCode = error.response?.statusCode ?? -1;
+        print('HTTP error status code: $statusCode');
+      },
+      onWebResourceError: (WebResourceError error) {
+        print('Web resource error: ${error.errorCode}');
+      },
+      onNavigationRequest: (NavigationRequest request) {
+        return request.url.startsWith('http://$host:$port') ? NavigationDecision.navigate : NavigationDecision.prevent;
+      },
+    ));
 
-      emit(ReaderState(
-        bookName: bookName,
-        chapterNumber: chapterNumber,
-        code: ReaderStateCode.loaded,
-        prevChapterNumber: chapterNumber - 1 >= 1 ? chapterNumber - 1 : -1,
-        nextChapterNumber: chapterNumber + 1 <= bookData.chapterList!.length ? chapterNumber + 1 : -1,
-        htmlContent: bookData.chapterList?[chapterNumber - 1].htmlContent ?? "",
-        bookmarkData: bookmarkData,
-        readerSettings: readerSettings,
-      ));
+    await _startWebServer();
+    webViewController.loadRequest(Uri.parse('http://$host:$port/'));
 
-      // After the render is completed, scroll to the bookmark.
-      // if (bookmarkData?.chapterNumber == chapterNumber && (readerSettings.autoSave || isAutoJump)) {
-      //   WidgetsBinding.instance.addPostFrameCallback((_) {
-      //     scrollToBookmark();
-      //   });
-      // } else if (bookmarkData?.chapterNumber != chapterNumber && readerSettings.autoSave) {
-      //   saveBookmark();
-      // }
-    });
+    final String bookName = state.bookName;
+    final int chapterNumber = state.chapterNumber;
+    final BookmarkData? bookmarkData = BookmarkProcessor.get(bookName);
+    final ReaderSettingsData readerSettings = ReaderSettingsData.load();
+
+    emit(ReaderState(
+      bookName: bookName,
+      chapterNumber: chapterNumber,
+      code: ReaderStateCode.loaded,
+      prevChapterNumber: chapterNumber - 1 >= 1 ? chapterNumber - 1 : -1,
+      nextChapterNumber: chapterNumber + 1 <= bookData.chapterList!.length ? chapterNumber + 1 : -1,
+      htmlContent: bookData.chapterList?[chapterNumber - 1].htmlContent ?? "",
+      bookmarkData: bookmarkData,
+      readerSettings: readerSettings,
+    ));
   }
 
   void changeChapter(int chapterNumber) async {
     emit(ReaderState(bookName: state.bookName, chapterNumber: chapterNumber));
-    // scrollController.jumpTo(0);
     if (state.readerSettings.autoSave) {
       saveBookmark();
     }
@@ -75,51 +94,37 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// Bookmarks
   void saveBookmark() {
-    final BookmarkData bookmarkObject = BookmarkData(
-      bookPath: state.bookName,
-      chapterNumber: state.chapterNumber,
-      // scrollPosition: scrollController.position.pixels,
-      scrollPosition: 0,
-      savedTime: DateTime.now(),
-    )
-      ..save();
-    emit(state.copyWith(bookmarkData: bookmarkObject));
+    // final BookmarkData bookmarkObject = BookmarkData(
+    //   bookPath: state.bookName,
+    //   chapterNumber: state.chapterNumber,
+    //   scrollPosition: 0,
+    //   savedTime: DateTime.now(),
+    // )
+    //   ..save();
+    // emit(state.copyWith(bookmarkData: bookmarkObject));
   }
 
   void scrollToBookmark() {
-    // scrollController.animateTo(
-    //   state.bookmarkData?.scrollPosition ?? 0.0,
-    //   duration: const Duration(milliseconds: 300),
-    //   curve: Curves.easeInOut,
-    // );
+
+  }
+
+  Future<void> _startWebServer() async {
+    var handler = const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);;
+    server = await shelf_io.serve(handler, host, port);
+    print('Server listening on port ${server?.port}');
+    server?.autoCompress = true;
+  }
+
+  Response _echoRequest(Request request) {
+    print('Server: ${request.url}');
+    return Response.ok('Hello, world!');
   }
 
   @override
   Future<void> close() async {
     super.close();
-    scrollController.dispose();
-  }
-
-  void _onScroll() {
-    if (state.code != ReaderStateCode.loaded) {
-      // The content is not loaded yet.
-      return;
-    }
-    emit(state.copyWith(
-      currentScrollY: scrollController.position.pixels,
-      maxScrollExtent: scrollController.position.maxScrollExtent,
-    ));
-  }
-
-  void _onScrollEnd() {
-    if (state.code != ReaderStateCode.loaded) {
-      // The content is not loaded yet.
-      return;
-    }
-    if (!scrollController.position.isScrollingNotifier.value) {
-      if (state.readerSettings.autoSave) {
-        saveBookmark();
-      }
-    }
+    await server?.close();
+    server = null;
+    print('Server closed');
   }
 }
