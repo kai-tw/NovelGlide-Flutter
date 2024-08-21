@@ -10,9 +10,8 @@ class ReaderState extends Equatable {
   final ReaderStateCode code;
   final String bookName;
   final int chapterNumber;
-  final int prevChapterNumber;
-  final int nextChapterNumber;
-  final String htmlContent;
+  final bool isFirstPage;
+  final bool isLastPage;
 
   /// Progress bar state.
   final double currentScrollY;
@@ -29,9 +28,8 @@ class ReaderState extends Equatable {
       [
         bookName,
         chapterNumber,
-        prevChapterNumber,
-        nextChapterNumber,
-        htmlContent,
+        isFirstPage,
+        isLastPage,
         bookmarkData,
         readerSettings,
         currentScrollY,
@@ -42,9 +40,8 @@ class ReaderState extends Equatable {
     this.code = ReaderStateCode.loading,
     required this.bookName,
     required this.chapterNumber,
-    this.prevChapterNumber = -1,
-    this.nextChapterNumber = -1,
-    this.htmlContent = "",
+    this.isFirstPage = true,
+    this.isLastPage = false,
     this.bookmarkData,
     ReaderSettingsData? readerSettings,
     this.currentScrollY = 0.0,
@@ -55,9 +52,8 @@ class ReaderState extends Equatable {
     ReaderStateCode? code,
     String? bookName,
     int? chapterNumber,
-    int? prevChapterNumber,
-    int? nextChapterNumber,
-    String? htmlContent,
+    bool? isFirstPage,
+    bool? isLastPage,
     BookmarkData? bookmarkData,
     ReaderSettingsData? readerSettings,
     double? currentScrollY,
@@ -67,9 +63,8 @@ class ReaderState extends Equatable {
       code: code ?? this.code,
       bookName: bookName ?? this.bookName,
       chapterNumber: chapterNumber ?? this.chapterNumber,
-      prevChapterNumber: prevChapterNumber ?? this.prevChapterNumber,
-      nextChapterNumber: nextChapterNumber ?? this.nextChapterNumber,
-      htmlContent: htmlContent ?? this.htmlContent,
+      isFirstPage: isFirstPage ?? this.isFirstPage,
+      isLastPage: isLastPage ?? this.isLastPage,
       bookmarkData: bookmarkData ?? this.bookmarkData,
       readerSettings: readerSettings ?? this.readerSettings,
       currentScrollY: currentScrollY ?? this.currentScrollY,

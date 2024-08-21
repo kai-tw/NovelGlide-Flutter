@@ -20,18 +20,25 @@ class ReaderBody extends StatelessWidget {
         const ReaderProgressBar(),
         Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
         Expanded(
-          child: BlocBuilder<ReaderCubit, ReaderState>(
-            buildWhen: (previous, current) => previous.code != current.code,
-            builder: (context, state) {
-              switch (state.code) {
-                case ReaderStateCode.loaded:
-                  return WebViewWidget(controller: cubit.webViewController);
-                default:
-                  return const Center(
-                    child: CommonLoading(),
-                  );
-              }
-            },
+          child: Stack(
+            children: [
+              WebViewWidget(controller: cubit.webViewController),
+              Positioned.fill(
+                child: BlocBuilder<ReaderCubit, ReaderState>(
+                  buildWhen: (previous, current) => previous.code != current.code,
+                  builder: (context, state) {
+                    switch (state.code) {
+                      case ReaderStateCode.loaded:
+                        return const SizedBox.shrink();
+                      default:
+                        return const Center(
+                          child: CommonLoading(),
+                        );
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ],

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
@@ -23,6 +24,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       : super(ReaderState(bookName: bookData.name, chapterNumber: chapterNumber));
 
   Future<void> initialize({bool isAutoJump = false}) async {
+    webViewController.enableZoom(false);
     webViewController.setJavaScriptMode(JavaScriptMode.unrestricted);
     webViewController.setBackgroundColor(Colors.transparent);
     webViewController.setNavigationDelegate(NavigationDelegate(
@@ -56,26 +58,19 @@ class ReaderCubit extends Cubit<ReaderState> {
       bookName: bookName,
       chapterNumber: chapterNumber,
       code: ReaderStateCode.loaded,
-      prevChapterNumber: chapterNumber - 1 >= 1 ? chapterNumber - 1 : -1,
-      nextChapterNumber: chapterNumber + 1 <= bookData.chapterList!.length ? chapterNumber + 1 : -1,
-      htmlContent: bookData.chapterList?[chapterNumber - 1].htmlContent ?? "",
       bookmarkData: bookmarkData,
       readerSettings: readerSettings,
     ));
   }
 
-  void changeChapter(int chapterNumber) async {
-    emit(ReaderState(bookName: state.bookName, chapterNumber: chapterNumber));
-    if (state.readerSettings.autoSave) {
-      saveBookmark();
-    }
-    emit(state.copyWith(
-      code: ReaderStateCode.loaded,
-      prevChapterNumber: chapterNumber - 1 >= 1 ? chapterNumber - 1 : -1,
-      nextChapterNumber: chapterNumber + 1 <= bookData.chapterList!.length ? chapterNumber + 1 : -1,
-      htmlContent: bookData.chapterList![chapterNumber - 1].htmlContent ?? "",
-      readerSettings: ReaderSettingsData.load(),
-    ));
+  /// Contact the web-view to go to the previous page
+  void prevPage() {
+    webViewController.runJavaScript('window.prevPage()');
+  }
+
+  /// Contact the web-view to go to the next page
+  void nextPage() {
+    webViewController.runJavaScript('window.nextPage()');
   }
 
   /// Settings
@@ -104,20 +99,46 @@ class ReaderCubit extends Cubit<ReaderState> {
     // emit(state.copyWith(bookmarkData: bookmarkObject));
   }
 
-  void scrollToBookmark() {
-
-  }
+  void scrollToBookmark() {}
 
   Future<void> _startWebServer() async {
-    var handler = const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);;
+    var handler = const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
     server = await shelf_io.serve(handler, host, port);
     print('Server listening on port ${server?.port}');
     server?.autoCompress = true;
   }
 
-  Response _echoRequest(Request request) {
-    print('Server: ${request.url}');
-    return Response.ok('Hello, world!');
+  Future<Response> _echoRequest(Request request) async {
+    print('Server: ${request.url.path}');
+    switch (request.url.path) {
+      case '':
+      case 'index.html':
+        return Response.ok(
+          await rootBundle.loadString('assets/reader_root/index.html'),
+          headers: {HttpHeaders.contentTypeHeader: 'text/html'},
+        );
+
+      case 'index.js':
+        return Response.ok(
+          await rootBundle.loadString('assets/reader_root/index.js'),
+          headers: {HttpHeaders.contentTypeHeader: 'text/javascript'},
+        );
+
+      case 'main.css':
+        return Response.ok(
+          await rootBundle.loadString('assets/reader_root/main.css'),
+          headers: {HttpHeaders.contentTypeHeader: 'text/css'},
+        );
+
+      case 'book.epub':
+        return Response.ok(
+          File(bookData.filePath).readAsBytesSync(),
+          headers: {HttpHeaders.contentTypeHeader: 'application/epub+zip'},
+        );
+
+      default:
+        return Response.notFound('Not found');
+    }
   }
 
   @override
