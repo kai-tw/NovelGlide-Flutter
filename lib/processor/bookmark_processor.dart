@@ -19,15 +19,9 @@ class BookmarkProcessor {
     return retList;
   }
 
-  static void save(BookmarkData data) {
+  static BookmarkData? get(String bookPath) {
     final Box<String> box = Hive.box(name: 'bookmark');
-    box.put(data.bookPath, data.toJson());
-    box.close();
-  }
-
-  static BookmarkData? get(String bookName) {
-    final Box<String> box = Hive.box(name: 'bookmark');
-    final String? jsonValue = box.get(bookName);
+    final String? jsonValue = box.get(bookPath);
     if (jsonValue != null) {
       return BookmarkData.fromJson(jsonValue);
     }
@@ -50,20 +44,5 @@ class BookmarkProcessor {
         destBox.put(key, sourceBox.get(key)!);
       }
     }
-  }
-
-  /// If the bookmark is at the chapter that is created or deleted, delete it.
-  static void chapterCheck(String bookName, int chapterNumber) {
-    final Box<String> box = Hive.box(name: 'bookmark');
-    final String? jsonValue = box.get(bookName);
-
-    if (jsonValue != null) {
-      final BookmarkData data = BookmarkData.fromJson(jsonValue);
-      if (data.chapterNumber == chapterNumber) {
-        box.delete(bookName);
-      }
-    }
-
-    box.close();
   }
 }

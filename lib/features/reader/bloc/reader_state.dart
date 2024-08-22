@@ -9,13 +9,8 @@ class ReaderState extends Equatable {
   /// Overall state.
   final ReaderStateCode code;
   final String bookName;
-  final int chapterNumber;
-  final bool isFirstPage;
-  final bool isLastPage;
-
-  /// Progress bar state.
-  final double currentScrollY;
-  final double maxScrollExtent;
+  final bool atStart;
+  final bool atEnd;
 
   /// Bookmark state.
   final BookmarkData? bookmarkData;
@@ -26,49 +21,38 @@ class ReaderState extends Equatable {
   @override
   List<Object?> get props =>
       [
+        code,
         bookName,
-        chapterNumber,
-        isFirstPage,
-        isLastPage,
+        atStart,
+        atEnd,
         bookmarkData,
         readerSettings,
-        currentScrollY,
-        maxScrollExtent,
       ];
 
   const ReaderState({
     this.code = ReaderStateCode.loading,
     required this.bookName,
-    required this.chapterNumber,
-    this.isFirstPage = true,
-    this.isLastPage = false,
+    this.atStart = true,
+    this.atEnd = false,
     this.bookmarkData,
     ReaderSettingsData? readerSettings,
-    this.currentScrollY = 0.0,
-    this.maxScrollExtent = 1.0,
   }) : readerSettings = readerSettings ?? const ReaderSettingsData();
 
   ReaderState copyWith({
     ReaderStateCode? code,
     String? bookName,
-    int? chapterNumber,
-    bool? isFirstPage,
-    bool? isLastPage,
+    bool? atStart,
+    bool? atEnd,
     BookmarkData? bookmarkData,
     ReaderSettingsData? readerSettings,
-    double? currentScrollY,
-    double? maxScrollExtent,
   }) {
     return ReaderState(
       code: code ?? this.code,
       bookName: bookName ?? this.bookName,
-      chapterNumber: chapterNumber ?? this.chapterNumber,
-      isFirstPage: isFirstPage ?? this.isFirstPage,
-      isLastPage: isLastPage ?? this.isLastPage,
+      atStart: atStart ?? this.atStart,
+      atEnd: atEnd ?? this.atEnd,
       bookmarkData: bookmarkData ?? this.bookmarkData,
       readerSettings: readerSettings ?? this.readerSettings,
-      currentScrollY: currentScrollY ?? this.currentScrollY,
-      maxScrollExtent: maxScrollExtent ?? this.maxScrollExtent,
     );
   }
 

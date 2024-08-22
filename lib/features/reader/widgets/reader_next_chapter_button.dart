@@ -12,14 +12,14 @@ class ReaderNextChapterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) => previous.isLastPage != current.isLastPage,
+      buildWhen: (previous, current) => previous.atEnd != current.atEnd,
       builder: (BuildContext context, ReaderState state) {
         return IconButton(
           icon: Icon(
             Icons.arrow_forward_ios_rounded,
             semanticLabel: AppLocalizations.of(context)!.accessibilityReaderNextChapterButton,
           ),
-          onPressed: state.isLastPage ? null : () => cubit.nextPage(),
+          onPressed: state.atEnd ? null : () => cubit.nextPage(),
         );
       },
     );

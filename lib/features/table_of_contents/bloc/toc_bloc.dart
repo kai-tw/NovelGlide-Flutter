@@ -26,7 +26,7 @@ class TocCubit extends Cubit<TocState> {
         coverBytes: bookData.coverBytes,
         code: chapterList.isEmpty ? TocStateCode.empty : TocStateCode.normal,
         chapterList: chapterList,
-        bookmarkData: BookmarkProcessor.get(bookData.name),
+        bookmarkData: BookmarkProcessor.get(bookData.filePath),
       ));
     });
   }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -15,60 +16,41 @@ import '../../../processor/bookmark_processor.dart';
 import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
-  final String host = '127.0.0.1';
-  final int port = 8080;
+  final String _host = '127.0.0.1';
+  final int _port = 8080;
   final BookData bookData;
-  late final AppLifecycleListener appLifecycleListener;
   final WebViewController webViewController = WebViewController();
-  ThemeData currentTheme;
-  HttpServer? server;
-  bool isServerActive = false;
+
+  late ThemeData _currentTheme;
+
+  bool _isAutoJump = false;
+  bool _isServerActive = false;
+  HttpServer? _server;
+  String? _startCfi;
 
   ReaderCubit({
     required this.bookData,
-    required int chapterNumber,
-    required this.currentTheme,
-  }) : super(ReaderState(bookName: bookData.name, chapterNumber: chapterNumber));
+  }) : super(ReaderState(bookName: bookData.name));
 
   Future<void> initialize({bool isAutoJump = false}) async {
-    final String bookName = state.bookName;
-    final int chapterNumber = state.chapterNumber;
-    final BookmarkData? bookmarkData = BookmarkProcessor.get(bookName);
-    final ReaderSettingsData readerSettings = ReaderSettingsData.load();
+    _isAutoJump = isAutoJump;
 
-    appLifecycleListener = AppLifecycleListener(onStateChange: _onStateChanged);
+    AppLifecycleListener(onStateChange: _onStateChanged);
 
     webViewController.enableZoom(false);
     webViewController.setJavaScriptMode(JavaScriptMode.unrestricted);
     webViewController.setBackgroundColor(Colors.transparent);
     webViewController.setNavigationDelegate(NavigationDelegate(
       onPageStarted: (String url) => print('Page started loading: $url'),
-      onPageFinished: (String url) async {
-        print('Page finished loading: $url');
-
-        if (!isClosed) {
-          emit(ReaderState(
-            bookName: bookName,
-            chapterNumber: chapterNumber,
-            code: ReaderStateCode.loaded,
-            bookmarkData: bookmarkData,
-            readerSettings: readerSettings,
-          ));
-        }
-
-        await webViewController.addJavaScriptChannel('ReaderChannel', onMessageReceived: (JavaScriptMessage message) {
-          final String messageName = message.message;
-          print('Received message: $messageName');
-        });
-      },
+      onPageFinished: (String url) => print('Page finished loading: $url'),
       onHttpError: (HttpResponseError error) => print('HTTP error status code: ${error.response?.statusCode ?? -1}'),
       onWebResourceError: (WebResourceError error) => print('Web resource error: ${error.errorCode}'),
       onNavigationRequest: (NavigationRequest request) =>
-          request.url.startsWith('http://$host:$port') ? NavigationDecision.navigate : NavigationDecision.prevent,
+          request.url.startsWith('http://$_host:$_port') ? NavigationDecision.navigate : NavigationDecision.prevent,
     ));
 
     await _startWebServer();
-    webViewController.loadRequest(Uri.parse('http://$host:$port/'));
+    webViewController.loadRequest(Uri.parse('http://$_host:$_port/'));
   }
 
   /// Contact the web-view to go to the previous page
@@ -78,51 +60,57 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// Contact the web-view to go to the next page
   void nextPage() {
-    webViewController.runJavaScript('window.getState()');
     webViewController.runJavaScript('window.nextPage()');
   }
 
   /// Settings
   void setSettings({double? fontSize, double? lineHeight, bool? autoSave}) {
-    final ReaderSettingsData newSettings = state.readerSettings.copyWith(
-      fontSize: fontSize,
-      lineHeight: lineHeight,
-      autoSave: autoSave,
-    );
-    emit(state.copyWith(readerSettings: newSettings));
+    emit(state.copyWith(
+      readerSettings: state.readerSettings.copyWith(
+        fontSize: fontSize,
+        lineHeight: lineHeight,
+        autoSave: autoSave,
+      ),
+    ));
+    sendThemeData();
   }
 
   void resetSettings() {
     emit(state.copyWith(readerSettings: const ReaderSettingsData()));
+    sendThemeData();
   }
 
   /// Bookmarks
   void saveBookmark() {
-    // final BookmarkData bookmarkObject = BookmarkData(
-    //   bookPath: state.bookName,
-    //   chapterNumber: state.chapterNumber,
-    //   scrollPosition: 0,
-    //   savedTime: DateTime.now(),
-    // )
-    //   ..save();
-    // emit(state.copyWith(bookmarkData: bookmarkObject));
+    final BookmarkData data = BookmarkData(
+      bookPath: bookData.filePath,
+      bookName: bookData.name,
+      startCfi: _startCfi,
+      savedTime: DateTime.now(),
+    )..save();
+    emit(state.copyWith(bookmarkData: data));
   }
 
-  void scrollToBookmark() {}
+  void scrollToBookmark() {
+    final BookmarkData? bookmarkData = state.bookmarkData ?? BookmarkProcessor.get(bookData.name);
+    if (bookmarkData?.startCfi != null) {
+      webViewController.runJavaScript('window.goToCfi("${bookmarkData!.startCfi}")');
+    }
+  }
 
   Future<void> _startWebServer() async {
     var handler = const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
-    server = await shelf_io.serve(handler, host, port);
-    print('Server listening on port ${server?.port}');
-    server?.autoCompress = true;
-    isServerActive = true;
+    _server = await shelf_io.serve(handler, _host, _port);
+    print('Server listening on port ${_server?.port}');
+    _server?.autoCompress = true;
+    _isServerActive = true;
   }
 
   Future<Response> _echoRequest(Request request) async {
     final HttpConnectionInfo? connectionInfo = request.context['shelf.io.connection_info'] as HttpConnectionInfo?;
     final String? remoteAddress = connectionInfo?.remoteAddress.address;
 
-    if (!isServerActive || remoteAddress != '127.0.0.1') {
+    if (!_isServerActive || remoteAddress != '127.0.0.1') {
       return Response.forbidden('Forbidden');
     }
 
@@ -150,13 +138,55 @@ class ReaderCubit extends Cubit<ReaderState> {
           headers: {HttpHeaders.contentTypeHeader: 'application/epub+zip'},
         );
 
-      case 'data':
-        print(await request.readAsString());
+      case 'loadDone':
+        if (!isClosed) {
+          emit(ReaderState(
+            bookName: bookData.name,
+            code: ReaderStateCode.loaded,
+            bookmarkData: BookmarkProcessor.get(bookData.filePath),
+            readerSettings: ReaderSettingsData.load(),
+          ));
+
+          if (_isAutoJump) {
+            scrollToBookmark();
+          }
+        }
+        return Response.ok('{}');
+
+      case 'setState':
+        final Map<String, dynamic> jsonValue = jsonDecode(await request.readAsString());
+
+        _startCfi = jsonValue['startCfi'];
+
+        emit(state.copyWith(
+          atStart: jsonValue['atStart'],
+          atEnd: jsonValue['atEnd'],
+        ));
+
+        if (state.readerSettings.autoSave) {
+          saveBookmark();
+        }
         return Response.ok('{}');
 
       default:
         return Response.notFound('Not found');
     }
+  }
+
+  void sendThemeData([ThemeData? newTheme]) {
+    _currentTheme = newTheme ?? _currentTheme;
+    final Color color = _currentTheme.colorScheme.onSurface;
+    final Map<String, dynamic> themeData = {
+      "body": {
+        "color": 'rgba(${color.red}, ${color.green}, ${color.blue}, ${color.alpha / 255})',
+        "font-size": state.readerSettings.fontSize.toStringAsFixed(2),
+        "line-height": state.readerSettings.lineHeight.toStringAsFixed(1),
+      },
+      "a": {
+        "color": "inherit !important",
+      }
+    };
+    webViewController.runJavaScript('window.setThemeData(${jsonEncode(themeData)})');
   }
 
   // Listen to the app lifecycle state changes
@@ -177,19 +207,19 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   void _onDetached() => close();
 
-  void _onResumed() => isServerActive = true;
+  void _onResumed() => _isServerActive = true;
 
-  void _onInactive() => isServerActive = false;
+  void _onInactive() => _isServerActive = false;
 
-  void _onHidden() => isServerActive = false;
+  void _onHidden() => _isServerActive = false;
 
-  void _onPaused() => isServerActive = false;
+  void _onPaused() => _isServerActive = false;
 
   @override
   Future<void> close() async {
-    super.close();
-    await server?.close();
-    server = null;
+    await _server?.close();
+    _server = null;
     print('Server closed');
+    super.close();
   }
 }

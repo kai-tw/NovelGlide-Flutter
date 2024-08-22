@@ -34,7 +34,7 @@ class BookProcessor {
     for (File epubFile in folder.listSync().whereType<File>()) {
       if (AdvancedMimeTypeResolver.instance.lookupAll(epubFile) == 'application/epub+zip') {
         epub.EpubBook epubBook = await epub.EpubReader.readBook(epubFile.readAsBytesSync());
-        entries.add(BookData.fromEpub(epubBook, epubFile.path));
+        entries.add(BookData(epubBook: epubBook, filePath: epubFile.path));
       }
     }
 

@@ -11,7 +11,6 @@ import '../data/file_path.dart';
 import '../toolbox/chinese_number_parser.dart';
 import '../toolbox/chapter_reg_exp.dart';
 import 'book_processor.dart';
-import 'bookmark_processor.dart';
 import 'chapter_processor_exception.dart';
 
 /// Process all the operation related to chapters.
@@ -125,8 +124,6 @@ class ChapterProcessor {
     await for (String line in _streamContentFromFile(file)) {
       chapterFile.writeAsStringSync(line + Platform.lineTerminator, mode: FileMode.append);
     }
-
-    BookmarkProcessor.chapterCheck(bookName, ordinalNumber);
 
     return chapterFile.existsSync();
   }

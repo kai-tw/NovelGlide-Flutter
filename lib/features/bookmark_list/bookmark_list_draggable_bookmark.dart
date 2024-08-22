@@ -22,7 +22,7 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
         onDragEnd: (_) => cubit.setDragging(false),
         onDragCompleted: () {
           try {
-            _bookmarkObject.clear();
+            _bookmarkObject.delete();
           } catch (e) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

@@ -7,7 +7,6 @@ import '../../ad_center/advertisement_id.dart';
 import '../common_components/common_loading.dart';
 import 'bloc/reader_cubit.dart';
 import 'bloc/reader_state.dart';
-import 'widgets/reader_progress_bar.dart';
 
 class ReaderBody extends StatelessWidget {
   const ReaderBody({super.key});
@@ -15,9 +14,9 @@ class ReaderBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ReaderCubit cubit = context.read<ReaderCubit>();
+    cubit.sendThemeData(Theme.of(context));
     return Column(
       children: [
-        const ReaderProgressBar(),
         Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
         Expanded(
           child: Stack(
