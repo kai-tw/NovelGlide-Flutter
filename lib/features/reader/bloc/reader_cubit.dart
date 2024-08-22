@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -14,53 +15,60 @@ import '../../../processor/bookmark_processor.dart';
 import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
-  final String host = 'localhost';
+  final String host = '127.0.0.1';
   final int port = 8080;
   final BookData bookData;
+  late final AppLifecycleListener appLifecycleListener;
   final WebViewController webViewController = WebViewController();
+  ThemeData currentTheme;
   HttpServer? server;
+  bool isServerActive = false;
 
-  ReaderCubit(this.bookData, int chapterNumber)
-      : super(ReaderState(bookName: bookData.name, chapterNumber: chapterNumber));
+  ReaderCubit({
+    required this.bookData,
+    required int chapterNumber,
+    required this.currentTheme,
+  }) : super(ReaderState(bookName: bookData.name, chapterNumber: chapterNumber));
 
   Future<void> initialize({bool isAutoJump = false}) async {
-    webViewController.enableZoom(false);
-    webViewController.setJavaScriptMode(JavaScriptMode.unrestricted);
-    webViewController.setBackgroundColor(Colors.transparent);
-    webViewController.setNavigationDelegate(NavigationDelegate(
-      onPageStarted: (String url) {
-        print('Page started loading: $url');
-      },
-      onPageFinished: (String url) {
-        print('Page finished loading: $url');
-      },
-      onHttpError: (HttpResponseError error) {
-        final int statusCode = error.response?.statusCode ?? -1;
-        print('HTTP error status code: $statusCode');
-      },
-      onWebResourceError: (WebResourceError error) {
-        print('Web resource error: ${error.errorCode}');
-      },
-      onNavigationRequest: (NavigationRequest request) {
-        return request.url.startsWith('http://$host:$port') ? NavigationDecision.navigate : NavigationDecision.prevent;
-      },
-    ));
-
-    await _startWebServer();
-    webViewController.loadRequest(Uri.parse('http://$host:$port/'));
-
     final String bookName = state.bookName;
     final int chapterNumber = state.chapterNumber;
     final BookmarkData? bookmarkData = BookmarkProcessor.get(bookName);
     final ReaderSettingsData readerSettings = ReaderSettingsData.load();
 
-    emit(ReaderState(
-      bookName: bookName,
-      chapterNumber: chapterNumber,
-      code: ReaderStateCode.loaded,
-      bookmarkData: bookmarkData,
-      readerSettings: readerSettings,
+    appLifecycleListener = AppLifecycleListener(onStateChange: _onStateChanged);
+
+    webViewController.enableZoom(false);
+    webViewController.setJavaScriptMode(JavaScriptMode.unrestricted);
+    webViewController.setBackgroundColor(Colors.transparent);
+    webViewController.setNavigationDelegate(NavigationDelegate(
+      onPageStarted: (String url) => print('Page started loading: $url'),
+      onPageFinished: (String url) async {
+        print('Page finished loading: $url');
+
+        if (!isClosed) {
+          emit(ReaderState(
+            bookName: bookName,
+            chapterNumber: chapterNumber,
+            code: ReaderStateCode.loaded,
+            bookmarkData: bookmarkData,
+            readerSettings: readerSettings,
+          ));
+        }
+
+        await webViewController.addJavaScriptChannel('ReaderChannel', onMessageReceived: (JavaScriptMessage message) {
+          final String messageName = message.message;
+          print('Received message: $messageName');
+        });
+      },
+      onHttpError: (HttpResponseError error) => print('HTTP error status code: ${error.response?.statusCode ?? -1}'),
+      onWebResourceError: (WebResourceError error) => print('Web resource error: ${error.errorCode}'),
+      onNavigationRequest: (NavigationRequest request) =>
+          request.url.startsWith('http://$host:$port') ? NavigationDecision.navigate : NavigationDecision.prevent,
     ));
+
+    await _startWebServer();
+    webViewController.loadRequest(Uri.parse('http://$host:$port/'));
   }
 
   /// Contact the web-view to go to the previous page
@@ -70,6 +78,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// Contact the web-view to go to the next page
   void nextPage() {
+    webViewController.runJavaScript('window.getState()');
     webViewController.runJavaScript('window.nextPage()');
   }
 
@@ -106,29 +115,34 @@ class ReaderCubit extends Cubit<ReaderState> {
     server = await shelf_io.serve(handler, host, port);
     print('Server listening on port ${server?.port}');
     server?.autoCompress = true;
+    isServerActive = true;
   }
 
   Future<Response> _echoRequest(Request request) async {
-    print('Server: ${request.url.path}');
+    final HttpConnectionInfo? connectionInfo = request.context['shelf.io.connection_info'] as HttpConnectionInfo?;
+    final String? remoteAddress = connectionInfo?.remoteAddress.address;
+
+    if (!isServerActive || remoteAddress != '127.0.0.1') {
+      return Response.forbidden('Forbidden');
+    }
+
     switch (request.url.path) {
       case '':
       case 'index.html':
         return Response.ok(
           await rootBundle.loadString('assets/reader_root/index.html'),
-          headers: {HttpHeaders.contentTypeHeader: 'text/html'},
+          headers: {HttpHeaders.contentTypeHeader: 'text/html; charset=utf-8'},
         );
 
       case 'index.js':
         return Response.ok(
           await rootBundle.loadString('assets/reader_root/index.js'),
-          headers: {HttpHeaders.contentTypeHeader: 'text/javascript'},
+          headers: {HttpHeaders.contentTypeHeader: 'text/javascript; charset=utf-8'},
         );
 
       case 'main.css':
-        return Response.ok(
-          await rootBundle.loadString('assets/reader_root/main.css'),
-          headers: {HttpHeaders.contentTypeHeader: 'text/css'},
-        );
+        String css = await rootBundle.loadString('assets/reader_root/main.css');
+        return Response.ok(css, headers: {HttpHeaders.contentTypeHeader: 'text/css; charset=utf-8'});
 
       case 'book.epub':
         return Response.ok(
@@ -136,10 +150,40 @@ class ReaderCubit extends Cubit<ReaderState> {
           headers: {HttpHeaders.contentTypeHeader: 'application/epub+zip'},
         );
 
+      case 'data':
+        print(await request.readAsString());
+        return Response.ok('{}');
+
       default:
         return Response.notFound('Not found');
     }
   }
+
+  // Listen to the app lifecycle state changes
+  void _onStateChanged(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.detached:
+        _onDetached();
+      case AppLifecycleState.resumed:
+        _onResumed();
+      case AppLifecycleState.inactive:
+        _onInactive();
+      case AppLifecycleState.hidden:
+        _onHidden();
+      case AppLifecycleState.paused:
+        _onPaused();
+    }
+  }
+
+  void _onDetached() => close();
+
+  void _onResumed() => isServerActive = true;
+
+  void _onInactive() => isServerActive = false;
+
+  void _onHidden() => isServerActive = false;
+
+  void _onPaused() => isServerActive = false;
 
   @override
   Future<void> close() async {

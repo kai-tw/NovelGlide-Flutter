@@ -36,7 +36,9 @@ class CommonFormSubmitButton extends StatelessWidget {
           );
           Form.of(context).save();
           onPressed!().then((bool isSuccess) {
-            Navigator.of(context, rootNavigator: true).pop();
+            if (context.mounted) {
+              Navigator.of(context, rootNavigator: true).pop();
+            }
 
             if (isSuccess && onSuccess != null) {
               onSuccess!();
@@ -44,7 +46,11 @@ class CommonFormSubmitButton extends StatelessWidget {
               onFailed!(null);
             }
           }).catchError((e) {
-            Navigator.of(context, rootNavigator: true).pop();
+
+            if (context.mounted) {
+              Navigator.of(context, rootNavigator: true).pop();
+            }
+
             if (onFailed != null) {
               onFailed!(e);
             }

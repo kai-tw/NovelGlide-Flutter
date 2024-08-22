@@ -12,9 +12,11 @@ class BookshelfAddBookButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => const AddBookScaffold()))
-            .then((_) => BlocProvider.of<BookshelfCubit>(context).refresh());
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AddBookScaffold())).then((_) {
+          if (context.mounted) {
+            BlocProvider.of<BookshelfCubit>(context).refresh();
+          }
+        });
       },
       child: Icon(
         Icons.add,

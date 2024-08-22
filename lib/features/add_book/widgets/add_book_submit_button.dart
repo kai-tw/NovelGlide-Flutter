@@ -27,8 +27,12 @@ class AddBookSubmitButton extends StatelessWidget {
   }
 
   void _onPressed(BuildContext context, AddBookCubit cubit) {
-    cubit.submit().then((_) => Navigator.of(context).pop()).catchError((e) {
-      if (e is AddBookDuplicateFileException) {
+    cubit.submit().then((_) {
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+    }).catchError((e) {
+      if (e is AddBookDuplicateFileException && context.mounted) {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bloc/reader_cubit.dart';
 import '../bloc/reader_state.dart';
@@ -11,9 +10,9 @@ class ReaderTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) => previous.chapterNumber != current.chapterNumber,
+      buildWhen: (previous, current) => previous.bookName != current.bookName,
       builder: (BuildContext context, ReaderState state) {
-        return Text(AppLocalizations.of(context)!.chapterLabel(state.chapterNumber));
+        return Text(state.bookName);
       },
     );
   }

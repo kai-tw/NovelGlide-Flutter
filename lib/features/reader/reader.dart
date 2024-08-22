@@ -14,12 +14,12 @@ class ReaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<ReaderCubit>(
-          create: (_) => ReaderCubit(bookData, chapterNumber)..initialize(isAutoJump: isAutoJump),
-        ),
-      ],
+    return BlocProvider(
+      create: (_) => ReaderCubit(
+        bookData: bookData,
+        chapterNumber: chapterNumber,
+        currentTheme: Theme.of(context),
+      )..initialize(isAutoJump: isAutoJump),
       child: const ReaderScaffold(),
     );
   }
