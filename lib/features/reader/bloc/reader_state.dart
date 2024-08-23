@@ -11,6 +11,8 @@ class ReaderState extends Equatable {
   final String bookName;
   final bool atStart;
   final bool atEnd;
+  final int localCurrent;
+  final int localTotal;
 
   /// Bookmark state.
   final BookmarkData? bookmarkData;
@@ -27,6 +29,8 @@ class ReaderState extends Equatable {
         atEnd,
         bookmarkData,
         readerSettings,
+        localCurrent,
+        localTotal,
       ];
 
   const ReaderState({
@@ -35,8 +39,10 @@ class ReaderState extends Equatable {
     this.atStart = true,
     this.atEnd = false,
     this.bookmarkData,
-    ReaderSettingsData? readerSettings,
-  }) : readerSettings = readerSettings ?? const ReaderSettingsData();
+    required this.readerSettings,
+    this.localCurrent = 0,
+    this.localTotal = 0,
+  });
 
   ReaderState copyWith({
     ReaderStateCode? code,
@@ -45,6 +51,8 @@ class ReaderState extends Equatable {
     bool? atEnd,
     BookmarkData? bookmarkData,
     ReaderSettingsData? readerSettings,
+    int? localCurrent,
+    int? localTotal,
   }) {
     return ReaderState(
       code: code ?? this.code,
@@ -53,6 +61,8 @@ class ReaderState extends Equatable {
       atEnd: atEnd ?? this.atEnd,
       bookmarkData: bookmarkData ?? this.bookmarkData,
       readerSettings: readerSettings ?? this.readerSettings,
+      localCurrent: localCurrent ?? this.localCurrent,
+      localTotal: localTotal ?? this.localTotal,
     );
   }
 

@@ -16,7 +16,7 @@ import '../../../processor/bookmark_processor.dart';
 import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
-  final String _host = '127.0.0.1';
+  final String _host = 'localhost';
   final int _port = 8080;
   final BookData bookData;
   final WebViewController webViewController = WebViewController();
@@ -30,7 +30,11 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   ReaderCubit({
     required this.bookData,
-  }) : super(ReaderState(bookName: bookData.name));
+  }) : super(ReaderState(
+          bookName: bookData.name,
+          bookmarkData: BookmarkProcessor.get(bookData.filePath),
+          readerSettings: ReaderSettingsData.load(),
+        ));
 
   Future<void> initialize({bool isAutoJump = false}) async {
     _isAutoJump = isAutoJump;
@@ -41,10 +45,19 @@ class ReaderCubit extends Cubit<ReaderState> {
     webViewController.setJavaScriptMode(JavaScriptMode.unrestricted);
     webViewController.setBackgroundColor(Colors.transparent);
     webViewController.setNavigationDelegate(NavigationDelegate(
-      onPageStarted: (String url) => print('Page started loading: $url'),
-      onPageFinished: (String url) => print('Page finished loading: $url'),
-      onHttpError: (HttpResponseError error) => print('HTTP error status code: ${error.response?.statusCode ?? -1}'),
-      onWebResourceError: (WebResourceError error) => print('Web resource error: ${error.errorCode}'),
+      onPageStarted: (String url) => debugPrint('Page started loading: $url'),
+      onPageFinished: (String url) {
+        debugPrint('Page finished loading: $url');
+        if (state.bookmarkData?.startCfi != null && _isAutoJump || state.readerSettings.autoSave) {
+          webViewController.runJavaScript('window.readerApi.main("${state.bookmarkData!.startCfi}")');
+        } else {
+          webViewController.runJavaScript('window.readerApi.main()');
+        }
+        sendThemeData();
+      },
+      onHttpError: (HttpResponseError error) =>
+          debugPrint('HTTP error status code: ${error.response?.statusCode ?? -1}'),
+      onWebResourceError: (WebResourceError error) => debugPrint('Web resource error: ${error.errorCode}'),
       onNavigationRequest: (NavigationRequest request) =>
           request.url.startsWith('http://$_host:$_port') ? NavigationDecision.navigate : NavigationDecision.prevent,
     ));
@@ -55,12 +68,12 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// Contact the web-view to go to the previous page
   void prevPage() {
-    webViewController.runJavaScript('window.prevPage()');
+    webViewController.runJavaScript('window.readerApi.prevPage()');
   }
 
   /// Contact the web-view to go to the next page
   void nextPage() {
-    webViewController.runJavaScript('window.nextPage()');
+    webViewController.runJavaScript('window.readerApi.nextPage()');
   }
 
   /// Settings
@@ -94,14 +107,14 @@ class ReaderCubit extends Cubit<ReaderState> {
   void scrollToBookmark() {
     final BookmarkData? bookmarkData = state.bookmarkData ?? BookmarkProcessor.get(bookData.name);
     if (bookmarkData?.startCfi != null) {
-      webViewController.runJavaScript('window.goToCfi("${bookmarkData!.startCfi}")');
+      webViewController.runJavaScript('window.readerApi.goToCfi("${bookmarkData!.startCfi}")');
     }
   }
 
   Future<void> _startWebServer() async {
     var handler = const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
     _server = await shelf_io.serve(handler, _host, _port);
-    print('Server listening on port ${_server?.port}');
+    debugPrint('Server listening on port ${_server?.port}');
     _server?.autoCompress = true;
     _isServerActive = true;
   }
@@ -140,32 +153,30 @@ class ReaderCubit extends Cubit<ReaderState> {
 
       case 'loadDone':
         if (!isClosed) {
-          emit(ReaderState(
-            bookName: bookData.name,
-            code: ReaderStateCode.loaded,
-            bookmarkData: BookmarkProcessor.get(bookData.filePath),
-            readerSettings: ReaderSettingsData.load(),
-          ));
-
-          if (_isAutoJump) {
-            scrollToBookmark();
-          }
+          emit(state.copyWith(code: ReaderStateCode.loaded));
         }
         return Response.ok('{}');
 
       case 'setState':
         final Map<String, dynamic> jsonValue = jsonDecode(await request.readAsString());
+        debugPrint(jsonValue.toString());
 
         _startCfi = jsonValue['startCfi'];
 
         emit(state.copyWith(
           atStart: jsonValue['atStart'],
           atEnd: jsonValue['atEnd'],
+          localCurrent: jsonValue['localCurrent'],
+          localTotal: jsonValue['localTotal'],
         ));
 
         if (state.readerSettings.autoSave) {
           saveBookmark();
         }
+        return Response.ok('{}');
+
+      case 'error':
+        debugPrint('Error: ${await request.readAsString()}');
         return Response.ok('{}');
 
       default:
@@ -186,7 +197,7 @@ class ReaderCubit extends Cubit<ReaderState> {
         "color": "inherit !important",
       }
     };
-    webViewController.runJavaScript('window.setThemeData(${jsonEncode(themeData)})');
+    webViewController.runJavaScript('window.readerApi.setThemeData(${jsonEncode(themeData)})');
   }
 
   // Listen to the app lifecycle state changes
@@ -219,7 +230,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   Future<void> close() async {
     await _server?.close();
     _server = null;
-    print('Server closed');
+    debugPrint('Server closed');
     super.close();
   }
 }

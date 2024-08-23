@@ -7,6 +7,7 @@ import '../../ad_center/advertisement_id.dart';
 import '../common_components/common_loading.dart';
 import 'bloc/reader_cubit.dart';
 import 'bloc/reader_state.dart';
+import 'widgets/reader_pagination.dart';
 
 class ReaderBody extends StatelessWidget {
   const ReaderBody({super.key});
@@ -40,6 +41,7 @@ class ReaderBody extends StatelessWidget {
             ],
           ),
         ),
+        const ReaderPagination(),
       ],
     );
   }
