@@ -56,3 +56,5 @@ A first attempt to develop a cross-platform app.
 ## TODO-List
 
 - [ ] Export books
+- [ ] Mark the book as my favorite
+- [ ] Category
