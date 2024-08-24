@@ -64,24 +64,24 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
     emit(state.copyWith(isSelecting: isSelecting, selectedBookmarks: const {}));
   }
 
-  void selectBookmark(String bookName) {
+  void selectBookmark(BookmarkData data) {
     emit(state.copyWith(
       selectedBookmarks: {
         ...state.selectedBookmarks,
-        bookName,
+        data,
       },
     ));
   }
 
   void selectAllBookmarks() {
     emit(state.copyWith(
-      selectedBookmarks: state.bookmarkList.map((e) => e.bookPath).toSet(),
+      selectedBookmarks: state.bookmarkList.toSet(),
     ));
   }
 
-  void deselectBookmark(String bookName) {
-    Set<String> newSet = Set<String>.from(state.selectedBookmarks);
-    newSet.remove(bookName);
+  void deselectBookmark(BookmarkData data) {
+    Set<BookmarkData> newSet = Set<BookmarkData>.from(state.selectedBookmarks);
+    newSet.remove(data);
 
     emit(state.copyWith(
       selectedBookmarks: newSet,
@@ -95,8 +95,8 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
   }
 
   Future<bool> deleteSelectedBookmarks() async {
-    for (String bookName in state.selectedBookmarks) {
-      BookmarkProcessor.delete(bookName);
+    for (BookmarkData data in state.selectedBookmarks) {
+      data.delete();
     }
     refresh();
     return true;
@@ -107,7 +107,7 @@ class BookmarkListState extends Equatable {
   final BookmarkListStateCode code;
   final BookmarkListSortOrder sortOrder;
   final List<BookmarkData> bookmarkList;
-  final Set<String> selectedBookmarks;
+  final Set<BookmarkData> selectedBookmarks;
   final bool isDragging;
   final bool isSelecting;
   final bool isAscending;
@@ -129,7 +129,7 @@ class BookmarkListState extends Equatable {
     BookmarkListStateCode? code,
     BookmarkListSortOrder? sortOrder,
     List<BookmarkData>? bookmarkList,
-    Set<String>? selectedBookmarks,
+    Set<BookmarkData>? selectedBookmarks,
     bool? isDragging,
     bool? isSelecting,
     bool? isAscending,

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:hive/hive.dart';
 
-import '../processor/bookmark_processor.dart';
 import '../toolbox/datetime_utility.dart';
 
 class BookmarkData {
@@ -37,7 +36,11 @@ class BookmarkData {
     box.close();
   }
 
-  void delete() => BookmarkProcessor.delete(bookPath);
+  void delete() {
+    final Box<String> box = Hive.box(name: 'bookmark');
+    box.delete(bookPath);
+    box.close();
+  }
 
   BookmarkData copyWith({
     String? bookPath,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../data/chapter_data.dart';
 import '../../reader/reader.dart';
@@ -20,7 +19,6 @@ class TocSliverChapterListItem extends StatelessWidget {
       child: BlocBuilder<TocCubit, TocState>(
         buildWhen: (previous, current) => previous.bookmarkData?.startCfi != current.bookmarkData?.startCfi,
         builder: (BuildContext context, TocState state) {
-          final String localizedOrdinalNum = AppLocalizations.of(context)!.chapterLabel(chapterData.ordinalNumber);
           return ListTile(
             onTap: () {
               Navigator.of(context)
@@ -31,7 +29,7 @@ class TocSliverChapterListItem extends StatelessWidget {
             contentPadding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
             leading: const Icon(Icons.numbers_rounded),
-            title: Text("$localizedOrdinalNum - ${chapterData.title}"),
+            title: Text(chapterData.title),
           );
         },
       ),

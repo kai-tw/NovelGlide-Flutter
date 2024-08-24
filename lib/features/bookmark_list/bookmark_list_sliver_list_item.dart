@@ -23,10 +23,10 @@ class BookmarkListSliverListItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(24.0),
       onTap: () async {
         if (cubit.state.isSelecting) {
-          if (cubit.state.selectedBookmarks.contains(_bookmarkData.bookPath)) {
-            cubit.deselectBookmark(_bookmarkData.bookPath);
+          if (cubit.state.selectedBookmarks.contains(_bookmarkData)) {
+            cubit.deselectBookmark(_bookmarkData);
           } else {
-            cubit.selectBookmark(_bookmarkData.bookPath);
+            cubit.selectBookmark(_bookmarkData);
           }
         } else {
           final BookData bookData = await BookData.fromPath(_bookmarkData.bookPath);
@@ -42,7 +42,7 @@ class BookmarkListSliverListItem extends StatelessWidget {
             previous.isSelecting != current.isSelecting || previous.selectedBookmarks != current.selectedBookmarks,
         builder: (BuildContext context, BookmarkListState state) {
           if (state.isSelecting) {
-            final bool isSelected = state.selectedBookmarks.contains(_bookmarkData.bookPath);
+            final bool isSelected = state.selectedBookmarks.contains(_bookmarkData);
             return Semantics(
               label: appLocalizations.bookmarkListAccessibilityItem,
               onTapHint: appLocalizations.bookmarkListAccessibilitySelectOnTap,
@@ -54,9 +54,9 @@ class BookmarkListSliverListItem extends StatelessWidget {
                   checkColor: Theme.of(context).colorScheme.onErrorContainer,
                   onChanged: (bool? value) {
                     if (value == true) {
-                      cubit.selectBookmark(_bookmarkData.bookPath);
+                      cubit.selectBookmark(_bookmarkData);
                     } else {
-                      cubit.deselectBookmark(_bookmarkData.bookPath);
+                      cubit.deselectBookmark(_bookmarkData);
                     }
                   },
                   semanticLabel: appLocalizations.bookmarkListAccessibilitySelectItem,
