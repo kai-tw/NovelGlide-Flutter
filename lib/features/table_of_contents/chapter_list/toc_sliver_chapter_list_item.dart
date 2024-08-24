@@ -24,7 +24,8 @@ class TocSliverChapterListItem extends StatelessWidget {
           return ListTile(
             onTap: () {
               Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => ReaderWidget(cubit.bookData)))
+                  .push(MaterialPageRoute(
+                      builder: (context) => ReaderWidget(cubit.bookData, gotoDestination: chapterData.fileName)))
                   .then((_) => cubit.refresh());
             },
             contentPadding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0),

@@ -7,16 +7,17 @@ import 'reader_scaffold.dart';
 
 class ReaderWidget extends StatelessWidget {
   final BookData bookData;
-  final bool isAutoJump;
+  final String? gotoDestination;
+  final bool isGotoBookmark;
 
-  const ReaderWidget(this.bookData, {super.key, this.isAutoJump = false});
+  const ReaderWidget(this.bookData, {super.key, this.isGotoBookmark = false, this.gotoDestination});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ReaderCubit(
         bookData: bookData,
-      )..initialize(isAutoJump: isAutoJump),
+      )..initialize(gotoDestination: gotoDestination, isGotoBookmark: isGotoBookmark),
       child: const ReaderScaffold(),
     );
   }

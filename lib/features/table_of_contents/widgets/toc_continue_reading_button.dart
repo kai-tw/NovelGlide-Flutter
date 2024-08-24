@@ -19,7 +19,7 @@ class TocContinueReadingButton extends StatelessWidget {
                   Navigator.of(context)
                       .push(MaterialPageRoute(
                           builder: (context) =>
-                              ReaderWidget(cubit.bookData, isAutoJump: true)))
+                              ReaderWidget(cubit.bookData, isGotoBookmark: true)))
                       .then((_) => cubit.refresh());
                 },
                 style: ElevatedButton.styleFrom(

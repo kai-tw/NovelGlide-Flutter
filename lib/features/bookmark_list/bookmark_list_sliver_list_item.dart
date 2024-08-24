@@ -32,7 +32,7 @@ class BookmarkListSliverListItem extends StatelessWidget {
           final BookData bookData = await BookData.fromPath(_bookmarkData.bookPath);
           if (context.mounted) {
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => ReaderWidget(bookData, isAutoJump: true)))
+                .push(MaterialPageRoute(builder: (context) => ReaderWidget(bookData, isGotoBookmark: true)))
                 .then((_) => cubit.refresh());
           }
         }

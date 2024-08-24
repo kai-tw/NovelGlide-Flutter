@@ -23,7 +23,6 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   late ThemeData _currentTheme;
 
-  bool _isAutoJump = false;
   bool _isServerActive = false;
   HttpServer? _server;
   String? _startCfi;
@@ -36,9 +35,7 @@ class ReaderCubit extends Cubit<ReaderState> {
           readerSettings: ReaderSettingsData.load(),
         ));
 
-  Future<void> initialize({bool isAutoJump = false}) async {
-    _isAutoJump = isAutoJump;
-
+  Future<void> initialize({String? gotoDestination, bool isGotoBookmark = false}) async {
     AppLifecycleListener(onStateChange: _onStateChanged);
 
     webViewController.enableZoom(false);
@@ -48,7 +45,9 @@ class ReaderCubit extends Cubit<ReaderState> {
       onPageStarted: (String url) => debugPrint('Page started loading: $url'),
       onPageFinished: (String url) {
         debugPrint('Page finished loading: $url');
-        if (state.bookmarkData?.startCfi != null && _isAutoJump || state.readerSettings.autoSave) {
+        if (gotoDestination != null) {
+          webViewController.runJavaScript('window.readerApi.main("$gotoDestination")');
+        } else if (state.bookmarkData?.startCfi != null && isGotoBookmark || state.readerSettings.autoSave) {
           webViewController.runJavaScript('window.readerApi.main("${state.bookmarkData!.startCfi}")');
         } else {
           webViewController.runJavaScript('window.readerApi.main()');
@@ -85,7 +84,14 @@ class ReaderCubit extends Cubit<ReaderState> {
         autoSave: autoSave,
       ),
     ));
-    sendThemeData();
+
+    if (state.readerSettings.fontSize != fontSize || state.readerSettings.lineHeight != lineHeight) {
+      sendThemeData();
+    }
+
+    if (autoSave ?? false) {
+      saveBookmark();
+    }
   }
 
   void resetSettings() {
@@ -107,7 +113,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   void scrollToBookmark() {
     final BookmarkData? bookmarkData = state.bookmarkData ?? BookmarkProcessor.get(bookData.name);
     if (bookmarkData?.startCfi != null) {
-      webViewController.runJavaScript('window.readerApi.goToCfi("${bookmarkData!.startCfi}")');
+      webViewController.runJavaScript('window.readerApi.goto("${bookmarkData!.startCfi}")');
     }
   }
 
