@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../nav/reader_navigation_bar.dart';
 import '../reader_app_bar.dart';
 import '../reader_body.dart';
-import '../reader_navigation.dart';
 
 class ReaderScaffoldCompactView extends StatelessWidget {
   const ReaderScaffoldCompactView({super.key});
@@ -14,7 +14,7 @@ class ReaderScaffoldCompactView extends StatelessWidget {
       body: SafeArea(
         child: ReaderBody(),
       ),
-      bottomNavigationBar: SafeArea(child: ReaderNavigation()),
+      bottomNavigationBar: SafeArea(child: ReaderNavigationBar()),
     );
   }
 }
