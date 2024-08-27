@@ -8,7 +8,7 @@ class ReaderSettingsData extends Equatable {
   static const double maxFontSize = 32;
 
   final double lineHeight;
-  static const double defaultLineHeight = 1.2;
+  static const double defaultLineHeight = 1.5;
   static const double minLineHeight = 1;
   static const double maxLineHeight = 3;
 
@@ -23,17 +23,19 @@ class ReaderSettingsData extends Equatable {
     this.autoSave = false,
   });
 
-  factory ReaderSettingsData.load() {
-    final Box readerSetting = Hive.box(name: 'reader_settings');
-    final double fontSize = readerSetting.get('font_size', defaultValue: defaultFontSize).clamp(minFontSize, maxFontSize);
-    final double lineHeight = readerSetting.get('line_height', defaultValue: defaultLineHeight).clamp(minLineHeight, maxLineHeight);
-    final bool autoSave = readerSetting.get('auto_save', defaultValue: false);
-    readerSetting.close();
+  factory ReaderSettingsData.fromJson(Map<String, dynamic> json) {
     return ReaderSettingsData(
-      fontSize: fontSize,
-      lineHeight: lineHeight,
-      autoSave: autoSave,
+      fontSize: json['font_size'] as double,
+      lineHeight: json['line_height'] as double,
+      autoSave: json['auto_save'] as bool,
     );
+  }
+
+  factory ReaderSettingsData.load() {
+    final Box readerSetting = Hive.box(name: 'settings');
+    final Map<String, dynamic>? json = readerSetting.get('reader_settings');
+    readerSetting.close();
+    return json != null ? ReaderSettingsData.fromJson(json) : const ReaderSettingsData();
   }
 
   ReaderSettingsData copyWith({
@@ -48,11 +50,16 @@ class ReaderSettingsData extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() =>
+      {
+        'font_size': fontSize,
+        'line_height': lineHeight,
+        'auto_save': autoSave,
+      };
+
   void save() {
-    Box readerSettings = Hive.box(name: 'reader_settings');
-    readerSettings.put('font_size', fontSize.clamp(minFontSize, maxFontSize));
-    readerSettings.put('line_height', lineHeight.clamp(minLineHeight, maxLineHeight));
-    readerSettings.put('auto_save', autoSave);
+    final Box readerSettings = Hive.box(name: 'settings');
+    readerSettings.put('reader_settings', toJson());
     readerSettings.close();
   }
 }

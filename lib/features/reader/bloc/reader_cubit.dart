@@ -229,7 +229,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     final Map<String, dynamic> themeData = {
       "body": {
         "color": 'rgba(${color.red}, ${color.green}, ${color.blue}, ${color.alpha / 255})',
-        "font-size": state.readerSettings.fontSize.toStringAsFixed(2),
+        "font-size": "${state.readerSettings.fontSize.toStringAsFixed(1)}px",
         "line-height": state.readerSettings.lineHeight.toStringAsFixed(1),
       },
       "a": {
