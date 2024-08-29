@@ -56,7 +56,6 @@ class ReaderCubit extends Cubit<ReaderState> {
         } else {
           webViewController.runJavaScript('window.readerApi.main()');
         }
-        sendThemeData();
       },
       onHttpError: (HttpResponseError error) =>
           emit(state.copyWith(code: ReaderStateCode.httpResponseError, httpResponseError: error)),
@@ -147,7 +146,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     final HttpConnectionInfo? connectionInfo = request.context['shelf.io.connection_info'] as HttpConnectionInfo?;
     final String? remoteAddress = connectionInfo?.remoteAddress.address;
 
-    if (!_isServerActive || remoteAddress != '127.0.0.1') {
+    if (!_isServerActive || remoteAddress != '127.0.0.1' && remoteAddress != '::1') {
       return Response.forbidden('Forbidden');
     }
 
@@ -185,6 +184,7 @@ class ReaderCubit extends Cubit<ReaderState> {
             webResourceError: null,
             httpResponseError: null,
           ));
+          sendThemeData();
         }
         return Response.ok('{}');
 
@@ -225,18 +225,20 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   void sendThemeData([ThemeData? newTheme]) {
     _currentTheme = newTheme ?? _currentTheme;
-    final Color color = _currentTheme.colorScheme.onSurface;
-    final Map<String, dynamic> themeData = {
-      "body": {
-        "color": 'rgba(${color.red}, ${color.green}, ${color.blue}, ${color.alpha / 255})',
-        "font-size": "${state.readerSettings.fontSize.toStringAsFixed(1)}px",
-        "line-height": state.readerSettings.lineHeight.toStringAsFixed(1),
-      },
-      "a": {
-        "color": "inherit !important",
-      }
-    };
-    webViewController.runJavaScript('window.readerApi.setThemeData(${jsonEncode(themeData)})');
+    if (state.code == ReaderStateCode.loaded) {
+      final Color color = _currentTheme.colorScheme.onSurface;
+      final Map<String, dynamic> themeData = {
+        "body": {
+          "color": 'rgba(${color.red}, ${color.green}, ${color.blue}, ${color.alpha / 255})',
+          "font-size": "${state.readerSettings.fontSize.toStringAsFixed(1)}px",
+          "line-height": state.readerSettings.lineHeight.toStringAsFixed(1),
+        },
+        "a": {
+          "color": "inherit !important",
+        }
+      };
+      webViewController.runJavaScript('window.readerApi.setThemeData(${jsonEncode(themeData)})');
+    }
   }
 
   /// ******* App Lifecycle ********
