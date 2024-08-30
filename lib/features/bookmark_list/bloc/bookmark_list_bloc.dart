@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/bookmark_data.dart';
-import '../../../processor/bookmark_processor.dart';
 
 class BookmarkListCubit extends Cubit<BookmarkListState> {
   BookmarkListCubit() : super(const BookmarkListState());
@@ -14,7 +13,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
   }
 
   Future<void> refresh() async {
-    final List<BookmarkData> bookmarkList = await BookmarkProcessor.getList();
+    final List<BookmarkData> bookmarkList = await BookmarkData.getList();
     bookmarkList.sort((a, b) => b.savedTime.compareTo(a.savedTime));
 
     if (!isClosed) {
@@ -29,7 +28,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
   }
 
   Future<void> setSortOrder(BookmarkListSortOrder sortOrder) async {
-    List<BookmarkData> list = await BookmarkProcessor.getList();
+    List<BookmarkData> list = await BookmarkData.getList();
     _sortBookmarkList(list, sortOrder, state.isAscending);
     if (!isClosed) {
       emit(state.copyWith(sortOrder: sortOrder, bookmarkList: list));
@@ -49,7 +48,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
   }
 
   Future<void> setAscending(bool isAscending) async {
-    List<BookmarkData> list = await BookmarkProcessor.getList();
+    List<BookmarkData> list = await BookmarkData.getList();
     _sortBookmarkList(list, state.sortOrder, isAscending);
     if (!isClosed) {
       emit(state.copyWith(isAscending: isAscending, bookmarkList: list));

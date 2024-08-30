@@ -4,7 +4,9 @@ import 'package:epubx/epubx.dart' as epub;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import '../toolbox/advanced_mime_type_resolver.dart';
 import 'chapter_data.dart';
+import 'file_path.dart';
 
 class BookData {
   String filePath;
@@ -38,6 +40,34 @@ class BookData {
       filePath: path,
       epubBook: await epub.EpubReader.readBook(File(path).readAsBytesSync()),
     );
+  }
+
+  /// Get all book data
+  static Future<List<BookData>> getDataList() async {
+    final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
+    return await compute<Map<String, dynamic>, List<BookData>>(_getDataListIsolate, {
+      "rootIsolateToken": rootIsolateToken,
+      "path": FilePath.instance.libraryRoot,
+    });
+  }
+
+  static Future<List<BookData>> _getDataListIsolate(Map<String, dynamic> message) async {
+    final RootIsolateToken rootIsolateToken = message["rootIsolateToken"];
+    final String path = message["path"];
+
+    BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+
+    final Directory folder = Directory(path);
+    final List<BookData> entries = [];
+
+    for (File epubFile in folder.listSync().whereType<File>()) {
+      if (AdvancedMimeTypeResolver.instance.lookupAll(epubFile) == 'application/epub+zip') {
+        epub.EpubBook epubBook = await epub.EpubReader.readBook(epubFile.readAsBytesSync());
+        entries.add(BookData(epubBook: epubBook, filePath: epubFile.path));
+      }
+    }
+
+    return entries;
   }
 
   /// Delete the book

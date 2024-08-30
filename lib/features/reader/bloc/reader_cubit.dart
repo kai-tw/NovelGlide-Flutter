@@ -12,29 +12,35 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
 import '../../../data/reader_settings_data.dart';
-import '../../../processor/bookmark_processor.dart';
 import 'reader_search_cubit.dart';
 import 'reader_search_result.dart';
 import 'reader_state.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
+  /// Web Server
   final String _host = 'localhost';
   final int _port = 8080;
-  final BookData bookData;
-
-  final WebViewController webViewController = WebViewController();
-  late ThemeData _currentTheme;
-  String? _startCfi;
   bool _isServerActive = false;
   HttpServer? _server;
 
+  /// WebView
+  final WebViewController webViewController = WebViewController();
+
+  /// Reader
+  final BookData bookData;
+  late ThemeData _currentTheme;
+  String? _startCfi;
+
   ReaderSearchCubit? searchCubit;
+
+  /// Gestures
+  double? startDragX;
 
   ReaderCubit({
     required this.bookData,
   }) : super(ReaderState(
           bookName: bookData.name,
-          bookmarkData: BookmarkProcessor.get(bookData.filePath),
+          bookmarkData: BookmarkData.get(bookData.filePath),
           readerSettings: ReaderSettingsData.load(),
         ));
 
@@ -57,12 +63,20 @@ class ReaderCubit extends Cubit<ReaderState> {
           webViewController.runJavaScript('window.readerApi.main()');
         }
       },
-      onHttpError: (HttpResponseError error) =>
-          emit(state.copyWith(code: ReaderStateCode.httpResponseError, httpResponseError: error)),
-      onWebResourceError: (WebResourceError error) =>
-          emit(state.copyWith(code: ReaderStateCode.webResourceError, webResourceError: error)),
+      onHttpError: (HttpResponseError error) {
+        if (!isClosed) {
+          emit(state.copyWith(code: ReaderStateCode.httpResponseError, httpResponseError: error));
+        }
+      },
+      onWebResourceError: (WebResourceError error) {
+        if (!isClosed) {
+          emit(state.copyWith(code: ReaderStateCode.webResourceError, webResourceError: error));
+        }
+      },
       onNavigationRequest: (NavigationRequest request) =>
-          request.url.startsWith('http://$_host:$_port') ? NavigationDecision.navigate : NavigationDecision.prevent,
+          request.url.startsWith('http://$_host:$_port') || request.url.startsWith('about:srcdoc')
+              ? NavigationDecision.navigate
+              : NavigationDecision.prevent,
     ));
 
     await _startWebServer();
@@ -125,7 +139,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   void scrollToBookmark() {
-    final BookmarkData? bookmarkData = state.bookmarkData ?? BookmarkProcessor.get(bookData.name);
+    final BookmarkData? bookmarkData = state.bookmarkData ?? BookmarkData.get(bookData.name);
     if (bookmarkData?.startCfi != null) {
       goto(bookmarkData!.startCfi!);
     }
@@ -133,7 +147,6 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// ******* Web Server Start ********
 
-  /// Start the web server.
   Future<void> _startWebServer() async {
     var handler = const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
     _server = await shelf_io.serve(handler, _host, _port);
@@ -193,12 +206,14 @@ class ReaderCubit extends Cubit<ReaderState> {
 
         _startCfi = jsonValue['startCfi'];
 
-        emit(state.copyWith(
-          atStart: jsonValue['atStart'],
-          atEnd: jsonValue['atEnd'],
-          localCurrent: jsonValue['localCurrent'],
-          localTotal: jsonValue['localTotal'],
-        ));
+        if (!isClosed) {
+          emit(state.copyWith(
+            atStart: jsonValue['atStart'],
+            atEnd: jsonValue['atEnd'],
+            localCurrent: jsonValue['localCurrent'],
+            localTotal: jsonValue['localTotal'],
+          ));
+        }
 
         if (searchCubit != null) {
           searchCubit!.setState = searchCubit!.state.copyWith(
@@ -241,13 +256,22 @@ class ReaderCubit extends Cubit<ReaderState> {
     }
   }
 
+  Future<void> _stopWebServer() async {
+    if (_server != null) {
+      await _server?.close();
+      _server = null;
+      debugPrint('Server closed');
+      _isServerActive = false;
+    }
+  }
+
   /// ******* App Lifecycle ********
 
   /// Listen to the app lifecycle state changes
   void _onStateChanged(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.detached:
-        close();
+        _stopWebServer();
         break;
       case AppLifecycleState.resumed:
         _isServerActive = true;
@@ -263,9 +287,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Cubit
   @override
   Future<void> close() async {
-    await _server?.close();
-    _server = null;
-    debugPrint('Server closed');
+    _stopWebServer();
     super.close();
   }
 }

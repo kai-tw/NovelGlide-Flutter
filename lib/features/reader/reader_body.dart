@@ -20,6 +20,7 @@ class ReaderBody extends StatelessWidget {
     cubit.sendThemeData(Theme.of(context));
     return Stack(
       children: [
+        /// Reader WebView
         Column(
           children: [
             Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
@@ -29,6 +30,39 @@ class ReaderBody extends StatelessWidget {
             const ReaderPagination(),
           ],
         ),
+
+        /// Reader Gesture Detector
+        Positioned.fill(
+          child: SizedBox.expand(
+            child: GestureDetector(
+              /// Swipe to prev/next page
+              onHorizontalDragStart: (details) {
+                if (cubit.state.code != ReaderStateCode.loaded) {
+                  return;
+                }
+                cubit.startDragX = details.localPosition.dx;
+              },
+              onHorizontalDragEnd: (details) {
+                if (cubit.state.code != ReaderStateCode.loaded) {
+                  return;
+                }
+                const double sensitivity = 50;
+                final double endDragX = details.localPosition.dx;
+                if (cubit.startDragX != null && cubit.startDragX! + sensitivity < endDragX) {
+                  cubit.prevPage();
+                } else if (cubit.startDragX != null && cubit.startDragX! - sensitivity > endDragX) {
+                  cubit.nextPage();
+                }
+                cubit.startDragX = null;
+              },
+              onHorizontalDragCancel: () {
+                cubit.startDragX = null;
+              },
+            ),
+          ),
+        ),
+
+        /// Reader Overlay (including loading, error-report, and searching widgets.)
         Positioned.fill(
           child: BlocBuilder<ReaderCubit, ReaderState>(
             buildWhen: (previous, current) => previous.code != current.code,

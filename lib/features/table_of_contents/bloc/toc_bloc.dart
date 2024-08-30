@@ -7,10 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
 import '../../../data/chapter_data.dart';
-import '../../../processor/bookmark_processor.dart';
 
 class TocCubit extends Cubit<TocState> {
   final PageStorageBucket bucket = PageStorageBucket();
+  final ScrollController scrollController = ScrollController();
   BookData bookData;
 
   TocCubit(this.bookData) : super(TocState(bookName: bookData.name, filePath: bookData.filePath));
@@ -26,7 +26,7 @@ class TocCubit extends Cubit<TocState> {
         coverBytes: bookData.coverBytes,
         code: chapterList.isEmpty ? TocStateCode.empty : TocStateCode.normal,
         chapterList: chapterList,
-        bookmarkData: BookmarkProcessor.get(bookData.filePath),
+        bookmarkData: BookmarkData.get(bookData.filePath),
       ));
     });
   }

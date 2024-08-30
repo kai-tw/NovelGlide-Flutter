@@ -10,16 +10,21 @@ class TocScrollView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
+
+    /// Add the floating action button to the end of the list.
     List<Widget> sliverList = List.from(slivers);
 
     /// Prevent the content from being covered by the floating action button.
     sliverList.add(const SliverPadding(padding: EdgeInsets.only(bottom: 80.0)));
 
     return PageStorage(
-      bucket: BlocProvider.of<TocCubit>(context).bucket,
+      bucket: cubit.bucket,
       child: Scrollbar(
+        controller: cubit.scrollController,
         child: CustomScrollView(
           key: const PageStorageKey<String>('toc-scroll-view'),
+          controller: cubit.scrollController,
           slivers: sliverList,
         ),
       ),

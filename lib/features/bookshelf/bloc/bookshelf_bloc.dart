@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/book_data.dart';
-import '../../../processor/book_processor.dart';
 
 class BookshelfCubit extends Cubit<BookshelfState> {
   List<BookData> _bookList = [];
@@ -16,7 +15,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   }
 
   Future<void> refresh() async {
-    List<BookData> list = _bookList = await BookProcessor.getDataList();
+    List<BookData> list = _bookList = await BookData.getDataList();
     BookshelfStateCode code = list.isEmpty ? BookshelfStateCode.empty : BookshelfStateCode.normal;
     _sortBookList(list, state.sortOrder, state.isAscending);
     if (!isClosed) {
