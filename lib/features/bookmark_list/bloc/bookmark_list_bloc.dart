@@ -21,7 +21,6 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
         code: bookmarkList.isEmpty ? BookmarkListStateCode.empty : BookmarkListStateCode.normal,
         sortOrder: state.sortOrder,
         bookmarkList: bookmarkList,
-        isSelecting: state.isSelecting,
         isAscending: state.isAscending,
       ));
     }

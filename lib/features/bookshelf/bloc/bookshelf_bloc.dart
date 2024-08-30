@@ -2,12 +2,11 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 
 import '../../../data/book_data.dart';
 
 class BookshelfCubit extends Cubit<BookshelfState> {
-  List<BookData> _bookList = [];
-
   BookshelfCubit() : super(const BookshelfState());
 
   void init() {
@@ -15,28 +14,41 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   }
 
   Future<void> refresh() async {
-    List<BookData> list = _bookList = await BookData.getDataList();
+    final Box box = Hive.box(name: 'settings');
+    BookshelfSortOrder sortOrder =
+        BookshelfSortOrder.fromString(box.get('bookshelf.sortOrder'), defaultValue: BookshelfSortOrder.name);
+    bool isAscending = box.get('bookshelf.isAscending', defaultValue: true);
+    box.close();
+
+    List<BookData> list = await BookData.getDataList();
     BookshelfStateCode code = list.isEmpty ? BookshelfStateCode.empty : BookshelfStateCode.normal;
-    _sortBookList(list, state.sortOrder, state.isAscending);
+
+    _sortBookList(list, sortOrder, isAscending);
+
     if (!isClosed) {
       emit(BookshelfState(
         code: code,
-        sortOrder: state.sortOrder,
+        sortOrder: sortOrder,
         bookList: list,
-        isSelecting: state.isSelecting,
-        isAscending: state.isAscending,
+        isAscending: isAscending,
       ));
     }
   }
 
-  void setSortOrder(BookshelfSortOrder sortOrder) {
-    _sortBookList(_bookList, sortOrder, state.isAscending);
-    emit(state.copyWith(sortOrder: sortOrder, bookList: _bookList));
-  }
+  void setListOrder({BookshelfSortOrder? sortOrder, bool? isAscending}) {
+    BookshelfSortOrder order = sortOrder ?? state.sortOrder;
+    bool ascending = isAscending ?? state.isAscending;
 
-  void setAscending(bool isAscending) {
-    _sortBookList(_bookList, state.sortOrder, isAscending);
-    emit(state.copyWith(isAscending: isAscending, bookList: _bookList));
+    final Box box = Hive.box(name: 'settings');
+    box.put('bookshelf.sortOrder', order.toString());
+    box.put('bookshelf.isAscending', ascending);
+    box.close();
+
+    _sortBookList(state.bookList, order, ascending);
+    emit(state.copyWith(
+      isAscending: ascending,
+      sortOrder: order,
+    ));
   }
 
   void _sortBookList(List<BookData> list, BookshelfSortOrder sortOrder, bool isAscending) {
@@ -134,4 +146,14 @@ class BookshelfState extends Equatable {
 
 enum BookshelfStateCode { normal, empty, loading }
 
-enum BookshelfSortOrder { name, modifiedDate }
+enum BookshelfSortOrder {
+  name,
+  modifiedDate;
+
+  static BookshelfSortOrder fromString(String? value, {BookshelfSortOrder defaultValue = BookshelfSortOrder.name}) {
+    if (value == null) {
+      return defaultValue;
+    }
+    return BookshelfSortOrder.values.firstWhere((element) => element.toString() == value);
+  }
+}

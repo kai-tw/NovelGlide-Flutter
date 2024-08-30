@@ -28,7 +28,9 @@ class BookshelfAppBarPopupMenuButton extends StatelessWidget {
           bool isSelected = cubit.state.sortOrder == entry.key;
           entries.add(
             PopupMenuItem(
-              onTap: () => isSelected ? cubit.setAscending(!cubit.state.isAscending) : cubit.setSortOrder(entry.key),
+              onTap: () => isSelected
+                  ? cubit.setListOrder(isAscending: !cubit.state.isAscending)
+                  : cubit.setListOrder(sortOrder: entry.key),
               child: ListTile(
                 contentPadding: EdgeInsets.zero,
                 dense: true,

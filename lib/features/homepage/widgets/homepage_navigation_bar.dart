@@ -10,6 +10,7 @@ class HomepageNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final HomepageCubit cubit = BlocProvider.of<HomepageCubit>(context);
 
     return BlocBuilder<HomepageCubit, HomepageState>(
       builder: (context, state) {
@@ -39,8 +40,7 @@ class HomepageNavigationBar extends StatelessWidget {
             ),
           ],
           onDestinationSelected: (index) {
-            BlocProvider.of<HomepageCubit>(context)
-                .setItem(HomepageNavigationItem.values[index.clamp(0, HomepageNavigationItem.values.length - 1)]);
+            cubit.setItem(HomepageNavigationItem.values[index.clamp(0, HomepageNavigationItem.values.length - 1)]);
           },
         );
       },

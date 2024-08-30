@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:epubx/epubx.dart' as epub;
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -8,9 +9,9 @@ import '../toolbox/advanced_mime_type_resolver.dart';
 import 'chapter_data.dart';
 import 'file_path.dart';
 
-class BookData {
-  String filePath;
-  epub.EpubBook epubBook;
+class BookData extends Equatable {
+  final String filePath;
+  final epub.EpubBook epubBook;
 
   File get file => File(filePath);
 
@@ -33,7 +34,10 @@ class BookData {
     return chapterList;
   }
 
-  BookData({required this.filePath, required this.epubBook});
+  @override
+  List<Object?> get props => [filePath];
+
+  const BookData({required this.filePath, required this.epubBook});
 
   static Future<BookData> fromPath(String path) async {
     return BookData(
