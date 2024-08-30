@@ -6,7 +6,7 @@ import 'package:hive/hive.dart';
 
 import '../toolbox/random_utility.dart';
 
-class CategoryData extends Equatable {
+class CollectionData extends Equatable {
   static const String hiveBoxName = 'category';
 
   final String id;
@@ -17,9 +17,9 @@ class CategoryData extends Equatable {
   @override
   List<Object?> get props => [id, name, color, pathSet];
 
-  const CategoryData(this.id, this.name, this.color, this.pathSet);
+  const CollectionData(this.id, this.name, this.color, this.pathSet);
 
-  factory CategoryData.fromName(String name) {
+  factory CollectionData.fromName(String name) {
     final Box box = Hive.box(name: hiveBoxName);
     String id = RandomUtility.getRandomString(10);
 
@@ -30,11 +30,11 @@ class CategoryData extends Equatable {
 
     box.close();
 
-    return CategoryData(id, name, null, const <String>{});
+    return CollectionData(id, name, null, const <String>{});
   }
 
-  factory CategoryData.fromJson(Map<String, dynamic> json) {
-    return CategoryData(
+  factory CollectionData.fromJson(Map<String, dynamic> json) {
+    return CollectionData(
       json['id'] as String,
       json['name'] as String,
       json['color'] != null ? Color(json['color'] as int) : null,
@@ -42,12 +42,12 @@ class CategoryData extends Equatable {
     );
   }
 
-  static List<CategoryData> getList() {
+  static List<CollectionData> getList() {
     final Box box = Hive.box(name: hiveBoxName);
-    List<CategoryData> list = [];
+    List<CollectionData> list = [];
 
     for (var key in box.keys) {
-      CategoryData data = CategoryData.fromJson(box.get(key));
+      CollectionData data = CollectionData.fromJson(box.get(key));
       for (var path in data.pathSet) {
         if (!File(path).existsSync()) {
           data.pathSet.remove(path);
@@ -61,13 +61,13 @@ class CategoryData extends Equatable {
     return list;
   }
 
-  CategoryData copyWith({
+  CollectionData copyWith({
     String? id,
     String? name,
     Color? color,
     Set<String>? pathSet,
   }) {
-    return CategoryData(
+    return CollectionData(
       id ?? this.id,
       name ?? this.name,
       color ?? this.color,

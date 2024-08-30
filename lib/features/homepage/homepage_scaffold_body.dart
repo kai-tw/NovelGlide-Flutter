@@ -7,6 +7,7 @@ import '../bookmark_list/bloc/bookmark_list_bloc.dart';
 import '../bookmark_list/bookmark_list_sliver_list.dart';
 import '../bookshelf/bloc/bookshelf_bloc.dart';
 import '../bookshelf/bookshelf_sliver_list.dart';
+import '../collection_list/collection_list_sliver_list.dart';
 import '../settings_page/settings_page.dart';
 import 'bloc/homepage_bloc.dart';
 
@@ -15,12 +16,13 @@ class HomepageScaffoldBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final HomepageCubit cubit = BlocProvider.of<HomepageCubit>(context);
+    final BookshelfCubit bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
+    final BookmarkListCubit bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
+
     return BlocBuilder<HomepageCubit, HomepageState>(
       buildWhen: (previous, current) => previous.navItem != current.navItem,
       builder: (context, state) {
-        final BookshelfCubit bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
-        final BookmarkListCubit bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
-
         switch (state.navItem) {
           case HomepageNavigationItem.bookshelf:
             return Column(
@@ -28,7 +30,7 @@ class HomepageScaffoldBody extends StatelessWidget {
                 Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
                 Expanded(
                   child: PageStorage(
-                    bucket: BlocProvider.of<HomepageCubit>(context).bookshelfBucket,
+                    bucket: cubit.bookshelfBucket,
                     child: RefreshIndicator(
                       onRefresh: () async => bookshelfCubit.refresh(),
                       child: const Scrollbar(
@@ -45,13 +47,36 @@ class HomepageScaffoldBody extends StatelessWidget {
               ],
             );
 
+          case HomepageNavigationItem.collection:
+            return Column(
+              children: [
+                Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+                Expanded(
+                  child: PageStorage(
+                    bucket: cubit.collectionBucket,
+                    child: RefreshIndicator(
+                      onRefresh: () async {},
+                      child: const Scrollbar(
+                        child: CustomScrollView(
+                          key: PageStorageKey<String>('homepage-collection'),
+                          slivers: [
+                            CollectionListSliverList(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+
           case HomepageNavigationItem.bookmark:
             return Column(
               children: [
                 Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
                 Expanded(
                   child: PageStorage(
-                    bucket: BlocProvider.of<HomepageCubit>(context).bookmarkBucket,
+                    bucket: cubit.bookmarkBucket,
                     child: RefreshIndicator(
                       onRefresh: () async => bookmarkListCubit.refresh(),
                       child: const Scrollbar(

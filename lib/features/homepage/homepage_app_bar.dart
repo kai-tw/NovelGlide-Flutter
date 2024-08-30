@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bookmark_list/bookmark_list_app_bar.dart';
 import '../bookshelf/bookshelf_app_bar.dart';
+import '../collection_list/collection_list_app_bar.dart';
 import 'bloc/homepage_bloc.dart';
 
 class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -20,6 +21,8 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
         switch (state.navItem) {
           case HomepageNavigationItem.bookshelf:
             return const BookshelfAppBar();
+          case HomepageNavigationItem.collection:
+            return const CollectionListAppBar();
           case HomepageNavigationItem.bookmark:
             return const BookmarkListAppBar();
           case HomepageNavigationItem.settings:

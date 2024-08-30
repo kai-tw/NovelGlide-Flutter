@@ -26,6 +26,10 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
     }
   }
 
+  void unfocused() {
+    emit(state.copyWith(isDragging: false, isSelecting: false));
+  }
+
   Future<void> setSortOrder(BookmarkListSortOrder sortOrder) async {
     List<BookmarkData> list = await BookmarkData.getList();
     _sortBookmarkList(list, sortOrder, state.isAscending);

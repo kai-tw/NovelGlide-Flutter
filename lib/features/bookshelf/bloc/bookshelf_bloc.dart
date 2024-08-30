@@ -35,6 +35,10 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     }
   }
 
+  void unfocused() {
+    emit(state.copyWith(isDragging: false, isSelecting: false));
+  }
+
   void setListOrder({BookshelfSortOrder? sortOrder, bool? isAscending}) {
     BookshelfSortOrder order = sortOrder ?? state.sortOrder;
     bool ascending = isAscending ?? state.isAscending;
