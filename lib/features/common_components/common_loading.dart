@@ -28,8 +28,12 @@ class CommonSliverLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SliverToBoxAdapter(
-      child: CommonLoading(),
+    return const SliverFillRemaining(
+      child: SafeArea(
+        child: Center(
+          child: CommonLoading(),
+        ),
+      ),
     );
   }
 }

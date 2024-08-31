@@ -2,26 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'bloc/add_book_bloc.dart';
-import 'widgets/add_book_file_info_widget.dart';
-import 'widgets/add_book_file_picking_button.dart';
-import 'widgets/add_book_submit_button.dart';
+import '../common_components/common_back_button.dart';
+import 'bloc/book_add_bloc.dart';
+import 'widgets/book_add_file_info_widget.dart';
+import 'widgets/book_add_file_picking_button.dart';
+import 'widgets/book_add_submit_button.dart';
 
-class AddBookForm extends StatelessWidget {
-  const AddBookForm({super.key});
+class BookAddForm extends StatelessWidget {
+  const BookAddForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: SingleChildScrollView(
-        child: Center(
-          child: Container(
+    return Stack(
+      children: [
+        Form(
+          child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 48.0),
             child: BlocProvider(
-              create: (context) => AddBookCubit(),
+              create: (context) => BookAddCubit(),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  const AddBookFileInfoWidget(),
+                  const BookAddFileInfoWidget(),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 48.0),
                     child: Text('${AppLocalizations.of(context)!.fileTypeHelperText} epub'),
@@ -29,8 +31,8 @@ class AddBookForm extends StatelessWidget {
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      AddBookFilePickingButton(),
-                      AddBookSubmitButton(),
+                      BookAddFilePickingButton(),
+                      BookAddSubmitButton(),
                     ],
                   ),
                 ],
@@ -38,7 +40,12 @@ class AddBookForm extends StatelessWidget {
             ),
           ),
         ),
-      ),
+        const Positioned(
+          top: 4.0,
+          right: 4.0,
+          child: CommonBackButton(iconData: Icons.close_rounded),
+        ),
+      ],
     );
   }
 }

@@ -5,7 +5,7 @@ import '../../data/window_class.dart';
 import '../bookmark_list/widgets/bookmark_list_operation_panel.dart';
 import '../bookshelf/widgets/bookshelf_operation_panel.dart';
 import 'bloc/homepage_bloc.dart';
-import 'widgets/homepage_floating_action_button.dart';
+import 'homepage_floating_action_button.dart';
 
 class HomepageTabSection extends StatelessWidget {
   const HomepageTabSection({super.key});

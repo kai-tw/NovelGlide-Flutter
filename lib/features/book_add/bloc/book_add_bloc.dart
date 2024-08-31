@@ -8,7 +8,7 @@ import 'package:path/path.dart';
 import '../../../data/file_path.dart';
 import '../../../toolbox/file_helper.dart';
 
-class AddBookCubit extends Cubit<AddBookState> {AddBookCubit() : super(const AddBookState());
+class BookAddCubit extends Cubit<BookAddState> {BookAddCubit() : super(const BookAddState());
 
   void pickFile() async {
     FilePickerResult? f = await FilePicker.platform.pickFiles(
@@ -16,7 +16,7 @@ class AddBookCubit extends Cubit<AddBookState> {AddBookCubit() : super(const Add
       allowedExtensions: ['epub'],
     );
 
-    emit(AddBookState(file: f != null ? File(f.files.single.path!) : null));
+    emit(BookAddState(file: f != null ? File(f.files.single.path!) : null));
   }
 
   Future<void> submit() async {
@@ -30,11 +30,11 @@ class AddBookCubit extends Cubit<AddBookState> {AddBookCubit() : super(const Add
   }
 
   void removeFile() {
-    emit(const AddBookState());
+    emit(const BookAddState());
   }
 }
 
-class AddBookState extends Equatable {
+class BookAddState extends Equatable {
   final File? file;
 
   String get fileName => file != null ? basename(file!.path) : '-';
@@ -43,7 +43,7 @@ class AddBookState extends Equatable {
   @override
   List<Object?> get props => [file, fileName, fileSize];
 
-  const AddBookState({this.file});
+  const BookAddState({this.file});
 }
 
 class AddBookDuplicateFileException implements Exception {}

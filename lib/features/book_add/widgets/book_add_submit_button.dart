@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../bloc/add_book_bloc.dart';
+import '../bloc/book_add_bloc.dart';
 
-class AddBookSubmitButton extends StatelessWidget {
-  const AddBookSubmitButton({super.key});
+class BookAddSubmitButton extends StatelessWidget {
+  const BookAddSubmitButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AddBookCubit cubit = BlocProvider.of<AddBookCubit>(context);
-    return BlocBuilder<AddBookCubit, AddBookState>(
+    final BookAddCubit cubit = BlocProvider.of<BookAddCubit>(context);
+    return BlocBuilder<BookAddCubit, BookAddState>(
       buildWhen: (previous, current) => previous.file != current.file,
       builder: (context, state) {
         return ElevatedButton.icon(
@@ -26,7 +26,7 @@ class AddBookSubmitButton extends StatelessWidget {
     );
   }
 
-  void _onPressed(BuildContext context, AddBookCubit cubit) {
+  void _onPressed(BuildContext context, BookAddCubit cubit) {
     cubit.submit().then((_) {
       if (context.mounted) {
         Navigator.of(context).pop();

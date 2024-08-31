@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/loading_state_code.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import 'bloc/bookmark_list_bloc.dart';
@@ -15,32 +16,29 @@ class BookmarkListSliverList extends StatelessWidget {
     return BlocBuilder<BookmarkListCubit, BookmarkListState>(
       builder: (context, state) {
         switch (state.code) {
-          case BookmarkListStateCode.normal:
-            return SliverPadding(
-              padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                    return BookmarkListSliverListItem(state.bookmarkList[index]);
-                  },
-                  childCount: state.bookmarkList.length,
+          case LoadingStateCode.loaded:
+            if (state.bookmarkList.isEmpty) {
+              return const CommonSliverListEmpty();
+            } else {
+              return SliverPadding(
+                padding: EdgeInsets.only(bottom: MediaQuery
+                    .of(context)
+                    .padding
+                    .bottom),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                      return BookmarkListSliverListItem(state.bookmarkList[index]);
+                    },
+                    childCount: state.bookmarkList.length,
+                  ),
                 ),
-              ),
-            );
+              );
+            }
 
-          case BookmarkListStateCode.loading:
-            return const SliverFillRemaining(
-              child: SafeArea(
-                child: CommonLoading(),
-              ),
-            );
-
-          default:
-            return const SliverFillRemaining(
-              child: SafeArea(
-                child: CommonListEmpty(),
-              ),
-            );
+          case LoadingStateCode.initial:
+          case LoadingStateCode.loading:
+            return const CommonSliverLoading();
         }
       },
     );

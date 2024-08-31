@@ -12,12 +12,12 @@ class CollectionData extends Equatable {
   final String id;
   final String name;
   final Color? color;
-  final Set<String> pathSet;
+  final List<String> pathList;
 
   @override
-  List<Object?> get props => [id, name, color, pathSet];
+  List<Object?> get props => [id, name, color, pathList];
 
-  const CollectionData(this.id, this.name, this.color, this.pathSet);
+  const CollectionData(this.id, this.name, this.color, this.pathList);
 
   factory CollectionData.fromName(String name) {
     final Box box = Hive.box(name: hiveBoxName);
@@ -30,7 +30,7 @@ class CollectionData extends Equatable {
 
     box.close();
 
-    return CollectionData(id, name, null, const <String>{});
+    return CollectionData(id, name, null, const <String>[]);
   }
 
   factory CollectionData.fromJson(Map<String, dynamic> json) {
@@ -38,7 +38,7 @@ class CollectionData extends Equatable {
       json['id'] as String,
       json['name'] as String,
       json['color'] != null ? Color(json['color'] as int) : null,
-      Set<String>.from(json['pathSet'] as List<dynamic>),
+      List<String>.from(json['pathSet']),
     );
   }
 
@@ -48,9 +48,9 @@ class CollectionData extends Equatable {
 
     for (var key in box.keys) {
       CollectionData data = CollectionData.fromJson(box.get(key));
-      for (var path in data.pathSet) {
+      for (var path in data.pathList) {
         if (!File(path).existsSync()) {
-          data.pathSet.remove(path);
+          data.pathList.remove(path);
         }
       }
       list.add(data);
@@ -65,13 +65,13 @@ class CollectionData extends Equatable {
     String? id,
     String? name,
     Color? color,
-    Set<String>? pathSet,
+    List<String>? pathList,
   }) {
     return CollectionData(
       id ?? this.id,
       name ?? this.name,
       color ?? this.color,
-      pathSet ?? this.pathSet,
+      pathList ?? this.pathList,
     );
   }
 
@@ -79,7 +79,7 @@ class CollectionData extends Equatable {
         'id': id,
         'name': name,
         'color': color?.value,
-        'pathSet': pathSet.toList(),
+        'pathSet': pathList.toList(),
       };
 
   void save() {

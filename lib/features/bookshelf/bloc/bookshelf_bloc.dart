@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
 import '../../../data/book_data.dart';
+import '../../../data/loading_state_code.dart';
 
 class BookshelfCubit extends Cubit<BookshelfState> {
   BookshelfCubit() : super(const BookshelfState());
@@ -21,13 +22,12 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     box.close();
 
     List<BookData> list = await BookData.getDataList();
-    BookshelfStateCode code = list.isEmpty ? BookshelfStateCode.empty : BookshelfStateCode.normal;
 
     _sortBookList(list, sortOrder, isAscending);
 
     if (!isClosed) {
       emit(BookshelfState(
-        code: code,
+        code: LoadingStateCode.loaded,
         sortOrder: sortOrder,
         bookList: list,
         isAscending: isAscending,
@@ -106,7 +106,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
 }
 
 class BookshelfState extends Equatable {
-  final BookshelfStateCode code;
+  final LoadingStateCode code;
   final BookshelfSortOrder sortOrder;
   final List<BookData> bookList;
   final Set<BookData> selectedBooks;
@@ -118,7 +118,7 @@ class BookshelfState extends Equatable {
   List<Object?> get props => [code, sortOrder, bookList, selectedBooks, isDragging, isSelecting, isAscending];
 
   const BookshelfState({
-    this.code = BookshelfStateCode.loading,
+    this.code = LoadingStateCode.initial,
     this.sortOrder = BookshelfSortOrder.name,
     this.bookList = const [],
     this.selectedBooks = const {},
@@ -128,7 +128,7 @@ class BookshelfState extends Equatable {
   });
 
   BookshelfState copyWith({
-    BookshelfStateCode? code,
+    LoadingStateCode? code,
     BookshelfSortOrder? sortOrder,
     List<BookData>? bookList,
     Set<BookData>? selectedBooks,
@@ -147,8 +147,6 @@ class BookshelfState extends Equatable {
     );
   }
 }
-
-enum BookshelfStateCode { normal, empty, loading }
 
 enum BookshelfSortOrder {
   name,

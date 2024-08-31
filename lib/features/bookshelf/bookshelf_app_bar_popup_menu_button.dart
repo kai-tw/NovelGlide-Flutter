@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../data/loading_state_code.dart';
 import 'bloc/bookshelf_bloc.dart';
 
 class BookshelfAppBarPopupMenuButton extends StatelessWidget {
@@ -47,25 +48,20 @@ class BookshelfAppBarPopupMenuButton extends StatelessWidget {
         }
 
         /// Edit mode
-        switch (cubit.state.code) {
-          case BookshelfStateCode.normal:
-            if (!cubit.state.isSelecting) {
-              entries.insertAll(0, [
-                PopupMenuItem(
-                  onTap: () => cubit.setSelecting(true),
-                  child: ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    dense: true,
-                    leading: const SizedBox(width: 24.0),
-                    title: Text(appLocalizations.bookshelfSelect),
-                    trailing: const Icon(Icons.check_circle_outline_rounded),
-                  ),
-                ),
-                const PopupMenuDivider(),
-              ]);
-            }
-            break;
-          default:
+        if (cubit.state.code == LoadingStateCode.loaded && !cubit.state.isSelecting) {
+          entries.insertAll(0, [
+            PopupMenuItem(
+              onTap: () => cubit.setSelecting(true),
+              child: ListTile(
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+                leading: const SizedBox(width: 24.0),
+                title: Text(appLocalizations.bookshelfSelect),
+                trailing: const Icon(Icons.check_circle_outline_rounded),
+              ),
+            ),
+            const PopupMenuDivider(),
+          ]);
         }
 
         return entries;

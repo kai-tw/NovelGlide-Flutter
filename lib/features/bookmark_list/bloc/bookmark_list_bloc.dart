@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/bookmark_data.dart';
+import '../../../data/loading_state_code.dart';
 
 class BookmarkListCubit extends Cubit<BookmarkListState> {
   BookmarkListCubit() : super(const BookmarkListState());
@@ -18,7 +19,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
 
     if (!isClosed) {
       emit(BookmarkListState(
-        code: bookmarkList.isEmpty ? BookmarkListStateCode.empty : BookmarkListStateCode.normal,
+        code: LoadingStateCode.loaded,
         sortOrder: state.sortOrder,
         bookmarkList: bookmarkList,
         isAscending: state.isAscending,
@@ -106,7 +107,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
 }
 
 class BookmarkListState extends Equatable {
-  final BookmarkListStateCode code;
+  final LoadingStateCode code;
   final BookmarkListSortOrder sortOrder;
   final List<BookmarkData> bookmarkList;
   final Set<BookmarkData> selectedBookmarks;
@@ -118,7 +119,7 @@ class BookmarkListState extends Equatable {
   List<Object?> get props => [code, sortOrder, bookmarkList, selectedBookmarks, isDragging, isSelecting, isAscending];
 
   const BookmarkListState({
-    this.code = BookmarkListStateCode.loading,
+    this.code = LoadingStateCode.initial,
     this.sortOrder = BookmarkListSortOrder.savedTime,
     this.bookmarkList = const [],
     this.selectedBookmarks = const {},
@@ -128,7 +129,7 @@ class BookmarkListState extends Equatable {
   });
 
   BookmarkListState copyWith({
-    BookmarkListStateCode? code,
+    LoadingStateCode? code,
     BookmarkListSortOrder? sortOrder,
     List<BookmarkData>? bookmarkList,
     Set<BookmarkData>? selectedBookmarks,
@@ -147,7 +148,5 @@ class BookmarkListState extends Equatable {
     );
   }
 }
-
-enum BookmarkListStateCode { normal, loading, empty }
 
 enum BookmarkListSortOrder { name, savedTime }

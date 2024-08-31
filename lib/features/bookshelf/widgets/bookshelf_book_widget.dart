@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../data/book_data.dart';
-import '../common_components/common_book_cover_image.dart';
+import '../../../data/book_data.dart';
+import '../../common_components/common_book_cover_image.dart';
 
 class BookshelfBookWidget extends StatelessWidget {
   final BookData bookData;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CollectionListAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CollectionListAppBar({super.key});
@@ -10,7 +11,7 @@ class CollectionListAppBar extends StatelessWidget implements PreferredSizeWidge
   Widget build(BuildContext context) {
     return AppBar(
       leading: const Icon(Icons.collections_bookmark_outlined),
-      title: const Text('Collection'),
+      title: Text(AppLocalizations.of(context)!.collectionTitle),
     );
   }
 }

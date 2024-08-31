@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/loading_state_code.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import 'bookshelf_sliver_list_item.dart';
@@ -20,41 +21,34 @@ class BookshelfSliverList extends StatelessWidget {
           previous.sortOrder != current.sortOrder,
       builder: (BuildContext context, BookshelfState state) {
         switch (state.code) {
-          case BookshelfStateCode.normal:
-            final double bottomPadding = MediaQuery.of(context).padding.bottom + 48.0;
-            return SliverPadding(
-              padding: EdgeInsets.only(bottom: bottomPadding),
-              sliver: SliverGrid(
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 150.0,
-                  childAspectRatio: 150 / 300,
+          case LoadingStateCode.loaded:
+            if (state.bookList.isEmpty) {
+              return const CommonSliverListEmpty();
+            } else {
+              final double bottomPadding = MediaQuery
+                  .of(context)
+                  .padding
+                  .bottom + 48.0;
+              return SliverPadding(
+                padding: EdgeInsets.only(bottom: bottomPadding),
+                sliver: SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 150.0,
+                    childAspectRatio: 150 / 300,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                      return BookshelfSliverListItem(state.bookList[index]);
+                    },
+                    childCount: state.bookList.length,
+                  ),
                 ),
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return BookshelfSliverListItem(state.bookList[index]);
-                  },
-                  childCount: state.bookList.length,
-                ),
-              ),
-            );
+              );
+            }
 
-          case BookshelfStateCode.loading:
-            return const SliverFillRemaining(
-              child: SafeArea(
-                child: Center(
-                  child: CommonLoading(),
-                ),
-              ),
-            );
-
-          default:
-            return const SliverFillRemaining(
-              child: SafeArea(
-                child: Center(
-                  child: CommonListEmpty(),
-                ),
-              ),
-            );
+          case LoadingStateCode.initial:
+          case LoadingStateCode.loading:
+            return const CommonSliverLoading();
         }
       },
     );

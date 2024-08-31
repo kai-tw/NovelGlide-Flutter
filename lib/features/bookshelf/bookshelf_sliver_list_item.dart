@@ -5,8 +5,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../data/book_data.dart';
 import '../table_of_contents/table_of_content.dart';
 import 'bloc/bookshelf_bloc.dart';
-import 'bookshelf_book_widget.dart';
-import 'bookshelf_draggable_book.dart';
+import 'widgets/bookshelf_draggable_book.dart';
+import 'widgets/bookshelf_book_widget.dart';
 import 'widgets/bookshelf_select_checkbox.dart';
 
 class BookshelfSliverListItem extends StatelessWidget {

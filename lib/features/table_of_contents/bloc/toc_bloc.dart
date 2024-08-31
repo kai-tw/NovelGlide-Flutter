@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
 import '../../../data/chapter_data.dart';
+import '../../../data/loading_state_code.dart';
 
 class TocCubit extends Cubit<TocState> {
   final PageStorageBucket bucket = PageStorageBucket();
@@ -24,7 +25,7 @@ class TocCubit extends Cubit<TocState> {
         bookName: bookData.name,
         filePath: bookData.filePath,
         coverBytes: bookData.coverBytes,
-        code: chapterList.isEmpty ? TocStateCode.empty : TocStateCode.normal,
+        code: LoadingStateCode.loaded,
         chapterList: chapterList,
         bookmarkData: BookmarkData.get(bookData.filePath),
       ));
@@ -36,7 +37,7 @@ class TocState extends Equatable {
   final String bookName;
   final String filePath;
   final Uint8List? coverBytes;
-  final TocStateCode code;
+  final LoadingStateCode code;
   final List<ChapterData> chapterList;
   final BookmarkData? bookmarkData;
 
@@ -47,7 +48,7 @@ class TocState extends Equatable {
     required this.bookName,
     required this.filePath,
     this.coverBytes,
-    this.code = TocStateCode.loading,
+    this.code = LoadingStateCode.initial,
     this.chapterList = const [],
     this.bookmarkData,
   });
@@ -56,7 +57,7 @@ class TocState extends Equatable {
     String? bookName,
     String? filePath,
     Uint8List? coverBytes,
-    TocStateCode? code,
+    LoadingStateCode? code,
     List<ChapterData>? chapterList,
     BookmarkData? bookmarkData,
   }) {
@@ -70,5 +71,3 @@ class TocState extends Equatable {
     );
   }
 }
-
-enum TocStateCode { loading, normal, empty }
