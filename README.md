@@ -28,6 +28,10 @@ A first attempt to develop a cross-platform app.
   - Search a keyword in the current chapter.
   - Search a keyword in all chapters.
 
+## Epub renderer
+
+- [NovelGlide-EpubRenderer](https://github.com/kai-tw/NovelGlide-EpubRenderer)
+
 ## Guide
 
 - [The Guide of the Book Operation](https://blog.kai-wu.net/2024/07/novelglide-book-guide.html) (Traditional Chinese)
