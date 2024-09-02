@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../data/window_class.dart';
 import 'book_add_form.dart';
 
 class BookAddDialog extends StatelessWidget {
@@ -7,8 +8,11 @@ class BookAddDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Dialog(
-      child: BookAddForm(),
+    return Dialog(
+      child: Container(
+        constraints: BoxConstraints(maxWidth: WindowClass.compact.maxWidth),
+        child: const BookAddForm(),
+      ),
     );
   }
 }

@@ -12,6 +12,10 @@ A first attempt to develop a cross-platform app.
   - Read a ePub book.
   - Add a ePub book.
   - Save a bookmark and jump to it.
+  - Search a keyword in a book or in the current chapter.
+- **Collection features**
+  - Add a book to a collection.
+  - Reorder the books in a collection.
 - **Appearance features**
   - Change the font size and line height.
   - Change the theme and brightness.
@@ -35,6 +39,3 @@ A first attempt to develop a cross-platform app.
 ## TODO-List
 
 - [ ] Export books
-- [ ] Category
-- [ ] Search
-- [ ] Custom book order.
