@@ -71,6 +71,8 @@ dependencies:
   xml: ^6.5.0
   shelf: ^1.4.1
   webview_flutter: ^4.8.0
+  image: ^3.3.0
+  bitmap: ^0.2.0
 
 dev_dependencies:
   flutter_test:

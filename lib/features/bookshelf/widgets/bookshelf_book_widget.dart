@@ -16,16 +16,13 @@ class BookshelfBookWidget extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 16.0),
           child: AspectRatio(
             aspectRatio: 1 / 1.5,
-            child: Hero(
-              tag: bookData.filePath,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                clipBehavior: Clip.hardEdge,
-                child: CommonBookCoverImage(bytes: bookData.coverBytes),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(16.0),
               ),
+              clipBehavior: Clip.hardEdge,
+              child: CommonBookCoverImage(bookData: bookData),
             ),
           ),
         ),

@@ -4,6 +4,7 @@ import 'package:epubx/epubx.dart' as epub;
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:image/image.dart';
 
 import '../toolbox/advanced_mime_type_resolver.dart';
 import 'bookmark_data.dart';
@@ -23,7 +24,7 @@ class BookData extends Equatable {
 
   String get name => epubBook.Title ?? '';
 
-  Uint8List? get coverBytes => epubBook.CoverImage?.getBytes();
+  Image? get coverImage => epubBook.CoverImage;
 
   List<ChapterData>? get chapterList {
     List<ChapterData> chapterList = [];
