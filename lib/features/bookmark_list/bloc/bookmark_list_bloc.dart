@@ -13,8 +13,8 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
     WidgetsBinding.instance.addPostFrameCallback((_) => refresh());
   }
 
-  Future<void> refresh() async {
-    final List<BookmarkData> bookmarkList = await BookmarkData.getList();
+  void refresh() {
+    final List<BookmarkData> bookmarkList = BookmarkData.getList();
     bookmarkList.sort((a, b) => b.savedTime.compareTo(a.savedTime));
 
     if (!isClosed) {
@@ -31,8 +31,8 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
     emit(state.copyWith(isDragging: false, isSelecting: false));
   }
 
-  Future<void> setSortOrder(BookmarkListSortOrder sortOrder) async {
-    List<BookmarkData> list = await BookmarkData.getList();
+  void setSortOrder(BookmarkListSortOrder sortOrder) {
+    List<BookmarkData> list = BookmarkData.getList();
     _sortBookmarkList(list, sortOrder, state.isAscending);
     if (!isClosed) {
       emit(state.copyWith(sortOrder: sortOrder, bookmarkList: list));
@@ -51,8 +51,8 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
     }
   }
 
-  Future<void> setAscending(bool isAscending) async {
-    List<BookmarkData> list = await BookmarkData.getList();
+  void setAscending(bool isAscending) {
+    List<BookmarkData> list = BookmarkData.getList();
     _sortBookmarkList(list, state.sortOrder, isAscending);
     if (!isClosed) {
       emit(state.copyWith(isAscending: isAscending, bookmarkList: list));

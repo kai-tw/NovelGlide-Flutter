@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -7,7 +5,7 @@ import 'package:hive/hive.dart';
 import '../toolbox/random_utility.dart';
 
 class CollectionData extends Equatable {
-  static const String hiveBoxName = 'category';
+  static const String hiveBoxName = 'collection';
 
   final String id;
   final String name;
@@ -38,7 +36,7 @@ class CollectionData extends Equatable {
       json['id'] as String,
       json['name'] as String,
       json['color'] != null ? Color(json['color'] as int) : null,
-      List<String>.from(json['pathSet']),
+      List<String>.from(json['pathList'] ?? []),
     );
   }
 
@@ -48,17 +46,29 @@ class CollectionData extends Equatable {
 
     for (var key in box.keys) {
       CollectionData data = CollectionData.fromJson(box.get(key));
-      for (var path in data.pathList) {
-        if (!File(path).existsSync()) {
-          data.pathList.remove(path);
-        }
-      }
       list.add(data);
     }
 
     box.close();
 
     return list;
+  }
+
+  static void reorder(int oldIndex, int newIndex) {
+    final Box box = Hive.box(name: hiveBoxName);
+    newIndex = newIndex - (oldIndex < newIndex ? 1 : 0);
+
+    CollectionData data = CollectionData.fromJson(box.getAt(oldIndex));
+    box.deleteAt(oldIndex);
+    box.put(data.id, data.toJson());
+
+    int loopTime = box.length - newIndex - 1;
+    while (loopTime-- > 0) {
+      data = CollectionData.fromJson(box.getAt(newIndex));
+      box.deleteAt(newIndex);
+      box.put(data.id, data.toJson());
+    }
+    box.close();
   }
 
   CollectionData copyWith({
@@ -79,7 +89,9 @@ class CollectionData extends Equatable {
         'id': id,
         'name': name,
         'color': color?.value,
-        'pathSet': pathList.toList(),
+        'pathList': [
+          ...{...pathList}
+        ],
       };
 
   void save() {

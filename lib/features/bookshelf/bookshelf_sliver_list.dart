@@ -25,10 +25,7 @@ class BookshelfSliverList extends StatelessWidget {
             if (state.bookList.isEmpty) {
               return const CommonSliverListEmpty();
             } else {
-              final double bottomPadding = MediaQuery
-                  .of(context)
-                  .padding
-                  .bottom + 48.0;
+              final double bottomPadding = MediaQuery.of(context).padding.bottom + 48.0;
               return SliverPadding(
                 padding: EdgeInsets.only(bottom: bottomPadding),
                 sliver: SliverGrid(
@@ -37,7 +34,7 @@ class BookshelfSliverList extends StatelessWidget {
                     childAspectRatio: 150 / 300,
                   ),
                   delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
+                    (BuildContext context, int index) {
                       return BookshelfSliverListItem(state.bookList[index]);
                     },
                     childCount: state.bookList.length,

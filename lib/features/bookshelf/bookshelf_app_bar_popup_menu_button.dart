@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/loading_state_code.dart';
+import '../../data/sort_order_code.dart';
 import 'bloc/bookshelf_bloc.dart';
 
 class BookshelfAppBarPopupMenuButton extends StatelessWidget {
@@ -15,17 +16,16 @@ class BookshelfAppBarPopupMenuButton extends StatelessWidget {
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
     return PopupMenuButton(
       icon: const Icon(Icons.more_vert_rounded),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
       clipBehavior: Clip.hardEdge,
       itemBuilder: (BuildContext context) {
         List<PopupMenuEntry<dynamic>> entries = [];
 
-        final Map<BookshelfSortOrder, String> sortMap = {
-          BookshelfSortOrder.name: appLocalizations.bookshelfSortName,
-          BookshelfSortOrder.modifiedDate: appLocalizations.bookshelfSortLastModified,
+        final Map<SortOrderCode, String> sortMap = {
+          SortOrderCode.name: appLocalizations.bookshelfSortName,
+          SortOrderCode.modifiedDate: appLocalizations.bookshelfSortLastModified,
         };
 
-        for (MapEntry<BookshelfSortOrder, String> entry in sortMap.entries) {
+        for (MapEntry<SortOrderCode, String> entry in sortMap.entries) {
           bool isSelected = cubit.state.sortOrder == entry.key;
           entries.add(
             PopupMenuItem(
@@ -38,9 +38,7 @@ class BookshelfAppBarPopupMenuButton extends StatelessWidget {
                 leading: isSelected ? const Icon(Icons.check_rounded) : const SizedBox(width: 24.0),
                 title: Text(entry.value),
                 trailing: isSelected
-                    ? cubit.state.isAscending
-                        ? const Icon(CupertinoIcons.chevron_up)
-                        : const Icon(CupertinoIcons.chevron_down)
+                    ? Icon(cubit.state.isAscending ? CupertinoIcons.chevron_up : CupertinoIcons.chevron_down)
                     : const SizedBox(width: 24.0),
               ),
             ),

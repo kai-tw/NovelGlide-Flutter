@@ -7,7 +7,8 @@ import '../bookmark_list/bloc/bookmark_list_bloc.dart';
 import '../bookmark_list/bookmark_list_sliver_list.dart';
 import '../bookshelf/bloc/bookshelf_bloc.dart';
 import '../bookshelf/bookshelf_sliver_list.dart';
-import '../collection_list/collection_list_sliver_list.dart';
+import '../collection_list/bloc/collection_list_bloc.dart';
+import '../collection_list/collection_list.dart';
 import '../settings_page/settings_page.dart';
 import 'bloc/homepage_bloc.dart';
 
@@ -18,6 +19,7 @@ class HomepageScaffoldBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final HomepageCubit cubit = BlocProvider.of<HomepageCubit>(context);
     final BookshelfCubit bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
+    final CollectionListCubit collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
     final BookmarkListCubit bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
 
     return BlocBuilder<HomepageCubit, HomepageState>(
@@ -55,12 +57,12 @@ class HomepageScaffoldBody extends StatelessWidget {
                   child: PageStorage(
                     bucket: cubit.collectionBucket,
                     child: RefreshIndicator(
-                      onRefresh: () async {},
+                      onRefresh: () async => collectionListCubit.refresh(),
                       child: const Scrollbar(
                         child: CustomScrollView(
                           key: PageStorageKey<String>('homepage-collection'),
                           slivers: [
-                            CollectionListSliverList(),
+                            CollectionList(),
                           ],
                         ),
                       ),

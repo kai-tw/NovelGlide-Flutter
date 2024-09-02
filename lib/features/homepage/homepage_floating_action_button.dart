@@ -13,7 +13,8 @@ class HomepageFloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final BookshelfCubit bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
+    final CollectionListCubit collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
 
     return BlocBuilder<HomepageCubit, HomepageState>(
       buildWhen: (previous, current) => previous.navItem != current.navItem,
@@ -28,14 +29,12 @@ class HomepageFloatingActionButton extends StatelessWidget {
                   context: context,
                   builder: (context) => const BookAddDialog(),
                 ).then((_) {
-                  if (context.mounted) {
-                    BlocProvider.of<BookshelfCubit>(context).refresh();
-                  }
+                  bookshelfCubit.refresh();
                 });
               },
               child: Icon(
                 Icons.add,
-                semanticLabel: appLocalizations.accessibilityAddBookButton,
+                semanticLabel: AppLocalizations.of(context)!.accessibilityAddBookButton,
               ),
             );
             break;
@@ -48,14 +47,12 @@ class HomepageFloatingActionButton extends StatelessWidget {
                   barrierDismissible: false,
                   builder: (context) => const CollectionAddDialog(),
                 ).then((_) {
-                  if (context.mounted) {
-                    BlocProvider.of<CollectionListCubit>(context).refresh();
-                  }
+                  collectionListCubit.refresh();
                 });
               },
               child: Icon(
                 Icons.add,
-                semanticLabel: appLocalizations.collectionAddBtn,
+                semanticLabel: AppLocalizations.of(context)!.collectionAddBtn,
               ),
             );
             break;

@@ -3,21 +3,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../ad_center/advertisement.dart';
 import '../../../ad_center/advertisement_id.dart';
+import '../../../data/book_data.dart';
 import '../bloc/toc_bloc.dart';
 import '../toc_app_bar.dart';
 import '../toc_fab_section.dart';
 import '../widgets/toc_book_name.dart';
 import '../widgets/toc_cover_banner.dart';
-import '../widgets/toc_scroll_view.dart';
-import '../chapter_list/toc_sliver_chapter_list.dart';
+import '../widgets/toc_sliver_chapter_list.dart';
 
 class TocScaffoldMediumView extends StatelessWidget {
-  const TocScaffoldMediumView({super.key});
+  final BookData bookData;
+
+  const TocScaffoldMediumView({super.key, required this.bookData});
 
   @override
   Widget build(BuildContext context) {
+    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
+
     return Scaffold(
-      appBar: const TocAppBar(),
+      appBar: TocAppBar(bookData: bookData),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
@@ -30,14 +34,14 @@ class TocScaffoldMediumView extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: Stack(
                           children: [
-                            TocCoverBanner(),
+                            TocCoverBanner(bookData: bookData),
                             Positioned.fill(
                               child: Align(
                                 alignment: Alignment.bottomLeft,
-                                child: TocBookName(),
+                                child: TocBookName(bookData: bookData),
                               ),
                             ),
                           ],
@@ -48,17 +52,24 @@ class TocScaffoldMediumView extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: Stack(
-                    children: [
-                      RefreshIndicator(
-                        onRefresh: () async => BlocProvider.of<TocCubit>(context).refresh(),
-                        child: const TocScrollView(
+                  child: RefreshIndicator(
+                    onRefresh: () async => BlocProvider.of<TocCubit>(context).refresh(),
+                    child: PageStorage(
+                      bucket: cubit.bucket,
+                      child: Scrollbar(
+                        controller: cubit.scrollController,
+                        child: CustomScrollView(
+                          key: const PageStorageKey<String>('toc-scroll-view'),
+                          controller: cubit.scrollController,
                           slivers: [
-                            TocSliverChapterList(),
+                            SliverPadding(
+                              padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 80.0),
+                              sliver: TocSliverChapterList(bookData: bookData),
+                            ),
                           ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ],

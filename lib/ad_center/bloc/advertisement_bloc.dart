@@ -28,7 +28,6 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
   }
 
   void loadAd() async {
-    return;
     final AnchoredAdaptiveBannerAdSize? size = await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(_width);
 
     bannerAd = BannerAd(

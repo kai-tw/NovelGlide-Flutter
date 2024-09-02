@@ -115,9 +115,9 @@ class GoogleDriveApi {
     final drive.Media media = drive.Media(file.openRead(), file.lengthSync());
 
     if (fileId != null) {
-      await driveApi!.files.update(drive.File(), fileId, uploadMedia: media);
+      await driveApi!.files.update(driveFile, fileId, uploadMedia: media);
     } else {
-      await driveApi!.files.create(drive.File(), uploadMedia: media);
+      await driveApi!.files.create(driveFile, uploadMedia: media);
     }
   }
 

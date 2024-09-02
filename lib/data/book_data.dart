@@ -6,7 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../toolbox/advanced_mime_type_resolver.dart';
+import 'bookmark_data.dart';
 import 'chapter_data.dart';
+import 'collection_data.dart';
 import 'file_path.dart';
 
 class BookData extends Equatable {
@@ -79,6 +81,20 @@ class BookData extends Equatable {
     if (file.existsSync()) {
       file.deleteSync();
     }
+
+    /// Search the bookmark and delete it.
+    Iterable<BookmarkData> bookmarkList = BookmarkData.getList().where((element) => element.bookPath == filePath);
+    for (BookmarkData data in bookmarkList) {
+      data.delete();
+    }
+
+    /// Search the collection and delete it.
+    Iterable<CollectionData> collectionList = CollectionData.getList().where((element) => element.pathList.contains(filePath));
+    for (CollectionData data in collectionList) {
+      data.pathList.remove(filePath);
+      data.save();
+    }
+
     return !file.existsSync();
   }
 }

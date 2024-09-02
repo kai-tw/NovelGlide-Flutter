@@ -18,11 +18,14 @@ abstract class ThemeTemplate {
       inputDecorationTheme: inputDecorationTheme,
       snackBarTheme: getSnackBarTheme(colorScheme),
       switchTheme: getSwitchTheme(colorScheme),
+      popupMenuTheme: PopupMenuThemeData(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
+      ),
       useMaterial3: true,
     );
   }
 
-  static final InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
+  static InputDecorationTheme get inputDecorationTheme => InputDecorationTheme(
     labelStyle: const TextStyle(fontSize: 16),
     contentPadding: const EdgeInsets.all(24.0),
     border: OutlineInputBorder(

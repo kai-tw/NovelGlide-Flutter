@@ -7,9 +7,9 @@ import 'bloc/bookmark_list_bloc.dart';
 import '../common_components/bookmark_widget.dart';
 
 class BookmarkListDraggableBookmark extends StatelessWidget {
-  final BookmarkData _bookmarkObject;
+  final BookmarkData _data;
 
-  const BookmarkListDraggableBookmark(this._bookmarkObject, {super.key});
+  const BookmarkListDraggableBookmark(this._data, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +21,7 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
         onDragStarted: () => cubit.setDragging(true),
         onDragEnd: (_) => cubit.setDragging(false),
         onDragCompleted: () {
-          try {
-            _bookmarkObject.delete();
-          } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(appLocalizations.deleteBookmarkFailed),
-              ),
-            );
-            return;
-          }
-
+          _data.delete();
           cubit.refresh();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -39,7 +29,7 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
             ),
           );
         },
-        data: _bookmarkObject,
+        data: _data,
         feedback: Opacity(
           opacity: 0.7,
           child: Container(
@@ -56,20 +46,20 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
                 ),
               ],
             ),
-            child: BookmarkWidget(_bookmarkObject),
+            child: BookmarkWidget(_data),
           ),
         ),
         childWhenDragging: Opacity(
           opacity: 0.3,
           child: SizedBox(
             width: constraints.maxWidth,
-            child: BookmarkWidget(_bookmarkObject),
+            child: BookmarkWidget(_data),
           ),
         ),
         child: Container(
           width: constraints.maxWidth,
           color: Colors.transparent,
-          child: BookmarkWidget(_bookmarkObject),
+          child: BookmarkWidget(_data),
         ),
       );
     });

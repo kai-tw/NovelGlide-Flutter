@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/window_class.dart';
 import '../bookmark_list/widgets/bookmark_list_operation_panel.dart';
 import '../bookshelf/widgets/bookshelf_operation_panel.dart';
+import '../collection_list/collection_list_operation_panel.dart';
 import 'bloc/homepage_bloc.dart';
 import 'homepage_floating_action_button.dart';
 
@@ -27,15 +28,20 @@ class HomepageTabSection extends StatelessWidget {
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(left: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: kFloatingActionButtonMargin),
               child: BlocBuilder<HomepageCubit, HomepageState>(
                 buildWhen: (previous, current) => previous.navItem != current.navItem,
                 builder: (context, state) {
                   switch (state.navItem) {
                     case HomepageNavigationItem.bookshelf:
                       return const BookshelfOperationPanel();
+
+                    case HomepageNavigationItem.collection:
+                      return const CollectionListOperationPanel();
+
                     case HomepageNavigationItem.bookmark:
                       return const BookmarkListOperationPanel();
+
                     default:
                       return const SizedBox.shrink();
                   }

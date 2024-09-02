@@ -21,13 +21,10 @@ class BookmarkListSliverList extends StatelessWidget {
               return const CommonSliverListEmpty();
             } else {
               return SliverPadding(
-                padding: EdgeInsets.only(bottom: MediaQuery
-                    .of(context)
-                    .padding
-                    .bottom),
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
+                    (BuildContext context, int index) {
                       return BookmarkListSliverListItem(state.bookmarkList[index]);
                     },
                     childCount: state.bookmarkList.length,

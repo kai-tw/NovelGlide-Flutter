@@ -15,7 +15,6 @@ class BookmarkListAppBarPopupMenuButton extends StatelessWidget {
     final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
     return PopupMenuButton(
       icon: const Icon(Icons.more_vert_rounded),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
       clipBehavior: Clip.hardEdge,
       itemBuilder: (BuildContext context) {
         List<PopupMenuEntry<dynamic>> entries = [];
@@ -37,9 +36,7 @@ class BookmarkListAppBarPopupMenuButton extends StatelessWidget {
                   leading: isSelected ? const Icon(Icons.check_rounded) : const SizedBox(width: 24.0),
                   title: Text(entry.value),
                   trailing: isSelected
-                      ? cubit.state.isAscending
-                      ? const Icon(CupertinoIcons.chevron_up)
-                      : const Icon(CupertinoIcons.chevron_down)
+                      ? Icon(cubit.state.isAscending ? CupertinoIcons.chevron_up : CupertinoIcons.chevron_down)
                       : const SizedBox(width: 24.0),
                 ),
               ),

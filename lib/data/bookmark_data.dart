@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:hive/hive.dart';
 
@@ -40,16 +39,16 @@ class BookmarkData {
     return null;
   }
 
-  static Future<List<BookmarkData>> getList() async {
+  static List<BookmarkData> getList() {
     final Box<String> box = Hive.box(name: 'bookmark');
     List<BookmarkData> retList = [];
 
-    for (int i = 0; i < box.length; i++) {
-      final BookmarkData data = BookmarkData.fromJson(box.getAt(i));
-      if (File(data.bookPath).existsSync()) {
-        retList.add(data);
+    for (String key in box.keys) {
+      final String? rawJson = box.get(key);
+      if (rawJson == null) {
+        box.delete(key);
       } else {
-        box.deleteAt(i);
+        retList.add(BookmarkData.fromJson(rawJson));
       }
     }
 
