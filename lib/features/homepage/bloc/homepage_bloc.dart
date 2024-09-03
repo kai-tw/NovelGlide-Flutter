@@ -4,10 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomepageCubit extends Cubit<HomepageState> {
   final PageStorageBucket bookshelfBucket = PageStorageBucket();
+  final PageStorageBucket collectionBucket = PageStorageBucket();
   final PageStorageBucket bookmarkBucket = PageStorageBucket();
 
   HomepageCubit() : super(const HomepageState());
-  
+
   void setItem(HomepageNavigationItem item) {
     emit(state.copyWith(navItem: item));
   }
@@ -22,7 +23,7 @@ class HomepageState extends Equatable {
   const HomepageState({
     this.navItem = HomepageNavigationItem.bookshelf,
   });
-  
+
   HomepageState copyWith({
     HomepageNavigationItem? navItem,
   }) {
@@ -32,4 +33,4 @@ class HomepageState extends Equatable {
   }
 }
 
-enum HomepageNavigationItem { bookshelf, bookmark, settings }
+enum HomepageNavigationItem { bookshelf, collection, bookmark, settings }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/bookmark_data.dart';
-import '../../../processor/bookmark_processor.dart';
+import '../../../data/loading_state_code.dart';
 
 class BookmarkListCubit extends Cubit<BookmarkListState> {
   BookmarkListCubit() : super(const BookmarkListState());
@@ -13,23 +13,26 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
     WidgetsBinding.instance.addPostFrameCallback((_) => refresh());
   }
 
-  Future<void> refresh() async {
-    final List<BookmarkData> bookmarkList = await BookmarkProcessor.getList();
+  void refresh() {
+    final List<BookmarkData> bookmarkList = BookmarkData.getList();
     bookmarkList.sort((a, b) => b.savedTime.compareTo(a.savedTime));
 
     if (!isClosed) {
       emit(BookmarkListState(
-        code: bookmarkList.isEmpty ? BookmarkListStateCode.empty : BookmarkListStateCode.normal,
+        code: LoadingStateCode.loaded,
         sortOrder: state.sortOrder,
         bookmarkList: bookmarkList,
-        isSelecting: state.isSelecting,
         isAscending: state.isAscending,
       ));
     }
   }
 
-  Future<void> setSortOrder(BookmarkListSortOrder sortOrder) async {
-    List<BookmarkData> list = await BookmarkProcessor.getList();
+  void unfocused() {
+    emit(state.copyWith(isDragging: false, isSelecting: false));
+  }
+
+  void setSortOrder(BookmarkListSortOrder sortOrder) {
+    List<BookmarkData> list = BookmarkData.getList();
     _sortBookmarkList(list, sortOrder, state.isAscending);
     if (!isClosed) {
       emit(state.copyWith(sortOrder: sortOrder, bookmarkList: list));
@@ -40,7 +43,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
     switch (sortOrder) {
       case BookmarkListSortOrder.name:
         list.sort(
-            (a, b) => isAscending ? compareNatural(a.bookName, b.bookName) : compareNatural(b.bookName, a.bookName));
+            (a, b) => isAscending ? compareNatural(a.bookPath, b.bookPath) : compareNatural(b.bookPath, a.bookPath));
         break;
       case BookmarkListSortOrder.savedTime:
         list.sort((a, b) => isAscending ? a.savedTime.compareTo(b.savedTime) : b.savedTime.compareTo(a.savedTime));
@@ -48,8 +51,8 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
     }
   }
 
-  Future<void> setAscending(bool isAscending) async {
-    List<BookmarkData> list = await BookmarkProcessor.getList();
+  void setAscending(bool isAscending) {
+    List<BookmarkData> list = BookmarkData.getList();
     _sortBookmarkList(list, state.sortOrder, isAscending);
     if (!isClosed) {
       emit(state.copyWith(isAscending: isAscending, bookmarkList: list));
@@ -64,24 +67,24 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
     emit(state.copyWith(isSelecting: isSelecting, selectedBookmarks: const {}));
   }
 
-  void selectBookmark(String bookName) {
+  void selectBookmark(BookmarkData data) {
     emit(state.copyWith(
       selectedBookmarks: {
         ...state.selectedBookmarks,
-        bookName,
+        data,
       },
     ));
   }
 
   void selectAllBookmarks() {
     emit(state.copyWith(
-      selectedBookmarks: state.bookmarkList.map((e) => e.bookName).toSet(),
+      selectedBookmarks: state.bookmarkList.toSet(),
     ));
   }
 
-  void deselectBookmark(String bookName) {
-    Set<String> newSet = Set<String>.from(state.selectedBookmarks);
-    newSet.remove(bookName);
+  void deselectBookmark(BookmarkData data) {
+    Set<BookmarkData> newSet = Set<BookmarkData>.from(state.selectedBookmarks);
+    newSet.remove(data);
 
     emit(state.copyWith(
       selectedBookmarks: newSet,
@@ -95,8 +98,8 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
   }
 
   Future<bool> deleteSelectedBookmarks() async {
-    for (String bookName in state.selectedBookmarks) {
-      BookmarkData.fromBookName(bookName).clear();
+    for (BookmarkData data in state.selectedBookmarks) {
+      data.delete();
     }
     refresh();
     return true;
@@ -104,10 +107,10 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
 }
 
 class BookmarkListState extends Equatable {
-  final BookmarkListStateCode code;
+  final LoadingStateCode code;
   final BookmarkListSortOrder sortOrder;
   final List<BookmarkData> bookmarkList;
-  final Set<String> selectedBookmarks;
+  final Set<BookmarkData> selectedBookmarks;
   final bool isDragging;
   final bool isSelecting;
   final bool isAscending;
@@ -116,7 +119,7 @@ class BookmarkListState extends Equatable {
   List<Object?> get props => [code, sortOrder, bookmarkList, selectedBookmarks, isDragging, isSelecting, isAscending];
 
   const BookmarkListState({
-    this.code = BookmarkListStateCode.loading,
+    this.code = LoadingStateCode.initial,
     this.sortOrder = BookmarkListSortOrder.savedTime,
     this.bookmarkList = const [],
     this.selectedBookmarks = const {},
@@ -126,10 +129,10 @@ class BookmarkListState extends Equatable {
   });
 
   BookmarkListState copyWith({
-    BookmarkListStateCode? code,
+    LoadingStateCode? code,
     BookmarkListSortOrder? sortOrder,
     List<BookmarkData>? bookmarkList,
-    Set<String>? selectedBookmarks,
+    Set<BookmarkData>? selectedBookmarks,
     bool? isDragging,
     bool? isSelecting,
     bool? isAscending,
@@ -145,7 +148,5 @@ class BookmarkListState extends Equatable {
     );
   }
 }
-
-enum BookmarkListStateCode { normal, loading, empty }
 
 enum BookmarkListSortOrder { name, savedTime }

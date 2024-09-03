@@ -92,11 +92,7 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
                         );
 
                       case BackupManagerGoogleDriveErrorCode.emptyFolder:
-                        return const SliverFillRemaining(
-                          child: Center(
-                            child: CommonListEmpty(),
-                          ),
-                        );
+                        return const CommonSliverListEmpty();
 
                       case BackupManagerGoogleDriveErrorCode.normal:
                         return SliverList(

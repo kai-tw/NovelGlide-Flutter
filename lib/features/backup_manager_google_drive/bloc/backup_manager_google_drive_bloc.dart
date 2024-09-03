@@ -23,7 +23,7 @@ class BackupManagerGoogleDriveCubit extends Cubit<BackupManagerGoogleDriveState>
     if (isEnabled && !await GoogleDriveApi.instance.isSignedIn()) {
       await GoogleDriveApi.instance.signIn();
     }
-    emit(BackupManagerGoogleDriveState(isEnabled: isEnabled));
+    emit(BackupManagerGoogleDriveState(isEnabled: isEnabled && await GoogleDriveApi.instance.isSignedIn()));
     box.close();
   }
 

@@ -20,7 +20,7 @@ class BookmarkListAppBar extends StatelessWidget implements PreferredSizeWidget 
       buildWhen: (previous, current) => previous.isSelecting != current.isSelecting,
       builder: (BuildContext context, BookmarkListState state) {
         return AppBar(
-          leading: const Icon(Icons.bookmark_outline_rounded),
+          leading: const Icon(Icons.bookmarks_outlined),
           title: Text(appLocalizations.bookmarkListTitle),
           actions: [
             AnimatedSwitcher(

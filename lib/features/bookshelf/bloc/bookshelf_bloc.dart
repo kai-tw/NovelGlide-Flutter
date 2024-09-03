@@ -2,9 +2,11 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 
 import '../../../data/book_data.dart';
-import '../../../processor/book_processor.dart';
+import '../../../data/loading_state_code.dart';
+import '../../../data/sort_order_code.dart';
 
 class BookshelfCubit extends Cubit<BookshelfState> {
   BookshelfCubit() : super(const BookshelfState());
@@ -14,44 +16,55 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   }
 
   Future<void> refresh() async {
-    List<BookData> list = await BookProcessor.getDataList();
-    BookshelfStateCode code = list.isEmpty ? BookshelfStateCode.empty : BookshelfStateCode.normal;
-    _sortBookList(list, state.sortOrder, state.isAscending);
+    final Box box = Hive.box(name: 'settings');
+    SortOrderCode sortOrder =
+    SortOrderCode.fromString(box.get('bookshelf.sortOrder'), defaultValue: SortOrderCode.name);
+    bool isAscending = box.get('bookshelf.isAscending', defaultValue: true);
+    box.close();
+
+    List<BookData> list = await BookData.getDataList();
+
+    _sortList(list, sortOrder, isAscending);
+
     if (!isClosed) {
       emit(BookshelfState(
-        code: code,
-        sortOrder: state.sortOrder,
+        code: LoadingStateCode.loaded,
+        sortOrder: sortOrder,
         bookList: list,
-        isSelecting: state.isSelecting,
-        isAscending: state.isAscending,
+        isAscending: isAscending,
       ));
     }
   }
 
-  Future<void> setSortOrder(BookshelfSortOrder sortOrder) async {
-    List<BookData> list = await BookProcessor.getDataList();
-    _sortBookList(list, sortOrder, state.isAscending);
-    if (!isClosed) {
-      emit(state.copyWith(sortOrder: sortOrder, bookList: list));
-    }
+  void unfocused() {
+    emit(state.copyWith(isDragging: false, isSelecting: false));
   }
 
-  Future<void> setAscending(bool isAscending) async {
-    List<BookData> list = await BookProcessor.getDataList();
-    _sortBookList(list, state.sortOrder, isAscending);
-    if (!isClosed) {
-      emit(state.copyWith(isAscending: isAscending, bookList: list));
-    }
+  void setListOrder({SortOrderCode? sortOrder, bool? isAscending}) {
+    SortOrderCode order = sortOrder ?? state.sortOrder;
+    bool ascending = isAscending ?? state.isAscending;
+
+    final Box box = Hive.box(name: 'settings');
+    box.put('bookshelf.sortOrder', order.toString());
+    box.put('bookshelf.isAscending', ascending);
+    box.close();
+
+    _sortList(state.bookList, order, ascending);
+    emit(state.copyWith(
+      isAscending: ascending,
+      sortOrder: order,
+    ));
   }
 
-  void _sortBookList(List<BookData> list, BookshelfSortOrder sortOrder, bool isAscending) {
+  void _sortList(List<BookData> list, SortOrderCode sortOrder, bool isAscending) {
     switch (sortOrder) {
-      case BookshelfSortOrder.name:
-        list.sort((a, b) => isAscending ? compareNatural(a.name, b.name) : compareNatural(b.name, a.name));
-        break;
-      case BookshelfSortOrder.modifiedDate:
+      case SortOrderCode.modifiedDate:
         list.sort((a, b) =>
             isAscending ? a.modifiedDate.compareTo(b.modifiedDate) : b.modifiedDate.compareTo(a.modifiedDate));
+        break;
+
+      default:
+        list.sort((a, b) => isAscending ? compareNatural(a.name, b.name) : compareNatural(b.name, a.name));
         break;
     }
   }
@@ -64,19 +77,19 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     emit(state.copyWith(isSelecting: isSelecting, selectedBooks: const {}));
   }
 
-  void selectBook(String bookName) {
-    emit(state.copyWith(selectedBooks: {...state.selectedBooks, bookName}));
+  void selectBook(BookData bookData) {
+    emit(state.copyWith(selectedBooks: {...state.selectedBooks, bookData}));
   }
 
   void selectAllBooks() {
     emit(state.copyWith(
-      selectedBooks: state.bookList.map((e) => e.name).toSet(),
+      selectedBooks: state.bookList.toSet(),
     ));
   }
 
-  void deselectBook(String bookName) {
-    Set<String> newSet = Set<String>.from(state.selectedBooks);
-    newSet.remove(bookName);
+  void deselectBook(BookData bookData) {
+    Set<BookData> newSet = Set<BookData>.from(state.selectedBooks);
+    newSet.remove(bookData);
 
     emit(state.copyWith(selectedBooks: newSet));
   }
@@ -86,8 +99,8 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   }
 
   Future<bool> deleteSelectedBooks() async {
-    for (String bookName in state.selectedBooks) {
-      BookProcessor.delete(bookName);
+    for (BookData bookData in state.selectedBooks) {
+      bookData.delete();
     }
     await refresh();
     return true;
@@ -95,10 +108,10 @@ class BookshelfCubit extends Cubit<BookshelfState> {
 }
 
 class BookshelfState extends Equatable {
-  final BookshelfStateCode code;
-  final BookshelfSortOrder sortOrder;
+  final LoadingStateCode code;
+  final SortOrderCode sortOrder;
   final List<BookData> bookList;
-  final Set<String> selectedBooks;
+  final Set<BookData> selectedBooks;
   final bool isDragging;
   final bool isSelecting;
   final bool isAscending;
@@ -107,8 +120,8 @@ class BookshelfState extends Equatable {
   List<Object?> get props => [code, sortOrder, bookList, selectedBooks, isDragging, isSelecting, isAscending];
 
   const BookshelfState({
-    this.code = BookshelfStateCode.loading,
-    this.sortOrder = BookshelfSortOrder.name,
+    this.code = LoadingStateCode.initial,
+    this.sortOrder = SortOrderCode.name,
     this.bookList = const [],
     this.selectedBooks = const {},
     this.isDragging = false,
@@ -117,10 +130,10 @@ class BookshelfState extends Equatable {
   });
 
   BookshelfState copyWith({
-    BookshelfStateCode? code,
-    BookshelfSortOrder? sortOrder,
+    LoadingStateCode? code,
+    SortOrderCode? sortOrder,
     List<BookData>? bookList,
-    Set<String>? selectedBooks,
+    Set<BookData>? selectedBooks,
     bool? isDragging,
     bool? isSelecting,
     bool? isAscending,
@@ -136,7 +149,3 @@ class BookshelfState extends Equatable {
     );
   }
 }
-
-enum BookshelfStateCode { normal, empty, loading }
-
-enum BookshelfSortOrder { name, modifiedDate }

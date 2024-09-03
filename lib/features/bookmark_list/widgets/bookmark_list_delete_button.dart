@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../common_components/common_delete_dialog.dart';
 import '../bloc/bookmark_list_bloc.dart';
 
 class BookmarkListDeleteButton extends StatelessWidget {
@@ -16,28 +17,8 @@ class BookmarkListDeleteButton extends StatelessWidget {
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
-              icon: const Icon(Icons.delete_forever_rounded, size: 48.0),
-              title: Text(appLocalizations.alertDialogDeleteBookmarkTitle),
-              content: Text(appLocalizations.alertDialogDeleteBookmarkDescription),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(appLocalizations.generalCancel),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    cubit.deleteSelectedBookmarks();
-                  },
-                  child: Text(
-                    appLocalizations.generalYes,
-                    style: TextStyle(color: Theme.of(context).colorScheme.error),
-                  ),
-                ),
-              ],
+            return CommonDeleteDialog(
+              onDelete: () => cubit.deleteSelectedBookmarks(),
             );
           },
         );

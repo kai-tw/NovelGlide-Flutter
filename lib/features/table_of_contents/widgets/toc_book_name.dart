@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/toc_bloc.dart';
+import '../../../data/book_data.dart';
 
 class TocBookName extends StatelessWidget {
-  const TocBookName({super.key});
+  final BookData bookData;
+
+  const TocBookName({super.key, required this.bookData});
 
   @override
   Widget build(BuildContext context) {
@@ -16,20 +17,15 @@ class TocBookName extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(16.0)),
       ),
       clipBehavior: Clip.hardEdge,
-      child: BlocBuilder<TocCubit, TocState>(
-        buildWhen: (previous, current) => previous.bookName != current.bookName,
-        builder: (BuildContext context, TocState state) {
-          return Text(
-            state.bookName,
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          );
-        },
+      child: Text(
+        bookData.name,
+        style: TextStyle(
+          fontSize: 16.0,
+          fontWeight: FontWeight.bold,
+          color: Theme.of(context).colorScheme.onSurface,
+        ),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

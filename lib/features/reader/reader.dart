@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/book_data.dart';
 import 'bloc/reader_cubit.dart';
 import 'reader_scaffold.dart';
 
 class ReaderWidget extends StatelessWidget {
-  const ReaderWidget(this.bookName, this.chapterNumber, {super.key, this.isAutoJump = false});
+  final BookData bookData;
+  final String? gotoDestination;
+  final bool isGotoBookmark;
 
-  final String bookName;
-  final int chapterNumber;
-  final bool isAutoJump;
+  const ReaderWidget(this.bookData, {super.key, this.isGotoBookmark = false, this.gotoDestination});
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<ReaderCubit>(
-          create: (_) => ReaderCubit(bookName, chapterNumber)..initialize(isAutoJump: isAutoJump),
-        ),
-      ],
+    return BlocProvider(
+      create: (_) => ReaderCubit(
+        bookData: bookData,
+      )..initialize(gotoDestination: gotoDestination, isGotoBookmark: isGotoBookmark),
       child: const ReaderScaffold(),
     );
   }

@@ -1,53 +1,107 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../ad_center/advertisement.dart';
 import '../../ad_center/advertisement_id.dart';
 import '../common_components/common_loading.dart';
 import 'bloc/reader_cubit.dart';
 import 'bloc/reader_state.dart';
-import 'reader_sliver_content.dart';
-import 'widgets/reader_progress_bar.dart';
+import 'search/reader_search.dart';
+import 'widgets/reader_overlap_widget.dart';
+import 'widgets/reader_pagination.dart';
 
 class ReaderBody extends StatelessWidget {
   const ReaderBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
-
-    return Column(
+    final ReaderCubit cubit = context.read<ReaderCubit>();
+    cubit.sendThemeData(Theme.of(context));
+    return Stack(
       children: [
-        const ReaderProgressBar(),
-        Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-        Expanded(
-          child: PageStorage(
-            bucket: cubit.bucket,
-            child: Scrollbar(
-              controller: cubit.scrollController,
-              child: CustomScrollView(
-                key: const PageStorageKey('reader-body-scrollview'),
-                physics: const BouncingScrollPhysics(),
-                controller: cubit.scrollController,
-                slivers: [
-                  BlocBuilder<ReaderCubit, ReaderState>(
-                    buildWhen: (previous, current) => previous.code != current.code,
-                    builder: (context, state) {
-                      switch (state.code) {
-                        case ReaderStateCode.loaded:
-                          return const ReaderSliverContent();
-                        default:
-                          return const SliverFillRemaining(
-                            child: Center(
-                              child: CommonLoading(),
-                            ),
-                          );
-                      }
-                    },
-                  ),
-                ],
-              ),
+        /// Reader WebView
+        Column(
+          children: [
+            Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+            Expanded(
+              child: WebViewWidget(controller: cubit.webViewController),
             ),
+            const ReaderPagination(),
+          ],
+        ),
+
+        /// Reader Gesture Detector
+        Positioned.fill(
+          child: SizedBox.expand(
+            child: GestureDetector(
+              /// Swipe to prev/next page
+              onHorizontalDragStart: (details) {
+                if (cubit.state.code != ReaderStateCode.loaded) {
+                  return;
+                }
+                cubit.startDragX = details.localPosition.dx;
+              },
+              onHorizontalDragEnd: (details) {
+                if (cubit.state.code != ReaderStateCode.loaded) {
+                  return;
+                }
+                const double sensitivity = 50;
+                final double endDragX = details.localPosition.dx;
+                if (cubit.startDragX != null && cubit.startDragX! + sensitivity < endDragX) {
+                  cubit.prevPage();
+                } else if (cubit.startDragX != null && cubit.startDragX! - sensitivity > endDragX) {
+                  cubit.nextPage();
+                }
+                cubit.startDragX = null;
+              },
+              onHorizontalDragCancel: () {
+                cubit.startDragX = null;
+              },
+            ),
+          ),
+        ),
+
+        /// Reader Overlay (including loading, error-report, and searching widgets.)
+        Positioned.fill(
+          child: BlocBuilder<ReaderCubit, ReaderState>(
+            buildWhen: (previous, current) => previous.code != current.code,
+            builder: (context, state) {
+              Widget child;
+
+              switch (state.code) {
+                case ReaderStateCode.loaded:
+                  child = const SizedBox.shrink();
+                  break;
+
+                case ReaderStateCode.loading:
+                  child = const ReaderOverlapWidget(
+                    children: [
+                      Center(
+                        child: CommonLoading(),
+                      ),
+                    ],
+                  );
+
+                case ReaderStateCode.search:
+                  child = const ReaderSearch();
+                  break;
+              }
+
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 500),
+                transitionBuilder: (child, animation) => FadeTransition(
+                  opacity: animation,
+                  child: SlideTransition(
+                    position: Tween<Offset>(begin: const Offset(0, -1), end: const Offset(0, 0))
+                        .chain(CurveTween(curve: Curves.easeInOut))
+                        .animate(animation),
+                    child: child,
+                  ),
+                ),
+                child: child,
+              );
+            },
           ),
         ),
       ],

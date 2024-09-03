@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../data/book_data.dart';
 import '../../data/bookmark_data.dart';
 import '../common_components/bookmark_widget.dart';
 import '../reader/reader.dart';
@@ -20,25 +21,20 @@ class BookmarkListSliverListItem extends StatelessWidget {
 
     return InkWell(
       borderRadius: BorderRadius.circular(24.0),
-      onTap: () {
+      onTap: () async {
         if (cubit.state.isSelecting) {
-          if (cubit.state.selectedBookmarks.contains(_bookmarkData.bookName)) {
-            cubit.deselectBookmark(_bookmarkData.bookName);
+          if (cubit.state.selectedBookmarks.contains(_bookmarkData)) {
+            cubit.deselectBookmark(_bookmarkData);
           } else {
-            cubit.selectBookmark(_bookmarkData.bookName);
+            cubit.selectBookmark(_bookmarkData);
           }
         } else {
-          Navigator.of(context)
-              .push(
-                MaterialPageRoute(
-                  builder: (context) => ReaderWidget(
-                    _bookmarkData.bookName,
-                    _bookmarkData.chapterNumber,
-                    isAutoJump: true,
-                  ),
-                ),
-              )
-              .then((_) => cubit.refresh());
+          final BookData bookData = await BookData.fromPath(_bookmarkData.bookPath);
+          if (context.mounted) {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => ReaderWidget(bookData, isGotoBookmark: true)))
+                .then((_) => cubit.refresh());
+          }
         }
       },
       child: BlocBuilder<BookmarkListCubit, BookmarkListState>(
@@ -46,7 +42,7 @@ class BookmarkListSliverListItem extends StatelessWidget {
             previous.isSelecting != current.isSelecting || previous.selectedBookmarks != current.selectedBookmarks,
         builder: (BuildContext context, BookmarkListState state) {
           if (state.isSelecting) {
-            final bool isSelected = state.selectedBookmarks.contains(_bookmarkData.bookName);
+            final bool isSelected = state.selectedBookmarks.contains(_bookmarkData);
             return Semantics(
               label: appLocalizations.bookmarkListAccessibilityItem,
               onTapHint: appLocalizations.bookmarkListAccessibilitySelectOnTap,
@@ -58,9 +54,9 @@ class BookmarkListSliverListItem extends StatelessWidget {
                   checkColor: Theme.of(context).colorScheme.onErrorContainer,
                   onChanged: (bool? value) {
                     if (value == true) {
-                      cubit.selectBookmark(_bookmarkData.bookName);
+                      cubit.selectBookmark(_bookmarkData);
                     } else {
-                      cubit.deselectBookmark(_bookmarkData.bookName);
+                      cubit.deselectBookmark(_bookmarkData);
                     }
                   },
                   semanticLabel: appLocalizations.bookmarkListAccessibilitySelectItem,

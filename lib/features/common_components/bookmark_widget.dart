@@ -50,7 +50,7 @@ class BookmarkWidget extends StatelessWidget {
               ),
           trailing: trailing,
           title: Text(_bookmarkObject.bookName),
-          subtitle: Text("${appLocalizations.chapterLabel(_bookmarkObject.chapterNumber)} / $savedTimeString"),
+          subtitle: Text(savedTimeString),
           textColor: color,
           iconColor: color,
         ),

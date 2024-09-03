@@ -6,6 +6,7 @@ import '../../data/window_class.dart';
 import '../../processor/theme_processor.dart';
 import '../bookmark_list/bloc/bookmark_list_bloc.dart';
 import '../bookshelf/bloc/bookshelf_bloc.dart';
+import '../collection_list/bloc/collection_list_bloc.dart';
 import 'bloc/homepage_bloc.dart';
 import 'view/homepage_scaffold_compact_view.dart';
 import 'view/homepage_scaffold_medium_view.dart';
@@ -37,6 +38,7 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
             providers: [
               BlocProvider(create: (_) => HomepageCubit()),
               BlocProvider(create: (_) => BookshelfCubit()..init()),
+              BlocProvider(create: (_) => CollectionListCubit()..init()),
               BlocProvider(create: (_) => BookmarkListCubit()..init()),
             ],
             child: const _HomepageScaffold(),

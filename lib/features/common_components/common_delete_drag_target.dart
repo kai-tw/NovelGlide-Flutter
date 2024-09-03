@@ -37,7 +37,7 @@ class CommonDeleteDragTarget extends StatelessWidget {
                 ),
               ),
               Text(
-                appLocalizations.commonDragHereToDelete,
+                appLocalizations.generalDragHereToDelete,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onError,
                 ),

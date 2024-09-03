@@ -18,6 +18,7 @@ class BookshelfOperationPanel extends StatelessWidget {
           previous.isDragging != current.isDragging,
       builder: (context, state) {
         Widget child = const SizedBox.shrink();
+
         if (state.isSelecting && state.selectedBooks.isNotEmpty) {
           child = const BookshelfDeleteButton();
         } else if (state.isDragging) {
@@ -25,6 +26,7 @@ class BookshelfOperationPanel extends StatelessWidget {
             onWillAcceptWithDetails: (details) => details.data is BookData,
           );
         }
+
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 200),
           transitionBuilder: (Widget child, Animation<double> animation) {
