@@ -12,6 +12,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
 import '../../../data/reader_settings_data.dart';
+import '../../../toolbox/css_helper.dart';
 import 'reader_search_cubit.dart';
 import 'reader_search_result.dart';
 import 'reader_state.dart';
@@ -61,16 +62,6 @@ class ReaderCubit extends Cubit<ReaderState> {
           webViewController.runJavaScript('window.readerApi.main("${state.bookmarkData!.startCfi}")');
         } else {
           webViewController.runJavaScript('window.readerApi.main()');
-        }
-      },
-      onHttpError: (HttpResponseError error) {
-        if (!isClosed) {
-          emit(state.copyWith(code: ReaderStateCode.httpResponseError, httpResponseError: error));
-        }
-      },
-      onWebResourceError: (WebResourceError error) {
-        if (!isClosed) {
-          emit(state.copyWith(code: ReaderStateCode.webResourceError, webResourceError: error));
         }
       },
       onNavigationRequest: (NavigationRequest request) =>
@@ -241,10 +232,9 @@ class ReaderCubit extends Cubit<ReaderState> {
   void sendThemeData([ThemeData? newTheme]) {
     _currentTheme = newTheme ?? _currentTheme;
     if (state.code == ReaderStateCode.loaded) {
-      final Color color = _currentTheme.colorScheme.onSurface;
       final Map<String, dynamic> themeData = {
         "body": {
-          "color": 'rgba(${color.red}, ${color.green}, ${color.blue}, ${color.alpha / 255})',
+          "color": CssHelper.convertColorToCssRgba(_currentTheme.colorScheme.onSurface),
           "font-size": "${state.readerSettings.fontSize.toStringAsFixed(1)}px",
           "line-height": state.readerSettings.lineHeight.toStringAsFixed(1),
         },

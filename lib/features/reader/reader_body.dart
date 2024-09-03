@@ -74,37 +74,6 @@ class ReaderBody extends StatelessWidget {
                   child = const SizedBox.shrink();
                   break;
 
-                case ReaderStateCode.webResourceError:
-                  child = ReaderOverlapWidget(
-                    children: [
-                      Icon(
-                        Icons.error_outline,
-                        size: 64,
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                      const Text("Web Resource Error"),
-                      Text(state.webResourceError!.description),
-                    ],
-                  );
-                  break;
-
-                case ReaderStateCode.httpResponseError:
-                  final HttpResponseError? error = state.httpResponseError;
-                  final String statusCode = error?.response?.statusCode.toString() ?? "Unknown Status Code";
-                  final String errorUrl = error?.request?.uri.toString() ?? "Unknown URL";
-                  child = ReaderOverlapWidget(
-                    children: [
-                      Icon(
-                        Icons.error_outline,
-                        size: 64,
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                      const Text("Http Response Error"),
-                      Text("$statusCode: $errorUrl"),
-                    ],
-                  );
-                  break;
-
                 case ReaderStateCode.loading:
                   child = const ReaderOverlapWidget(
                     children: [

@@ -79,4 +79,4 @@ class ReaderState extends Equatable {
 
 }
 
-enum ReaderStateCode { loading, loaded, search, webResourceError, httpResponseError }
+enum ReaderStateCode { loading, loaded, search }

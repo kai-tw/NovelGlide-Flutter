@@ -17,7 +17,7 @@ class BookAddForm extends StatelessWidget {
       children: [
         Form(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 48.0),
+            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24.0),
             child: BlocProvider(
               create: (context) => BookAddCubit(),
               child: Column(
@@ -28,8 +28,10 @@ class BookAddForm extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 48.0),
                     child: Text('${AppLocalizations.of(context)!.fileTypeHelperText} epub'),
                   ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  const OverflowBar(
+                    alignment: MainAxisAlignment.spaceBetween,
+                    overflowAlignment: OverflowBarAlignment.center,
+                    overflowSpacing: 10.0,
                     children: [
                       BookAddFilePickingButton(),
                       BookAddSubmitButton(),
