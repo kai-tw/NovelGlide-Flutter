@@ -18,7 +18,6 @@ class HomepageNavigationRail extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        print(constraints);
         return SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: constraints.maxHeight),

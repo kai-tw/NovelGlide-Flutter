@@ -13,6 +13,7 @@ import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
 import '../../../data/reader_settings_data.dart';
 import '../../../toolbox/css_helper.dart';
+import '../../../toolbox/random_utility.dart';
 import 'reader_search_cubit.dart';
 import 'reader_search_result.dart';
 import 'reader_state.dart';
@@ -30,6 +31,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Reader
   final BookData bookData;
   late ThemeData _currentTheme;
+  String? _authToken;
   String? _startCfi;
 
   ReaderSearchCubit? searchCubit;
@@ -56,6 +58,8 @@ class ReaderCubit extends Cubit<ReaderState> {
       onPageStarted: (String url) => debugPrint('Page started loading: $url'),
       onPageFinished: (String url) {
         debugPrint('Page finished loading: $url');
+        _authToken = RandomUtility.getRandomString(32);
+        webViewController.runJavaScript('window.readerApi.setAuthToken("$_authToken")');
         if (gotoDestination != null) {
           webViewController.runJavaScript('window.readerApi.main("$gotoDestination")');
         } else if (state.bookmarkData?.startCfi != null && isGotoBookmark || state.readerSettings.autoSave) {
@@ -149,6 +153,8 @@ class ReaderCubit extends Cubit<ReaderState> {
   Future<Response> _echoRequest(Request request) async {
     final HttpConnectionInfo? connectionInfo = request.context['shelf.io.connection_info'] as HttpConnectionInfo?;
     final String? remoteAddress = connectionInfo?.remoteAddress.address;
+    final String clientAuthToken = request.headers['authorization']?.substring(7) ?? '';
+    final bool isAuthorized = _authToken != null && clientAuthToken == _authToken && request.method == 'POST';
 
     if (!_isServerActive || remoteAddress != '127.0.0.1' && remoteAddress != '::1') {
       return Response.forbidden('Forbidden');
@@ -178,10 +184,11 @@ class ReaderCubit extends Cubit<ReaderState> {
           headers: {HttpHeaders.contentTypeHeader: 'application/epub+zip'},
         );
 
-      case 'favicon.ico':
-        return Response.ok('');
-
       case 'loadDone':
+        if (!isAuthorized) {
+          return Response.forbidden('Forbidden');
+        }
+
         if (!isClosed) {
           emit(state.copyWith(
             code: ReaderStateCode.loaded,
@@ -193,8 +200,11 @@ class ReaderCubit extends Cubit<ReaderState> {
         return Response.ok('{}');
 
       case 'setState':
-        final Map<String, dynamic> jsonValue = jsonDecode(await request.readAsString());
+        if (!isAuthorized) {
+          return Response.forbidden('Forbidden');
+        }
 
+        final Map<String, dynamic> jsonValue = jsonDecode(await request.readAsString());
         _startCfi = jsonValue['startCfi'];
 
         if (!isClosed) {
@@ -218,10 +228,7 @@ class ReaderCubit extends Cubit<ReaderState> {
         if (state.readerSettings.autoSave) {
           saveBookmark();
         }
-        return Response.ok('{}');
 
-      case 'error':
-        debugPrint('Error: ${await request.readAsString()}');
         return Response.ok('{}');
 
       default:
