@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:epubx/epubx.dart' as epub;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,16 +40,20 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Gestures
   double? startDragX;
 
-  ReaderCubit({
-    required this.bookData,
-  }) : super(ReaderState(
-          bookName: bookData.name,
-          bookmarkData: BookmarkData.get(bookData.filePath),
-          readerSettings: ReaderSettingsData.load(),
-        ));
+  ReaderCubit({required this.bookData})
+      : super(ReaderState(
+            bookName: bookData.name,
+            bookmarkData: BookmarkData.get(bookData.filePath),
+            readerSettings: ReaderSettingsData.load()));
 
   /// Client initialization.
   Future<void> initialize({String? gotoDestination, bool isGotoBookmark = false}) async {
+    /// Read the book if it is not read yet.
+    if (bookData.epubBook == null) {
+      bookData.epubBook = await epub.EpubReader.readBook(File(bookData.filePath).readAsBytesSync());
+      emit(state.copyWith(bookName: bookData.name));
+    }
+
     AppLifecycleListener(onStateChange: _onStateChanged);
 
     webViewController.enableZoom(false);
@@ -123,7 +128,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// ******* Bookmarks ********
 
-  void saveBookmark() {
+  Future<void> saveBookmark() async {
     final BookmarkData data = BookmarkData(
       bookPath: bookData.filePath,
       bookName: bookData.name,
@@ -133,7 +138,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     emit(state.copyWith(bookmarkData: data));
   }
 
-  void scrollToBookmark() {
+  Future<void> scrollToBookmark() async {
     final BookmarkData? bookmarkData = state.bookmarkData ?? BookmarkData.get(bookData.name);
     if (bookmarkData?.startCfi != null) {
       goto(bookmarkData!.startCfi!);
