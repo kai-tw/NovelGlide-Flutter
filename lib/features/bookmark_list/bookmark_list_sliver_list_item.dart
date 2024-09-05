@@ -21,7 +21,7 @@ class BookmarkListSliverListItem extends StatelessWidget {
 
     return InkWell(
       borderRadius: BorderRadius.circular(24.0),
-      onTap: () async {
+      onTap: () {
         if (cubit.state.isSelecting) {
           if (cubit.state.selectedBookmarks.contains(_bookmarkData)) {
             cubit.deselectBookmark(_bookmarkData);
@@ -29,7 +29,7 @@ class BookmarkListSliverListItem extends StatelessWidget {
             cubit.selectBookmark(_bookmarkData);
           }
         } else {
-          final BookData bookData = await BookData.fromPath(_bookmarkData.bookPath);
+          final BookData bookData = BookData(filePath: _bookmarkData.bookPath);
           if (context.mounted) {
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => ReaderWidget(bookData, isGotoBookmark: true)))

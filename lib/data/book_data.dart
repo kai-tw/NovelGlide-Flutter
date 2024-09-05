@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:epubx/epubx.dart' as epub;
-import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart';
@@ -12,9 +11,9 @@ import 'chapter_data.dart';
 import 'collection_data.dart';
 import 'file_path.dart';
 
-class BookData extends Equatable {
+class BookData {
   final String filePath;
-  final epub.EpubBook epubBook;
+  epub.EpubBook? epubBook;
 
   File get file => File(filePath);
 
@@ -22,30 +21,26 @@ class BookData extends Equatable {
 
   DateTime get modifiedDate => file.statSync().modified;
 
-  String get name => epubBook.Title ?? '';
+  String get name => epubBook?.Title ?? '';
 
-  Image? get coverImage => epubBook.CoverImage;
+  Image? get coverImage => epubBook?.CoverImage;
 
   List<ChapterData>? get chapterList {
     List<ChapterData> chapterList = [];
 
-    for (int i = 0; i < (epubBook.Chapters ?? []).length; i++) {
-      epub.EpubChapter epubChapter = epubBook.Chapters![i];
+    for (int i = 0; i < (epubBook?.Chapters ?? []).length; i++) {
+      epub.EpubChapter epubChapter = epubBook!.Chapters![i];
       chapterList.add(ChapterData.fromEpubChapter(epubChapter, i + 1));
     }
 
     return chapterList;
   }
 
-  @override
-  List<Object?> get props => [filePath];
-
-  const BookData({required this.filePath, required this.epubBook});
+  BookData({required this.filePath, this.epubBook});
 
   static Future<BookData> fromPath(String path) async {
     return BookData(
       filePath: path,
-      epubBook: await epub.EpubReader.readBook(File(path).readAsBytesSync()),
     );
   }
 

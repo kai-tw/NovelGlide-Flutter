@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:epubx/epubx.dart' as epub;
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,8 +21,7 @@ class CollectionDialogCubit extends Cubit<CollectionDialogState> {
     List<BookData> bookList = [];
 
     for (String path in collectionData.pathList) {
-      epub.EpubBook epubBook = await epub.EpubReader.readBook(File(path).readAsBytesSync());
-      bookList.add(BookData(filePath: path, epubBook: epubBook));
+      bookList.add(BookData(filePath: path));
     }
 
     emit(CollectionDialogState(
