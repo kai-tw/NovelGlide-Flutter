@@ -28,7 +28,11 @@ class TocFabSection extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => ReaderWidget(cubit.bookData)))
+                    .push(MaterialPageRoute(
+                        builder: (context) => ReaderWidget(
+                              bookPath: cubit.bookData.filePath,
+                              bookData: cubit.bookData,
+                            )))
                     .then((_) => cubit.refresh());
               },
               style: ElevatedButton.styleFrom(
@@ -49,7 +53,12 @@ class TocFabSection extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: () {
                   Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => ReaderWidget(cubit.bookData, isGotoBookmark: true)))
+                      .push(MaterialPageRoute(
+                          builder: (context) => ReaderWidget(
+                                bookPath: cubit.bookData.filePath,
+                                bookData: cubit.bookData,
+                                isGotoBookmark: true,
+                              )))
                       .then((_) => cubit.refresh());
                 },
                 style: ElevatedButton.styleFrom(

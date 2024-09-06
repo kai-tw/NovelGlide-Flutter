@@ -35,7 +35,11 @@ class TocSliverChapterList extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(
-                          builder: (context) => ReaderWidget(bookData, gotoDestination: chapterData.fileName)))
+                          builder: (context) => ReaderWidget(
+                                bookData: bookData,
+                                bookPath: bookData.filePath,
+                                gotoDestination: chapterData.fileName,
+                              )))
                       .then((_) => cubit.refresh());
                 },
                 dense: true,
@@ -67,5 +71,6 @@ class TocSliverChapterList extends StatelessWidget {
 class _TocChapterListItem {
   final ChapterData chapterData;
   final int nestingLevel;
+
   const _TocChapterListItem({required this.chapterData, required this.nestingLevel});
 }

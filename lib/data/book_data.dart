@@ -13,7 +13,9 @@ import 'file_path.dart';
 
 class BookData {
   final String filePath;
-  epub.EpubBook? epubBook;
+  String name;
+  Image? coverImage;
+  List<ChapterData>? chapterList;
 
   File get file => File(filePath);
 
@@ -21,28 +23,7 @@ class BookData {
 
   DateTime get modifiedDate => file.statSync().modified;
 
-  String get name => epubBook?.Title ?? '';
-
-  Image? get coverImage => epubBook?.CoverImage;
-
-  List<ChapterData>? get chapterList {
-    List<ChapterData> chapterList = [];
-
-    for (int i = 0; i < (epubBook?.Chapters ?? []).length; i++) {
-      epub.EpubChapter epubChapter = epubBook!.Chapters![i];
-      chapterList.add(ChapterData.fromEpubChapter(epubChapter, i + 1));
-    }
-
-    return chapterList;
-  }
-
-  BookData({required this.filePath, this.epubBook});
-
-  static Future<BookData> fromPath(String path) async {
-    return BookData(
-      filePath: path,
-    );
-  }
+  BookData({required this.filePath, required this.name, this.coverImage, this.chapterList});
 
   /// Get all book data
   static Future<List<BookData>> getDataList() async {
@@ -63,28 +44,40 @@ class BookData {
     final List<BookData> entries = [];
 
     for (File epubFile in folder.listSync().whereType<File>()) {
-      if (AdvancedMimeTypeResolver.instance.lookupAll(epubFile) == 'application/epub+zip') {
-        epub.EpubBook epubBook = await epub.EpubReader.readBook(epubFile.readAsBytesSync());
-        entries.add(BookData(epubBook: epubBook, filePath: epubFile.path));
-      }
+      entries.add(await _loadEpubBook(epubFile.path));
     }
 
     return entries;
   }
 
-  Future<void> loadEpubBook() async {
+  static Future<BookData> loadEpubBook(String filePath) async {
     final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
-    epubBook ??= await compute<Map<String, dynamic>, epub.EpubBook>(_loadEpubBookIsolate, {
+    return await compute<Map<String, dynamic>, BookData>(_loadEpubBookIsolate, {
       "rootIsolateToken": rootIsolateToken,
       "path": filePath,
     });
   }
 
-  Future<epub.EpubBook> _loadEpubBookIsolate(Map<String, dynamic> message) async {
+  static Future<BookData> _loadEpubBookIsolate(Map<String, dynamic> message) async {
     final RootIsolateToken rootIsolateToken = message["rootIsolateToken"];
     final String path = message["path"];
     BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
-    return await epub.EpubReader.readBook(File(path).readAsBytesSync());
+    return _loadEpubBook(path);
+  }
+
+  static Future<BookData> _loadEpubBook(String path) async {
+    epub.EpubBook? epubBook;
+    epubBook = await epub.EpubReader.readBook(File(path).readAsBytesSync());
+    String name = epubBook.Title ?? '';
+    Image? coverImage = epubBook.CoverImage;
+    List<ChapterData> chapterList = [];
+
+    for (int i = 0; i < epubBook.Chapters!.length; i++) {
+      chapterList.add(ChapterData.fromEpubChapter(epubBook.Chapters![i], i));
+    }
+
+    epubBook = null;
+    return BookData(filePath: path, name: name, coverImage: coverImage, chapterList: chapterList);
   }
 
   /// Delete the book
@@ -100,7 +93,8 @@ class BookData {
     }
 
     /// Search the collection and delete it.
-    Iterable<CollectionData> collectionList = CollectionData.getList().where((element) => element.pathList.contains(filePath));
+    Iterable<CollectionData> collectionList =
+        CollectionData.getList().where((element) => element.pathList.contains(filePath));
     for (CollectionData data in collectionList) {
       data.pathList.remove(filePath);
       data.save();

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../data/book_data.dart';
 import '../../data/bookmark_data.dart';
 import '../common_components/bookmark_widget.dart';
 import '../reader/reader.dart';
@@ -29,10 +28,13 @@ class BookmarkListSliverListItem extends StatelessWidget {
             cubit.selectBookmark(_bookmarkData);
           }
         } else {
-          final BookData bookData = BookData(filePath: _bookmarkData.bookPath);
           if (context.mounted) {
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => ReaderWidget(bookData, isGotoBookmark: true)))
+                .push(MaterialPageRoute(
+                    builder: (context) => ReaderWidget(
+                          bookPath: _bookmarkData.bookPath,
+                          isGotoBookmark: true,
+                        )))
                 .then((_) => cubit.refresh());
           }
         }

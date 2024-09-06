@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:epubx/epubx.dart' as epub;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +29,8 @@ class ReaderCubit extends Cubit<ReaderState> {
   final WebViewController webViewController = WebViewController();
 
   /// Reader
-  final BookData bookData;
+  final BookData? bookData;
+  final String bookPath;
   late ThemeData _currentTheme;
   String? _authToken;
   String? _startCfi;
@@ -40,17 +40,17 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Gestures
   double? startDragX;
 
-  ReaderCubit({required this.bookData})
+  ReaderCubit({required this.bookPath, this.bookData})
       : super(ReaderState(
-            bookName: bookData.name,
-            bookmarkData: BookmarkData.get(bookData.filePath),
+            bookName: bookData?.name ?? '',
+            bookmarkData: BookmarkData.get(bookPath),
             readerSettings: ReaderSettingsData.load()));
 
   /// Client initialization.
   Future<void> initialize({String? gotoDestination, bool isGotoBookmark = false}) async {
     /// Read the book if it is not read yet.
-    if (bookData.epubBook == null) {
-      await bookData.loadEpubBook();
+    if (bookData == null) {
+      BookData bookData = await BookData.loadEpubBook(bookPath);
       emit(state.copyWith(bookName: bookData.name));
     }
 
@@ -130,8 +130,8 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   Future<void> saveBookmark() async {
     final BookmarkData data = BookmarkData(
-      bookPath: bookData.filePath,
-      bookName: bookData.name,
+      bookPath: bookPath,
+      bookName: state.bookName,
       startCfi: _startCfi,
       savedTime: DateTime.now(),
     )..save();
@@ -139,7 +139,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   Future<void> scrollToBookmark() async {
-    final BookmarkData? bookmarkData = state.bookmarkData ?? BookmarkData.get(bookData.name);
+    final BookmarkData? bookmarkData = state.bookmarkData ?? BookmarkData.get(state.bookName);
     if (bookmarkData?.startCfi != null) {
       goto(bookmarkData!.startCfi!);
     }
@@ -183,7 +183,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
       case 'book.epub':
         return Response.ok(
-          File(bookData.filePath).readAsBytesSync(),
+          File(bookPath).readAsBytesSync(),
           headers: {HttpHeaders.contentTypeHeader: 'application/epub+zip'},
         );
 
