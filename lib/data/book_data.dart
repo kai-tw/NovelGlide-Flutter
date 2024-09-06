@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart';
 
-import '../toolbox/advanced_mime_type_resolver.dart';
 import 'bookmark_data.dart';
 import 'chapter_data.dart';
 import 'collection_data.dart';
