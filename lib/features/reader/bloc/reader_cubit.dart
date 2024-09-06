@@ -50,7 +50,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   Future<void> initialize({String? gotoDestination, bool isGotoBookmark = false}) async {
     /// Read the book if it is not read yet.
     if (bookData.epubBook == null) {
-      bookData.epubBook = await epub.EpubReader.readBook(File(bookData.filePath).readAsBytesSync());
+      await bookData.loadEpubBook();
       emit(state.copyWith(bookName: bookData.name));
     }
 

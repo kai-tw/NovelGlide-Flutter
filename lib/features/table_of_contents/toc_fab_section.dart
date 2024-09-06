@@ -66,6 +66,7 @@ class TocFabSection extends StatelessWidget {
           }
 
           return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,

@@ -72,6 +72,21 @@ class BookData {
     return entries;
   }
 
+  Future<void> loadEpubBook() async {
+    final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
+    epubBook ??= await compute<Map<String, dynamic>, epub.EpubBook>(_loadEpubBookIsolate, {
+      "rootIsolateToken": rootIsolateToken,
+      "path": filePath,
+    });
+  }
+
+  Future<epub.EpubBook> _loadEpubBookIsolate(Map<String, dynamic> message) async {
+    final RootIsolateToken rootIsolateToken = message["rootIsolateToken"];
+    final String path = message["path"];
+    BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
+    return await epub.EpubReader.readBook(File(path).readAsBytesSync());
+  }
+
   /// Delete the book
   bool delete() {
     if (file.existsSync()) {
