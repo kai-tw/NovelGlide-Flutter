@@ -156,12 +156,10 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   Future<Response> _echoRequest(Request request) async {
-    final HttpConnectionInfo? connectionInfo = request.context['shelf.io.connection_info'] as HttpConnectionInfo?;
-    final String? remoteAddress = connectionInfo?.remoteAddress.address;
     final String clientAuthToken = request.headers['authorization']?.substring(7) ?? '';
     final bool isAuthorized = _authToken != null && clientAuthToken == _authToken && request.method == 'POST';
 
-    if (!_isServerActive || remoteAddress != '127.0.0.1' && remoteAddress != '::1') {
+    if (!_isServerActive) {
       return Response.forbidden('Forbidden');
     }
 
