@@ -135,6 +135,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       bookPath: bookPath,
       bookName: state.bookName,
       chapterTitle: state.chapterTitle,
+      chapterFileName: state.chapterFileName,
       startCfi: state.startCfi,
       savedTime: DateTime.now(),
     )..save();
@@ -217,6 +218,7 @@ class ReaderCubit extends Cubit<ReaderState> {
             atStart: jsonValue['atStart'],
             atEnd: jsonValue['atEnd'],
             chapterTitle: bookData?.findChapterByFileName(jsonValue['href'])?.title ?? '',
+            chapterFileName: jsonValue['href'],
             startCfi: jsonValue['startCfi'],
             localCurrent: jsonValue['localCurrent'],
             localTotal: jsonValue['localTotal'],

@@ -45,7 +45,16 @@ class TocSliverChapterList extends StatelessWidget {
                 dense: true,
                 contentPadding: EdgeInsets.only(left: 12.0 + 16 * nestingLevel, right: 12.0),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-                leading: const Icon(Icons.numbers_rounded, size: 20.0),
+                leading: BlocBuilder<TocCubit, TocState>(
+                  builder: (context, state) {
+                    final bool isBookmarked = state.bookmarkData?.chapterFileName == chapterData.fileName;
+                    return Icon(
+                      isBookmarked ? Icons.bookmark_rounded : Icons.numbers_rounded,
+                      color: isBookmarked ? Theme.of(context).colorScheme.error : null,
+                      size: 20.0,
+                    );
+                  },
+                ),
                 title: Text(chapterData.title, style: Theme.of(context).textTheme.bodyLarge),
               ),
             );

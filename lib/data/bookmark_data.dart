@@ -8,6 +8,7 @@ class BookmarkData {
   final String bookPath;
   final String bookName;
   final String chapterTitle;
+  final String chapterFileName;
   final String? startCfi;
   final DateTime savedTime;
 
@@ -17,6 +18,7 @@ class BookmarkData {
     required this.bookPath,
     required this.bookName,
     required this.chapterTitle,
+    required this.chapterFileName,
     this.startCfi,
     required this.savedTime,
   });
@@ -26,6 +28,7 @@ class BookmarkData {
       bookPath: map['bookPath'] ?? '',
       bookName: map['bookName'] ?? '',
       chapterTitle: map['chapterTitle'] ?? '',
+      chapterFileName: map['chapterFileName'] ?? '',
       startCfi: map['startCfi'] ?? '',
       savedTime: DateTime.parse(map['savedTime'] ?? DateTime.now().toIso8601String()),
     );
@@ -76,6 +79,7 @@ class BookmarkData {
     String? bookPath,
     String? bookName,
     String? chapterTitle,
+    String? chapterFileName,
     String? startCfi,
     DateTime? savedTime,
   }) {
@@ -83,6 +87,7 @@ class BookmarkData {
       bookPath: bookPath ?? this.bookPath,
       bookName: bookName ?? this.bookName,
       chapterTitle: chapterTitle ?? this.chapterTitle,
+      chapterFileName: chapterFileName ?? this.chapterFileName,
       startCfi: startCfi ?? this.startCfi,
       savedTime: savedTime ?? this.savedTime,
     );
@@ -93,6 +98,7 @@ class BookmarkData {
       'bookPath': bookPath,
       'bookName': bookName,
       'chapterTitle': chapterTitle,
+      'chapterFileName': chapterFileName,
       'startCfi': startCfi,
       'savedTime': savedTime.toIso8601String(),
     };
