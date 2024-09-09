@@ -8,6 +8,8 @@ class ReaderState extends Equatable {
   /// Overall state.
   final ReaderStateCode code;
   final String bookName;
+  final String chapterTitle;
+  final String startCfi;
   final bool atStart;
   final bool atEnd;
   final int localCurrent;
@@ -28,6 +30,7 @@ class ReaderState extends Equatable {
       [
         code,
         bookName,
+        chapterTitle,
         atStart,
         atEnd,
         localCurrent,
@@ -41,6 +44,8 @@ class ReaderState extends Equatable {
   const ReaderState({
     this.code = ReaderStateCode.loading,
     required this.bookName,
+    this.chapterTitle = '',
+    this.startCfi = '',
     this.atStart = true,
     this.atEnd = false,
     this.localCurrent = 0,
@@ -54,6 +59,8 @@ class ReaderState extends Equatable {
   ReaderState copyWith({
     ReaderStateCode? code,
     String? bookName,
+    String? chapterTitle,
+    String? startCfi,
     bool? atStart,
     bool? atEnd,
     int? localCurrent,
@@ -66,6 +73,8 @@ class ReaderState extends Equatable {
     return ReaderState(
       code: code ?? this.code,
       bookName: bookName ?? this.bookName,
+      chapterTitle: chapterTitle ?? this.chapterTitle,
+      startCfi: startCfi ?? this.startCfi,
       atStart: atStart ?? this.atStart,
       atEnd: atEnd ?? this.atEnd,
       localCurrent: localCurrent ?? this.localCurrent,

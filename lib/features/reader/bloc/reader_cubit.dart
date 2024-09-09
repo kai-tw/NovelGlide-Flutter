@@ -29,11 +29,10 @@ class ReaderCubit extends Cubit<ReaderState> {
   final WebViewController webViewController = WebViewController();
 
   /// Reader
-  final BookData? bookData;
+  BookData? bookData;
   final String bookPath;
   late ThemeData _currentTheme;
   String? _authToken;
-  String? _startCfi;
 
   ReaderSearchCubit? searchCubit;
 
@@ -50,8 +49,11 @@ class ReaderCubit extends Cubit<ReaderState> {
   Future<void> initialize({String? gotoDestination, bool isGotoBookmark = false}) async {
     /// Read the book if it is not read yet.
     if (bookData == null) {
-      BookData bookData = await BookData.loadEpubBook(bookPath);
-      emit(state.copyWith(bookName: bookData.name));
+      bookData = await BookData.loadEpubBook(bookPath);
+
+      if (!isClosed) {
+        emit(state.copyWith(bookName: bookData?.name));
+      }
     }
 
     AppLifecycleListener(onStateChange: _onStateChanged);
@@ -132,7 +134,8 @@ class ReaderCubit extends Cubit<ReaderState> {
     final BookmarkData data = BookmarkData(
       bookPath: bookPath,
       bookName: state.bookName,
-      startCfi: _startCfi,
+      chapterTitle: state.chapterTitle,
+      startCfi: state.startCfi,
       savedTime: DateTime.now(),
     )..save();
     emit(state.copyWith(bookmarkData: data));
@@ -208,12 +211,13 @@ class ReaderCubit extends Cubit<ReaderState> {
         }
 
         final Map<String, dynamic> jsonValue = jsonDecode(await request.readAsString());
-        _startCfi = jsonValue['startCfi'];
 
         if (!isClosed) {
           emit(state.copyWith(
             atStart: jsonValue['atStart'],
             atEnd: jsonValue['atEnd'],
+            chapterTitle: bookData?.findChapterByFileName(jsonValue['href'])?.title ?? '',
+            startCfi: jsonValue['startCfi'],
             localCurrent: jsonValue['localCurrent'],
             localTotal: jsonValue['localTotal'],
           ));

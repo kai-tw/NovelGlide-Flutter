@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:epubx/epubx.dart' as epub;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -77,6 +78,21 @@ class BookData {
 
     epubBook = null;
     return BookData(filePath: path, name: name, coverImage: coverImage, chapterList: chapterList);
+  }
+
+  ChapterData? findChapterByFileName(String fileName) {
+    return _findChapterByFileName(chapterList, fileName);
+  }
+
+  ChapterData? _findChapterByFileName(List<ChapterData>? chapterList, String fileName) {
+    ChapterData? target = chapterList?.firstWhereOrNull((element) => element.fileName == fileName);
+    if (target != null) {
+      return target;
+    }
+    for (ChapterData chapter in chapterList ?? []) {
+      target ??= _findChapterByFileName(chapter.subChapterList, fileName);
+    }
+    return target;
   }
 
   /// Delete the book

@@ -4,18 +4,18 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../data/bookmark_data.dart';
 
 class BookmarkWidget extends StatelessWidget {
-  final BookmarkData _bookmarkObject;
+  final BookmarkData _bookmarkData;
   final Widget? leading;
   final Widget? trailing;
   final Color? color;
   final Color? backgroundColor;
 
-  const BookmarkWidget(this._bookmarkObject, {super.key, this.leading, this.color, this.backgroundColor, this.trailing});
+  const BookmarkWidget(this._bookmarkData, {super.key, this.leading, this.color, this.backgroundColor, this.trailing});
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final int daysPassed = _bookmarkObject.daysPassed;
+    final int daysPassed = _bookmarkData.daysPassed;
     String savedTimeString = "";
 
     switch (daysPassed) {
@@ -49,8 +49,8 @@ class BookmarkWidget extends StatelessWidget {
                 child: Icon(Icons.bookmark_rounded),
               ),
           trailing: trailing,
-          title: Text(_bookmarkObject.bookName),
-          subtitle: Text(savedTimeString),
+          title: Text(_bookmarkData.bookName),
+          subtitle: Text('${_bookmarkData.chapterTitle}\n$savedTimeString'),
           textColor: color,
           iconColor: color,
         ),

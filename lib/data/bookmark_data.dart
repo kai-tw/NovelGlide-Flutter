@@ -7,6 +7,7 @@ import '../toolbox/datetime_utility.dart';
 class BookmarkData {
   final String bookPath;
   final String bookName;
+  final String chapterTitle;
   final String? startCfi;
   final DateTime savedTime;
 
@@ -15,6 +16,7 @@ class BookmarkData {
   BookmarkData({
     required this.bookPath,
     required this.bookName,
+    required this.chapterTitle,
     this.startCfi,
     required this.savedTime,
   });
@@ -23,6 +25,7 @@ class BookmarkData {
     return BookmarkData(
       bookPath: map['bookPath'] ?? '',
       bookName: map['bookName'] ?? '',
+      chapterTitle: map['chapterTitle'] ?? '',
       startCfi: map['startCfi'] ?? '',
       savedTime: DateTime.parse(map['savedTime'] ?? DateTime.now().toIso8601String()),
     );
@@ -72,12 +75,14 @@ class BookmarkData {
   BookmarkData copyWith({
     String? bookPath,
     String? bookName,
+    String? chapterTitle,
     String? startCfi,
     DateTime? savedTime,
   }) {
     return BookmarkData(
       bookPath: bookPath ?? this.bookPath,
       bookName: bookName ?? this.bookName,
+      chapterTitle: chapterTitle ?? this.chapterTitle,
       startCfi: startCfi ?? this.startCfi,
       savedTime: savedTime ?? this.savedTime,
     );
@@ -87,6 +92,7 @@ class BookmarkData {
     return {
       'bookPath': bookPath,
       'bookName': bookName,
+      'chapterTitle': chapterTitle,
       'startCfi': startCfi,
       'savedTime': savedTime.toIso8601String(),
     };
