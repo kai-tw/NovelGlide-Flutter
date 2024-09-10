@@ -66,8 +66,7 @@ class BookData {
   }
 
   static Future<BookData> _loadEpubBook(String path) async {
-    epub.EpubBook? epubBook;
-    epubBook = await epub.EpubReader.readBook(File(path).readAsBytesSync());
+    epub.EpubBook epubBook = await epub.EpubReader.readBook(File(path).readAsBytesSync());
     String name = epubBook.Title ?? '';
     Image? coverImage = epubBook.CoverImage;
     List<ChapterData> chapterList = [];
@@ -76,7 +75,6 @@ class BookData {
       chapterList.add(ChapterData.fromEpubChapter(epubBook.Chapters![i], i));
     }
 
-    epubBook = null;
     return BookData(filePath: path, name: name, coverImage: coverImage, chapterList: chapterList);
   }
 
