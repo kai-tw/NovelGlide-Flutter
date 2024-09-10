@@ -40,9 +40,17 @@ class ReaderBody extends StatelessWidget {
                   const double sensitivity = 50;
                   final double endDragX = details.localPosition.dx;
                   if (cubit.startDragX != null && cubit.startDragX! + sensitivity < endDragX) {
-                    cubit.prevPage();
+                    if (cubit.state.isRtl) {
+                      cubit.nextPage();
+                    } else {
+                      cubit.prevPage();
+                    }
                   } else if (cubit.startDragX != null && cubit.startDragX! - sensitivity > endDragX) {
-                    cubit.nextPage();
+                    if (cubit.state.isRtl) {
+                      cubit.prevPage();
+                    } else {
+                      cubit.nextPage();
+                    }
                   }
                   cubit.startDragX = null;
                 },

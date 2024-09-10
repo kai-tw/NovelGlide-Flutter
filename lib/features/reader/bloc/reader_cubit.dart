@@ -219,6 +219,7 @@ class ReaderCubit extends Cubit<ReaderState> {
             atEnd: jsonValue['atEnd'],
             chapterTitle: bookData?.findChapterByFileName(jsonValue['href'])?.title ?? '',
             chapterFileName: jsonValue['href'],
+            isRtl: jsonValue['isRtl'],
             startCfi: jsonValue['startCfi'],
             localCurrent: jsonValue['localCurrent'],
             localTotal: jsonValue['localTotal'],

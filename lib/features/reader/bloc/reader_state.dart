@@ -13,6 +13,7 @@ class ReaderState extends Equatable {
   final String startCfi;
   final bool atStart;
   final bool atEnd;
+  final bool isRtl;
   final int localCurrent;
   final int localTotal;
 
@@ -35,6 +36,7 @@ class ReaderState extends Equatable {
         chapterFileName,
         atStart,
         atEnd,
+        isRtl,
         localCurrent,
         localTotal,
         webResourceError,
@@ -51,6 +53,7 @@ class ReaderState extends Equatable {
     this.startCfi = '',
     this.atStart = true,
     this.atEnd = false,
+    this.isRtl = false,
     this.localCurrent = 0,
     this.localTotal = 0,
     this.webResourceError,
@@ -67,6 +70,7 @@ class ReaderState extends Equatable {
     String? startCfi,
     bool? atStart,
     bool? atEnd,
+    bool? isRtl,
     int? localCurrent,
     int? localTotal,
     WebResourceError? webResourceError,
@@ -82,6 +86,7 @@ class ReaderState extends Equatable {
       startCfi: startCfi ?? this.startCfi,
       atStart: atStart ?? this.atStart,
       atEnd: atEnd ?? this.atEnd,
+      isRtl: isRtl ?? this.isRtl,
       localCurrent: localCurrent ?? this.localCurrent,
       localTotal: localTotal ?? this.localTotal,
       webResourceError: webResourceError ?? this.webResourceError,

@@ -18,7 +18,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   Future<void> refresh() async {
     final Box box = Hive.box(name: 'settings');
     SortOrderCode sortOrder =
-    SortOrderCode.fromString(box.get('bookshelf.sortOrder'), defaultValue: SortOrderCode.name);
+        SortOrderCode.fromString(box.get('bookshelf.sortOrder'), defaultValue: SortOrderCode.name);
     bool isAscending = box.get('bookshelf.isAscending', defaultValue: true);
     box.close();
 
