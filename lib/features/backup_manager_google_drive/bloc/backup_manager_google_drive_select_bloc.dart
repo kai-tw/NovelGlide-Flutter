@@ -8,6 +8,7 @@ import 'package:path/path.dart';
 
 import '../../../data/file_path.dart';
 import '../../../processor/google_drive_api.dart';
+import '../../../toolbox/backup_utility.dart';
 import '../../../toolbox/random_utility.dart';
 
 class BackupManagerGoogleDriveSelectCubit extends Cubit<BackupManagerGoogleDriveSelectState> {
@@ -58,7 +59,7 @@ class BackupManagerGoogleDriveSelectCubit extends Cubit<BackupManagerGoogleDrive
   }
 
   Future<void> restoreBackup(String fileId) async {
-    final Directory tempFolder = RandomUtility.getAvailableTempFolder();
+    final Directory tempFolder = await RandomUtility.getAvailableTempFolder();
     tempFolder.createSync(recursive: true);
 
     final File zipFile = File(join(tempFolder.path, 'Library.zip'));
@@ -66,10 +67,7 @@ class BackupManagerGoogleDriveSelectCubit extends Cubit<BackupManagerGoogleDrive
 
     await GoogleDriveApi.instance.downloadFile(fileId, zipFile);
 
-    final Directory library = Directory(FilePath.instance.libraryRoot);
-    library.deleteSync(recursive: true);
-    library.createSync(recursive: true);
-    await ZipFile.extractToDirectory(zipFile: zipFile, destinationDir: library);
+    await BackupUtility.restoreBackup(tempFolder, zipFile);
 
     tempFolder.deleteSync(recursive: true);
 

@@ -13,30 +13,19 @@ class ReaderSettingsAutoSaveSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     final ReaderSettingsCubit cubit = BlocProvider.of<ReaderSettingsCubit>(context);
     final ReaderCubit readerCubit = BlocProvider.of<ReaderCubit>(context);
-    return Row(
-      children: [
-        Expanded(
-          child: Text(AppLocalizations.of(context)!.readerSettingsAutoSaveSwitch),
-        ),
-        BlocBuilder<ReaderSettingsCubit, ReaderSettingsData>(
-          builder: (BuildContext context, ReaderSettingsData state) {
-            return Semantics(
-              label: AppLocalizations.of(context)!.accessibilityReaderSettingsAutoSaveSwitch,
-              value: state.autoSave
-                  ? AppLocalizations.of(context)!.accessibilityReaderSettingsAutoSaveSwitchOn
-                  : AppLocalizations.of(context)!.accessibilityReaderSettingsAutoSaveSwitchOff,
-              child: Switch(
-                value: state.autoSave,
-                onChanged: (bool value) {
-                  cubit.setState(autoSave: value);
-                  readerCubit.setSettings(autoSave: value);
-                  cubit.save();
-                },
-              ),
-            );
+    return BlocBuilder<ReaderSettingsCubit, ReaderSettingsData>(
+      builder: (context, state) {
+        return SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          title: Text(AppLocalizations.of(context)!.readerSettingsAutoSaveSwitch),
+          value: state.autoSave,
+          onChanged: (bool value) {
+            cubit.setState(autoSave: value);
+            readerCubit.setSettings(autoSave: value);
+            cubit.save();
           },
-        ),
-      ],
+        );
+      },
     );
   }
 }

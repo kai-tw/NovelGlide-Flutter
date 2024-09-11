@@ -35,65 +35,58 @@ class _BackupManagerGoogleDrive extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ListTile(
-            leading: const Icon(Icons.cloud_rounded),
-            title: Text(appLocalizations.backupManagerGoogleDriveBackup),
-            trailing: BlocBuilder<BackupManagerGoogleDriveCubit, BackupManagerGoogleDriveState>(
-              buildWhen: (previous, current) => previous.isEnabled != current.isEnabled,
-              builder: (context, state) {
-                return Semantics(
-                  label: state.isEnabled
-                      ? appLocalizations.backupManagerGoogleDriveBackupEnable
-                      : appLocalizations.backupManagerGoogleDriveBackupDisable,
-                  value: state.isEnabled ? appLocalizations.generalEnabled : appLocalizations.generalDisabled,
-                  child: Switch(
-                    value: state.isEnabled,
-                    onChanged: cubit.setEnabled,
-                  ),
-                );
-              },
-            ),
-          ),
           BlocBuilder<BackupManagerGoogleDriveCubit, BackupManagerGoogleDriveState>(
-            buildWhen: (previous, current) =>
-                previous.isEnabled != current.isEnabled || previous.createState != current.createState,
+            buildWhen: (previous, current) => previous.code != current.code,
             builder: (context, state) {
-              return ListTile(
-                onTap: () {
-                  if (state.isEnabled) {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => const BackupManagerGoogleDriveFileManager()));
-                  }
-                },
-                leading: const Icon(Icons.folder),
-                title: Text(appLocalizations.backupManagerFileManagement),
-                trailing: const Icon(Icons.chevron_right),
-                iconColor: Theme.of(context).colorScheme.primary.withOpacity(state.isEnabled ? 1 : 0.5),
-                textColor: Theme.of(context).colorScheme.primary.withOpacity(state.isEnabled ? 1 : 0.5),
+              return SwitchListTile(
+                title: Text(appLocalizations.backupManagerGoogleDriveBackup),
+                secondary: const Icon(Icons.cloud_rounded),
+                value: state.code == BackupManagerGoogleDriveCode.idle ||
+                    state.code == BackupManagerGoogleDriveCode.creating ||
+                    state.code == BackupManagerGoogleDriveCode.success,
+                onChanged: state.code == BackupManagerGoogleDriveCode.idle ||
+                        state.code == BackupManagerGoogleDriveCode.disabled
+                    ? cubit.setEnabled
+                    : null,
               );
             },
           ),
           BlocBuilder<BackupManagerGoogleDriveCubit, BackupManagerGoogleDriveState>(
-            buildWhen: (previous, current) =>
-                previous.isEnabled != current.isEnabled || previous.createState != current.createState,
+            buildWhen: (previous, current) => previous.code != current.code,
             builder: (context, state) {
-              switch (state.createState) {
-                case BackupManagerGoogleDriveCreateState.idle:
+              return ListTile(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => const BackupManagerGoogleDriveFileManager()));
+                },
+                leading: const Icon(Icons.folder),
+                title: Text(appLocalizations.backupManagerFileManagement),
+                trailing: const Icon(Icons.chevron_right),
+                enabled: state.code == BackupManagerGoogleDriveCode.idle,
+              );
+            },
+          ),
+          BlocBuilder<BackupManagerGoogleDriveCubit, BackupManagerGoogleDriveState>(
+            buildWhen: (previous, current) => previous.code != current.code,
+            builder: (context, state) {
+              switch (state.code) {
+                case BackupManagerGoogleDriveCode.disabled:
+                case BackupManagerGoogleDriveCode.idle:
                   return ListTile(
                     leading: const Icon(Icons.add),
                     title: Text(appLocalizations.backupManagerCreateNewBackup),
                     onTap: () => cubit.createBackup(),
-                    enabled: state.isEnabled,
+                    enabled: state.code == BackupManagerGoogleDriveCode.idle,
                   );
 
-                case BackupManagerGoogleDriveCreateState.creating:
+                case BackupManagerGoogleDriveCode.creating:
                   return ListTile(
                     leading: const Icon(Icons.sync),
                     title: Text(appLocalizations.backupManagerCreateNewBackup),
                     enabled: false,
                   );
 
-                case BackupManagerGoogleDriveCreateState.success:
+                case BackupManagerGoogleDriveCode.success:
                   return ListTile(
                     leading: const Icon(Icons.check_rounded),
                     title: Text(appLocalizations.backupManagerCreateNewBackup),
@@ -101,7 +94,7 @@ class _BackupManagerGoogleDrive extends StatelessWidget {
                     textColor: Colors.green,
                   );
 
-                case BackupManagerGoogleDriveCreateState.failed:
+                case BackupManagerGoogleDriveCode.error:
                   return ListTile(
                     leading: const Icon(Icons.close_rounded),
                     title: Text(appLocalizations.backupManagerCreateNewBackup),

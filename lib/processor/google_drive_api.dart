@@ -48,9 +48,7 @@ class GoogleDriveApi {
     driveApi = null;
   }
 
-  Future<bool> isSignedIn() async {
-    return await _googleSignIn.isSignedIn() && driveApi != null;
-  }
+  Future<bool> isSignedIn() async => await _googleSignIn.isSignedIn() && driveApi != null;
 
   Future<drive.FileList> list({
     String? corpora,

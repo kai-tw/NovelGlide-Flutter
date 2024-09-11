@@ -27,20 +27,6 @@ class DeveloperPage extends StatelessWidget {
             leading: const Icon(Icons.error_outline_rounded),
             title: const Text('Force crash'),
           ),
-
-          ListTile(
-            onTap: () {
-              debugPrint(FilePath.instance.supportFolder);
-              debugPrint(FilePath.instance.documentFolder);
-              debugPrint(FilePath.instance.cacheFolder);
-              debugPrint(FilePath.instance.tempFolder);
-              debugPrint(FilePath.instance.downloadFolder);
-              debugPrint(FilePath.instance.iosLibraryFolder);
-              debugPrint(FilePath.instance.libraryRoot);
-            },
-            leading: const Icon(Icons.code_rounded),
-            title: const Text('Print FilePath'),
-          ),
         ],
       ),
     );

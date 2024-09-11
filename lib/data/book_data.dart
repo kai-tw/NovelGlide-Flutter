@@ -30,7 +30,7 @@ class BookData {
     final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
     return await compute<Map<String, dynamic>, List<BookData>>(_getDataListIsolate, {
       "rootIsolateToken": rootIsolateToken,
-      "path": FilePath.instance.libraryRoot,
+      "path": await FilePath.libraryRoot,
     });
   }
 

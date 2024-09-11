@@ -11,10 +11,12 @@ class RandomUtility {
     return String.fromCharCodes(Iterable.generate(length, (_) => alphabet.codeUnitAt(Random().nextInt(alphabet.length))));
   }
 
-  static Directory getAvailableTempFolder() {
-    Directory tempFolder = Directory(join(FilePath.instance.tempFolder, RandomUtility.getRandomString(8)));
+  static Future<Directory> getAvailableTempFolder() async {
+    final String tempFolderPath = await FilePath.tempFolder;
+
+    Directory tempFolder = Directory(join(tempFolderPath, RandomUtility.getRandomString(8)));
     while (tempFolder.existsSync()) {
-      tempFolder = Directory(join(FilePath.instance.tempFolder, RandomUtility.getRandomString(8)));
+      tempFolder = Directory(join(tempFolderPath, RandomUtility.getRandomString(8)));
     }
     tempFolder.createSync(recursive: true);
     return tempFolder;

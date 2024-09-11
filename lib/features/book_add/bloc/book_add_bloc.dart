@@ -20,7 +20,7 @@ class BookAddCubit extends Cubit<BookAddState> {BookAddCubit() : super(const Boo
   }
 
   Future<void> submit() async {
-    File file = File(join(FilePath.instance.libraryRoot, state.fileName));
+    File file = File(join(await FilePath.libraryRoot, state.fileName));
 
     if (file.existsSync()) {
       throw AddBookDuplicateFileException();

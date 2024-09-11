@@ -217,7 +217,7 @@ class ReaderCubit extends Cubit<ReaderState> {
           emit(state.copyWith(
             atStart: jsonValue['atStart'],
             atEnd: jsonValue['atEnd'],
-            chapterTitle: bookData?.findChapterByFileName(jsonValue['href'])?.title ?? '',
+            chapterTitle: bookData?.findChapterByFileName(jsonValue['href'])?.title ?? '-',
             chapterFileName: jsonValue['href'],
             isRtl: jsonValue['isRtl'],
             startCfi: jsonValue['startCfi'],

@@ -11,85 +11,79 @@ import '../../../toolbox/random_utility.dart';
 class BackupManagerGoogleDriveCubit extends Cubit<BackupManagerGoogleDriveState> {
   BackupManagerGoogleDriveCubit() : super(const BackupManagerGoogleDriveState());
 
-  Future<void> init() async {
-    await refresh();
-  }
+  Future<void> init() async => await refresh();
 
   Future<void> refresh() async {
     final Box box = Hive.box(name: 'settings');
     final bool isEnabled = box.get('isBackupToGoogleDriveEnabled', defaultValue: false);
-    if (isEnabled && !await GoogleDriveApi.instance.isSignedIn()) {
-      await GoogleDriveApi.instance.signIn();
-    }
-    emit(BackupManagerGoogleDriveState(isEnabled: isEnabled && await GoogleDriveApi.instance.isSignedIn()));
     box.close();
+    setEnabled(isEnabled);
   }
 
   Future<void> setEnabled(bool isEnabled) async {
-    final Box box = Hive.box(name: 'settings');
-    if (isEnabled) {
-      try {
-        await GoogleDriveApi.instance.signIn();
-      } catch (e) {
-        isEnabled = false;
-      }
-    } else {
+    final bool isSignedIn = await GoogleDriveApi.instance.isSignedIn();
+
+    if (isEnabled && !isSignedIn) {
+      // If the user is not signed in, sign in.
+      await GoogleDriveApi.instance.signIn();
+      isEnabled = await GoogleDriveApi.instance.isSignedIn();
+    } else if (!isEnabled && isSignedIn) {
+      // If the user is signed in, sign out.
       await GoogleDriveApi.instance.signOut();
     }
+
+    // Save the setting.
+    final Box box = Hive.box(name: 'settings');
     box.put('isBackupToGoogleDriveEnabled', isEnabled);
     box.close();
-    refresh();
+
+    emit(BackupManagerGoogleDriveState(
+      code: isEnabled ? BackupManagerGoogleDriveCode.idle : BackupManagerGoogleDriveCode.disabled,
+    ));
   }
 
   Future<void> createBackup() async {
-    emit(state.copyWith(createState: BackupManagerGoogleDriveCreateState.creating));
-    final Directory tempFolder = RandomUtility.getAvailableTempFolder();
+    emit(state.copyWith(code: BackupManagerGoogleDriveCode.creating));
+    final Directory tempFolder = await RandomUtility.getAvailableTempFolder();
     tempFolder.createSync(recursive: true);
 
-    /// Create zip file.
+    // Create zip file.
     final File zipFile = await BackupUtility.createBackup(tempFolder.path);
 
-    /// Upload zip file.
+    // Upload zip file.
     await GoogleDriveApi.instance.uploadFile('appDataFolder', zipFile);
 
     tempFolder.deleteSync(recursive: true);
 
     if (!isClosed) {
-      emit(state.copyWith(createState: BackupManagerGoogleDriveCreateState.success));
+      emit(state.copyWith(code: BackupManagerGoogleDriveCode.success));
+    }
 
-      await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
-      if (!isClosed) {
-        refresh();
-      }
+    if (!isClosed) {
+      emit(state.copyWith(code: BackupManagerGoogleDriveCode.idle));
     }
   }
 }
 
 class BackupManagerGoogleDriveState extends Equatable {
-  final bool isEnabled;
-  final BackupManagerGoogleDriveCreateState createState;
+  final BackupManagerGoogleDriveCode code;
 
   @override
-  List<Object?> get props => [
-        isEnabled,
-        createState,
-      ];
+  List<Object?> get props => [code];
 
   const BackupManagerGoogleDriveState({
-    this.isEnabled = false,
-    this.createState = BackupManagerGoogleDriveCreateState.idle,
+    this.code = BackupManagerGoogleDriveCode.disabled,
   });
 
   BackupManagerGoogleDriveState copyWith({
-    bool? isEnabled,
-    BackupManagerGoogleDriveCreateState? createState,
+    BackupManagerGoogleDriveCode? code,
   }) {
     return BackupManagerGoogleDriveState(
-      isEnabled: isEnabled ?? this.isEnabled,
-      createState: createState ?? this.createState,
+      code: code ?? this.code,
     );
   }
 }
 
-enum BackupManagerGoogleDriveCreateState { idle, creating, success, failed }
+enum BackupManagerGoogleDriveCode { disabled, idle, creating, success, error }

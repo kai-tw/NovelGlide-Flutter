@@ -4,47 +4,34 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FilePath {
-  static final FilePath instance = _instance;
-  static final FilePath _instance = FilePath._init();
+  FilePath._();
 
-  late final String supportFolder;
-  late final String documentFolder;
-  late final String cacheFolder;
-  late final String tempFolder;
-  late final String? downloadFolder;
-  late final String? iosLibraryFolder;
-  late final String? androidExternalStorage;
+  /// Shared folders
 
-  late final String libraryRoot;
-  late final String hiveRoot;
-  late final String backupRoot;
+  static Future<String> get supportFolder async => (await getApplicationSupportDirectory()).path;
 
-  factory FilePath() => _instance;
+  static Future<String> get documentFolder async => (await getApplicationDocumentsDirectory()).path;
 
-  FilePath._init();
+  static Future<String> get cacheFolder async => (await getApplicationCacheDirectory()).path;
 
-  Future<void> init() async {
-    supportFolder = (await getApplicationSupportDirectory()).path;
-    documentFolder = (await getApplicationDocumentsDirectory()).path;
-    cacheFolder = (await getApplicationCacheDirectory()).path;
-    tempFolder = (await getTemporaryDirectory()).path;
-    downloadFolder = (await getDownloadsDirectory())?.path;
-    iosLibraryFolder = Platform.isIOS ? (await getLibraryDirectory()).path : null;
-    androidExternalStorage = Platform.isAndroid ? (await getExternalStorageDirectory())?.path : null;
+  static Future<String> get tempFolder async => (await getTemporaryDirectory()).path;
 
-    final String baseFolder = iosLibraryFolder ?? documentFolder;
-    libraryRoot = join(baseFolder, 'Library');
-    hiveRoot = join(baseFolder, "Hive");
-    backupRoot = join(androidExternalStorage ?? documentFolder, 'Backups');
+  static Future<String?> get downloadFolder async => (await getDownloadsDirectory())?.path;
 
-    _createIfNotExist(libraryRoot);
-    _createIfNotExist(hiveRoot);
-  }
+  /// Platform only folders
 
-  void _createIfNotExist(String path) {
-    final Directory dir = Directory(path);
-    if (!dir.existsSync()) {
-      dir.createSync(recursive: true);
-    }
-  }
+  static Future<String?> get _iosLibraryFolder async => Platform.isIOS ? (await getLibraryDirectory()).path : null;
+
+  static Future<String?> get _androidExternalFolder async =>
+      Platform.isAndroid ? (await getExternalStorageDirectory())?.path : null;
+
+  /// Application folders
+
+  static Future<String> get _baseFolder async => await _iosLibraryFolder ?? await documentFolder;
+
+  static Future<String> get libraryRoot async => join(await _baseFolder, 'Library');
+
+  static Future<String> get hiveRoot async => join(await _baseFolder, "Hive");
+
+  static Future<String> get backupRoot async => join(await _androidExternalFolder ?? await documentFolder, 'Backups');
 }

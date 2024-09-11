@@ -23,8 +23,7 @@ void main() async {
 
   // Isolate Initialization
   await AppInfo.instance.init();
-  await FilePath.instance.init();
-  Hive.defaultDirectory = FilePath.instance.hiveRoot;
+  Hive.defaultDirectory = await FilePath.hiveRoot;
 
   runApp(const App());
 }
