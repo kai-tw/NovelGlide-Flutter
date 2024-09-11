@@ -1,13 +1,11 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter_archive/flutter_archive.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:path/path.dart';
 
-import '../../../data/file_path.dart';
 import '../../../processor/google_drive_api.dart';
+import '../../../toolbox/backup_utility.dart';
 import '../../../toolbox/random_utility.dart';
 
 class BackupManagerGoogleDriveCubit extends Cubit<BackupManagerGoogleDriveState> {
@@ -49,12 +47,7 @@ class BackupManagerGoogleDriveCubit extends Cubit<BackupManagerGoogleDriveState>
     tempFolder.createSync(recursive: true);
 
     /// Create zip file.
-    final File zipFile = File(join(tempFolder.path, 'Library_${DateTime.now().toIso8601String()}.zip'));
-    zipFile.createSync();
-    await ZipFile.createFromDirectory(
-      sourceDir: Directory(FilePath.instance.libraryRoot),
-      zipFile: zipFile,
-    );
+    final File zipFile = await BackupUtility.createBackup(tempFolder.path);
 
     /// Upload zip file.
     await GoogleDriveApi.instance.uploadFile('appDataFolder', zipFile);

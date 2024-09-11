@@ -77,46 +77,38 @@ class _BackupManagerGoogleDrive extends StatelessWidget {
             buildWhen: (previous, current) =>
                 previous.isEnabled != current.isEnabled || previous.createState != current.createState,
             builder: (context, state) {
-              Future<void> Function()? onTap;
-              IconData leadingIcon;
-              Color color;
+              switch (state.createState) {
+                case BackupManagerGoogleDriveCreateState.idle:
+                  return ListTile(
+                    leading: const Icon(Icons.add),
+                    title: Text(appLocalizations.backupManagerCreateNewBackup),
+                    onTap: () => cubit.createBackup(),
+                    enabled: state.isEnabled,
+                  );
 
-              if (state.isEnabled) {
-                switch (state.createState) {
-                  case BackupManagerGoogleDriveCreateState.idle:
-                    onTap = () => cubit.createBackup();
-                    leadingIcon = Icons.cloud_upload_rounded;
-                    color = Theme.of(context).colorScheme.primary.withOpacity(1);
-                    break;
+                case BackupManagerGoogleDriveCreateState.creating:
+                  return ListTile(
+                    leading: const Icon(Icons.sync),
+                    title: Text(appLocalizations.backupManagerCreateNewBackup),
+                    enabled: false,
+                  );
 
-                  case BackupManagerGoogleDriveCreateState.creating:
-                    leadingIcon = Icons.cloud_sync_rounded;
-                    color = Theme.of(context).colorScheme.primary.withOpacity(0.5);
-                    break;
+                case BackupManagerGoogleDriveCreateState.success:
+                  return ListTile(
+                    leading: const Icon(Icons.check_rounded),
+                    title: Text(appLocalizations.backupManagerCreateNewBackup),
+                    iconColor: Colors.green,
+                    textColor: Colors.green,
+                  );
 
-                  case BackupManagerGoogleDriveCreateState.success:
-                    leadingIcon = Icons.cloud_done_rounded;
-                    color = Colors.green;
-                    break;
-
-                  case BackupManagerGoogleDriveCreateState.failed:
-                    leadingIcon = Icons.cloud_off_rounded;
-                    color = Theme.of(context).colorScheme.error;
-                    break;
-                }
-              } else {
-                onTap = null;
-                leadingIcon = Icons.cloud_off_rounded;
-                color = Theme.of(context).colorScheme.primary.withOpacity(0.5);
+                case BackupManagerGoogleDriveCreateState.failed:
+                  return ListTile(
+                    leading: const Icon(Icons.close_rounded),
+                    title: Text(appLocalizations.backupManagerCreateNewBackup),
+                    iconColor: Theme.of(context).colorScheme.error,
+                    textColor: Theme.of(context).colorScheme.error,
+                  );
               }
-
-              return ListTile(
-                onTap: onTap,
-                leading: Icon(leadingIcon),
-                title: Text(appLocalizations.backupManagerCreateNewBackup),
-                iconColor: color,
-                textColor: color,
-              );
             },
           ),
         ],

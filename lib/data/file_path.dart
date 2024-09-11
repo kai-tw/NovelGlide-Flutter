@@ -12,10 +12,12 @@ class FilePath {
   late final String cacheFolder;
   late final String tempFolder;
   late final String? downloadFolder;
-  late final String? libraryFolder;
+  late final String? iosLibraryFolder;
+  late final String? androidExternalStorage;
 
   late final String libraryRoot;
   late final String hiveRoot;
+  late final String backupRoot;
 
   factory FilePath() => _instance;
 
@@ -27,11 +29,13 @@ class FilePath {
     cacheFolder = (await getApplicationCacheDirectory()).path;
     tempFolder = (await getTemporaryDirectory()).path;
     downloadFolder = (await getDownloadsDirectory())?.path;
-    libraryFolder = Platform.isIOS ? (await getLibraryDirectory()).path : null;
+    iosLibraryFolder = Platform.isIOS ? (await getLibraryDirectory()).path : null;
+    androidExternalStorage = Platform.isAndroid ? (await getExternalStorageDirectory())?.path : null;
 
-    final String baseFolder = Platform.isIOS ? libraryFolder! : documentFolder;
+    final String baseFolder = iosLibraryFolder ?? documentFolder;
     libraryRoot = join(baseFolder, 'Library');
     hiveRoot = join(baseFolder, "Hive");
+    backupRoot = join(androidExternalStorage ?? documentFolder, 'Backups');
 
     _createIfNotExist(libraryRoot);
     _createIfNotExist(hiveRoot);

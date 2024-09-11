@@ -35,7 +35,7 @@ class DeveloperPage extends StatelessWidget {
               debugPrint(FilePath.instance.cacheFolder);
               debugPrint(FilePath.instance.tempFolder);
               debugPrint(FilePath.instance.downloadFolder);
-              debugPrint(FilePath.instance.libraryFolder);
+              debugPrint(FilePath.instance.iosLibraryFolder);
               debugPrint(FilePath.instance.libraryRoot);
             },
             leading: const Icon(Icons.code_rounded),
