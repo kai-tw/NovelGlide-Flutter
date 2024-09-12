@@ -16,34 +16,34 @@ class BookshelfAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
-    return BlocBuilder<BookshelfCubit, BookshelfState>(
-      buildWhen: (previous, current) => previous.isSelecting != current.isSelecting,
-      builder: (BuildContext context, BookshelfState state) {
-        return AppBar(
-          leading: const Icon(Icons.book_outlined),
-          title: Text(appLocalizations.bookshelfTitle),
-          actions: [
-            AnimatedSwitcher(
+    return AppBar(
+      leading: const Icon(Icons.book_outlined),
+      title: Text(appLocalizations.bookshelfTitle),
+      actions: [
+        BlocBuilder<BookshelfCubit, BookshelfState>(
+          buildWhen: (previous, current) => previous.isSelecting != current.isSelecting,
+          builder: (context, state) {
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
+              child: state.isSelecting ? const BookshelfSelectAllButton() : null,
+            );
+          },
+        ),
+        BlocBuilder<BookshelfCubit, BookshelfState>(
+          buildWhen: (previous, current) => previous.isSelecting != current.isSelecting,
+          builder: (context, state) {
+            return AnimatedSwitcher(
               duration: const Duration(milliseconds: 300),
               transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
               child: state.isSelecting
-                  ? const BookshelfSelectAllButton()
-                  : const SizedBox.shrink(),
-            ),
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
-              child: state.isSelecting
-                  ? TextButton(
-                      onPressed: () => cubit.setSelecting(false),
-                      child: Text(appLocalizations.generalDone),
-                    )
-                  : const SizedBox.shrink(),
-            ),
-            const BookshelfAppBarPopupMenuButton(),
-          ],
-        );
-      },
+                  ? TextButton(onPressed: () => cubit.setSelecting(false), child: Text(appLocalizations.generalDone))
+                  : null,
+            );
+          },
+        ),
+        const BookshelfAppBarPopupMenuButton(),
+      ],
     );
   }
 }

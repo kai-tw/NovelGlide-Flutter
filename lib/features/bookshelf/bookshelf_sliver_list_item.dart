@@ -6,7 +6,6 @@ import '../../data/book_data.dart';
 import '../table_of_contents/table_of_content.dart';
 import 'bloc/bookshelf_bloc.dart';
 import 'widgets/bookshelf_draggable_book.dart';
-import 'widgets/bookshelf_book_widget.dart';
 import 'widgets/bookshelf_select_checkbox.dart';
 
 class BookshelfSliverListItem extends StatelessWidget {
@@ -35,23 +34,11 @@ class BookshelfSliverListItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(24.0),
       child: Stack(
         children: [
-          BlocBuilder<BookshelfCubit, BookshelfState>(
-            buildWhen: (previous, current) => previous.isSelecting != current.isSelecting,
-            builder: (BuildContext context, BookshelfState state) {
-              if (state.isSelecting) {
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: BookshelfBookWidget(bookData: bookData),
-                );
-              } else {
-                return Semantics(
-                  label: AppLocalizations.of(context)!.accessibilityBookshelfListItem,
-                  onTapHint: AppLocalizations.of(context)!.accessibilityBookshelfListItemOnTap,
-                  onLongPressHint: AppLocalizations.of(context)!.accessibilityBookshelfListItemOnLongPress,
-                  child: BookshelfDraggableBook(bookData),
-                );
-              }
-            },
+          Semantics(
+            label: AppLocalizations.of(context)!.accessibilityBookshelfListItem,
+            onTapHint: AppLocalizations.of(context)!.accessibilityBookshelfListItemOnTap,
+            onLongPressHint: AppLocalizations.of(context)!.accessibilityBookshelfListItemOnLongPress,
+            child: BookshelfDraggableBook(bookData),
           ),
           Positioned.fill(
             child: Align(

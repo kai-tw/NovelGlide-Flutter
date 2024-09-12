@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
+import '../../../data/chapter_data.dart';
 import '../../../data/loading_state_code.dart';
 
 class TocCubit extends Cubit<TocState> {
@@ -20,6 +21,7 @@ class TocCubit extends Cubit<TocState> {
       emit(TocState(
         code: LoadingStateCode.loaded,
         bookmarkData: BookmarkData.get(bookData.filePath),
+        chapterList: await bookData.getChapterList(),
       ));
     });
   }
@@ -28,22 +30,26 @@ class TocCubit extends Cubit<TocState> {
 class TocState extends Equatable {
   final LoadingStateCode code;
   final BookmarkData? bookmarkData;
+  final List<ChapterData> chapterList;
 
   @override
-  List<Object?> get props => [code, bookmarkData];
+  List<Object?> get props => [code, bookmarkData, chapterList];
 
   const TocState({
     this.code = LoadingStateCode.initial,
     this.bookmarkData,
+    this.chapterList = const [],
   });
 
   TocState copyWith({
     LoadingStateCode? code,
     BookmarkData? bookmarkData,
+    List<ChapterData>? chapterList,
   }) {
     return TocState(
       code: code ?? this.code,
       bookmarkData: bookmarkData ?? this.bookmarkData,
+      chapterList: chapterList ?? this.chapterList,
     );
   }
 }

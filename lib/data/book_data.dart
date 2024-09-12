@@ -5,17 +5,16 @@ import 'package:epubx/epubx.dart' as epub;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart';
+import 'package:novelglide/data/sort_order_code.dart';
 
 import 'bookmark_data.dart';
 import 'chapter_data.dart';
 import 'collection_data.dart';
-import 'file_path.dart';
 
 class BookData {
   final String filePath;
   String name;
   Image? coverImage;
-  List<ChapterData>? chapterList;
 
   File get file => File(filePath);
 
@@ -23,63 +22,39 @@ class BookData {
 
   DateTime get modifiedDate => file.statSync().modified;
 
-  BookData({required this.filePath, required this.name, this.coverImage, this.chapterList});
+  BookData({required this.filePath, required this.name, this.coverImage});
 
-  /// Get all book data
-  static Future<List<BookData>> getDataList() async {
-    final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
-    return await compute<Map<String, dynamic>, List<BookData>>(_getDataListIsolate, {
-      "rootIsolateToken": rootIsolateToken,
-      "path": await FilePath.libraryRoot,
-    });
+  factory BookData.fromEpubBook(String path, epub.EpubBook epubBook) {
+    return BookData(
+      filePath: path,
+      name: epubBook.Title ?? '',
+      coverImage: epubBook.CoverImage,
+    );
   }
 
-  static Future<List<BookData>> _getDataListIsolate(Map<String, dynamic> message) async {
-    final RootIsolateToken rootIsolateToken = message["rootIsolateToken"];
-    final String path = message["path"];
-
-    BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
-
-    final Directory folder = Directory(path);
-    final List<BookData> entries = [];
-
-    for (File epubFile in folder.listSync().whereType<File>()) {
-      entries.add(await _loadEpubBook(epubFile.path));
-    }
-
-    return entries;
-  }
-
-  static Future<BookData> loadEpubBook(String filePath) async {
+  /// If the book is large, it will be an intensive task to read the whole book.
+  static Future<epub.EpubBook> loadEpubBook(String filePath) async {
     final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
-    return await compute<Map<String, dynamic>, BookData>(_loadEpubBookIsolate, {
+    return await compute<Map<String, dynamic>, epub.EpubBook>(_loadEpubBookIsolate, {
       "rootIsolateToken": rootIsolateToken,
       "path": filePath,
     });
   }
 
-  static Future<BookData> _loadEpubBookIsolate(Map<String, dynamic> message) async {
+  static Future<epub.EpubBook> _loadEpubBookIsolate(Map<String, dynamic> message) async {
     final RootIsolateToken rootIsolateToken = message["rootIsolateToken"];
     final String path = message["path"];
     BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
-    return _loadEpubBook(path);
+    return await epub.EpubReader.readBook(File(path).readAsBytesSync());
   }
 
-  static Future<BookData> _loadEpubBook(String path) async {
-    epub.EpubBook epubBook = await epub.EpubReader.readBook(File(path).readAsBytesSync());
-    String name = epubBook.Title ?? '';
-    Image? coverImage = epubBook.CoverImage;
-    List<ChapterData> chapterList = [];
-
-    for (int i = 0; i < epubBook.Chapters!.length; i++) {
-      chapterList.add(ChapterData.fromEpubChapter(epubBook.Chapters![i], i));
-    }
-
-    return BookData(filePath: path, name: name, coverImage: coverImage, chapterList: chapterList);
+  Future<List<ChapterData>> getChapterList() async {
+    final epub.EpubBook epubBook = await loadEpubBook(filePath);
+    return epubBook.Chapters?.map((e) => ChapterData.fromEpubChapter(e, 0)).toList() ?? [];
   }
 
-  ChapterData? findChapterByFileName(String fileName) {
-    return _findChapterByFileName(chapterList, fileName);
+  Future<ChapterData?> findChapterByFileName(String fileName) async {
+    return _findChapterByFileName(await getChapterList(), fileName);
   }
 
   ChapterData? _findChapterByFileName(List<ChapterData>? chapterList, String fileName) {
@@ -114,5 +89,15 @@ class BookData {
     }
 
     return !file.existsSync();
+  }
+
+  static int Function(BookData, BookData) sortCompare(SortOrderCode sortOrder, bool isAscending) {
+    switch (sortOrder) {
+      case SortOrderCode.modifiedDate:
+        return (a, b) => isAscending ? a.modifiedDate.compareTo(b.modifiedDate) : b.modifiedDate.compareTo(a.modifiedDate);
+
+      default:
+        return (a, b) => isAscending ? compareNatural(a.name, b.name) : compareNatural(b.name, a.name);
+    }
   }
 }

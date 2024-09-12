@@ -7,7 +7,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive/hive.dart';
 
-import 'data/app_info.dart';
 import 'data/file_path.dart';
 import 'features/homepage/homepage.dart';
 import 'firebase_options.dart';
@@ -21,8 +20,6 @@ void main() async {
   MobileAds.instance.initialize();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Isolate Initialization
-  await AppInfo.instance.init();
   Hive.defaultDirectory = await FilePath.hiveRoot;
 
   runApp(const App());
@@ -39,7 +36,7 @@ class App extends StatelessWidget {
       initTheme: initTheme,
       builder: (context, initTheme) {
         return MaterialApp(
-          title: AppInfo.instance.appName,
+          title: 'NovelGlide',
           theme: initTheme,
           localizationsDelegates: const [
             AppLocalizations.delegate,

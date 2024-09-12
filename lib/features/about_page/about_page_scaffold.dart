@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
-import '../../data/app_info.dart';
 import '../common_components/app_icon.dart';
 import '../common_components/common_back_button.dart';
 
@@ -28,16 +30,34 @@ class AboutPageScaffold extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  AppInfo.instance.appName,
-                  style: Theme.of(context).textTheme.titleLarge,
+                child: FutureBuilder(
+                  future: PackageInfo.fromPlatform(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Text(
+                        "${snapshot.data?.appName}",
+                        style: Theme.of(context).textTheme.titleLarge,
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  },
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Text(
-                  '${AppInfo.instance.appVersion} (${AppInfo.instance.buildNumber})',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                child: FutureBuilder(
+                  future: PackageInfo.fromPlatform(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return Text(
+                        '${Platform.operatingSystem} v${snapshot.data?.version} (${snapshot.data?.buildNumber})',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  },
                 ),
               ),
             ],

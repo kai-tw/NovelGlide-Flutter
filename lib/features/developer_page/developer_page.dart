@@ -1,7 +1,6 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 
-import '../../data/file_path.dart';
 import '../common_components/common_back_button.dart';
 import 'device_info_panel.dart';
 

@@ -25,7 +25,7 @@ class ReaderWidget extends StatelessWidget {
       create: (_) => ReaderCubit(
         bookData: bookData,
         bookPath: bookPath,
-      )..initialize(gotoDestination: gotoDestination, isGotoBookmark: isGotoBookmark),
+      )..initialize(dest: gotoDestination, isGotoBookmark: isGotoBookmark),
       child: const ReaderScaffold(),
     );
   }

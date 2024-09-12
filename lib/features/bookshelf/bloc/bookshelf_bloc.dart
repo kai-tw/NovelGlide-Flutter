@@ -1,12 +1,15 @@
-import 'package:collection/collection.dart';
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
 import '../../../data/book_data.dart';
+import '../../../data/file_path.dart';
 import '../../../data/loading_state_code.dart';
 import '../../../data/sort_order_code.dart';
+import '../../../toolbox/advanced_mime_type_resolver.dart';
 
 class BookshelfCubit extends Cubit<BookshelfState> {
   BookshelfCubit() : super(const BookshelfState());
@@ -16,15 +19,32 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   }
 
   Future<void> refresh() async {
+    emit(const BookshelfState(code: LoadingStateCode.loading));
+
     final Box box = Hive.box(name: 'settings');
     SortOrderCode sortOrder =
         SortOrderCode.fromString(box.get('bookshelf.sortOrder'), defaultValue: SortOrderCode.name);
     bool isAscending = box.get('bookshelf.isAscending', defaultValue: true);
     box.close();
 
-    List<BookData> list = await BookData.getDataList();
+    final Directory folder = Directory(await FilePath.libraryRoot);
+    final Iterable<File> fileList = folder
+        .listSync()
+        .whereType<File>()
+        .where((e) => AdvancedMimeTypeResolver.instance.lookupAll(e) == 'application/epub+zip');
+    List<BookData> list = [];
 
-    _sortList(list, sortOrder, isAscending);
+    for (File epubFile in fileList) {
+      if (state.bookList.any((element) => element.filePath == epubFile.path)) {
+        // Old book! Reference it.
+        list.add(state.bookList.firstWhere((element) => element.filePath == epubFile.path));
+      } else {
+        // New book! Read it.
+        list.add(BookData.fromEpubBook(epubFile.path, await BookData.loadEpubBook(epubFile.path)));
+      }
+    }
+
+    list.sort(BookData.sortCompare(sortOrder, isAscending));
 
     if (!isClosed) {
       emit(BookshelfState(
@@ -49,24 +69,11 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     box.put('bookshelf.isAscending', ascending);
     box.close();
 
-    _sortList(state.bookList, order, ascending);
+    state.bookList.sort(BookData.sortCompare(order, ascending));
     emit(state.copyWith(
       isAscending: ascending,
       sortOrder: order,
     ));
-  }
-
-  void _sortList(List<BookData> list, SortOrderCode sortOrder, bool isAscending) {
-    switch (sortOrder) {
-      case SortOrderCode.modifiedDate:
-        list.sort((a, b) =>
-            isAscending ? a.modifiedDate.compareTo(b.modifiedDate) : b.modifiedDate.compareTo(a.modifiedDate));
-        break;
-
-      default:
-        list.sort((a, b) => isAscending ? compareNatural(a.name, b.name) : compareNatural(b.name, a.name));
-        break;
-    }
   }
 
   void setDragging(bool isDragging) {
@@ -99,11 +106,22 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   }
 
   Future<bool> deleteSelectedBooks() async {
+    List<BookData> newList = List<BookData>.from(state.bookList);
     for (BookData bookData in state.selectedBooks) {
       bookData.delete();
+      newList.remove(bookData);
     }
-    await refresh();
+    emit(state.copyWith(bookList: newList));
     return true;
+  }
+
+  void deleteBook(BookData bookData) {
+    bookData.delete();
+
+    // Update the book list
+    List<BookData> newList = List<BookData>.from(state.bookList);
+    newList.remove(bookData);
+    emit(state.copyWith(bookList: newList));
   }
 }
 

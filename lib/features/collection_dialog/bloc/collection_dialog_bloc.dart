@@ -21,7 +21,7 @@ class CollectionDialogCubit extends Cubit<CollectionDialogState> {
     List<BookData> bookList = [];
 
     for (String path in collectionData.pathList) {
-      bookList.add(await BookData.loadEpubBook(path));
+      bookList.add(BookData.fromEpubBook(path, await BookData.loadEpubBook(path)));
     }
 
     emit(CollectionDialogState(

@@ -1,12 +1,10 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter_archive/flutter_archive.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:path/path.dart';
 
-import '../../../data/file_path.dart';
 import '../../../processor/google_drive_api.dart';
 import '../../../toolbox/backup_utility.dart';
 import '../../../toolbox/random_utility.dart';

@@ -13,7 +13,6 @@ import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
 import '../../../data/reader_settings_data.dart';
 import '../../../toolbox/css_helper.dart';
-import '../../../toolbox/random_utility.dart';
 import 'reader_search_cubit.dart';
 import 'reader_search_result.dart';
 import 'reader_state.dart';
@@ -22,7 +21,6 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Web Server
   final String _host = 'localhost';
   final int _port = 8080;
-  bool _isServerActive = false;
   HttpServer? _server;
 
   /// WebView
@@ -32,7 +30,6 @@ class ReaderCubit extends Cubit<ReaderState> {
   BookData? bookData;
   final String bookPath;
   late ThemeData _currentTheme;
-  String? _authToken;
 
   ReaderSearchCubit? searchCubit;
 
@@ -46,10 +43,10 @@ class ReaderCubit extends Cubit<ReaderState> {
             readerSettings: ReaderSettingsData.load()));
 
   /// Client initialization.
-  Future<void> initialize({String? gotoDestination, bool isGotoBookmark = false}) async {
+  Future<void> initialize({String? dest, bool isGotoBookmark = false}) async {
     /// Read the book if it is not read yet.
     if (bookData == null) {
-      bookData = await BookData.loadEpubBook(bookPath);
+      bookData = await BookData.fromEpubBook(bookPath, await BookData.loadEpubBook(bookPath));
 
       if (!isClosed) {
         emit(state.copyWith(bookName: bookData?.name));
@@ -63,26 +60,86 @@ class ReaderCubit extends Cubit<ReaderState> {
     webViewController.setBackgroundColor(Colors.transparent);
     webViewController.setNavigationDelegate(NavigationDelegate(
       onPageStarted: (String url) => debugPrint('Page started loading: $url'),
-      onPageFinished: (String url) {
-        debugPrint('Page finished loading: $url');
-        _authToken = RandomUtility.getRandomString(32);
-        webViewController.runJavaScript('window.readerApi.setAuthToken("$_authToken")');
-        if (gotoDestination != null) {
-          webViewController.runJavaScript('window.readerApi.main("$gotoDestination")');
-        } else if (state.bookmarkData?.startCfi != null && isGotoBookmark || state.readerSettings.autoSave) {
-          webViewController.runJavaScript('window.readerApi.main("${state.bookmarkData!.startCfi}")');
-        } else {
-          webViewController.runJavaScript('window.readerApi.main()');
-        }
-      },
+      onPageFinished: (url) => _onPageFinished(url, dest: dest, isGotoBookmark: isGotoBookmark),
       onNavigationRequest: (NavigationRequest request) =>
           request.url.startsWith('http://$_host:$_port') || request.url.startsWith('about:srcdoc')
               ? NavigationDecision.navigate
               : NavigationDecision.prevent,
     ));
 
-    await _startWebServer();
+    await Future.wait([
+      _startWebServer(),
+      webViewController.addJavaScriptChannel('appApi', onMessageReceived: _onAppApiMessage),
+    ]);
     webViewController.loadRequest(Uri.parse('http://$_host:$_port/'));
+  }
+
+  /// ******* WebView Handler ********
+
+  void _onPageFinished(String url, {String? dest, bool isGotoBookmark = false}) async {
+    debugPrint('Page finished loading: $url');
+
+    // Construct the appApi channel
+    webViewController.runJavaScript('window.readerApi.setAppApi()');
+
+    if (dest != null) {
+      webViewController.runJavaScript('window.readerApi.main("$dest")');
+    } else if (state.bookmarkData?.startCfi != null && isGotoBookmark || state.readerSettings.autoSave) {
+      webViewController.runJavaScript('window.readerApi.main("${state.bookmarkData!.startCfi}")');
+    } else {
+      webViewController.runJavaScript('window.readerApi.main()');
+    }
+  }
+
+  /// ******* App Api Channel ********
+
+  void _onAppApiMessage(JavaScriptMessage message) async {
+    Map<String, dynamic> request = jsonDecode(message.message);
+    switch (request['route']) {
+      case 'loadDone':
+        if (!isClosed) {
+          _stopWebServer();
+          emit(state.copyWith(code: ReaderStateCode.loaded));
+          sendThemeData();
+        }
+        break;
+
+      case 'setState':
+        if (!isClosed) {
+          final Map<String, dynamic> jsonValue = jsonDecode(request['data']);
+          emit(state.copyWith(
+            atStart: jsonValue['atStart'],
+            atEnd: jsonValue['atEnd'],
+            chapterTitle: (await bookData?.findChapterByFileName(jsonValue['href']))?.title ?? '-',
+            chapterFileName: jsonValue['href'],
+            isRtl: jsonValue['isRtl'],
+            startCfi: jsonValue['startCfi'],
+            localCurrent: jsonValue['localCurrent'],
+            localTotal: jsonValue['localTotal'],
+          ));
+
+          if (searchCubit != null) {
+            searchCubit!.setState = searchCubit!.state.copyWith(
+              code: ReaderSearchStateCode.loaded,
+              searchResultList: (jsonValue['searchResultList'] ?? [])
+                  .map<ReaderSearchResult>((e) => ReaderSearchResult(cfi: e['cfi'], excerpt: e['excerpt']))
+                  .toList(),
+            );
+          }
+
+          if (state.readerSettings.autoSave) {
+            saveBookmark();
+          }
+        }
+        break;
+
+      case 'log':
+        debugPrint(request['data']);
+        break;
+
+      default:
+        debugPrint('Unknown app api message: $message');
+    }
   }
 
   /// ******* Communication ********
@@ -92,6 +149,23 @@ class ReaderCubit extends Cubit<ReaderState> {
   void nextPage() => webViewController.runJavaScript('window.readerApi.nextPage()');
 
   void goto(String cfi) => webViewController.runJavaScript('window.readerApi.goto("$cfi")');
+
+  void sendThemeData([ThemeData? newTheme]) {
+    _currentTheme = newTheme ?? _currentTheme;
+    if (state.code == ReaderStateCode.loaded) {
+      final Map<String, dynamic> themeData = {
+        "body": {
+          "color": CssHelper.convertColorToCssRgba(_currentTheme.colorScheme.onSurface),
+          "font-size": "${state.readerSettings.fontSize.toStringAsFixed(1)}px",
+          "line-height": state.readerSettings.lineHeight.toStringAsFixed(1),
+        },
+        "a": {
+          "color": "inherit !important",
+        }
+      };
+      webViewController.runJavaScript('window.readerApi.setThemeData(${jsonEncode(themeData)})');
+    }
+  }
 
   /// ******* Search ********
 
@@ -156,17 +230,9 @@ class ReaderCubit extends Cubit<ReaderState> {
     _server = await shelf_io.serve(handler, _host, _port);
     debugPrint('Server listening on port ${_server?.port}');
     _server?.autoCompress = true;
-    _isServerActive = true;
   }
 
   Future<Response> _echoRequest(Request request) async {
-    final String clientAuthToken = request.headers['authorization']?.substring(7) ?? '';
-    final bool isAuthorized = _authToken != null && clientAuthToken == _authToken && request.method == 'POST';
-
-    if (!_isServerActive) {
-      return Response.forbidden('Forbidden');
-    }
-
     switch (request.url.path) {
       case '':
       case 'index.html':
@@ -191,75 +257,8 @@ class ReaderCubit extends Cubit<ReaderState> {
           headers: {HttpHeaders.contentTypeHeader: 'application/epub+zip'},
         );
 
-      case 'loadDone':
-        if (!isAuthorized) {
-          return Response.forbidden('Forbidden');
-        }
-
-        if (!isClosed) {
-          emit(state.copyWith(
-            code: ReaderStateCode.loaded,
-            webResourceError: null,
-            httpResponseError: null,
-          ));
-          sendThemeData();
-        }
-        return Response.ok('{}');
-
-      case 'setState':
-        if (!isAuthorized) {
-          return Response.forbidden('Forbidden');
-        }
-
-        final Map<String, dynamic> jsonValue = jsonDecode(await request.readAsString());
-
-        if (!isClosed) {
-          emit(state.copyWith(
-            atStart: jsonValue['atStart'],
-            atEnd: jsonValue['atEnd'],
-            chapterTitle: bookData?.findChapterByFileName(jsonValue['href'])?.title ?? '-',
-            chapterFileName: jsonValue['href'],
-            isRtl: jsonValue['isRtl'],
-            startCfi: jsonValue['startCfi'],
-            localCurrent: jsonValue['localCurrent'],
-            localTotal: jsonValue['localTotal'],
-          ));
-        }
-
-        if (searchCubit != null) {
-          searchCubit!.setState = searchCubit!.state.copyWith(
-            code: ReaderSearchStateCode.loaded,
-            searchResultList: (jsonValue['searchResultList'] ?? [])
-                .map<ReaderSearchResult>((e) => ReaderSearchResult(cfi: e['cfi'], excerpt: e['excerpt']))
-                .toList(),
-          );
-        }
-
-        if (state.readerSettings.autoSave) {
-          saveBookmark();
-        }
-
-        return Response.ok('{}');
-
       default:
         return Response.notFound('Not found');
-    }
-  }
-
-  void sendThemeData([ThemeData? newTheme]) {
-    _currentTheme = newTheme ?? _currentTheme;
-    if (state.code == ReaderStateCode.loaded) {
-      final Map<String, dynamic> themeData = {
-        "body": {
-          "color": CssHelper.convertColorToCssRgba(_currentTheme.colorScheme.onSurface),
-          "font-size": "${state.readerSettings.fontSize.toStringAsFixed(1)}px",
-          "line-height": state.readerSettings.lineHeight.toStringAsFixed(1),
-        },
-        "a": {
-          "color": "inherit !important",
-        }
-      };
-      webViewController.runJavaScript('window.readerApi.setThemeData(${jsonEncode(themeData)})');
     }
   }
 
@@ -268,7 +267,6 @@ class ReaderCubit extends Cubit<ReaderState> {
       await _server?.close();
       _server = null;
       debugPrint('Server closed');
-      _isServerActive = false;
     }
   }
 
@@ -276,18 +274,8 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// Listen to the app lifecycle state changes
   void _onStateChanged(AppLifecycleState state) {
-    switch (state) {
-      case AppLifecycleState.detached:
-        _stopWebServer();
-        break;
-      case AppLifecycleState.resumed:
-        _isServerActive = true;
-        break;
-      case AppLifecycleState.inactive:
-      case AppLifecycleState.hidden:
-      case AppLifecycleState.paused:
-        _isServerActive = false;
-        break;
+    if (state == AppLifecycleState.detached) {
+      _stopWebServer();
     }
   }
 
