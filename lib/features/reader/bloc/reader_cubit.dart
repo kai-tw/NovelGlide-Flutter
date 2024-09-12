@@ -46,7 +46,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   Future<void> initialize({String? dest, bool isGotoBookmark = false}) async {
     /// Read the book if it is not read yet.
     if (bookData == null) {
-      bookData = await BookData.fromEpubBook(bookPath, await BookData.loadEpubBook(bookPath));
+      bookData = BookData.fromEpubBook(bookPath, await BookData.loadEpubBook(bookPath));
 
       if (!isClosed) {
         emit(state.copyWith(bookName: bookData?.name));
@@ -106,7 +106,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
       case 'setState':
         if (!isClosed) {
-          final Map<String, dynamic> jsonValue = jsonDecode(request['data']);
+          final Map<String, dynamic> jsonValue = request['data'];
           emit(state.copyWith(
             atStart: jsonValue['atStart'],
             atEnd: jsonValue['atEnd'],

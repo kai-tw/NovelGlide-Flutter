@@ -40,26 +40,7 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
           child: Scrollbar(
             child: CustomScrollView(
               slivers: [
-                BlocConsumer<BackupManagerGoogleDriveSelectCubit, BackupManagerGoogleDriveSelectState>(
-                  listenWhen: (previous, current) => previous.restoreState != current.restoreState,
-                  listener: (context, state) {
-                    switch (state.restoreState) {
-                      case BackupManagerGoogleDriveMessage.restoreSuccessfully:
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(appLocalizations.backupManagerRestoreSuccessfully),
-                        ));
-                        break;
-
-                      case BackupManagerGoogleDriveMessage.copySuccessfully:
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(appLocalizations.backupManagerGoogleDriveCopySuccessfully),
-                        ));
-                        break;
-
-                      case BackupManagerGoogleDriveMessage.blank:
-                        break;
-                    }
-                  },
+                BlocBuilder<BackupManagerGoogleDriveSelectCubit, BackupManagerGoogleDriveSelectState>(
                   buildWhen: (previous, current) => previous.errorCode != current.errorCode,
                   builder: (context, state) {
                     switch (state.errorCode) {

@@ -31,14 +31,14 @@ class HomepageNavigationBar extends StatelessWidget {
               enabled: state.navItem != HomepageNavigationItem.bookshelf,
             ),
             NavigationDestination(
-              icon: Icon(Icons.collections_bookmark_outlined, color: Colors.white.withOpacity(0.5)),
-              selectedIcon: const Icon(Icons.collections_bookmark_outlined, color: Colors.white),
+              icon: Icon(Icons.collections_bookmark_rounded, color: Colors.white.withOpacity(0.5)),
+              selectedIcon: const Icon(Icons.collections_bookmark_rounded, color: Colors.white),
               label: 'Collection',
               enabled: state.navItem != HomepageNavigationItem.collection,
             ),
             NavigationDestination(
-              icon: Icon(Icons.bookmarks_outlined, color: Colors.white.withOpacity(0.5)),
-              selectedIcon: const Icon(Icons.bookmarks_outlined, color: Colors.white),
+              icon: Icon(Icons.bookmarks_rounded, color: Colors.white.withOpacity(0.5)),
+              selectedIcon: const Icon(Icons.bookmarks_rounded, color: Colors.white),
               label: appLocalizations.bookmarkListTitle,
               enabled: state.navItem != HomepageNavigationItem.bookmark,
             ),

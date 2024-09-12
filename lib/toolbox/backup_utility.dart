@@ -5,6 +5,8 @@ import 'package:flutter_archive/flutter_archive.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 
+import '../data/bookmark_data.dart';
+import '../data/collection_data.dart';
 import '../data/file_path.dart';
 
 class BackupUtility {
@@ -15,7 +17,8 @@ class BackupUtility {
     final isBackupBookmarks = box.get('backupManager.isBackupBookmarks', defaultValue: false);
     box.close();
 
-    final Directory libraryFolder = Directory(await FilePath.libraryRoot);
+    final String libraryRoot = await FilePath.libraryRoot;
+    final Directory libraryFolder = Directory(libraryRoot);
     File? collectionFile;
     File? bookmarkFile;
 
@@ -24,7 +27,9 @@ class BackupUtility {
       Map<String, dynamic> collectionJson = {};
 
       for (String key in collectionBox.keys) {
-        collectionJson[key] = collectionBox.get(key);
+        CollectionData collectionData = CollectionData.fromJson(collectionBox.get(key));
+        collectionData.pathList = collectionData.pathList.map((e) => e.substring(libraryRoot.length)).toList();
+        collectionJson[key] = collectionData.toJson();
       }
 
       collectionBox.close();
@@ -38,7 +43,9 @@ class BackupUtility {
       Map<String, dynamic> bookmarkJson = {};
 
       for (String key in bookmarkBox.keys) {
-        bookmarkJson[key] = bookmarkBox.get(key);
+        BookmarkData bookmarkData = BookmarkData.fromJson(bookmarkBox.get(key));
+        bookmarkData.bookPath = bookmarkData.bookPath.substring(libraryRoot.length);
+        bookmarkJson[key.substring(libraryRoot.length)] = bookmarkData.toJson();
       }
 
       bookmarkBox.close();
@@ -65,20 +72,23 @@ class BackupUtility {
   }
 
   static Future<void> restoreBackup(Directory tempFolder, File zipFile) async {
-    final Directory library = Directory(await FilePath.libraryRoot);
-    library.deleteSync(recursive: true);
-    library.createSync(recursive: true);
-    await ZipFile.extractToDirectory(zipFile: zipFile, destinationDir: library);
-    final File collectionFile = File(join(library.path, 'collection.json'));
-    final File bookmarkFile = File(join(library.path, 'bookmark.json'));
+    final String libraryRoot = await FilePath.libraryRoot;
+    final Directory libraryFolder = Directory(libraryRoot);
+    libraryFolder.deleteSync(recursive: true);
+    libraryFolder.createSync(recursive: true);
+    await ZipFile.extractToDirectory(zipFile: zipFile, destinationDir: libraryFolder);
+    final File collectionFile = File(join(libraryRoot, 'collection.json'));
+    final File bookmarkFile = File(join(libraryRoot, 'bookmark.json'));
 
     if (collectionFile.existsSync()) {
       final Map<String, dynamic> collectionJson = jsonDecode(collectionFile.readAsStringSync());
-      final Box collectionBox = Hive.box(name: 'collection');
+      final Box<Map<String, dynamic>> collectionBox = Hive.box(name: 'collection');
       collectionBox.clear();
 
       for (String key in collectionJson.keys) {
-        collectionBox.put(key, collectionJson[key]);
+        CollectionData collectionData = CollectionData.fromJson(collectionJson[key]);
+        collectionData.pathList = collectionData.pathList.map((e) => libraryRoot + e).toList();
+        collectionBox.put(key, collectionData.toJson());
       }
 
       collectionBox.close();
@@ -87,11 +97,13 @@ class BackupUtility {
 
     if (bookmarkFile.existsSync()) {
       final Map<String, dynamic> bookmarkJson = jsonDecode(bookmarkFile.readAsStringSync());
-      final Box bookmarkBox = Hive.box(name: 'bookmark');
+      final Box<Map<String, dynamic>> bookmarkBox = Hive.box(name: 'bookmark');
       bookmarkBox.clear();
 
       for (String key in bookmarkJson.keys) {
-        bookmarkBox.put(key, bookmarkJson[key]);
+        BookmarkData bookmarkData = BookmarkData.fromJson(bookmarkJson[key]);
+        bookmarkData.bookPath = libraryRoot + bookmarkData.bookPath;
+        bookmarkBox.put(libraryRoot + key, bookmarkData.toJson());
       }
 
       bookmarkBox.close();

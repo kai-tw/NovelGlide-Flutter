@@ -56,7 +56,7 @@ class BackupManagerGoogleDriveSelectCubit extends Cubit<BackupManagerGoogleDrive
     ));
   }
 
-  Future<void> restoreBackup(String fileId) async {
+  Future<bool> restoreBackup(String fileId) async {
     final Directory tempFolder = await RandomUtility.getAvailableTempFolder();
     tempFolder.createSync(recursive: true);
 
@@ -68,58 +68,41 @@ class BackupManagerGoogleDriveSelectCubit extends Cubit<BackupManagerGoogleDrive
     await BackupUtility.restoreBackup(tempFolder, zipFile);
 
     tempFolder.deleteSync(recursive: true);
-
-    _showMessage(BackupManagerGoogleDriveMessage.restoreSuccessfully);
+    return true;
   }
 
-  Future<void> deleteFile(String fileId) async {
+  Future<bool> deleteFile(String fileId) async {
     await GoogleDriveApi.instance.deleteFile(fileId);
-    await refresh();
+    return true;
   }
 
-  Future<void> copyToDrive(String fileId) async {
+  Future<bool> copyToDrive(String fileId) async {
     await GoogleDriveApi.instance.copyFile(fileId, ['root']);
-    _showMessage(BackupManagerGoogleDriveMessage.copySuccessfully);
-  }
-
-  Future<void> _showMessage(BackupManagerGoogleDriveMessage message) async {
-    if (!isClosed) {
-      emit(state.copyWith(restoreState: message));
-      await Future.delayed(const Duration(seconds: 2));
-
-      if (!isClosed) {
-        state.copyWith(restoreState: BackupManagerGoogleDriveMessage.blank);
-      }
-    }
+    return true;
   }
 }
 
 class BackupManagerGoogleDriveSelectState extends Equatable {
   final BackupManagerGoogleDriveErrorCode errorCode;
-  final BackupManagerGoogleDriveMessage restoreState;
   final List<drive.File>? files;
 
   @override
   List<Object?> get props => [
         errorCode,
-        restoreState,
         files,
       ];
 
   const BackupManagerGoogleDriveSelectState({
     this.errorCode = BackupManagerGoogleDriveErrorCode.unInitialized,
-    this.restoreState = BackupManagerGoogleDriveMessage.blank,
     this.files,
   });
 
   BackupManagerGoogleDriveSelectState copyWith({
     BackupManagerGoogleDriveErrorCode? errorCode,
-    BackupManagerGoogleDriveMessage? restoreState,
     List<drive.File>? files,
   }) {
     return BackupManagerGoogleDriveSelectState(
       errorCode: errorCode ?? this.errorCode,
-      restoreState: restoreState ?? this.restoreState,
       files: files ?? this.files,
     );
   }
@@ -132,10 +115,4 @@ enum BackupManagerGoogleDriveErrorCode {
   permissionDenied,
   emptyFolder,
   normal,
-}
-
-enum BackupManagerGoogleDriveMessage {
-  blank,
-  restoreSuccessfully,
-  copySuccessfully,
 }

@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 import '../toolbox/datetime_utility.dart';
 
 class BookmarkData {
-  final String bookPath;
+  String bookPath;
   final String bookName;
   final String chapterTitle;
   final String chapterFileName;
@@ -23,7 +23,7 @@ class BookmarkData {
     required this.savedTime,
   });
 
-  factory BookmarkData.fromMap(Map<String, dynamic> map) {
+  factory BookmarkData.fromJson(Map<String, dynamic> map) {
     return BookmarkData(
       bookPath: map['bookPath'] ?? '',
       bookName: map['bookName'] ?? '',
@@ -34,27 +34,18 @@ class BookmarkData {
     );
   }
 
-  factory BookmarkData.fromJson(String json) => BookmarkData.fromMap(jsonDecode(json));
-
   static BookmarkData? get(String bookPath) {
-    final Box<String> box = Hive.box(name: 'bookmark');
-    final String? jsonValue = box.get(bookPath);
-    if (jsonValue != null) {
-      return BookmarkData.fromJson(jsonValue);
-    }
-    return null;
+    final Box<Map<String, dynamic>> box = Hive.box(name: 'bookmark');
+    return box.get(bookPath) != null ? BookmarkData.fromJson(box.get(bookPath)!) : null;
   }
 
   static List<BookmarkData> getList() {
-    final Box<String> box = Hive.box(name: 'bookmark');
+    final Box<Map<String, dynamic>> box = Hive.box(name: 'bookmark');
     List<BookmarkData> retList = [];
 
     for (String key in box.keys) {
-      final String? rawJson = box.get(key);
-      if (rawJson == null) {
-        box.delete(key);
-      } else {
-        retList.add(BookmarkData.fromJson(rawJson));
+      if (box.get(key) != null) {
+        retList.add(BookmarkData.fromJson(box.get(key)!));
       }
     }
 
@@ -64,13 +55,13 @@ class BookmarkData {
   }
 
   void save() {
-    final Box<String> box = Hive.box(name: 'bookmark');
-    box.put(bookPath, jsonEncode(toJson()));
+    final Box<Map<String, dynamic>?> box = Hive.box(name: 'bookmark');
+    box.put(bookPath, toJson());
     box.close();
   }
 
   void delete() {
-    final Box<String> box = Hive.box(name: 'bookmark');
+    final Box<Map<String, dynamic>?> box = Hive.box(name: 'bookmark');
     box.delete(bookPath);
     box.close();
   }

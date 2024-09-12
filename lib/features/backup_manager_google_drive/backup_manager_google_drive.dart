@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../common_components/common_loading.dart';
 import 'backup_manager_google_drive_file_manager.dart';
 import 'bloc/backup_manager_google_drive_bloc.dart';
 
@@ -32,29 +33,19 @@ class _BackupManagerGoogleDrive extends StatelessWidget {
         color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(24.0),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          BlocBuilder<BackupManagerGoogleDriveCubit, BackupManagerGoogleDriveState>(
-            buildWhen: (previous, current) => previous.code != current.code,
-            builder: (context, state) {
-              return SwitchListTile(
+      child: BlocBuilder<BackupManagerGoogleDriveCubit, BackupManagerGoogleDriveState>(
+        buildWhen: (previous, current) => previous.code != current.code,
+        builder: (context, state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SwitchListTile(
                 title: Text(appLocalizations.backupManagerGoogleDriveBackup),
                 secondary: const Icon(Icons.cloud_rounded),
-                value: state.code == BackupManagerGoogleDriveCode.idle ||
-                    state.code == BackupManagerGoogleDriveCode.creating ||
-                    state.code == BackupManagerGoogleDriveCode.success,
-                onChanged: state.code == BackupManagerGoogleDriveCode.idle ||
-                        state.code == BackupManagerGoogleDriveCode.disabled
-                    ? cubit.setEnabled
-                    : null,
-              );
-            },
-          ),
-          BlocBuilder<BackupManagerGoogleDriveCubit, BackupManagerGoogleDriveState>(
-            buildWhen: (previous, current) => previous.code != current.code,
-            builder: (context, state) {
-              return ListTile(
+                value: state.code == BackupManagerGoogleDriveCode.idle,
+                onChanged: cubit.setEnabled,
+              ),
+              ListTile(
                 onTap: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) => const BackupManagerGoogleDriveFileManager()));
@@ -63,48 +54,49 @@ class _BackupManagerGoogleDrive extends StatelessWidget {
                 title: Text(appLocalizations.backupManagerFileManagement),
                 trailing: const Icon(Icons.chevron_right),
                 enabled: state.code == BackupManagerGoogleDriveCode.idle,
-              );
-            },
-          ),
-          BlocBuilder<BackupManagerGoogleDriveCubit, BackupManagerGoogleDriveState>(
-            buildWhen: (previous, current) => previous.code != current.code,
-            builder: (context, state) {
-              switch (state.code) {
-                case BackupManagerGoogleDriveCode.disabled:
-                case BackupManagerGoogleDriveCode.idle:
-                  return ListTile(
-                    leading: const Icon(Icons.add),
-                    title: Text(appLocalizations.backupManagerCreateNewBackup),
-                    onTap: () => cubit.createBackup(),
-                    enabled: state.code == BackupManagerGoogleDriveCode.idle,
+              ),
+              ListTile(
+                leading: const Icon(Icons.add),
+                title: Text(appLocalizations.backupManagerCreateNewBackup),
+                enabled: state.code == BackupManagerGoogleDriveCode.idle,
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (_) {
+                      return FutureBuilder(
+                        future: cubit.createBackup(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return AlertDialog(
+                              icon: const Icon(Icons.check_rounded, color: Colors.green, size: 60.0),
+                              content: Text(appLocalizations.backupManagerCreationSuccess),
+                              actions: [
+                                TextButton.icon(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  icon: const Icon(Icons.close_rounded),
+                                  label: Text(appLocalizations.generalClose),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return const AlertDialog(
+                              content: SizedBox(
+                                width: 200.0,
+                                height: 100.0,
+                                child: CommonLoading(),
+                              ),
+                            );
+                          }
+                        },
+                      );
+                    },
                   );
-
-                case BackupManagerGoogleDriveCode.creating:
-                  return ListTile(
-                    leading: const Icon(Icons.sync),
-                    title: Text(appLocalizations.backupManagerCreateNewBackup),
-                    enabled: false,
-                  );
-
-                case BackupManagerGoogleDriveCode.success:
-                  return ListTile(
-                    leading: const Icon(Icons.check_rounded),
-                    title: Text(appLocalizations.backupManagerCreateNewBackup),
-                    iconColor: Colors.green,
-                    textColor: Colors.green,
-                  );
-
-                case BackupManagerGoogleDriveCode.error:
-                  return ListTile(
-                    leading: const Icon(Icons.close_rounded),
-                    title: Text(appLocalizations.backupManagerCreateNewBackup),
-                    iconColor: Theme.of(context).colorScheme.error,
-                    textColor: Theme.of(context).colorScheme.error,
-                  );
-              }
-            },
-          ),
-        ],
+                },
+              ),
+            ],
+          );
+        },
       ),
     );
   }

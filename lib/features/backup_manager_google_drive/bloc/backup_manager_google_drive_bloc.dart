@@ -42,8 +42,7 @@ class BackupManagerGoogleDriveCubit extends Cubit<BackupManagerGoogleDriveState>
     ));
   }
 
-  Future<void> createBackup() async {
-    emit(state.copyWith(code: BackupManagerGoogleDriveCode.creating));
+  Future<bool> createBackup() async {
     final Directory tempFolder = await RandomUtility.getAvailableTempFolder();
     tempFolder.createSync(recursive: true);
 
@@ -55,15 +54,7 @@ class BackupManagerGoogleDriveCubit extends Cubit<BackupManagerGoogleDriveState>
 
     tempFolder.deleteSync(recursive: true);
 
-    if (!isClosed) {
-      emit(state.copyWith(code: BackupManagerGoogleDriveCode.success));
-    }
-
-    await Future.delayed(const Duration(seconds: 2));
-
-    if (!isClosed) {
-      emit(state.copyWith(code: BackupManagerGoogleDriveCode.idle));
-    }
+    return true;
   }
 }
 
