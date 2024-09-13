@@ -3,17 +3,8 @@ import 'package:flutter/material.dart';
 import 'theme_template.dart';
 
 class DefaultTheme extends ThemeTemplate{
-  static final DefaultTheme instance = _instance;
-  static final DefaultTheme _instance = DefaultTheme._();
-
-  factory DefaultTheme() => instance;
-  DefaultTheme._();
-
-  @override
-  final ThemeData lightTheme = ThemeTemplate.generateThemeByBrightness(_lightColorScheme);
-
-  @override
-  final ThemeData darkTheme = ThemeTemplate.generateThemeByBrightness(_darkColorScheme);
+  static final ThemeData lightTheme = ThemeTemplate.generateThemeByBrightness(_lightColorScheme);
+  static final ThemeData darkTheme = ThemeTemplate.generateThemeByBrightness(_darkColorScheme);
 
   /// The color scheme for light theme
   static const ColorScheme _lightColorScheme = ColorScheme(

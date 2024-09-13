@@ -15,6 +15,7 @@ class BookshelfSliverListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
 
     return InkWell(
@@ -26,18 +27,34 @@ class BookshelfSliverListItem extends StatelessWidget {
             cubit.selectBook(bookData);
           }
         } else {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => TableOfContents(bookData)))
-              .then((_) => cubit.refresh());
+          if (bookData.isExist) {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => TableOfContents(bookData)));
+          } else {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                icon: Icon(Icons.error_outline_rounded, color: Theme.of(context).colorScheme.error, size: 48.0),
+                content: const Text("This book doesn't exist.", textAlign: TextAlign.center),
+                actions: [
+                  TextButton.icon(
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: const Icon(Icons.close),
+                    label: Text(appLocalizations.generalClose),
+                  ),
+                ],
+              ),
+            );
+            cubit.refresh();
+          }
         }
       },
       borderRadius: BorderRadius.circular(24.0),
       child: Stack(
         children: [
           Semantics(
-            label: AppLocalizations.of(context)!.accessibilityBookshelfListItem,
-            onTapHint: AppLocalizations.of(context)!.accessibilityBookshelfListItemOnTap,
-            onLongPressHint: AppLocalizations.of(context)!.accessibilityBookshelfListItemOnLongPress,
+            label: appLocalizations.accessibilityBookshelfListItem,
+            onTapHint: appLocalizations.accessibilityBookshelfListItemOnTap,
+            onLongPressHint: appLocalizations.accessibilityBookshelfListItemOnLongPress,
             child: BookshelfDraggableBook(bookData),
           ),
           Positioned.fill(

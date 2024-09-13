@@ -43,7 +43,7 @@ class ThemeManagerThemeSelector extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   sliver: SliverGrid(
                     delegate: SliverChildBuilderDelegate(
-                          (context, index) => ThemeManagerSelectThemeButton(themeId: ThemeId.values[index]),
+                      (context, index) => ThemeManagerSelectThemeButton(themeId: ThemeId.values[index]),
                       childCount: ThemeId.values.length,
                     ),
                     gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(

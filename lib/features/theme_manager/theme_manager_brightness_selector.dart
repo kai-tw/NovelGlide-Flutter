@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../processor/theme_processor.dart';
-import 'bloc/theme_manager_brightness_bloc.dart';
+import '../../data/theme_data_record.dart';
+import 'bloc/theme_manager_bloc.dart';
 
 class ThemeManagerBrightnessSelector extends StatelessWidget {
   const ThemeManagerBrightnessSelector({super.key});
@@ -12,26 +12,27 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return BlocProvider(
-      create: (context) => ThemeManagerBrightnessCubit()..refresh(),
-      child: Container(
-        margin: const EdgeInsets.all(16.0),
-        padding: const EdgeInsets.fromLTRB(24.0, 8.0, 24.0, 24.0),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainer,
-          borderRadius: const BorderRadius.all(Radius.circular(24.0)),
-        ),
-        child: Column(
-          children: [
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.brightness_4_rounded),
-              title: Text(appLocalizations.brightnessSelectorTitle, style: Theme.of(context).textTheme.titleMedium),
-              subtitle: Text(appLocalizations.brightnessSelectorDescription),
-            ),
-            ThemeSwitcher.withTheme(
-              builder: (context, _, currentTheme) {
-                return BlocBuilder<ThemeManagerBrightnessCubit, ThemeManagerBrightnessState>(builder: (context, state) {
+    final ThemeManagerCubit cubit = BlocProvider.of<ThemeManagerCubit>(context);
+    return Container(
+      margin: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.fromLTRB(24.0, 8.0, 24.0, 24.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainer,
+        borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+      ),
+      child: Column(
+        children: [
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.brightness_4_rounded),
+            title: Text(appLocalizations.brightnessSelectorTitle, style: Theme.of(context).textTheme.titleMedium),
+            subtitle: Text(appLocalizations.brightnessSelectorDescription),
+          ),
+          BlocBuilder<ThemeManagerCubit, ThemeManagerState>(
+            buildWhen: (previous, current) => previous.brightness != current.brightness,
+            builder: (context, state) {
+              return ThemeSwitcher(
+                builder: (context) {
                   return SegmentedButton<Brightness?>(
                     segments: [
                       ButtonSegment<Brightness?>(
@@ -57,17 +58,27 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
                       ),
                     ],
                     selected: {state.brightness},
-                    onSelectionChanged: (brightnessSet) {
+                    onSelectionChanged: (brightnessSet) async {
                       final Brightness? brightness = brightnessSet.first;
-                      BlocProvider.of<ThemeManagerBrightnessCubit>(context).setBrightness(brightness);
-                      ThemeProcessor.switchBrightness(context, brightness: brightness);
+                      cubit.setBrightness(brightness);
+
+                      final ThemeDataRecord record = ThemeDataRecord.fromSettings();
+                      record.brightness = brightness;
+                      record.saveToSettings();
+
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (context.mounted) {
+                          final ThemeData themeData = record.themeId.getThemeDataByBrightness(brightness: brightness);
+                          ThemeSwitcher.of(context).changeTheme(theme: themeData);
+                        }
+                      });
                     },
                   );
-                });
-              },
-            ),
-          ],
-        ),
+                },
+              );
+            },
+          ),
+        ],
       ),
     );
   }

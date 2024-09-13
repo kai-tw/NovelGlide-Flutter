@@ -8,9 +8,9 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive/hive.dart';
 
 import 'data/file_path.dart';
+import 'data/theme_data_record.dart';
 import 'features/homepage/homepage.dart';
 import 'firebase_options.dart';
-import 'processor/theme_processor.dart';
 
 void main() async {
   // Flutter Initialization
@@ -30,7 +30,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData initTheme = ThemeProcessor.getThemeDataFromSettings();
+    final ThemeDataRecord record = ThemeDataRecord.fromSettings();
+    final ThemeData initTheme = record.themeId.getThemeDataByBrightness(brightness: record.brightness);
 
     return ThemeProvider(
       initTheme: initTheme,

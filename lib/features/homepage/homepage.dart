@@ -2,8 +2,8 @@ import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/theme_data_record.dart';
 import '../../data/window_class.dart';
-import '../../processor/theme_processor.dart';
 import '../bookmark_list/bloc/bookmark_list_bloc.dart';
 import '../bookshelf/bloc/bookshelf_bloc.dart';
 import '../collection_list/bloc/collection_list_bloc.dart';
@@ -20,8 +20,6 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
-  late BuildContext _themeContext;
-
   @override
   void initState() {
     super.initState();
@@ -33,7 +31,6 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
     return ThemeSwitchingArea(
       child: ThemeSwitcher(
         builder: (context) {
-          _themeContext = context;
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (_) => HomepageCubit()),
@@ -50,7 +47,12 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
 
   @override
   void didChangePlatformBrightness() {
-    ThemeProcessor.onBrightnessChanged(_themeContext);
+    ThemeDataRecord record = ThemeDataRecord.fromSettings();
+
+    if (record.brightness == null) {
+      final ThemeData themeData = record.themeId.getThemeDataByBrightness(brightness: record.brightness);
+      ThemeSwitcher.of(context).changeTheme(theme: themeData);
+    }
   }
 
   @override

@@ -14,14 +14,23 @@ class TocCubit extends Cubit<TocState> {
 
   TocCubit(this.bookData) : super(const TocState());
 
-  Future<void> refresh({BookData? newData}) async {
-    bookData = newData ?? bookData;
-
+  Future<void> init() async {
+    emit(const TocState(code: LoadingStateCode.loading));
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       emit(TocState(
         code: LoadingStateCode.loaded,
         bookmarkData: BookmarkData.get(bookData.filePath),
         chapterList: await bookData.getChapterList(),
+      ));
+    });
+  }
+
+  Future<void> refresh() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      emit(TocState(
+        code: LoadingStateCode.loaded,
+        bookmarkData: BookmarkData.get(bookData.filePath),
+        chapterList: state.chapterList,
       ));
     });
   }
@@ -40,16 +49,4 @@ class TocState extends Equatable {
     this.bookmarkData,
     this.chapterList = const [],
   });
-
-  TocState copyWith({
-    LoadingStateCode? code,
-    BookmarkData? bookmarkData,
-    List<ChapterData>? chapterList,
-  }) {
-    return TocState(
-      code: code ?? this.code,
-      bookmarkData: bookmarkData ?? this.bookmarkData,
-      chapterList: chapterList ?? this.chapterList,
-    );
-  }
 }

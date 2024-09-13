@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:bitmap/bitmap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -25,12 +27,31 @@ class CommonBookCoverImage extends StatelessWidget {
     } else {
       final Bitmap bitmap = Bitmap.fromHeadless(image.width, image.height, image.getBytes());
 
-      return Image.memory(
-        bitmap.buildHeaded(),
-        fit: BoxFit.cover,
-        gaplessPlayback: true,
-        semanticLabel: AppLocalizations.of(context)!.accessibilityBookCover,
+      return LayoutBuilder(
+        builder: (context, constraints) {
+          return FutureBuilder(
+            future: _bitmapOptimize(image, constraints),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Image.memory(
+                  snapshot.data!,
+                  fit: BoxFit.cover,
+                  gaplessPlayback: true,
+                  semanticLabel: AppLocalizations.of(context)!.accessibilityBookCover,
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          );
+        },
       );
     }
+  }
+
+  Future<Uint8List?> _bitmapOptimize(img.Image image, BoxConstraints constraints) async {
+    return Bitmap.fromHeadless(image.width, image.height, image.getBytes())
+        .apply(BitmapResize.to(width: constraints.maxWidth.truncate(), height: constraints.maxHeight.truncate()))
+        .buildHeaded();
   }
 }

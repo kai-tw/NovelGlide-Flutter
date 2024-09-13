@@ -2,8 +2,8 @@ import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../data/theme_data_record.dart';
 import '../../../data/theme_id.dart';
-import '../../../processor/theme_processor.dart';
 
 class ThemeManagerSelectThemeButton extends StatelessWidget {
   const ThemeManagerSelectThemeButton({super.key, required this.themeId});
@@ -13,8 +13,9 @@ class ThemeManagerSelectThemeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final String? themeName = ThemeProcessor.getThemeNameById(context, themeId);
-    final ThemeData themeData = ThemeProcessor.getThemeDataById(themeId);
+    final String? themeName = _getThemeNameById(context, themeId);
+    final Brightness? brightness = ThemeDataRecord.fromSettings().brightness;
+    final ThemeData themeData = themeId.getThemeDataByBrightness(brightness: brightness);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -22,7 +23,10 @@ class ThemeManagerSelectThemeButton extends StatelessWidget {
         ThemeSwitcher(
           builder: (context) {
             return OutlinedButton(
-              onPressed: () => ThemeProcessor.switchTheme(context, id: themeId),
+              onPressed: () {
+                ThemeDataRecord(themeId: themeId, brightness: brightness).saveToSettings();
+                ThemeSwitcher.of(context).changeTheme(theme: themeData);
+              },
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
                 backgroundColor: themeData.colorScheme.surface,
@@ -46,5 +50,17 @@ class ThemeManagerSelectThemeButton extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String? _getThemeNameById(BuildContext context, ThemeId id) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    switch (id) {
+      case ThemeId.materialTheme:
+        return appLocalizations.themeListNameMaterial;
+      case ThemeId.yellowTheme:
+        return appLocalizations.themeListNameYellow;
+      default:
+        return appLocalizations.themeListNameDefault;
+    }
   }
 }

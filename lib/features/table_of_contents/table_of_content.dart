@@ -27,7 +27,7 @@ class TableOfContents extends StatelessWidget {
     }
 
     return BlocProvider(
-      create: (_) => TocCubit(bookData)..refresh(),
+      create: (_) => TocCubit(bookData)..init(),
       child: scaffold,
     );
   }

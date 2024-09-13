@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
 
 abstract class ThemeTemplate {
-  abstract final ThemeData lightTheme;
-  abstract final ThemeData darkTheme;
-
-  ThemeData getThemeByBrightness({Brightness? brightness}) {
-    final Brightness platformBrightness = WidgetsBinding.instance.platformDispatcher.platformBrightness;
-    return (brightness ?? platformBrightness) == Brightness.light ? lightTheme : darkTheme;
-  }
-
   static ThemeData generateThemeByBrightness(ColorScheme colorScheme) {
     return ThemeData(
       appBarTheme: getAppBarTheme(colorScheme),

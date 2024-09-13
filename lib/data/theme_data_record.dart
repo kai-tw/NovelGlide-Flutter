@@ -17,7 +17,7 @@ class ThemeDataRecord {
 
   factory ThemeDataRecord.fromJson(Map<String, dynamic> json) {
     return ThemeDataRecord(
-      themeId: ThemeIdExtension.getFromString(json["themeId"]) ?? ThemeId.defaultTheme,
+      themeId: ThemeId.getFromString(json["themeId"]) ?? ThemeId.defaultTheme,
       brightness: BrightnessExtension.getFromString(json["brightness"]),
     );
   }

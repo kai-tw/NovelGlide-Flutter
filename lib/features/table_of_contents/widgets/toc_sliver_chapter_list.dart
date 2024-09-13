@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/chapter_data.dart';
@@ -25,31 +24,27 @@ class TocSliverChapterList extends StatelessWidget {
           case LoadingStateCode.loading:
             return const CommonSliverLoading();
           case LoadingStateCode.loaded:
-          if (state.chapterList.isEmpty) {
-            return const CommonSliverListEmpty();
-          } else {
-            final TocCubit cubit = BlocProvider.of<TocCubit>(context);
-            final List<_TocChapterListItem> allChapterList = _constructList(state.chapterList, 0);
+            if (state.chapterList.isEmpty) {
+              return const CommonSliverListEmpty();
+            } else {
+              final TocCubit cubit = BlocProvider.of<TocCubit>(context);
+              final List<_TocChapterListItem> allChapterList = _constructList(state.chapterList, 0);
 
-            return SliverList(
-              delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                  final ChapterData chapterData = allChapterList[index].chapterData;
-                  final int nestingLevel = allChapterList[index].nestingLevel;
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final ChapterData chapterData = allChapterList[index].chapterData;
+                    final int nestingLevel = allChapterList[index].nestingLevel;
 
-                  return Semantics(
-                    label: AppLocalizations.of(context)!.accessibilityTocListItem,
-                    onTapHint: AppLocalizations.of(context)!.accessibilityTocListItemOnTap,
-                    onLongPressHint: AppLocalizations.of(context)!.accessibilityTocListItemOnLongPress,
-                    child: ListTile(
+                    return ListTile(
                       onTap: () {
                         Navigator.of(context)
                             .push(MaterialPageRoute(
-                            builder: (context) => ReaderWidget(
-                              bookData: bookData,
-                              bookPath: bookData.filePath,
-                              gotoDestination: chapterData.fileName,
-                            )))
+                                builder: (context) => ReaderWidget(
+                                      bookData: bookData,
+                                      bookPath: bookData.filePath,
+                                      gotoDestination: chapterData.fileName,
+                                    )))
                             .then((_) => cubit.refresh());
                       },
                       dense: true,
@@ -60,19 +55,18 @@ class TocSliverChapterList extends StatelessWidget {
                           final bool isBookmarked = state.bookmarkData?.chapterFileName == chapterData.fileName;
                           return Icon(
                             isBookmarked ? Icons.bookmark_rounded : Icons.numbers_rounded,
-                            color: isBookmarked ? Theme.of(context).colorScheme.error : null,
+                            color: isBookmarked ? Theme.of(context).colorScheme.secondary : null,
                             size: 20.0,
                           );
                         },
                       ),
                       title: Text(chapterData.title, style: Theme.of(context).textTheme.bodyLarge),
-                    ),
-                  );
-                },
-                childCount: allChapterList.length,
-              ),
-            );
-          }
+                    );
+                  },
+                  childCount: allChapterList.length,
+                ),
+              );
+            }
         }
       },
     );
