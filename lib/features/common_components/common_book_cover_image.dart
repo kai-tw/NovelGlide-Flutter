@@ -25,8 +25,6 @@ class CommonBookCoverImage extends StatelessWidget {
         semanticLabel: AppLocalizations.of(context)!.accessibilityBookCover,
       );
     } else {
-      final Bitmap bitmap = Bitmap.fromHeadless(image.width, image.height, image.getBytes());
-
       return LayoutBuilder(
         builder: (context, constraints) {
           return FutureBuilder(
