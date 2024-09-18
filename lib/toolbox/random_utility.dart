@@ -21,4 +21,6 @@ class RandomUtility {
     tempFolder.createSync(recursive: true);
     return tempFolder;
   }
+
+  RandomUtility._();
 }

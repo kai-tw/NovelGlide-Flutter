@@ -7,4 +7,6 @@ class FileHelper {
     int index = (log(size) / log(1024)).floor();
     return '${(size / pow(1024, index)).toStringAsFixed(decimals)} ${units[index]}';
   }
+
+  FileHelper._();
 }

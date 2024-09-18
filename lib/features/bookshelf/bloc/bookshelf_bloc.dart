@@ -9,7 +9,7 @@ import '../../../data/book_data.dart';
 import '../../../data/file_path.dart';
 import '../../../data/loading_state_code.dart';
 import '../../../data/sort_order_code.dart';
-import '../../../toolbox/advanced_mime_type_resolver.dart';
+import '../../../toolbox/mime_resolver.dart';
 
 class BookshelfCubit extends Cubit<BookshelfState> {
   BookshelfCubit() : super(const BookshelfState());
@@ -31,7 +31,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     final Iterable<File> fileList = folder
         .listSync()
         .whereType<File>()
-        .where((e) => AdvancedMimeTypeResolver.instance.lookupAll(e) == 'application/epub+zip');
+        .where((e) => MimeResolver.instance.lookupAll(e) == 'application/epub+zip');
     List<BookData> list = [];
 
     for (File epubFile in fileList) {

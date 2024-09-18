@@ -11,4 +11,6 @@ class VerifyUtility {
   static bool isFolderNameValid(String name) {
     return !folderNameDenyRegex.hasMatch(name);
   }
+
+  VerifyUtility._();
 }

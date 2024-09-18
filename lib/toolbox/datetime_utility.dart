@@ -8,4 +8,6 @@ class DateTimeUtility {
   static int daysPassed(DateTime from) {
     return daysBetween(from, DateTime.now());
   }
+
+  DateTimeUtility._();
 }

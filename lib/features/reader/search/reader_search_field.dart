@@ -15,7 +15,8 @@ class ReaderSearchField extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           decoration: InputDecoration(
-            border: const UnderlineInputBorder(),
+            contentPadding: EdgeInsets.zero,
+            border: InputBorder.none,
             labelText: AppLocalizations.of(context)!.readerSearch,
           ),
           onChanged: (value) => cubit.searchQuery = value,

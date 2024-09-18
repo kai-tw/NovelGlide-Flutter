@@ -37,6 +37,10 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
       listener: BannerAdListener(
         onAdLoaded: (ad) {
           if (!isClosed) {
+            // Dispose of the old ad.
+            state.bannerAd?.dispose();
+
+            // Update the state to display the new ad.
             emit(AdvertisementState(bannerAd: ad as BannerAd));
           }
         },

@@ -31,30 +31,38 @@ class _ReaderSearch extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
       ),
-      child: const Column(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Expanded(
+          const Expanded(
             child: ReaderSearchResultList(),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 16.0),
-            child: ReaderSearchRangeSelector(),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: ReaderSearchField(),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                child: ReaderSearchSubmitBtn(),
-              ),
-            ],
+          Container(
+            padding: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainerHigh,
+              borderRadius: BorderRadius.circular(24.0),
+            ),
+            child: const Column(
+              children: [
+                ReaderSearchRangeSelector(),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 24.0, 0.0, 24.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ReaderSearchField(),
+                      ),
+                      ReaderSearchSubmitBtn(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

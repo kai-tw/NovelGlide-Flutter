@@ -110,4 +110,6 @@ class BackupUtility {
       bookmarkFile.deleteSync();
     }
   }
+
+  BackupUtility._();
 }

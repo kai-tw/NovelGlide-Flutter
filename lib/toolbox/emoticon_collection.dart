@@ -9,4 +9,6 @@ class EmoticonCollection {
     final randNum = random.nextInt(shock.length);
     return shock[randNum];
   }
+
+  EmoticonCollection._();
 }

@@ -2,18 +2,18 @@ import 'dart:io';
 
 import 'package:mime/mime.dart';
 
-class AdvancedMimeTypeResolver extends MimeTypeResolver {
-  static AdvancedMimeTypeResolver get instance => _instance;
-  static final AdvancedMimeTypeResolver _instance = AdvancedMimeTypeResolver._internal();
+class MimeResolver extends MimeTypeResolver {
+  static MimeResolver get instance => _instance;
+  static final MimeResolver _instance = MimeResolver._internal();
 
   bool _isInit = false;
 
-  factory AdvancedMimeTypeResolver() {
+  factory MimeResolver() {
     _instance.init();
     return _instance;
   }
 
-  AdvancedMimeTypeResolver._internal() : super();
+  MimeResolver._internal() : super();
 
   void init() {
     if (_isInit) return;

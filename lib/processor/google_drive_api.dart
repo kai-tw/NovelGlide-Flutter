@@ -8,7 +8,7 @@ import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:path/path.dart';
 
-import '../toolbox/advanced_mime_type_resolver.dart';
+import '../toolbox/mime_resolver.dart';
 
 class GoogleDriveApi {
   static GoogleDriveApi get instance => _instance;
@@ -108,7 +108,7 @@ class GoogleDriveApi {
     final drive.File driveFile = drive.File();
     driveFile.name = basename(file.path);
     driveFile.parents = [spaces];
-    driveFile.mimeType = AdvancedMimeTypeResolver.instance.lookupAll(file);
+    driveFile.mimeType = MimeResolver.instance.lookupAll(file);
 
     final drive.Media media = drive.Media(file.openRead(), file.lengthSync());
 
