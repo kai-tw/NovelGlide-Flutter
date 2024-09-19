@@ -27,17 +27,18 @@ class BookshelfDraggableBook extends StatelessWidget {
               maxSimultaneousDrags: state.code == LoadingStateCode.loaded && !state.isSelecting ? 1 : 0,
               onDragStarted: () => cubit.setDragging(true),
               onDragEnd: (_) => cubit.setDragging(false),
-              onDragCompleted: () {
-                final bool isSuccess = bookData.delete();
+              onDragCompleted: () async {
+                final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
+                final bool isSuccess = await bookData.delete();
                 if (isSuccess) {
                   cubit.deleteBook(bookData);
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  messenger.showSnackBar(
                     SnackBar(
                       content: Text(appLocalizations.deleteBookSuccessfully),
                     ),
                   );
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  messenger.showSnackBar(
                     SnackBar(
                       content: Text(appLocalizations.deleteBookFailed),
                     ),

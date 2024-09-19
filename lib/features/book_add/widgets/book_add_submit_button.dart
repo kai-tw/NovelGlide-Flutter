@@ -27,10 +27,12 @@ class BookAddSubmitButton extends StatelessWidget {
   }
 
   void _onPressed(BuildContext context, BookAddCubit cubit) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final NavigatorState navigator = Navigator.of(context);
+    final ThemeData themeData = Theme.of(context);
+
     cubit.submit().then((_) {
-      if (context.mounted) {
-        Navigator.of(context).pop();
-      }
+      navigator.pop(true);
     }).catchError((e) {
       if (e is AddBookDuplicateFileException && context.mounted) {
         showDialog(
@@ -39,14 +41,14 @@ class BookAddSubmitButton extends StatelessWidget {
             icon: Icon(
               Icons.error_rounded,
               size: 48,
-              color: Theme.of(context).colorScheme.error,
+              color: themeData.colorScheme.error,
             ),
-            title: Text(AppLocalizations.of(context)!.addBookFailed),
-            content: Text(AppLocalizations.of(context)!.addBookDuplicated),
+            title: Text(appLocalizations.addBookFailed),
+            content: Text(appLocalizations.addBookDuplicated),
             actions: [
               TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(AppLocalizations.of(context)!.generalClose),
+                onPressed: () => navigator.pop(),
+                child: Text(appLocalizations.generalClose),
               ),
             ],
           ),

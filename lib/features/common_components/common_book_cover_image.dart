@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bitmap/bitmap.dart';
@@ -48,8 +49,16 @@ class CommonBookCoverImage extends StatelessWidget {
   }
 
   Future<Uint8List?> _bitmapOptimize(img.Image image, BoxConstraints constraints) async {
+    final double widthRatio = constraints.maxWidth / image.width;
+    final double heightRatio = constraints.maxHeight / image.height;
+
+    final double maxRatio = max(widthRatio, heightRatio);
+
+    final int displayWidth = (image.width * maxRatio).truncate();
+    final int displayHeight = (image.height * maxRatio).truncate();
+
     return Bitmap.fromHeadless(image.width, image.height, image.getBytes())
-        .apply(BitmapResize.to(width: constraints.maxWidth.truncate(), height: constraints.maxHeight.truncate()))
+        .apply(BitmapResize.to(width: displayWidth, height: displayHeight))
         .buildHeaded();
   }
 }

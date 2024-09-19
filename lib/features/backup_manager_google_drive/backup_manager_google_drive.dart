@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../toolbox/route_helper.dart';
 import '../common_components/common_loading.dart';
 import 'backup_manager_google_drive_file_manager.dart';
 import 'bloc/backup_manager_google_drive_bloc.dart';
@@ -47,8 +48,7 @@ class _BackupManagerGoogleDrive extends StatelessWidget {
               ),
               ListTile(
                 onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => const BackupManagerGoogleDriveFileManager()));
+                  Navigator.of(context).push(RouteHelper.pushRoute(const BackupManagerGoogleDriveFileManager()));
                 },
                 leading: const Icon(Icons.folder),
                 title: Text(appLocalizations.backupManagerFileManagement),

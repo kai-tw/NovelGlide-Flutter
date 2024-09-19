@@ -13,13 +13,17 @@ import 'view/homepage_scaffold_medium_view.dart';
 
 /// The homepage of the app
 class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+  final HomepageNavigationItem initialItem;
+
+  const Homepage({super.key, this.initialItem = HomepageNavigationItem.bookshelf});
 
   @override
   State<Homepage> createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
+  ThemeSwitcherState? _switcherState;
+
   @override
   void initState() {
     super.initState();
@@ -29,11 +33,12 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return ThemeSwitchingArea(
-      child: ThemeSwitcher(
-        builder: (context) {
+      child: ThemeSwitcher.switcher(
+        builder: (context, switcher) {
+          _switcherState = switcher;
           return MultiBlocProvider(
             providers: [
-              BlocProvider(create: (_) => HomepageCubit()),
+              BlocProvider(create: (_) => HomepageCubit(initialItem: widget.initialItem)),
               BlocProvider(create: (_) => BookshelfCubit()..init()),
               BlocProvider(create: (_) => CollectionListCubit()..init()),
               BlocProvider(create: (_) => BookmarkListCubit()..init()),
@@ -51,7 +56,7 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
 
     if (record.brightness == null) {
       final ThemeData themeData = record.themeId.getThemeDataByBrightness(brightness: record.brightness);
-      ThemeSwitcher.of(context).changeTheme(theme: themeData);
+      _switcherState?.changeTheme(theme: themeData);
     }
   }
 

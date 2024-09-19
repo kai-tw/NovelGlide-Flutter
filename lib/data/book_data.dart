@@ -69,20 +69,20 @@ class BookData {
   }
 
   /// Delete the book
-  bool delete() {
+  Future<bool> delete() async {
     if (file.existsSync()) {
       file.deleteSync();
     }
 
     /// Search the bookmark and delete it.
-    Iterable<BookmarkData> bookmarkList = BookmarkData.getList().where((element) => element.bookPath == filePath);
+    Iterable<BookmarkData> bookmarkList = (await BookmarkData.getList()).where((element) => element.bookPath == filePath);
     for (BookmarkData data in bookmarkList) {
       data.delete();
     }
 
     /// Search the collection and delete it.
     Iterable<CollectionData> collectionList =
-        CollectionData.getList().where((element) => element.pathList.contains(filePath));
+        (await CollectionData.getList()).where((element) => element.pathList.contains(filePath));
     for (CollectionData data in collectionList) {
       data.pathList.remove(filePath);
       data.save();

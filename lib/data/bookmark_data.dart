@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
+import 'package:path/path.dart';
 
 import '../toolbox/datetime_utility.dart';
+import 'file_path.dart';
 
 class BookmarkData {
   String bookPath;
@@ -34,18 +36,21 @@ class BookmarkData {
     );
   }
 
-  static BookmarkData? get(String bookPath) {
+  static Future<BookmarkData?> get(String bookPath) async {
     final Box<Map<String, dynamic>> box = Hive.box(name: 'bookmark');
+    bookPath = isAbsolute(bookPath) ? relative(bookPath, from: await FilePath.libraryRoot) : bookPath;
     return box.get(bookPath) != null ? BookmarkData.fromJson(box.get(bookPath)!) : null;
   }
 
-  static List<BookmarkData> getList() {
+  static Future<List<BookmarkData>> getList() async {
     final Box<Map<String, dynamic>> box = Hive.box(name: 'bookmark');
     List<BookmarkData> retList = [];
 
     for (String key in box.keys) {
       if (box.get(key) != null) {
-        retList.add(BookmarkData.fromJson(box.get(key)!));
+        final BookmarkData data = BookmarkData.fromJson(box.get(key)!);
+        data.bookPath = isAbsolute(data.bookPath) ? data.bookPath : join(await FilePath.libraryRoot, data.bookPath);
+        retList.add(data);
       }
     }
 
@@ -54,8 +59,9 @@ class BookmarkData {
     return retList;
   }
 
-  void save() {
+  void save() async {
     final Box<Map<String, dynamic>?> box = Hive.box(name: 'bookmark');
+    bookPath = isAbsolute(bookPath) ? relative(bookPath, from: await FilePath.libraryRoot) : bookPath;
     box.put(bookPath, toJson());
     box.close();
   }

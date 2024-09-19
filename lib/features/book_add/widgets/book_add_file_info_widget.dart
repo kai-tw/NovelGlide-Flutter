@@ -18,11 +18,19 @@ class BookAddFileInfoWidget extends StatelessWidget {
           contentPadding: const EdgeInsets.only(bottom: 16.0),
           leading: const Icon(Icons.book_outlined, size: 48),
           title: Text(
-            state.fileName,
+            state.fileName ?? 'No File Selected',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(state.fileName == null ? 0.7 : 1.0),
+            ),
           ),
-          subtitle: Text(state.fileSize),
+          subtitle: Text(
+            state.fileSize ?? '0KB',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(state.fileSize == null ? 0.7 : 1.0),
+            ),
+          ),
         );
       },
     );

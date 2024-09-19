@@ -28,8 +28,10 @@ class HomepageFloatingActionButton extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (context) => const BookAddDialog(),
-                ).then((_) {
-                  bookshelfCubit.refresh();
+                ).then((isSuccess) {
+                  if (isSuccess == true) {
+                    bookshelfCubit.refresh();
+                  }
                 });
               },
               child: Icon(

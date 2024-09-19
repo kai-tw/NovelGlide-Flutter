@@ -5,12 +5,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path/path.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
+import '../../../data/file_path.dart';
 import '../../../data/reader_settings_data.dart';
 import '../../../toolbox/css_helper.dart';
 import 'reader_search_cubit.dart';
@@ -37,20 +39,18 @@ class ReaderCubit extends Cubit<ReaderState> {
   double? startDragX;
 
   ReaderCubit({required this.bookPath, this.bookData})
-      : super(ReaderState(
-            bookName: bookData?.name ?? '',
-            bookmarkData: BookmarkData.get(bookPath),
-            readerSettings: ReaderSettingsData.load()));
+      : super(ReaderState(bookName: bookData?.name ?? '', readerSettings: ReaderSettingsData.load()));
 
   /// Client initialization.
   Future<void> initialize({String? dest, bool isGotoBookmark = false}) async {
     /// Read the book if it is not read yet.
-    if (bookData == null) {
-      bookData = BookData.fromEpubBook(bookPath, await BookData.loadEpubBook(bookPath));
-
-      if (!isClosed) {
-        emit(state.copyWith(bookName: bookData?.name));
-      }
+    final absolutePath = isAbsolute(bookPath) ? bookPath : join(await FilePath.libraryRoot, bookPath);
+    bookData ??= BookData.fromEpubBook(absolutePath, await BookData.loadEpubBook(absolutePath));
+    if (!isClosed) {
+      emit(state.copyWith(
+        bookName: bookData?.name,
+        bookmarkData: await BookmarkData.get(bookPath),
+      ));
     }
 
     AppLifecycleListener(onStateChange: _onStateChanged);
@@ -61,10 +61,12 @@ class ReaderCubit extends Cubit<ReaderState> {
     webViewController.setNavigationDelegate(NavigationDelegate(
       onPageStarted: (String url) => debugPrint('Page started loading: $url'),
       onPageFinished: (url) => _onPageFinished(url, dest: dest, isGotoBookmark: isGotoBookmark),
-      onNavigationRequest: (NavigationRequest request) =>
-          request.url.startsWith('http://$_host:$_port') || request.url.startsWith('about:srcdoc')
-              ? NavigationDecision.navigate
-              : NavigationDecision.prevent,
+      onNavigationRequest: (NavigationRequest request) {
+        return _server != null && request.url.startsWith('http://$_host:$_port') ||
+                request.url.startsWith('about:srcdoc')
+            ? NavigationDecision.navigate
+            : NavigationDecision.prevent;
+      },
     ));
 
     await Future.wait([
@@ -212,11 +214,14 @@ class ReaderCubit extends Cubit<ReaderState> {
       startCfi: state.startCfi,
       savedTime: DateTime.now(),
     )..save();
-    emit(state.copyWith(bookmarkData: data));
+
+    if (!isClosed) {
+      emit(state.copyWith(bookmarkData: data));
+    }
   }
 
   Future<void> scrollToBookmark() async {
-    final BookmarkData? bookmarkData = state.bookmarkData ?? BookmarkData.get(state.bookName);
+    final BookmarkData? bookmarkData = state.bookmarkData ?? await BookmarkData.get(state.bookName);
     if (bookmarkData?.startCfi != null) {
       goto(bookmarkData!.startCfi!);
     }

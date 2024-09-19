@@ -5,8 +5,6 @@ import 'package:flutter_archive/flutter_archive.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 
-import '../data/bookmark_data.dart';
-import '../data/collection_data.dart';
 import '../data/file_path.dart';
 
 class BackupUtility {
@@ -27,9 +25,7 @@ class BackupUtility {
       Map<String, dynamic> collectionJson = {};
 
       for (String key in collectionBox.keys) {
-        CollectionData collectionData = CollectionData.fromJson(collectionBox.get(key));
-        collectionData.pathList = collectionData.pathList.map((e) => e.substring(libraryRoot.length)).toList();
-        collectionJson[key] = collectionData.toJson();
+        collectionJson[key] = collectionBox.get(key);
       }
 
       collectionBox.close();
@@ -43,9 +39,7 @@ class BackupUtility {
       Map<String, dynamic> bookmarkJson = {};
 
       for (String key in bookmarkBox.keys) {
-        BookmarkData bookmarkData = BookmarkData.fromJson(bookmarkBox.get(key));
-        bookmarkData.bookPath = bookmarkData.bookPath.substring(libraryRoot.length);
-        bookmarkJson[key.substring(libraryRoot.length)] = bookmarkData.toJson();
+        bookmarkJson[key] = bookmarkBox.get(key);
       }
 
       bookmarkBox.close();
@@ -86,9 +80,7 @@ class BackupUtility {
       collectionBox.clear();
 
       for (String key in collectionJson.keys) {
-        CollectionData collectionData = CollectionData.fromJson(collectionJson[key]);
-        collectionData.pathList = collectionData.pathList.map((e) => libraryRoot + e).toList();
-        collectionBox.put(key, collectionData.toJson());
+        collectionBox.put(key, collectionJson[key]);
       }
 
       collectionBox.close();
@@ -101,9 +93,7 @@ class BackupUtility {
       bookmarkBox.clear();
 
       for (String key in bookmarkJson.keys) {
-        BookmarkData bookmarkData = BookmarkData.fromJson(bookmarkJson[key]);
-        bookmarkData.bookPath = libraryRoot + bookmarkData.bookPath;
-        bookmarkBox.put(libraryRoot + key, bookmarkData.toJson());
+        bookmarkBox.put(key, bookmarkJson[key]);
       }
 
       bookmarkBox.close();

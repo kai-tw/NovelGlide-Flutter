@@ -108,15 +108,15 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   Future<bool> deleteSelectedBooks() async {
     List<BookData> newList = List<BookData>.from(state.bookList);
     for (BookData bookData in state.selectedBooks) {
-      bookData.delete();
+      await bookData.delete();
       newList.remove(bookData);
     }
     emit(state.copyWith(bookList: newList));
     return true;
   }
 
-  void deleteBook(BookData bookData) {
-    bookData.delete();
+  void deleteBook(BookData bookData) async {
+    await bookData.delete();
 
     // Update the book list
     List<BookData> newList = List<BookData>.from(state.bookList);

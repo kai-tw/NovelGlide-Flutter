@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:path/path.dart';
 
 import '../toolbox/random_utility.dart';
+import 'file_path.dart';
 
 class CollectionData {
   static const String hiveBoxName = 'collection';
@@ -27,21 +29,22 @@ class CollectionData {
     return CollectionData(id, name, null, const <String>[]);
   }
 
-  factory CollectionData.fromJson(Map<String, dynamic> json) {
+  static Future<CollectionData> fromJson(Map<String, dynamic> json) async {
+    final String libraryRoot = await FilePath.libraryRoot;
     return CollectionData(
       json['id'] as String,
       json['name'] as String,
       json['color'] != null ? Color(json['color'] as int) : null,
-      List<String>.from(json['pathList'] ?? []),
+      List<String>.from(json['pathList'] ?? []).map<String>((e) => isAbsolute(e) ? e : join(libraryRoot, e)).toList(),
     );
   }
 
-  static List<CollectionData> getList() {
+  static Future<List<CollectionData>> getList() async {
     final Box<Map<String, dynamic>> box = Hive.box(name: hiveBoxName);
     List<CollectionData> list = [];
 
     for (var key in box.keys) {
-      CollectionData data = CollectionData.fromJson(box.get(key)!);
+      CollectionData data = await CollectionData.fromJson(box.get(key)!);
       list.add(data);
     }
 
@@ -50,17 +53,17 @@ class CollectionData {
     return list;
   }
 
-  static void reorder(int oldIndex, int newIndex) {
+  static void reorder(int oldIndex, int newIndex) async {
     final Box<Map<String, dynamic>> box = Hive.box(name: hiveBoxName);
     newIndex = newIndex - (oldIndex < newIndex ? 1 : 0);
 
-    CollectionData data = CollectionData.fromJson(box.getAt(oldIndex));
+    CollectionData data = await CollectionData.fromJson(box.getAt(oldIndex));
     box.deleteAt(oldIndex);
     box.put(data.id, data.toJson());
 
     int loopTime = box.length - newIndex - 1;
     while (loopTime-- > 0) {
-      data = CollectionData.fromJson(box.getAt(newIndex));
+      data = await CollectionData.fromJson(box.getAt(newIndex));
       box.deleteAt(newIndex);
       box.put(data.id, data.toJson());
     }
@@ -90,8 +93,10 @@ class CollectionData {
         ],
       };
 
-  void save() {
+  void save() async {
+    final String libraryRoot = await FilePath.libraryRoot;
     final Box<Map<String, dynamic>?> box = Hive.box(name: hiveBoxName);
+    pathList = pathList.map<String>((e) => isAbsolute(e) ? relative(e, from: libraryRoot) : e).toList();
     box.put(id, toJson());
     box.close();
   }

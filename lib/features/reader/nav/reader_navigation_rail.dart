@@ -14,7 +14,7 @@ class ReaderNavigationRail extends StatelessWidget {
     return const SizedBox(
       width: 64.0,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           ReaderSettingsButton(),
           ReaderJumpToBookmarkButton(),

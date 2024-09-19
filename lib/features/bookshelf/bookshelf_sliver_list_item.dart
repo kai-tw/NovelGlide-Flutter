@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/book_data.dart';
+import '../../toolbox/route_helper.dart';
 import '../table_of_contents/table_of_content.dart';
 import 'bloc/bookshelf_bloc.dart';
 import 'widgets/bookshelf_draggable_book.dart';
@@ -28,7 +29,7 @@ class BookshelfSliverListItem extends StatelessWidget {
           }
         } else {
           if (bookData.isExist) {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => TableOfContents(bookData)));
+            Navigator.of(context).push(RouteHelper.pushRoute(TableOfContents(bookData)));
           } else {
             showDialog(
               context: context,

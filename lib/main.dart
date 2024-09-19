@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,7 +22,18 @@ void main() async {
   MobileAds.instance.initialize();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  // Hive Initialization
   Hive.defaultDirectory = await FilePath.hiveRoot;
+  Directory hiveDirectory = Directory(Hive.defaultDirectory!);
+  if (!hiveDirectory.existsSync()) {
+    hiveDirectory.createSync(recursive: true);
+  }
+
+  // Library Initialization
+  Directory libraryDirectory = Directory(await FilePath.libraryRoot);
+  if (!libraryDirectory.existsSync()) {
+    libraryDirectory.createSync(recursive: true);
+  }
 
   runApp(const App());
 }

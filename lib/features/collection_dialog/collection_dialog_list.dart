@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/book_data.dart';
 import '../../data/loading_state_code.dart';
+import '../../toolbox/route_helper.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import '../table_of_contents/table_of_content.dart';
@@ -37,13 +38,7 @@ class CollectionDialogList extends StatelessWidget {
                     key: ValueKey(data.filePath),
                     onTap: () {
                       Navigator.of(context).pop();
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return TableOfContents(data);
-                          },
-                        ),
-                      );
+                      Navigator.of(context).push(RouteHelper.pushRoute(TableOfContents(data)));
                     },
                     leading: const Icon(Icons.book_outlined),
                     title: Text(data.name),

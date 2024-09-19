@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/window_class.dart';
+import '../../toolbox/route_helper.dart';
 import '../about_page/about_page_scaffold.dart';
 import '../backup_manager/backup_manager_scaffold.dart';
 import '../developer_page/developer_page.dart';
@@ -18,7 +19,7 @@ class SettingsPage extends StatelessWidget {
     final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
     final List<Widget> buttonList = [
       ListTile(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ThemeManager())),
+        onTap: () => Navigator.of(context).pushReplacement(RouteHelper.pushRoute(const ThemeManager())),
         leading: const Padding(
           padding: EdgeInsets.only(right: 12.0),
           child: Icon(Icons.format_paint_rounded),
@@ -26,7 +27,7 @@ class SettingsPage extends StatelessWidget {
         title: Text(appLocalizations.themeManagerTitle),
       ),
       ListTile(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const BackupManagerScaffold())),
+        onTap: () => Navigator.of(context).push(RouteHelper.pushRoute(const BackupManagerScaffold())),
         leading: const Padding(
           padding: EdgeInsets.only(right: 12.0),
           child: Icon(Icons.cloud_rounded),
@@ -34,7 +35,7 @@ class SettingsPage extends StatelessWidget {
         title: Text(appLocalizations.backupManagerTitle),
       ),
       ListTile(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const StoreScaffold())),
+        onTap: () => Navigator.of(context).push(RouteHelper.pushRoute(const StoreScaffold())),
         leading: const Padding(
           padding: EdgeInsets.only(right: 12.0),
           child: Icon(Icons.store_rounded),
@@ -42,7 +43,7 @@ class SettingsPage extends StatelessWidget {
         title: Text(appLocalizations.storeTitle),
       ),
       ListTile(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AboutPageScaffold())),
+        onTap: () => Navigator.of(context).push(RouteHelper.pushRoute(const AboutPageScaffold())),
         leading: const Padding(
           padding: EdgeInsets.only(right: 12.0),
           child: Icon(Icons.info_outline),
@@ -56,7 +57,7 @@ class SettingsPage extends StatelessWidget {
       buttonList.insert(
         buttonList.length - 1,
         ListTile(
-          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const DeveloperPage())),
+          onTap: () => Navigator.of(context).push(RouteHelper.pushRoute(const DeveloperPage())),
           leading: const Padding(
             padding: EdgeInsets.only(right: 12.0),
             child: Icon(Icons.code_rounded),

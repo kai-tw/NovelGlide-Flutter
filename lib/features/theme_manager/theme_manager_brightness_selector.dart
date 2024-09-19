@@ -31,8 +31,8 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
           BlocBuilder<ThemeManagerCubit, ThemeManagerState>(
             buildWhen: (previous, current) => previous.brightness != current.brightness,
             builder: (context, state) {
-              return ThemeSwitcher(
-                builder: (context) {
+              return ThemeSwitcher.switcher(
+                builder: (_, switcher) {
                   return SegmentedButton<Brightness?>(
                     segments: [
                       ButtonSegment<Brightness?>(
@@ -67,10 +67,8 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
                       record.saveToSettings();
 
                       WidgetsBinding.instance.addPostFrameCallback((_) {
-                        if (context.mounted) {
-                          final ThemeData themeData = record.themeId.getThemeDataByBrightness(brightness: brightness);
-                          ThemeSwitcher.of(context).changeTheme(theme: themeData);
-                        }
+                        final ThemeData themeData = record.themeId.getThemeDataByBrightness(brightness: brightness);
+                        switcher.changeTheme(theme: themeData);
                       });
                     },
                   );

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/window_class.dart';
+import '../../toolbox/route_helper.dart';
 import '../reader/reader.dart';
 import 'bloc/toc_bloc.dart';
 
@@ -28,11 +29,12 @@ class TocFabSection extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.of(context)
-                    .push(MaterialPageRoute(
-                        builder: (context) => ReaderWidget(
-                              bookPath: cubit.bookData.filePath,
-                              bookData: cubit.bookData,
-                            )))
+                    .push(RouteHelper.pushRoute(
+                      ReaderWidget(
+                        bookPath: cubit.bookData.filePath,
+                        bookData: cubit.bookData,
+                      ),
+                    ))
                     .then((_) => cubit.refresh());
               },
               style: ElevatedButton.styleFrom(
@@ -53,12 +55,13 @@ class TocFabSection extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: () {
                   Navigator.of(context)
-                      .push(MaterialPageRoute(
-                          builder: (context) => ReaderWidget(
-                                bookPath: cubit.bookData.filePath,
-                                bookData: cubit.bookData,
-                                isGotoBookmark: true,
-                              )))
+                      .push(RouteHelper.pushRoute(
+                        ReaderWidget(
+                          bookPath: cubit.bookData.filePath,
+                          bookData: cubit.bookData,
+                          isGotoBookmark: true,
+                        ),
+                      ))
                       .then((_) => cubit.refresh());
                 },
                 style: ElevatedButton.styleFrom(

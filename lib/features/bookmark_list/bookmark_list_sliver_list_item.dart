@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/bookmark_data.dart';
+import '../../toolbox/route_helper.dart';
 import '../common_components/bookmark_widget.dart';
 import '../reader/reader.dart';
 import 'bloc/bookmark_list_bloc.dart';
@@ -21,6 +22,8 @@ class BookmarkListSliverListItem extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(24.0),
       onTap: () {
+        final NavigatorState navigator = Navigator.of(context);
+
         if (cubit.state.isSelecting) {
           if (cubit.state.selectedBookmarks.contains(_bookmarkData)) {
             cubit.deselectBookmark(_bookmarkData);
@@ -28,12 +31,9 @@ class BookmarkListSliverListItem extends StatelessWidget {
             cubit.selectBookmark(_bookmarkData);
           }
         } else {
-          if (context.mounted) {
-            Navigator.of(context)
-                .push(MaterialPageRoute(
-                    builder: (context) => ReaderWidget(bookPath: _bookmarkData.bookPath, isGotoBookmark: true)))
-                .then((_) => cubit.refresh());
-          }
+          navigator
+              .push(RouteHelper.pushRoute(ReaderWidget(bookPath: _bookmarkData.bookPath, isGotoBookmark: true)))
+              .then((_) => cubit.refresh());
         }
       },
       child: BlocBuilder<BookmarkListCubit, BookmarkListState>(

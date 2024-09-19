@@ -18,8 +18,8 @@ class CollectionListCubit extends Cubit<CollectionListState> {
     });
   }
 
-  void refresh() {
-    List<CollectionData> collectionList = CollectionData.getList();
+  void refresh() async {
+    List<CollectionData> collectionList = await CollectionData.getList();
     _sortList(collectionList, state.sortOrder, state.isAscending);
     emit(CollectionListState(
       code: LoadingStateCode.loaded,

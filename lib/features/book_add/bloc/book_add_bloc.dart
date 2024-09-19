@@ -37,8 +37,8 @@ class BookAddCubit extends Cubit<BookAddState> {BookAddCubit() : super(const Boo
 class BookAddState extends Equatable {
   final File? file;
 
-  String get fileName => file != null ? basename(file!.path) : '-';
-  String get fileSize => file != null ? FileHelper.getFileSizeString(file!.lengthSync()) : '-';
+  String? get fileName => file != null ? basename(file!.path) : null;
+  String? get fileSize => file != null ? FileHelper.getFileSizeString(file!.lengthSync()) : null;
 
   @override
   List<Object?> get props => [file, fileName, fileSize];

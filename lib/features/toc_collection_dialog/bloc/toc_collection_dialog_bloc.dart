@@ -18,8 +18,8 @@ class TocCollectionDialogCubit extends Cubit<TocCollectionDialogState> {
     });
   }
 
-  void refresh() {
-    List<CollectionData> collectionList = CollectionData.getList();
+  void refresh() async {
+    List<CollectionData> collectionList = await CollectionData.getList();
     Set<String> selectedCollections =
         collectionList.where((e) => e.pathList.contains(bookData.filePath)).map((e) => e.id).toSet();
 
