@@ -16,10 +16,17 @@ class ThemeManager extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeSwitchingArea(
-      child: BlocProvider(
-        create: (_) => ThemeManagerCubit(),
-        child: const ThemeManagerScaffold(),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (_, __) {
+        Navigator.of(context)
+            .pushReplacement(RouteHelper.popRoute(const Homepage(initialItem: HomepageNavigationItem.settings)));
+      },
+      child: ThemeSwitchingArea(
+        child: BlocProvider(
+          create: (_) => ThemeManagerCubit(),
+          child: const ThemeManagerScaffold(),
+        ),
       ),
     );
   }
