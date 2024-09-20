@@ -37,6 +37,22 @@ class _BackupManagerGoogleDrive extends StatelessWidget {
       child: BlocBuilder<BackupManagerGoogleDriveCubit, BackupManagerGoogleDriveState>(
         buildWhen: (previous, current) => previous.code != current.code,
         builder: (context, state) {
+          String createButtonText;
+
+          switch (state.code) {
+            case BackupManagerGoogleDriveCode.idle:
+              createButtonText = appLocalizations.backupManagerCreateNewBackup;
+              break;
+            case BackupManagerGoogleDriveCode.creating:
+              createButtonText = appLocalizations.backupManagerCreating;
+              break;
+            case BackupManagerGoogleDriveCode.success:
+              createButtonText = appLocalizations.backupManagerCreationSuccess;
+              break;
+            default:
+              createButtonText = appLocalizations.backupManagerCreationError;
+          }
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -57,7 +73,7 @@ class _BackupManagerGoogleDrive extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.add),
-                title: Text(appLocalizations.backupManagerCreateNewBackup),
+                title: Text(createButtonText),
                 enabled: state.code == BackupManagerGoogleDriveCode.idle,
                 onTap: () {
                   showDialog(
