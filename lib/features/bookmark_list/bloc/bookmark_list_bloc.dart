@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/bookmark_data.dart';
@@ -8,10 +7,6 @@ import '../../../data/loading_state_code.dart';
 
 class BookmarkListCubit extends Cubit<BookmarkListState> {
   BookmarkListCubit() : super(const BookmarkListState());
-
-  void init() {
-    WidgetsBinding.instance.addPostFrameCallback((_) => refresh());
-  }
 
   void refresh() async {
     final List<BookmarkData> bookmarkList = await BookmarkData.getList();

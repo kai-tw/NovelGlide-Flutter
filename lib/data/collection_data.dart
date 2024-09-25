@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 
@@ -10,10 +9,9 @@ class CollectionData {
 
   final String id;
   final String name;
-  final Color? color;
   List<String> pathList;
 
-  CollectionData(this.id, this.name, this.color, this.pathList);
+  CollectionData(this.id, this.name, this.pathList);
 
   factory CollectionData.fromName(String name) {
     final Box<Map<String, dynamic>?> box = Hive.box(name: hiveBoxName);
@@ -26,7 +24,14 @@ class CollectionData {
 
     box.close();
 
-    return CollectionData(id, name, null, const <String>[]);
+    return CollectionData(id, name, const <String>[]);
+  }
+
+  static Future<CollectionData> fromId(String id) async {
+    final Box<Map<String, dynamic>> box = Hive.box(name: hiveBoxName);
+    CollectionData data = await CollectionData.fromJson(box.get(id)!);
+    box.close();
+    return data;
   }
 
   static Future<CollectionData> fromJson(Map<String, dynamic> json) async {
@@ -34,7 +39,6 @@ class CollectionData {
     return CollectionData(
       json['id'] as String,
       json['name'] as String,
-      json['color'] != null ? Color(json['color'] as int) : null,
       List<String>.from(json['pathList'] ?? []).map<String>((e) => isAbsolute(e) ? e : join(libraryRoot, e)).toList(),
     );
   }
@@ -73,13 +77,11 @@ class CollectionData {
   CollectionData copyWith({
     String? id,
     String? name,
-    Color? color,
     List<String>? pathList,
   }) {
     return CollectionData(
       id ?? this.id,
       name ?? this.name,
-      color ?? this.color,
       pathList ?? this.pathList,
     );
   }
@@ -87,7 +89,6 @@ class CollectionData {
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
-        'color': color?.value,
         'pathList': [
           ...{...pathList}
         ],

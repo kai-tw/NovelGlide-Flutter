@@ -4,7 +4,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/collection_data.dart';
 import '../../data/loading_state_code.dart';
-import '../collection_dialog/collection_dialog.dart';
+import '../../toolbox/route_helper.dart';
+import '../collection_viewer/collection_viewer.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import 'bloc/collection_list_bloc.dart';
@@ -61,12 +62,8 @@ class CollectionList extends StatelessWidget {
                           ),
                         );
                       } else {
-                        onTap = () => showDialog(
-                          context: context,
-                          builder: (context) => CollectionDialog(
-                            collectionData: data,
-                          ),
-                        );
+                        onTap = () =>
+                            Navigator.of(context).push(RouteHelper.pushRoute(CollectionViewer(collectionData: data)));
                       }
 
                       return ListTile(

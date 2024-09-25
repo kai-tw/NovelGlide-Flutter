@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ReaderSettingsSlider extends StatelessWidget {
-  final Widget leftIcon;
-  final Widget rightIcon;
+  final Widget leading;
+  final Widget trailing;
   final double min;
   final double max;
   final double value;
@@ -12,8 +12,8 @@ class ReaderSettingsSlider extends StatelessWidget {
 
   const ReaderSettingsSlider({
     super.key,
-    required this.leftIcon,
-    required this.rightIcon,
+    required this.leading,
+    required this.trailing,
     required this.min,
     required this.max,
     required this.value,
@@ -30,7 +30,7 @@ class ReaderSettingsSlider extends StatelessWidget {
         Container(
           margin: const EdgeInsets.only(right: 8.0),
           width: 32,
-          child: leftIcon,
+          child: leading,
         ),
         Expanded(
           child: Slider(
@@ -45,7 +45,7 @@ class ReaderSettingsSlider extends StatelessWidget {
         Container(
           margin: const EdgeInsets.only(left: 8.0),
           width: 32,
-          child: rightIcon,
+          child: trailing,
         ),
       ],
     );

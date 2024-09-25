@@ -13,21 +13,24 @@ class ReaderSettingsData extends Equatable {
   static const double maxLineHeight = 3;
 
   final bool autoSave;
+  final bool gestureDetection;
 
   @override
-  List<Object?> get props => [fontSize, lineHeight, autoSave];
+  List<Object?> get props => [fontSize, lineHeight, autoSave, gestureDetection];
 
   const ReaderSettingsData({
     this.fontSize = defaultFontSize,
     this.lineHeight = defaultLineHeight,
     this.autoSave = false,
+    this.gestureDetection = true,
   });
 
   factory ReaderSettingsData.fromJson(Map<String, dynamic> json) {
     return ReaderSettingsData(
-      fontSize: json['font_size'] as double,
-      lineHeight: json['line_height'] as double,
-      autoSave: json['auto_save'] as bool,
+      fontSize: json['font_size'] ?? defaultFontSize,
+      lineHeight: json['line_height'] ?? defaultLineHeight,
+      autoSave: json['auto_save'] ?? false,
+      gestureDetection: json['gesture_detection'] ?? true,
     );
   }
 
@@ -42,11 +45,13 @@ class ReaderSettingsData extends Equatable {
     double? fontSize,
     double? lineHeight,
     bool? autoSave,
+    bool? gestureDetection,
   }) {
     return ReaderSettingsData(
       fontSize: (fontSize ?? this.fontSize).clamp(minFontSize, maxFontSize),
       lineHeight: (lineHeight ?? this.lineHeight).clamp(minLineHeight, maxLineHeight),
       autoSave: autoSave ?? this.autoSave,
+      gestureDetection: gestureDetection ?? this.gestureDetection,
     );
   }
 
@@ -55,6 +60,7 @@ class ReaderSettingsData extends Equatable {
         'font_size': fontSize,
         'line_height': lineHeight,
         'auto_save': autoSave,
+        'gesture_detection': gestureDetection,
       };
 
   void save() {

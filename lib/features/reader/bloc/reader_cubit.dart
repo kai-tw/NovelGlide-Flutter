@@ -1,13 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
-import 'package:shelf/shelf.dart';
-import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data/book_data.dart';
@@ -15,15 +11,15 @@ import '../../../data/bookmark_data.dart';
 import '../../../data/file_path.dart';
 import '../../../data/reader_settings_data.dart';
 import '../../../toolbox/css_helper.dart';
+import 'reader_gesture_handler.dart';
 import 'reader_search_cubit.dart';
 import 'reader_search_result.dart';
 import 'reader_state.dart';
+import 'reader_web_server_handler.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
   /// Web Server
-  final String _host = 'localhost';
-  final int _port = 8080;
-  HttpServer? _server;
+  late final ReaderWebServerHandler _serverHandler = ReaderWebServerHandler(this, bookPath);
 
   /// WebView
   final WebViewController webViewController = WebViewController();
@@ -36,7 +32,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   ReaderSearchCubit? searchCubit;
 
   /// Gestures
-  double? startDragX;
+  late final ReaderGestureHandler gestureHandler = ReaderGestureHandler(this);
 
   ReaderCubit({required this.bookPath, this.bookData})
       : super(ReaderState(bookName: bookData?.name ?? '', readerSettings: ReaderSettingsData.load()));
@@ -62,7 +58,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       onPageStarted: (String url) => debugPrint('Page started loading: $url'),
       onPageFinished: (url) => _onPageFinished(url, dest: dest, isGotoBookmark: isGotoBookmark),
       onNavigationRequest: (NavigationRequest request) {
-        return _server != null && request.url.startsWith('http://$_host:$_port') ||
+        return _serverHandler.isRunning && request.url.startsWith(_serverHandler.url) ||
                 request.url.startsWith('about:srcdoc')
             ? NavigationDecision.navigate
             : NavigationDecision.prevent;
@@ -70,10 +66,10 @@ class ReaderCubit extends Cubit<ReaderState> {
     ));
 
     await Future.wait([
-      _startWebServer(),
+      _serverHandler.start(),
       webViewController.addJavaScriptChannel('appApi', onMessageReceived: _onAppApiMessage),
     ]);
-    webViewController.loadRequest(Uri.parse('http://$_host:$_port/'));
+    webViewController.loadRequest(Uri.parse(_serverHandler.url));
   }
 
   /// ******* WebView Handler ********
@@ -100,7 +96,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     switch (request['route']) {
       case 'loadDone':
         if (!isClosed) {
-          _stopWebServer();
+          _serverHandler.stop();
           emit(state.copyWith(code: ReaderStateCode.loaded));
           sendThemeData();
         }
@@ -180,27 +176,18 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// ******* Settings ********
 
-  void setSettings({double? fontSize, double? lineHeight, bool? autoSave}) {
+  void setSettings(ReaderSettingsData settings) {
     emit(state.copyWith(
-      readerSettings: state.readerSettings.copyWith(
-        fontSize: fontSize,
-        lineHeight: lineHeight,
-        autoSave: autoSave,
-      ),
+      readerSettings: settings,
     ));
 
-    if (state.readerSettings.fontSize != fontSize || state.readerSettings.lineHeight != lineHeight) {
+    if (state.readerSettings.fontSize != settings.fontSize || state.readerSettings.lineHeight != settings.lineHeight) {
       sendThemeData();
     }
 
-    if (autoSave ?? false) {
+    if (settings.autoSave) {
       saveBookmark();
     }
-  }
-
-  void resetSettings() {
-    emit(state.copyWith(readerSettings: const ReaderSettingsData()));
-    sendThemeData();
   }
 
   /// ******* Bookmarks ********
@@ -227,66 +214,19 @@ class ReaderCubit extends Cubit<ReaderState> {
     }
   }
 
-  /// ******* Web Server Start ********
-
-  Future<void> _startWebServer() async {
-    var handler = const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
-    _server = await shelf_io.serve(handler, _host, _port);
-    debugPrint('Server listening on port ${_server?.port}');
-    _server?.autoCompress = true;
-  }
-
-  Future<Response> _echoRequest(Request request) async {
-    switch (request.url.path) {
-      case '':
-      case 'index.html':
-        return Response.ok(
-          await rootBundle.loadString('assets/reader_root/index.html'),
-          headers: {HttpHeaders.contentTypeHeader: 'text/html; charset=utf-8'},
-        );
-
-      case 'index.js':
-        return Response.ok(
-          await rootBundle.loadString('assets/reader_root/index.js'),
-          headers: {HttpHeaders.contentTypeHeader: 'text/javascript; charset=utf-8'},
-        );
-
-      case 'main.css':
-        String css = await rootBundle.loadString('assets/reader_root/main.css');
-        return Response.ok(css, headers: {HttpHeaders.contentTypeHeader: 'text/css; charset=utf-8'});
-
-      case 'book.epub':
-        return Response.ok(
-          File(bookPath).readAsBytesSync(),
-          headers: {HttpHeaders.contentTypeHeader: 'application/epub+zip'},
-        );
-
-      default:
-        return Response.notFound('Not found');
-    }
-  }
-
-  Future<void> _stopWebServer() async {
-    if (_server != null) {
-      await _server?.close();
-      _server = null;
-      debugPrint('Server closed');
-    }
-  }
-
   /// ******* App Lifecycle ********
 
   /// Listen to the app lifecycle state changes
   void _onStateChanged(AppLifecycleState state) {
     if (state == AppLifecycleState.detached) {
-      _stopWebServer();
+      _serverHandler.stop();
     }
   }
 
   /// Cubit
   @override
   Future<void> close() async {
-    _stopWebServer();
+    _serverHandler.stop();
     super.close();
   }
 }

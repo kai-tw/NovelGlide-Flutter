@@ -39,9 +39,9 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
           return MultiBlocProvider(
             providers: [
               BlocProvider(create: (_) => HomepageCubit(initialItem: widget.initialItem)),
-              BlocProvider(create: (_) => BookshelfCubit()..init()),
-              BlocProvider(create: (_) => CollectionListCubit()..init()),
-              BlocProvider(create: (_) => BookmarkListCubit()..init()),
+              BlocProvider(create: (_) => BookshelfCubit()),
+              BlocProvider(create: (_) => CollectionListCubit()),
+              BlocProvider(create: (_) => BookmarkListCubit()),
             ],
             child: const _HomepageScaffold(),
           );

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../data/reader_settings_data.dart';
-import '../../reader/bloc/reader_cubit.dart';
 import '../bloc/reader_settings_bloc.dart';
 import 'reader_settings_slider.dart';
 
@@ -13,17 +12,16 @@ class ReaderSettingsFontSizeSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ReaderSettingsCubit cubit = BlocProvider.of<ReaderSettingsCubit>(context);
-    final ReaderCubit readerCubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderSettingsCubit, ReaderSettingsData>(
       builder: (BuildContext context, ReaderSettingsData state) {
         return ReaderSettingsSlider(
-          leftIcon: Icon(
+          leading: Icon(
             Icons.format_size_rounded,
             color: Theme.of(context).colorScheme.primary,
             size: ReaderSettingsData.minFontSize,
             semanticLabel: AppLocalizations.of(context)!.accessibilityFontSizeSliderMinIcon,
           ),
-          rightIcon: Icon(
+          trailing: Icon(
             Icons.format_size_rounded,
             color: Theme.of(context).colorScheme.primary,
             size: ReaderSettingsData.maxFontSize,
@@ -37,11 +35,9 @@ class ReaderSettingsFontSizeSlider extends StatelessWidget {
           },
           onChanged: (double value) {
             cubit.setState(fontSize: value);
-            readerCubit.setSettings(fontSize: value);
           },
           onChangeEnd: (double value) {
             cubit.setState(fontSize: value);
-            readerCubit.setSettings(fontSize: value);
             cubit.save();
           },
         );

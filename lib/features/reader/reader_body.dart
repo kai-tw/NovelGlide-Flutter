@@ -25,46 +25,13 @@ class ReaderBody extends StatelessWidget {
           children: [
             Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
             Expanded(
-              child: GestureDetector(
-                /// Swipe to prev/next page
-                onHorizontalDragStart: (details) {
-                  if (cubit.state.code != ReaderStateCode.loaded) {
-                    return;
-                  }
-                  cubit.startDragX = details.localPosition.dx;
-                },
-                onHorizontalDragEnd: (details) {
-                  if (cubit.state.code != ReaderStateCode.loaded) {
-                    return;
-                  }
-                  const double sensitivity = 50;
-                  final double endDragX = details.localPosition.dx;
-                  if (cubit.startDragX != null && cubit.startDragX! + sensitivity < endDragX) {
-                    if (cubit.state.isRtl) {
-                      cubit.nextPage();
-                    } else {
-                      cubit.prevPage();
-                    }
-                  } else if (cubit.startDragX != null && cubit.startDragX! - sensitivity > endDragX) {
-                    if (cubit.state.isRtl) {
-                      cubit.prevPage();
-                    } else {
-                      cubit.nextPage();
-                    }
-                  }
-                  cubit.startDragX = null;
-                },
-                onHorizontalDragCancel: () {
-                  cubit.startDragX = null;
-                },
-                child: WebViewWidget(controller: cubit.webViewController),
-              ),
+              child: WebViewWidget(controller: cubit.webViewController),
             ),
             const ReaderPagination(),
           ],
         ),
 
-        /// Reader Overlay (including loading, error-report, and searching widgets.)
+        /// Reader Overlay (including loading and searching widgets.)
         Positioned.fill(
           child: BlocBuilder<ReaderCubit, ReaderState>(
             buildWhen: (previous, current) => previous.code != current.code,
@@ -103,6 +70,26 @@ class ReaderBody extends StatelessWidget {
                 ),
                 child: child,
               );
+            },
+          ),
+        ),
+
+        /// Gesture Detector overlay
+        Positioned.fill(
+          child: BlocBuilder<ReaderCubit, ReaderState>(
+            buildWhen: (previous, current) =>
+                previous.code != current.code || previous.readerSettings != current.readerSettings,
+            builder: (context, state) {
+              if (state.code == ReaderStateCode.loaded && state.readerSettings.gestureDetection) {
+                return GestureDetector(
+                  /// Swipe to prev/next page
+                  onHorizontalDragStart: cubit.gestureHandler.onStart,
+                  onHorizontalDragEnd: cubit.gestureHandler.onEnd,
+                  onHorizontalDragCancel: cubit.gestureHandler.onCancel,
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
             },
           ),
         ),

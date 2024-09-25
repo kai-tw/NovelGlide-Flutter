@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../reader/bloc/reader_cubit.dart';
 import 'bloc/reader_settings_bloc.dart';
 import 'widgets/reader_settings_auto_save_switch.dart';
 import 'widgets/reader_settings_font_size_slider.dart';
+import 'widgets/reader_settings_gesture_switcher.dart';
 import 'widgets/reader_settings_line_height_slider.dart';
 import 'widgets/reader_settings_reset_button.dart';
-import 'widgets/reader_settings_section_container.dart';
 
 class ReaderSettingsBottomSheet extends StatelessWidget {
   const ReaderSettingsBottomSheet({super.key});
@@ -20,14 +21,14 @@ class ReaderSettingsBottomSheet extends StatelessWidget {
       expand: false,
       snap: true,
       snapSizes: const [0.25, 0.5, 0.8],
-      builder: (BuildContext context, ScrollController scrollController) {
+      builder: (context, scrollController) {
         return SingleChildScrollView(
           controller: scrollController,
           child: BlocProvider(
-            create: (context) => ReaderSettingsCubit(),
+            create: (context) => ReaderSettingsCubit(BlocProvider.of<ReaderCubit>(context)),
             child: const Column(
               children: [
-                ReaderSettingsSectionContainer(
+                _CustomContainer(
                   child: Column(
                     children: [
                       Padding(
@@ -41,10 +42,15 @@ class ReaderSettingsBottomSheet extends StatelessWidget {
                     ],
                   ),
                 ),
-                ReaderSettingsSectionContainer(
-                  child: ReaderSettingsAutoSaveSwitch(),
+                _CustomContainer(
+                  child: Column(
+                    children: [
+                      ReaderSettingsAutoSaveSwitch(),
+                      ReaderSettingsGestureSwitcher(),
+                    ],
+                  ),
                 ),
-                ReaderSettingsSectionContainer(
+                _CustomContainer(
                   child: ReaderSettingsResetButton(),
                 ),
               ],
@@ -52,6 +58,25 @@ class ReaderSettingsBottomSheet extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _CustomContainer extends StatelessWidget {
+  const _CustomContainer({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 24.0),
+      padding: const EdgeInsets.all(24.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      child: child,
     );
   }
 }

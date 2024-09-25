@@ -108,7 +108,7 @@ class GoogleDriveApi {
     final drive.File driveFile = drive.File();
     driveFile.name = basename(file.path);
     driveFile.parents = [spaces];
-    driveFile.mimeType = MimeResolver.instance.lookupAll(file);
+    driveFile.mimeType = MimeResolver.lookupAll(file);
 
     final drive.Media media = drive.Media(file.openRead(), file.lengthSync());
 

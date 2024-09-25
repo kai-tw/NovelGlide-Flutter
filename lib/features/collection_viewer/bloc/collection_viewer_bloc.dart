@@ -6,10 +6,10 @@ import '../../../data/book_data.dart';
 import '../../../data/collection_data.dart';
 import '../../../data/loading_state_code.dart';
 
-class CollectionDialogCubit extends Cubit<CollectionDialogState> {
-  final CollectionData collectionData;
+class CollectionViewerCubit extends Cubit<CollectionViewerState> {
+  CollectionData collectionData;
 
-  CollectionDialogCubit(this.collectionData) : super(const CollectionDialogState());
+  CollectionViewerCubit(this.collectionData) : super(const CollectionViewerState());
 
   void init() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -18,13 +18,14 @@ class CollectionDialogCubit extends Cubit<CollectionDialogState> {
   }
 
   void refresh() async {
+    collectionData = await CollectionData.fromId(collectionData.id);
     List<BookData> bookList = [];
 
     for (String path in collectionData.pathList) {
       bookList.add(BookData.fromEpubBook(path, await BookData.loadEpubBook(path)));
     }
 
-    emit(CollectionDialogState(
+    emit(CollectionViewerState(
       code: LoadingStateCode.loaded,
       bookList: [
         ...{...bookList}
@@ -40,23 +41,23 @@ class CollectionDialogCubit extends Cubit<CollectionDialogState> {
   }
 }
 
-class CollectionDialogState extends Equatable {
+class CollectionViewerState extends Equatable {
   final LoadingStateCode code;
   final List<BookData> bookList;
 
   @override
   List<Object?> get props => [code, bookList];
 
-  const CollectionDialogState({
+  const CollectionViewerState({
     this.code = LoadingStateCode.initial,
     this.bookList = const [],
   });
 
-  CollectionDialogState copyWith({
+  CollectionViewerState copyWith({
     LoadingStateCode? code,
     List<BookData>? bookList,
   }) {
-    return CollectionDialogState(
+    return CollectionViewerState(
       code: code ?? this.code,
       bookList: bookList ?? this.bookList,
     );

@@ -12,10 +12,14 @@ import '../../../data/sort_order_code.dart';
 import '../../../toolbox/mime_resolver.dart';
 
 class BookshelfCubit extends Cubit<BookshelfState> {
+  bool isInitialized = false;
+
   BookshelfCubit() : super(const BookshelfState());
 
   void init() {
+    if (isInitialized) return;
     WidgetsBinding.instance.addPostFrameCallback((_) => refresh());
+    isInitialized = true;
   }
 
   Future<void> refresh() async {
@@ -31,7 +35,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     final Iterable<File> fileList = folder
         .listSync()
         .whereType<File>()
-        .where((e) => MimeResolver.instance.lookupAll(e) == 'application/epub+zip');
+        .where((e) => MimeResolver.lookupAll(e) == 'application/epub+zip');
     List<BookData> list = [];
 
     for (File epubFile in fileList) {

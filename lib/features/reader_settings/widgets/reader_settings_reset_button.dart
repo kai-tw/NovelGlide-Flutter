@@ -57,7 +57,6 @@ class ReaderSettingsResetButton extends StatelessWidget {
               Navigator.of(context).pop();
               buttonCubit.onPressedHandler();
               settingsCubit.reset();
-              readerCubit.resetSettings();
             },
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,

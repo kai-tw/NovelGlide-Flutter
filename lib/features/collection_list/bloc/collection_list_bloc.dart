@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
@@ -10,13 +9,6 @@ import '../../../data/sort_order_code.dart';
 
 class CollectionListCubit extends Cubit<CollectionListState> {
   CollectionListCubit() : super(const CollectionListState());
-
-  void init() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      emit(const CollectionListState(code: LoadingStateCode.loading));
-      refresh();
-    });
-  }
 
   void refresh() async {
     List<CollectionData> collectionList = await CollectionData.getList();

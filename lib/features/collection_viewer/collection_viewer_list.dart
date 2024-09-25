@@ -7,16 +7,16 @@ import '../../toolbox/route_helper.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import '../table_of_contents/table_of_content.dart';
-import 'bloc/collection_dialog_bloc.dart';
+import 'bloc/collection_viewer_bloc.dart';
 
-class CollectionDialogList extends StatelessWidget {
-  const CollectionDialogList({super.key});
+class CollectionViewerList extends StatelessWidget {
+  const CollectionViewerList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<CollectionDialogCubit>(context);
+    final CollectionViewerCubit cubit = BlocProvider.of<CollectionViewerCubit>(context);
 
-    return BlocBuilder<CollectionDialogCubit, CollectionDialogState>(
+    return BlocBuilder<CollectionViewerCubit, CollectionViewerState>(
       buildWhen: (previous, current) => previous.code != current.code || previous.bookList != current.bookList,
       builder: (context, state) {
         switch (state.code) {
@@ -31,21 +31,22 @@ class CollectionDialogList extends StatelessWidget {
               );
             } else {
               return ReorderableListView.builder(
+                onReorder: cubit.reorder,
                 itemCount: state.bookList.length,
                 itemBuilder: (context, index) {
                   final BookData data = state.bookList[index];
                   return ListTile(
                     key: ValueKey(data.filePath),
                     onTap: () {
-                      Navigator.of(context).pop();
-                      Navigator.of(context).push(RouteHelper.pushRoute(TableOfContents(data)));
+                      Navigator.of(context)
+                          .push(RouteHelper.pushRoute(TableOfContents(data)))
+                          .then((_) => cubit.refresh());
                     },
                     leading: const Icon(Icons.book_outlined),
                     title: Text(data.name),
                     trailing: const Icon(Icons.drag_handle_rounded),
                   );
                 },
-                onReorder: cubit.reorder,
               );
             }
         }
