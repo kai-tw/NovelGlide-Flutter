@@ -13,16 +13,21 @@ class ReaderWebViewHandler {
   final ReaderCubit _readerCubit;
   final WebViewController controller = WebViewController();
   late final ReaderWebServerHandler _serverHandler = _readerCubit.serverHandler;
+  String? _dest;
+  bool _isGotoBookmark = false;
 
   ReaderWebViewHandler(this._readerCubit);
 
   void init({String? dest, bool isGotoBookmark = false}) {
+    _dest = dest;
+    _isGotoBookmark = isGotoBookmark;
+
     controller.enableZoom(false);
     controller.setJavaScriptMode(JavaScriptMode.unrestricted);
     controller.setBackgroundColor(Colors.transparent);
     controller.setNavigationDelegate(NavigationDelegate(
       onPageStarted: (String url) => debugPrint('Page started loading: $url'),
-      onPageFinished: (url) => _onPageFinished(url, dest: dest, isGotoBookmark: isGotoBookmark),
+      onPageFinished: _onPageFinished,
       onNavigationRequest: _onNavigationRequest,
     ));
   }
@@ -49,15 +54,15 @@ class ReaderWebViewHandler {
     controller.runJavaScript('window.readerApi.setThemeData(${jsonEncode(json)})');
   }
 
-  void _onPageFinished(String url, {String? dest, bool isGotoBookmark = false}) async {
+  void _onPageFinished(String url) async {
     debugPrint('Page finished loading: $url');
 
     // Construct the appApi channel
     controller.runJavaScript('window.readerApi.setAppApi()');
 
-    if (dest != null) {
-      controller.runJavaScript('window.readerApi.main("$dest")');
-    } else if (_readerCubit.state.bookmarkData?.startCfi != null && isGotoBookmark ||
+    if (_dest != null) {
+      controller.runJavaScript('window.readerApi.main("$_dest")');
+    } else if (_readerCubit.state.bookmarkData?.startCfi != null && _isGotoBookmark ||
         _readerCubit.state.readerSettings.autoSave) {
       controller.runJavaScript('window.readerApi.main("${_readerCubit.state.bookmarkData!.startCfi}")');
     } else {
@@ -66,8 +71,7 @@ class ReaderWebViewHandler {
   }
 
   FutureOr<NavigationDecision> _onNavigationRequest(NavigationRequest request) {
-    return _serverHandler.isRunning && request.url.startsWith(_serverHandler.url) ||
-            request.url.startsWith('about:srcdoc')
+    return _serverHandler.isRunning && request.url.startsWith(_serverHandler.url) || request.url == 'about:srcdoc'
         ? NavigationDecision.navigate
         : NavigationDecision.prevent;
   }
