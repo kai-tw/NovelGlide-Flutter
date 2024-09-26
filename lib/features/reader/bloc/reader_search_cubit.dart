@@ -30,11 +30,11 @@ class ReaderSearchCubit extends Cubit<ReaderSearchState> {
   /// Communication
 
   void search(String query) {
-    readerCubit.webViewController.runJavaScript('window.readerApi.search("$query")');
+    readerCubit.webViewHandler.controller.runJavaScript('window.readerApi.search("$query")');
   }
 
   void searchInCurrentChapter(String query) {
-    readerCubit.webViewController.runJavaScript('window.readerApi.searchInCurrentChapter("$query")');
+    readerCubit.webViewHandler.controller.runJavaScript('window.readerApi.searchInCurrentChapter("$query")');
   }
 
   @override

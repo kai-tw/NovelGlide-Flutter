@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../data/book_data.dart';
-import '../../../data/loading_state_code.dart';
+import '../../../enum/loading_state_code.dart';
 import '../../common_components/draggable_feedback_widget.dart';
 import '../../common_components/draggable_placeholder_widget.dart';
 import '../bloc/bookshelf_bloc.dart';

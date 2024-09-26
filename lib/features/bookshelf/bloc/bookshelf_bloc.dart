@@ -6,9 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
 import '../../../data/book_data.dart';
-import '../../../data/file_path.dart';
-import '../../../data/loading_state_code.dart';
-import '../../../data/sort_order_code.dart';
+import '../../../toolbox/file_path.dart';
+import '../../../enum/loading_state_code.dart';
+import '../../../enum/sort_order_code.dart';
 import '../../../toolbox/mime_resolver.dart';
 
 class BookshelfCubit extends Cubit<BookshelfState> {

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../reader/bloc/reader_cubit.dart';
-import 'bloc/reader_settings_bloc.dart';
 import 'widgets/reader_settings_auto_save_switch.dart';
 import 'widgets/reader_settings_font_size_slider.dart';
 import 'widgets/reader_settings_gesture_switcher.dart';
@@ -24,37 +21,34 @@ class ReaderSettingsBottomSheet extends StatelessWidget {
       builder: (context, scrollController) {
         return SingleChildScrollView(
           controller: scrollController,
-          child: BlocProvider(
-            create: (context) => ReaderSettingsCubit(BlocProvider.of<ReaderCubit>(context)),
-            child: const Column(
-              children: [
-                _CustomContainer(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 8.0),
-                        child: ReaderSettingsFontSizeSlider(),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 8.0),
-                        child: ReaderSettingsLineHeightSlider(),
-                      ),
-                    ],
-                  ),
+          child: const Column(
+            children: [
+              _CustomContainer(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 8.0),
+                      child: ReaderSettingsFontSizeSlider(),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 8.0),
+                      child: ReaderSettingsLineHeightSlider(),
+                    ),
+                  ],
                 ),
-                _CustomContainer(
-                  child: Column(
-                    children: [
-                      ReaderSettingsAutoSaveSwitch(),
-                      ReaderSettingsGestureSwitcher(),
-                    ],
-                  ),
+              ),
+              _CustomContainer(
+                child: Column(
+                  children: [
+                    ReaderSettingsAutoSaveSwitch(),
+                    ReaderSettingsGestureSwitcher(),
+                  ],
                 ),
-                _CustomContainer(
-                  child: ReaderSettingsResetButton(),
-                ),
-              ],
-            ),
+              ),
+              _CustomContainer(
+                child: ReaderSettingsResetButton(),
+              ),
+            ],
           ),
         );
       },

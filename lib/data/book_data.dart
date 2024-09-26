@@ -5,7 +5,7 @@ import 'package:epubx/epubx.dart' as epub;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart';
-import 'package:novelglide/data/sort_order_code.dart';
+import 'package:novelglide/enum/sort_order_code.dart';
 
 import 'bookmark_data.dart';
 import 'chapter_data.dart';

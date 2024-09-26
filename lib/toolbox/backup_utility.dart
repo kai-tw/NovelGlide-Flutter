@@ -5,7 +5,7 @@ import 'package:flutter_archive/flutter_archive.dart';
 import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 
-import '../data/file_path.dart';
+import 'file_path.dart';
 
 class BackupUtility {
   static Future<File> createBackup(String tempFolderPath) async {

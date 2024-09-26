@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/bookmark_data.dart';
-import '../../../data/loading_state_code.dart';
+import '../../../enum/loading_state_code.dart';
 
 class BookmarkListCubit extends Cubit<BookmarkListState> {
   BookmarkListCubit() : super(const BookmarkListState());

@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../data/reader_settings_data.dart';
-import '../bloc/reader_settings_bloc.dart';
+import '../../reader/bloc/reader_cubit.dart';
+import '../../reader/bloc/reader_state.dart';
 import 'reader_settings_slider.dart';
 
 class ReaderSettingsLineHeightSlider extends StatelessWidget {
@@ -11,9 +12,10 @@ class ReaderSettingsLineHeightSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ReaderSettingsCubit cubit = BlocProvider.of<ReaderSettingsCubit>(context);
-    return BlocBuilder<ReaderSettingsCubit, ReaderSettingsData>(
-      builder: (BuildContext context, ReaderSettingsData state) {
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
+    return BlocBuilder<ReaderCubit, ReaderState>(
+      buildWhen: (previous, current) => previous.readerSettings.lineHeight != current.readerSettings.lineHeight,
+      builder: (context, state) {
         return ReaderSettingsSlider(
           leading: Icon(
             Icons.density_small_rounded,
@@ -27,16 +29,15 @@ class ReaderSettingsLineHeightSlider extends StatelessWidget {
           ),
           min: ReaderSettingsData.minLineHeight,
           max: ReaderSettingsData.maxLineHeight,
-          value: state.lineHeight,
+          value: state.readerSettings.lineHeight,
           semanticFormatterCallback: (double value) {
             return '${AppLocalizations.of(context)!.accessibilityLineHeightSlider} ${value.toStringAsFixed(1)}';
           },
           onChanged: (double value) {
-            cubit.setState(lineHeight: value);
+            cubit.setSettings(state.readerSettings.copyWith(lineHeight: value));
           },
           onChangeEnd: (double value) {
-            cubit.setState(lineHeight: value);
-            cubit.save();
+            cubit.setSettings(state.readerSettings.copyWith(lineHeight: value)..save());
           },
         );
       },

@@ -16,8 +16,7 @@ class ReaderBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ReaderCubit cubit = context.read<ReaderCubit>();
-    cubit.sendThemeData(Theme.of(context));
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return Stack(
       children: [
         /// Reader WebView
@@ -25,7 +24,7 @@ class ReaderBody extends StatelessWidget {
           children: [
             Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
             Expanded(
-              child: WebViewWidget(controller: cubit.webViewController),
+              child: WebViewWidget(controller: cubit.webViewHandler.controller),
             ),
             const ReaderPagination(),
           ],

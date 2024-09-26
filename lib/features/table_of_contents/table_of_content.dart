@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/book_data.dart';
-import '../../data/window_class.dart';
+import '../../enum/window_class.dart';
 import 'bloc/toc_bloc.dart';
 import 'view/toc_scaffold_compact_view.dart';
 import 'view/toc_scaffold_medium_view.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/theme_data_record.dart';
-import '../../data/window_class.dart';
+import '../../enum/window_class.dart';
 import '../bookmark_list/bloc/bookmark_list_bloc.dart';
 import '../bookshelf/bloc/bookshelf_bloc.dart';
 import '../collection_list/bloc/collection_list_bloc.dart';

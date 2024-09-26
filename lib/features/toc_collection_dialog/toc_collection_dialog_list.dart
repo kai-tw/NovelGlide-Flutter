@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/collection_data.dart';
-import '../../data/loading_state_code.dart';
+import '../../enum/loading_state_code.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import 'bloc/toc_collection_dialog_bloc.dart';

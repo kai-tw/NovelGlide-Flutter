@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/collection_data.dart';
-import '../../../data/loading_state_code.dart';
+import '../../../enum/loading_state_code.dart';
 
 class CollectionViewerCubit extends Cubit<CollectionViewerState> {
   CollectionData collectionData;

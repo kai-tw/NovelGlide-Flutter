@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../data/loading_state_code.dart';
-import '../../data/sort_order_code.dart';
+import '../../enum/loading_state_code.dart';
+import '../../enum/sort_order_code.dart';
 import 'bloc/collection_list_bloc.dart';
 
 class CollectionListAppBar extends StatelessWidget implements PreferredSizeWidget {

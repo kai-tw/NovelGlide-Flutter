@@ -68,4 +68,8 @@ class ReaderSettingsData extends Equatable {
     readerSettings.put('reader_settings', toJson());
     readerSettings.close();
   }
+
+  bool isStyleChanged(ReaderSettingsData other) {
+    return fontSize != other.fontSize || lineHeight != other.lineHeight;
+  }
 }

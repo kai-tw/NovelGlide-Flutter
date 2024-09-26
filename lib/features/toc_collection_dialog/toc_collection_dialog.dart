@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/book_data.dart';
-import '../../data/window_class.dart';
+import '../../enum/window_class.dart';
 import '../common_components/common_back_button.dart';
 import 'bloc/toc_collection_dialog_bloc.dart';
 import 'toc_collection_dialog_list.dart';

@@ -8,33 +8,37 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
-import '../../../data/file_path.dart';
+import '../../../toolbox/file_path.dart';
 import '../../../data/reader_settings_data.dart';
-import '../../../toolbox/css_helper.dart';
 import 'reader_gesture_handler.dart';
+import 'reader_lifecycle_handler.dart';
 import 'reader_search_cubit.dart';
 import 'reader_search_result.dart';
 import 'reader_state.dart';
 import 'reader_web_server_handler.dart';
+import 'reader_web_view_handler.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
   /// Web Server
-  late final ReaderWebServerHandler _serverHandler = ReaderWebServerHandler(this, bookPath);
+  late final ReaderWebServerHandler serverHandler = ReaderWebServerHandler(bookPath);
 
   /// WebView
-  final WebViewController webViewController = WebViewController();
+  late final ReaderWebViewHandler webViewHandler = ReaderWebViewHandler(this);
 
   /// Reader
-  BookData? bookData;
   final String bookPath;
-  late ThemeData _currentTheme;
+  BookData? bookData;
+  ThemeData currentTheme;
 
   ReaderSearchCubit? searchCubit;
 
   /// Gestures
   late final ReaderGestureHandler gestureHandler = ReaderGestureHandler(this);
 
-  ReaderCubit({required this.bookPath, this.bookData})
+  /// AppLifecycleListener
+  late final ReaderLifecycleHandler lifecycleHandler = ReaderLifecycleHandler(this);
+
+  ReaderCubit({required this.bookPath, this.bookData, required this.currentTheme})
       : super(ReaderState(bookName: bookData?.name ?? '', readerSettings: ReaderSettingsData.load()));
 
   /// Client initialization.
@@ -42,6 +46,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     /// Read the book if it is not read yet.
     final absolutePath = isAbsolute(bookPath) ? bookPath : join(await FilePath.libraryRoot, bookPath);
     bookData ??= BookData.fromEpubBook(absolutePath, await BookData.loadEpubBook(absolutePath));
+
     if (!isClosed) {
       emit(state.copyWith(
         bookName: bookData?.name,
@@ -49,54 +54,23 @@ class ReaderCubit extends Cubit<ReaderState> {
       ));
     }
 
-    AppLifecycleListener(onStateChange: _onStateChanged);
-
-    webViewController.enableZoom(false);
-    webViewController.setJavaScriptMode(JavaScriptMode.unrestricted);
-    webViewController.setBackgroundColor(Colors.transparent);
-    webViewController.setNavigationDelegate(NavigationDelegate(
-      onPageStarted: (String url) => debugPrint('Page started loading: $url'),
-      onPageFinished: (url) => _onPageFinished(url, dest: dest, isGotoBookmark: isGotoBookmark),
-      onNavigationRequest: (NavigationRequest request) {
-        return _serverHandler.isRunning && request.url.startsWith(_serverHandler.url) ||
-                request.url.startsWith('about:srcdoc')
-            ? NavigationDecision.navigate
-            : NavigationDecision.prevent;
-      },
-    ));
+    webViewHandler.init(dest: dest, isGotoBookmark: isGotoBookmark);
 
     await Future.wait([
-      _serverHandler.start(),
-      webViewController.addJavaScriptChannel('appApi', onMessageReceived: _onAppApiMessage),
+      serverHandler.start(),
+      webViewHandler.addAppApiChannel(),
     ]);
-    webViewController.loadRequest(Uri.parse(_serverHandler.url));
-  }
-
-  /// ******* WebView Handler ********
-
-  void _onPageFinished(String url, {String? dest, bool isGotoBookmark = false}) async {
-    debugPrint('Page finished loading: $url');
-
-    // Construct the appApi channel
-    webViewController.runJavaScript('window.readerApi.setAppApi()');
-
-    if (dest != null) {
-      webViewController.runJavaScript('window.readerApi.main("$dest")');
-    } else if (state.bookmarkData?.startCfi != null && isGotoBookmark || state.readerSettings.autoSave) {
-      webViewController.runJavaScript('window.readerApi.main("${state.bookmarkData!.startCfi}")');
-    } else {
-      webViewController.runJavaScript('window.readerApi.main()');
-    }
+    webViewHandler.request();
   }
 
   /// ******* App Api Channel ********
 
-  void _onAppApiMessage(JavaScriptMessage message) async {
+  void onAppApiMessage(JavaScriptMessage message) async {
     Map<String, dynamic> request = jsonDecode(message.message);
     switch (request['route']) {
       case 'loadDone':
         if (!isClosed) {
-          _serverHandler.stop();
+          serverHandler.stop();
           emit(state.copyWith(code: ReaderStateCode.loaded));
           sendThemeData();
         }
@@ -141,26 +115,16 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// ******* Communication ********
 
-  void prevPage() => webViewController.runJavaScript('window.readerApi.prevPage()');
+  void prevPage() => webViewHandler.controller.runJavaScript('window.readerApi.prevPage()');
 
-  void nextPage() => webViewController.runJavaScript('window.readerApi.nextPage()');
+  void nextPage() => webViewHandler.controller.runJavaScript('window.readerApi.nextPage()');
 
-  void goto(String cfi) => webViewController.runJavaScript('window.readerApi.goto("$cfi")');
+  void goto(String cfi) => webViewHandler.controller.runJavaScript('window.readerApi.goto("$cfi")');
 
   void sendThemeData([ThemeData? newTheme]) {
-    _currentTheme = newTheme ?? _currentTheme;
+    currentTheme = newTheme ?? currentTheme;
     if (state.code == ReaderStateCode.loaded) {
-      final Map<String, dynamic> themeData = {
-        "body": {
-          "color": CssHelper.convertColorToCssRgba(_currentTheme.colorScheme.onSurface),
-          "font-size": "${state.readerSettings.fontSize.toStringAsFixed(1)}px",
-          "line-height": state.readerSettings.lineHeight.toStringAsFixed(1),
-        },
-        "a": {
-          "color": "inherit !important",
-        }
-      };
-      webViewController.runJavaScript('window.readerApi.setThemeData(${jsonEncode(themeData)})');
+      webViewHandler.sendThemeData(currentTheme, state.readerSettings);
     }
   }
 
@@ -177,11 +141,11 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// ******* Settings ********
 
   void setSettings(ReaderSettingsData settings) {
-    emit(state.copyWith(
-      readerSettings: settings,
-    ));
+    final bool isStyleChanged = state.readerSettings.isStyleChanged(settings);
 
-    if (state.readerSettings.fontSize != settings.fontSize || state.readerSettings.lineHeight != settings.lineHeight) {
+    emit(state.copyWith(readerSettings: settings));
+
+    if (isStyleChanged) {
       sendThemeData();
     }
 
@@ -214,19 +178,10 @@ class ReaderCubit extends Cubit<ReaderState> {
     }
   }
 
-  /// ******* App Lifecycle ********
-
-  /// Listen to the app lifecycle state changes
-  void _onStateChanged(AppLifecycleState state) {
-    if (state == AppLifecycleState.detached) {
-      _serverHandler.stop();
-    }
-  }
-
-  /// Cubit
   @override
   Future<void> close() async {
-    _serverHandler.stop();
+    serverHandler.stop();
+    lifecycleHandler.dispose();
     super.close();
   }
 }

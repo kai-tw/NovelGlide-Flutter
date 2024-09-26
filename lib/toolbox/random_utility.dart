@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:path/path.dart';
 
-import '../data/file_path.dart';
+import 'file_path.dart';
 
 class RandomUtility {
   static String getRandomString(int length) {

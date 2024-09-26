@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../data/window_class.dart';
+import '../../enum/window_class.dart';
 import 'book_add_form.dart';
 
 class BookAddDialog extends StatelessWidget {

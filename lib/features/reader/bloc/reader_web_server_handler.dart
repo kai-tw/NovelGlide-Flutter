@@ -5,23 +5,20 @@ import 'package:flutter/services.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 
-import 'reader_cubit.dart';
-
 class ReaderWebServerHandler {
   final String _host = 'localhost';
   final int _port = 8080;
   HttpServer? _server;
 
-  final ReaderCubit readerCubit;
-  final String bookPath;
+  final String _bookPath;
 
   bool get isRunning => _server != null;
   String get url => 'http://$_host:$_port';
 
-  ReaderWebServerHandler(this.readerCubit, this.bookPath);
+  ReaderWebServerHandler(this._bookPath);
 
   Future<void> start() async {
-    var handler = const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
+    final Handler handler = const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
     _server = await shelf_io.serve(handler, _host, _port);
     debugPrint('Server listening on port ${_server?.port}');
     _server?.autoCompress = true;
@@ -48,7 +45,7 @@ class ReaderWebServerHandler {
 
       case 'book.epub':
         return Response.ok(
-          File(bookPath).readAsBytesSync(),
+          File(_bookPath).readAsBytesSync(),
           headers: {HttpHeaders.contentTypeHeader: 'application/epub+zip'},
         );
 

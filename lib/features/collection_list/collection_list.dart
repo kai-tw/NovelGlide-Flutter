@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/collection_data.dart';
-import '../../data/loading_state_code.dart';
+import '../../enum/loading_state_code.dart';
 import '../../toolbox/route_helper.dart';
 import '../collection_viewer/collection_viewer.dart';
 import '../common_components/common_list_empty.dart';

@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
 import '../../../data/collection_data.dart';
-import '../../../data/loading_state_code.dart';
-import '../../../data/sort_order_code.dart';
+import '../../../enum/loading_state_code.dart';
+import '../../../enum/sort_order_code.dart';
 
 class CollectionListCubit extends Cubit<CollectionListState> {
   CollectionListCubit() : super(const CollectionListState());

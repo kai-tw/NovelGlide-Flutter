@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 
 import '../toolbox/random_utility.dart';
-import 'file_path.dart';
+import '../toolbox/file_path.dart';
 
 class CollectionData {
   static const String hiveBoxName = 'collection';

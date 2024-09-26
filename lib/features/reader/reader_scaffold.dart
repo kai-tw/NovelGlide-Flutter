@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/window_class.dart';
+import '../../enum/window_class.dart';
 import 'bloc/reader_cubit.dart';
 import 'bloc/reader_state.dart';
 import 'view/reader_scaffold_compact_view.dart';

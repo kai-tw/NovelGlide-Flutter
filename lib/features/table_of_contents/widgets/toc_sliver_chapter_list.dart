@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/chapter_data.dart';
-import '../../../data/loading_state_code.dart';
+import '../../../enum/loading_state_code.dart';
 import '../../../toolbox/route_helper.dart';
 import '../../common_components/common_list_empty.dart';
 import '../../common_components/common_loading.dart';
