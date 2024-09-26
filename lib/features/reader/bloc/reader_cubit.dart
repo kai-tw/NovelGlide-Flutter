@@ -8,6 +8,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
+import '../../../enum/loading_state_code.dart';
 import '../../../toolbox/file_path.dart';
 import '../../../data/reader_settings_data.dart';
 import 'reader_gesture_handler.dart';
@@ -91,7 +92,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
           if (searchCubit != null) {
             searchCubit!.setState = searchCubit!.state.copyWith(
-              code: ReaderSearchStateCode.loaded,
+              code: LoadingStateCode.loaded,
               searchResultList: (jsonValue['searchResultList'] ?? [])
                   .map<ReaderSearchResult>((e) => ReaderSearchResult(cfi: e['cfi'], excerpt: e['excerpt']))
                   .toList(),

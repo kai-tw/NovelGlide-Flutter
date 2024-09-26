@@ -1,11 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../enum/loading_state_code.dart';
 import 'reader_cubit.dart';
 import 'reader_search_result.dart';
 
 class ReaderSearchCubit extends Cubit<ReaderSearchState> {
-  final ReaderCubit readerCubit;
+  final ReaderCubit _readerCubit;
 
   set searchQuery(String query) => emit(state.copyWith(query: query));
 
@@ -13,10 +14,14 @@ class ReaderSearchCubit extends Cubit<ReaderSearchState> {
 
   set searchRange(ReaderSearchRange range) => emit(state.copyWith(range: range));
 
-  ReaderSearchCubit({required this.readerCubit}) : super(const ReaderSearchState());
+  ReaderSearchCubit(this._readerCubit) : super(const ReaderSearchState());
+
+  void init() {
+    _readerCubit.searchCubit = this;
+  }
 
   void startSearch() {
-    emit(state.copyWith(code: ReaderSearchStateCode.loading));
+    emit(state.copyWith(code: LoadingStateCode.loading));
     switch (state.range) {
       case ReaderSearchRange.currentChapter:
         searchInCurrentChapter(state.query);
@@ -30,22 +35,22 @@ class ReaderSearchCubit extends Cubit<ReaderSearchState> {
   /// Communication
 
   void search(String query) {
-    readerCubit.webViewHandler.controller.runJavaScript('window.readerApi.search("$query")');
+    _readerCubit.webViewHandler.controller.runJavaScript('window.readerApi.search("$query")');
   }
 
   void searchInCurrentChapter(String query) {
-    readerCubit.webViewHandler.controller.runJavaScript('window.readerApi.searchInCurrentChapter("$query")');
+    _readerCubit.webViewHandler.controller.runJavaScript('window.readerApi.searchInCurrentChapter("$query")');
   }
 
   @override
   Future<void> close() async {
-    readerCubit.searchCubit = null;
+    _readerCubit.searchCubit = null;
     super.close();
   }
 }
 
 class ReaderSearchState extends Equatable {
-  final ReaderSearchStateCode code;
+  final LoadingStateCode code;
   final ReaderSearchRange range;
   final String query;
   final List<ReaderSearchResult> searchResultList;
@@ -54,14 +59,14 @@ class ReaderSearchState extends Equatable {
   List<Object?> get props => [code, range, query, searchResultList];
 
   const ReaderSearchState({
-    this.code = ReaderSearchStateCode.initial,
+    this.code = LoadingStateCode.initial,
     this.query = '',
     this.range = ReaderSearchRange.currentChapter,
     this.searchResultList = const [],
   });
 
   ReaderSearchState copyWith({
-    ReaderSearchStateCode? code,
+    LoadingStateCode? code,
     String? query,
     ReaderSearchRange? range,
     List<ReaderSearchResult>? searchResultList,
@@ -74,7 +79,5 @@ class ReaderSearchState extends Equatable {
     );
   }
 }
-
-enum ReaderSearchStateCode { initial, loading, loaded }
 
 enum ReaderSearchRange { currentChapter, all }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../enum/loading_state_code.dart';
 import '../bloc/reader_search_cubit.dart';
 
 class ReaderSearchField extends StatelessWidget {
@@ -20,7 +21,7 @@ class ReaderSearchField extends StatelessWidget {
             labelText: AppLocalizations.of(context)!.readerSearch,
           ),
           onChanged: (value) => cubit.searchQuery = value,
-          readOnly: state.code == ReaderSearchStateCode.loading,
+          readOnly: state.code == LoadingStateCode.loading,
         );
       },
     );

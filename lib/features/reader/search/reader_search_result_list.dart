@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../enum/loading_state_code.dart';
 import '../../common_components/common_loading.dart';
 import '../bloc/reader_cubit.dart';
 import '../bloc/reader_search_cubit.dart';
@@ -20,15 +21,15 @@ class ReaderSearchResultList extends StatelessWidget {
         Widget child;
 
         switch (state.code) {
-          case ReaderSearchStateCode.initial:
+          case LoadingStateCode.initial:
             child = Center(child: Text(AppLocalizations.of(context)!.readerSearchTypeToSearch));
             break;
 
-          case ReaderSearchStateCode.loading:
+          case LoadingStateCode.loading:
             child = const Center(child: CommonLoading());
             break;
 
-          case ReaderSearchStateCode.loaded:
+          case LoadingStateCode.loaded:
             if (searchResultList.isEmpty) {
               child = Center(child: Text(AppLocalizations.of(context)!.readerSearchNoResult));
             } else {
