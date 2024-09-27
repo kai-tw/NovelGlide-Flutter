@@ -2,44 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../bloc/reader_add_bookmark_button_bloc.dart';
+import '../../../enum/common_button_state_code.dart';
 import '../bloc/reader_cubit.dart';
 import '../bloc/reader_state.dart';
 
-class ReaderAddBookmarkButton extends StatelessWidget {
+class ReaderAddBookmarkButton extends StatefulWidget {
   const ReaderAddBookmarkButton({super.key});
 
   @override
+  State<ReaderAddBookmarkButton> createState() => _State();
+}
+
+class _State extends State<ReaderAddBookmarkButton> {
+  CommonButtonStateCode _stateCode = CommonButtonStateCode.disabled;
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) =>
+    return BlocListener<ReaderCubit, ReaderState>(
+      listenWhen: (previous, current) =>
           previous.readerSettings.autoSave != current.readerSettings.autoSave || previous.code != current.code,
-      builder: (BuildContext context, ReaderState readerState) {
-        return BlocProvider(
-          create: (_) => ReaderAddBookmarkButtonCubit(),
-          child: BlocBuilder<ReaderAddBookmarkButtonCubit, ReaderAddBookmarkButtonState>(
-            builder: (BuildContext context, ReaderAddBookmarkButtonState state) {
-              final ReaderAddBookmarkButtonCubit cubit = BlocProvider.of<ReaderAddBookmarkButtonCubit>(context);
-              final ReaderCubit readerCubit = BlocProvider.of<ReaderCubit>(context);
-              final bool isDisabled =
-                  readerState.readerSettings.autoSave || state.isDisabled || readerState.code != ReaderStateCode.loaded;
-              return IconButton(
-                icon: Icon(
-                  state.iconData,
-                  semanticLabel: AppLocalizations.of(context)!.accessibilityReaderAddBookmarkButton,
-                ),
-                disabledColor: state.disabledColor,
-                onPressed: isDisabled ? null : () => _onPressed(readerCubit, cubit),
-              );
-            },
-          ),
-        );
+      listener: (context, readerState) {
+        if (readerState.code == ReaderStateCode.loaded && !readerState.readerSettings.autoSave) {
+          setState(() => _stateCode = CommonButtonStateCode.idle);
+        } else {
+          setState(() => _stateCode = CommonButtonStateCode.disabled);
+        }
       },
+      child: IconButton(
+        icon: Icon(
+          Icons.bookmark_add_rounded,
+          semanticLabel: AppLocalizations.of(context)!.accessibilityReaderAddBookmarkButton,
+        ),
+        selectedIcon: const Icon(Icons.check_rounded, color: Colors.green),
+        isSelected: _stateCode == CommonButtonStateCode.success,
+        onPressed: _stateCode == CommonButtonStateCode.idle ? _onPressed : null,
+      ),
     );
   }
 
-  void _onPressed(ReaderCubit readerCubit, ReaderAddBookmarkButtonCubit cubit) {
-    cubit.onPressedHandler();
-    readerCubit.saveBookmark();
+  void _onPressed() async {
+    BlocProvider.of<ReaderCubit>(context).saveBookmark();
+
+    setState(() => _stateCode = CommonButtonStateCode.success);
+    await Future.delayed(const Duration(seconds: 2));
+    if (mounted) {
+      setState(() => _stateCode = CommonButtonStateCode.idle);
+    }
   }
 }

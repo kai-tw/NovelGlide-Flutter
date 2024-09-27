@@ -7,7 +7,8 @@ import '../../toolbox/route_helper.dart';
 import '../about_page/about_page_scaffold.dart';
 import '../backup_manager/backup_manager_scaffold.dart';
 import '../developer_page/developer_page.dart';
-import '../store/store_scaffold.dart';
+
+// import '../store/store_scaffold.dart';
 import '../theme_manager/theme_manager.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -17,6 +18,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
+
     final List<Widget> buttonList = [
       ListTile(
         onTap: () => Navigator.of(context).pushReplacement(RouteHelper.pushRoute(const ThemeManager())),
@@ -34,14 +36,14 @@ class SettingsPage extends StatelessWidget {
         ),
         title: Text(appLocalizations.backupManagerTitle),
       ),
-      ListTile(
-        onTap: () => Navigator.of(context).push(RouteHelper.pushRoute(const StoreScaffold())),
-        leading: const Padding(
-          padding: EdgeInsets.only(right: 12.0),
-          child: Icon(Icons.store_rounded),
-        ),
-        title: Text(appLocalizations.storeTitle),
-      ),
+      // ListTile(
+      //   onTap: () => Navigator.of(context).push(RouteHelper.pushRoute(const StoreScaffold())),
+      //   leading: const Padding(
+      //     padding: EdgeInsets.only(right: 12.0),
+      //     child: Icon(Icons.store_rounded),
+      //   ),
+      //   title: Text(appLocalizations.storeTitle),
+      // ),
       ListTile(
         onTap: () => Navigator.of(context).push(RouteHelper.pushRoute(const AboutPageScaffold())),
         leading: const Padding(
@@ -50,12 +52,10 @@ class SettingsPage extends StatelessWidget {
         ),
         title: Text(appLocalizations.settingsPageAbout),
       ),
-      Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom)),
     ];
 
     if (kDebugMode) {
-      buttonList.insert(
-        buttonList.length - 1,
+      buttonList.add(
         ListTile(
           onTap: () => Navigator.of(context).push(RouteHelper.pushRoute(const DeveloperPage())),
           leading: const Padding(
@@ -67,14 +67,18 @@ class SettingsPage extends StatelessWidget {
       );
     }
 
-    if (windowClass != WindowClass.compact) {
-      /// Add padding to align with the navigation rail.
-      buttonList.insert(0, const Padding(padding: EdgeInsets.only(top: 16.0)));
-    }
-
     return Scrollbar(
-      child: ListView(
-        children: buttonList,
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: windowClass == WindowClass.compact ? 0.0 : 16.0,
+            bottom: MediaQuery.of(context).padding.bottom,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: buttonList,
+          ),
+        ),
       ),
     );
   }

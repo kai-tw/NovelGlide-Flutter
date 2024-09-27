@@ -94,7 +94,7 @@ class CollectionData {
         ],
       };
 
-  void save() async {
+  Future<void> save() async {
     final String libraryRoot = await FilePath.libraryRoot;
     final Box<Map<String, dynamic>?> box = Hive.box(name: hiveBoxName);
     pathList = pathList.map<String>((e) => isAbsolute(e) ? relative(e, from: libraryRoot) : e).toList();

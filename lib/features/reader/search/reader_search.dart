@@ -27,14 +27,11 @@ class _ReaderSearch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      height: double.infinity,
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: [
           const Expanded(
             child: ReaderSearchResultList(),

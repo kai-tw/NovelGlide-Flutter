@@ -21,10 +21,16 @@ class ReaderSettingsBottomSheet extends StatelessWidget {
       builder: (context, scrollController) {
         return SingleChildScrollView(
           controller: scrollController,
-          child: const Column(
+          child: Column(
             children: [
-              _CustomContainer(
-                child: Column(
+              Container(
+                margin: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 24.0),
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                child: const Column(
                   children: [
                     Padding(
                       padding: EdgeInsets.only(bottom: 8.0),
@@ -37,40 +43,33 @@ class ReaderSettingsBottomSheet extends StatelessWidget {
                   ],
                 ),
               ),
-              _CustomContainer(
-                child: Column(
+              Container(
+                margin: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 24.0),
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                child: const Column(
                   children: [
                     ReaderSettingsAutoSaveSwitch(),
                     ReaderSettingsGestureSwitcher(),
                   ],
                 ),
               ),
-              _CustomContainer(
-                child: ReaderSettingsResetButton(),
+              Container(
+                margin: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 24.0),
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                child: const ReaderSettingsResetButton(),
               ),
             ],
           ),
         );
       },
-    );
-  }
-}
-
-class _CustomContainer extends StatelessWidget {
-  const _CustomContainer({required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 24.0),
-      padding: const EdgeInsets.all(24.0),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      child: child,
     );
   }
 }

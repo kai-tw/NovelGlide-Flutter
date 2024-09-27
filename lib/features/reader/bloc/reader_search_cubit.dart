@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../enum/loading_state_code.dart';
 import 'reader_cubit.dart';
-import 'reader_search_result.dart';
 
 class ReaderSearchCubit extends Cubit<ReaderSearchState> {
   final ReaderCubit _readerCubit;
@@ -78,6 +77,19 @@ class ReaderSearchState extends Equatable {
       searchResultList: searchResultList ?? this.searchResultList,
     );
   }
+}
+
+class ReaderSearchResult extends Equatable {
+  final String cfi;
+  final String excerpt;
+
+  @override
+  List<Object?> get props => [cfi, excerpt];
+
+  const ReaderSearchResult({
+    required this.cfi,
+    required this.excerpt,
+  });
 }
 
 enum ReaderSearchRange { currentChapter, all }

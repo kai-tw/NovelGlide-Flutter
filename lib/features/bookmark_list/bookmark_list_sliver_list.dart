@@ -13,6 +13,7 @@ class BookmarkListSliverList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<BookmarkListCubit>(context).refresh();
+
     return BlocBuilder<BookmarkListCubit, BookmarkListState>(
       builder: (context, state) {
         switch (state.code) {
@@ -21,7 +22,9 @@ class BookmarkListSliverList extends StatelessWidget {
               return const CommonSliverListEmpty();
             } else {
               return SliverPadding(
-                padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).padding.bottom,
+                ),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {

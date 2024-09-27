@@ -29,6 +29,8 @@ class ReaderWebViewHandler {
       onPageStarted: (String url) => debugPrint('Page started loading: $url'),
       onPageFinished: _onPageFinished,
       onNavigationRequest: _onNavigationRequest,
+      onWebResourceError: (error) => debugPrint('Web resource error: $error'),
+      onHttpError: (error) => debugPrint('HTTP error: $error'),
     ));
   }
 

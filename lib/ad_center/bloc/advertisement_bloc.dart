@@ -20,11 +20,14 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
       _subscription.cancel();
     }, onError: (error) {});
 
-    if (Platform.isAndroid && await InAppPurchase.instance.isAvailable()) {
-      InAppPurchase.instance.restorePurchases();
-    } else {
-      loadAd();
-    }
+    // loadAd();
+
+    // Store disabled.
+    // if (Platform.isAndroid && await InAppPurchase.instance.isAvailable()) {
+    //   InAppPurchase.instance.restorePurchases();
+    // } else {
+    //   loadAd();
+    // }
   }
 
   void loadAd() async {

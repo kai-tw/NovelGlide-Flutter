@@ -10,91 +10,71 @@ class ReaderSettingsResetButton extends StatefulWidget {
   const ReaderSettingsResetButton({super.key});
 
   @override
-  State<StatefulWidget> createState() => _State();
+  State<ReaderSettingsResetButton> createState() => _State();
 }
 
 class _State extends State<ReaderSettingsResetButton> {
-  CommonButtonStateCode _state = CommonButtonStateCode.idle;
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  CommonButtonStateCode _stateCode = CommonButtonStateCode.idle;
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    IconData iconData;
-    Color backgroundColor;
-    Color foregroundColor;
-    String text;
-    void Function()? onPressed;
+    IconData iconData = Icons.refresh_rounded;
+    Color backgroundColor = Theme.of(context).colorScheme.error;
+    Color foregroundColor = Theme.of(context).colorScheme.onError;
+    String text = appLocalizations.readerSettingsResetButton;
 
-    switch (_state) {
-      case CommonButtonStateCode.idle:
-        iconData = Icons.refresh_rounded;
-        backgroundColor = Theme.of(context).colorScheme.error;
-        foregroundColor = Theme.of(context).colorScheme.onError;
-        text = appLocalizations.readerSettingsResetButton;
-        onPressed = () => _onPressed(context);
-        break;
-
-      case CommonButtonStateCode.success:
-        iconData = Icons.refresh_rounded;
-        backgroundColor = Colors.green;
-        foregroundColor = Colors.white;
-        text = appLocalizations.readerSettingsResetButtonDone;
-        break;
-
-      default:
-        iconData = Icons.refresh_rounded;
-        backgroundColor = Theme.of(context).colorScheme.error;
-        foregroundColor = Theme.of(context).colorScheme.onError;
-        text = appLocalizations.readerSettingsResetButton;
-        break;
+    if (_stateCode == CommonButtonStateCode.success) {
+      iconData = Icons.check_rounded;
+      backgroundColor = Colors.green;
+      foregroundColor = Colors.white;
+      text = appLocalizations.readerSettingsResetButtonDone;
     }
 
     return Align(
       alignment: Alignment.centerRight,
-      child: FilledButton.tonalIcon(
+      child: FilledButton.icon(
         icon: Icon(iconData),
         label: Text(text),
-        style: OutlinedButton.styleFrom(
+        style: FilledButton.styleFrom(
           backgroundColor: backgroundColor,
           foregroundColor: foregroundColor,
           disabledBackgroundColor: backgroundColor,
           disabledForegroundColor: foregroundColor,
         ),
-        onPressed: onPressed,
+        onPressed: _stateCode == CommonButtonStateCode.idle ? _onPressed : null,
       ),
     );
   }
 
-  void _onPressed(BuildContext context) {
+  void _onPressed() {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.alertDialogResetSettingsTitle),
-        content: Text(AppLocalizations.of(context)!.alertDialogResetSettingsDescription),
+        title: Text(appLocalizations.alertDialogResetSettingsTitle),
+        content: Text(appLocalizations.alertDialogResetSettingsDescription),
         actions: [
           TextButton(
             onPressed: () async {
               Navigator.of(context).pop();
               cubit.setSettings(const ReaderSettingsData()..save());
 
-              setState(() => _state = CommonButtonStateCode.success);
+              setState(() => _stateCode = CommonButtonStateCode.success);
               await Future.delayed(const Duration(seconds: 2));
-              setState(() => _state = CommonButtonStateCode.idle);
+              if (mounted) {
+                setState(() => _stateCode = CommonButtonStateCode.idle);
+              }
             },
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
-            child: Text(AppLocalizations.of(context)!.generalYes),
+            child: Text(appLocalizations.generalYes),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text(AppLocalizations.of(context)!.generalNo),
+            child: Text(appLocalizations.generalNo),
           ),
         ],
       ),

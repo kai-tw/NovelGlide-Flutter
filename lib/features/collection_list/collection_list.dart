@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/collection_data.dart';
 import '../../enum/loading_state_code.dart';
+import '../../enum/window_class.dart';
 import '../../toolbox/route_helper.dart';
 import '../collection_viewer/collection_viewer.dart';
 import '../common_components/common_list_empty.dart';
@@ -17,6 +18,7 @@ class CollectionList extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final CollectionListCubit cubit = BlocProvider.of<CollectionListCubit>(context)..refresh();
+    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
 
     return BlocBuilder<CollectionListCubit, CollectionListState>(
       buildWhen: (previous, current) =>
@@ -35,7 +37,10 @@ class CollectionList extends StatelessWidget {
               return const CommonSliverListEmpty();
             } else {
               return SliverPadding(
-                padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 72.0),
+                padding: EdgeInsets.only(
+                  top: windowClass == WindowClass.compact ? 0.0 : 16.0,
+                  bottom: MediaQuery.of(context).padding.bottom + 72.0,
+                ),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {

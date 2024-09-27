@@ -14,7 +14,6 @@ import '../../../data/reader_settings_data.dart';
 import 'reader_gesture_handler.dart';
 import 'reader_lifecycle_handler.dart';
 import 'reader_search_cubit.dart';
-import 'reader_search_result.dart';
 import 'reader_state.dart';
 import 'reader_web_server_handler.dart';
 import 'reader_web_view_handler.dart';

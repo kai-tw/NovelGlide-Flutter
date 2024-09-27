@@ -25,17 +25,12 @@ class ReaderSearchRangeSelector extends StatelessWidget {
               label: Text(AppLocalizations.of(context)!.readerSearchAllRange),
             ),
           ],
-          expandedInsets: EdgeInsets.zero,
           style: SegmentedButton.styleFrom(
-            selectedBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
-            selectedForegroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-            side: BorderSide(
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
-            ),
             shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(24.0)),
+              borderRadius: BorderRadius.all(Radius.circular(16.0)),
             ),
           ),
+          expandedInsets: const EdgeInsets.symmetric(horizontal: 4.0),
           selected: {state.range},
           onSelectionChanged: (value) => cubit.searchRange = value.first,
         );

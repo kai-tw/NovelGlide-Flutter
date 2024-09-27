@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../enum/loading_state_code.dart';
 import '../../enum/sort_order_code.dart';
+import '../../enum/window_class.dart';
 import 'bloc/collection_list_bloc.dart';
 
 class CollectionListAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -17,9 +18,11 @@ class CollectionListAppBar extends StatelessWidget implements PreferredSizeWidge
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final CollectionListCubit cubit = BlocProvider.of<CollectionListCubit>(context);
+    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
 
     return AppBar(
       leading: const Icon(Icons.collections_bookmark_outlined),
+      leadingWidth: windowClass == WindowClass.compact ? null : 100.0,
       title: Text(AppLocalizations.of(context)!.collectionTitle),
       actions: [
         /// Select all button

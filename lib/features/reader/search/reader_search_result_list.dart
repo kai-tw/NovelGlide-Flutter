@@ -6,7 +6,6 @@ import '../../../enum/loading_state_code.dart';
 import '../../common_components/common_loading.dart';
 import '../bloc/reader_cubit.dart';
 import '../bloc/reader_search_cubit.dart';
-import '../bloc/reader_search_result.dart';
 
 class ReaderSearchResultList extends StatelessWidget {
   const ReaderSearchResultList({super.key});

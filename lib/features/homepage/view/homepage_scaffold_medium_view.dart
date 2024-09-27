@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/homepage_bloc.dart';
 import '../homepage_app_bar.dart';
 import '../homepage_scaffold_body.dart';
 import '../homepage_tab_section.dart';
@@ -12,32 +10,29 @@ class HomepageScaffoldMediumView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomepageCubit, HomepageState>(
-      builder: (BuildContext context, HomepageState homepageState) {
-        return Scaffold(
-          extendBody: true,
-          appBar: const HomepageAppBar(),
-          body: SafeArea(
-            child: Row(
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-                  decoration: BoxDecoration(
-                    color: Colors.black87,
-                    borderRadius: BorderRadius.circular(24.0),
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  child: const HomepageNavigationRail(),
-                ),
-                const Expanded(
-                  child: HomepageScaffoldBody(),
-                ),
-              ],
+    return Scaffold(
+      extendBody: true,
+      appBar: const HomepageAppBar(),
+      body: SafeArea(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+              decoration: BoxDecoration(
+                color: Colors.black87,
+                borderRadius: BorderRadius.circular(24.0),
+              ),
+              clipBehavior: Clip.hardEdge,
+              child: const HomepageNavigationRail(),
             ),
-          ),
-          floatingActionButton: const HomepageTabSection(),
-        );
-      },
+            const Expanded(
+              child: HomepageScaffoldBody(),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: const HomepageTabSection(),
     );
   }
 }

@@ -22,22 +22,35 @@ class CollectionViewerCubit extends Cubit<CollectionViewerState> {
     List<BookData> bookList = [];
 
     for (String path in collectionData.pathList) {
-      bookList.add(BookData.fromEpubBook(path, await BookData.loadEpubBook(path)));
+      if (state.bookList.where((e) => e.filePath == path).isNotEmpty) {
+        // Already in the list, so copy it.
+        bookList.add(state.bookList.firstWhere((e) => e.filePath == path));
+      } else {
+        // Doesn't exist in the list, so load it.
+        bookList.add(BookData.fromEpubBook(path, await BookData.loadEpubBook(path)));
+      }
     }
 
     emit(CollectionViewerState(
       code: LoadingStateCode.loaded,
-      bookList: [
-        ...{...bookList}
-      ],
+      bookList: bookList,
     ));
   }
 
   void reorder(int oldIndex, int newIndex) {
-    collectionData.pathList.insert(newIndex, collectionData.pathList[oldIndex]);
-    collectionData.pathList.removeAt(oldIndex);
+    if (oldIndex == newIndex) {
+      return;
+    }
+
+    BookData target = state.bookList.removeAt(oldIndex);
+    state.bookList.insert(oldIndex < newIndex ? newIndex - 1 : newIndex, target);
+    emit(CollectionViewerState(
+      code: LoadingStateCode.loaded,
+      bookList: state.bookList,
+    ));
+
+    collectionData.pathList = state.bookList.map<String>((e) => e.filePath).toList();
     collectionData.save();
-    refresh();
   }
 }
 
