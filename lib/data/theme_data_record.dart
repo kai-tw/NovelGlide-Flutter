@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'preference_keys.dart';
 import 'brightness_extension.dart';
 import 'theme_id.dart';
 
@@ -22,11 +23,12 @@ class ThemeDataRecord {
     );
   }
 
-  factory ThemeDataRecord.fromSettings() {
-    final Box settingsBox = Hive.box(name: "settings");
-    String themeRecord = settingsBox.get("theme", defaultValue: "{}");
-    settingsBox.close();
-    return ThemeDataRecord.fromJson(jsonDecode(themeRecord));
+  static Future<ThemeDataRecord> fromSettings() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return ThemeDataRecord(
+      themeId: ThemeId.getFromString(prefs.getString(PreferenceKeys.theme.themeId)) ?? ThemeId.defaultTheme,
+      brightness: BrightnessExtension.getFromString(prefs.getString(PreferenceKeys.theme.brightness)),
+    );
   }
 
   String toJson() {
@@ -36,9 +38,14 @@ class ThemeDataRecord {
     });
   }
 
-  void saveToSettings() {
-    final Box settingsBox = Hive.box(name: "settings");
-    settingsBox.put("theme", toJson());
-    settingsBox.close();
+  Future<void> saveToSettings() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(PreferenceKeys.theme.themeId, themeId.toString());
+
+    if (brightness != null) {
+      prefs.setString(PreferenceKeys.theme.brightness, brightness!.toString());
+    } else {
+      prefs.remove(PreferenceKeys.theme.brightness);
+    }
   }
 }

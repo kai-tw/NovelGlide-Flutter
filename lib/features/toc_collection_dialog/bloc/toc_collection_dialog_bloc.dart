@@ -40,14 +40,14 @@ class TocCollectionDialogCubit extends Cubit<TocCollectionDialogState> {
     emit(state.copyWith(selectedCollections: {...state.selectedCollections}..remove(id)));
   }
 
-  void save() {
+  Future<void> save() async {
     for (CollectionData data in state.collectionList) {
       if (state.selectedCollections.contains(data.id)) {
         data.pathList.add(bookData.filePath);
       } else if (data.pathList.contains(bookData.filePath)) {
         data.pathList.remove(bookData.filePath);
       }
-      data.save();
+      await data.save();
     }
   }
 }

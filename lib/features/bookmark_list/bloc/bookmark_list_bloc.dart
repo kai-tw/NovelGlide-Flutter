@@ -93,9 +93,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
   }
 
   Future<bool> deleteSelectedBookmarks() async {
-    for (BookmarkData data in state.selectedBookmarks) {
-      data.delete();
-    }
+    await Future.wait(state.selectedBookmarks.map((e) => e.delete()));
     refresh();
     return true;
   }

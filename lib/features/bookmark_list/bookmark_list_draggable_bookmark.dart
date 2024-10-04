@@ -22,10 +22,13 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
       return LongPressDraggable(
         onDragStarted: () => cubit.setDragging(true),
         onDragEnd: (_) => cubit.setDragging(false),
-        onDragCompleted: () {
-          _data.delete();
+        onDragCompleted: () async {
+          final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
+
+          await _data.delete();
           cubit.refresh();
-          ScaffoldMessenger.of(context).showSnackBar(
+
+          messenger.showSnackBar(
             SnackBar(
               content: Text(appLocalizations.deleteBookmarkSuccessfully),
             ),

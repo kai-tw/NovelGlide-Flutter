@@ -1,37 +1,55 @@
-import 'package:hive/hive.dart';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:path/path.dart';
 
 import '../toolbox/random_utility.dart';
 import '../toolbox/file_path.dart';
 
 class CollectionData {
-  static const String hiveBoxName = 'collection';
-
   final String id;
   final String name;
   List<String> pathList;
 
   CollectionData(this.id, this.name, this.pathList);
 
-  factory CollectionData.fromName(String name) {
-    final Box<Map<String, dynamic>?> box = Hive.box(name: hiveBoxName);
+  static Future<String> get jsonPath async => join(await FilePath.dataRoot, 'collection.json');
+
+  static Future<File> get jsonFile async => File(await jsonPath);
+
+  static Future<Map<String, dynamic>> get jsonData async {
+    final File dataFile = await jsonFile;
+    dataFile.createSync(recursive: true);
+
+    String jsonString = dataFile.readAsStringSync();
+    jsonString = jsonString.isEmpty ? '{}' : jsonString;
+
+    return jsonDecode(jsonString);
+  }
+
+  /// Create a new empty collection.
+  static Future<void> create(String name) async {
+    final File dataFile = await jsonFile;
+    final Map<String, dynamic> json = await jsonData;
     String id = RandomUtility.getRandomString(10);
 
-    while (box.containsKey(id)) {
+    while (json.containsKey(id)) {
       // Key collision
       id = RandomUtility.getRandomString(10);
     }
 
-    box.close();
-
-    return CollectionData(id, name, const <String>[]);
+    json[id] = CollectionData(id, name, const <String>[]).toJson();
+    dataFile.writeAsStringSync(jsonEncode(json));
   }
 
   static Future<CollectionData> fromId(String id) async {
-    final Box<Map<String, dynamic>> box = Hive.box(name: hiveBoxName);
-    CollectionData data = await CollectionData.fromJson(box.get(id)!);
-    box.close();
-    return data;
+    final Map<String, dynamic> json = await jsonData;
+
+    if (json.containsKey(id)) {
+      return await CollectionData.fromJson(json[id]!);
+    } else {
+      return CollectionData(id, id, const <String>[]);
+    }
   }
 
   static Future<CollectionData> fromJson(Map<String, dynamic> json) async {
@@ -44,34 +62,33 @@ class CollectionData {
   }
 
   static Future<List<CollectionData>> getList() async {
-    final Box<Map<String, dynamic>> box = Hive.box(name: hiveBoxName);
+    final Map<String, dynamic> json = await jsonData;
     List<CollectionData> list = [];
 
-    for (var key in box.keys) {
-      CollectionData data = await CollectionData.fromJson(box.get(key)!);
+    for (var key in json.keys) {
+      CollectionData data = await CollectionData.fromJson(json[key]!);
       list.add(data);
     }
-
-    box.close();
 
     return list;
   }
 
   static void reorder(int oldIndex, int newIndex) async {
-    final Box<Map<String, dynamic>> box = Hive.box(name: hiveBoxName);
+    final File dataFile = await jsonFile;
+    final Map<String, dynamic> json = await jsonData;
     newIndex = newIndex - (oldIndex < newIndex ? 1 : 0);
 
-    CollectionData data = await CollectionData.fromJson(box.getAt(oldIndex));
-    box.deleteAt(oldIndex);
-    box.put(data.id, data.toJson());
+    CollectionData data = await CollectionData.fromJson(json[json.keys.elementAt(oldIndex)]!);
+    json.remove(json.keys.elementAt(oldIndex));
+    json[data.id] = data.toJson();
 
-    int loopTime = box.length - newIndex - 1;
+    int loopTime = json.keys.length - newIndex - 1;
     while (loopTime-- > 0) {
-      data = await CollectionData.fromJson(box.getAt(newIndex));
-      box.deleteAt(newIndex);
-      box.put(data.id, data.toJson());
+      data = await CollectionData.fromJson(json[json.keys.elementAt(newIndex)]!);
+      json.remove(json.keys.elementAt(newIndex));
+      json[data.id] = data.toJson();
     }
-    box.close();
+    dataFile.writeAsStringSync(jsonEncode(json));
   }
 
   CollectionData copyWith({
@@ -96,15 +113,22 @@ class CollectionData {
 
   Future<void> save() async {
     final String libraryRoot = await FilePath.libraryRoot;
-    final Box<Map<String, dynamic>?> box = Hive.box(name: hiveBoxName);
+    final File dataFile = await jsonFile;
+    final Map<String, dynamic> json = await jsonData;
+
+    // Turn absolute path to relative path.
     pathList = pathList.map<String>((e) => isAbsolute(e) ? relative(e, from: libraryRoot) : e).toList();
-    box.put(id, toJson());
-    box.close();
+
+    // Save to file.
+    json[id] = toJson();
+    dataFile.writeAsStringSync(jsonEncode(json));
   }
 
-  void delete() {
-    final Box<Map<String, dynamic>?> box = Hive.box(name: hiveBoxName);
-    box.delete(id);
-    box.close();
+  Future<void> delete() async {
+    final File dataFile = await jsonFile;
+    final Map<String, dynamic> json = await jsonData;
+
+    json.remove(id);
+    dataFile.writeAsStringSync(jsonEncode(json));
   }
 }

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../processor/google_drive_api.dart';
 import '../../../toolbox/backup_utility.dart';
@@ -14,9 +14,8 @@ class BackupManagerGoogleDriveCubit extends Cubit<BackupManagerGoogleDriveState>
   Future<void> init() async => await refresh();
 
   Future<void> refresh() async {
-    final Box box = Hive.box(name: 'settings');
-    final bool isEnabled = box.get('isBackupToGoogleDriveEnabled', defaultValue: false);
-    box.close();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool isEnabled = prefs.getBool('isBackupToGoogleDriveEnabled') ?? false;
     setEnabled(isEnabled);
   }
 
@@ -32,14 +31,13 @@ class BackupManagerGoogleDriveCubit extends Cubit<BackupManagerGoogleDriveState>
       await GoogleDriveApi.instance.signOut();
     }
 
-    // Save the setting.
-    final Box box = Hive.box(name: 'settings');
-    box.put('isBackupToGoogleDriveEnabled', isEnabled);
-    box.close();
-
     emit(BackupManagerGoogleDriveState(
       code: isEnabled ? BackupManagerGoogleDriveCode.idle : BackupManagerGoogleDriveCode.disabled,
     ));
+
+    // Save the setting.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isBackupToGoogleDriveEnabled', isEnabled);
   }
 
   Future<bool> createBackup() async {

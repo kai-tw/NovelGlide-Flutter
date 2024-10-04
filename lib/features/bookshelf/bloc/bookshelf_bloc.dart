@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/book_data.dart';
+import '../../../data/preference_keys.dart';
 import '../../../toolbox/file_path.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/sort_order_code.dart';
@@ -25,11 +26,10 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   Future<void> refresh() async {
     emit(const BookshelfState(code: LoadingStateCode.loading));
 
-    final Box box = Hive.box(name: 'settings');
-    SortOrderCode sortOrder =
-        SortOrderCode.fromString(box.get('bookshelf.sortOrder'), defaultValue: SortOrderCode.name);
-    bool isAscending = box.get('bookshelf.isAscending', defaultValue: true);
-    box.close();
+    // Load the sorting preferences.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    SortOrderCode sortOrder = SortOrderCode.fromString(prefs.getString(PreferenceKeys.bookshelf.sortOrder) ?? 'name');
+    bool isAscending = prefs.getBool(PreferenceKeys.bookshelf.isAscending) ?? true;
 
     final Directory folder = Directory(await FilePath.libraryRoot);
     final Iterable<File> fileList = folder
@@ -64,14 +64,14 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     emit(state.copyWith(isDragging: false, isSelecting: false));
   }
 
-  void setListOrder({SortOrderCode? sortOrder, bool? isAscending}) {
+  Future<void> setListOrder({SortOrderCode? sortOrder, bool? isAscending}) async {
     SortOrderCode order = sortOrder ?? state.sortOrder;
     bool ascending = isAscending ?? state.isAscending;
 
-    final Box box = Hive.box(name: 'settings');
-    box.put('bookshelf.sortOrder', order.toString());
-    box.put('bookshelf.isAscending', ascending);
-    box.close();
+    // Save the sorting preferences.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(PreferenceKeys.bookshelf.sortOrder, order.toString());
+    prefs.setBool(PreferenceKeys.bookshelf.isAscending, ascending);
 
     state.bookList.sort(BookData.sortCompare(order, ascending));
     emit(state.copyWith(

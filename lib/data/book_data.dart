@@ -76,9 +76,7 @@ class BookData {
 
     /// Search the bookmark and delete it.
     Iterable<BookmarkData> bookmarkList = (await BookmarkData.getList()).where((element) => element.bookPath == filePath);
-    for (BookmarkData data in bookmarkList) {
-      data.delete();
-    }
+    await Future.wait(bookmarkList.map((e) => e.delete()));
 
     /// Search the collection and delete it.
     Iterable<CollectionData> collectionList =

@@ -1,15 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../data/preference_keys.dart';
 
 class BackupManagerSettingsCubit extends Cubit<BackupManagerSettingsState> {
   BackupManagerSettingsCubit() : super(const BackupManagerSettingsState());
 
-  void init() {
-    final Box box = Hive.box(name: 'settings');
-    final isBackupCollections = box.get('backupManager.isBackupCollections', defaultValue: false);
-    final isBackupBookmarks = box.get('backupManager.isBackupBookmarks', defaultValue: false);
-    box.close();
+  Future<void> init() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final isBackupCollections = prefs.getBool(PreferenceKeys.backupManager.isBackupCollections) ?? false;
+    final isBackupBookmarks = prefs.getBool(PreferenceKeys.backupManager.isBackupBookmarks) ?? false;
 
     emit(state.copyWith(
       isBackupCollections: isBackupCollections,
@@ -17,20 +18,19 @@ class BackupManagerSettingsCubit extends Cubit<BackupManagerSettingsState> {
     ));
   }
 
-  void setState({bool? backupCollections, bool? backupBookmarks}) {
+  Future<void> setState({bool? backupCollections, bool? backupBookmarks}) async {
     final isBackupCollections = backupCollections ?? state.isBackupCollections;
     final isBackupBookmarks = backupBookmarks ?? state.isBackupBookmarks;
-
-    // Save the settings
-    final Box box = Hive.box(name: 'settings');
-    box.put('backupManager.isBackupCollections', isBackupCollections);
-    box.put('backupManager.isBackupBookmarks', isBackupBookmarks);
-    box.close();
 
     emit(state.copyWith(
       isBackupCollections: isBackupCollections,
       isBackupBookmarks: isBackupBookmarks,
     ));
+
+    // Save the settings
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(PreferenceKeys.backupManager.isBackupCollections, isBackupCollections);
+    prefs.setBool(PreferenceKeys.backupManager.isBackupBookmarks, isBackupBookmarks);
   }
 }
 

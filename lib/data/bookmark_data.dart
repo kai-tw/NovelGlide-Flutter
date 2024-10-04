@@ -1,6 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:hive/hive.dart';
 import 'package:path/path.dart';
 
 import '../toolbox/datetime_utility.dart';
@@ -25,6 +25,20 @@ class BookmarkData {
     required this.savedTime,
   });
 
+  static Future<String> get jsonPath async => join(await FilePath.dataRoot, 'bookmark.json');
+
+  static Future<File> get jsonFile async => File(await jsonPath);
+
+  static Future<Map<String, dynamic>> get jsonData async {
+    final File dataFile = await jsonFile;
+    dataFile.createSync(recursive: true);
+
+    String jsonString = dataFile.readAsStringSync();
+    jsonString = jsonString.isEmpty ? '{}' : jsonString;
+
+    return jsonDecode(jsonString);
+  }
+
   factory BookmarkData.fromJson(Map<String, dynamic> map) {
     return BookmarkData(
       bookPath: map['bookPath'] ?? '',
@@ -37,39 +51,39 @@ class BookmarkData {
   }
 
   static Future<BookmarkData?> get(String bookPath) async {
-    final Box<Map<String, dynamic>> box = Hive.box(name: 'bookmark');
+    final Map<String, dynamic> json = await jsonData;
     bookPath = isAbsolute(bookPath) ? relative(bookPath, from: await FilePath.libraryRoot) : bookPath;
-    return box.get(bookPath) != null ? BookmarkData.fromJson(box.get(bookPath)!) : null;
+    return json.containsKey(bookPath) ? BookmarkData.fromJson(json[bookPath]!) : null;
   }
 
   static Future<List<BookmarkData>> getList() async {
-    final Box<Map<String, dynamic>> box = Hive.box(name: 'bookmark');
+    final Map<String, dynamic> json = await jsonData;
     List<BookmarkData> retList = [];
 
-    for (String key in box.keys) {
-      if (box.get(key) != null) {
-        final BookmarkData data = BookmarkData.fromJson(box.get(key)!);
+    for (String key in json.keys) {
+      if (json.containsKey(key)) {
+        final BookmarkData data = BookmarkData.fromJson(json[key]!);
         data.bookPath = isAbsolute(data.bookPath) ? data.bookPath : join(await FilePath.libraryRoot, data.bookPath);
         retList.add(data);
       }
     }
 
-    box.close();
-
     return retList;
   }
 
   void save() async {
-    final Box<Map<String, dynamic>?> box = Hive.box(name: 'bookmark');
+    final File dataFile = await jsonFile;
+    final Map<String, dynamic> json = await jsonData;
     bookPath = isAbsolute(bookPath) ? relative(bookPath, from: await FilePath.libraryRoot) : bookPath;
-    box.put(bookPath, toJson());
-    box.close();
+    json[bookPath] = toJson();
+    dataFile.writeAsStringSync(jsonEncode(json));
   }
 
-  void delete() {
-    final Box<Map<String, dynamic>?> box = Hive.box(name: 'bookmark');
-    box.delete(bookPath);
-    box.close();
+  Future<void> delete() async {
+    final File dataFile = await jsonFile;
+    final Map<String, dynamic> json = await jsonData;
+    json.remove(bookPath);
+    dataFile.writeAsStringSync(jsonEncode(json));
   }
 
   BookmarkData copyWith({

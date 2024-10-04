@@ -51,8 +51,8 @@ class _HomepageState extends State<Homepage> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangePlatformBrightness() {
-    ThemeDataRecord record = ThemeDataRecord.fromSettings();
+  void didChangePlatformBrightness() async {
+    ThemeDataRecord record = await ThemeDataRecord.fromSettings();
 
     if (record.brightness == null) {
       final ThemeData themeData = record.themeId.getThemeDataByBrightness(brightness: record.brightness);

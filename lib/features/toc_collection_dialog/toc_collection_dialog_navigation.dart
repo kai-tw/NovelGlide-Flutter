@@ -42,10 +42,14 @@ class TocCollectionDialogNavigation extends StatelessWidget {
             label: Text(appLocalizations.generalAdd),
           ),
           TextButton.icon(
-            onPressed: () {
+            onPressed: () async {
+              final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
+
               Navigator.of(context).pop();
-              cubit.save();
-              ScaffoldMessenger.of(context).showSnackBar(
+
+              await cubit.save();
+
+              messenger.showSnackBar(
                 SnackBar(
                   content: Text(appLocalizations.collectionSaved),
                 ),

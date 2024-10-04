@@ -62,7 +62,7 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
                       final Brightness? brightness = brightnessSet.first;
                       cubit.setBrightness(brightness);
 
-                      final ThemeDataRecord record = ThemeDataRecord.fromSettings();
+                      final ThemeDataRecord record = await ThemeDataRecord.fromSettings();
                       record.brightness = brightness;
                       record.saveToSettings();
 

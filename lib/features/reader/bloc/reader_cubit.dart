@@ -39,7 +39,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   late final ReaderLifecycleHandler lifecycleHandler = ReaderLifecycleHandler(this);
 
   ReaderCubit({required this.bookPath, this.bookData, required this.currentTheme})
-      : super(ReaderState(bookName: bookData?.name ?? '', readerSettings: ReaderSettingsData.load()));
+      : super(ReaderState(bookName: bookData?.name ?? '', readerSettings: const ReaderSettingsData()));
 
   /// Client initialization.
   Future<void> initialize({String? dest, bool isGotoBookmark = false}) async {
@@ -51,6 +51,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       emit(state.copyWith(
         bookName: bookData?.name,
         bookmarkData: await BookmarkData.get(bookPath),
+        readerSettings: await ReaderSettingsData.load(),
       ));
     }
 

@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'preference_keys.dart';
 
 class ReaderSettingsData extends Equatable {
   final double fontSize;
@@ -25,20 +27,14 @@ class ReaderSettingsData extends Equatable {
     this.gestureDetection = true,
   });
 
-  factory ReaderSettingsData.fromJson(Map<String, dynamic> json) {
+  static Future<ReaderSettingsData> load() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     return ReaderSettingsData(
-      fontSize: json['font_size'] ?? defaultFontSize,
-      lineHeight: json['line_height'] ?? defaultLineHeight,
-      autoSave: json['auto_save'] ?? false,
-      gestureDetection: json['gesture_detection'] ?? true,
+      fontSize: prefs.getDouble(PreferenceKeys.reader.fontSize) ?? defaultFontSize,
+      lineHeight: prefs.getDouble(PreferenceKeys.reader.lineHeight) ?? defaultLineHeight,
+      autoSave: prefs.getBool(PreferenceKeys.reader.autoSave) ?? false,
+      gestureDetection: prefs.getBool(PreferenceKeys.reader.gestureDetection) ?? true,
     );
-  }
-
-  factory ReaderSettingsData.load() {
-    final Box readerSetting = Hive.box(name: 'settings');
-    final Map<String, dynamic>? json = readerSetting.get('reader_settings');
-    readerSetting.close();
-    return json != null ? ReaderSettingsData.fromJson(json) : const ReaderSettingsData();
   }
 
   ReaderSettingsData copyWith({
@@ -63,10 +59,12 @@ class ReaderSettingsData extends Equatable {
         'gesture_detection': gestureDetection,
       };
 
-  void save() {
-    final Box readerSettings = Hive.box(name: 'settings');
-    readerSettings.put('reader_settings', toJson());
-    readerSettings.close();
+  Future<void> save() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setDouble(PreferenceKeys.reader.fontSize, fontSize);
+    prefs.setDouble(PreferenceKeys.reader.lineHeight, lineHeight);
+    prefs.setBool(PreferenceKeys.reader.autoSave, autoSave);
+    prefs.setBool(PreferenceKeys.reader.gestureDetection, gestureDetection);
   }
 
   bool isStyleChanged(ReaderSettingsData other) {

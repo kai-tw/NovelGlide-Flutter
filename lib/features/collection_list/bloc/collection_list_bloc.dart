@@ -1,9 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/collection_data.dart';
+import '../../../data/preference_keys.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/sort_order_code.dart';
 
@@ -56,22 +57,20 @@ class CollectionListCubit extends Cubit<CollectionListState> {
     emit(state.copyWith(selectedCollections: newSet));
   }
 
-  void deleteSelectedCollections() {
-    for (CollectionData data in state.selectedCollections) {
-      data.delete();
-    }
+  Future<void> deleteSelectedCollections() async {
+    await Future.wait(state.selectedCollections.map((e) => e.delete()));
     refresh();
   }
 
-  void setListOrder({SortOrderCode? sortOrder, bool? isAscending}) {
+  Future<void> setListOrder({SortOrderCode? sortOrder, bool? isAscending}) async {
     final SortOrderCode order = sortOrder ?? state.sortOrder;
     final bool ascending = isAscending ?? state.isAscending;
     List<CollectionData> list = List.from(state.collectionList);
 
-    final Box box = Hive.box(name: 'settings');
-    box.put('collection.sortOrder', order.toString());
-    box.put('collection.isAscending', ascending);
-    box.close();
+    // Save the sorting preferences.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(PreferenceKeys.collection.sortOrder, order.toString());
+    prefs.setBool(PreferenceKeys.collection.isAscending, ascending);
 
     _sortList(list, order, ascending);
     emit(state.copyWith(

@@ -22,16 +22,11 @@ class FilePath {
 
   static Future<String?> get _iosLibraryFolder async => Platform.isIOS ? (await getLibraryDirectory()).path : null;
 
-  static Future<String?> get _androidExternalFolder async =>
-      Platform.isAndroid ? (await getExternalStorageDirectory())?.path : null;
-
   /// Application folders
 
   static Future<String> get _baseFolder async => await _iosLibraryFolder ?? await documentFolder;
 
   static Future<String> get libraryRoot async => join(await _baseFolder, 'Library');
 
-  static Future<String> get hiveRoot async => join(await _baseFolder, "Hive");
-
-  static Future<String> get backupRoot async => join(await _androidExternalFolder ?? await documentFolder, 'Backups');
+  static Future<String> get dataRoot async => join(await _baseFolder, 'Data');
 }

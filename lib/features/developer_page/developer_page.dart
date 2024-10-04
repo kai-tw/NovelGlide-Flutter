@@ -1,8 +1,8 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 
+import '../../toolbox/file_path.dart';
 import '../common_components/common_back_button.dart';
-import 'device_info_panel.dart';
 
 class DeveloperPage extends StatelessWidget {
   const DeveloperPage({super.key});
@@ -16,9 +16,56 @@ class DeveloperPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          const DeviceInfoPanel(),
+          ListTile(
+            title: const Text('Device'),
+            titleTextStyle: Theme.of(context).textTheme.titleLarge,
+          ),
+          ListTile(
+            title: const Text('devicePixelRatio'),
+            subtitle: Text("${MediaQuery.of(context).devicePixelRatio}"),
+          ),
+          ListTile(
+            title: const Text('size.width'),
+            subtitle: Text("${MediaQuery.of(context).size.width}"),
+          ),
+          ListTile(
+            title: const Text('size.height'),
+            subtitle: Text("${MediaQuery.of(context).size.height}"),
+          ),
+          ListTile(
+            title: const Text('Orientation'),
+            subtitle: Text("${MediaQuery.of(context).orientation}"),
+          ),
+          ListTile(
+            title: const Text('Platform brightness'),
+            subtitle: Text("${MediaQuery.of(context).platformBrightness}"),
+          ),
+          const Divider(),
 
-          /// Force crash button
+          ListTile(
+            title: const Text('File Paths'),
+            titleTextStyle: Theme.of(context).textTheme.titleLarge,
+          ),
+          ListTile(
+            title: const Text('libraryRoot'),
+            subtitle: FutureBuilder(
+              future: FilePath.libraryRoot,
+              builder: (context, snapshot) => Text(snapshot.data?.toString() ?? ''),
+            ),
+          ),
+          ListTile(
+            title: const Text('dataRoot'),
+            subtitle: FutureBuilder(
+              future: FilePath.dataRoot,
+              builder: (context, snapshot) => Text(snapshot.data?.toString() ?? ''),
+            ),
+          ),
+          const Divider(),
+
+          ListTile(
+            title: const Text('Firebase'),
+            titleTextStyle: Theme.of(context).textTheme.titleLarge,
+          ),
           ListTile(
             onTap: () {
               FirebaseCrashlytics.instance.crash();

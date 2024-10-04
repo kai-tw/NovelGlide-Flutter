@@ -53,21 +53,21 @@ class CollectionAddForm extends StatelessWidget {
                   builder: (context, state) {
                     final isDisabled = state.name == null || state.name!.isEmpty;
                     return ElevatedButton.icon(
-                      onPressed: isDisabled ? null : () {
-                        if (formKey.currentState!.validate()) {
-                          formKey.currentState!.save();
+                      onPressed: isDisabled
+                          ? null
+                          : () async {
+                              if (formKey.currentState!.validate()) {
+                                final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
+                                final NavigatorState navigator = Navigator.of(context);
 
-                          CollectionData.fromName(state.name!).save();
+                                formKey.currentState!.save();
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(appLocalizations.collectionAddSuccess),
-                            ),
-                          );
+                                await CollectionData.create(state.name!);
 
-                          Navigator.of(context).pop();
-                        }
-                      },
+                                messenger.showSnackBar(SnackBar(content: Text(appLocalizations.collectionAddSuccess)));
+                                navigator.pop();
+                              }
+                            },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Theme.of(context).colorScheme.onPrimary,
                         backgroundColor: Theme.of(context).colorScheme.primary,

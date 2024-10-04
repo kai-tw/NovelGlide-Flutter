@@ -7,15 +7,14 @@ import '../../../data/theme_data_record.dart';
 class ThemeManagerCubit extends Cubit<ThemeManagerState> {
   final ScrollController scrollController = ScrollController();
 
-  factory ThemeManagerCubit() {
-    return ThemeManagerCubit._super(ThemeManagerState(
-      brightness: ThemeDataRecord.fromSettings().brightness,
-    ));
+  ThemeManagerCubit() : super(const ThemeManagerState());
+
+  Future<void> init() async {
+    final ThemeDataRecord record = await ThemeDataRecord.fromSettings();
+    emit(ThemeManagerState(brightness: record.brightness));
   }
 
-  ThemeManagerCubit._super(super.initialState);
-
-  void setBrightness(Brightness? brightness) async {
+  Future<void> setBrightness(Brightness? brightness) async {
     emit(ThemeManagerState(brightness: brightness));
   }
 

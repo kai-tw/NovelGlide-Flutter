@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:hive/hive.dart';
 
 import 'toolbox/file_path.dart';
 import 'data/theme_data_record.dart';
@@ -22,30 +21,26 @@ void main() async {
   MobileAds.instance.initialize();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Hive Initialization
-  Hive.defaultDirectory = await FilePath.hiveRoot;
-  Directory hiveDirectory = Directory(Hive.defaultDirectory!);
-  if (!hiveDirectory.existsSync()) {
-    hiveDirectory.createSync(recursive: true);
-  }
-
   // Library Initialization
   Directory libraryDirectory = Directory(await FilePath.libraryRoot);
   if (!libraryDirectory.existsSync()) {
     libraryDirectory.createSync(recursive: true);
   }
 
-  runApp(const App());
+  // Theme Initialization
+  ThemeDataRecord record = await ThemeDataRecord.fromSettings();
+  final ThemeData initTheme = record.themeId.getThemeDataByBrightness(brightness: record.brightness);
+
+  runApp(App(initTheme: initTheme));
 }
 
 class App extends StatelessWidget {
-  const App({super.key});
+  final ThemeData initTheme;
+
+  const App({super.key, required this.initTheme});
 
   @override
   Widget build(BuildContext context) {
-    final ThemeDataRecord record = ThemeDataRecord.fromSettings();
-    final ThemeData initTheme = record.themeId.getThemeDataByBrightness(brightness: record.brightness);
-
     return ThemeProvider(
       initTheme: initTheme,
       builder: (context, initTheme) {

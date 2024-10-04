@@ -24,7 +24,7 @@ class ThemeManager extends StatelessWidget {
       },
       child: ThemeSwitchingArea(
         child: BlocProvider(
-          create: (_) => ThemeManagerCubit(),
+          create: (_) => ThemeManagerCubit()..init(),
           child: const ThemeManagerScaffold(),
         ),
       ),

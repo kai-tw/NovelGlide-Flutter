@@ -14,7 +14,7 @@ class ThemeManagerSelectThemeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final String? themeName = _getThemeNameById(context, themeId);
-    final Brightness? brightness = ThemeDataRecord.fromSettings().brightness;
+    final Brightness brightness = Theme.of(context).brightness;
     final ThemeData themeData = themeId.getThemeDataByBrightness(brightness: brightness);
 
     return Column(
