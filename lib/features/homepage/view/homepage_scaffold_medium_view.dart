@@ -18,7 +18,7 @@ class HomepageScaffoldMediumView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+              margin: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
               decoration: BoxDecoration(
                 color: Colors.black87,
                 borderRadius: BorderRadius.circular(24.0),
