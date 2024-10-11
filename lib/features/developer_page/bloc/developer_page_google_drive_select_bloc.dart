@@ -1,16 +1,11 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
-import 'package:path/path.dart';
 
 import '../../../processor/google_drive_api.dart';
-import '../../../toolbox/backup_utility.dart';
-import '../../../toolbox/random_utility.dart';
 
-class BackupManagerGoogleDriveSelectCubit extends Cubit<BackupManagerGoogleDriveSelectState> {
-  BackupManagerGoogleDriveSelectCubit() : super(const BackupManagerGoogleDriveSelectState());
+class DeveloperPageGoogleDriveSelectCubit extends Cubit<DeveloperPageGoogleDriveSelectState> {
+  DeveloperPageGoogleDriveSelectCubit() : super(const DeveloperPageGoogleDriveSelectState());
 
   Future<void> init() async {
     try {
@@ -18,19 +13,19 @@ class BackupManagerGoogleDriveSelectCubit extends Cubit<BackupManagerGoogleDrive
     } catch (e) {
       switch (e.runtimeType) {
         case GoogleDriveSignInException _:
-          emit(const BackupManagerGoogleDriveSelectState(
+          emit(const DeveloperPageGoogleDriveSelectState(
             errorCode: BackupManagerGoogleDriveErrorCode.signInError,
           ));
           break;
 
         case GoogleDrivePermissionDeniedException _:
-          emit(const BackupManagerGoogleDriveSelectState(
+          emit(const DeveloperPageGoogleDriveSelectState(
             errorCode: BackupManagerGoogleDriveErrorCode.permissionDenied,
           ));
           break;
 
         default:
-          emit(const BackupManagerGoogleDriveSelectState(
+          emit(const DeveloperPageGoogleDriveSelectState(
             errorCode: BackupManagerGoogleDriveErrorCode.unknownError,
           ));
       }
@@ -39,36 +34,21 @@ class BackupManagerGoogleDriveSelectCubit extends Cubit<BackupManagerGoogleDrive
   }
 
   Future<void> refresh() async {
-    emit(const BackupManagerGoogleDriveSelectState(
+    emit(const DeveloperPageGoogleDriveSelectState(
       errorCode: BackupManagerGoogleDriveErrorCode.unInitialized,
     ));
     drive.FileList? fileList = await GoogleDriveApi.instance.list(
       spaces: 'appDataFolder',
-      orderBy: 'createdTime desc',
-      $fields: 'files(name,createdTime,id,mimeType)',
+      orderBy: 'modifiedTime desc',
+      $fields: 'files(name,createdTime,id,mimeType,modifiedTime)',
     );
     List<drive.File> files = fileList.files ?? [];
 
-    emit(BackupManagerGoogleDriveSelectState(
+    emit(DeveloperPageGoogleDriveSelectState(
       errorCode:
           files.isEmpty ? BackupManagerGoogleDriveErrorCode.emptyFolder : BackupManagerGoogleDriveErrorCode.normal,
       files: files,
     ));
-  }
-
-  Future<bool> restoreBackup(String fileId) async {
-    final Directory tempFolder = await RandomUtility.getAvailableTempFolder();
-    tempFolder.createSync(recursive: true);
-
-    final File zipFile = File(join(tempFolder.path, 'Library.zip'));
-    zipFile.createSync();
-
-    await GoogleDriveApi.instance.downloadFile(fileId, zipFile);
-
-    await BackupUtility.restoreBackup(tempFolder, zipFile);
-
-    tempFolder.deleteSync(recursive: true);
-    return true;
   }
 
   Future<bool> deleteFile(String fileId) async {
@@ -82,7 +62,7 @@ class BackupManagerGoogleDriveSelectCubit extends Cubit<BackupManagerGoogleDrive
   }
 }
 
-class BackupManagerGoogleDriveSelectState extends Equatable {
+class DeveloperPageGoogleDriveSelectState extends Equatable {
   final BackupManagerGoogleDriveErrorCode errorCode;
   final List<drive.File>? files;
 
@@ -92,16 +72,16 @@ class BackupManagerGoogleDriveSelectState extends Equatable {
         files,
       ];
 
-  const BackupManagerGoogleDriveSelectState({
+  const DeveloperPageGoogleDriveSelectState({
     this.errorCode = BackupManagerGoogleDriveErrorCode.unInitialized,
     this.files,
   });
 
-  BackupManagerGoogleDriveSelectState copyWith({
+  DeveloperPageGoogleDriveSelectState copyWith({
     BackupManagerGoogleDriveErrorCode? errorCode,
     List<drive.File>? files,
   }) {
-    return BackupManagerGoogleDriveSelectState(
+    return DeveloperPageGoogleDriveSelectState(
       errorCode: errorCode ?? this.errorCode,
       files: files ?? this.files,
     );

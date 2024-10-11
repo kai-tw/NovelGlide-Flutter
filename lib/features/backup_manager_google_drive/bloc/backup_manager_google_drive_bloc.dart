@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:googleapis/drive/v3.dart' as drive;
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../processor/google_drive_api.dart';
@@ -16,7 +18,16 @@ class BackupManagerGoogleDriveCubit extends Cubit<BackupManagerGoogleDriveState>
   Future<void> refresh() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final bool isEnabled = prefs.getBool('isBackupToGoogleDriveEnabled') ?? false;
-    setEnabled(isEnabled);
+    await setEnabled(isEnabled);
+
+    if (state.code == BackupManagerGoogleDriveCode.idle) {
+      final String? fileId = await GoogleDriveApi.instance.getFileId('Library.zip');
+
+      if (fileId != null) {
+        final drive.File metadata = await GoogleDriveApi.instance.getMetadataById(fileId, field: 'modifiedTime');
+        emit(state.copyWith(fileId: fileId, metadata: metadata));
+      }
+    }
   }
 
   Future<void> setEnabled(bool isEnabled) async {
@@ -54,25 +65,61 @@ class BackupManagerGoogleDriveCubit extends Cubit<BackupManagerGoogleDriveState>
 
     return true;
   }
+
+  Future<bool> deleteBackup() async {
+    if (state.fileId == null) {
+      return false;
+    }
+
+    await GoogleDriveApi.instance.deleteFile(state.fileId!);
+    return true;
+  }
+
+  Future<bool> restoreBackup() async {
+    if (state.fileId == null) {
+      return false;
+    }
+
+    final Directory tempFolder = await RandomUtility.getAvailableTempFolder();
+    tempFolder.createSync(recursive: true);
+
+    final File zipFile = File(join(tempFolder.path, 'Library.zip'));
+    zipFile.createSync();
+
+    await GoogleDriveApi.instance.downloadFile(state.fileId!, zipFile);
+
+    await BackupUtility.restoreBackup(tempFolder, zipFile);
+
+    tempFolder.deleteSync(recursive: true);
+    return true;
+  }
 }
 
 class BackupManagerGoogleDriveState extends Equatable {
   final BackupManagerGoogleDriveCode code;
+  final String? fileId;
+  final drive.File? metadata;
 
   @override
-  List<Object?> get props => [code];
+  List<Object?> get props => [code, fileId];
 
   const BackupManagerGoogleDriveState({
     this.code = BackupManagerGoogleDriveCode.disabled,
+    this.fileId,
+    this.metadata,
   });
 
   BackupManagerGoogleDriveState copyWith({
     BackupManagerGoogleDriveCode? code,
+    String? fileId,
+    drive.File? metadata,
   }) {
     return BackupManagerGoogleDriveState(
       code: code ?? this.code,
+      fileId: fileId ?? this.fileId,
+      metadata: metadata ?? this.metadata,
     );
   }
 }
 
-enum BackupManagerGoogleDriveCode { disabled, idle, creating, success, error }
+enum BackupManagerGoogleDriveCode { disabled, idle }

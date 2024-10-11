@@ -30,7 +30,7 @@ class BackupUtility {
     }
 
     // Create a zip file
-    final File zipFile = File(join(tempFolderPath, 'Library_${DateTime.now().toIso8601String()}.zip'));
+    final File zipFile = File(join(tempFolderPath, 'Library.zip'));
     zipFile.createSync();
 
     await ZipFile.createFromDirectory(sourceDir: libraryFolder, zipFile: zipFile);

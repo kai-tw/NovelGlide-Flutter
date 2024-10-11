@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
-import 'package:intl/intl.dart';
 
+import '../../toolbox/datetime_utility.dart';
 import '../common_components/common_back_button.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
-import 'backup_manager_google_drive_bottom_sheet.dart';
-import 'bloc/backup_manager_google_drive_select_bloc.dart';
+import 'developer_page_google_drive_bottom_sheet.dart';
+import 'bloc/developer_page_google_drive_select_bloc.dart';
 
-class BackupManagerGoogleDriveFileManager extends StatelessWidget {
-  const BackupManagerGoogleDriveFileManager({super.key});
+class DeveloperPageGoogleDriveFileManager extends StatelessWidget {
+  const DeveloperPageGoogleDriveFileManager({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => BackupManagerGoogleDriveSelectCubit()..init(),
+      create: (context) => DeveloperPageGoogleDriveSelectCubit()..init(),
       child: _BackupManagerGoogleDriveFileManager(key: key),
     );
   }
@@ -27,12 +26,11 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BackupManagerGoogleDriveSelectCubit cubit = BlocProvider.of<BackupManagerGoogleDriveSelectCubit>(context);
+    final DeveloperPageGoogleDriveSelectCubit cubit = BlocProvider.of<DeveloperPageGoogleDriveSelectCubit>(context);
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        title: Text(appLocalizations.backupManagerFileManagement),
+        title: const Text("Google Drive File Manager"),
       ),
       body: SafeArea(
         child: RefreshIndicator(
@@ -40,7 +38,7 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
           child: Scrollbar(
             child: CustomScrollView(
               slivers: [
-                BlocBuilder<BackupManagerGoogleDriveSelectCubit, BackupManagerGoogleDriveSelectState>(
+                BlocBuilder<DeveloperPageGoogleDriveSelectCubit, DeveloperPageGoogleDriveSelectState>(
                   buildWhen: (previous, current) => previous.errorCode != current.errorCode,
                   builder: (context, state) {
                     switch (state.errorCode) {
@@ -52,23 +50,23 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
                         );
 
                       case BackupManagerGoogleDriveErrorCode.signInError:
-                        return SliverFillRemaining(
+                        return const SliverFillRemaining(
                           child: Center(
-                            child: Text(appLocalizations.backupManagerGoogleDriveSignInFailed),
+                            child: Text("Failed to sign in to Google Drive"),
                           ),
                         );
 
                       case BackupManagerGoogleDriveErrorCode.permissionDenied:
-                        return SliverFillRemaining(
+                        return const SliverFillRemaining(
                           child: Center(
-                            child: Text(appLocalizations.fileSystemPermissionDenied),
+                            child: Text("Permission denied"),
                           ),
                         );
 
                       case BackupManagerGoogleDriveErrorCode.unknownError:
-                        return SliverFillRemaining(
+                        return const SliverFillRemaining(
                           child: Center(
-                            child: Text(appLocalizations.exceptionUnknownError),
+                            child: Text("Unknown error"),
                           ),
                         );
 
@@ -80,8 +78,7 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {
                               final drive.File file = state.files![index];
-                              final String? formatDate =
-                                  file.createdTime != null ? DateFormat().format(file.createdTime!) : null;
+                              final String formatDate = DateTimeUtility.format(file.modifiedTime);
                               IconData iconData;
 
                               switch (file.mimeType) {
@@ -104,12 +101,12 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
                                   child: Icon(iconData),
                                 ),
                                 title: Text(
-                                  file.name ?? appLocalizations.fileSystemUntitledFile,
+                                  file.name ?? "Untitled File",
                                   style: Theme.of(context).textTheme.bodyLarge,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 subtitle: Text(
-                                  appLocalizations.fileSystemCreateOnDate(formatDate!),
+                                  formatDate,
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 trailing: Padding(
@@ -122,13 +119,13 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
                                         showDragHandle: true,
                                         builder: (_) => BlocProvider.value(
                                           value: cubit,
-                                          child: BackupManagerGoogleDriveBottomSheet(file: file),
+                                          child: DeveloperPageGoogleDriveBottomSheet(file: file),
                                         ),
                                       );
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.more_vert,
-                                      semanticLabel: appLocalizations.backupManagerAccessibilityMore,
+                                      semanticLabel: "More",
                                     ),
                                   ),
                                 ),

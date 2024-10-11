@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 
 import '../common_components/common_loading.dart';
-import 'bloc/backup_manager_google_drive_select_bloc.dart';
+import 'bloc/developer_page_google_drive_select_bloc.dart';
 
-class BackupManagerGoogleDriveBottomSheet extends StatelessWidget {
+class DeveloperPageGoogleDriveBottomSheet extends StatelessWidget {
   final drive.File file;
 
-  const BackupManagerGoogleDriveBottomSheet({super.key, required this.file});
+  const DeveloperPageGoogleDriveBottomSheet({super.key, required this.file});
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BackupManagerGoogleDriveSelectCubit cubit = BlocProvider.of<BackupManagerGoogleDriveSelectCubit>(context);
+    final DeveloperPageGoogleDriveSelectCubit cubit = BlocProvider.of<DeveloperPageGoogleDriveSelectCubit>(context);
     return DraggableScrollableSheet(
       initialChildSize: 0.3,
       minChildSize: 0.25,
@@ -28,47 +26,9 @@ class BackupManagerGoogleDriveBottomSheet extends StatelessWidget {
             ListTile(
               contentPadding: const EdgeInsets.symmetric(horizontal: 32.0),
               leading: const Icon(Icons.folder_zip_rounded),
-              title: Text(file.name ?? appLocalizations.fileSystemUntitledFile),
+              title: Text(file.name ?? "Untitled File"),
             ),
             const Divider(),
-            ListTile(
-              onTap: () {
-                if (file.id != null) {
-                  Navigator.of(sheetContext).pop();
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (_) {
-                      return FutureBuilder(
-                        future: cubit.restoreBackup(file.id!),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return AlertDialog(
-                              icon: const Icon(Icons.check_rounded, color: Colors.green, size: 60.0),
-                              content: Text(appLocalizations.backupManagerRestoreSuccessfully),
-                              actions: [
-                                TextButton.icon(
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  icon: const Icon(Icons.close_rounded),
-                                  label: Text(appLocalizations.generalClose),
-                                ),
-                              ],
-                            );
-                          } else {
-                            return const AlertDialog(
-                              content: SizedBox.square(dimension: 100.0, child: CommonLoading()),
-                            );
-                          }
-                        },
-                      );
-                    },
-                  );
-                }
-              },
-              contentPadding: const EdgeInsets.symmetric(horizontal: 32.0),
-              leading: const Icon(Icons.restore_rounded),
-              title: Text(appLocalizations.backupManagerRestoreBackup),
-            ),
             ListTile(
               onTap: () {
                 if (file.id != null) {
@@ -83,7 +43,7 @@ class BackupManagerGoogleDriveBottomSheet extends StatelessWidget {
                           if (snapshot.hasData) {
                             return AlertDialog(
                               icon: const Icon(Icons.check_rounded, color: Colors.green, size: 60.0),
-                              content: Text(appLocalizations.backupManagerDeleteBackupSuccessfully),
+                              content: const Text("Delete Successfully"),
                               actions: [
                                 TextButton.icon(
                                   onPressed: () {
@@ -91,7 +51,7 @@ class BackupManagerGoogleDriveBottomSheet extends StatelessWidget {
                                     cubit.refresh();
                                   },
                                   icon: const Icon(Icons.close_rounded),
-                                  label: Text(appLocalizations.generalClose),
+                                  label: const Text("Close"),
                                 ),
                               ],
                             );
@@ -108,7 +68,7 @@ class BackupManagerGoogleDriveBottomSheet extends StatelessWidget {
               },
               contentPadding: const EdgeInsets.symmetric(horizontal: 32.0),
               leading: const Icon(Icons.delete_rounded),
-              title: Text(appLocalizations.backupManagerDeleteBackup),
+              title: const Text("Delete this file"),
             ),
             ListTile(
               onTap: () {
@@ -124,12 +84,12 @@ class BackupManagerGoogleDriveBottomSheet extends StatelessWidget {
                           if (snapshot.hasData) {
                             return AlertDialog(
                               icon: const Icon(Icons.check_rounded, color: Colors.green, size: 60.0),
-                              content: Text(appLocalizations.backupManagerGoogleDriveCopySuccessfully),
+                              content: const Text("Copy Successfully"),
                               actions: [
                                 TextButton.icon(
                                   onPressed: () => Navigator.of(context).pop(),
                                   icon: const Icon(Icons.close_rounded),
-                                  label: Text(appLocalizations.generalClose),
+                                  label: const Text("Close"),
                                 ),
                               ],
                             );
@@ -146,7 +106,7 @@ class BackupManagerGoogleDriveBottomSheet extends StatelessWidget {
               },
               contentPadding: const EdgeInsets.symmetric(horizontal: 32.0),
               leading: const Icon(Icons.copy_rounded),
-              title: Text(appLocalizations.backupManagerGoogleDriveCopy),
+              title: const Text("Copy to my drive"),
             ),
           ],
         );

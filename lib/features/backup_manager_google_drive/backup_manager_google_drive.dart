@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../toolbox/route_helper.dart';
-import '../common_components/common_loading.dart';
-import 'backup_manager_google_drive_file_manager.dart';
+import '../../toolbox/datetime_utility.dart';
+import '../backup_manager/widgets/backup_manager_action_list_tile.dart';
 import 'bloc/backup_manager_google_drive_bloc.dart';
 
 class BackupManagerGoogleDrive extends StatelessWidget {
@@ -35,24 +34,8 @@ class _BackupManagerGoogleDrive extends StatelessWidget {
         borderRadius: BorderRadius.circular(24.0),
       ),
       child: BlocBuilder<BackupManagerGoogleDriveCubit, BackupManagerGoogleDriveState>(
-        buildWhen: (previous, current) => previous.code != current.code,
+        buildWhen: (previous, current) => previous.code != current.code || previous.fileId != current.fileId,
         builder: (context, state) {
-          String createButtonText;
-
-          switch (state.code) {
-            case BackupManagerGoogleDriveCode.idle:
-              createButtonText = appLocalizations.backupManagerCreateNewBackup;
-              break;
-            case BackupManagerGoogleDriveCode.creating:
-              createButtonText = appLocalizations.backupManagerCreating;
-              break;
-            case BackupManagerGoogleDriveCode.success:
-              createButtonText = appLocalizations.backupManagerCreationSuccess;
-              break;
-            default:
-              createButtonText = appLocalizations.backupManagerCreationError;
-          }
-
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -63,52 +46,32 @@ class _BackupManagerGoogleDrive extends StatelessWidget {
                 onChanged: cubit.setEnabled,
               ),
               ListTile(
-                onTap: () {
-                  Navigator.of(context).push(RouteHelper.pushRoute(const BackupManagerGoogleDriveFileManager()));
-                },
-                leading: const Icon(Icons.folder),
-                title: Text(appLocalizations.backupManagerFileManagement),
-                trailing: const Icon(Icons.chevron_right),
-                enabled: state.code == BackupManagerGoogleDriveCode.idle,
+                leading: const Icon(Icons.calendar_today_rounded),
+                title: Text(appLocalizations.backupManagerLastTime),
+                subtitle: Text(DateTimeUtility.format(state.metadata?.modifiedTime, defaultValue: '-')),
               ),
-              ListTile(
-                leading: const Icon(Icons.add),
-                title: Text(createButtonText),
+              BackupManagerActionListTile(
+                iconData: Icons.backup_outlined,
+                titleLabel: appLocalizations.backupManagerCreate,
+                successLabel: appLocalizations.backupManagerCreateSuccessfully,
                 enabled: state.code == BackupManagerGoogleDriveCode.idle,
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (_) {
-                      return FutureBuilder(
-                        future: cubit.createBackup(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return AlertDialog(
-                              icon: const Icon(Icons.check_rounded, color: Colors.green, size: 60.0),
-                              content: Text(appLocalizations.backupManagerCreationSuccess),
-                              actions: [
-                                TextButton.icon(
-                                  onPressed: () => Navigator.of(context).pop(),
-                                  icon: const Icon(Icons.close_rounded),
-                                  label: Text(appLocalizations.generalClose),
-                                ),
-                              ],
-                            );
-                          } else {
-                            return const AlertDialog(
-                              content: SizedBox(
-                                width: 200.0,
-                                height: 100.0,
-                                child: CommonLoading(),
-                              ),
-                            );
-                          }
-                        },
-                      );
-                    },
-                  );
-                },
+                future: cubit.createBackup,
+                onComplete: cubit.refresh,
+              ),
+              BackupManagerActionListTile(
+                iconData: Icons.restore_rounded,
+                titleLabel: appLocalizations.backupManagerRestoreBackup,
+                successLabel: appLocalizations.backupManagerRestoreSuccessfully,
+                enabled: state.code == BackupManagerGoogleDriveCode.idle && state.fileId != null,
+                future: cubit.restoreBackup,
+              ),
+              BackupManagerActionListTile(
+                iconData: Icons.delete_outlined,
+                titleLabel: appLocalizations.backupManagerDeleteBackup,
+                successLabel: appLocalizations.backupManagerDeleteBackupSuccessfully,
+                enabled: state.code == BackupManagerGoogleDriveCode.idle && state.fileId != null,
+                future: cubit.deleteBackup,
+                onComplete: cubit.refresh,
               ),
             ],
           );

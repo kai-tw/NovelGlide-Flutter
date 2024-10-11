@@ -2,7 +2,9 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 
 import '../../toolbox/file_path.dart';
+import '../../toolbox/route_helper.dart';
 import '../common_components/common_back_button.dart';
+import 'developer_page_google_drive_file_manager.dart';
 
 class DeveloperPage extends StatelessWidget {
   const DeveloperPage({super.key});
@@ -67,11 +69,20 @@ class DeveloperPage extends StatelessWidget {
             titleTextStyle: Theme.of(context).textTheme.titleLarge,
           ),
           ListTile(
-            onTap: () {
-              FirebaseCrashlytics.instance.crash();
-            },
+            onTap: () => FirebaseCrashlytics.instance.crash(),
             leading: const Icon(Icons.error_outline_rounded),
             title: const Text('Force crash'),
+          ),
+          const Divider(),
+
+          ListTile(
+            title: const Text('Google Drive'),
+            titleTextStyle: Theme.of(context).textTheme.titleLarge,
+          ),
+          ListTile(
+            onTap: () => Navigator.of(context).push(RouteHelper.pushRoute(const DeveloperPageGoogleDriveFileManager())),
+            leading: const Icon(Icons.folder),
+            title: const Text('File Browser'),
           ),
         ],
       ),
