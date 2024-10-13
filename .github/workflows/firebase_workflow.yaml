@@ -11,6 +11,7 @@ on:
 jobs:
   build:
     runs-on: macos-latest
+    environment: Firebase App Distribution
     steps:
       - uses: actions/checkout@v4
 
@@ -46,7 +47,7 @@ jobs:
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.ANDROID_APP_ID }}
-          serviceAccountCredentials: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: build/app/outputs/bundle/release/app-release.aab
 
