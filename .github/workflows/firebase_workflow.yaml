@@ -44,7 +44,7 @@ jobs:
         run: flutter build appbundle --release
 
       - name: Upload AAB to Firebase
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        uses: emertozd/Firebase-Distribution-Github-Action@v2
         with:
           appId: ${{ secrets.ANDROID_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
