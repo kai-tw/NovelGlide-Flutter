@@ -29,20 +29,21 @@ void main() async {
 
   // Theme Initialization
   ThemeDataRecord record = await ThemeDataRecord.fromSettings();
-  final ThemeData initTheme = record.themeId.getThemeDataByBrightness(brightness: record.brightness);
+  final ThemeData initTheme =
+      record.themeId.getThemeDataByBrightness(brightness: record.brightness);
 
-  runApp(App(initTheme: initTheme));
+  runApp(App(initialTheme: initTheme));
 }
 
 class App extends StatelessWidget {
-  final ThemeData initTheme;
+  final ThemeData initialTheme;
 
-  const App({super.key, required this.initTheme});
+  const App({super.key, required this.initialTheme});
 
   @override
   Widget build(BuildContext context) {
     return ThemeProvider(
-      initTheme: initTheme,
+      initTheme: initialTheme,
       builder: (context, initTheme) {
         return MaterialApp(
           title: 'NovelGlide',
@@ -55,8 +56,10 @@ class App extends StatelessWidget {
           ],
           supportedLocales: const [
             Locale('en'),
-            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
-            Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
+            Locale.fromSubtags(
+                languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
+            Locale.fromSubtags(
+                languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
           ],
           initialRoute: "/",
           routes: {

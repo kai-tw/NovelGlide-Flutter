@@ -24,7 +24,8 @@ void main() {
 
     // Package Initialization
     MobileAds.instance.initialize();
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
 
     // Library Initialization
     Directory libraryDirectory = Directory(await FilePath.libraryRoot);
@@ -34,10 +35,11 @@ void main() {
 
     // Theme Initialization
     ThemeDataRecord record = await ThemeDataRecord.fromSettings();
-    final ThemeData initTheme = record.themeId.getThemeDataByBrightness(brightness: record.brightness);
+    final ThemeData initTheme =
+        record.themeId.getThemeDataByBrightness(brightness: record.brightness);
 
     // Build our app and trigger a frame.
-    await tester.pumpWidget(App(initTheme: initTheme));
+    await tester.pumpWidget(App(initialTheme: initTheme));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
