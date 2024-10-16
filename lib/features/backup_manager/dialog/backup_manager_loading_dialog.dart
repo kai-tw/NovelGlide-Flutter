@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../common_components/common_loading.dart';
 
+/// A dialog that displays a loading indicator for backup management operations.
 class BackupManagerLoadingDialog extends StatelessWidget {
   const BackupManagerLoadingDialog({super.key});
 

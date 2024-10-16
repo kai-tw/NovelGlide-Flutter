@@ -32,7 +32,7 @@ void main() async {
 
   // Theme Initialization
   ThemeDataRecord record = await ThemeDataRecord.fromSettings();
-  final ThemeData initTheme =
+  final ThemeData initialTheme =
       record.themeId.getThemeDataByBrightness(brightness: record.brightness);
 
   // Log Initialization
@@ -44,14 +44,10 @@ void main() async {
     );
   } else {
     Logger.level = Level.all;
-    Logger.addLogListener(
-      (event) =>
-          debugPrint('[${event.time}] <${event.level.name}> ${event.message}'),
-    );
   }
 
   // Start App
-  runApp(App(initialTheme: initTheme));
+  runApp(App(initialTheme: initialTheme));
 }
 
 class App extends StatelessWidget {
@@ -63,10 +59,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return ThemeProvider(
       initTheme: initialTheme,
-      builder: (context, initTheme) {
+      builder: (context, initialTheme) {
         return MaterialApp(
           title: 'NovelGlide',
-          theme: initTheme,
+          theme: initialTheme,
           localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,

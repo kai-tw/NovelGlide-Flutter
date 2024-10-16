@@ -1,6 +1,7 @@
 import 'package:epubx/epubx.dart' as epub;
 import 'package:equatable/equatable.dart';
 
+/// Represents a chapter with a title, optional file name, and a list of subchapters.
 class ChapterData extends Equatable {
   final String title;
   final String? fileName;
@@ -15,12 +16,15 @@ class ChapterData extends Equatable {
     this.subChapterList,
   });
 
-  factory ChapterData.fromEpubChapter(epub.EpubChapter epubChapter, int ordinalNumber) {
+  /// Factory constructor to create a [ChapterData] instance from an [epub.EpubChapter].
+  factory ChapterData.fromEpubChapter(
+      epub.EpubChapter epubChapter, int ordinalNumber) {
     return ChapterData(
       title: epubChapter.Title ?? "",
       fileName: epubChapter.ContentFileName ?? "",
-      subChapterList:
-          (epubChapter.SubChapters ?? []).map((e) => ChapterData.fromEpubChapter(e, ordinalNumber)).toList(),
+      subChapterList: (epubChapter.SubChapters ?? [])
+          .map((e) => ChapterData.fromEpubChapter(e, ordinalNumber))
+          .toList(),
     );
   }
 }

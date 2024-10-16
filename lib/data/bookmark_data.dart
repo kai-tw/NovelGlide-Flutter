@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import '../toolbox/datetime_utility.dart';
 import '../toolbox/file_path.dart';
 
+/// Represents a bookmark with its metadata and operations.
 class BookmarkData {
   String bookPath;
   final String bookName;
@@ -14,8 +15,10 @@ class BookmarkData {
   final String? startCfi;
   final DateTime savedTime;
 
+  /// Calculates the number of days passed since the bookmark was saved.
   int get daysPassed => DateTimeUtility.daysPassed(savedTime);
 
+  /// Constructor for creating a BookmarkData instance.
   BookmarkData({
     required this.bookPath,
     required this.bookName,
@@ -25,10 +28,13 @@ class BookmarkData {
     required this.savedTime,
   });
 
+  /// Returns the path to the JSON file storing bookmarks.
   static Future<String> get jsonPath async => join(await FilePath.dataRoot, 'bookmark.json');
 
+  /// Returns the File object for the JSON file storing bookmarks.
   static Future<File> get jsonFile async => File(await jsonPath);
 
+  /// Reads and returns the JSON data from the bookmark file.
   static Future<Map<String, dynamic>> get jsonData async {
     final File dataFile = await jsonFile;
     dataFile.createSync(recursive: true);
@@ -39,6 +45,7 @@ class BookmarkData {
     return jsonDecode(jsonString);
   }
 
+  /// Factory constructor to create a BookmarkData instance from a JSON map.
   factory BookmarkData.fromJson(Map<String, dynamic> map) {
     return BookmarkData(
       bookPath: map['bookPath'] ?? '',
@@ -50,12 +57,14 @@ class BookmarkData {
     );
   }
 
+  /// Retrieves a bookmark by its book path.
   static Future<BookmarkData?> get(String bookPath) async {
     final Map<String, dynamic> json = await jsonData;
     bookPath = isAbsolute(bookPath) ? relative(bookPath, from: await FilePath.libraryRoot) : bookPath;
     return json.containsKey(bookPath) ? BookmarkData.fromJson(json[bookPath]!) : null;
   }
 
+  /// Retrieves a list of all bookmarks.
   static Future<List<BookmarkData>> getList() async {
     final Map<String, dynamic> json = await jsonData;
     List<BookmarkData> retList = [];
@@ -71,6 +80,7 @@ class BookmarkData {
     return retList;
   }
 
+  /// Saves the current bookmark to the JSON file.
   void save() async {
     final File dataFile = await jsonFile;
     final Map<String, dynamic> json = await jsonData;
@@ -79,6 +89,7 @@ class BookmarkData {
     dataFile.writeAsStringSync(jsonEncode(json));
   }
 
+  /// Deletes the current bookmark from the JSON file.
   Future<void> delete() async {
     final File dataFile = await jsonFile;
     final Map<String, dynamic> json = await jsonData;
@@ -86,6 +97,7 @@ class BookmarkData {
     dataFile.writeAsStringSync(jsonEncode(json));
   }
 
+  /// Creates a copy of the current bookmark with optional new values.
   BookmarkData copyWith({
     String? bookPath,
     String? bookName,
@@ -104,6 +116,7 @@ class BookmarkData {
     );
   }
 
+  /// Converts the bookmark data to a JSON map.
   Map<String, dynamic> toJson() {
     return {
       'bookPath': bookPath,
@@ -115,6 +128,7 @@ class BookmarkData {
     };
   }
 
+  /// Returns a JSON string representation of the bookmark.
   @override
   String toString() => jsonEncode(toJson());
 }

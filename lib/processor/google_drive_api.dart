@@ -10,6 +10,7 @@ import 'package:path/path.dart';
 
 import '../toolbox/mime_resolver.dart';
 
+/// A singleton class to interact with Google Drive API.
 class GoogleDriveApi {
   static GoogleDriveApi get instance => _instance;
   static final GoogleDriveApi _instance = GoogleDriveApi._internal();
@@ -21,10 +22,13 @@ class GoogleDriveApi {
   static final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: _scopes);
   drive.DriveApi? driveApi;
 
+  /// Factory constructor to return the singleton instance.
   factory GoogleDriveApi() => _instance;
 
+  /// Internal constructor for singleton pattern.
   GoogleDriveApi._internal();
 
+  /// Signs in the user and initializes the Drive API client.
   Future<void> signIn() async {
     if (await _googleSignIn.signInSilently() == null && await _googleSignIn.signIn() == null) {
       throw GoogleDriveSignInException();
@@ -43,13 +47,16 @@ class GoogleDriveApi {
     }
   }
 
+  /// Signs out the user and clears the Drive API client.
   Future<void> signOut() async {
     await _googleSignIn.signOut();
     driveApi = null;
   }
 
+  /// Checks if the user is signed in and the Drive API client is initialized.
   Future<bool> isSignedIn() async => await _googleSignIn.isSignedIn() && driveApi != null;
 
+  /// Lists files in Google Drive with optional query parameters.
   Future<drive.FileList> list({
     String? corpora,
     String? driveId,
@@ -86,26 +93,31 @@ class GoogleDriveApi {
     );
   }
 
+  /// Retrieves the file ID for a given file name in the app data folder.
   Future<String?> getFileId(String fileName) async {
     final drive.FileList fileList =
         await driveApi!.files.list(spaces: 'appDataFolder', q: "name = '$fileName'", pageSize: 1);
     return fileList.files?.isNotEmpty ?? false ? fileList.files?.first.id : null;
   }
 
+  /// Retrieves metadata for a file by its ID.
   Future<drive.File> getMetadataById(String fileId, {String? field}) async {
     return await driveApi!.files.get(fileId, $fields: field) as drive.File;
   }
 
+  /// Copies a file to specified parent folders.
   Future<void> copyFile(String fileId, List<String> parents) async {
     drive.File request = drive.File();
     request.parents = parents;
     await driveApi!.files.copy(request, fileId);
   }
 
+  /// Deletes a file by its ID.
   Future<void> deleteFile(String fileId) async {
     await driveApi!.files.delete(fileId);
   }
 
+  /// Uploads a file to Google Drive, updating if it already exists.
   Future<void> uploadFile(String spaces, File file) async {
     final String? fileId = await getFileId(basename(file.path));
 
@@ -123,6 +135,7 @@ class GoogleDriveApi {
     }
   }
 
+  /// Downloads a file from Google Drive and saves it locally.
   Future<void> downloadFile(String fileId, File saveFile) async {
     Completer completer = Completer();
     List<int> buffer = [];
@@ -146,6 +159,8 @@ class GoogleDriveApi {
   }
 }
 
+/// Exception thrown when Google Drive sign-in fails.
 class GoogleDriveSignInException implements Exception {}
 
+/// Exception thrown when Google Drive permissions are denied.
 class GoogleDrivePermissionDeniedException implements Exception {}

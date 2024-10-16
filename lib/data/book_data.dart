@@ -11,19 +11,25 @@ import 'bookmark_data.dart';
 import 'chapter_data.dart';
 import 'collection_data.dart';
 
+/// Represents a book with its metadata and operations.
 class BookData {
   final String filePath;
   String name;
   Image? coverImage;
 
+  /// Returns the file object for the book.
   File get file => File(filePath);
 
+  /// Checks if the book file exists.
   bool get isExist => file.existsSync();
 
+  /// Returns the last modified date of the book file.
   DateTime get modifiedDate => file.statSync().modified;
 
+  /// Constructor for creating a BookData instance.
   BookData({required this.filePath, required this.name, this.coverImage});
 
+  /// Factory constructor to create a BookData instance from an EpubBook.
   factory BookData.fromEpubBook(String path, epub.EpubBook epubBook) {
     return BookData(
       filePath: path,
@@ -32,7 +38,7 @@ class BookData {
     );
   }
 
-  /// If the book is large, it will be an intensive task to read the whole book.
+  /// Loads an EpubBook asynchronously, potentially a heavy operation.
   static Future<epub.EpubBook> loadEpubBook(String filePath) async {
     final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
     return await compute<Map<String, dynamic>, epub.EpubBook>(_loadEpubBookIsolate, {
@@ -41,6 +47,7 @@ class BookData {
     });
   }
 
+  /// Isolate function to load an EpubBook.
   static Future<epub.EpubBook> _loadEpubBookIsolate(Map<String, dynamic> message) async {
     final RootIsolateToken rootIsolateToken = message["rootIsolateToken"];
     final String path = message["path"];
@@ -48,15 +55,18 @@ class BookData {
     return await epub.EpubReader.readBook(File(path).readAsBytesSync());
   }
 
+  /// Retrieves a list of chapters from the book.
   Future<List<ChapterData>> getChapterList() async {
     final epub.EpubBook epubBook = await loadEpubBook(filePath);
     return epubBook.Chapters?.map((e) => ChapterData.fromEpubChapter(e, 0)).toList() ?? [];
   }
 
+  /// Finds a chapter by its file name.
   Future<ChapterData?> findChapterByFileName(String fileName) async {
     return _findChapterByFileName(await getChapterList(), fileName);
   }
 
+  /// Helper method to find a chapter by file name recursively.
   ChapterData? _findChapterByFileName(List<ChapterData>? chapterList, String fileName) {
     ChapterData? target = chapterList?.firstWhereOrNull((element) => element.fileName == fileName);
     if (target != null) {
@@ -68,17 +78,17 @@ class BookData {
     return target;
   }
 
-  /// Delete the book
+  /// Deletes the book and associated bookmarks and collections.
   Future<bool> delete() async {
     if (file.existsSync()) {
       file.deleteSync();
     }
 
-    /// Search the bookmark and delete it.
+    // Delete associated bookmarks.
     Iterable<BookmarkData> bookmarkList = (await BookmarkData.getList()).where((element) => element.bookPath == filePath);
     await Future.wait(bookmarkList.map((e) => e.delete()));
 
-    /// Search the collection and delete it.
+    // Delete associated collections.
     Iterable<CollectionData> collectionList =
         (await CollectionData.getList()).where((element) => element.pathList.contains(filePath));
     for (CollectionData data in collectionList) {
@@ -89,6 +99,7 @@ class BookData {
     return !file.existsSync();
   }
 
+  /// Provides a comparison function for sorting books.
   static int Function(BookData, BookData) sortCompare(SortOrderCode sortOrder, bool isAscending) {
     switch (sortOrder) {
       case SortOrderCode.modifiedDate:
