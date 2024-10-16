@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data/reader_settings_data.dart';
@@ -15,6 +16,7 @@ class ReaderWebViewHandler {
   late final ReaderWebServerHandler _serverHandler = _readerCubit.serverHandler;
   String? _dest;
   bool _isGotoBookmark = false;
+  final Logger logger = Logger();
 
   ReaderWebViewHandler(this._readerCubit);
 
@@ -26,16 +28,17 @@ class ReaderWebViewHandler {
     controller.setJavaScriptMode(JavaScriptMode.unrestricted);
     controller.setBackgroundColor(Colors.transparent);
     controller.setNavigationDelegate(NavigationDelegate(
-      onPageStarted: (String url) => debugPrint('Page started loading: $url'),
+      onPageStarted: (String url) => logger.i('Page started loading: $url'),
       onPageFinished: _onPageFinished,
       onNavigationRequest: _onNavigationRequest,
-      onWebResourceError: (error) => debugPrint('Web resource error: $error'),
-      onHttpError: (error) => debugPrint('HTTP error: $error'),
+      onWebResourceError: (error) => logger.i('Web resource error: $error'),
+      onHttpError: (error) => logger.i('HTTP error: $error'),
     ));
   }
 
   Future<void> addAppApiChannel() async {
-    return controller.addJavaScriptChannel('appApi', onMessageReceived: _readerCubit.onAppApiMessage);
+    return controller.addJavaScriptChannel('appApi',
+        onMessageReceived: _readerCubit.onAppApiMessage);
   }
 
   Future<void> request() async {
@@ -45,7 +48,8 @@ class ReaderWebViewHandler {
   void sendThemeData(ThemeData themeData, ReaderSettingsData settings) {
     final Map<String, dynamic> json = {
       "body": {
-        "color": CssHelper.convertColorToCssRgba(themeData.colorScheme.onSurface),
+        "color":
+            CssHelper.convertColorToCssRgba(themeData.colorScheme.onSurface),
         "font-size": "${settings.fontSize.toStringAsFixed(1)}px",
         "line-height": settings.lineHeight.toStringAsFixed(1),
       },
@@ -53,27 +57,32 @@ class ReaderWebViewHandler {
         "color": "inherit !important",
       }
     };
-    controller.runJavaScript('window.readerApi.setThemeData(${jsonEncode(json)})');
+    controller
+        .runJavaScript('window.readerApi.setThemeData(${jsonEncode(json)})');
   }
 
   void _onPageFinished(String url) async {
-    debugPrint('Page finished loading: $url');
+    logger.i('Page finished loading: $url');
 
     // Construct the appApi channel
     controller.runJavaScript('window.readerApi.setAppApi()');
 
     if (_dest != null) {
       controller.runJavaScript('window.readerApi.main("$_dest")');
-    } else if (_readerCubit.state.bookmarkData?.startCfi != null && _isGotoBookmark ||
+    } else if (_readerCubit.state.bookmarkData?.startCfi != null &&
+            _isGotoBookmark ||
         _readerCubit.state.readerSettings.autoSave) {
-      controller.runJavaScript('window.readerApi.main("${_readerCubit.state.bookmarkData!.startCfi}")');
+      controller.runJavaScript(
+          'window.readerApi.main("${_readerCubit.state.bookmarkData!.startCfi}")');
     } else {
       controller.runJavaScript('window.readerApi.main()');
     }
   }
 
   FutureOr<NavigationDecision> _onNavigationRequest(NavigationRequest request) {
-    return _serverHandler.isRunning && request.url.startsWith(_serverHandler.url) || request.url == 'about:srcdoc'
+    return _serverHandler.isRunning &&
+                request.url.startsWith(_serverHandler.url) ||
+            request.url == 'about:srcdoc'
         ? NavigationDecision.navigate
         : NavigationDecision.prevent;
   }

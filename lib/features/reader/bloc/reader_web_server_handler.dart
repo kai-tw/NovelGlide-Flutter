@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 
@@ -15,12 +15,15 @@ class ReaderWebServerHandler {
   bool get isRunning => _server != null;
   String get url => 'http://$_host:$_port';
 
+  final Logger logger = Logger();
+
   ReaderWebServerHandler(this._bookPath);
 
   Future<void> start() async {
-    final Handler handler = const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
+    final Handler handler =
+        const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
     _server = await shelf_io.serve(handler, _host, _port);
-    debugPrint('Server listening on port ${_server?.port}');
+    logger.i('Server listening on port ${_server?.port}');
     _server?.autoCompress = true;
   }
 
@@ -36,12 +39,16 @@ class ReaderWebServerHandler {
       case 'index.js':
         return Response.ok(
           await rootBundle.loadString('assets/reader_root/index.js'),
-          headers: {HttpHeaders.contentTypeHeader: 'text/javascript; charset=utf-8'},
+          headers: {
+            HttpHeaders.contentTypeHeader: 'text/javascript; charset=utf-8'
+          },
         );
 
       case 'main.css':
         String css = await rootBundle.loadString('assets/reader_root/main.css');
-        return Response.ok(css, headers: {HttpHeaders.contentTypeHeader: 'text/css; charset=utf-8'});
+        return Response.ok(css, headers: {
+          HttpHeaders.contentTypeHeader: 'text/css; charset=utf-8'
+        });
 
       case 'book.epub':
         return Response.ok(
@@ -58,7 +65,7 @@ class ReaderWebServerHandler {
     if (_server != null) {
       await _server?.close();
       _server = null;
-      debugPrint('Server closed');
+      logger.i('Server closed');
     }
   }
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -20,7 +21,8 @@ import 'reader_web_view_handler.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
   /// Web Server
-  late final ReaderWebServerHandler serverHandler = ReaderWebServerHandler(bookPath);
+  late final ReaderWebServerHandler serverHandler =
+      ReaderWebServerHandler(bookPath);
 
   /// WebView
   late final ReaderWebViewHandler webViewHandler = ReaderWebViewHandler(this);
@@ -36,16 +38,23 @@ class ReaderCubit extends Cubit<ReaderState> {
   late final ReaderGestureHandler gestureHandler = ReaderGestureHandler(this);
 
   /// AppLifecycleListener
-  late final ReaderLifecycleHandler lifecycleHandler = ReaderLifecycleHandler(this);
+  late final ReaderLifecycleHandler lifecycleHandler =
+      ReaderLifecycleHandler(this);
 
-  ReaderCubit({required this.bookPath, this.bookData, required this.currentTheme})
-      : super(ReaderState(bookName: bookData?.name ?? '', readerSettings: const ReaderSettingsData()));
+  ReaderCubit(
+      {required this.bookPath, this.bookData, required this.currentTheme})
+      : super(ReaderState(
+            bookName: bookData?.name ?? '',
+            readerSettings: const ReaderSettingsData()));
 
   /// Client initialization.
   Future<void> initialize({String? dest, bool isGotoBookmark = false}) async {
     /// Read the book if it is not read yet.
-    final absolutePath = isAbsolute(bookPath) ? bookPath : join(await FilePath.libraryRoot, bookPath);
-    bookData ??= BookData.fromEpubBook(absolutePath, await BookData.loadEpubBook(absolutePath));
+    final absolutePath = isAbsolute(bookPath)
+        ? bookPath
+        : join(await FilePath.libraryRoot, bookPath);
+    bookData ??= BookData.fromEpubBook(
+        absolutePath, await BookData.loadEpubBook(absolutePath));
 
     if (!isClosed) {
       emit(state.copyWith(
@@ -94,7 +103,8 @@ class ReaderCubit extends Cubit<ReaderState> {
             searchCubit!.setState = searchCubit!.state.copyWith(
               code: LoadingStateCode.loaded,
               searchResultList: (jsonValue['searchResultList'] ?? [])
-                  .map<ReaderSearchResult>((e) => ReaderSearchResult(cfi: e['cfi'], excerpt: e['excerpt']))
+                  .map<ReaderSearchResult>((e) =>
+                      ReaderSearchResult(cfi: e['cfi'], excerpt: e['excerpt']))
                   .toList(),
             );
           }
@@ -106,21 +116,24 @@ class ReaderCubit extends Cubit<ReaderState> {
         break;
 
       case 'log':
-        debugPrint(request['data']);
+        Logger().i(request['data']);
         break;
 
       default:
-        debugPrint('Unknown app api message: $message');
+        Logger().i('Unknown app api message: $message');
     }
   }
 
   /// ******* Communication ********
 
-  void prevPage() => webViewHandler.controller.runJavaScript('window.readerApi.prevPage()');
+  void prevPage() =>
+      webViewHandler.controller.runJavaScript('window.readerApi.prevPage()');
 
-  void nextPage() => webViewHandler.controller.runJavaScript('window.readerApi.nextPage()');
+  void nextPage() =>
+      webViewHandler.controller.runJavaScript('window.readerApi.nextPage()');
 
-  void goto(String cfi) => webViewHandler.controller.runJavaScript('window.readerApi.goto("$cfi")');
+  void goto(String cfi) =>
+      webViewHandler.controller.runJavaScript('window.readerApi.goto("$cfi")');
 
   void sendThemeData([ThemeData? newTheme]) {
     currentTheme = newTheme ?? currentTheme;
@@ -161,7 +174,10 @@ class ReaderCubit extends Cubit<ReaderState> {
     final BookmarkData data = BookmarkData(
       bookPath: bookPath,
       bookName: state.bookName,
-      chapterTitle: (await bookData?.findChapterByFileName(state.chapterFileName))?.title ?? '-',
+      chapterTitle:
+          (await bookData?.findChapterByFileName(state.chapterFileName))
+                  ?.title ??
+              '-',
       chapterFileName: state.chapterFileName,
       startCfi: state.startCfi,
       savedTime: DateTime.now(),
@@ -173,7 +189,8 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   Future<void> scrollToBookmark() async {
-    final BookmarkData? bookmarkData = state.bookmarkData ?? await BookmarkData.get(state.bookName);
+    final BookmarkData? bookmarkData =
+        state.bookmarkData ?? await BookmarkData.get(state.bookName);
     if (bookmarkData?.startCfi != null) {
       goto(bookmarkData!.startCfi!);
     }

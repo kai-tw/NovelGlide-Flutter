@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:logger/logger.dart';
 
 import 'toolbox/file_path.dart';
 import 'data/theme_data_record.dart';
@@ -32,6 +35,22 @@ void main() async {
   final ThemeData initTheme =
       record.themeId.getThemeDataByBrightness(brightness: record.brightness);
 
+  // Log Initialization
+  if (kReleaseMode) {
+    Logger.level = Level.info;
+    Logger.addLogListener(
+      (event) => FirebaseCrashlytics.instance
+          .log('[${event.time}] <${event.level.name}> ${event.message}'),
+    );
+  } else {
+    Logger.level = Level.all;
+    Logger.addLogListener(
+      (event) =>
+          debugPrint('[${event.time}] <${event.level.name}> ${event.message}'),
+    );
+  }
+
+  // Start App
   runApp(App(initialTheme: initTheme));
 }
 
