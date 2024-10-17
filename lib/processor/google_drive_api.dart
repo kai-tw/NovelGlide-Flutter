@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:googleapis_auth/googleapis_auth.dart';
+import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 
+import '../exceptions/exception_template.dart';
 import '../toolbox/mime_resolver.dart';
 
 /// A singleton class to interact with Google Drive API.
@@ -147,13 +148,20 @@ class GoogleDriveApi {
 
   /// Downloads a file from Google Drive and saves it locally.
   Future<void> downloadFile(String fileId, File saveFile) async {
-    Completer completer = Completer();
+    final logger = Logger();
+    final completer = Completer();
     List<int> buffer = [];
 
     drive.Media media = await GoogleDriveApi.instance.driveApi!.files.get(
       fileId,
       downloadOptions: drive.DownloadOptions.fullMedia,
     ) as drive.Media;
+
+    logger.i(
+      'Google Drive Api: Starting file download.\n'
+      '                  File ID: $fileId\n'
+      '                  Destination Path: ${saveFile.path}',
+    );
 
     media.stream.listen((List<int> data) {
       buffer.addAll(data);
@@ -162,15 +170,25 @@ class GoogleDriveApi {
       buffer.clear();
       completer.complete();
     }, onError: (e) {
-      FirebaseCrashlytics.instance.recordError(e, StackTrace.current);
+      logger.e('Google Drive Api: $e');
     });
 
     await completer.future;
+
+    logger.i('Google Drive Api: Download File Complete.');
+    logger.close();
   }
 }
 
 /// Exception thrown when Google Drive sign-in fails.
-class GoogleDriveSignInException implements Exception {}
+class GoogleDriveSignInException extends ExceptionTemplate {
+  @override
+  final message = 'Google Drive sign-in failed. Please try again.';
+}
 
 /// Exception thrown when Google Drive permissions are denied.
-class GoogleDrivePermissionDeniedException implements Exception {}
+class GoogleDrivePermissionDeniedException implements ExceptionTemplate {
+  @override
+  final message =
+      'Google Drive permissions were denied. Please check your settings and try again.';
+}
