@@ -19,8 +19,6 @@ class BackupManagerGoogleDrive extends StatelessWidget {
 
   /// Builds the main content of the Backup Manager.
   Widget _buildContent(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-
     return Container(
       margin: const EdgeInsets.all(16.0),
       padding: const EdgeInsets.all(24.0),
@@ -29,101 +27,125 @@ class BackupManagerGoogleDrive extends StatelessWidget {
         color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(24.0),
       ),
-      child: BlocBuilder<BackupManagerGoogleDriveCubit,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _buildSwitcher(context),
+          _buildLastBackupTile(context),
+          _buildCreateActionTile(context),
+          _buildRestoreActionTile(context),
+          _buildDeleteActionTile(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSwitcher(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context);
+    return BlocBuilder<BackupManagerGoogleDriveCubit,
+        BackupManagerGoogleDriveState>(
+      buildWhen: (prev, curr) => prev.code != curr.code,
+      builder: (context, state) {
+        return SwitchListTile(
+          title: Text(
+            appLocalizations?.backupManagerGoogleDriveBackup ??
+                'Google Drive Backup',
+          ),
+          secondary: const Icon(Icons.cloud_rounded),
+          value: state.code == BackupManagerGoogleDriveCode.idle,
+          onChanged: (value) =>
+              BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
+                  .setEnabled(value),
+        );
+      },
+    );
+  }
+
+  /// Builds the list tile showing the last backup time.
+  Widget _buildLastBackupTile(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context);
+    return ListTile(
+      leading: const Icon(Icons.calendar_today_rounded),
+      title: Text(
+        appLocalizations?.backupManagerLastTime ?? 'Last backup time',
+      ),
+      subtitle: BlocBuilder<BackupManagerGoogleDriveCubit,
           BackupManagerGoogleDriveState>(
-        buildWhen: (previous, current) =>
-            previous.code != current.code || previous.fileId != current.fileId,
+        buildWhen: (prev, curr) =>
+            prev.metadata?.modifiedTime != curr.metadata?.modifiedTime,
         builder: (context, state) {
-          return _buildColumn(context, appLocalizations, state);
+          return Text(
+            DateTimeUtility.format(state.metadata?.modifiedTime,
+                defaultValue: '-'),
+          );
         },
       ),
     );
   }
 
-  /// Builds the column containing all the UI elements.
-  Widget _buildColumn(
-    BuildContext context,
-    AppLocalizations appLocalizations,
-    BackupManagerGoogleDriveState state,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _buildSwitcher(context, appLocalizations, state),
-        _buildLastBackupTile(appLocalizations, state),
-        _buildActionTiles(context, appLocalizations, state),
-      ],
-    );
-  }
-
-  Widget _buildSwitcher(
-    BuildContext context,
-    AppLocalizations appLocalizations,
-    BackupManagerGoogleDriveState state,
-  ) {
-    return SwitchListTile(
-      title: Text(appLocalizations.backupManagerGoogleDriveBackup),
-      secondary: const Icon(Icons.cloud_rounded),
-      value: state.code == BackupManagerGoogleDriveCode.idle,
-      onChanged: (value) =>
-          BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-              .setEnabled(value),
-    );
-  }
-
-  /// Builds the list tile showing the last backup time.
-  Widget _buildLastBackupTile(
-    AppLocalizations appLocalizations,
-    BackupManagerGoogleDriveState state,
-  ) {
-    return ListTile(
-      leading: const Icon(Icons.calendar_today_rounded),
-      title: Text(appLocalizations.backupManagerLastTime),
-      subtitle: Text(
-        DateTimeUtility.format(state.metadata?.modifiedTime, defaultValue: '-'),
-      ),
-    );
-  }
-
-  /// Builds the action tiles for creating, restoring, and deleting backups.
-  Widget _buildActionTiles(
-    BuildContext context,
-    AppLocalizations appLocalizations,
-    BackupManagerGoogleDriveState state,
-  ) {
-    return Column(
-      children: [
-        BackupManagerActionListTile(
+  Widget _buildCreateActionTile(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context);
+    return BlocBuilder<BackupManagerGoogleDriveCubit,
+        BackupManagerGoogleDriveState>(
+      buildWhen: (prev, curr) => prev.code != curr.code,
+      builder: (context, state) {
+        return BackupManagerActionListTile(
           iconData: Icons.backup_outlined,
-          titleLabel: appLocalizations.backupManagerCreate,
-          successLabel: appLocalizations.backupManagerCreateSuccessfully,
+          titleLabel: appLocalizations?.backupManagerCreate ?? 'Backup now',
+          successLabel: appLocalizations?.backupManagerCreateSuccessfully ??
+              'Backup successfully.',
           enabled: state.code == BackupManagerGoogleDriveCode.idle,
           future: () => BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
               .createBackup(),
           onComplete: () =>
               BlocProvider.of<BackupManagerGoogleDriveCubit>(context).refresh(),
-        ),
-        BackupManagerActionListTile(
+        );
+      },
+    );
+  }
+
+  Widget _buildRestoreActionTile(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context);
+    return BlocBuilder<BackupManagerGoogleDriveCubit,
+        BackupManagerGoogleDriveState>(
+      buildWhen: (prev, curr) => prev.code != curr.code,
+      builder: (context, state) {
+        return BackupManagerActionListTile(
           iconData: Icons.restore_rounded,
-          titleLabel: appLocalizations.backupManagerRestoreBackup,
-          successLabel: appLocalizations.backupManagerRestoreSuccessfully,
+          titleLabel: appLocalizations?.backupManagerRestoreBackup ??
+              'Restore from backup',
+          successLabel: appLocalizations?.backupManagerRestoreSuccessfully ??
+              'Successfully restore from the backup.',
           enabled: state.code == BackupManagerGoogleDriveCode.idle &&
               state.fileId != null,
           future: () => BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
               .restoreBackup(),
-        ),
-        BackupManagerActionListTile(
+        );
+      },
+    );
+  }
+
+  Widget _buildDeleteActionTile(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context);
+    return BlocBuilder<BackupManagerGoogleDriveCubit,
+        BackupManagerGoogleDriveState>(
+      buildWhen: (prev, curr) => prev.code != curr.code,
+      builder: (context, state) {
+        return BackupManagerActionListTile(
           iconData: Icons.delete_outlined,
-          titleLabel: appLocalizations.backupManagerDeleteBackup,
-          successLabel: appLocalizations.backupManagerDeleteBackupSuccessfully,
+          titleLabel:
+              appLocalizations?.backupManagerDeleteBackup ?? 'Delete backup',
+          successLabel:
+              appLocalizations?.backupManagerDeleteBackupSuccessfully ??
+                  'Successfully delete backup.',
           enabled: state.code == BackupManagerGoogleDriveCode.idle &&
               state.fileId != null,
           future: () => BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
               .deleteBackup(),
           onComplete: () =>
               BlocProvider.of<BackupManagerGoogleDriveCubit>(context).refresh(),
-        ),
-      ],
+        );
+      },
     );
   }
 }
