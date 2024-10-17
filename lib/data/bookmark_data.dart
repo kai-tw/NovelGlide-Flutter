@@ -18,6 +18,9 @@ class BookmarkData {
   /// Calculates the number of days passed since the bookmark was saved.
   int get daysPassed => DateTimeUtility.daysPassed(savedTime);
 
+  // Static methods
+  static String jsonFileName = 'bookmark.json';
+
   /// Constructor for creating a BookmarkData instance.
   BookmarkData({
     required this.bookPath,
@@ -29,7 +32,8 @@ class BookmarkData {
   });
 
   /// Returns the path to the JSON file storing bookmarks.
-  static Future<String> get jsonPath async => join(await FilePath.dataRoot, 'bookmark.json');
+  static Future<String> get jsonPath async =>
+      join(await FilePath.dataRoot, jsonFileName);
 
   /// Returns the File object for the JSON file storing bookmarks.
   static Future<File> get jsonFile async => File(await jsonPath);
@@ -53,15 +57,20 @@ class BookmarkData {
       chapterTitle: map['chapterTitle'] ?? '',
       chapterFileName: map['chapterFileName'] ?? '',
       startCfi: map['startCfi'] ?? '',
-      savedTime: DateTime.parse(map['savedTime'] ?? DateTime.now().toIso8601String()),
+      savedTime:
+          DateTime.parse(map['savedTime'] ?? DateTime.now().toIso8601String()),
     );
   }
 
   /// Retrieves a bookmark by its book path.
   static Future<BookmarkData?> get(String bookPath) async {
     final Map<String, dynamic> json = await jsonData;
-    bookPath = isAbsolute(bookPath) ? relative(bookPath, from: await FilePath.libraryRoot) : bookPath;
-    return json.containsKey(bookPath) ? BookmarkData.fromJson(json[bookPath]!) : null;
+    bookPath = isAbsolute(bookPath)
+        ? relative(bookPath, from: await FilePath.libraryRoot)
+        : bookPath;
+    return json.containsKey(bookPath)
+        ? BookmarkData.fromJson(json[bookPath]!)
+        : null;
   }
 
   /// Retrieves a list of all bookmarks.
@@ -72,7 +81,9 @@ class BookmarkData {
     for (String key in json.keys) {
       if (json.containsKey(key)) {
         final BookmarkData data = BookmarkData.fromJson(json[key]!);
-        data.bookPath = isAbsolute(data.bookPath) ? data.bookPath : join(await FilePath.libraryRoot, data.bookPath);
+        data.bookPath = isAbsolute(data.bookPath)
+            ? data.bookPath
+            : join(await FilePath.libraryRoot, data.bookPath);
         retList.add(data);
       }
     }
@@ -84,7 +95,9 @@ class BookmarkData {
   void save() async {
     final File dataFile = await jsonFile;
     final Map<String, dynamic> json = await jsonData;
-    bookPath = isAbsolute(bookPath) ? relative(bookPath, from: await FilePath.libraryRoot) : bookPath;
+    bookPath = isAbsolute(bookPath)
+        ? relative(bookPath, from: await FilePath.libraryRoot)
+        : bookPath;
     json[bookPath] = toJson();
     dataFile.writeAsStringSync(jsonEncode(json));
   }

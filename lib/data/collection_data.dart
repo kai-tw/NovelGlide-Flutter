@@ -12,9 +12,12 @@ class CollectionData {
   final String name;
   List<String> pathList;
 
+  static String jsonFileName = 'collection.json';
+
   CollectionData(this.id, this.name, this.pathList);
 
-  static Future<String> get jsonPath async => join(await FilePath.dataRoot, 'collection.json');
+  static Future<String> get jsonPath async =>
+      join(await FilePath.dataRoot, jsonFileName);
 
   static Future<File> get jsonFile async => File(await jsonPath);
 
@@ -59,7 +62,9 @@ class CollectionData {
     return CollectionData(
       json['id'] as String,
       json['name'] as String,
-      List<String>.from(json['pathList'] ?? []).map<String>((e) => isAbsolute(e) ? e : join(libraryRoot, e)).toList(),
+      List<String>.from(json['pathList'] ?? [])
+          .map<String>((e) => isAbsolute(e) ? e : join(libraryRoot, e))
+          .toList(),
     );
   }
 
@@ -82,13 +87,15 @@ class CollectionData {
     final Map<String, dynamic> json = await jsonData;
     newIndex = newIndex - (oldIndex < newIndex ? 1 : 0);
 
-    CollectionData data = await CollectionData.fromJson(json[json.keys.elementAt(oldIndex)]!);
+    CollectionData data =
+        await CollectionData.fromJson(json[json.keys.elementAt(oldIndex)]!);
     json.remove(json.keys.elementAt(oldIndex));
     json[data.id] = data.toJson();
 
     int loopTime = json.keys.length - newIndex - 1;
     while (loopTime-- > 0) {
-      data = await CollectionData.fromJson(json[json.keys.elementAt(newIndex)]!);
+      data =
+          await CollectionData.fromJson(json[json.keys.elementAt(newIndex)]!);
       json.remove(json.keys.elementAt(newIndex));
       json[data.id] = data.toJson();
     }
@@ -123,7 +130,9 @@ class CollectionData {
     final File dataFile = await jsonFile;
     final Map<String, dynamic> json = await jsonData;
 
-    pathList = pathList.map<String>((e) => isAbsolute(e) ? relative(e, from: libraryRoot) : e).toList();
+    pathList = pathList
+        .map<String>((e) => isAbsolute(e) ? relative(e, from: libraryRoot) : e)
+        .toList();
 
     json[id] = toJson();
     dataFile.writeAsStringSync(jsonEncode(json));

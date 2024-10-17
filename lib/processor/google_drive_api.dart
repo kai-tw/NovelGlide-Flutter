@@ -30,7 +30,8 @@ class GoogleDriveApi {
 
   /// Signs in the user and initializes the Drive API client.
   Future<void> signIn() async {
-    if (await _googleSignIn.signInSilently() == null && await _googleSignIn.signIn() == null) {
+    if (await _googleSignIn.signInSilently() == null &&
+        await _googleSignIn.signIn() == null) {
       throw GoogleDriveSignInException();
     }
 
@@ -54,7 +55,8 @@ class GoogleDriveApi {
   }
 
   /// Checks if the user is signed in and the Drive API client is initialized.
-  Future<bool> isSignedIn() async => await _googleSignIn.isSignedIn() && driveApi != null;
+  Future<bool> isSignedIn() async =>
+      await _googleSignIn.isSignedIn() && driveApi != null;
 
   /// Lists files in Google Drive with optional query parameters.
   Future<drive.FileList> list({
@@ -94,10 +96,18 @@ class GoogleDriveApi {
   }
 
   /// Retrieves the file ID for a given file name in the app data folder.
-  Future<String?> getFileId(String fileName) async {
-    final drive.FileList fileList =
-        await driveApi!.files.list(spaces: 'appDataFolder', q: "name = '$fileName'", pageSize: 1);
-    return fileList.files?.isNotEmpty ?? false ? fileList.files?.first.id : null;
+  Future<String?> getFileId(
+    String fileName, {
+    String spaces = 'appDataFolder',
+  }) async {
+    final drive.FileList fileList = await driveApi!.files.list(
+      spaces: spaces,
+      q: "name = '$fileName'",
+      pageSize: 1,
+    );
+    return fileList.files?.isNotEmpty ?? false
+        ? fileList.files?.first.id
+        : null;
   }
 
   /// Retrieves metadata for a file by its ID.

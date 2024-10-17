@@ -3,9 +3,13 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
+import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../data/bookmark_data.dart';
+import '../../../data/collection_data.dart';
+import '../../../data/preference_keys.dart';
 import '../../../processor/google_drive_api.dart';
 import '../../../toolbox/backup_utility.dart';
 import '../../../toolbox/random_utility.dart';
@@ -13,6 +17,8 @@ import '../../../toolbox/random_utility.dart';
 /// Manages Google Drive backup operations.
 class BackupManagerGoogleDriveCubit
     extends Cubit<BackupManagerGoogleDriveState> {
+  final logger = Logger();
+
   BackupManagerGoogleDriveCubit()
       : super(const BackupManagerGoogleDriveState());
 
@@ -40,9 +46,13 @@ class BackupManagerGoogleDriveCubit
     final isSignedIn = await GoogleDriveApi.instance.isSignedIn();
 
     if (isEnabled != isSignedIn) {
-      isEnabled
-          ? await GoogleDriveApi.instance.signIn()
-          : await GoogleDriveApi.instance.signOut();
+      try {
+        isEnabled
+            ? await GoogleDriveApi.instance.signIn()
+            : await GoogleDriveApi.instance.signOut();
+      } catch (e) {
+        logger.e(e);
+      }
       isEnabled = await GoogleDriveApi.instance.isSignedIn();
     }
 
@@ -61,8 +71,17 @@ class BackupManagerGoogleDriveCubit
     final tempFolder = await RandomUtility.getAvailableTempFolder();
     tempFolder.createSync(recursive: true);
 
+    // Backup books
     final zipFile = await BackupUtility.createBackup(tempFolder.path);
     await GoogleDriveApi.instance.uploadFile('appDataFolder', zipFile);
+
+    // Backup collections
+    final collectionFile = await CollectionData.jsonFile;
+    await GoogleDriveApi.instance.uploadFile('appDataFolder', collectionFile);
+
+    // Backup bookmarks
+    final bookmarkFile = await BookmarkData.jsonFile;
+    await GoogleDriveApi.instance.uploadFile('appDataFolder', bookmarkFile);
 
     tempFolder.deleteSync(recursive: true);
     return true;
@@ -86,11 +105,51 @@ class BackupManagerGoogleDriveCubit
     final zipFile = File(join(tempFolder.path, 'Library.zip'));
     zipFile.createSync();
 
+    // Restore books
     await GoogleDriveApi.instance.downloadFile(state.fileId!, zipFile);
     await BackupUtility.restoreBackup(tempFolder, zipFile);
 
     tempFolder.deleteSync(recursive: true);
+
+    // Get the settings
+    final prefs = await SharedPreferences.getInstance();
+
+    // Restore collections
+    final isBackupCollections =
+        prefs.getBool(PreferenceKeys.backupManager.isBackupCollections) ??
+            false;
+    if (isBackupCollections) {
+      final collectionFileId =
+          await GoogleDriveApi.instance.getFileId(CollectionData.jsonFileName);
+      if (collectionFileId != null) {
+        final collectionFile = await CollectionData.jsonFile;
+        collectionFile.deleteSync();
+        await GoogleDriveApi.instance
+            .downloadFile(collectionFileId, collectionFile);
+      }
+    }
+
+    // Restore bookmarks
+    final isBackupBookmarks =
+        prefs.getBool(PreferenceKeys.backupManager.isBackupBookmarks) ?? false;
+    if (isBackupBookmarks) {
+      final bookmarkFileId =
+          await GoogleDriveApi.instance.getFileId(BookmarkData.jsonFileName);
+      if (bookmarkFileId != null) {
+        final bookmarkFile = await BookmarkData.jsonFile;
+        bookmarkFile.deleteSync();
+        await GoogleDriveApi.instance
+            .downloadFile(bookmarkFileId, bookmarkFile);
+      }
+    }
+
     return true;
+  }
+
+  @override
+  Future<void> close() {
+    logger.close();
+    return super.close();
   }
 }
 
