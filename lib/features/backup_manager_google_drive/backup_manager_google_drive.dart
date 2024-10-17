@@ -20,7 +20,6 @@ class BackupManagerGoogleDrive extends StatelessWidget {
   /// Builds the main content of the Backup Manager.
   Widget _buildContent(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
 
     return Container(
       margin: const EdgeInsets.all(16.0),
@@ -35,7 +34,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
         buildWhen: (previous, current) =>
             previous.code != current.code || previous.fileId != current.fileId,
         builder: (context, state) {
-          return _buildColumn(context, appLocalizations, cubit, state);
+          return _buildColumn(context, appLocalizations, state);
         },
       ),
     );
@@ -45,15 +44,30 @@ class BackupManagerGoogleDrive extends StatelessWidget {
   Widget _buildColumn(
     BuildContext context,
     AppLocalizations appLocalizations,
-    BackupManagerGoogleDriveCubit cubit,
     BackupManagerGoogleDriveState state,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        _buildSwitcher(context, appLocalizations, state),
         _buildLastBackupTile(appLocalizations, state),
-        _buildActionTiles(appLocalizations, cubit, state),
+        _buildActionTiles(context, appLocalizations, state),
       ],
+    );
+  }
+
+  Widget _buildSwitcher(
+    BuildContext context,
+    AppLocalizations appLocalizations,
+    BackupManagerGoogleDriveState state,
+  ) {
+    return SwitchListTile(
+      title: Text(appLocalizations.backupManagerGoogleDriveBackup),
+      secondary: const Icon(Icons.cloud_rounded),
+      value: state.code == BackupManagerGoogleDriveCode.idle,
+      onChanged: (value) =>
+          BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
+              .setEnabled(value),
     );
   }
 
@@ -73,8 +87,8 @@ class BackupManagerGoogleDrive extends StatelessWidget {
 
   /// Builds the action tiles for creating, restoring, and deleting backups.
   Widget _buildActionTiles(
+    BuildContext context,
     AppLocalizations appLocalizations,
-    BackupManagerGoogleDriveCubit cubit,
     BackupManagerGoogleDriveState state,
   ) {
     return Column(
@@ -84,8 +98,10 @@ class BackupManagerGoogleDrive extends StatelessWidget {
           titleLabel: appLocalizations.backupManagerCreate,
           successLabel: appLocalizations.backupManagerCreateSuccessfully,
           enabled: state.code == BackupManagerGoogleDriveCode.idle,
-          future: cubit.createBackup,
-          onComplete: cubit.refresh,
+          future: () => BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
+              .createBackup(),
+          onComplete: () =>
+              BlocProvider.of<BackupManagerGoogleDriveCubit>(context).refresh(),
         ),
         BackupManagerActionListTile(
           iconData: Icons.restore_rounded,
@@ -93,7 +109,8 @@ class BackupManagerGoogleDrive extends StatelessWidget {
           successLabel: appLocalizations.backupManagerRestoreSuccessfully,
           enabled: state.code == BackupManagerGoogleDriveCode.idle &&
               state.fileId != null,
-          future: cubit.restoreBackup,
+          future: () => BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
+              .restoreBackup(),
         ),
         BackupManagerActionListTile(
           iconData: Icons.delete_outlined,
@@ -101,8 +118,10 @@ class BackupManagerGoogleDrive extends StatelessWidget {
           successLabel: appLocalizations.backupManagerDeleteBackupSuccessfully,
           enabled: state.code == BackupManagerGoogleDriveCode.idle &&
               state.fileId != null,
-          future: cubit.deleteBackup,
-          onComplete: cubit.refresh,
+          future: () => BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
+              .deleteBackup(),
+          onComplete: () =>
+              BlocProvider.of<BackupManagerGoogleDriveCubit>(context).refresh(),
         ),
       ],
     );
