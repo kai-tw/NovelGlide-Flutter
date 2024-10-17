@@ -6,12 +6,14 @@ import 'package:path/path.dart';
 import 'file_path.dart';
 
 class BackupUtility {
+  static String libraryArchiveName = 'Library.zip';
+
   static Future<File> createBackup(String tempFolderPath) async {
     final String libraryRoot = await FilePath.libraryRoot;
     final Directory libraryFolder = Directory(libraryRoot);
 
     // Create a zip file
-    final File zipFile = File(join(tempFolderPath, 'Library.zip'));
+    final File zipFile = File(join(tempFolderPath, libraryArchiveName));
     zipFile.createSync();
 
     await ZipFile.createFromDirectory(

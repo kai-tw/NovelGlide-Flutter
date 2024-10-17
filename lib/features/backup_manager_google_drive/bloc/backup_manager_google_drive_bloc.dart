@@ -32,7 +32,8 @@ class BackupManagerGoogleDriveCubit
     await setEnabled(isEnabled);
 
     if (state.code == BackupManagerGoogleDriveCode.idle) {
-      final fileId = await GoogleDriveApi.instance.getFileId('Library.zip');
+      final fileId = await GoogleDriveApi.instance
+          .getFileId(BackupUtility.libraryArchiveName);
       if (fileId != null) {
         final metadata = await GoogleDriveApi.instance
             .getMetadataById(fileId, field: 'modifiedTime');
