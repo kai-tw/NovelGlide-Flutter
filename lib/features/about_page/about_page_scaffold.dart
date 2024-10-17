@@ -42,18 +42,19 @@ class AboutPageScaffold extends StatelessWidget {
 
   /// Builds a widget to display the app name.
   Widget _buildAppName(
-      BuildContext context, Future<PackageInfo> packageInfoFuture) {
+    BuildContext context,
+    Future<PackageInfo> packageInfoFuture,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: FutureBuilder<PackageInfo>(
         future: packageInfoFuture,
         builder: (context, snapshot) {
-          return snapshot.connectionState == ConnectionState.done
-              ? Text(
-                  snapshot.data?.appName ?? '',
-                  style: Theme.of(context).textTheme.titleLarge,
-                )
-              : const SizedBox.shrink();
+          if (snapshot.hasData) {
+            return Text(snapshot.data!.appName);
+          } else {
+            return const SizedBox.shrink();
+          }
         },
       ),
     );
@@ -61,18 +62,22 @@ class AboutPageScaffold extends StatelessWidget {
 
   /// Builds a widget to display the app version and build number.
   Widget _buildAppVersion(
-      BuildContext context, Future<PackageInfo> packageInfoFuture) {
+    BuildContext context,
+    Future<PackageInfo> packageInfoFuture,
+  ) {
+    final os = Platform.operatingSystem;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: FutureBuilder<PackageInfo>(
         future: packageInfoFuture,
         builder: (context, snapshot) {
-          return snapshot.connectionState == ConnectionState.done
-              ? Text(
-                  '${Platform.operatingSystem} v${snapshot.data?.version} (${snapshot.data?.buildNumber})',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                )
-              : const SizedBox.shrink();
+          if (snapshot.hasData) {
+            final version = snapshot.data!.version;
+            final buildVersion = snapshot.data!.buildNumber;
+            return Text('$os v$version ($buildVersion)');
+          } else {
+            return const SizedBox.shrink();
+          }
         },
       ),
     );
