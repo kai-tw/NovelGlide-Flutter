@@ -39,7 +39,9 @@ class BackupManagerGoogleDriveCubit
       if (fileId != null) {
         final metadata = await GoogleDriveApi.instance
             .getMetadataById(fileId, field: 'modifiedTime');
-        emit(state.copyWith(fileId: fileId, metadata: metadata));
+        if (!isClosed) {
+          emit(state.copyWith(fileId: fileId, metadata: metadata));
+        }
       }
     }
   }
