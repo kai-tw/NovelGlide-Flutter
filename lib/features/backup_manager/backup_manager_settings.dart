@@ -10,7 +10,7 @@ class BackupManagerSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => BackupManagerSettingsCubit()..init(),
+      create: (_) => BackupManagerSettingsCubit(),
       child: Builder(
         builder: (context) => _buildSettingsContent(context),
       ),
@@ -37,7 +37,7 @@ class BackupManagerSettings extends StatelessWidget {
             builder: (context, state) => SwitchListTile(
               title: Text(appLocalizations.backupManagerBackupCollection),
               value: state.isBackupCollections,
-              onChanged: (value) => cubit.setState(backupCollections: value),
+              onChanged: (value) => cubit.setState(isBackupCollections: value),
             ),
           ),
           BlocBuilder<BackupManagerSettingsCubit, BackupManagerSettingsState>(
@@ -46,7 +46,7 @@ class BackupManagerSettings extends StatelessWidget {
             builder: (context, state) => SwitchListTile(
               title: Text(appLocalizations.backupManagerBackupBookmark),
               value: state.isBackupBookmarks,
-              onChanged: (value) => cubit.setState(backupBookmarks: value),
+              onChanged: (value) => cubit.setState(isBackupBookmarks: value),
             ),
           ),
         ],

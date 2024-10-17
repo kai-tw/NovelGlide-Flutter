@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:logger/logger.dart';
 
 import '../dialog/backup_manager_loading_dialog.dart';
 import '../dialog/backup_manager_success_dialog.dart';
@@ -24,51 +25,66 @@ class BackupManagerActionListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Access localized strings
-    final appLocalizations = AppLocalizations.of(context);
-
     return ListTile(
-      onTap: () async {
-        // Show a dialog while the future is being resolved
-        await showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (_) {
-            return FutureBuilder<Object?>(
-              future: future(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  // Show loading dialog while waiting
-                  return const BackupManagerLoadingDialog();
-                } else if (snapshot.hasError) {
-                  // Handle error state
-                  return AlertDialog(
-                    title: Text(appLocalizations?.exceptionUnknownError ?? 'Error'),
-                    content: Text(snapshot.error.toString()),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: Text(appLocalizations?.generalClose ?? 'Close'),
-                      ),
-                    ],
-                  );
-                } else {
-                  // Show success dialog if data is available
-                  return BackupManagerSuccessDialog(content: successLabel);
-                }
-              },
-            );
-          },
-        );
-
-        // Call onComplete callback if provided
-        if (onComplete != null) {
-          onComplete!();
-        }
-      },
+      onTap: () => _onTap(context),
       leading: Icon(iconData),
       title: Text(titleLabel),
       enabled: enabled,
     );
+  }
+
+  Future<void> _onTap(BuildContext context) async {
+    // Show a dialog while the future is being resolved
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return FutureBuilder<Object?>(
+          future: future(),
+          builder: _buildDialog,
+        );
+      },
+    );
+
+    // Call onComplete callback if provided
+    if (onComplete != null) {
+      onComplete!();
+    }
+  }
+
+  Widget _buildDialog(BuildContext context, AsyncSnapshot<Object?> snapshot) {
+    // Access localized strings
+    final appLocalizations = AppLocalizations.of(context);
+
+    switch (snapshot.connectionState) {
+      case ConnectionState.done:
+        // Operation done.
+        if (snapshot.hasError) {
+          // Handle error state
+          // Record the error log
+          final logger = Logger();
+          logger.e(snapshot.error);
+          logger.close();
+
+          // Show the error dialog.
+          return AlertDialog(
+            title: Text(appLocalizations?.exceptionUnknownError ?? 'Error'),
+            content: Text(snapshot.error.toString()),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(appLocalizations?.generalClose ?? 'Close'),
+              ),
+            ],
+          );
+        } else {
+          // Show success dialog.
+          return BackupManagerSuccessDialog(content: successLabel);
+        }
+
+      default:
+        // Show loading dialog while waiting
+        return const BackupManagerLoadingDialog();
+    }
   }
 }

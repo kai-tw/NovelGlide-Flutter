@@ -12,7 +12,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => BackupManagerGoogleDriveCubit()..init(),
+      create: (_) => BackupManagerGoogleDriveCubit(),
       child: _buildContent(context),
     );
   }
@@ -44,7 +44,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context);
     return BlocBuilder<BackupManagerGoogleDriveCubit,
         BackupManagerGoogleDriveState>(
-      buildWhen: (prev, curr) => prev.code != curr.code,
+      buildWhen: (prev, curr) => prev.isReady != curr.isReady,
       builder: (context, state) {
         return SwitchListTile(
           title: Text(
@@ -52,7 +52,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                 'Google Drive Backup',
           ),
           secondary: const Icon(Icons.cloud_rounded),
-          value: state.code == BackupManagerGoogleDriveCode.idle,
+          value: state.isReady,
           onChanged: (value) =>
               BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
                   .setEnabled(value),
@@ -87,14 +87,14 @@ class BackupManagerGoogleDrive extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context);
     return BlocBuilder<BackupManagerGoogleDriveCubit,
         BackupManagerGoogleDriveState>(
-      buildWhen: (prev, curr) => prev.code != curr.code,
+      buildWhen: (prev, curr) => prev.isReady != curr.isReady,
       builder: (context, state) {
         return BackupManagerActionListTile(
           iconData: Icons.backup_outlined,
           titleLabel: appLocalizations?.backupManagerCreate ?? 'Backup now',
           successLabel: appLocalizations?.backupManagerCreateSuccessfully ??
               'Backup successfully.',
-          enabled: state.code == BackupManagerGoogleDriveCode.idle,
+          enabled: state.isReady,
           future: () => BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
               .createBackup(),
           onComplete: () =>
@@ -108,7 +108,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context);
     return BlocBuilder<BackupManagerGoogleDriveCubit,
         BackupManagerGoogleDriveState>(
-      buildWhen: (prev, curr) => prev.code != curr.code,
+      buildWhen: (prev, curr) => prev.isReady != curr.isReady,
       builder: (context, state) {
         return BackupManagerActionListTile(
           iconData: Icons.restore_rounded,
@@ -116,8 +116,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
               'Restore from backup',
           successLabel: appLocalizations?.backupManagerRestoreSuccessfully ??
               'Successfully restore from the backup.',
-          enabled: state.code == BackupManagerGoogleDriveCode.idle &&
-              state.fileId != null,
+          enabled: state.isReady && state.fileId != null,
           future: () => BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
               .restoreBackup(),
         );
@@ -129,7 +128,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context);
     return BlocBuilder<BackupManagerGoogleDriveCubit,
         BackupManagerGoogleDriveState>(
-      buildWhen: (prev, curr) => prev.code != curr.code,
+      buildWhen: (prev, curr) => prev.isReady != curr.isReady,
       builder: (context, state) {
         return BackupManagerActionListTile(
           iconData: Icons.delete_outlined,
@@ -138,8 +137,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
           successLabel:
               appLocalizations?.backupManagerDeleteBackupSuccessfully ??
                   'Successfully delete backup.',
-          enabled: state.code == BackupManagerGoogleDriveCode.idle &&
-              state.fileId != null,
+          enabled: state.isReady && state.fileId != null,
           future: () => BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
               .deleteBackup(),
           onComplete: () =>

@@ -18,20 +18,22 @@ import '../../../toolbox/random_utility.dart';
 class BackupManagerGoogleDriveCubit
     extends Cubit<BackupManagerGoogleDriveState> {
   final logger = Logger();
+  final _drivePrefKey = PreferenceKeys.backupManager.isGoogleDriveEnabled;
 
-  BackupManagerGoogleDriveCubit()
-      : super(const BackupManagerGoogleDriveState());
+  factory BackupManagerGoogleDriveCubit() =>
+      BackupManagerGoogleDriveCubit._internal(
+          const BackupManagerGoogleDriveState())
+        ..refresh();
 
-  /// Initializes the backup manager by refreshing the state.
-  Future<void> init() => refresh();
+  BackupManagerGoogleDriveCubit._internal(super.initialState);
 
   /// Refreshes the backup state by checking preferences and updating metadata.
   Future<void> refresh() async {
     final prefs = await SharedPreferences.getInstance();
-    final isEnabled = prefs.getBool('isBackupToGoogleDriveEnabled') ?? false;
+    final isEnabled = prefs.getBool(_drivePrefKey) ?? false;
     await setEnabled(isEnabled);
 
-    if (state.code == BackupManagerGoogleDriveCode.idle) {
+    if (state.isReady) {
       final fileId = await GoogleDriveApi.instance
           .getFileId(BackupUtility.libraryArchiveName);
       if (fileId != null) {
@@ -54,17 +56,13 @@ class BackupManagerGoogleDriveCubit
       } catch (e) {
         logger.e(e);
       }
-      isEnabled = await GoogleDriveApi.instance.isSignedIn();
     }
+    isEnabled = await GoogleDriveApi.instance.isSignedIn();
 
-    emit(state.copyWith(
-      code: isEnabled
-          ? BackupManagerGoogleDriveCode.idle
-          : BackupManagerGoogleDriveCode.disabled,
-    ));
+    emit(state.copyWith(isReady: isEnabled));
 
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isBackupToGoogleDriveEnabled', isEnabled);
+    await prefs.setBool(_drivePrefKey, isEnabled);
   }
 
   /// Creates a backup and uploads it to Google Drive.
@@ -149,32 +147,29 @@ class BackupManagerGoogleDriveCubit
 
 /// Represents the state of the Google Drive backup manager.
 class BackupManagerGoogleDriveState extends Equatable {
-  final BackupManagerGoogleDriveCode code;
+  final bool isReady;
   final String? fileId;
   final drive.File? metadata;
 
   const BackupManagerGoogleDriveState({
-    this.code = BackupManagerGoogleDriveCode.disabled,
+    this.isReady = false,
     this.fileId,
     this.metadata,
   });
 
   @override
-  List<Object?> get props => [code, fileId];
+  List<Object?> get props => [isReady, fileId, metadata];
 
   /// Creates a copy of the current state with optional new values.
   BackupManagerGoogleDriveState copyWith({
-    BackupManagerGoogleDriveCode? code,
+    bool? isReady,
     String? fileId,
     drive.File? metadata,
   }) {
     return BackupManagerGoogleDriveState(
-      code: code ?? this.code,
+      isReady: isReady ?? this.isReady,
       fileId: fileId ?? this.fileId,
       metadata: metadata ?? this.metadata,
     );
   }
 }
-
-/// Enum representing the backup manager's operational state.
-enum BackupManagerGoogleDriveCode { disabled, idle }

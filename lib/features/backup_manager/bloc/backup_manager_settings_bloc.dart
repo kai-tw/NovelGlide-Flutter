@@ -6,19 +6,22 @@ import '../../../data/preference_keys.dart';
 
 /// Manages the state of backup settings using a Cubit.
 class BackupManagerSettingsCubit extends Cubit<BackupManagerSettingsState> {
-  BackupManagerSettingsCubit() : super(const BackupManagerSettingsState());
+  final _collectionPrefKey = PreferenceKeys.backupManager.isBackupCollections;
+  final _bookmarkPrefKey = PreferenceKeys.backupManager.isBackupBookmarks;
+
+  factory BackupManagerSettingsCubit() => BackupManagerSettingsCubit._internal(
+        const BackupManagerSettingsState(),
+      ).._init();
+
+  BackupManagerSettingsCubit._internal(super.initialState);
 
   /// Initializes the backup settings from shared preferences.
-  Future<void> init() async {
+  Future<void> _init() async {
     final prefs = await SharedPreferences.getInstance();
-    final isBackupCollections =
-        prefs.getBool(PreferenceKeys.backupManager.isBackupCollections) ??
-            false;
-    final isBackupBookmarks =
-        prefs.getBool(PreferenceKeys.backupManager.isBackupBookmarks) ?? false;
+    final isBackupCollections = prefs.getBool(_collectionPrefKey) ?? false;
+    final isBackupBookmarks = prefs.getBool(_bookmarkPrefKey) ?? false;
 
-    if (isBackupCollections != state.isBackupCollections ||
-        isBackupBookmarks != state.isBackupBookmarks) {
+    if (!isClosed) {
       emit(
         state.copyWith(
           isBackupCollections: isBackupCollections,
@@ -29,13 +32,14 @@ class BackupManagerSettingsCubit extends Cubit<BackupManagerSettingsState> {
   }
 
   /// Updates the backup settings and saves them to shared preferences.
-  Future<void> setState(
-      {bool? backupCollections, bool? backupBookmarks}) async {
-    final isBackupCollections = backupCollections ?? state.isBackupCollections;
-    final isBackupBookmarks = backupBookmarks ?? state.isBackupBookmarks;
+  Future<void> setState({
+    bool? isBackupCollections,
+    bool? isBackupBookmarks,
+  }) async {
+    isBackupCollections = isBackupCollections ?? state.isBackupCollections;
+    isBackupBookmarks = isBackupBookmarks ?? state.isBackupBookmarks;
 
-    if (isBackupCollections != state.isBackupCollections ||
-        isBackupBookmarks != state.isBackupBookmarks) {
+    if (!isClosed) {
       emit(
         state.copyWith(
           isBackupCollections: isBackupCollections,
@@ -44,10 +48,8 @@ class BackupManagerSettingsCubit extends Cubit<BackupManagerSettingsState> {
       );
 
       final prefs = await SharedPreferences.getInstance();
-      prefs.setBool(PreferenceKeys.backupManager.isBackupCollections,
-          isBackupCollections);
-      prefs.setBool(
-          PreferenceKeys.backupManager.isBackupBookmarks, isBackupBookmarks);
+      prefs.setBool(_collectionPrefKey, isBackupCollections);
+      prefs.setBool(_bookmarkPrefKey, isBackupBookmarks);
     }
   }
 }
