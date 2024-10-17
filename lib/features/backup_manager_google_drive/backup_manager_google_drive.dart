@@ -108,7 +108,8 @@ class BackupManagerGoogleDrive extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context);
     return BlocBuilder<BackupManagerGoogleDriveCubit,
         BackupManagerGoogleDriveState>(
-      buildWhen: (prev, curr) => prev.isReady != curr.isReady,
+      buildWhen: (prev, curr) =>
+          prev.isReady != curr.isReady || prev.fileId != curr.fileId,
       builder: (context, state) {
         return BackupManagerActionListTile(
           iconData: Icons.restore_rounded,
@@ -128,7 +129,8 @@ class BackupManagerGoogleDrive extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context);
     return BlocBuilder<BackupManagerGoogleDriveCubit,
         BackupManagerGoogleDriveState>(
-      buildWhen: (prev, curr) => prev.isReady != curr.isReady,
+      buildWhen: (prev, curr) =>
+          prev.isReady != curr.isReady || prev.fileId != curr.fileId,
       builder: (context, state) {
         return BackupManagerActionListTile(
           iconData: Icons.delete_outlined,
