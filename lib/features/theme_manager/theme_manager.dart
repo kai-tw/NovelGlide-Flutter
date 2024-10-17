@@ -21,14 +21,19 @@ class ThemeManager extends StatelessWidget {
       onPopInvokedWithResult: (_, __) => _navigateToHomepage(context),
       child: ThemeSwitchingArea(
         child: BlocProvider(
-          create: (_) => ThemeManagerCubit()..init(),
-          child: _buildScaffold(context),
+          create: (_) => ThemeManagerCubit(),
+          child: const _Scaffold(),
         ),
       ),
     );
   }
+}
 
-  Widget _buildScaffold(BuildContext context) {
+class _Scaffold extends StatelessWidget {
+  const _Scaffold();
+
+  @override
+  Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final ThemeManagerCubit cubit = BlocProvider.of<ThemeManagerCubit>(context);
     return Scaffold(
@@ -49,12 +54,12 @@ class ThemeManager extends StatelessWidget {
       ),
     );
   }
+}
 
-  void _navigateToHomepage(BuildContext context) {
-    Navigator.of(context).pushReplacement(
-      RouteHelper.popRoute(
-        const Homepage(initialItem: HomepageNavigationItem.settings),
-      ),
-    );
-  }
+void _navigateToHomepage(BuildContext context) {
+  Navigator.of(context).pushReplacement(
+    RouteHelper.popRoute(
+      const Homepage(initialItem: HomepageNavigationItem.settings),
+    ),
+  );
 }

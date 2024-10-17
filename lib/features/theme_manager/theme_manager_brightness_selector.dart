@@ -84,10 +84,13 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
     ];
   }
 
-  Future<void> _onBrightnessChanged(Set<Brightness?> brightnessSet,
-      ThemeManagerCubit cubit, ThemeSwitcherState switcher) async {
+  Future<void> _onBrightnessChanged(
+    Set<Brightness?> brightnessSet,
+    ThemeManagerCubit cubit,
+    ThemeSwitcherState switcher,
+  ) async {
     final brightness = brightnessSet.first;
-    cubit.setBrightness(brightness);
+    cubit.brightness = brightness;
 
     final record = await ThemeDataRecord.fromSettings();
     record.brightness = brightness;
