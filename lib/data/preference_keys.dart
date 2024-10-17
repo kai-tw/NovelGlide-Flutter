@@ -5,8 +5,9 @@ class PreferenceKeys {
   static final BackupManagerPref backupManager = BackupManagerPref._();
   static final ReaderPref reader = ReaderPref._();
   static final ThemePref theme = ThemePref._();
-  static final SortOrderPref bookshelf = SortOrderPref._();
-  static final CollectionSortOrderPref collection = CollectionSortOrderPref._();
+  static final SortOrderPref bookshelf = SortOrderPref._('bookshelf');
+  static final SortOrderPref collection = SortOrderPref._('collection');
+  static final SortOrderPref bookmark = SortOrderPref._('bookmark');
 }
 
 /// Preference keys related to backup management.
@@ -36,18 +37,20 @@ class ThemePref {
   final String brightness = 'theme_brightness';
 }
 
-/// Preference keys related to sort order settings for bookshelf.
+/// Preference keys related to sort order settings.
 class SortOrderPref {
-  SortOrderPref._();
+  final String sortOrder;
+  final String isAscending;
 
-  final String sortOrder = 'bookshelf_sortOrder';
-  final String isAscending = 'bookshelf_isAscending';
-}
+  factory SortOrderPref._(String prefix) {
+    return SortOrderPref._internal(
+      '${prefix}_sortOrder',
+      '${prefix}_isAscending',
+    );
+  }
 
-/// Preference keys related to sort order settings for collection.
-class CollectionSortOrderPref {
-  CollectionSortOrderPref._();
-
-  final String sortOrder = 'collection_sortOrder';
-  final String isAscending = 'collection_isAscending';
+  SortOrderPref._internal(
+    this.sortOrder,
+    this.isAscending,
+  );
 }
