@@ -119,31 +119,24 @@ class BackupManagerGoogleDriveCubit
         prefs.getBool(PreferenceKeys.backupManager.isBackupCollections) ??
             false;
     if (isBackupCollections) {
-      final collectionFileId =
-          await GoogleDriveApi.instance.getFileId(CollectionData.jsonFileName);
-      if (collectionFileId != null) {
-        final collectionFile = await CollectionData.jsonFile;
-        collectionFile.deleteSync();
-        await GoogleDriveApi.instance
-            .downloadFile(collectionFileId, collectionFile);
-      }
+      _restoreData(CollectionData.jsonFileName, await CollectionData.jsonFile);
     }
 
     // Restore bookmarks
     final isBackupBookmarks =
         prefs.getBool(PreferenceKeys.backupManager.isBackupBookmarks) ?? false;
     if (isBackupBookmarks) {
-      final bookmarkFileId =
-          await GoogleDriveApi.instance.getFileId(BookmarkData.jsonFileName);
-      if (bookmarkFileId != null) {
-        final bookmarkFile = await BookmarkData.jsonFile;
-        bookmarkFile.deleteSync();
-        await GoogleDriveApi.instance
-            .downloadFile(bookmarkFileId, bookmarkFile);
-      }
+      _restoreData(BookmarkData.jsonFileName, await BookmarkData.jsonFile);
     }
 
     return true;
+  }
+
+  Future<void> _restoreData(String fileName, File target) async {
+    final id = await GoogleDriveApi.instance.getFileId(fileName);
+    if (id != null) {
+      await GoogleDriveApi.instance.downloadFile(id, target);
+    }
   }
 
   @override
