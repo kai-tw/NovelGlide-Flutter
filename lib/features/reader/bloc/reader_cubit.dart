@@ -22,17 +22,18 @@ import 'reader_web_view_handler.dart';
 class ReaderCubit extends Cubit<ReaderState> {
   /// Web Server
   late final ReaderWebServerHandler serverHandler =
-      ReaderWebServerHandler(bookPath);
+      ReaderWebServerHandler(bookPath, _logger);
 
   /// WebView
-  late final ReaderWebViewHandler webViewHandler = ReaderWebViewHandler(this);
+  late final ReaderWebViewHandler webViewHandler =
+      ReaderWebViewHandler(this, _logger);
 
   /// Reader
   final String bookPath;
   BookData? bookData;
   ThemeData currentTheme;
 
-  ReaderSearchCubit? searchCubit;
+  late final ReaderSearchCubit searchCubit = ReaderSearchCubit(this, _logger);
 
   /// Gestures
   late final ReaderGestureHandler gestureHandler = ReaderGestureHandler(this);
@@ -41,20 +42,48 @@ class ReaderCubit extends Cubit<ReaderState> {
   late final ReaderLifecycleHandler lifecycleHandler =
       ReaderLifecycleHandler(this);
 
-  ReaderCubit(
-      {required this.bookPath, this.bookData, required this.currentTheme})
-      : super(ReaderState(
-            bookName: bookData?.name ?? '',
-            readerSettings: const ReaderSettingsData()));
+  /// Logger
+  final Logger _logger = Logger();
+
+  factory ReaderCubit({
+    required String bookPath,
+    required ThemeData currentTheme,
+    BookData? bookData,
+    String? destination,
+    bool isGotoBookmark = false,
+  }) {
+    final initialState = ReaderState(
+      bookName: bookData?.name ?? '',
+      readerSettings: const ReaderSettingsData(),
+    );
+    final cubit = ReaderCubit._internal(
+      initialState,
+      currentTheme: currentTheme,
+      bookPath: bookPath,
+      bookData: bookData,
+    );
+    cubit._initialize(destination: destination, isGotoBookmark: isGotoBookmark);
+    return cubit;
+  }
+
+  ReaderCubit._internal(
+    super.initialState, {
+    required this.currentTheme,
+    required this.bookPath,
+    this.bookData,
+  });
 
   /// Client initialization.
-  Future<void> initialize({String? dest, bool isGotoBookmark = false}) async {
+  Future<void> _initialize({
+    String? destination,
+    bool isGotoBookmark = false,
+  }) async {
     /// Read the book if it is not read yet.
-    final absolutePath = isAbsolute(bookPath)
-        ? bookPath
-        : join(await FilePath.libraryRoot, bookPath);
-    bookData ??= BookData.fromEpubBook(
-        absolutePath, await BookData.loadEpubBook(absolutePath));
+    if (bookData == null) {
+      final absolutePath = absolute(await FilePath.libraryRoot, bookPath);
+      final epubBook = await BookData.loadEpubBook(absolutePath);
+      bookData = BookData.fromEpubBook(absolutePath, epubBook);
+    }
 
     if (!isClosed) {
       emit(state.copyWith(
@@ -64,7 +93,10 @@ class ReaderCubit extends Cubit<ReaderState> {
       ));
     }
 
-    webViewHandler.init(dest: dest, isGotoBookmark: isGotoBookmark);
+    webViewHandler.initialize(
+      destination: destination,
+      isGotoBookmark: isGotoBookmark,
+    );
 
     await Future.wait([
       serverHandler.start(),
@@ -73,13 +105,15 @@ class ReaderCubit extends Cubit<ReaderState> {
     webViewHandler.request();
   }
 
-  /// ******* App Api Channel ********
-
+  /// JavaScript Channel Message Processor
   void onAppApiMessage(JavaScriptMessage message) async {
     Map<String, dynamic> request = jsonDecode(message.message);
+    _logger.i('JS Channel Receive the ${request['route']} request.');
+
     switch (request['route']) {
       case 'loadDone':
         if (!isClosed) {
+          _logger.i('The book has been loaded.');
           serverHandler.stop();
           emit(state.copyWith(code: ReaderStateCode.loaded));
           sendThemeData();
@@ -99,8 +133,8 @@ class ReaderCubit extends Cubit<ReaderState> {
             localTotal: jsonValue['localTotal'],
           ));
 
-          if (searchCubit != null) {
-            searchCubit!.setState = searchCubit!.state.copyWith(
+          if (state.code == ReaderStateCode.search) {
+            searchCubit.setState = searchCubit.state.copyWith(
               code: LoadingStateCode.loaded,
               searchResultList: (jsonValue['searchResultList'] ?? [])
                   .map<ReaderSearchResult>((e) =>
@@ -116,11 +150,11 @@ class ReaderCubit extends Cubit<ReaderState> {
         break;
 
       case 'log':
-        Logger().i(request['data']);
+        _logger.i(request['data']);
         break;
 
       default:
-        Logger().i('Unknown app api message: $message');
+        _logger.i('Unknown app api message: $message.');
     }
   }
 
@@ -138,6 +172,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   void sendThemeData([ThemeData? newTheme]) {
     currentTheme = newTheme ?? currentTheme;
     if (state.code == ReaderStateCode.loaded) {
+      _logger.i('Send the theme data to the renderer.');
       webViewHandler.sendThemeData(currentTheme, state.readerSettings);
     }
   }
@@ -145,10 +180,12 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// ******* Search ********
 
   void openSearch() {
+    _logger.i('Open the search panel.');
     emit(state.copyWith(code: ReaderStateCode.search));
   }
 
   void closeSearch() {
+    _logger.i('Close the search panel.');
     emit(state.copyWith(code: ReaderStateCode.loaded));
   }
 
@@ -171,6 +208,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// ******* Bookmarks ********
 
   Future<void> saveBookmark() async {
+    _logger.i('Save the bookmark.');
     final BookmarkData data = BookmarkData(
       bookPath: bookPath,
       bookName: state.bookName,
@@ -189,6 +227,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   Future<void> scrollToBookmark() async {
+    _logger.i('Scroll to the bookmark.');
     final BookmarkData? bookmarkData =
         state.bookmarkData ?? await BookmarkData.get(state.bookName);
     if (bookmarkData?.startCfi != null) {
@@ -198,7 +237,9 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   @override
   Future<void> close() async {
-    serverHandler.stop();
+    await serverHandler.stop();
+    searchCubit.close();
+    _logger.close();
     lifecycleHandler.dispose();
     super.close();
   }

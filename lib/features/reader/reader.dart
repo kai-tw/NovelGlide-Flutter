@@ -26,7 +26,9 @@ class ReaderWidget extends StatelessWidget {
         bookData: bookData,
         bookPath: bookPath,
         currentTheme: Theme.of(context),
-      )..initialize(dest: gotoDestination, isGotoBookmark: isGotoBookmark),
+        destination: gotoDestination,
+        isGotoBookmark: isGotoBookmark,
+      ),
       child: const ReaderScaffold(),
     );
   }

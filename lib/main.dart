@@ -43,7 +43,11 @@ void main() async {
           .log('[${event.time}] <${event.level.name}> ${event.message}'),
     );
   } else {
-    Logger.level = Level.all;
+    Logger.level = Level.off;
+    Logger.addLogListener(
+      (event) =>
+          debugPrint('[${event.time}] <${event.level.name}> ${event.message}'),
+    );
   }
 
   // Start App
