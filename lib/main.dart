@@ -39,8 +39,26 @@ void main() async {
   if (kReleaseMode) {
     Logger.level = Level.info;
     Logger.addLogListener(
-      (event) => FirebaseCrashlytics.instance
-          .log('[${event.time}] <${event.level.name}> ${event.message}'),
+      (event) {
+        switch (event.level) {
+          case Level.error:
+          case Level.fatal:
+            FirebaseCrashlytics.instance.recordError(
+              Exception(event.message),
+              event.stackTrace,
+              reason: event.message,
+              information: [
+                'Time: ${event.time}',
+              ],
+              fatal: event.level == Level.fatal,
+            );
+            break;
+          default:
+            FirebaseCrashlytics.instance.log(
+              '[${event.time}] <${event.level.name}> ${event.message}',
+            );
+        }
+      },
     );
   } else {
     Logger.level = Level.off;
