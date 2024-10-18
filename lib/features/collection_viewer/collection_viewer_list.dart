@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/book_data.dart';
 import '../../enum/loading_state_code.dart';
 import '../../toolbox/route_helper.dart';
 import '../common_components/common_list_empty.dart';
@@ -14,10 +13,12 @@ class CollectionViewerList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CollectionViewerCubit cubit = BlocProvider.of<CollectionViewerCubit>(context);
+    final cubit = BlocProvider.of<CollectionViewerCubit>(context);
 
     return BlocBuilder<CollectionViewerCubit, CollectionViewerState>(
-      buildWhen: (previous, current) => previous.code != current.code || previous.bookList != current.bookList,
+      buildWhen: (previous, current) =>
+          previous.code != current.code ||
+          previous.bookList != current.bookList,
       builder: (context, state) {
         switch (state.code) {
           case LoadingStateCode.initial:
@@ -34,7 +35,7 @@ class CollectionViewerList extends StatelessWidget {
                 onReorder: cubit.reorder,
                 itemCount: state.bookList.length,
                 itemBuilder: (context, index) {
-                  final BookData data = state.bookList[index];
+                  final data = state.bookList[index];
                   return ListTile(
                     key: ValueKey(data.filePath),
                     onTap: () {

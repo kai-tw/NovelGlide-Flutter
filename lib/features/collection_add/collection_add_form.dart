@@ -3,80 +3,34 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../data/collection_data.dart';
 import 'bloc/collection_add_bloc.dart';
+import 'widgets/collection_add_cancel_button.dart';
+import 'widgets/collection_add_name_field.dart';
+import 'widgets/collection_add_submit_button.dart';
+import 'widgets/collection_add_title.dart';
 
 class CollectionAddForm extends StatelessWidget {
   const CollectionAddForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-    return Form(
-      key: formKey,
+    return const Form(
       canPop: false,
       child: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: EdgeInsets.all(24.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              appLocalizations.collectionAddTitle,
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
+            CollectionAddTitle(),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 24.0),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: appLocalizations.collectionName,
-                ),
-                inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
-                onChanged: (value) {
-                  BlocProvider.of<CollectionAddCubit>(context).name = value;
-                },
-              ),
+              padding: EdgeInsets.symmetric(vertical: 24.0),
+              child: CollectionAddNameField(),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                TextButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.close_rounded),
-                  label: Text(appLocalizations.generalCancel),
-                ),
-                BlocBuilder<CollectionAddCubit, CollectionAddState>(
-                  buildWhen: (previous, current) => previous.name != current.name,
-                  builder: (context, state) {
-                    final isDisabled = state.name == null || state.name!.isEmpty;
-                    return ElevatedButton.icon(
-                      onPressed: isDisabled
-                          ? null
-                          : () async {
-                              if (formKey.currentState!.validate()) {
-                                final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
-                                final NavigatorState navigator = Navigator.of(context);
-
-                                formKey.currentState!.save();
-
-                                await CollectionData.create(state.name!);
-
-                                messenger.showSnackBar(SnackBar(content: Text(appLocalizations.collectionAddSuccess)));
-                                navigator.pop();
-                              }
-                            },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ),
-                      icon: const Icon(Icons.send_rounded),
-                      label: Text(appLocalizations.generalSubmit),
-                    );
-                  },
-                ),
+                CollectionAddCancelButton(),
+                CollectionAddSubmitButton(),
               ],
             ),
           ],
