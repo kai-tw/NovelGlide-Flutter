@@ -33,9 +33,9 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
     if (!isClosed) {
       emit(BookmarkListState(
         code: LoadingStateCode.loaded,
-        sortOrder: state.sortOrder,
+        sortOrder: sortOrder,
         bookmarkList: bookmarkList,
-        isAscending: state.isAscending,
+        isAscending: isAscending,
       ));
     }
   }
@@ -83,7 +83,6 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
             : compareNatural(b.bookPath, a.bookPath));
         break;
 
-      case SortOrderCode.savedTime:
       default:
         list.sort((a, b) => isAscending
             ? a.savedTime.compareTo(b.savedTime)
