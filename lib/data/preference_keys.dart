@@ -1,39 +1,56 @@
+/// A collection of preference keys used throughout the application.
 class PreferenceKeys {
   PreferenceKeys._();
 
-  static final BackupManagerPreferenceKeys backupManager = BackupManagerPreferenceKeys._();
-  static final ReaderPreferenceKeys reader = ReaderPreferenceKeys._();
-  static final ThemePreferenceKeys theme = ThemePreferenceKeys._();
-  static final SortOrderPreferenceKeys bookshelf = SortOrderPreferenceKeys._();
-  static final SortOrderPreferenceKeys collection = SortOrderPreferenceKeys._();
+  static final BackupManagerPref backupManager = BackupManagerPref._();
+  static final ReaderPref reader = ReaderPref._();
+  static final ThemePref theme = ThemePref._();
+  static final SortOrderPref bookshelf = SortOrderPref._('bookshelf');
+  static final SortOrderPref collection = SortOrderPref._('collection');
+  static final SortOrderPref bookmark = SortOrderPref._('bookmark');
 }
 
-class BackupManagerPreferenceKeys {
-  BackupManagerPreferenceKeys._();
+/// Preference keys related to backup management.
+class BackupManagerPref {
+  BackupManagerPref._();
 
-  final String isBackupCollections = 'isBackupCollections';
-  final String isBackupBookmarks = 'isBackupBookmarks';
+  final String isBackupCollections = 'backupManager_isBackupCollections';
+  final String isBackupBookmarks = 'backupManager_isBackupBookmarks';
+  final String isGoogleDriveEnabled = 'backupManager_isBackupToGoogleDrive';
 }
 
-class ReaderPreferenceKeys {
-  ReaderPreferenceKeys._();
+/// Preference keys related to the reader settings.
+class ReaderPref {
+  ReaderPref._();
 
-  final String fontSize = 'fontSize';
-  final String lineHeight = 'lineHeight';
-  final String autoSave = 'autoSave';
-  final String gestureDetection = 'gestureDetection';
+  final String fontSize = 'reader_fontSize';
+  final String lineHeight = 'reader_lineHeight';
+  final String autoSave = 'reader_autoSave';
+  final String gestureDetection = 'reader_gestureDetection';
 }
 
-class ThemePreferenceKeys {
-  ThemePreferenceKeys._();
+/// Preference keys related to theme settings.
+class ThemePref {
+  ThemePref._();
 
-  final String themeId = 'themeId';
-  final String brightness = 'brightness';
+  final String themeId = 'theme_themeId';
+  final String brightness = 'theme_brightness';
 }
 
-class SortOrderPreferenceKeys {
-  SortOrderPreferenceKeys._();
+/// Preference keys related to sort order settings.
+class SortOrderPref {
+  final String sortOrder;
+  final String isAscending;
 
-  final String sortOrder = 'sortOrder';
-  final String isAscending = 'isAscending';
+  factory SortOrderPref._(String prefix) {
+    return SortOrderPref._internal(
+      '${prefix}_sortOrder',
+      '${prefix}_isAscending',
+    );
+  }
+
+  SortOrderPref._internal(
+    this.sortOrder,
+    this.isAscending,
+  );
 }

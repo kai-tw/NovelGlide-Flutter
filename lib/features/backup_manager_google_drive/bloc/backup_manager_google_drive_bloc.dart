@@ -3,123 +3,175 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
+import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../data/bookmark_data.dart';
+import '../../../data/collection_data.dart';
+import '../../../data/preference_keys.dart';
 import '../../../processor/google_drive_api.dart';
 import '../../../toolbox/backup_utility.dart';
 import '../../../toolbox/random_utility.dart';
 
-class BackupManagerGoogleDriveCubit extends Cubit<BackupManagerGoogleDriveState> {
-  BackupManagerGoogleDriveCubit() : super(const BackupManagerGoogleDriveState());
+/// Manages Google Drive backup operations.
+class BackupManagerGoogleDriveCubit
+    extends Cubit<BackupManagerGoogleDriveState> {
+  final logger = Logger();
+  final _drivePrefKey = PreferenceKeys.backupManager.isGoogleDriveEnabled;
 
-  Future<void> init() async => await refresh();
+  factory BackupManagerGoogleDriveCubit() =>
+      BackupManagerGoogleDriveCubit._internal(
+          const BackupManagerGoogleDriveState())
+        ..refresh();
 
+  BackupManagerGoogleDriveCubit._internal(super.initialState);
+
+  /// Refreshes the backup state by checking preferences and updating metadata.
   Future<void> refresh() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool isEnabled = prefs.getBool('isBackupToGoogleDriveEnabled') ?? false;
+    final prefs = await SharedPreferences.getInstance();
+    final isEnabled = prefs.getBool(_drivePrefKey) ?? false;
     await setEnabled(isEnabled);
 
-    if (state.code == BackupManagerGoogleDriveCode.idle) {
-      final String? fileId = await GoogleDriveApi.instance.getFileId('Library.zip');
-
+    if (state.isReady) {
+      final fileId = await GoogleDriveApi.instance
+          .getFileId(BackupUtility.libraryArchiveName);
       if (fileId != null) {
-        final drive.File metadata = await GoogleDriveApi.instance.getMetadataById(fileId, field: 'modifiedTime');
-        emit(state.copyWith(fileId: fileId, metadata: metadata));
+        final metadata = await GoogleDriveApi.instance
+            .getMetadataById(fileId, field: 'modifiedTime');
+        if (!isClosed) {
+          emit(state.copyWith(fileId: fileId, metadata: metadata));
+        }
       }
     }
   }
 
+  /// Sets the backup enabled state and manages sign-in status.
   Future<void> setEnabled(bool isEnabled) async {
-    final bool isSignedIn = await GoogleDriveApi.instance.isSignedIn();
+    final isSignedIn = await GoogleDriveApi.instance.isSignedIn();
 
-    if (isEnabled && !isSignedIn) {
-      // If the user is not signed in, sign in.
-      await GoogleDriveApi.instance.signIn();
-      isEnabled = await GoogleDriveApi.instance.isSignedIn();
-    } else if (!isEnabled && isSignedIn) {
-      // If the user is signed in, sign out.
-      await GoogleDriveApi.instance.signOut();
+    if (isEnabled != isSignedIn) {
+      try {
+        isEnabled
+            ? await GoogleDriveApi.instance.signIn()
+            : await GoogleDriveApi.instance.signOut();
+      } catch (e) {
+        logger.e(e);
+      }
     }
+    isEnabled = await GoogleDriveApi.instance.isSignedIn();
 
-    emit(BackupManagerGoogleDriveState(
-      code: isEnabled ? BackupManagerGoogleDriveCode.idle : BackupManagerGoogleDriveCode.disabled,
-    ));
+    emit(state.copyWith(isReady: isEnabled));
 
-    // Save the setting.
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isBackupToGoogleDriveEnabled', isEnabled);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_drivePrefKey, isEnabled);
   }
 
+  /// Creates a backup and uploads it to Google Drive.
   Future<bool> createBackup() async {
-    final Directory tempFolder = await RandomUtility.getAvailableTempFolder();
+    final tempFolder = await RandomUtility.getAvailableTempFolder();
     tempFolder.createSync(recursive: true);
 
-    // Create zip file.
-    final File zipFile = await BackupUtility.createBackup(tempFolder.path);
-
-    // Upload zip file.
+    // Backup books
+    final zipFile = await BackupUtility.createBackup(tempFolder.path);
     await GoogleDriveApi.instance.uploadFile('appDataFolder', zipFile);
 
-    tempFolder.deleteSync(recursive: true);
+    // Backup collections
+    final collectionFile = await CollectionData.jsonFile;
+    await GoogleDriveApi.instance.uploadFile('appDataFolder', collectionFile);
 
+    // Backup bookmarks
+    final bookmarkFile = await BookmarkData.jsonFile;
+    await GoogleDriveApi.instance.uploadFile('appDataFolder', bookmarkFile);
+
+    tempFolder.deleteSync(recursive: true);
     return true;
   }
 
+  /// Deletes the existing backup from Google Drive.
   Future<bool> deleteBackup() async {
-    if (state.fileId == null) {
-      return false;
-    }
+    if (state.fileId == null) return false;
 
     await GoogleDriveApi.instance.deleteFile(state.fileId!);
     return true;
   }
 
+  /// Restores a backup from Google Drive.
   Future<bool> restoreBackup() async {
-    if (state.fileId == null) {
-      return false;
-    }
+    if (state.fileId == null) return false;
 
-    final Directory tempFolder = await RandomUtility.getAvailableTempFolder();
+    final tempFolder = await RandomUtility.getAvailableTempFolder();
     tempFolder.createSync(recursive: true);
 
-    final File zipFile = File(join(tempFolder.path, 'Library.zip'));
+    final zipFile = File(join(tempFolder.path, 'Library.zip'));
     zipFile.createSync();
 
+    // Restore books
     await GoogleDriveApi.instance.downloadFile(state.fileId!, zipFile);
-
     await BackupUtility.restoreBackup(tempFolder, zipFile);
 
     tempFolder.deleteSync(recursive: true);
+
+    // Get the settings
+    final prefs = await SharedPreferences.getInstance();
+
+    // Restore collections
+    final isBackupCollections =
+        prefs.getBool(PreferenceKeys.backupManager.isBackupCollections) ??
+            false;
+    if (isBackupCollections) {
+      _restoreData(CollectionData.jsonFileName, await CollectionData.jsonFile);
+    }
+
+    // Restore bookmarks
+    final isBackupBookmarks =
+        prefs.getBool(PreferenceKeys.backupManager.isBackupBookmarks) ?? false;
+    if (isBackupBookmarks) {
+      _restoreData(BookmarkData.jsonFileName, await BookmarkData.jsonFile);
+    }
+
     return true;
+  }
+
+  Future<void> _restoreData(String fileName, File target) async {
+    final id = await GoogleDriveApi.instance.getFileId(fileName);
+    if (id != null) {
+      await GoogleDriveApi.instance.downloadFile(id, target);
+    }
+  }
+
+  @override
+  Future<void> close() {
+    logger.close();
+    return super.close();
   }
 }
 
+/// Represents the state of the Google Drive backup manager.
 class BackupManagerGoogleDriveState extends Equatable {
-  final BackupManagerGoogleDriveCode code;
+  final bool isReady;
   final String? fileId;
   final drive.File? metadata;
 
-  @override
-  List<Object?> get props => [code, fileId];
-
   const BackupManagerGoogleDriveState({
-    this.code = BackupManagerGoogleDriveCode.disabled,
+    this.isReady = false,
     this.fileId,
     this.metadata,
   });
 
+  @override
+  List<Object?> get props => [isReady, fileId, metadata];
+
+  /// Creates a copy of the current state with optional new values.
   BackupManagerGoogleDriveState copyWith({
-    BackupManagerGoogleDriveCode? code,
+    bool? isReady,
     String? fileId,
     drive.File? metadata,
   }) {
     return BackupManagerGoogleDriveState(
-      code: code ?? this.code,
+      isReady: isReady ?? this.isReady,
       fileId: fileId ?? this.fileId,
       metadata: metadata ?? this.metadata,
     );
   }
 }
-
-enum BackupManagerGoogleDriveCode { disabled, idle }

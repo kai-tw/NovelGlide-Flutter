@@ -10,19 +10,17 @@ class BackupManagerSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => BackupManagerSettingsCubit()..init(),
-      child: _BackupManagerSettings(key: key),
+      create: (_) => BackupManagerSettingsCubit(),
+      child: Builder(
+        builder: (context) => _buildSettingsContent(context),
+      ),
     );
   }
-}
 
-class _BackupManagerSettings extends StatelessWidget {
-  const _BackupManagerSettings({super.key});
+  Widget _buildSettingsContent(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
+    final cubit = context.read<BackupManagerSettingsCubit>();
 
-  @override
-  Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BackupManagerSettingsCubit cubit = BlocProvider.of<BackupManagerSettingsCubit>(context);
     return Container(
       margin: const EdgeInsets.all(16.0),
       padding: const EdgeInsets.all(24.0),
@@ -34,24 +32,22 @@ class _BackupManagerSettings extends StatelessWidget {
       child: Column(
         children: [
           BlocBuilder<BackupManagerSettingsCubit, BackupManagerSettingsState>(
-            buildWhen: (previous, current) => previous.isBackupCollections != current.isBackupCollections,
-            builder: (context, state) {
-              return SwitchListTile(
-                title: Text(appLocalizations.backupManagerBackupCollection),
-                value: state.isBackupCollections,
-                onChanged: (value) => cubit.setState(backupCollections: value),
-              );
-            },
+            buildWhen: (previous, current) =>
+                previous.isBackupCollections != current.isBackupCollections,
+            builder: (context, state) => SwitchListTile(
+              title: Text(appLocalizations.backupManagerBackupCollection),
+              value: state.isBackupCollections,
+              onChanged: (value) => cubit.setState(isBackupCollections: value),
+            ),
           ),
           BlocBuilder<BackupManagerSettingsCubit, BackupManagerSettingsState>(
-            buildWhen: (previous, current) => previous.isBackupBookmarks != current.isBackupBookmarks,
-            builder: (context, state) {
-              return SwitchListTile(
-                title: Text(appLocalizations.backupManagerBackupBookmark),
-                value: state.isBackupBookmarks,
-                onChanged: (value) => cubit.setState(backupBookmarks: value),
-              );
-            },
+            buildWhen: (previous, current) =>
+                previous.isBackupBookmarks != current.isBackupBookmarks,
+            builder: (context, state) => SwitchListTile(
+              title: Text(appLocalizations.backupManagerBackupBookmark),
+              value: state.isBackupBookmarks,
+              onChanged: (value) => cubit.setState(isBackupBookmarks: value),
+            ),
           ),
         ],
       ),

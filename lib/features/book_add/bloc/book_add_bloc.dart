@@ -5,45 +5,56 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 
+import '../../../exceptions/file_exceptions.dart';
 import '../../../toolbox/file_path.dart';
-import '../../../toolbox/file_helper.dart';
 
-class BookAddCubit extends Cubit<BookAddState> {BookAddCubit() : super(const BookAddState());
+/// Cubit to manage the state of adding a book.
+class BookAddCubit extends Cubit<BookAddState> {
+  BookAddCubit() : super(const BookAddState());
 
-  void pickFile() async {
-    FilePickerResult? f = await FilePicker.platform.pickFiles(
+  /// Allows the user to pick a file.
+  Future<void> pickFile() async {
+    final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['epub'],
     );
 
-    emit(BookAddState(file: f != null ? File(f.files.single.path!) : null));
+    if (!isClosed) {
+      emit(BookAddState(file: _getFileFromResult(result)));
+    }
   }
 
+  /// Submits the selected file to the library.
   Future<void> submit() async {
-    File file = File(join(await FilePath.libraryRoot, state.fileName));
+    final fileName = basename(state.file!.path);
+    final filePath = join(await FilePath.libraryRoot, fileName);
+    final file = File(filePath);
 
     if (file.existsSync()) {
-      throw AddBookDuplicateFileException();
+      throw DuplicateFileException();
     }
 
-    state.file!.copySync(file.path);
+    // Copy the file to the library path.
+    state.file?.copySync(file.path);
   }
 
-  void removeFile() {
-    emit(const BookAddState());
+  /// Removes the selected file from the state.
+  void removeFile() => emit(const BookAddState());
+
+  /// Helper method to extract a File from the FilePickerResult.
+  File? _getFileFromResult(FilePickerResult? result) {
+    return result?.files.single.path != null
+        ? File(result!.files.single.path!)
+        : null;
   }
 }
 
+/// State representing the current file being added.
 class BookAddState extends Equatable {
   final File? file;
 
-  String? get fileName => file != null ? basename(file!.path) : null;
-  String? get fileSize => file != null ? FileHelper.getFileSizeString(file!.lengthSync()) : null;
-
   @override
-  List<Object?> get props => [file, fileName, fileSize];
+  List<Object?> get props => [file];
 
   const BookAddState({this.file});
 }
-
-class AddBookDuplicateFileException implements Exception {}

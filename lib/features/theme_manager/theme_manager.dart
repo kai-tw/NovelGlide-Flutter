@@ -18,22 +18,19 @@ class ThemeManager extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (_, __) {
-        Navigator.of(context)
-            .pushReplacement(RouteHelper.popRoute(const Homepage(initialItem: HomepageNavigationItem.settings)));
-      },
+      onPopInvokedWithResult: (_, __) => _navigateToHomepage(context),
       child: ThemeSwitchingArea(
         child: BlocProvider(
-          create: (_) => ThemeManagerCubit()..init(),
-          child: const ThemeManagerScaffold(),
+          create: (_) => ThemeManagerCubit(),
+          child: const _Scaffold(),
         ),
       ),
     );
   }
 }
 
-class ThemeManagerScaffold extends StatelessWidget {
-  const ThemeManagerScaffold({super.key});
+class _Scaffold extends StatelessWidget {
+  const _Scaffold();
 
   @override
   Widget build(BuildContext context) {
@@ -42,10 +39,7 @@ class ThemeManagerScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: CommonBackButton(
-          onPressed: () {
-            Navigator.of(context)
-                .pushReplacement(RouteHelper.popRoute(const Homepage(initialItem: HomepageNavigationItem.settings)));
-          },
+          onPressed: () => _navigateToHomepage(context),
         ),
         title: Text(appLocalizations.themeManagerTitle),
       ),
@@ -60,4 +54,12 @@ class ThemeManagerScaffold extends StatelessWidget {
       ),
     );
   }
+}
+
+void _navigateToHomepage(BuildContext context) {
+  Navigator.of(context).pushReplacement(
+    RouteHelper.popRoute(
+      const Homepage(initialItem: HomepageNavigationItem.settings),
+    ),
+  );
 }

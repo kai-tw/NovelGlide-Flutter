@@ -14,8 +14,8 @@ class ReaderSearch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
-    return BlocProvider(
-      create: (context) => ReaderSearchCubit(cubit)..init(),
+    return BlocProvider<ReaderSearchCubit>.value(
+      value: cubit.searchCubit,
       child: const _ReaderSearch(),
     );
   }

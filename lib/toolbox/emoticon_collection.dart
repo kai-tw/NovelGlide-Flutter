@@ -1,14 +1,30 @@
 import 'dart:math';
 
+/// A utility class for managing collections of emoticons.
 class EmoticonCollection {
-  static const List<String> shock = ['Σ(｀L_｀ )', '(ﾟ々｡)', 'Σ(;ﾟдﾟ)'];
+  /// A collection of emoticons representing shock.
+  static const List<String> shock = [
+    'Σ(｀L_｀ )',
+    '(ﾟ々｡)',
+    'Σ(;ﾟдﾟ)',
+    'Σ(￣□￣)',
+    '(⊙_☉)',
+    '（°o°）',
+    'Σ(ﾟДﾟ)',
+    '（⊙＿⊙）',
+    '（°□°）',
+    '（⊙_⊙）',
+    '（°◇°）',
+    '（°ロ°）'
+  ];
 
-  // Return a random emoticon in shock collection.
+  /// Returns a random emoticon from the shock collection.
   static String getRandomShock() {
-    final Random random = Random();
-    final randNum = random.nextInt(shock.length);
-    return shock[randNum];
+    final random = Random();
+    final randomIndex = random.nextInt(shock.length);
+    return shock[randomIndex];
   }
 
+  // Private constructor to prevent instantiation.
   EmoticonCollection._();
 }

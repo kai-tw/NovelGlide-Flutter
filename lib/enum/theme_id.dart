@@ -4,12 +4,13 @@ import '../theme/default_theme.dart';
 import '../theme/material_theme.dart';
 import '../theme/yellow_theme.dart';
 
+/// Enum representing different theme identifiers.
 enum ThemeId {
   defaultTheme,
   materialTheme,
   yellowTheme;
 
-  /// Get the theme template by id.
+  /// Get the theme template by id based on the brightness.
   ThemeData getThemeDataByBrightness({Brightness? brightness}) {
     final bool isLight =
         (brightness ?? WidgetsBinding.instance.platformDispatcher.platformBrightness) == Brightness.light;
@@ -24,6 +25,7 @@ enum ThemeId {
     }
   }
 
+  /// Retrieve a [ThemeId] from a string representation.
   static ThemeId? getFromString(String? str) {
     try {
       return ThemeId.values.firstWhere((e) => e.toString() == str);

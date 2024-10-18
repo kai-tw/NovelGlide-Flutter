@@ -1,12 +1,40 @@
 import 'dart:math';
 
+/// A utility class for file-related operations.
 class FileHelper {
+  /// Converts a file size in bytes to a human-readable string with units.
+  ///
+  /// [size] is the file size in bytes.
+  /// [decimals] specifies the number of decimal places to include in the result.
+  /// Returns a string representation of the file size with appropriate units.
   static String getFileSizeString(int size, {int decimals = 2}) {
-    final List<String> units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    // List of units for file sizes.
+    const List<String> units = [
+      'B', // Bytes
+      'KB', // Kilobytes
+      'MB', // Megabytes
+      'GB', // Gigabytes
+      'TB', // Terabytes
+      'PB', // Petabytes
+      'EB', // Exabytes
+      'ZB', // Zettabytes
+      'YB' // Yottabytes
+    ];
+
+    // Ensure the size is not negative.
     size = max(size, 0);
-    int index = (log(size) / log(1024)).floor();
-    return '${(size / pow(1024, index)).toStringAsFixed(decimals)} ${units[index]}';
+
+    // Determine the index for the appropriate unit.
+    int index = size > 0 ? (log(size) / log(1024)).floor() : 0;
+
+    // Ensure index does not exceed the units list length.
+    index = min(index, units.length - 1);
+
+    // Format the size with the specified number of decimal places.
+    double fileSize = size / pow(1024, index);
+    return '${fileSize.toStringAsFixed(decimals)} ${units[index]}';
   }
 
+  // Private constructor to prevent instantiation of this utility class.
   FileHelper._();
 }

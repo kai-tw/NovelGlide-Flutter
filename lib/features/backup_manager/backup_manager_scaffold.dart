@@ -10,11 +10,12 @@ class BackupManagerScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final appLocalizations = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        title: Text(appLocalizations.backupManagerTitle),
+        title: Text(appLocalizations?.backupManagerTitle ?? 'Backup Manager'),
       ),
       body: const SafeArea(
         child: SingleChildScrollView(

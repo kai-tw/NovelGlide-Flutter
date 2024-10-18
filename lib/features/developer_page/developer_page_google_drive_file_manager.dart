@@ -90,6 +90,10 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
                                   iconData = Icons.folder_zip_rounded;
                                   break;
 
+                                case 'application/epub+zip':
+                                  iconData = Icons.book_rounded;
+                                  break;
+
                                 default:
                                   iconData = Icons.insert_drive_file_rounded;
                               }

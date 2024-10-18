@@ -1,25 +1,39 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 
 import '../../../enum/loading_state_code.dart';
 import 'reader_cubit.dart';
 
 class ReaderSearchCubit extends Cubit<ReaderSearchState> {
   final ReaderCubit _readerCubit;
+  final Logger _logger;
 
-  set searchQuery(String query) => emit(state.copyWith(query: query));
+  set searchQuery(String query) => emit(state.copyWith(query: query.trim()));
 
   set setState(ReaderSearchState state) => emit(state);
 
-  set searchRange(ReaderSearchRange range) => emit(state.copyWith(range: range));
+  set searchRange(ReaderSearchRange range) =>
+      emit(state.copyWith(range: range));
 
-  ReaderSearchCubit(this._readerCubit) : super(const ReaderSearchState());
-
-  void init() {
-    _readerCubit.searchCubit = this;
+  factory ReaderSearchCubit(ReaderCubit readerCubit, Logger logger) {
+    const initialState = ReaderSearchState();
+    final cubit = ReaderSearchCubit._internal(
+      initialState,
+      readerCubit,
+      logger,
+    );
+    return cubit;
   }
 
+  ReaderSearchCubit._internal(
+    super.initialState,
+    this._readerCubit,
+    this._logger,
+  );
+
   void startSearch() {
+    _logger.i('Start a search query.');
     emit(state.copyWith(code: LoadingStateCode.loading));
     switch (state.range) {
       case ReaderSearchRange.currentChapter:
@@ -34,17 +48,15 @@ class ReaderSearchCubit extends Cubit<ReaderSearchState> {
   /// Communication
 
   void search(String query) {
-    _readerCubit.webViewHandler.controller.runJavaScript('window.readerApi.search("$query")');
+    _logger.i('Search "$query" in the whole book.');
+    _readerCubit.webViewHandler.controller
+        .runJavaScript('window.readerApi.search("$query")');
   }
 
   void searchInCurrentChapter(String query) {
-    _readerCubit.webViewHandler.controller.runJavaScript('window.readerApi.searchInCurrentChapter("$query")');
-  }
-
-  @override
-  Future<void> close() async {
-    _readerCubit.searchCubit = null;
-    super.close();
+    _logger.i('Search "$query" in the current chapter.');
+    _readerCubit.webViewHandler.controller
+        .runJavaScript('window.readerApi.searchInCurrentChapter("$query")');
   }
 }
 

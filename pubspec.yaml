@@ -73,6 +73,7 @@ dependencies:
   url_launcher: ^6.3.0
   webview_flutter: ^4.8.0
   xml: ^6.5.0
+  logger: ^2.4.0
 
 
 dev_dependencies:
@@ -101,7 +102,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
-    - assets/reader_root/
+    - assets/renderer/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
