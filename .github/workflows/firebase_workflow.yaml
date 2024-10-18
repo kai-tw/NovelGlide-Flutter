@@ -32,6 +32,7 @@ jobs:
   build_aab:
     runs-on: macos-latest
     environment: Firebase App Distribution
+    needs: build_renderer
     steps:
       - uses: actions/checkout@v4
 
