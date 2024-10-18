@@ -9,28 +9,45 @@ import '../../../enum/loading_state_code.dart';
 import '../../../enum/sort_order_code.dart';
 
 class CollectionListCubit extends Cubit<CollectionListState> {
+  // Keys for storing sort order and ascending preference in shared preferences
+  final _sortOrderKey = PreferenceKeys.collection.sortOrder;
+  final _isAscendingKey = PreferenceKeys.collection.isAscending;
+
+  // Constructor initializing the cubit with an initial state
   CollectionListCubit() : super(const CollectionListState());
 
-  void refresh() async {
-    List<CollectionData> collectionList = await CollectionData.getList();
-    _sortList(collectionList, state.sortOrder, state.isAscending);
-    emit(CollectionListState(
+  // Refreshes the collection list by fetching data and applying saved sort preferences
+  Future<void> refresh() async {
+    final collectionList = await CollectionData.getList();
+    final prefs = await SharedPreferences.getInstance();
+
+    final sortOrder = SortOrderCode.fromString(
+      prefs.getString(_sortOrderKey),
+      defaultValue: SortOrderCode.name,
+    );
+    final isAscending = prefs.getBool(_isAscendingKey) ?? true;
+
+    _sortList(collectionList, sortOrder, isAscending);
+
+    emit(state.copyWith(
       code: LoadingStateCode.loaded,
       collectionList: collectionList,
+      isAscending: isAscending,
+      sortOrder: sortOrder,
     ));
   }
 
+  // Reorders the collection list and updates the state
   void reorder(int oldIndex, int newIndex) {
-    final List<CollectionData> collectionList = state.collectionList;
-    final CollectionData item = collectionList.removeAt(oldIndex);
+    final collectionList = List<CollectionData>.from(state.collectionList);
+    final item = collectionList.removeAt(oldIndex);
     collectionList.insert(newIndex - (oldIndex < newIndex ? 1 : 0), item);
-    emit(CollectionListState(
-      code: LoadingStateCode.loaded,
-      collectionList: collectionList,
-    ));
+
+    emit(state.copyWith(collectionList: collectionList));
     CollectionData.reorder(oldIndex, newIndex);
   }
 
+  // Sets the selecting mode and clears selected collections
   void setSelecting(bool isSelecting) {
     emit(state.copyWith(
       isSelecting: isSelecting,
@@ -38,39 +55,47 @@ class CollectionListCubit extends Cubit<CollectionListState> {
     ));
   }
 
+  // Selects all collections in the list
   void selectAll() {
     emit(state.copyWith(selectedCollections: state.collectionList.toSet()));
   }
 
+  // Selects a specific collection
   void selectCollection(CollectionData data) {
-    emit(state.copyWith(selectedCollections: {...state.selectedCollections, data}));
+    emit(state.copyWith(
+      selectedCollections: {...state.selectedCollections, data},
+    ));
   }
 
+  // Deselects all collections
   void deselectAll() {
     emit(state.copyWith(selectedCollections: const {}));
   }
 
+  // Deselects a specific collection
   void deselectCollection(CollectionData data) {
-    Set<CollectionData> newSet = Set<CollectionData>.from(state.selectedCollections);
-    newSet.remove(data);
-
+    final newSet = Set<CollectionData>.from(state.selectedCollections)..remove(data);
     emit(state.copyWith(selectedCollections: newSet));
   }
 
+  // Deletes all selected collections and refreshes the list
   Future<void> deleteSelectedCollections() async {
     await Future.wait(state.selectedCollections.map((e) => e.delete()));
     refresh();
   }
 
-  Future<void> setListOrder({SortOrderCode? sortOrder, bool? isAscending}) async {
-    final SortOrderCode order = sortOrder ?? state.sortOrder;
-    final bool ascending = isAscending ?? state.isAscending;
-    List<CollectionData> list = List.from(state.collectionList);
+  // Sets the list order and saves preferences
+  Future<void> setListOrder({
+    SortOrderCode? sortOrder,
+    bool? isAscending,
+  }) async {
+    final order = sortOrder ?? state.sortOrder;
+    final ascending = isAscending ?? state.isAscending;
+    final list = List<CollectionData>.from(state.collectionList);
 
-    // Save the sorting preferences.
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(PreferenceKeys.collection.sortOrder, order.toString());
-    prefs.setBool(PreferenceKeys.collection.isAscending, ascending);
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(_sortOrderKey, order.toString());
+    prefs.setBool(_isAscendingKey, ascending);
 
     _sortList(list, order, ascending);
     emit(state.copyWith(
@@ -80,8 +105,15 @@ class CollectionListCubit extends Cubit<CollectionListState> {
     ));
   }
 
-  void _sortList(List<CollectionData> list, SortOrderCode sortOrder, bool isAscending) {
-    list.sort((a, b) => isAscending ? compareNatural(a.name, b.name) : compareNatural(b.name, a.name));
+  // Helper method to sort the collection list
+  void _sortList(
+    List<CollectionData> list,
+    SortOrderCode sortOrder,
+    bool isAscending,
+  ) {
+    list.sort((a, b) => isAscending
+        ? compareNatural(a.name, b.name)
+        : compareNatural(b.name, a.name));
   }
 }
 
@@ -94,7 +126,8 @@ class CollectionListState extends Equatable {
   final SortOrderCode sortOrder;
 
   @override
-  List<Object?> get props => [code, collectionList, isSelecting, selectedCollections];
+  List<Object?> get props =>
+      [code, collectionList, isSelecting, selectedCollections];
 
   const CollectionListState({
     this.code = LoadingStateCode.initial,
