@@ -47,3 +47,6 @@ app.*.map.json
 
 # Debug files
 app_untranslated.txt
+
+# Project specific
+assets/reader_root/*
