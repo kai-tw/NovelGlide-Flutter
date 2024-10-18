@@ -1,1 +1,1 @@
-body{margin:0;padding:0;width:100vw;height:100vh;background:rgba(0,0,0,0);overflow:hidden}#app{width:inherit;height:inherit;overflow:hidden}
+body{margin:0;padding:0;width:100vw;height:100vh;background:rgba(0,0,0,0);overflow:hidden;touch-action:none}#app{width:inherit;height:inherit;overflow:hidden}
