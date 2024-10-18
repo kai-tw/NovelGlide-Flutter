@@ -49,4 +49,4 @@ app.*.map.json
 app_untranslated.txt
 
 # Project specific
-assets/reader_root/*
+assets/renderer/*

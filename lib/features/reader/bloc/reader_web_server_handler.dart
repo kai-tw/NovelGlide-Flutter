@@ -50,14 +50,14 @@ class ReaderWebServerHandler {
       case 'index.html':
         // Serve the index.html file for the root path or index.html request.
         return Response.ok(
-          await rootBundle.loadString('assets/reader_root/index.html'),
+          await rootBundle.loadString('assets/renderer/index.html'),
           headers: {HttpHeaders.contentTypeHeader: 'text/html; charset=utf-8'},
         );
 
       case 'index.js':
         // Serve the index.js file for JavaScript functionality.
         return Response.ok(
-          await rootBundle.loadString('assets/reader_root/index.js'),
+          await rootBundle.loadString('assets/renderer/index.js'),
           headers: {
             HttpHeaders.contentTypeHeader: 'text/javascript; charset=utf-8'
           },
@@ -65,7 +65,7 @@ class ReaderWebServerHandler {
 
       case 'main.css':
         // Serve the main.css file for styling.
-        String css = await rootBundle.loadString('assets/reader_root/main.css');
+        String css = await rootBundle.loadString('assets/renderer/main.css');
         return Response.ok(css, headers: {
           HttpHeaders.contentTypeHeader: 'text/css; charset=utf-8'
         });
