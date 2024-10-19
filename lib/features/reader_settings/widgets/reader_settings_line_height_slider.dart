@@ -12,32 +12,45 @@ class ReaderSettingsLineHeightSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) => previous.readerSettings.lineHeight != current.readerSettings.lineHeight,
+      buildWhen: (previous, current) =>
+          previous.readerSettings.lineHeight !=
+          current.readerSettings.lineHeight,
       builder: (context, state) {
+        final appLocalizations = AppLocalizations.of(context)!;
+        final cubit = BlocProvider.of<ReaderCubit>(context);
         return ReaderSettingsSlider(
           leading: Icon(
             Icons.density_small_rounded,
             color: Theme.of(context).colorScheme.primary,
-            semanticLabel: AppLocalizations.of(context)!.accessibilityLineHeightSliderMinIcon,
+            semanticLabel:
+                appLocalizations.accessibilityLineHeightSliderMinIcon,
           ),
           trailing: Icon(
             Icons.density_large_rounded,
             color: Theme.of(context).colorScheme.primary,
-            semanticLabel: AppLocalizations.of(context)!.accessibilityLineHeightSliderMaxIcon,
+            semanticLabel:
+                appLocalizations.accessibilityLineHeightSliderMaxIcon,
           ),
           min: ReaderSettingsData.minLineHeight,
           max: ReaderSettingsData.maxLineHeight,
           value: state.readerSettings.lineHeight,
           semanticFormatterCallback: (double value) {
-            return '${AppLocalizations.of(context)!.accessibilityLineHeightSlider} ${value.toStringAsFixed(1)}';
+            return '${appLocalizations.accessibilityLineHeightSlider} ${value.toStringAsFixed(1)}';
           },
           onChanged: (double value) {
-            cubit.setSettings(state.readerSettings.copyWith(lineHeight: value));
+            cubit.setSettings(
+              state.readerSettings.copyWith(
+                lineHeight: value,
+              ),
+            );
           },
           onChangeEnd: (double value) {
-            cubit.setSettings(state.readerSettings.copyWith(lineHeight: value)..save());
+            cubit.setSettings(
+              state.readerSettings.copyWith(
+                lineHeight: value,
+              )..save(),
+            );
           },
         );
       },

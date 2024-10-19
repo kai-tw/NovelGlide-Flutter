@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'bloc/collection_add_bloc.dart';
 import 'widgets/collection_add_cancel_button.dart';
 import 'widgets/collection_add_name_field.dart';
 import 'widgets/collection_add_submit_button.dart';

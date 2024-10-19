@@ -12,34 +12,44 @@ class ReaderSettingsFontSizeSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) => previous.readerSettings.fontSize != current.readerSettings.fontSize,
+      buildWhen: (previous, current) =>
+          previous.readerSettings.fontSize != current.readerSettings.fontSize,
       builder: (context, state) {
+        final appLocalizations = AppLocalizations.of(context)!;
+        final cubit = BlocProvider.of<ReaderCubit>(context);
         return ReaderSettingsSlider(
           leading: Icon(
             Icons.format_size_rounded,
             color: Theme.of(context).colorScheme.primary,
             size: ReaderSettingsData.minFontSize,
-            semanticLabel: AppLocalizations.of(context)!.accessibilityFontSizeSliderMinIcon,
+            semanticLabel: appLocalizations.accessibilityFontSizeSliderMinIcon,
           ),
           trailing: Icon(
             Icons.format_size_rounded,
             color: Theme.of(context).colorScheme.primary,
             size: ReaderSettingsData.maxFontSize,
-            semanticLabel: AppLocalizations.of(context)!.accessibilityFontSizeSliderMaxIcon,
+            semanticLabel: appLocalizations.accessibilityFontSizeSliderMaxIcon,
           ),
           min: ReaderSettingsData.minFontSize,
           max: ReaderSettingsData.maxFontSize,
           value: state.readerSettings.fontSize,
           semanticFormatterCallback: (double value) {
-            return '${AppLocalizations.of(context)!.accessibilityFontSizeSlider} ${value.toStringAsFixed(1)}';
+            return '${appLocalizations.accessibilityFontSizeSlider} ${value.toStringAsFixed(1)}';
           },
           onChanged: (double value) {
-            cubit.setSettings(state.readerSettings.copyWith(fontSize: value));
+            cubit.setSettings(
+              state.readerSettings.copyWith(
+                fontSize: value,
+              ),
+            );
           },
           onChangeEnd: (double value) {
-            cubit.setSettings(state.readerSettings.copyWith(fontSize: value)..save());
+            cubit.setSettings(
+              state.readerSettings.copyWith(
+                fontSize: value,
+              )..save(),
+            );
           },
         );
       },
