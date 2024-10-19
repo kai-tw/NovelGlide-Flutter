@@ -9,7 +9,7 @@ import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 
 import '../exceptions/exception_template.dart';
-import '../toolbox/mime_resolver.dart';
+import 'mime_resolver.dart';
 
 /// A singleton class to interact with Google Drive API.
 class GoogleDriveApi {
@@ -94,6 +94,14 @@ class GoogleDriveApi {
       teamDriveId: teamDriveId,
       $fields: $fields,
     );
+  }
+
+  /// Checks if the file exists in Google Drive.
+  Future<bool> fileExists(
+    String fileName, {
+    String spaces = 'appDataFolder',
+  }) async {
+    return await getFileId(fileName, spaces: spaces) != null;
   }
 
   /// Retrieves the file ID for a given file name in the app data folder.

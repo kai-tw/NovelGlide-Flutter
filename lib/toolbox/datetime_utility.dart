@@ -26,12 +26,16 @@ class DateTimeUtility {
   /// The [pattern] parameter is the format pattern to use.
   /// The [defaultValue] is returned if [dateTime] is null.
   /// Returns a formatted date string or the [defaultValue] if [dateTime] is null.
-  static String format(DateTime? dateTime, {String? pattern, String defaultValue = ''}) {
+  static String format(
+    DateTime? dateTime, {
+    String? pattern,
+    String defaultValue = '',
+  }) {
     if (dateTime == null) {
       return defaultValue;
     }
-    final formatter = pattern != null ? DateFormat(pattern) : DateFormat();
-    return formatter.format(dateTime);
+    final formatter = DateFormat(pattern);
+    return formatter.format(dateTime.toLocal());
   }
 
   // Private constructor to prevent instantiation.

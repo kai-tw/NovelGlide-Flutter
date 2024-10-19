@@ -3,7 +3,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../common_components/common_back_button.dart';
 import '../backup_manager_google_drive/backup_manager_google_drive.dart';
-import 'backup_manager_settings.dart';
 
 class BackupManagerScaffold extends StatelessWidget {
   const BackupManagerScaffold({super.key});
@@ -21,7 +20,6 @@ class BackupManagerScaffold extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              BackupManagerSettings(),
               BackupManagerGoogleDrive(),
             ],
           ),

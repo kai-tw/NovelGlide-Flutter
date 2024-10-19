@@ -8,7 +8,7 @@ import 'file_path.dart';
 class BackupUtility {
   static String libraryArchiveName = 'Library.zip';
 
-  static Future<File> createBackup(String tempFolderPath) async {
+  static Future<File> archiveLibrary(String tempFolderPath) async {
     final String libraryRoot = await FilePath.libraryRoot;
     final Directory libraryFolder = Directory(libraryRoot);
 
@@ -17,7 +17,9 @@ class BackupUtility {
     zipFile.createSync();
 
     await ZipFile.createFromDirectory(
-        sourceDir: libraryFolder, zipFile: zipFile);
+      sourceDir: libraryFolder,
+      zipFile: zipFile,
+    );
 
     return zipFile;
   }
