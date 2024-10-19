@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../data/bookmark_data.dart';
 import '../../../data/collection_data.dart';
 import '../../../data/preference_keys.dart';
+import '../../../enum/loading_state_code.dart';
 import '../../../toolbox/google_drive_api.dart';
 import '../../../toolbox/backup_utility.dart';
 import '../../../toolbox/random_utility.dart';
@@ -31,9 +32,14 @@ class BackupManagerGoogleDriveCubit
 
   /// Refreshes the backup state by checking preferences and updating metadata.
   Future<void> refresh() async {
+    emit(
+      const BackupManagerGoogleDriveState(
+        code: LoadingStateCode.loading,
+      ),
+    );
     final prefs = await SharedPreferences.getInstance();
     final isEnabled = prefs.getBool(_drivePrefKey) ?? false;
-    final isReady = await setEnabled(isEnabled);
+    final isReady = await _isApiReady(isEnabled);
 
     if (isReady) {
       // Get the ids of the files
@@ -62,7 +68,7 @@ class BackupManagerGoogleDriveCubit
 
       if (!isClosed) {
         emit(BackupManagerGoogleDriveState(
-          isReady: isReady,
+          code: LoadingStateCode.loaded,
           libraryId: libraryId,
           collectionId: collectionId,
           bookmarkId: bookmarkId,
@@ -77,7 +83,13 @@ class BackupManagerGoogleDriveCubit
   }
 
   /// Sets the backup enabled state and manages sign-in status.
-  Future<bool> setEnabled(bool isEnabled) async {
+  Future<void> setEnabled(bool isEnabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_drivePrefKey, await _isApiReady(isEnabled));
+  }
+
+  /// Checks if the Google Drive is ready to be used.
+  Future<bool> _isApiReady(bool isEnabled) async {
     final isSignedIn = await _driveApi.isSignedIn();
 
     if (isEnabled != isSignedIn) {
@@ -87,14 +99,7 @@ class BackupManagerGoogleDriveCubit
         logger.e(e);
       }
     }
-    isEnabled = await _driveApi.isSignedIn();
-
-    emit(state.copyWith(isReady: isEnabled));
-
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_drivePrefKey, isEnabled);
-
-    return isEnabled;
+    return _driveApi.isSignedIn();
   }
 
   /// Creates a backup and uploads it to Google Drive.
@@ -230,14 +235,14 @@ class BackupManagerGoogleDriveCubit
 
 /// Represents the state of the Google Drive backup manager.
 class BackupManagerGoogleDriveState extends Equatable {
-  final bool isReady;
+  final LoadingStateCode code;
   final String? libraryId;
   final String? collectionId;
   final String? bookmarkId;
   final DateTime? lastBackupTime;
 
   const BackupManagerGoogleDriveState({
-    this.isReady = false,
+    this.code = LoadingStateCode.initial,
     this.libraryId,
     this.collectionId,
     this.bookmarkId,
@@ -246,7 +251,7 @@ class BackupManagerGoogleDriveState extends Equatable {
 
   @override
   List<Object?> get props => [
-        isReady,
+        code,
         libraryId,
         collectionId,
         bookmarkId,
@@ -255,14 +260,14 @@ class BackupManagerGoogleDriveState extends Equatable {
 
   /// Creates a copy of the current state with optional new values.
   BackupManagerGoogleDriveState copyWith({
-    bool? isReady,
+    LoadingStateCode? code,
     String? libraryId,
     String? collectionId,
     String? bookmarkId,
     DateTime? lastBackupTime,
   }) {
     return BackupManagerGoogleDriveState(
-      isReady: isReady ?? this.isReady,
+      code: code ?? this.code,
       libraryId: libraryId ?? this.libraryId,
       collectionId: collectionId ?? this.collectionId,
       bookmarkId: bookmarkId ?? this.bookmarkId,

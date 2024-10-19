@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../enum/loading_state_code.dart';
 import '../../toolbox/datetime_utility.dart';
 import '../backup_manager/widgets/backup_manager_action_list_tile.dart';
 import 'bloc/backup_manager_google_drive_bloc.dart';
@@ -25,7 +26,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
         child: BlocBuilder<BackupManagerGoogleDriveCubit,
             BackupManagerGoogleDriveState>(
           buildWhen: (prev, curr) =>
-              prev.isReady != curr.isReady ||
+              prev.code != curr.code ||
               prev.lastBackupTime != curr.lastBackupTime ||
               prev.libraryId != curr.libraryId,
           builder: (context, state) {
@@ -36,10 +37,17 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                 SwitchListTile(
                   title: Text(appLocalizations.backupManagerGoogleDrive),
                   secondary: const Icon(Icons.cloud_rounded),
-                  value: state.isReady,
-                  onChanged: (value) =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .setEnabled(value),
+                  value: state.code == LoadingStateCode.loaded,
+                  onChanged: (value) async {
+                    if (state.code == LoadingStateCode.loading) {
+                      return;
+                    }
+
+                    final cubit =
+                        BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
+                    await cubit.setEnabled(value);
+                    await cubit.refresh();
+                  },
                 ),
                 // Show the last backup time
                 ListTile(
@@ -51,6 +59,9 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                       defaultValue: '-',
                     ),
                   ),
+                  trailing: state.code == LoadingStateCode.loading
+                      ? const CircularProgressIndicator()
+                      : null,
                 ),
 
                 const Divider(),
@@ -62,7 +73,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                   titleLabel: appLocalizations.backupManagerBackupAll,
                   successLabel:
                       appLocalizations.backupManagerBackupSuccessfully,
-                  enabled: state.isReady,
+                  enabled: state.code == LoadingStateCode.loaded,
                   future: () =>
                       BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
                           .backupAll(),
@@ -76,7 +87,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                   titleLabel: appLocalizations.backupManagerBackupLibrary,
                   successLabel:
                       appLocalizations.backupManagerBackupSuccessfully,
-                  enabled: state.isReady,
+                  enabled: state.code == LoadingStateCode.loaded,
                   future: () =>
                       BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
                           .backupLibrary(),
@@ -90,7 +101,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                   titleLabel: appLocalizations.backupManagerBackupCollection,
                   successLabel:
                       appLocalizations.backupManagerBackupSuccessfully,
-                  enabled: state.isReady,
+                  enabled: state.code == LoadingStateCode.loaded,
                   future: () =>
                       BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
                           .backupCollections(),
@@ -100,11 +111,11 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                 ),
                 // Backup bookmarks to Google Drive
                 BackupManagerActionListTile(
-                  iconData: Icons.bookmark_add_outlined,
+                  iconData: Icons.backup_outlined,
                   titleLabel: appLocalizations.backupManagerBackupBookmark,
                   successLabel:
                       appLocalizations.backupManagerBackupSuccessfully,
-                  enabled: state.isReady,
+                  enabled: state.code == LoadingStateCode.loaded,
                   future: () =>
                       BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
                           .backupBookmarks(),
@@ -122,40 +133,46 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                   titleLabel: appLocalizations.backupManagerRestoreAll,
                   successLabel:
                       appLocalizations.backupManagerRestoreSuccessfully,
-                  enabled: state.isReady && state.libraryId != null,
+                  enabled: state.code == LoadingStateCode.loaded &&
+                      (state.libraryId != null ||
+                          state.collectionId != null ||
+                          state.bookmarkId != null),
                   future: () =>
                       BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
                           .restoreAll(),
                 ),
                 // Restore library from Google Drive
                 BackupManagerActionListTile(
-                  iconData: Icons.library_books_outlined,
+                  iconData: Icons.restore_rounded,
                   titleLabel: appLocalizations.backupManagerRestoreLibrary,
                   successLabel:
                       appLocalizations.backupManagerRestoreSuccessfully,
-                  enabled: state.isReady && state.libraryId != null,
+                  enabled: state.code == LoadingStateCode.loaded &&
+                      state.libraryId != null,
                   future: () =>
                       BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
                           .restoreLibrary(),
                 ),
                 // Restore collections from Google Drive
                 BackupManagerActionListTile(
-                  iconData: Icons.collections_bookmark_outlined,
+                  iconData: Icons.restore_rounded,
                   titleLabel: appLocalizations.backupManagerRestoreCollection,
                   successLabel:
                       appLocalizations.backupManagerRestoreSuccessfully,
-                  enabled: state.isReady && state.libraryId != null,
+                  enabled: state.code == LoadingStateCode.loaded &&
+                      state.collectionId != null,
                   future: () =>
                       BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
                           .restoreCollections(),
                 ),
                 // Restore bookmarks from Google Drive
                 BackupManagerActionListTile(
-                  iconData: Icons.bookmark_border,
+                  iconData: Icons.restore_rounded,
                   titleLabel: appLocalizations.backupManagerRestoreBookmark,
                   successLabel:
                       appLocalizations.backupManagerRestoreSuccessfully,
-                  enabled: state.isReady && state.libraryId != null,
+                  enabled: state.code == LoadingStateCode.loaded &&
+                      state.bookmarkId != null,
                   future: () =>
                       BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
                           .restoreBookmarks(),
@@ -170,7 +187,10 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                   titleLabel: appLocalizations.backupManagerDeleteAllBackup,
                   successLabel:
                       appLocalizations.backupManagerDeleteBackupSuccessfully,
-                  enabled: state.isReady && state.libraryId != null,
+                  enabled: state.code == LoadingStateCode.loaded &&
+                      (state.libraryId != null ||
+                          state.collectionId != null ||
+                          state.bookmarkId != null),
                   future: () =>
                       BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
                           .deleteAll(),
@@ -180,11 +200,12 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                 ),
                 // Delete library backup from Google Drive
                 BackupManagerActionListTile(
-                  iconData: Icons.library_books_outlined,
+                  iconData: Icons.delete_outlined,
                   titleLabel: appLocalizations.backupManagerDeleteLibraryBackup,
                   successLabel:
                       appLocalizations.backupManagerDeleteBackupSuccessfully,
-                  enabled: state.isReady && state.libraryId != null,
+                  enabled: state.code == LoadingStateCode.loaded &&
+                      state.libraryId != null,
                   future: () =>
                       BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
                           .deleteLibrary(),
@@ -194,12 +215,13 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                 ),
                 // Delete collections backup from Google Drive
                 BackupManagerActionListTile(
-                  iconData: Icons.collections_bookmark_outlined,
+                  iconData: Icons.delete_outlined,
                   titleLabel:
                       appLocalizations.backupManagerDeleteCollectionBackup,
                   successLabel:
                       appLocalizations.backupManagerDeleteBackupSuccessfully,
-                  enabled: state.isReady && state.libraryId != null,
+                  enabled: state.code == LoadingStateCode.loaded &&
+                      state.collectionId != null,
                   future: () =>
                       BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
                           .deleteCollections(),
@@ -209,12 +231,13 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                 ),
                 // Delete bookmarks backup from Google Drive
                 BackupManagerActionListTile(
-                  iconData: Icons.bookmark_border,
+                  iconData: Icons.delete_outlined,
                   titleLabel:
                       appLocalizations.backupManagerDeleteBookmarkBackup,
                   successLabel:
                       appLocalizations.backupManagerDeleteBackupSuccessfully,
-                  enabled: state.isReady && state.libraryId != null,
+                  enabled: state.code == LoadingStateCode.loaded &&
+                      state.bookmarkId != null,
                   future: () =>
                       BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
                           .deleteBookmarks(),
