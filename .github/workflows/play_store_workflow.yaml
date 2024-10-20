@@ -1,4 +1,4 @@
-name: Deploy to Google Play Store Closed Test Track
+name: Deploy to Google Play Store Internal
 
 on: workflow_dispatch
 
