@@ -14,6 +14,9 @@ class TocCollectionDialogList extends StatelessWidget {
     final cubit = BlocProvider.of<TocCollectionDialogCubit>(context);
 
     return BlocBuilder<TocCollectionDialogCubit, TocCollectionDialogState>(
+      buildWhen: (previous, current) =>
+          previous.code != current.code ||
+          previous.selectedCollections != current.selectedCollections,
       builder: (context, state) {
         switch (state.code) {
           case LoadingStateCode.initial:
@@ -28,18 +31,22 @@ class TocCollectionDialogList extends StatelessWidget {
                 itemCount: state.collectionList.length,
                 itemBuilder: (context, index) {
                   final data = state.collectionList[index];
+                  final isSelected =
+                      state.selectedCollections.contains(data.id);
 
                   return CheckboxListTile(
                     contentPadding:
                         const EdgeInsets.fromLTRB(16, 0.0, 8.0, 0.0),
                     title: Text(data.name),
                     secondary: const Icon(Icons.folder),
-                    value: state.selectedCollections.contains(data.id),
-                    onChanged: (_) => _onTap(
-                      cubit,
-                      state.selectedCollections,
-                      data.id,
-                    ),
+                    value: isSelected,
+                    onChanged: (_) {
+                      if (isSelected) {
+                        cubit.deselect(data.id);
+                      } else {
+                        cubit.select(data.id);
+                      }
+                    },
                   );
                 },
               );
@@ -47,13 +54,5 @@ class TocCollectionDialogList extends StatelessWidget {
         }
       },
     );
-  }
-
-  void _onTap(TocCollectionDialogCubit cubit, Set<String> set, String id) {
-    if (set.contains(id)) {
-      cubit.deselect(id);
-    } else {
-      cubit.select(id);
-    }
   }
 }
