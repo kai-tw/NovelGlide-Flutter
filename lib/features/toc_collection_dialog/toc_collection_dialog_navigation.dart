@@ -11,7 +11,8 @@ class TocCollectionDialogNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final TocCollectionDialogCubit cubit = BlocProvider.of<TocCollectionDialogCubit>(context);
+    final TocCollectionDialogCubit cubit =
+        BlocProvider.of<TocCollectionDialogCubit>(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -21,13 +22,6 @@ class TocCollectionDialogNavigation extends StatelessWidget {
       child: OverflowBar(
         alignment: MainAxisAlignment.spaceEvenly,
         children: [
-          TextButton.icon(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.close),
-            label: Text(appLocalizations.generalClose),
-          ),
           TextButton.icon(
             onPressed: () {
               showDialog(
@@ -43,7 +37,7 @@ class TocCollectionDialogNavigation extends StatelessWidget {
           ),
           TextButton.icon(
             onPressed: () async {
-              final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
+              final messenger = ScaffoldMessenger.of(context);
 
               Navigator.of(context).pop();
 
