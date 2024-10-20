@@ -22,15 +22,17 @@ class TocCollectionDialog extends StatelessWidget {
       create: (_) => TocCollectionDialogCubit(bookData)..init(),
       child: Dialog(
         clipBehavior: Clip.hardEdge,
-        child: Container(
+        child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: WindowClass.compact.maxWidth),
-          child: Scaffold(
-            appBar: AppBar(
-              leading: const CommonBackButton(),
-              title: Text(appLocalizations.collectionAddToCollections),
+          child: ScaffoldMessenger(
+            child: Scaffold(
+              appBar: AppBar(
+                leading: const CommonBackButton(),
+                title: Text(appLocalizations.collectionAddToCollections),
+              ),
+              body: const TocCollectionDialogList(),
+              bottomNavigationBar: const TocCollectionDialogNavigation(),
             ),
-            body: const TocCollectionDialogList(),
-            bottomNavigationBar: const TocCollectionDialogNavigation(),
           ),
         ),
       ),
