@@ -18,6 +18,9 @@ jobs:
   deploy_to_play_store:
     runs-on: ubuntu-latest
     needs: build_aab
+    permissions:
+     contents: 'read'
+     id-token: 'write'
     steps:
       - name: Download AAB
         uses: actions/download-artifact@v4
