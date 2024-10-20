@@ -34,6 +34,7 @@ jobs:
         with:
           project_id: novelglide
           workload_identity_provider: projects/569892023598/locations/global/workloadIdentityPools/github/providers/github-action-provider
+          service_account: play-store@novelglide.iam.gserviceaccount.com
 
       - name: Deploy to Play Store
         uses: r0adkll/upload-google-play@v1
