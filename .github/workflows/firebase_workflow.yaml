@@ -7,10 +7,12 @@ jobs:
     uses: ./.github/workflows/build_renderer.yaml
 
   build_aab:
+    needs: build_renderer
     uses: ./.github/workflows/build_aab.yaml
 
   deploy_to_firebase:
     runs-on: macos-latest
+    needs: build_aab
     environment: Firebase App Distribution
     steps:
       - name: Download AAB

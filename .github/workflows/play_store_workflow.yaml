@@ -7,10 +7,12 @@ jobs:
     uses: ./.github/workflows/build_renderer.yaml
 
   build_aab:
+    needs: build_renderer
     uses: ./.github/workflows/build_aab.yaml
 
   deploy_to_play_store:
     runs-on: ubuntu-latest
+    needs: build_aab
     steps:
       - name: Download AAB
         uses: actions/download-artifact@v4
