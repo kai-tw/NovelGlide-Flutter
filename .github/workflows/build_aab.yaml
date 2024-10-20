@@ -1,6 +1,16 @@
 name: Build AAB
 
-on: workflow_call
+on:
+  workflow_call:
+    secrets:
+      KEYSTORE_JKS:
+        required: true
+      KEYSTORE_PASSWORD:
+        required: true
+      KEY_PASSWORD:
+        required: true
+      KEY_ALIAS:
+        required: true
 
 jobs:
   build_aab:

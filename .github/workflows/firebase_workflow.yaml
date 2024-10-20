@@ -9,6 +9,11 @@ jobs:
   build_aab:
     needs: build_renderer
     uses: ./.github/workflows/build_aab.yaml
+    secrets:
+      KEYSTORE_JKS: ${{ secrets.KEYSTORE_JKS }}
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
 
   deploy_to_firebase:
     runs-on: macos-latest
