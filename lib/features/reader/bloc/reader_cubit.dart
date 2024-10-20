@@ -9,7 +9,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
-import '../../../enum/loading_state_code.dart';
 import '../../../toolbox/file_path.dart';
 import '../../../data/reader_settings_data.dart';
 import 'reader_gesture_handler.dart';
@@ -124,22 +123,28 @@ class ReaderCubit extends Cubit<ReaderState> {
       case 'setState':
         if (!isClosed) {
           final Map<String, dynamic> jsonValue = request['data'];
-          emit(state.copyWith(
-            atStart: jsonValue['atStart'],
-            atEnd: jsonValue['atEnd'],
-            chapterFileName: jsonValue['href'],
-            isRtl: jsonValue['isRtl'],
-            startCfi: jsonValue['startCfi'],
-            localCurrent: jsonValue['localCurrent'],
-            localTotal: jsonValue['localTotal'],
-          ));
+          emit(
+            state.copyWith(
+              atStart: jsonValue['atStart'],
+              atEnd: jsonValue['atEnd'],
+              chapterFileName: jsonValue['href'],
+              isRtl: jsonValue['isRtl'],
+              startCfi: jsonValue['startCfi'],
+              localCurrent: jsonValue['localCurrent'],
+              localTotal: jsonValue['localTotal'],
+            ),
+          );
 
-          if (state.code == ReaderStateCode.search) {
-            searchCubit.setState = searchCubit.state.copyWith(
-              code: LoadingStateCode.loaded,
-              searchResultList: (jsonValue['searchResultList'] ?? [])
-                  .map<ReaderSearchResult>((e) =>
-                      ReaderSearchResult(cfi: e['cfi'], excerpt: e['excerpt']))
+          if (state.code == ReaderStateCode.search &&
+              jsonValue['searchResultList'] is List) {
+            searchCubit.setResultList(
+              jsonValue['searchResultList']
+                  .map<ReaderSearchResult>(
+                    (e) => ReaderSearchResult(
+                      cfi: e['cfi'],
+                      excerpt: e['excerpt'],
+                    ),
+                  )
                   .toList(),
             );
           }
@@ -210,13 +215,12 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   Future<void> saveBookmark() async {
     _logger.i('Save the bookmark.');
-    final BookmarkData data = BookmarkData(
+    final chapterTitle =
+        (await bookData?.findChapterByFileName(state.chapterFileName))?.title;
+    final data = BookmarkData(
       bookPath: bookPath,
       bookName: state.bookName,
-      chapterTitle:
-          (await bookData?.findChapterByFileName(state.chapterFileName))
-                  ?.title ??
-              '-',
+      chapterTitle: chapterTitle ?? '-',
       chapterFileName: state.chapterFileName,
       startCfi: state.startCfi,
       savedTime: DateTime.now(),
@@ -229,7 +233,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   Future<void> scrollToBookmark() async {
     _logger.i('Scroll to the bookmark.');
-    final BookmarkData? bookmarkData =
+    final bookmarkData =
         state.bookmarkData ?? await BookmarkData.get(state.bookName);
     if (bookmarkData?.startCfi != null) {
       goto(bookmarkData!.startCfi!);
@@ -239,7 +243,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   @override
   Future<void> close() async {
     await serverHandler.stop();
-    searchCubit.close();
+    await searchCubit.close();
     _logger.close();
     lifecycleHandler.dispose();
     super.close();

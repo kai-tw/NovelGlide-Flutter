@@ -9,13 +9,6 @@ class ReaderSearchCubit extends Cubit<ReaderSearchState> {
   final ReaderCubit _readerCubit;
   final Logger _logger;
 
-  set searchQuery(String query) => emit(state.copyWith(query: query.trim()));
-
-  set setState(ReaderSearchState state) => emit(state);
-
-  set searchRange(ReaderSearchRange range) =>
-      emit(state.copyWith(range: range));
-
   factory ReaderSearchCubit(ReaderCubit readerCubit, Logger logger) {
     const initialState = ReaderSearchState();
     final cubit = ReaderSearchCubit._internal(
@@ -58,22 +51,45 @@ class ReaderSearchCubit extends Cubit<ReaderSearchState> {
     _readerCubit.webViewHandler.controller
         .runJavaScript('window.readerApi.searchInCurrentChapter("$query")');
   }
+
+  void setResultList(List<ReaderSearchResult> resultList) {
+    _logger.i('Set the result list.');
+    emit(
+      state.copyWith(
+        code: LoadingStateCode.loaded,
+        searchResultList: resultList,
+      ),
+    );
+  }
+
+  void setQuery(String query) {
+    emit(state.copyWith(query: query.trim()));
+  }
+
+  void setRange(ReaderSearchRange range) {
+    emit(state.copyWith(range: range));
+  }
 }
 
 class ReaderSearchState extends Equatable {
   final LoadingStateCode code;
   final ReaderSearchRange range;
   final String query;
-  final List<ReaderSearchResult> searchResultList;
+  final List<ReaderSearchResult> resultList;
 
   @override
-  List<Object?> get props => [code, range, query, searchResultList];
+  List<Object?> get props => [
+        code,
+        range,
+        query,
+        resultList,
+      ];
 
   const ReaderSearchState({
     this.code = LoadingStateCode.initial,
     this.query = '',
     this.range = ReaderSearchRange.currentChapter,
-    this.searchResultList = const [],
+    this.resultList = const [],
   });
 
   ReaderSearchState copyWith({
@@ -86,7 +102,7 @@ class ReaderSearchState extends Equatable {
       code: code ?? this.code,
       query: query ?? this.query,
       range: range ?? this.range,
-      searchResultList: searchResultList ?? this.searchResultList,
+      resultList: searchResultList ?? this.resultList,
     );
   }
 }

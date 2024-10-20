@@ -14,13 +14,14 @@ class ReaderSearchField extends StatelessWidget {
     return BlocBuilder<ReaderSearchCubit, ReaderSearchState>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
-        return TextField(
+        return TextFormField(
           decoration: InputDecoration(
             contentPadding: EdgeInsets.zero,
             border: InputBorder.none,
             labelText: AppLocalizations.of(context)!.readerSearch,
           ),
-          onChanged: (value) => cubit.searchQuery = value,
+          onChanged: (value) => cubit.setQuery(value),
+          initialValue: state.query,
           readOnly: state.code == LoadingStateCode.loading,
         );
       },

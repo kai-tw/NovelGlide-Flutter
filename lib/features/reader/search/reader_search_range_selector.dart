@@ -9,7 +9,8 @@ class ReaderSearchRangeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ReaderSearchCubit cubit = BlocProvider.of<ReaderSearchCubit>(context);
+    final appLocalizations = AppLocalizations.of(context)!;
+    final cubit = BlocProvider.of<ReaderSearchCubit>(context);
     return BlocBuilder<ReaderSearchCubit, ReaderSearchState>(
       builder: (context, state) {
         return SegmentedButton(
@@ -17,12 +18,12 @@ class ReaderSearchRangeSelector extends StatelessWidget {
             ButtonSegment(
               value: ReaderSearchRange.currentChapter,
               icon: const Icon(Icons.insert_drive_file_rounded),
-              label: Text(AppLocalizations.of(context)!.readerSearchCurrentChapter),
+              label: Text(appLocalizations.readerSearchCurrentChapter),
             ),
             ButtonSegment(
               value: ReaderSearchRange.all,
               icon: const Icon(Icons.menu_book_rounded),
-              label: Text(AppLocalizations.of(context)!.readerSearchAllRange),
+              label: Text(appLocalizations.readerSearchAllRange),
             ),
           ],
           style: SegmentedButton.styleFrom(
@@ -32,7 +33,7 @@ class ReaderSearchRangeSelector extends StatelessWidget {
           ),
           expandedInsets: const EdgeInsets.symmetric(horizontal: 4.0),
           selected: {state.range},
-          onSelectionChanged: (value) => cubit.searchRange = value.first,
+          onSelectionChanged: (value) => cubit.setRange(value.first),
         );
       },
     );
