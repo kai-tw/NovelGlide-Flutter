@@ -27,7 +27,7 @@ jobs:
           channel: stable
 
       - name: Decode keystore.jks
-        run: echo "${{ secrets.KEYSTORE_JKS_PROD }}" | base64 --decode > android/app/keystore.jks
+        run: echo "${{ secrets.KEYSTORE_JKS }}" | base64 --decode > android/app/keystore.jks
 
       - name: Create key.properties
         run: |
