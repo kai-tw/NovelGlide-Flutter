@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../data/collection_data.dart';
 import '../../enum/loading_state_code.dart';
 import '../../enum/window_class.dart';
 import '../../toolbox/route_helper.dart';
@@ -16,9 +14,9 @@ class CollectionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final CollectionListCubit cubit = BlocProvider.of<CollectionListCubit>(context)..refresh();
-    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
+    final cubit = BlocProvider.of<CollectionListCubit>(context)..refresh();
+    final windowWidth = MediaQuery.of(context).size.width;
+    final windowClass = WindowClass.getClassByWidth(windowWidth);
 
     return BlocBuilder<CollectionListCubit, CollectionListState>(
       buildWhen: (previous, current) =>
@@ -44,40 +42,38 @@ class CollectionList extends StatelessWidget {
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      final CollectionData data = state.collectionList[index];
-                      final Set<CollectionData> selectedSet = state.selectedCollections;
-                      void Function() onTap;
-                      Widget? trailing;
+                      final data = state.collectionList[index];
+                      const icon = Icon(Icons.folder_rounded);
+                      final title = Text(data.name);
 
                       if (state.isSelecting) {
-                        onTap = () {
-                          if (selectedSet.contains(data)) {
-                            cubit.deselectCollection(data);
-                          } else {
-                            cubit.selectCollection(data);
-                          }
-                        };
-                        trailing = Semantics(
-                          label: selectedSet.contains(data)
-                              ? appLocalizations.collectionDeselect
-                              : appLocalizations.collectionSelect,
-                          child: Checkbox(
-                            value: selectedSet.contains(data),
-                            onChanged: (_) => onTap(),
-                          ),
+                        final isSelected =
+                            state.selectedCollections.contains(data);
+                        return CheckboxListTile(
+                          title: title,
+                          secondary: icon,
+                          value: isSelected,
+                          onChanged: (_) {
+                            if (isSelected) {
+                              cubit.deselectCollection(data);
+                            } else {
+                              cubit.selectCollection(data);
+                            }
+                          },
                         );
                       } else {
-                        onTap = () =>
-                            Navigator.of(context).push(RouteHelper.pushRoute(CollectionViewer(collectionData: data)));
+                        return ListTile(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              RouteHelper.pushRoute(
+                                CollectionViewer(collectionData: data),
+                              ),
+                            );
+                          },
+                          leading: icon,
+                          title: title,
+                        );
                       }
-
-                      return ListTile(
-                        onTap: onTap,
-                        leading: const Icon(Icons.folder_rounded),
-                        title: Text(data.name),
-                        trailing: trailing,
-                        minLeadingWidth: 40.0,
-                      );
                     },
                     childCount: state.collectionList.length,
                   ),
