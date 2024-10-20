@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../data/collection_data.dart';
 import '../../enum/loading_state_code.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
@@ -13,8 +11,7 @@ class TocCollectionDialogList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final TocCollectionDialogCubit cubit = BlocProvider.of<TocCollectionDialogCubit>(context);
+    final cubit = BlocProvider.of<TocCollectionDialogCubit>(context);
 
     return BlocBuilder<TocCollectionDialogCubit, TocCollectionDialogState>(
       builder: (context, state) {
@@ -30,19 +27,18 @@ class TocCollectionDialogList extends StatelessWidget {
               return ListView.builder(
                 itemCount: state.collectionList.length,
                 itemBuilder: (context, index) {
-                  final CollectionData data = state.collectionList[index];
+                  final data = state.collectionList[index];
 
-                  return ListTile(
-                    onTap: () => _onTap(cubit, state.selectedCollections, data.id),
-                    contentPadding: const EdgeInsets.fromLTRB(16, 0.0, 8.0, 0.0),
-                    leading: const Icon(Icons.folder),
+                  return CheckboxListTile(
+                    contentPadding:
+                        const EdgeInsets.fromLTRB(16, 0.0, 8.0, 0.0),
                     title: Text(data.name),
-                    trailing: Semantics(
-                      label: appLocalizations.collectionSelect,
-                      child: Checkbox(
-                        value: state.selectedCollections.contains(data.id),
-                        onChanged: (_) => _onTap(cubit, state.selectedCollections, data.id),
-                      ),
+                    secondary: const Icon(Icons.folder),
+                    value: state.selectedCollections.contains(data.id),
+                    onChanged: (_) => _onTap(
+                      cubit,
+                      state.selectedCollections,
+                      data.id,
                     ),
                   );
                 },
