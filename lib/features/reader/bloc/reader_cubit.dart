@@ -20,6 +20,11 @@ import 'reader_web_server_handler.dart';
 import 'reader_web_view_handler.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
+  /// Reader
+  final String bookPath;
+  BookData? bookData;
+  ThemeData currentTheme;
+
   /// Web Server
   late final ReaderWebServerHandler serverHandler =
       ReaderWebServerHandler(bookPath, _logger);
@@ -28,11 +33,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   late final ReaderWebViewHandler webViewHandler =
       ReaderWebViewHandler(this, _logger);
 
-  /// Reader
-  final String bookPath;
-  BookData? bookData;
-  ThemeData currentTheme;
-
+  /// Search
   late final ReaderSearchCubit searchCubit = ReaderSearchCubit(this, _logger);
 
   /// Gestures
