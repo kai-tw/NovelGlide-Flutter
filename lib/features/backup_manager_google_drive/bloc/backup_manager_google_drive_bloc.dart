@@ -50,18 +50,24 @@ class BackupManagerGoogleDriveCubit
       final bookmarkId = await _driveApi.getFileId(BookmarkData.jsonFileName);
       final timeList = [
         libraryId != null
-            ? (await _driveApi.getMetadataById(libraryId,
-                    field: 'modifiedTime'))
+            ? (await _driveApi.getMetadataById(
+                libraryId,
+                field: 'modifiedTime',
+              ))
                 .modifiedTime
             : null,
         collectionId != null
-            ? (await _driveApi.getMetadataById(collectionId,
-                    field: 'modifiedTime'))
+            ? (await _driveApi.getMetadataById(
+                collectionId,
+                field: 'modifiedTime',
+              ))
                 .modifiedTime
             : null,
         bookmarkId != null
-            ? (await _driveApi.getMetadataById(bookmarkId,
-                    field: 'modifiedTime'))
+            ? (await _driveApi.getMetadataById(
+                bookmarkId,
+                field: 'modifiedTime',
+              ))
                 .modifiedTime
             : null,
       ].where((e) => e != null).toList();
