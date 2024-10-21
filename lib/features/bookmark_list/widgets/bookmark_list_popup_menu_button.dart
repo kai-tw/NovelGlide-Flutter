@@ -14,12 +14,12 @@ class BookmarkListPopupMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
     final cubit = BlocProvider.of<BookmarkListCubit>(context);
-    final state = cubit.state;
 
     return PopupMenuButton(
       icon: const Icon(Icons.more_vert_rounded),
       clipBehavior: Clip.hardEdge,
       itemBuilder: (BuildContext context) {
+        final state = cubit.state;
         List<PopupMenuEntry<dynamic>> entries = [];
 
         // Edit mode button
@@ -31,7 +31,7 @@ class BookmarkListPopupMenuButton extends StatelessWidget {
                 contentPadding: EdgeInsets.zero,
                 dense: true,
                 leading: const SizedBox(width: 24.0),
-                title: Text(appLocalizations.bookmarkListSelect),
+                title: Text(appLocalizations.generalSelect),
                 trailing: const Icon(Icons.check_circle_outline_rounded),
               ),
             ),

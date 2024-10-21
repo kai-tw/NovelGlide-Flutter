@@ -60,7 +60,7 @@ class BookshelfPopupMenuButton extends StatelessWidget {
                 contentPadding: EdgeInsets.zero,
                 dense: true,
                 leading: const SizedBox(width: 24.0),
-                title: Text(appLocalizations.bookshelfSelect),
+                title: Text(appLocalizations.generalSelect),
                 trailing: const Icon(Icons.check_circle_outline_rounded),
               ),
             ),

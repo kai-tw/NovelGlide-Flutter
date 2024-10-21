@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../enum/loading_state_code.dart';
 import '../../enum/window_class.dart';
@@ -14,6 +15,7 @@ class CollectionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
     final cubit = BlocProvider.of<CollectionListCubit>(context)..refresh();
     final windowWidth = MediaQuery.of(context).size.width;
     final windowClass = WindowClass.getClassByWidth(windowWidth);
@@ -26,13 +28,11 @@ class CollectionList extends StatelessWidget {
           previous.selectedCollections != current.selectedCollections,
       builder: (context, state) {
         switch (state.code) {
-          case LoadingStateCode.initial:
-          case LoadingStateCode.loading:
-            return const CommonSliverLoading();
-
           case LoadingStateCode.loaded:
             if (state.collectionList.isEmpty) {
-              return const CommonSliverListEmpty();
+              return CommonSliverListEmpty(
+                title: appLocalizations.collectionNoCollection,
+              );
             } else {
               return SliverPadding(
                 padding: EdgeInsets.only(
@@ -80,6 +80,10 @@ class CollectionList extends StatelessWidget {
                 ),
               );
             }
+
+          case LoadingStateCode.initial:
+          case LoadingStateCode.loading:
+            return const CommonSliverLoading();
         }
       },
     );

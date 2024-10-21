@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../enum/loading_state_code.dart';
 import '../common_components/common_list_empty.dart';
@@ -12,6 +13,7 @@ class BookmarkListSliverList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
     BlocProvider.of<BookmarkListCubit>(context).refresh();
 
     return BlocBuilder<BookmarkListCubit, BookmarkListState>(
@@ -19,7 +21,9 @@ class BookmarkListSliverList extends StatelessWidget {
         switch (state.code) {
           case LoadingStateCode.loaded:
             if (state.bookmarkList.isEmpty) {
-              return const CommonSliverListEmpty();
+              return CommonSliverListEmpty(
+                title: appLocalizations.bookmarkListNoBookmark,
+              );
             } else {
               return SliverPadding(
                 padding: EdgeInsets.only(

@@ -3,10 +3,13 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CommonLoading extends StatelessWidget {
-  const CommonLoading({super.key});
+  final String? title;
+
+  const CommonLoading({super.key, this.title});
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
     return SafeArea(
       child: Center(
         child: Column(
@@ -17,7 +20,7 @@ class CommonLoading extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
               size: 50.0,
             ),
-            Text(AppLocalizations.of(context)!.generalLoading),
+            Text(title ?? appLocalizations.generalLoading),
           ],
         ),
       ),
@@ -26,12 +29,14 @@ class CommonLoading extends StatelessWidget {
 }
 
 class CommonSliverLoading extends StatelessWidget {
-  const CommonSliverLoading({super.key});
+  final String? title;
+
+  const CommonSliverLoading({super.key, this.title});
 
   @override
   Widget build(BuildContext context) {
-    return const SliverFillRemaining(
-      child: CommonLoading(),
+    return SliverFillRemaining(
+      child: CommonLoading(title: title),
     );
   }
 }

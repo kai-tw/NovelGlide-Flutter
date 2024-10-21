@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../enum/loading_state_code.dart';
 import '../common_components/common_list_empty.dart';
@@ -12,7 +13,7 @@ class BookshelfSliverList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<BookshelfCubit>(context).init();
+    final appLocalizations = AppLocalizations.of(context)!;
 
     return BlocBuilder<BookshelfCubit, BookshelfState>(
       buildWhen: (previous, current) =>
@@ -24,9 +25,12 @@ class BookshelfSliverList extends StatelessWidget {
         switch (state.code) {
           case LoadingStateCode.loaded:
             if (state.bookList.isEmpty) {
-              return const CommonSliverListEmpty();
+              return CommonSliverListEmpty(
+                title: appLocalizations.bookshelfNoBook,
+              );
             } else {
-              final double bottomPadding = MediaQuery.of(context).padding.bottom + 48.0;
+              final bottomPadding =
+                  MediaQuery.of(context).padding.bottom + 48.0;
               return SliverPadding(
                 padding: EdgeInsets.only(bottom: bottomPadding),
                 sliver: SliverGrid(
@@ -35,9 +39,8 @@ class BookshelfSliverList extends StatelessWidget {
                     childAspectRatio: 150 / 300,
                   ),
                   delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return BookshelfSliverListItem(state.bookList[index]);
-                    },
+                    (context, index) =>
+                        BookshelfSliverListItem(state.bookList[index]),
                     childCount: state.bookList.length,
                   ),
                 ),

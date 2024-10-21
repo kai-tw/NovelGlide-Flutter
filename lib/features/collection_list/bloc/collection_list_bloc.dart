@@ -74,7 +74,8 @@ class CollectionListCubit extends Cubit<CollectionListState> {
 
   // Deselects a specific collection
   void deselectCollection(CollectionData data) {
-    final newSet = Set<CollectionData>.from(state.selectedCollections)..remove(data);
+    final newSet = Set<CollectionData>.from(state.selectedCollections)
+      ..remove(data);
     emit(state.copyWith(selectedCollections: newSet));
   }
 
@@ -126,8 +127,14 @@ class CollectionListState extends Equatable {
   final SortOrderCode sortOrder;
 
   @override
-  List<Object?> get props =>
-      [code, collectionList, isSelecting, selectedCollections];
+  List<Object?> get props => [
+        code,
+        collectionList,
+        isSelecting,
+        selectedCollections,
+        isAscending,
+        sortOrder,
+      ];
 
   const CollectionListState({
     this.code = LoadingStateCode.initial,

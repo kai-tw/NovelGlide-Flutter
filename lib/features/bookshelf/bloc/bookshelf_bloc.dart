@@ -13,26 +13,27 @@ import '../../../enum/sort_order_code.dart';
 import '../../../toolbox/mime_resolver.dart';
 
 class BookshelfCubit extends Cubit<BookshelfState> {
-  bool isInitialized = false;
+  final String _sortOrderKey = PreferenceKeys.bookshelf.sortOrder;
+  final String _isAscendingKey = PreferenceKeys.bookshelf.isAscending;
 
-  BookshelfCubit() : super(const BookshelfState());
-
-  void init() {
-    if (isInitialized) return;
-    WidgetsBinding.instance.addPostFrameCallback((_) => refresh());
-    isInitialized = true;
+  factory BookshelfCubit() {
+    final cubit = BookshelfCubit._internal(const BookshelfState());
+    WidgetsBinding.instance.addPostFrameCallback((_) => cubit.refresh());
+    return cubit;
   }
+
+  BookshelfCubit._internal(super.initialState);
 
   Future<void> refresh() async {
     emit(const BookshelfState(code: LoadingStateCode.loading));
 
     // Load the sorting preferences.
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    SortOrderCode sortOrder = SortOrderCode.fromString(prefs.getString(PreferenceKeys.bookshelf.sortOrder) ?? 'name');
-    bool isAscending = prefs.getBool(PreferenceKeys.bookshelf.isAscending) ?? true;
+    final prefs = await SharedPreferences.getInstance();
+    final sortOrder = SortOrderCode.fromString(prefs.getString(_sortOrderKey));
+    final isAscending = prefs.getBool(_isAscendingKey) ?? true;
 
-    final Directory folder = Directory(await FilePath.libraryRoot);
-    final Iterable<File> fileList = folder
+    final folder = Directory(await FilePath.libraryRoot);
+    final fileList = folder
         .listSync()
         .whereType<File>()
         .where((e) => MimeResolver.lookupAll(e) == 'application/epub+zip');
@@ -41,10 +42,12 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     for (File epubFile in fileList) {
       if (state.bookList.any((element) => element.filePath == epubFile.path)) {
         // Old book! Reference it.
-        list.add(state.bookList.firstWhere((element) => element.filePath == epubFile.path));
+        list.add(state.bookList
+            .firstWhere((element) => element.filePath == epubFile.path));
       } else {
         // New book! Read it.
-        list.add(BookData.fromEpubBook(epubFile.path, await BookData.loadEpubBook(epubFile.path)));
+        list.add(BookData.fromEpubBook(
+            epubFile.path, await BookData.loadEpubBook(epubFile.path)));
       }
     }
 
@@ -64,14 +67,17 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     emit(state.copyWith(isDragging: false, isSelecting: false));
   }
 
-  Future<void> setListOrder({SortOrderCode? sortOrder, bool? isAscending}) async {
-    SortOrderCode order = sortOrder ?? state.sortOrder;
-    bool ascending = isAscending ?? state.isAscending;
+  Future<void> setListOrder({
+    SortOrderCode? sortOrder,
+    bool? isAscending,
+  }) async {
+    final order = sortOrder ?? state.sortOrder;
+    final ascending = isAscending ?? state.isAscending;
 
     // Save the sorting preferences.
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(PreferenceKeys.bookshelf.sortOrder, order.toString());
-    prefs.setBool(PreferenceKeys.bookshelf.isAscending, ascending);
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(_sortOrderKey, order.toString());
+    prefs.setBool(_isAscendingKey, ascending);
 
     state.bookList.sort(BookData.sortCompare(order, ascending));
     emit(state.copyWith(
@@ -139,7 +145,15 @@ class BookshelfState extends Equatable {
   final bool isAscending;
 
   @override
-  List<Object?> get props => [code, sortOrder, bookList, selectedBooks, isDragging, isSelecting, isAscending];
+  List<Object?> get props => [
+        code,
+        sortOrder,
+        bookList,
+        selectedBooks,
+        isDragging,
+        isSelecting,
+        isAscending
+      ];
 
   const BookshelfState({
     this.code = LoadingStateCode.initial,
