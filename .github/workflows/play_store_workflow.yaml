@@ -43,4 +43,4 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.CREDENTIAL_KEY }}
           packageName: com.kai_wu.novelglide
           releaseFiles: ./app-release.aab
-          track: qa
+          track: internal
