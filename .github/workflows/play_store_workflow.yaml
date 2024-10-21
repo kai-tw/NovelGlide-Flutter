@@ -17,6 +17,7 @@ jobs:
 
   deploy_to_play_store:
     runs-on: ubuntu-latest
+    environment: Google Play Store
     needs: build_aab
     permissions:
      contents: 'read'
@@ -28,17 +29,18 @@ jobs:
           name: aab
           path: ./
 
-      - name: Authenticate to Google Cloud
-        id: auth
-        uses: 'google-github-actions/auth@v2'
-        with:
-          workload_identity_provider: projects/569892023598/locations/global/workloadIdentityPools/github/providers/github-action-provider
-          service_account: play-store@novelglide.iam.gserviceaccount.com
+      # - name: Authenticate to Google Cloud
+      #   id: auth
+      #   uses: 'google-github-actions/auth@v2'
+      #   with:
+      #     workload_identity_provider: projects/569892023598/locations/global/workloadIdentityPools/github/providers/github-action-provider
+      #     service_account: play-store@novelglide.iam.gserviceaccount.com
 
       - name: Deploy to Play Store
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJson: ${{ steps.auth.outputs.credentials_file_path }}
+          # serviceAccountJson: ${{ steps.auth.outputs.credentials_file_path }}
+          serviceAccountJsonPlainText: ${{ secrets.CREDENTIAL_KEY }}
           packageName: com.kai_wu.novelglide
           releaseFiles: ./app-release.aab
           track: qa
