@@ -1,7 +1,12 @@
 import 'dart:math';
 
+import 'package:path/path.dart';
+
 /// A utility class for file-related operations.
 class FileHelper {
+  // Private constructor to prevent instantiation of this utility class.
+  FileHelper._();
+
   /// Converts a file size in bytes to a human-readable string with units.
   ///
   /// [size] is the file size in bytes.
@@ -35,6 +40,11 @@ class FileHelper {
     return '${fileSize.toStringAsFixed(decimals)} ${units[index]}';
   }
 
-  // Private constructor to prevent instantiation of this utility class.
-  FileHelper._();
+  static String getAbsolutePath(String path, String root) {
+    return isAbsolute(path) ? path : join(root, path);
+  }
+
+  static String getRelativePath(String path, String root) {
+    return isRelative(path) ? path : relative(path, from: root);
+  }
 }

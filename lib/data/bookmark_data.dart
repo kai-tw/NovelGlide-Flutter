@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 
 import '../toolbox/datetime_utility.dart';
+import '../toolbox/file_helper.dart';
 import '../toolbox/file_path.dart';
 
 /// Represents a bookmark with its metadata and operations.
@@ -64,10 +65,8 @@ class BookmarkData {
 
   /// Retrieves a bookmark by its book path.
   static Future<BookmarkData?> get(String bookPath) async {
-    final Map<String, dynamic> json = await jsonData;
-    bookPath = isAbsolute(bookPath)
-        ? relative(bookPath, from: await FilePath.libraryRoot)
-        : bookPath;
+    final json = await jsonData;
+    bookPath = FileHelper.getRelativePath(bookPath, await FilePath.libraryRoot);
     return json.containsKey(bookPath)
         ? BookmarkData.fromJson(json[bookPath]!)
         : null;
@@ -75,16 +74,23 @@ class BookmarkData {
 
   /// Retrieves a list of all bookmarks.
   static Future<List<BookmarkData>> getList() async {
-    final Map<String, dynamic> json = await jsonData;
+    final json = await jsonData;
     List<BookmarkData> retList = [];
 
     for (String key in json.keys) {
       if (json.containsKey(key)) {
-        final BookmarkData data = BookmarkData.fromJson(json[key]!);
-        data.bookPath = isAbsolute(data.bookPath)
-            ? data.bookPath
-            : join(await FilePath.libraryRoot, data.bookPath);
-        retList.add(data);
+        final data = BookmarkData.fromJson(json[key]!);
+
+        data.bookPath = FileHelper.getAbsolutePath(
+          data.bookPath,
+          await FilePath.libraryRoot,
+        );
+
+        if (File(data.bookPath).existsSync()) {
+          retList.add(data);
+        } else {
+          await data.delete();
+        }
       }
     }
 
@@ -93,40 +99,19 @@ class BookmarkData {
 
   /// Saves the current bookmark to the JSON file.
   void save() async {
-    final File dataFile = await jsonFile;
-    final Map<String, dynamic> json = await jsonData;
-    bookPath = isAbsolute(bookPath)
-        ? relative(bookPath, from: await FilePath.libraryRoot)
-        : bookPath;
+    final dataFile = await jsonFile;
+    final json = await jsonData;
+    bookPath = FileHelper.getRelativePath(bookPath, await FilePath.libraryRoot);
     json[bookPath] = toJson();
     dataFile.writeAsStringSync(jsonEncode(json));
   }
 
   /// Deletes the current bookmark from the JSON file.
   Future<void> delete() async {
-    final File dataFile = await jsonFile;
-    final Map<String, dynamic> json = await jsonData;
+    final dataFile = await jsonFile;
+    final json = await jsonData;
     json.remove(bookPath);
     dataFile.writeAsStringSync(jsonEncode(json));
-  }
-
-  /// Creates a copy of the current bookmark with optional new values.
-  BookmarkData copyWith({
-    String? bookPath,
-    String? bookName,
-    String? chapterTitle,
-    String? chapterFileName,
-    String? startCfi,
-    DateTime? savedTime,
-  }) {
-    return BookmarkData(
-      bookPath: bookPath ?? this.bookPath,
-      bookName: bookName ?? this.bookName,
-      chapterTitle: chapterTitle ?? this.chapterTitle,
-      chapterFileName: chapterFileName ?? this.chapterFileName,
-      startCfi: startCfi ?? this.startCfi,
-      savedTime: savedTime ?? this.savedTime,
-    );
   }
 
   /// Converts the bookmark data to a JSON map.
