@@ -9,10 +9,11 @@ class BookmarkListSelectButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
+    final cubit = BlocProvider.of<BookmarkListCubit>(context);
     return BlocBuilder<BookmarkListCubit, BookmarkListState>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
+          previous.bookmarkList != current.bookmarkList ||
           previous.selectedBookmarks != current.selectedBookmarks,
       builder: (context, state) {
         Widget? child;

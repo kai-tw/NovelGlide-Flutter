@@ -89,7 +89,7 @@ class BookmarkData {
         if (File(data.bookPath).existsSync()) {
           retList.add(data);
         } else {
-          await data.delete();
+          data.delete();
         }
       }
     }
@@ -101,16 +101,17 @@ class BookmarkData {
   void save() async {
     final dataFile = await jsonFile;
     final json = await jsonData;
-    bookPath = FileHelper.getRelativePath(bookPath, await FilePath.libraryRoot);
-    json[bookPath] = toJson();
+    final path = FileHelper.getRelativePath(bookPath, await FilePath.libraryRoot);
+    json[path] = toJson();
     dataFile.writeAsStringSync(jsonEncode(json));
   }
 
   /// Deletes the current bookmark from the JSON file.
   Future<void> delete() async {
     final dataFile = await jsonFile;
-    final json = await jsonData;
-    json.remove(bookPath);
+    Map<String, dynamic> json = await jsonData;
+    final path = FileHelper.getRelativePath(bookPath, await FilePath.libraryRoot);
+    json.remove(path);
     dataFile.writeAsStringSync(jsonEncode(json));
   }
 

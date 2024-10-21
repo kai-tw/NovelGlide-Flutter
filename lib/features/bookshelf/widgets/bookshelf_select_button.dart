@@ -9,17 +9,18 @@ class BookshelfSelectButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
+    final cubit = BlocProvider.of<BookshelfCubit>(context);
     return BlocBuilder<BookshelfCubit, BookshelfState>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
+          previous.bookList != current.bookList ||
           previous.selectedBooks != current.selectedBooks,
-      builder: (BuildContext context, BookshelfState state) {
+      builder: (context, state) {
         Widget? child;
 
         if (state.isSelecting) {
           child = CommonListSelectTextButton(
-            isEmpty: state.selectedBooks.isEmpty,
+            isEmpty: state.bookList.isEmpty,
             isSelectAll: state.selectedBooks.length == state.bookList.length,
             selectAll: cubit.selectAllBooks,
             deselectAll: cubit.deselectAllBooks,

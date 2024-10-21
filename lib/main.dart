@@ -102,7 +102,7 @@ class App extends StatelessWidget {
           routes: {
             "/": (_) => const Homepage(),
           },
-          builder: (context, child) => AccessibilityTools(child: child),
+          // builder: (context, child) => AccessibilityTools(child: child),
           // debugShowCheckedModeBanner: false,
         );
       },

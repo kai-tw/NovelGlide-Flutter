@@ -13,6 +13,7 @@ class CollectionListSelectButton extends StatelessWidget {
     return BlocBuilder<CollectionListCubit, CollectionListState>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
+          previous.collectionList != current.collectionList ||
           previous.selectedCollections != current.selectedCollections,
       builder: (context, state) {
         Widget? child;
