@@ -35,6 +35,15 @@ jobs:
         with:
           flutter-version: 3.24.3
           channel: stable
+          cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:-:hash:"
+          cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
+          pub-cache-key: "flutter-pub:os:-:channel:-:version:-:arch:-:hash:"
+          pub-cache-path: "${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:"
+      - run: flutter --version
+
+      - name: Pub Get Packages
+        run: flutter pub get
 
       - name: Decode keystore.jks
         run: echo "${{ secrets.KEYSTORE_JKS }}" | base64 --decode > android/app/keystore.jks
@@ -45,9 +54,6 @@ jobs:
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> android/key.properties
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
           echo "storeFile=keystore.jks" >> android/key.properties
-
-      - name: Pub Get Packages
-        run: flutter pub get
 
       - name: Build AAB
         run: flutter build appbundle --release
