@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../data/bookmark_data.dart';
-import '../common_components/draggable_feedback_widget.dart';
-import '../common_components/draggable_placeholder_widget.dart';
-import 'bloc/bookmark_list_bloc.dart';
-import '../common_components/bookmark_widget.dart';
+import '../../../data/bookmark_data.dart';
+import '../../common_components/draggable_feedback_widget.dart';
+import '../../common_components/draggable_placeholder_widget.dart';
+import '../bloc/bookmark_list_bloc.dart';
+import '../../common_components/bookmark_widget.dart';
 
 class BookmarkListDraggableBookmark extends StatelessWidget {
   final BookmarkData _data;

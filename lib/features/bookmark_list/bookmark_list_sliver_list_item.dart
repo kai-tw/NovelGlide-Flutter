@@ -7,7 +7,7 @@ import '../../toolbox/route_helper.dart';
 import '../common_components/bookmark_widget.dart';
 import '../reader/reader.dart';
 import 'bloc/bookmark_list_bloc.dart';
-import 'bookmark_list_draggable_bookmark.dart';
+import 'widgets/bookmark_list_draggable_bookmark.dart';
 
 class BookmarkListSliverListItem extends StatelessWidget {
   const BookmarkListSliverListItem(this._bookmarkData, {super.key});
