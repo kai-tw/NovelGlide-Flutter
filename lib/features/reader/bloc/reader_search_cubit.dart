@@ -57,7 +57,7 @@ class ReaderSearchCubit extends Cubit<ReaderSearchState> {
     emit(
       state.copyWith(
         code: LoadingStateCode.loaded,
-        searchResultList: resultList,
+        resultList: resultList,
       ),
     );
   }
@@ -96,13 +96,13 @@ class ReaderSearchState extends Equatable {
     LoadingStateCode? code,
     String? query,
     ReaderSearchRange? range,
-    List<ReaderSearchResult>? searchResultList,
+    List<ReaderSearchResult>? resultList,
   }) {
     return ReaderSearchState(
       code: code ?? this.code,
       query: query ?? this.query,
       range: range ?? this.range,
-      resultList: searchResultList ?? this.resultList,
+      resultList: resultList ?? this.resultList,
     );
   }
 }
