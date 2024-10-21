@@ -32,8 +32,8 @@ class CollectionListPopupMenuButton extends StatelessWidget {
 
     List<PopupMenuEntry> entries = [];
 
-    if (!state.isSelecting) {
-      /// Active selection
+    if (state.code == LoadingStateCode.loaded && !state.isSelecting) {
+      /// Edit mode button
       entries.add(PopupMenuItem(
         onTap: () => cubit.setSelecting(true),
         child: ListTile(
