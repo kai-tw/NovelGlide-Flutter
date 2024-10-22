@@ -18,77 +18,117 @@ class TocSliverChapterList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TocCubit, TocState>(
-      buildWhen: (previous, current) => previous.code != current.code || previous.chapterList != current.chapterList,
+      buildWhen: (previous, current) =>
+          previous.code != current.code ||
+          previous.chapterList != current.chapterList ||
+          previous.bookmarkData != current.bookmarkData,
       builder: (context, state) {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
             return const CommonSliverLoading();
+
           case LoadingStateCode.loaded:
             if (state.chapterList.isEmpty) {
               return const CommonSliverListEmpty();
             } else {
-              final TocCubit cubit = BlocProvider.of<TocCubit>(context);
-              final List<_TocChapterListItem> allChapterList = _constructList(state.chapterList, 0);
-
-              return SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final ChapterData chapterData = allChapterList[index].chapterData;
-                    final int nestingLevel = allChapterList[index].nestingLevel;
-
-                    return ListTile(
-                      onTap: () {
-                        Navigator.of(context)
-                            .push(RouteHelper.pushRoute(
-                              ReaderWidget(
-                                bookData: bookData,
-                                bookPath: bookData.filePath,
-                                gotoDestination: chapterData.fileName,
-                              ),
-                            ))
-                            .then((_) => cubit.refresh());
-                      },
-                      dense: true,
-                      contentPadding: EdgeInsets.only(left: 12.0 + 16 * nestingLevel, right: 12.0),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-                      leading: BlocBuilder<TocCubit, TocState>(
-                        builder: (context, state) {
-                          final bool isBookmarked = state.bookmarkData?.chapterFileName == chapterData.fileName;
-                          return Icon(
-                            isBookmarked ? Icons.bookmark_rounded : Icons.numbers_rounded,
-                            color: isBookmarked ? Theme.of(context).colorScheme.secondary : null,
-                            size: 20.0,
-                          );
-                        },
-                      ),
-                      title: Text(chapterData.title, style: Theme.of(context).textTheme.bodyLarge),
-                    );
-                  },
-                  childCount: allChapterList.length,
-                ),
-              );
+              return _buildList(context, state);
             }
         }
       },
     );
   }
 
-  List<_TocChapterListItem> _constructList(List<ChapterData> chapterDataList, int nestingLevel) {
-    List<_TocChapterListItem> list = [];
-    for (ChapterData data in chapterDataList) {
-      list.add(_TocChapterListItem(chapterData: data, nestingLevel: nestingLevel));
+  Widget _buildList(BuildContext context, TocState state) {
+    final cubit = BlocProvider.of<TocCubit>(context);
+    final allChapterList = _constructChapterTree(state.chapterList, 0);
+
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          final chapterData = allChapterList[index].chapterData;
+          final nestingLevel = allChapterList[index].nestingLevel;
+          final bookmarkData = state.bookmarkData;
+          final isBookmarked =
+              bookmarkData?.chapterFileName == chapterData.fileName;
+          final themeData = Theme.of(context);
+
+          return ListTile(
+            onTap: () {
+              Navigator.of(context)
+                  .push(
+                    RouteHelper.pushRoute(
+                      ReaderWidget(
+                        bookData: bookData,
+                        bookPath: bookData.filePath,
+                        gotoDestination: chapterData.fileName,
+                      ),
+                    ),
+                  )
+                  .then((_) => cubit.refresh());
+            },
+            dense: true,
+            contentPadding: EdgeInsets.only(
+              left: 12.0 + 16 * nestingLevel,
+              right: 12.0,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            leading: Icon(
+              isBookmarked ? Icons.bookmark_rounded : Icons.numbers_rounded,
+              color: isBookmarked ? themeData.colorScheme.secondary : null,
+              size: 20.0,
+            ),
+            title: Text(
+              chapterData.title,
+              style: themeData.textTheme.bodyLarge,
+            ),
+          );
+        },
+        childCount: allChapterList.length,
+      ),
+    );
+  }
+
+  /// Constructs the chapter n-ary tree.
+  /// [chapterDataList] is the list of chapters to be traversed.
+  /// [nestingLevel] is the nesting level of the current chapter.
+  /// [nestingLevel] will be used to calculate the indentation of the chapter tile.
+  List<_ListItem> _constructChapterTree(
+    List<ChapterData> chapterDataList,
+    int nestingLevel,
+  ) {
+    // Tree root
+    List<_ListItem> list = [];
+
+    // Traverse the sub chapters
+    for (final data in chapterDataList) {
+      list.add(_ListItem(
+        chapterData: data,
+        nestingLevel: nestingLevel,
+      ));
+
+      // If the chapter has sub chapters, traverse them
       if (data.subChapterList != null) {
-        list.addAll(_constructList(data.subChapterList!, nestingLevel + 1));
+        list.addAll(
+          _constructChapterTree(
+            data.subChapterList!,
+            nestingLevel + 1,
+          ),
+        );
       }
     }
     return list;
   }
 }
 
-class _TocChapterListItem {
+class _ListItem {
   final ChapterData chapterData;
   final int nestingLevel;
 
-  const _TocChapterListItem({required this.chapterData, required this.nestingLevel});
+  const _ListItem({
+    required this.chapterData,
+    required this.nestingLevel,
+  });
 }

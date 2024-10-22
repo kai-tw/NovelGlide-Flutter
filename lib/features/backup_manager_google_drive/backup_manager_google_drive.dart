@@ -30,6 +30,8 @@ class BackupManagerGoogleDrive extends StatelessWidget {
               prev.lastBackupTime != curr.lastBackupTime ||
               prev.libraryId != curr.libraryId,
           builder: (context, state) {
+            final cubit =
+                BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -43,8 +45,6 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                       return;
                     }
 
-                    final cubit =
-                        BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
                     await cubit.setEnabled(value);
                     await cubit.refresh();
                   },
