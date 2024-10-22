@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,15 +22,12 @@ void main() async {
   MobileAds.instance.initialize();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Library Initialization
-  Directory libraryDirectory = Directory(await FilePath.libraryRoot);
-  if (!libraryDirectory.existsSync()) {
-    libraryDirectory.createSync(recursive: true);
-  }
+  // File Path Initialization
+  await FilePath.ensureInitialized();
 
   // Theme Initialization
-  ThemeDataRecord record = await ThemeDataRecord.fromSettings();
-  final ThemeData initialTheme =
+  final record = await ThemeDataRecord.fromSettings();
+  final initialTheme =
       record.themeId.getThemeDataByBrightness(brightness: record.brightness);
 
   // Log Initialization
@@ -102,7 +97,7 @@ class App extends StatelessWidget {
           routes: {
             "/": (_) => const Homepage(),
           },
-          // builder: (context, child) => AccessibilityTools(child: child),
+          builder: (context, child) => AccessibilityTools(child: child),
           // debugShowCheckedModeBanner: false,
         );
       },

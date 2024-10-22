@@ -9,11 +9,10 @@ class BackupUtility {
   static String libraryArchiveName = 'Library.zip';
 
   static Future<File> archiveLibrary(String tempFolderPath) async {
-    final String libraryRoot = await FilePath.libraryRoot;
-    final Directory libraryFolder = Directory(libraryRoot);
+    final libraryFolder = Directory(FilePath.libraryRoot);
 
     // Create a zip file
-    final File zipFile = File(join(tempFolderPath, libraryArchiveName));
+    final zipFile = File(join(tempFolderPath, libraryArchiveName));
     zipFile.createSync();
 
     await ZipFile.createFromDirectory(
@@ -25,8 +24,7 @@ class BackupUtility {
   }
 
   static Future<void> restoreBackup(Directory tempFolder, File zipFile) async {
-    final String libraryRoot = await FilePath.libraryRoot;
-    final Directory libraryFolder = Directory(libraryRoot);
+    final libraryFolder = Directory(FilePath.libraryRoot);
 
     // Clear the Library folder.
     libraryFolder.deleteSync(recursive: true);

@@ -9,7 +9,8 @@ import '../../../enum/loading_state_code.dart';
 class CollectionViewerCubit extends Cubit<CollectionViewerState> {
   CollectionData collectionData;
 
-  CollectionViewerCubit(this.collectionData) : super(const CollectionViewerState());
+  CollectionViewerCubit(this.collectionData)
+      : super(const CollectionViewerState());
 
   void init() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -18,7 +19,7 @@ class CollectionViewerCubit extends Cubit<CollectionViewerState> {
   }
 
   void refresh() async {
-    collectionData = await CollectionData.fromId(collectionData.id);
+    collectionData = CollectionData.fromId(collectionData.id);
     List<BookData> bookList = [];
 
     for (String path in collectionData.pathList) {
@@ -27,7 +28,8 @@ class CollectionViewerCubit extends Cubit<CollectionViewerState> {
         bookList.add(state.bookList.firstWhere((e) => e.filePath == path));
       } else {
         // Doesn't exist in the list, so load it.
-        bookList.add(BookData.fromEpubBook(path, await BookData.loadEpubBook(path)));
+        bookList.add(
+            BookData.fromEpubBook(path, await BookData.loadEpubBook(path)));
       }
     }
 
@@ -43,13 +45,15 @@ class CollectionViewerCubit extends Cubit<CollectionViewerState> {
     }
 
     BookData target = state.bookList.removeAt(oldIndex);
-    state.bookList.insert(oldIndex < newIndex ? newIndex - 1 : newIndex, target);
+    state.bookList
+        .insert(oldIndex < newIndex ? newIndex - 1 : newIndex, target);
     emit(CollectionViewerState(
       code: LoadingStateCode.loaded,
       bookList: state.bookList,
     ));
 
-    collectionData.pathList = state.bookList.map<String>((e) => e.filePath).toList();
+    collectionData.pathList =
+        state.bookList.map<String>((e) => e.filePath).toList();
     collectionData.save();
   }
 }

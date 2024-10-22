@@ -18,7 +18,7 @@ class _State extends State<ReaderSettingsResetButton> {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final appLocalizations = AppLocalizations.of(context)!;
     IconData iconData = Icons.refresh_rounded;
     Color backgroundColor = Theme.of(context).colorScheme.error;
     Color foregroundColor = Theme.of(context).colorScheme.onError;
@@ -48,8 +48,8 @@ class _State extends State<ReaderSettingsResetButton> {
   }
 
   void _onPressed() {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
+    final appLocalizations = AppLocalizations.of(context)!;
+    final cubit = BlocProvider.of<ReaderCubit>(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

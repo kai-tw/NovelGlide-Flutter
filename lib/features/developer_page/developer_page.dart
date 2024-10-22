@@ -43,27 +43,19 @@ class DeveloperPage extends StatelessWidget {
             subtitle: Text("${MediaQuery.of(context).platformBrightness}"),
           ),
           const Divider(),
-
           ListTile(
             title: const Text('File Paths'),
             titleTextStyle: Theme.of(context).textTheme.titleLarge,
           ),
           ListTile(
             title: const Text('libraryRoot'),
-            subtitle: FutureBuilder(
-              future: FilePath.libraryRoot,
-              builder: (context, snapshot) => Text(snapshot.data?.toString() ?? ''),
-            ),
+            subtitle: Text(FilePath.libraryRoot),
           ),
           ListTile(
             title: const Text('dataRoot'),
-            subtitle: FutureBuilder(
-              future: FilePath.dataRoot,
-              builder: (context, snapshot) => Text(snapshot.data?.toString() ?? ''),
-            ),
+            subtitle: Text(FilePath.dataRoot),
           ),
           const Divider(),
-
           ListTile(
             title: const Text('Firebase'),
             titleTextStyle: Theme.of(context).textTheme.titleLarge,
@@ -74,13 +66,13 @@ class DeveloperPage extends StatelessWidget {
             title: const Text('Force crash'),
           ),
           const Divider(),
-
           ListTile(
             title: const Text('Google Drive'),
             titleTextStyle: Theme.of(context).textTheme.titleLarge,
           ),
           ListTile(
-            onTap: () => Navigator.of(context).push(RouteHelper.pushRoute(const DeveloperPageGoogleDriveFileManager())),
+            onTap: () => Navigator.of(context).push(RouteHelper.pushRoute(
+                const DeveloperPageGoogleDriveFileManager())),
             leading: const Icon(Icons.folder),
             title: const Text('File Browser'),
           ),

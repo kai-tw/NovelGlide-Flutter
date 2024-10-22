@@ -120,7 +120,7 @@ class BackupManagerGoogleDriveCubit
 
   /// Backs up the library to Google Drive.
   Future<bool> backupLibrary() async {
-    final tempFolder = await RandomUtility.getAvailableTempFolder();
+    final tempFolder = RandomUtility.getAvailableTempFolder();
     tempFolder.createSync(recursive: true);
     final zipFile = await BackupUtility.archiveLibrary(tempFolder.path);
     await _driveApi.uploadFile('appDataFolder', zipFile);
@@ -129,7 +129,7 @@ class BackupManagerGoogleDriveCubit
   }
 
   Future<bool> backupCollections() async {
-    final collectionFile = await CollectionData.jsonFile;
+    final collectionFile = CollectionData.jsonFile;
     if (collectionFile.existsSync()) {
       await _driveApi.uploadFile('appDataFolder', collectionFile);
     }
@@ -137,7 +137,7 @@ class BackupManagerGoogleDriveCubit
   }
 
   Future<bool> backupBookmarks() async {
-    final bookmarkFile = await BookmarkData.jsonFile;
+    final bookmarkFile = BookmarkData.jsonFile;
     if (bookmarkFile.existsSync()) {
       await _driveApi.uploadFile('appDataFolder', bookmarkFile);
     }
@@ -190,7 +190,7 @@ class BackupManagerGoogleDriveCubit
 
   Future<bool> restoreLibrary() async {
     if (state.libraryId != null) {
-      final tempFolder = await RandomUtility.getAvailableTempFolder();
+      final tempFolder = RandomUtility.getAvailableTempFolder();
       tempFolder.createSync(recursive: true);
 
       final zipFile = File(
@@ -215,7 +215,7 @@ class BackupManagerGoogleDriveCubit
   Future<bool> restoreCollections() async {
     final id = await _driveApi.getFileId(CollectionData.jsonFileName);
     if (id != null) {
-      await _driveApi.downloadFile(id, await CollectionData.jsonFile);
+      await _driveApi.downloadFile(id, CollectionData.jsonFile);
       return true;
     } else {
       return false;
@@ -225,7 +225,7 @@ class BackupManagerGoogleDriveCubit
   Future<bool> restoreBookmarks() async {
     final id = await _driveApi.getFileId(BookmarkData.jsonFileName);
     if (id != null) {
-      await _driveApi.downloadFile(id, await BookmarkData.jsonFile);
+      await _driveApi.downloadFile(id, BookmarkData.jsonFile);
       return true;
     } else {
       return false;

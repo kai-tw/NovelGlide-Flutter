@@ -18,11 +18,14 @@ class _State extends State<ReaderAddBookmarkButton> {
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
     return BlocListener<ReaderCubit, ReaderState>(
       listenWhen: (previous, current) =>
-          previous.readerSettings.autoSave != current.readerSettings.autoSave || previous.code != current.code,
+          previous.readerSettings.autoSave != current.readerSettings.autoSave ||
+          previous.code != current.code,
       listener: (context, readerState) {
-        if (readerState.code == ReaderStateCode.loaded && !readerState.readerSettings.autoSave) {
+        if (readerState.code == ReaderStateCode.loaded &&
+            !readerState.readerSettings.autoSave) {
           setState(() => _stateCode = CommonButtonStateCode.idle);
         } else {
           setState(() => _stateCode = CommonButtonStateCode.disabled);
@@ -31,7 +34,7 @@ class _State extends State<ReaderAddBookmarkButton> {
       child: IconButton(
         icon: Icon(
           Icons.bookmark_add_rounded,
-          semanticLabel: AppLocalizations.of(context)!.accessibilityReaderAddBookmarkButton,
+          semanticLabel: appLocalizations.accessibilityReaderAddBookmarkButton,
         ),
         selectedIcon: const Icon(Icons.check_rounded, color: Colors.green),
         isSelected: _stateCode == CommonButtonStateCode.success,

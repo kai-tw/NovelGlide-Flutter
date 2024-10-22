@@ -5,47 +5,39 @@ import 'package:path_provider/path_provider.dart';
 
 /// A utility class for managing file paths in the application.
 class FilePath {
+  /// Shared folders
+  // static late String supportFolder;
+  static late String documentFolder;
+  // static late String cacheFolder;
+  static late String tempFolder;
+  // static String? downloadFolder;
+
+  /// Platform-specific folders
+  static String? _iosLibraryFolder;
+
+  /// Application folders
+  static String get _baseFolder => _iosLibraryFolder ?? documentFolder;
+  static String get libraryRoot => join(_baseFolder, 'Library');
+  static String get dataRoot => join(_baseFolder, 'Data');
+
   // Private constructor to prevent instantiation.
   FilePath._();
 
-  /// Shared folders
+  static Future<void> ensureInitialized() async {
+    // supportFolder = (await getApplicationSupportDirectory()).path;
+    documentFolder = (await getApplicationDocumentsDirectory()).path;
+    // cacheFolder = (await getApplicationCacheDirectory()).path;
+    tempFolder = (await getTemporaryDirectory()).path;
+    // downloadFolder = (await getDownloadsDirectory())?.path;
+    _iosLibraryFolder =
+        Platform.isIOS ? (await getLibraryDirectory()).path : null;
 
-  /// Returns the path to the application support directory.
-  static Future<String> get supportFolder async =>
-      (await getApplicationSupportDirectory()).path;
-
-  /// Returns the path to the application documents directory.
-  static Future<String> get documentFolder async =>
-      (await getApplicationDocumentsDirectory()).path;
-
-  /// Returns the path to the application cache directory.
-  static Future<String> get cacheFolder async =>
-      (await getApplicationCacheDirectory()).path;
-
-  /// Returns the path to the temporary directory.
-  static Future<String> get tempFolder async =>
-      (await getTemporaryDirectory()).path;
-
-  /// Returns the path to the downloads directory, if available.
-  static Future<String?> get downloadFolder async =>
-      (await getDownloadsDirectory())?.path;
-
-  /// Platform-specific folders
-
-  /// Returns the path to the iOS library directory, if on iOS.
-  static Future<String?> get _iosLibraryFolder async =>
-      Platform.isIOS ? (await getLibraryDirectory()).path : null;
-
-  /// Application folders
-
-  /// Returns the base folder path, preferring iOS library on iOS.
-  static Future<String> get _baseFolder async =>
-      await _iosLibraryFolder ?? await documentFolder;
-
-  /// Returns the path to the library root directory.
-  static Future<String> get libraryRoot async =>
-      join(await _baseFolder, 'Library');
-
-  /// Returns the path to the data root directory.
-  static Future<String> get dataRoot async => join(await _baseFolder, 'Data');
+    // Create the folders if they don't exist.
+    for (final folderPath in [libraryRoot, dataRoot]) {
+      final folder = Directory(folderPath);
+      if (!folder.existsSync()) {
+        folder.createSync(recursive: true);
+      }
+    }
+  }
 }

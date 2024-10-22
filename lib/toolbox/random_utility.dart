@@ -19,8 +19,8 @@ class RandomUtility {
   }
 
   // Finds an available temporary folder and creates it
-  static Future<Directory> getAvailableTempFolder() async {
-    final String tempFolderPath = await FilePath.tempFolder;
+  static Directory getAvailableTempFolder() {
+    final String tempFolderPath = FilePath.tempFolder;
     Directory tempFolder;
 
     do {

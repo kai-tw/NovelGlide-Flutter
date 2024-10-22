@@ -19,7 +19,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
   // Refreshes the bookmark list by fetching it from the data source and sorting it.
   void refresh() async {
     // Fetch the bookmark list from the data source.
-    final List<BookmarkData> bookmarkList = await BookmarkData.getList();
+    final List<BookmarkData> bookmarkList = BookmarkData.getList();
 
     // Fetch the preference.
     final prefs = await SharedPreferences.getInstance();

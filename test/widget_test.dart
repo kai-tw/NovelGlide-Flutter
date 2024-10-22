@@ -5,8 +5,6 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,11 +25,8 @@ void main() {
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
 
-    // Library Initialization
-    Directory libraryDirectory = Directory(await FilePath.libraryRoot);
-    if (!libraryDirectory.existsSync()) {
-      libraryDirectory.createSync(recursive: true);
-    }
+    // File Path Initialization
+    await FilePath.ensureInitialized();
 
     // Theme Initialization
     ThemeDataRecord record = await ThemeDataRecord.fromSettings();

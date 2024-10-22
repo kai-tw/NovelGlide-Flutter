@@ -19,17 +19,17 @@ class TocCubit extends Cubit<TocState> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       emit(TocState(
         code: LoadingStateCode.loaded,
-        bookmarkData: await BookmarkData.get(bookData.filePath),
+        bookmarkData: BookmarkData.get(bookData.filePath),
         chapterList: await bookData.getChapterList(),
       ));
     });
   }
 
-  Future<void> refresh() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+  void refresh() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       emit(TocState(
         code: LoadingStateCode.loaded,
-        bookmarkData: await BookmarkData.get(bookData.filePath),
+        bookmarkData: BookmarkData.get(bookData.filePath),
         chapterList: state.chapterList,
       ));
     });

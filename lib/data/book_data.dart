@@ -41,14 +41,16 @@ class BookData {
   /// Loads an EpubBook asynchronously, potentially a heavy operation.
   static Future<epub.EpubBook> loadEpubBook(String filePath) async {
     final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
-    return await compute<Map<String, dynamic>, epub.EpubBook>(_loadEpubBookIsolate, {
+    return await compute<Map<String, dynamic>, epub.EpubBook>(
+        _loadEpubBookIsolate, {
       "rootIsolateToken": rootIsolateToken,
       "path": filePath,
     });
   }
 
   /// Isolate function to load an EpubBook.
-  static Future<epub.EpubBook> _loadEpubBookIsolate(Map<String, dynamic> message) async {
+  static Future<epub.EpubBook> _loadEpubBookIsolate(
+      Map<String, dynamic> message) async {
     final RootIsolateToken rootIsolateToken = message["rootIsolateToken"];
     final String path = message["path"];
     BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
@@ -58,7 +60,9 @@ class BookData {
   /// Retrieves a list of chapters from the book.
   Future<List<ChapterData>> getChapterList() async {
     final epub.EpubBook epubBook = await loadEpubBook(filePath);
-    return epubBook.Chapters?.map((e) => ChapterData.fromEpubChapter(e, 0)).toList() ?? [];
+    return epubBook.Chapters?.map((e) => ChapterData.fromEpubChapter(e, 0))
+            .toList() ??
+        [];
   }
 
   /// Finds a chapter by its file name.
@@ -67,8 +71,10 @@ class BookData {
   }
 
   /// Helper method to find a chapter by file name recursively.
-  ChapterData? _findChapterByFileName(List<ChapterData>? chapterList, String fileName) {
-    ChapterData? target = chapterList?.firstWhereOrNull((element) => element.fileName == fileName);
+  ChapterData? _findChapterByFileName(
+      List<ChapterData>? chapterList, String fileName) {
+    ChapterData? target = chapterList
+        ?.firstWhereOrNull((element) => element.fileName == fileName);
     if (target != null) {
       return target;
     }
@@ -85,12 +91,13 @@ class BookData {
     }
 
     // Delete associated bookmarks.
-    Iterable<BookmarkData> bookmarkList = (await BookmarkData.getList()).where((element) => element.bookPath == filePath);
+    final bookmarkList =
+        BookmarkData.getList().where((element) => element.bookPath == filePath);
     await Future.wait(bookmarkList.map((e) => e.delete()));
 
     // Delete associated collections.
-    Iterable<CollectionData> collectionList =
-        (await CollectionData.getList()).where((element) => element.pathList.contains(filePath));
+    final collectionList = (await CollectionData.getList())
+        .where((element) => element.pathList.contains(filePath));
     for (CollectionData data in collectionList) {
       data.pathList.remove(filePath);
       data.save();
@@ -100,13 +107,18 @@ class BookData {
   }
 
   /// Provides a comparison function for sorting books.
-  static int Function(BookData, BookData) sortCompare(SortOrderCode sortOrder, bool isAscending) {
+  static int Function(BookData, BookData) sortCompare(
+      SortOrderCode sortOrder, bool isAscending) {
     switch (sortOrder) {
       case SortOrderCode.modifiedDate:
-        return (a, b) => isAscending ? a.modifiedDate.compareTo(b.modifiedDate) : b.modifiedDate.compareTo(a.modifiedDate);
+        return (a, b) => isAscending
+            ? a.modifiedDate.compareTo(b.modifiedDate)
+            : b.modifiedDate.compareTo(a.modifiedDate);
 
       default:
-        return (a, b) => isAscending ? compareNatural(a.name, b.name) : compareNatural(b.name, a.name);
+        return (a, b) => isAscending
+            ? compareNatural(a.name, b.name)
+            : compareNatural(b.name, a.name);
     }
   }
 }

@@ -80,7 +80,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   }) async {
     /// Read the book if it is not read yet.
     if (bookData == null) {
-      final absolutePath = absolute(await FilePath.libraryRoot, bookPath);
+      final absolutePath = absolute(FilePath.libraryRoot, bookPath);
       final epubBook = await BookData.loadEpubBook(absolutePath);
       bookData = BookData.fromEpubBook(absolutePath, epubBook);
     }
@@ -88,7 +88,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     if (!isClosed) {
       emit(state.copyWith(
         bookName: bookData?.name,
-        bookmarkData: await BookmarkData.get(bookPath),
+        bookmarkData: BookmarkData.get(bookPath),
         readerSettings: await ReaderSettingsData.load(),
       ));
     }
@@ -231,10 +231,9 @@ class ReaderCubit extends Cubit<ReaderState> {
     }
   }
 
-  Future<void> scrollToBookmark() async {
+  void scrollToBookmark() {
     _logger.i('Scroll to the bookmark.');
-    final bookmarkData =
-        state.bookmarkData ?? await BookmarkData.get(state.bookName);
+    final bookmarkData = state.bookmarkData ?? BookmarkData.get(state.bookName);
     if (bookmarkData?.startCfi != null) {
       goto(bookmarkData!.startCfi!);
     }

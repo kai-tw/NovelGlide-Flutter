@@ -27,7 +27,7 @@ class BookAddCubit extends Cubit<BookAddState> {
   /// Submits the selected file to the library.
   Future<void> submit() async {
     final fileName = basename(state.file!.path);
-    final filePath = join(await FilePath.libraryRoot, fileName);
+    final filePath = join(FilePath.libraryRoot, fileName);
     final file = File(filePath);
 
     if (file.existsSync()) {

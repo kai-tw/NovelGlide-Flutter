@@ -32,7 +32,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     final sortOrder = SortOrderCode.fromString(prefs.getString(_sortOrderKey));
     final isAscending = prefs.getBool(_isAscendingKey) ?? true;
 
-    final folder = Directory(await FilePath.libraryRoot);
+    final folder = Directory(FilePath.libraryRoot);
     final fileList = folder
         .listSync()
         .whereType<File>()
