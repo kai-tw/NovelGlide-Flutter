@@ -35,22 +35,15 @@ class ReaderSettingsLineHeightSlider extends StatelessWidget {
           min: ReaderSettingsData.minLineHeight,
           max: ReaderSettingsData.maxLineHeight,
           value: state.readerSettings.lineHeight,
-          semanticFormatterCallback: (double value) {
+          semanticFormatterCallback: (value) {
             return '${appLocalizations.accessibilityLineHeightSlider} ${value.toStringAsFixed(1)}';
           },
-          onChanged: (double value) {
-            cubit.setSettings(
-              state.readerSettings.copyWith(
-                lineHeight: value,
-              ),
-            );
+          onChanged: (value) {
+            cubit.setSettings(lineHeight: value);
           },
-          onChangeEnd: (double value) {
-            cubit.setSettings(
-              state.readerSettings.copyWith(
-                lineHeight: value,
-              )..save(),
-            );
+          onChangeEnd: (value) {
+            cubit.setSettings(lineHeight: value);
+            cubit.saveSettings();
           },
         );
       },

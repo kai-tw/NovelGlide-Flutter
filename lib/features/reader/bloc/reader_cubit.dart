@@ -9,8 +9,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
-import '../../../toolbox/file_path.dart';
 import '../../../data/reader_settings_data.dart';
+import '../../../toolbox/file_path.dart';
 import 'reader_gesture_handler.dart';
 import 'reader_lifecycle_handler.dart';
 import 'reader_search_cubit.dart';
@@ -197,19 +197,34 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   /// ******* Settings ********
 
-  void setSettings(ReaderSettingsData settings) {
-    final bool isStyleChanged = state.readerSettings.isStyleChanged(settings);
+  void setSettings({
+    double? fontSize,
+    double? lineHeight,
+    bool? autoSave,
+    bool? gestureDetection,
+  }) {
+    final settings = state.readerSettings.copyWith(
+      fontSize: fontSize,
+      lineHeight: lineHeight,
+      autoSave: autoSave,
+      gestureDetection: gestureDetection,
+    );
 
     emit(state.copyWith(readerSettings: settings));
 
-    if (isStyleChanged) {
+    if (fontSize != null || lineHeight != null) {
       sendThemeData();
     }
 
-    if (settings.autoSave) {
+    if (autoSave == true) {
       saveBookmark();
     }
   }
+
+  void saveSettings() => state.readerSettings.save();
+
+  void resetSettings() =>
+      emit(state.copyWith(readerSettings: const ReaderSettingsData()));
 
   /// ******* Bookmarks ********
 

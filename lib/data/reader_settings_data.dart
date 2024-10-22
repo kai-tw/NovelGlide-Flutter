@@ -33,12 +33,12 @@ class ReaderSettingsData extends Equatable {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return ReaderSettingsData(
       fontSize:
-          prefs.getDouble(PreferenceKeys.reader.fontSize) ?? defaultFontSize,
+      prefs.getDouble(PreferenceKeys.reader.fontSize) ?? defaultFontSize,
       lineHeight: prefs.getDouble(PreferenceKeys.reader.lineHeight) ??
           defaultLineHeight,
       autoSave: prefs.getBool(PreferenceKeys.reader.autoSave) ?? false,
       gestureDetection:
-          prefs.getBool(PreferenceKeys.reader.gestureDetection) ?? true,
+      prefs.getBool(PreferenceKeys.reader.gestureDetection) ?? true,
     );
   }
 
@@ -52,14 +52,15 @@ class ReaderSettingsData extends Equatable {
     return ReaderSettingsData(
       fontSize: (fontSize ?? this.fontSize).clamp(minFontSize, maxFontSize),
       lineHeight:
-          (lineHeight ?? this.lineHeight).clamp(minLineHeight, maxLineHeight),
+      (lineHeight ?? this.lineHeight).clamp(minLineHeight, maxLineHeight),
       autoSave: autoSave ?? this.autoSave,
       gestureDetection: gestureDetection ?? this.gestureDetection,
     );
   }
 
   /// Converts the settings to a JSON map.
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() =>
+      {
         'font_size': fontSize,
         'line_height': lineHeight,
         'auto_save': autoSave,
@@ -73,10 +74,5 @@ class ReaderSettingsData extends Equatable {
     prefs.setDouble(PreferenceKeys.reader.lineHeight, lineHeight);
     prefs.setBool(PreferenceKeys.reader.autoSave, autoSave);
     prefs.setBool(PreferenceKeys.reader.gestureDetection, gestureDetection);
-  }
-
-  /// Checks if the style settings have changed compared to another instance.
-  bool isStyleChanged(ReaderSettingsData other) {
-    return fontSize != other.fontSize || lineHeight != other.lineHeight;
   }
 }

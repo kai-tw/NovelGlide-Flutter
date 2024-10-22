@@ -13,14 +13,17 @@ class ReaderSettingsGestureSwitcher extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) => previous.readerSettings.gestureDetection != current.readerSettings.gestureDetection,
+      buildWhen: (previous, current) =>
+          previous.readerSettings.gestureDetection !=
+          current.readerSettings.gestureDetection,
       builder: (context, state) {
         return SwitchListTile(
           contentPadding: EdgeInsets.zero,
           title: Text(appLocalizations.readerSettingsGesture),
           value: state.readerSettings.gestureDetection,
           onChanged: (value) {
-            cubit.setSettings(state.readerSettings.copyWith(gestureDetection: value)..save());
+            cubit.setSettings(gestureDetection: value);
+            cubit.saveSettings();
           },
         );
       },

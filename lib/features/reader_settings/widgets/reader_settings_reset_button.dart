@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../data/reader_settings_data.dart';
 import '../../../enum/common_button_state_code.dart';
 import '../../reader/bloc/reader_cubit.dart';
 
@@ -59,7 +58,8 @@ class _State extends State<ReaderSettingsResetButton> {
           TextButton(
             onPressed: () async {
               Navigator.of(context).pop();
-              cubit.setSettings(const ReaderSettingsData()..save());
+              cubit.resetSettings();
+              cubit.saveSettings();
 
               setState(() => _stateCode = CommonButtonStateCode.success);
               await Future.delayed(const Duration(seconds: 2));

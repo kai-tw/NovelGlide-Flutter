@@ -34,22 +34,15 @@ class ReaderSettingsFontSizeSlider extends StatelessWidget {
           min: ReaderSettingsData.minFontSize,
           max: ReaderSettingsData.maxFontSize,
           value: state.readerSettings.fontSize,
-          semanticFormatterCallback: (double value) {
+          semanticFormatterCallback: (value) {
             return '${appLocalizations.accessibilityFontSizeSlider} ${value.toStringAsFixed(1)}';
           },
-          onChanged: (double value) {
-            cubit.setSettings(
-              state.readerSettings.copyWith(
-                fontSize: value,
-              ),
-            );
+          onChanged: (value) {
+            cubit.setSettings(fontSize: value);
           },
-          onChangeEnd: (double value) {
-            cubit.setSettings(
-              state.readerSettings.copyWith(
-                fontSize: value,
-              )..save(),
-            );
+          onChangeEnd: (value) {
+            cubit.setSettings(fontSize: value);
+            cubit.saveSettings();
           },
         );
       },
