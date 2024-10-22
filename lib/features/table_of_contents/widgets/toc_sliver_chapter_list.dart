@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/chapter_data.dart';
@@ -17,6 +18,7 @@ class TocSliverChapterList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<TocCubit, TocState>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
@@ -30,7 +32,9 @@ class TocSliverChapterList extends StatelessWidget {
 
           case LoadingStateCode.loaded:
             if (state.chapterList.isEmpty) {
-              return const CommonSliverListEmpty();
+              return CommonSliverListEmpty(
+                title: appLocalizations.tocNoChapter,
+              );
             } else {
               return _buildList(context, state);
             }
