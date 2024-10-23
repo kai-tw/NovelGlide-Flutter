@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../enum/loading_state_code.dart';
-import '../../common_components/common_loading.dart';
-import '../bloc/reader_cubit.dart';
-import '../bloc/reader_search_cubit.dart';
+import '../../enum/loading_state_code.dart';
+import '../common_components/common_loading.dart';
+import 'bloc/reader_search_cubit.dart';
 
 class ReaderSearchResultList extends StatelessWidget {
   const ReaderSearchResultList({super.key});
@@ -48,8 +47,8 @@ class ReaderSearchResultList extends StatelessWidget {
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
-    final readerCubit = BlocProvider.of<ReaderCubit>(context);
-    final state = BlocProvider.of<ReaderSearchCubit>(context).state;
+    final cubit = BlocProvider.of<ReaderSearchCubit>(context);
+    final state = cubit.state;
 
     final query = state.query;
     final result = state.resultList[index];
@@ -63,8 +62,8 @@ class ReaderSearchResultList extends StatelessWidget {
 
     return ListTile(
       onTap: () {
-        readerCubit.goto(result.cfi);
-        readerCubit.closeSearch();
+        Navigator.of(context).pop();
+        cubit.readerCubit.goto(result.cfi);
       },
       title: Text.rich(
         TextSpan(

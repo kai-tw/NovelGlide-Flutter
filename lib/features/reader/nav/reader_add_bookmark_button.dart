@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../enum/common_button_state_code.dart';
+import '../../../enum/loading_state_code.dart';
 import '../bloc/reader_cubit.dart';
 import '../bloc/reader_state.dart';
 
@@ -24,7 +25,7 @@ class _State extends State<ReaderAddBookmarkButton> {
           previous.readerSettings.autoSave != current.readerSettings.autoSave ||
           previous.code != current.code,
       listener: (context, readerState) {
-        if (readerState.code == ReaderStateCode.loaded &&
+        if (readerState.code == LoadingStateCode.loaded &&
             !readerState.readerSettings.autoSave) {
           setState(() => _stateCode = CommonButtonStateCode.idle);
         } else {

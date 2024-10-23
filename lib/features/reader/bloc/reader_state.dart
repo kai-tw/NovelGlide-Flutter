@@ -3,10 +3,11 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data/bookmark_data.dart';
 import '../../../data/reader_settings_data.dart';
+import '../../../enum/loading_state_code.dart';
 
 class ReaderState extends Equatable {
-  /// Overall state.
-  final ReaderStateCode code;
+  final LoadingStateCode code;
+  final ReaderLoadingStateCode loadingStateCode;
   final String bookName;
   final String chapterFileName;
   final String startCfi;
@@ -27,9 +28,9 @@ class ReaderState extends Equatable {
   final ReaderSettingsData readerSettings;
 
   @override
-  List<Object?> get props =>
-      [
+  List<Object?> get props => [
         code,
+        loadingStateCode,
         bookName,
         chapterFileName,
         atStart,
@@ -44,7 +45,8 @@ class ReaderState extends Equatable {
       ];
 
   const ReaderState({
-    this.code = ReaderStateCode.loading,
+    this.code = LoadingStateCode.initial,
+    this.loadingStateCode = ReaderLoadingStateCode.initial,
     required this.bookName,
     this.chapterFileName = '',
     this.startCfi = '',
@@ -60,7 +62,8 @@ class ReaderState extends Equatable {
   });
 
   ReaderState copyWith({
-    ReaderStateCode? code,
+    LoadingStateCode? code,
+    ReaderLoadingStateCode? loadingStateCode,
     String? bookName,
     String? chapterFileName,
     String? startCfi,
@@ -76,6 +79,7 @@ class ReaderState extends Equatable {
   }) {
     return ReaderState(
       code: code ?? this.code,
+      loadingStateCode: loadingStateCode ?? this.loadingStateCode,
       bookName: bookName ?? this.bookName,
       chapterFileName: chapterFileName ?? this.chapterFileName,
       startCfi: startCfi ?? this.startCfi,
@@ -90,7 +94,6 @@ class ReaderState extends Equatable {
       readerSettings: readerSettings ?? this.readerSettings,
     );
   }
-
 }
 
-enum ReaderStateCode { loading, loaded, search }
+enum ReaderLoadingStateCode { initial, bookLoading, rendering }

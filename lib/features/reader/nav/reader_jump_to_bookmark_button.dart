@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../enum/loading_state_code.dart';
 import '../bloc/reader_cubit.dart';
 import '../bloc/reader_state.dart';
 
@@ -19,11 +20,12 @@ class ReaderJumpToBookmarkButton extends StatelessWidget {
         final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
         final bool isDisabled = state.bookmarkData?.startCfi == null ||
             state.readerSettings.autoSave ||
-            state.code != ReaderStateCode.loaded;
+            state.code != LoadingStateCode.loaded;
         return IconButton(
           icon: Icon(
             Icons.bookmark_rounded,
-            semanticLabel: AppLocalizations.of(context)!.accessibilityReaderBookmarkButton,
+            semanticLabel:
+                AppLocalizations.of(context)!.accessibilityReaderBookmarkButton,
           ),
           onPressed: isDisabled ? null : cubit.scrollToBookmark,
         );

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../enum/loading_state_code.dart';
-import '../bloc/reader_search_cubit.dart';
+import '../../enum/loading_state_code.dart';
+import 'bloc/reader_search_cubit.dart';
 
 class ReaderSearchField extends StatelessWidget {
   const ReaderSearchField({super.key});

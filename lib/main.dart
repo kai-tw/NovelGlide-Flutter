@@ -9,10 +9,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 
-import 'toolbox/file_path.dart';
 import 'data/theme_data_record.dart';
 import 'features/homepage/homepage.dart';
 import 'firebase_options.dart';
+import 'toolbox/file_path.dart';
 
 void main() async {
   // Flutter Initialization

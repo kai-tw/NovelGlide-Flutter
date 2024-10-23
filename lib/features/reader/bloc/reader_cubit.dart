@@ -10,10 +10,12 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
 import '../../../data/reader_settings_data.dart';
+import '../../../enum/loading_state_code.dart';
 import '../../../toolbox/file_path.dart';
+import '../../reader_search/bloc/reader_search_cubit.dart';
+import '../../reader_search/bloc/reader_search_result.dart';
 import 'reader_gesture_handler.dart';
 import 'reader_lifecycle_handler.dart';
-import 'reader_search_cubit.dart';
 import 'reader_state.dart';
 import 'reader_web_server_handler.dart';
 import 'reader_web_view_handler.dart';
@@ -78,6 +80,11 @@ class ReaderCubit extends Cubit<ReaderState> {
     String? destination,
     bool isGotoBookmark = false,
   }) async {
+    emit(state.copyWith(
+      code: LoadingStateCode.loading,
+      loadingStateCode: ReaderLoadingStateCode.bookLoading,
+    ));
+
     /// Read the book if it is not read yet.
     if (bookData == null) {
       final absolutePath = absolute(FilePath.libraryRoot, bookPath);
@@ -87,6 +94,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
     if (!isClosed) {
       emit(state.copyWith(
+        loadingStateCode: ReaderLoadingStateCode.rendering,
         bookName: bookData?.name,
         bookmarkData: BookmarkData.get(bookPath),
         readerSettings: await ReaderSettingsData.load(),
@@ -115,7 +123,7 @@ class ReaderCubit extends Cubit<ReaderState> {
         if (!isClosed) {
           _logger.i('The book has been loaded.');
           serverHandler.stop();
-          emit(state.copyWith(code: ReaderStateCode.loaded));
+          emit(state.copyWith(code: LoadingStateCode.loaded));
           sendThemeData();
         }
         break;
@@ -135,8 +143,7 @@ class ReaderCubit extends Cubit<ReaderState> {
             ),
           );
 
-          if (state.code == ReaderStateCode.search &&
-              jsonValue['searchResultList'] is List) {
+          if (jsonValue['searchResultList'] is List) {
             searchCubit.setResultList(
               jsonValue['searchResultList']
                   .map<ReaderSearchResult>(
@@ -177,22 +184,10 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   void sendThemeData([ThemeData? newTheme]) {
     currentTheme = newTheme ?? currentTheme;
-    if (state.code == ReaderStateCode.loaded) {
+    if (state.code == LoadingStateCode.loaded) {
       _logger.i('Send the theme data to the renderer.');
       webViewHandler.sendThemeData(currentTheme, state.readerSettings);
     }
-  }
-
-  /// ******* Search ********
-
-  void openSearch() {
-    _logger.i('Open the search panel.');
-    emit(state.copyWith(code: ReaderStateCode.search));
-  }
-
-  void closeSearch() {
-    _logger.i('Close the search panel.');
-    emit(state.copyWith(code: ReaderStateCode.loaded));
   }
 
   /// ******* Settings ********

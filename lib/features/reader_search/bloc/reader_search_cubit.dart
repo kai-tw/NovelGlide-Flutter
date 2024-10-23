@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 
 import '../../../enum/loading_state_code.dart';
-import 'reader_cubit.dart';
+import '../../reader/bloc/reader_cubit.dart';
+import 'reader_search_result.dart';
 
 class ReaderSearchCubit extends Cubit<ReaderSearchState> {
-  final ReaderCubit _readerCubit;
+  final ReaderCubit readerCubit;
   final Logger _logger;
 
   factory ReaderSearchCubit(ReaderCubit readerCubit, Logger logger) {
@@ -21,7 +22,7 @@ class ReaderSearchCubit extends Cubit<ReaderSearchState> {
 
   ReaderSearchCubit._internal(
     super.initialState,
-    this._readerCubit,
+    this.readerCubit,
     this._logger,
   );
 
@@ -30,25 +31,25 @@ class ReaderSearchCubit extends Cubit<ReaderSearchState> {
     emit(state.copyWith(code: LoadingStateCode.loading));
     switch (state.range) {
       case ReaderSearchRange.currentChapter:
-        searchInCurrentChapter(state.query);
+        _searchInCurrentChapter(state.query);
         break;
       case ReaderSearchRange.all:
-        search(state.query);
+        _searchInWholeBook(state.query);
         break;
     }
   }
 
   /// Communication
 
-  void search(String query) {
+  void _searchInWholeBook(String query) {
     _logger.i('Search "$query" in the whole book.');
-    _readerCubit.webViewHandler.controller
-        .runJavaScript('window.readerApi.search("$query")');
+    readerCubit.webViewHandler.controller
+        .runJavaScript('window.readerApi.searchInWholeBook("$query")');
   }
 
-  void searchInCurrentChapter(String query) {
+  void _searchInCurrentChapter(String query) {
     _logger.i('Search "$query" in the current chapter.');
-    _readerCubit.webViewHandler.controller
+    readerCubit.webViewHandler.controller
         .runJavaScript('window.readerApi.searchInCurrentChapter("$query")');
   }
 
@@ -105,19 +106,6 @@ class ReaderSearchState extends Equatable {
       resultList: resultList ?? this.resultList,
     );
   }
-}
-
-class ReaderSearchResult extends Equatable {
-  final String cfi;
-  final String excerpt;
-
-  @override
-  List<Object?> get props => [cfi, excerpt];
-
-  const ReaderSearchResult({
-    required this.cfi,
-    required this.excerpt,
-  });
 }
 
 enum ReaderSearchRange { currentChapter, all }

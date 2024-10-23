@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../enum/loading_state_code.dart';
 import '../../reader_settings/reader_settings_bottom_sheet.dart';
 import '../bloc/reader_cubit.dart';
 import '../bloc/reader_state.dart';
@@ -15,13 +16,15 @@ class ReaderSettingsButton extends StatelessWidget {
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
-        final isDisabled = state.code != ReaderStateCode.loaded;
+        final isDisabled = state.code != LoadingStateCode.loaded;
         return IconButton(
           icon: Icon(
             Icons.settings_rounded,
-            semanticLabel: AppLocalizations.of(context)!.accessibilityReaderSettingsButton,
+            semanticLabel:
+                AppLocalizations.of(context)!.accessibilityReaderSettingsButton,
           ),
-          onPressed: isDisabled ? null : () => _navigateToSettingsPage(context, cubit),
+          onPressed:
+              isDisabled ? null : () => _navigateToSettingsPage(context, cubit),
         );
       },
     );

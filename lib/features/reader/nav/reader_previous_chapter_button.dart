@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../enum/loading_state_code.dart';
 import '../bloc/reader_cubit.dart';
 import '../bloc/reader_state.dart';
 
@@ -18,14 +19,20 @@ class ReaderPreviousChapterButton extends StatelessWidget {
           previous.atEnd != current.atEnd ||
           previous.isRtl != current.isRtl,
       builder: (BuildContext context, ReaderState state) {
-        final bool isDisabled =
-            state.code != ReaderStateCode.loaded || (state.isRtl && state.atEnd) || (!state.isRtl && state.atStart);
+        final isDisabled = state.code != LoadingStateCode.loaded ||
+            (state.isRtl && state.atEnd) ||
+            (!state.isRtl && state.atStart);
         return IconButton(
           icon: Icon(
             Icons.arrow_back_ios_rounded,
-            semanticLabel: AppLocalizations.of(context)!.accessibilityReaderPrevChapterButton,
+            semanticLabel: AppLocalizations.of(context)!
+                .accessibilityReaderPrevChapterButton,
           ),
-          onPressed: isDisabled ? null : state.isRtl ? () => cubit.nextPage() : () => cubit.prevPage(),
+          onPressed: isDisabled
+              ? null
+              : state.isRtl
+                  ? () => cubit.nextPage()
+                  : () => cubit.prevPage(),
         );
       },
     );
