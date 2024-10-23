@@ -53,27 +53,25 @@ class BackupManagerActionListTile extends StatelessWidget {
   }
 
   Widget _buildDialog(BuildContext context, AsyncSnapshot<Object?> snapshot) {
-    // Access localized strings
-    switch (snapshot.connectionState) {
-      case ConnectionState.done:
-        // Operation done.
-        if (snapshot.hasError) {
-          // Handle error state
-          // Record the error log
-          final logger = Logger();
-          logger.e(snapshot.error);
-          logger.close();
+    if (snapshot.hasError) {
+      // Handle error state
+      // Record the error log
+      final logger = Logger();
+      logger.e(snapshot.error);
+      logger.close();
 
-          // Show the error dialog.
-          return BackupManagerErrorDialog(content: snapshot.error.toString());
-        } else {
-          // Show success dialog.
+      // Show the error dialog.
+      return BackupManagerErrorDialog(content: snapshot.error.toString());
+    } else {
+      switch (snapshot.connectionState) {
+        case ConnectionState.done:
+          // Operation done. Show success dialog.
           return BackupManagerSuccessDialog(content: successLabel);
-        }
 
-      default:
-        // Show loading dialog while waiting
-        return const BackupManagerLoadingDialog();
+        default:
+          // Show loading dialog while waiting
+          return const BackupManagerLoadingDialog();
+      }
     }
   }
 }
