@@ -74,12 +74,8 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                   successLabel:
                       appLocalizations.backupManagerBackupSuccessfully,
                   enabled: state.code == LoadingStateCode.loaded,
-                  future: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .backupAll(),
-                  onComplete: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .refresh(),
+                  future: () => cubit.backupAll(),
+                  onComplete: () => cubit.refresh(),
                 ),
                 // Backup library to Google Drive
                 BackupManagerActionListTile(
@@ -88,12 +84,8 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                   successLabel:
                       appLocalizations.backupManagerBackupSuccessfully,
                   enabled: state.code == LoadingStateCode.loaded,
-                  future: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .backupLibrary(),
-                  onComplete: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .refresh(),
+                  future: () => cubit.backupLibrary(),
+                  onComplete: () => cubit.refresh(),
                 ),
                 // Backup collections to Google Drive
                 BackupManagerActionListTile(
@@ -102,12 +94,8 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                   successLabel:
                       appLocalizations.backupManagerBackupSuccessfully,
                   enabled: state.code == LoadingStateCode.loaded,
-                  future: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .backupCollections(),
-                  onComplete: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .refresh(),
+                  future: () => cubit.backupCollections(),
+                  onComplete: () => cubit.refresh(),
                 ),
                 // Backup bookmarks to Google Drive
                 BackupManagerActionListTile(
@@ -116,12 +104,8 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                   successLabel:
                       appLocalizations.backupManagerBackupSuccessfully,
                   enabled: state.code == LoadingStateCode.loaded,
-                  future: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .backupBookmarks(),
-                  onComplete: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .refresh(),
+                  future: () => cubit.backupBookmarks(),
+                  onComplete: () => cubit.refresh(),
                 ),
 
                 const Divider(),
@@ -137,9 +121,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                       (state.libraryId != null ||
                           state.collectionId != null ||
                           state.bookmarkId != null),
-                  future: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .restoreAll(),
+                  future: () => cubit.restoreAll(),
                 ),
                 // Restore library from Google Drive
                 BackupManagerActionListTile(
@@ -149,9 +131,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                       appLocalizations.backupManagerRestoreSuccessfully,
                   enabled: state.code == LoadingStateCode.loaded &&
                       state.libraryId != null,
-                  future: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .restoreLibrary(),
+                  future: () => cubit.restoreLibrary(),
                 ),
                 // Restore collections from Google Drive
                 BackupManagerActionListTile(
@@ -161,9 +141,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                       appLocalizations.backupManagerRestoreSuccessfully,
                   enabled: state.code == LoadingStateCode.loaded &&
                       state.collectionId != null,
-                  future: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .restoreCollections(),
+                  future: () => cubit.restoreCollections(),
                 ),
                 // Restore bookmarks from Google Drive
                 BackupManagerActionListTile(
@@ -173,9 +151,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                       appLocalizations.backupManagerRestoreSuccessfully,
                   enabled: state.code == LoadingStateCode.loaded &&
                       state.bookmarkId != null,
-                  future: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .restoreBookmarks(),
+                  future: () => cubit.restoreBookmarks(),
                 ),
 
                 const Divider(),
@@ -191,12 +167,8 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                       (state.libraryId != null ||
                           state.collectionId != null ||
                           state.bookmarkId != null),
-                  future: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .deleteAll(),
-                  onComplete: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .refresh(),
+                  future: () => cubit.deleteAll(),
+                  onComplete: () => cubit.refresh(),
                 ),
                 // Delete library backup from Google Drive
                 BackupManagerActionListTile(
@@ -206,12 +178,8 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                       appLocalizations.backupManagerDeleteBackupSuccessfully,
                   enabled: state.code == LoadingStateCode.loaded &&
                       state.libraryId != null,
-                  future: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .deleteLibrary(),
-                  onComplete: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .refresh(),
+                  future: () => cubit.deleteLibrary(),
+                  onComplete: () => cubit.refresh(),
                 ),
                 // Delete collections backup from Google Drive
                 BackupManagerActionListTile(
@@ -222,12 +190,8 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                       appLocalizations.backupManagerDeleteBackupSuccessfully,
                   enabled: state.code == LoadingStateCode.loaded &&
                       state.collectionId != null,
-                  future: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .deleteCollections(),
-                  onComplete: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .refresh(),
+                  future: () => cubit.deleteCollections(),
+                  onComplete: () => cubit.refresh(),
                 ),
                 // Delete bookmarks backup from Google Drive
                 BackupManagerActionListTile(
@@ -238,12 +202,8 @@ class BackupManagerGoogleDrive extends StatelessWidget {
                       appLocalizations.backupManagerDeleteBackupSuccessfully,
                   enabled: state.code == LoadingStateCode.loaded &&
                       state.bookmarkId != null,
-                  future: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .deleteBookmarks(),
-                  onComplete: () =>
-                      BlocProvider.of<BackupManagerGoogleDriveCubit>(context)
-                          .refresh(),
+                  future: () => cubit.deleteBookmarks(),
+                  onComplete: () => cubit.refresh(),
                 ),
               ],
             );

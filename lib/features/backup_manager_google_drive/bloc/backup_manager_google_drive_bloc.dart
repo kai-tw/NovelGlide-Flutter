@@ -10,8 +10,8 @@ import '../../../data/bookmark_data.dart';
 import '../../../data/collection_data.dart';
 import '../../../data/preference_keys.dart';
 import '../../../enum/loading_state_code.dart';
-import '../../../toolbox/google_drive_api.dart';
 import '../../../toolbox/backup_utility.dart';
+import '../../../toolbox/google_drive_api.dart';
 import '../../../toolbox/random_utility.dart';
 
 /// Manages Google Drive backup operations.
@@ -118,7 +118,7 @@ class BackupManagerGoogleDriveCubit
         .contains(false);
   }
 
-  /// Backs up the library to Google Drive.
+  /// Back up the library to Google Drive.
   Future<bool> backupLibrary() async {
     final tempFolder = RandomUtility.getAvailableTempFolder();
     tempFolder.createSync(recursive: true);
