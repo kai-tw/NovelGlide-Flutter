@@ -15,7 +15,6 @@ class ReaderScaffold extends StatelessWidget {
     switch (windowClass) {
       case WindowClass.compact:
         return const ReaderScaffoldCompactView();
-        break;
 
       default:
         return const ReaderScaffoldMediumView();
