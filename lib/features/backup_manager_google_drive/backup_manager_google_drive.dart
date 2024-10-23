@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../enum/loading_state_code.dart';
-import '../../toolbox/datetime_utility.dart';
-import '../backup_manager/widgets/backup_manager_action_list_tile.dart';
 import 'bloc/backup_manager_google_drive_bloc.dart';
+import 'widgets/backup_manager_google_drive_all.dart';
+import 'widgets/backup_manager_google_drive_bookmarks.dart';
+import 'widgets/backup_manager_google_drive_books.dart';
+import 'widgets/backup_manager_google_drive_collections.dart';
+import 'widgets/backup_manager_google_drive_switcher.dart';
+import 'widgets/backup_manager_google_drive_time_tile.dart';
 
 class BackupManagerGoogleDrive extends StatelessWidget {
   const BackupManagerGoogleDrive({super.key});
@@ -23,191 +26,17 @@ class BackupManagerGoogleDrive extends StatelessWidget {
           color: Theme.of(context).colorScheme.surfaceContainer,
           borderRadius: BorderRadius.circular(24.0),
         ),
-        child: BlocBuilder<BackupManagerGoogleDriveCubit,
-            BackupManagerGoogleDriveState>(
-          buildWhen: (prev, curr) =>
-              prev.code != curr.code ||
-              prev.lastBackupTime != curr.lastBackupTime ||
-              prev.libraryId != curr.libraryId,
-          builder: (context, state) {
-            final cubit =
-                BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Switch to enable/disable Google Drive backup
-                SwitchListTile(
-                  title: Text(appLocalizations.backupManagerGoogleDrive),
-                  secondary: const Icon(Icons.cloud_rounded),
-                  value: state.code == LoadingStateCode.loaded,
-                  onChanged: (value) async {
-                    if (state.code == LoadingStateCode.loading) {
-                      return;
-                    }
-
-                    await cubit.setEnabled(value);
-                    await cubit.refresh();
-                  },
-                ),
-                // Show the last backup time
-                ListTile(
-                  leading: const Icon(Icons.calendar_today_rounded),
-                  title: Text(appLocalizations.backupManagerLastTime),
-                  subtitle: Text(
-                    DateTimeUtility.format(
-                      state.lastBackupTime,
-                      defaultValue: '-',
-                    ),
-                  ),
-                  trailing: state.code == LoadingStateCode.loading
-                      ? const CircularProgressIndicator()
-                      : null,
-                ),
-
-                const Divider(),
-
-                // Backup Functionality
-                // Backup all to Google Drive
-                BackupManagerActionListTile(
-                  iconData: Icons.backup_outlined,
-                  titleLabel: appLocalizations.backupManagerBackupAll,
-                  successLabel:
-                      appLocalizations.backupManagerBackupSuccessfully,
-                  enabled: state.code == LoadingStateCode.loaded,
-                  future: () => cubit.backupAll(),
-                  onComplete: () => cubit.refresh(),
-                ),
-                // Backup library to Google Drive
-                BackupManagerActionListTile(
-                  iconData: Icons.backup_outlined,
-                  titleLabel: appLocalizations.backupManagerBackupLibrary,
-                  successLabel:
-                      appLocalizations.backupManagerBackupSuccessfully,
-                  enabled: state.code == LoadingStateCode.loaded,
-                  future: () => cubit.backupLibrary(),
-                  onComplete: () => cubit.refresh(),
-                ),
-                // Backup collections to Google Drive
-                BackupManagerActionListTile(
-                  iconData: Icons.backup_outlined,
-                  titleLabel: appLocalizations.backupManagerBackupCollection,
-                  successLabel:
-                      appLocalizations.backupManagerBackupSuccessfully,
-                  enabled: state.code == LoadingStateCode.loaded,
-                  future: () => cubit.backupCollections(),
-                  onComplete: () => cubit.refresh(),
-                ),
-                // Backup bookmarks to Google Drive
-                BackupManagerActionListTile(
-                  iconData: Icons.backup_outlined,
-                  titleLabel: appLocalizations.backupManagerBackupBookmark,
-                  successLabel:
-                      appLocalizations.backupManagerBackupSuccessfully,
-                  enabled: state.code == LoadingStateCode.loaded,
-                  future: () => cubit.backupBookmarks(),
-                  onComplete: () => cubit.refresh(),
-                ),
-
-                const Divider(),
-
-                // Restore Functionality
-                // Restore all books from Google Drive
-                BackupManagerActionListTile(
-                  iconData: Icons.restore_rounded,
-                  titleLabel: appLocalizations.backupManagerRestoreAll,
-                  successLabel:
-                      appLocalizations.backupManagerRestoreSuccessfully,
-                  enabled: state.code == LoadingStateCode.loaded &&
-                      (state.libraryId != null ||
-                          state.collectionId != null ||
-                          state.bookmarkId != null),
-                  future: () => cubit.restoreAll(),
-                ),
-                // Restore library from Google Drive
-                BackupManagerActionListTile(
-                  iconData: Icons.restore_rounded,
-                  titleLabel: appLocalizations.backupManagerRestoreLibrary,
-                  successLabel:
-                      appLocalizations.backupManagerRestoreSuccessfully,
-                  enabled: state.code == LoadingStateCode.loaded &&
-                      state.libraryId != null,
-                  future: () => cubit.restoreLibrary(),
-                ),
-                // Restore collections from Google Drive
-                BackupManagerActionListTile(
-                  iconData: Icons.restore_rounded,
-                  titleLabel: appLocalizations.backupManagerRestoreCollection,
-                  successLabel:
-                      appLocalizations.backupManagerRestoreSuccessfully,
-                  enabled: state.code == LoadingStateCode.loaded &&
-                      state.collectionId != null,
-                  future: () => cubit.restoreCollections(),
-                ),
-                // Restore bookmarks from Google Drive
-                BackupManagerActionListTile(
-                  iconData: Icons.restore_rounded,
-                  titleLabel: appLocalizations.backupManagerRestoreBookmark,
-                  successLabel:
-                      appLocalizations.backupManagerRestoreSuccessfully,
-                  enabled: state.code == LoadingStateCode.loaded &&
-                      state.bookmarkId != null,
-                  future: () => cubit.restoreBookmarks(),
-                ),
-
-                const Divider(),
-
-                // Delete backups Functionality
-                // Delete all backups in Google Drive
-                BackupManagerActionListTile(
-                  iconData: Icons.delete_outlined,
-                  titleLabel: appLocalizations.backupManagerDeleteAllBackup,
-                  successLabel:
-                      appLocalizations.backupManagerDeleteBackupSuccessfully,
-                  enabled: state.code == LoadingStateCode.loaded &&
-                      (state.libraryId != null ||
-                          state.collectionId != null ||
-                          state.bookmarkId != null),
-                  future: () => cubit.deleteAll(),
-                  onComplete: () => cubit.refresh(),
-                ),
-                // Delete library backup from Google Drive
-                BackupManagerActionListTile(
-                  iconData: Icons.delete_outlined,
-                  titleLabel: appLocalizations.backupManagerDeleteLibraryBackup,
-                  successLabel:
-                      appLocalizations.backupManagerDeleteBackupSuccessfully,
-                  enabled: state.code == LoadingStateCode.loaded &&
-                      state.libraryId != null,
-                  future: () => cubit.deleteLibrary(),
-                  onComplete: () => cubit.refresh(),
-                ),
-                // Delete collections backup from Google Drive
-                BackupManagerActionListTile(
-                  iconData: Icons.delete_outlined,
-                  titleLabel:
-                      appLocalizations.backupManagerDeleteCollectionBackup,
-                  successLabel:
-                      appLocalizations.backupManagerDeleteBackupSuccessfully,
-                  enabled: state.code == LoadingStateCode.loaded &&
-                      state.collectionId != null,
-                  future: () => cubit.deleteCollections(),
-                  onComplete: () => cubit.refresh(),
-                ),
-                // Delete bookmarks backup from Google Drive
-                BackupManagerActionListTile(
-                  iconData: Icons.delete_outlined,
-                  titleLabel:
-                      appLocalizations.backupManagerDeleteBookmarkBackup,
-                  successLabel:
-                      appLocalizations.backupManagerDeleteBackupSuccessfully,
-                  enabled: state.code == LoadingStateCode.loaded &&
-                      state.bookmarkId != null,
-                  future: () => cubit.deleteBookmarks(),
-                  onComplete: () => cubit.refresh(),
-                ),
-              ],
-            );
-          },
+        child: const Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            BackupManagerGoogleDriveSwitcher(),
+            BackupManagerGoogleDriveTimeTile(),
+            Divider(),
+            BackupManagerGoogleDriveAll(),
+            BackupManagerGoogleDriveBooks(),
+            BackupManagerGoogleDriveCollections(),
+            BackupManagerGoogleDriveBookmarks(),
+          ],
         ),
       ),
     );
