@@ -110,12 +110,14 @@ class BackupManagerGoogleDriveCubit
 
   /// Creates a backup and uploads it to Google Drive.
   Future<bool> backupAll() async {
-    return !(await Future.wait([
+    final result = !(await Future.wait([
       backupLibrary(),
       backupCollections(),
       backupBookmarks(),
     ]))
         .contains(false);
+    refresh();
+    return result;
   }
 
   /// Back up the library to Google Drive.
@@ -125,7 +127,9 @@ class BackupManagerGoogleDriveCubit
     final zipFile = await BackupUtility.archiveLibrary(tempFolder.path);
     await _driveApi.uploadFile('appDataFolder', zipFile);
     tempFolder.deleteSync(recursive: true);
-    return await _driveApi.fileExists(BackupUtility.libraryArchiveName);
+    final result = await _driveApi.fileExists(BackupUtility.libraryArchiveName);
+    refresh();
+    return result;
   }
 
   Future<bool> backupCollections() async {
@@ -133,7 +137,9 @@ class BackupManagerGoogleDriveCubit
     if (collectionFile.existsSync()) {
       await _driveApi.uploadFile('appDataFolder', collectionFile);
     }
-    return await _driveApi.fileExists(CollectionData.jsonFileName);
+    final result = await _driveApi.fileExists(CollectionData.jsonFileName);
+    refresh();
+    return result;
   }
 
   Future<bool> backupBookmarks() async {
@@ -141,24 +147,31 @@ class BackupManagerGoogleDriveCubit
     if (bookmarkFile.existsSync()) {
       await _driveApi.uploadFile('appDataFolder', bookmarkFile);
     }
-    return await _driveApi.fileExists(BookmarkData.jsonFileName);
+    final result = await _driveApi.fileExists(BookmarkData.jsonFileName);
+    refresh();
+    return result;
   }
 
   /// Deletes the existing backup from Google Drive.
   Future<bool> deleteAll() async {
-    return !(await Future.wait([
+    final result = !(await Future.wait([
       deleteLibrary(),
       deleteCollections(),
       deleteBookmarks(),
     ]))
         .contains(false);
+    refresh();
+    return result;
   }
 
   Future<bool> deleteLibrary() async {
     if (state.libraryId != null) {
       await _driveApi.deleteFile(state.libraryId!);
     }
-    return !(await _driveApi.fileExists(BackupUtility.libraryArchiveName));
+    final result =
+        !(await _driveApi.fileExists(BackupUtility.libraryArchiveName));
+    refresh();
+    return result;
   }
 
   Future<bool> deleteCollections() async {
@@ -167,7 +180,9 @@ class BackupManagerGoogleDriveCubit
     if (collectionFileId != null) {
       await _driveApi.deleteFile(collectionFileId);
     }
-    return !(await _driveApi.fileExists(CollectionData.jsonFileName));
+    final result = !(await _driveApi.fileExists(CollectionData.jsonFileName));
+    refresh();
+    return result;
   }
 
   Future<bool> deleteBookmarks() async {
@@ -175,7 +190,9 @@ class BackupManagerGoogleDriveCubit
     if (bookmarkFileId != null) {
       await _driveApi.deleteFile(bookmarkFileId);
     }
-    return !(await _driveApi.fileExists(BookmarkData.jsonFileName));
+    final result = !(await _driveApi.fileExists(BookmarkData.jsonFileName));
+    refresh();
+    return result;
   }
 
   /// Restores a backup from Google Drive.
@@ -185,6 +202,7 @@ class BackupManagerGoogleDriveCubit
       restoreCollections(),
       restoreBookmarks(),
     ]);
+    refresh();
     return true;
   }
 
@@ -206,30 +224,27 @@ class BackupManagerGoogleDriveCubit
       await BackupUtility.restoreBackup(tempFolder, zipFile);
 
       tempFolder.deleteSync(recursive: true);
-      return true;
-    } else {
-      return false;
     }
+    refresh();
+    return state.libraryId != null;
   }
 
   Future<bool> restoreCollections() async {
     final id = await _driveApi.getFileId(CollectionData.jsonFileName);
     if (id != null) {
       await _driveApi.downloadFile(id, CollectionData.jsonFile);
-      return true;
-    } else {
-      return false;
     }
+    refresh();
+    return id != null;
   }
 
   Future<bool> restoreBookmarks() async {
     final id = await _driveApi.getFileId(BookmarkData.jsonFileName);
     if (id != null) {
       await _driveApi.downloadFile(id, BookmarkData.jsonFile);
-      return true;
-    } else {
-      return false;
     }
+    refresh();
+    return id != null;
   }
 
   @override

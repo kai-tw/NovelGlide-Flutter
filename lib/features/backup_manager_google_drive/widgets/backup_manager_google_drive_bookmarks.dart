@@ -18,7 +18,7 @@ class BackupManagerGoogleDriveBookmarks extends StatelessWidget {
     final cubit = BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
     return ListTile(
       contentPadding: const EdgeInsets.fromLTRB(16.0, 4.0, 8.0, 4.0),
-      title: const Text('Bookmarks'),
+      title: Text(appLocalizations.backupManagerLabelBookmark),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

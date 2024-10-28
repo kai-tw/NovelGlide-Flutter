@@ -18,7 +18,7 @@ class BackupManagerGoogleDriveCollections extends StatelessWidget {
     final cubit = BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
     return ListTile(
       contentPadding: const EdgeInsets.fromLTRB(16.0, 4.0, 8.0, 4.0),
-      title: const Text('Collections'),
+      title: Text(appLocalizations.backupManagerLabelCollection),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
