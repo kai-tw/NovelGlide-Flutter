@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 
 import 'file_path.dart';
 
-class RandomUtility {
+class RandomUtils {
   // Generates a random string of the specified length
   static String getRandomString(int length) {
     const String alphabet =
@@ -32,5 +32,5 @@ class RandomUtility {
   }
 
   // Private constructor to prevent instantiation
-  RandomUtility._();
+  RandomUtils._();
 }

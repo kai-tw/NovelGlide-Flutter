@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 
-import '../toolbox/datetime_utility.dart';
-import '../toolbox/file_helper.dart';
-import '../toolbox/file_path.dart';
+import '../utils/datetime_utils.dart';
+import '../utils/file_path.dart';
+import '../utils/file_utils.dart';
 
 /// Represents a bookmark with its metadata and operations.
 class BookmarkData {
@@ -17,7 +17,7 @@ class BookmarkData {
   final DateTime savedTime;
 
   /// Calculates the number of days passed since the bookmark was saved.
-  int get daysPassed => DateTimeUtility.daysPassed(savedTime);
+  int get daysPassed => DateTimeUtils.daysPassed(savedTime);
 
   // Static methods
   static String jsonFileName = 'bookmark.json';
@@ -63,7 +63,7 @@ class BookmarkData {
 
   /// Retrieves a bookmark by its book path.
   static BookmarkData? get(String bookPath) {
-    bookPath = FileHelper.getRelativePath(bookPath, FilePath.libraryRoot);
+    bookPath = FileUtils.getRelativePath(bookPath, FilePath.libraryRoot);
     return jsonData.containsKey(bookPath)
         ? BookmarkData.fromJson(jsonData[bookPath]!)
         : null;
@@ -77,7 +77,7 @@ class BookmarkData {
       if (jsonData.containsKey(key)) {
         final data = BookmarkData.fromJson(jsonData[key]!);
 
-        data.bookPath = FileHelper.getAbsolutePath(
+        data.bookPath = FileUtils.getAbsolutePath(
           data.bookPath,
           FilePath.libraryRoot,
         );
@@ -96,14 +96,14 @@ class BookmarkData {
   /// Saves the current bookmark to the JSON file.
   void save() async {
     final json = jsonData;
-    final path = FileHelper.getRelativePath(bookPath, FilePath.libraryRoot);
+    final path = FileUtils.getRelativePath(bookPath, FilePath.libraryRoot);
     json[path] = toJson();
     jsonFile.writeAsStringSync(jsonEncode(json));
   }
 
   /// Deletes the current bookmark from the JSON file.
   Future<void> delete() async {
-    final path = FileHelper.getRelativePath(bookPath, FilePath.libraryRoot);
+    final path = FileUtils.getRelativePath(bookPath, FilePath.libraryRoot);
     jsonData.remove(path);
     jsonFile.writeAsStringSync(jsonEncode(jsonData));
   }

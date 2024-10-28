@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 
-import '../../toolbox/datetime_utility.dart';
+import '../../utils/datetime_utils.dart';
 import '../common_components/common_back_button.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
-import 'developer_page_google_drive_bottom_sheet.dart';
 import 'bloc/developer_page_google_drive_select_bloc.dart';
+import 'developer_page_google_drive_bottom_sheet.dart';
 
 class DeveloperPageGoogleDriveFileManager extends StatelessWidget {
   const DeveloperPageGoogleDriveFileManager({super.key});
@@ -26,7 +26,8 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DeveloperPageGoogleDriveSelectCubit cubit = BlocProvider.of<DeveloperPageGoogleDriveSelectCubit>(context);
+    final DeveloperPageGoogleDriveSelectCubit cubit =
+        BlocProvider.of<DeveloperPageGoogleDriveSelectCubit>(context);
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
@@ -38,8 +39,10 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
           child: Scrollbar(
             child: CustomScrollView(
               slivers: [
-                BlocBuilder<DeveloperPageGoogleDriveSelectCubit, DeveloperPageGoogleDriveSelectState>(
-                  buildWhen: (previous, current) => previous.errorCode != current.errorCode,
+                BlocBuilder<DeveloperPageGoogleDriveSelectCubit,
+                    DeveloperPageGoogleDriveSelectState>(
+                  buildWhen: (previous, current) =>
+                      previous.errorCode != current.errorCode,
                   builder: (context, state) {
                     switch (state.errorCode) {
                       case BackupManagerGoogleDriveErrorCode.unInitialized:
@@ -78,7 +81,8 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {
                               final drive.File file = state.files![index];
-                              final String formatDate = DateTimeUtility.format(file.modifiedTime);
+                              final String formatDate =
+                                  DateTimeUtils.format(file.modifiedTime);
                               IconData iconData;
 
                               switch (file.mimeType) {
@@ -101,7 +105,8 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
                               return ListTile(
                                 contentPadding: EdgeInsets.zero,
                                 leading: Padding(
-                                  padding: const EdgeInsets.only(left: 18.0, right: 14.0),
+                                  padding: const EdgeInsets.only(
+                                      left: 18.0, right: 14.0),
                                   child: Icon(iconData),
                                 ),
                                 title: Text(
@@ -119,11 +124,14 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
                                     onPressed: () {
                                       showModalBottomSheet(
                                         context: context,
-                                        scrollControlDisabledMaxHeightRatio: 1.0,
+                                        scrollControlDisabledMaxHeightRatio:
+                                            1.0,
                                         showDragHandle: true,
                                         builder: (_) => BlocProvider.value(
                                           value: cubit,
-                                          child: DeveloperPageGoogleDriveBottomSheet(file: file),
+                                          child:
+                                              DeveloperPageGoogleDriveBottomSheet(
+                                                  file: file),
                                         ),
                                       );
                                     },

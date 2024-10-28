@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../enum/loading_state_code.dart';
-import '../../../toolbox/datetime_utility.dart';
+import '../../../utils/datetime_utils.dart';
 import '../bloc/backup_manager_google_drive_bloc.dart';
 
 class BackupManagerGoogleDriveTimeTile extends StatelessWidget {
@@ -22,7 +22,7 @@ class BackupManagerGoogleDriveTimeTile extends StatelessWidget {
           leading: const Icon(Icons.calendar_today_rounded),
           title: Text(appLocalizations.backupManagerLastTime),
           subtitle: Text(
-            DateTimeUtility.format(
+            DateTimeUtils.format(
               state.lastBackupTime,
               defaultValue: '-',
             ),

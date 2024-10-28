@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 /// A utility class for CSS-related helper functions.
-class CssHelper {
+class CssUtils {
   /// Converts a [Color] object to a CSS rgba() string.
   ///
   /// The [color] parameter is the color to convert.
@@ -16,5 +16,5 @@ class CssHelper {
   }
 
   // Private constructor to prevent instantiation.
-  CssHelper._();
+  CssUtils._();
 }

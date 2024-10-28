@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 
 import 'file_path.dart';
 
-class BackupUtility {
+class BackupUtils {
   static String libraryArchiveName = 'Library.zip';
 
   static Future<File> archiveLibrary(String tempFolderPath) async {
@@ -36,5 +36,5 @@ class BackupUtility {
     );
   }
 
-  BackupUtility._();
+  BackupUtils._();
 }

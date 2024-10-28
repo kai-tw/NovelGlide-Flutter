@@ -7,10 +7,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/preference_keys.dart';
-import '../../../toolbox/file_path.dart';
+import '../../../utils/file_path.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/sort_order_code.dart';
-import '../../../toolbox/mime_resolver.dart';
+import '../../../utils/mime_resolver.dart';
 
 class BookshelfCubit extends Cubit<BookshelfState> {
   final String _sortOrderKey = PreferenceKeys.bookshelf.sortOrder;

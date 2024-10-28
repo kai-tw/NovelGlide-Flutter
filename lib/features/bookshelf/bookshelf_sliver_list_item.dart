@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/book_data.dart';
-import '../../toolbox/route_helper.dart';
+import '../../utils/route_utils.dart';
 import '../table_of_contents/table_of_content.dart';
 import 'bloc/bookshelf_bloc.dart';
 import 'widgets/bookshelf_draggable_book.dart';
@@ -29,13 +29,16 @@ class BookshelfSliverListItem extends StatelessWidget {
           }
         } else {
           if (bookData.isExist) {
-            Navigator.of(context).push(RouteHelper.pushRoute(TableOfContents(bookData)));
+            Navigator.of(context)
+                .push(RouteUtils.pushRoute(TableOfContents(bookData)));
           } else {
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
-                icon: Icon(Icons.error_outline_rounded, color: Theme.of(context).colorScheme.error, size: 48.0),
-                content: const Text("This book doesn't exist.", textAlign: TextAlign.center),
+                icon: Icon(Icons.error_outline_rounded,
+                    color: Theme.of(context).colorScheme.error, size: 48.0),
+                content: const Text("This book doesn't exist.",
+                    textAlign: TextAlign.center),
                 actions: [
                   TextButton.icon(
                     onPressed: () => Navigator.of(context).pop(),
@@ -55,7 +58,8 @@ class BookshelfSliverListItem extends StatelessWidget {
           Semantics(
             label: appLocalizations.accessibilityBookshelfListItem,
             onTapHint: appLocalizations.accessibilityBookshelfListItemOnTap,
-            onLongPressHint: appLocalizations.accessibilityBookshelfListItemOnLongPress,
+            onLongPressHint:
+                appLocalizations.accessibilityBookshelfListItemOnLongPress,
             child: BookshelfDraggableBook(bookData),
           ),
           Positioned.fill(
@@ -65,12 +69,16 @@ class BookshelfSliverListItem extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: BlocBuilder<BookshelfCubit, BookshelfState>(
                   buildWhen: (previous, current) =>
-                      previous.isSelecting != current.isSelecting || previous.selectedBooks != current.selectedBooks,
+                      previous.isSelecting != current.isSelecting ||
+                      previous.selectedBooks != current.selectedBooks,
                   builder: (BuildContext context, BookshelfState state) {
                     return AnimatedSwitcher(
                       duration: const Duration(milliseconds: 300),
-                      transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
-                      child: state.isSelecting ? BookshelfSelectCheckbox(bookData: bookData) : null,
+                      transitionBuilder: (child, animation) =>
+                          FadeTransition(opacity: animation, child: child),
+                      child: state.isSelecting
+                          ? BookshelfSelectCheckbox(bookData: bookData)
+                          : null,
                     );
                   },
                 ),

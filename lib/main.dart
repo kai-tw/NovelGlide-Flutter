@@ -12,7 +12,7 @@ import 'package:logger/logger.dart';
 import 'data/theme_data_record.dart';
 import 'features/homepage/homepage.dart';
 import 'firebase_options.dart';
-import 'toolbox/file_path.dart';
+import 'utils/file_path.dart';
 
 void main() async {
   // Flutter Initialization

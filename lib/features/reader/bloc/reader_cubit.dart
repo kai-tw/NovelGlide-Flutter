@@ -11,7 +11,7 @@ import '../../../data/book_data.dart';
 import '../../../data/bookmark_data.dart';
 import '../../../data/reader_settings_data.dart';
 import '../../../enum/loading_state_code.dart';
-import '../../../toolbox/file_path.dart';
+import '../../../utils/file_path.dart';
 import '../../reader_search/bloc/reader_search_cubit.dart';
 import '../../reader_search/bloc/reader_search_result.dart';
 import 'reader_gesture_handler.dart';

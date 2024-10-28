@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:path/path.dart';
 
 /// A utility class for file-related operations.
-class FileHelper {
+class FileUtils {
   // Private constructor to prevent instantiation of this utility class.
-  FileHelper._();
+  FileUtils._();
 
   /// Converts a file size in bytes to a human-readable string with units.
   ///
@@ -22,8 +22,8 @@ class FileHelper {
       'TB', // Terabytes
       'PB', // Petabytes
       'EB', // Exabytes
-      'ZB', // Zettabytes
-      'YB' // Yottabytes
+      'ZB', // Zetta bytes
+      'YB' // Yotta bytes
     ];
 
     // Ensure the size is not negative.

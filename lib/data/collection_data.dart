@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 
-import '../toolbox/file_path.dart';
-import '../toolbox/random_utility.dart';
+import '../utils/file_path.dart';
+import '../utils/random_utils.dart';
 
 /// Represents a collection of data with an ID, name, and a list of paths.
 class CollectionData {
@@ -31,10 +31,10 @@ class CollectionData {
 
   /// Creates a new empty collection with a unique ID.
   static Future<void> create(String name) async {
-    String id = RandomUtility.getRandomString(10);
+    String id = RandomUtils.getRandomString(10);
 
     while (jsonData.containsKey(id)) {
-      id = RandomUtility.getRandomString(10);
+      id = RandomUtils.getRandomString(10);
     }
 
     jsonData[id] = CollectionData(id, name, const <String>[]).toJson();

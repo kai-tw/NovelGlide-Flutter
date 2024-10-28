@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../enum/window_class.dart';
-import '../../toolbox/route_helper.dart';
+import '../../utils/route_utils.dart';
 import '../about_page/about_page_scaffold.dart';
 import '../backup_manager/backup_manager_scaffold.dart';
 import '../developer_page/developer_page.dart';
@@ -22,7 +22,7 @@ class SettingsPage extends StatelessWidget {
     final List<Widget> buttonList = [
       ListTile(
         onTap: () => Navigator.of(context).pushReplacement(
-          RouteHelper.pushRoute(const ThemeManager()),
+          RouteUtils.pushRoute(const ThemeManager()),
         ),
         leading: const Padding(
           padding: EdgeInsets.only(right: 12.0),
@@ -32,7 +32,7 @@ class SettingsPage extends StatelessWidget {
       ),
       ListTile(
         onTap: () => Navigator.of(context).push(
-          RouteHelper.pushRoute(const BackupManagerScaffold()),
+          RouteUtils.pushRoute(const BackupManagerScaffold()),
         ),
         leading: const Padding(
           padding: EdgeInsets.only(right: 12.0),
@@ -50,7 +50,7 @@ class SettingsPage extends StatelessWidget {
       // ),
       ListTile(
         onTap: () => Navigator.of(context).push(
-          RouteHelper.pushRoute(const AboutPageScaffold()),
+          RouteUtils.pushRoute(const AboutPageScaffold()),
         ),
         leading: const Padding(
           padding: EdgeInsets.only(right: 12.0),
@@ -64,7 +64,7 @@ class SettingsPage extends StatelessWidget {
       buttonList.add(
         ListTile(
           onTap: () => Navigator.of(context)
-              .push(RouteHelper.pushRoute(const DeveloperPage())),
+              .push(RouteUtils.pushRoute(const DeveloperPage())),
           leading: const Padding(
             padding: EdgeInsets.only(right: 12.0),
             child: Icon(Icons.code_rounded),

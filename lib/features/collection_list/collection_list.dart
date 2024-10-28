@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../enum/loading_state_code.dart';
 import '../../enum/window_class.dart';
-import '../../toolbox/route_helper.dart';
+import '../../utils/route_utils.dart';
 import '../collection_viewer/collection_viewer.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
@@ -65,7 +65,7 @@ class CollectionList extends StatelessWidget {
                         return ListTile(
                           onTap: () {
                             Navigator.of(context).push(
-                              RouteHelper.pushRoute(
+                              RouteUtils.pushRoute(
                                 CollectionViewer(collectionData: data),
                               ),
                             );

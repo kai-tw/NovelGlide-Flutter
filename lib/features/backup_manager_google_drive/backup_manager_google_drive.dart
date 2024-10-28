@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc/backup_manager_google_drive_bloc.dart';
 import 'widgets/backup_manager_google_drive_all.dart';
@@ -15,7 +14,6 @@ class BackupManagerGoogleDrive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
     return BlocProvider(
       create: (_) => BackupManagerGoogleDriveCubit(),
       child: Container(

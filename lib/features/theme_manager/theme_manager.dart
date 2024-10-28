@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../toolbox/route_helper.dart';
+import '../../utils/route_utils.dart';
 import '../common_components/common_back_button.dart';
 import '../homepage/bloc/homepage_bloc.dart';
 import '../homepage/homepage.dart';
@@ -58,7 +58,7 @@ class _Scaffold extends StatelessWidget {
 
 void _navigateToHomepage(BuildContext context) {
   Navigator.of(context).pushReplacement(
-    RouteHelper.popRoute(
+    RouteUtils.popRoute(
       const Homepage(initialItem: HomepageNavigationItem.settings),
     ),
   );

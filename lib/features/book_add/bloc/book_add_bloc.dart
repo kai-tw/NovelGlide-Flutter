@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 
 import '../../../exceptions/file_exceptions.dart';
-import '../../../toolbox/file_path.dart';
+import '../../../utils/file_path.dart';
 
 /// Cubit to manage the state of adding a book.
 class BookAddCubit extends Cubit<BookAddState> {

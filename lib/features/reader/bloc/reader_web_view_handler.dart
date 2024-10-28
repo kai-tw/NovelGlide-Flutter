@@ -7,7 +7,7 @@ import 'package:logger/logger.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data/reader_settings_data.dart';
-import '../../../toolbox/css_helper.dart';
+import '../../../utils/css_utils.dart';
 import 'reader_cubit.dart';
 import 'reader_web_server_handler.dart';
 
@@ -85,7 +85,7 @@ class ReaderWebViewHandler {
     final Map<String, dynamic> json = {
       "body": {
         // Convert color to CSS RGBA format.
-        "color": CssHelper.convertColorToRgba(themeData.colorScheme.onSurface),
+        "color": CssUtils.convertColorToRgba(themeData.colorScheme.onSurface),
         // Set font size.
         "font-size": "${settings.fontSize.toStringAsFixed(1)}px",
         // Set line height.

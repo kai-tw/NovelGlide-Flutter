@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../enum/window_class.dart';
-import '../../toolbox/route_helper.dart';
+import '../../utils/route_utils.dart';
 import '../reader/reader.dart';
 import 'bloc/toc_bloc.dart';
 
@@ -13,8 +13,10 @@ class TocFabSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TocCubit cubit = BlocProvider.of<TocCubit>(context);
-    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
-    double maxWidth = MediaQuery.of(context).size.width - kFloatingActionButtonMargin;
+    final WindowClass windowClass =
+        WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
+    double maxWidth =
+        MediaQuery.of(context).size.width - kFloatingActionButtonMargin;
 
     if (windowClass != WindowClass.compact) {
       maxWidth *= 0.618;
@@ -29,7 +31,7 @@ class TocFabSection extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.of(context)
-                    .push(RouteHelper.pushRoute(
+                    .push(RouteUtils.pushRoute(
                       ReaderWidget(
                         bookPath: cubit.bookData.filePath,
                         bookData: cubit.bookData,
@@ -40,7 +42,8 @@ class TocFabSection extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0, vertical: 12.0),
                 fixedSize: const Size.fromHeight(56.0),
                 elevation: 5.0,
               ),
@@ -55,7 +58,7 @@ class TocFabSection extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: () {
                   Navigator.of(context)
-                      .push(RouteHelper.pushRoute(
+                      .push(RouteUtils.pushRoute(
                         ReaderWidget(
                           bookPath: cubit.bookData.filePath,
                           bookData: cubit.bookData,
@@ -67,7 +70,8 @@ class TocFabSection extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0, vertical: 12.0),
                   fixedSize: const Size.fromHeight(56.0),
                   elevation: 5.0,
                 ),

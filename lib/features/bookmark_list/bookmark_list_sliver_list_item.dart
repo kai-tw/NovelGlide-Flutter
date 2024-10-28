@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/bookmark_data.dart';
-import '../../toolbox/route_helper.dart';
+import '../../utils/route_utils.dart';
 import '../common_components/bookmark_widget.dart';
 import '../reader/reader.dart';
 import 'bloc/bookmark_list_bloc.dart';
@@ -32,16 +32,19 @@ class BookmarkListSliverListItem extends StatelessWidget {
           }
         } else {
           navigator
-              .push(RouteHelper.pushRoute(ReaderWidget(bookPath: _bookmarkData.bookPath, isGotoBookmark: true)))
+              .push(RouteUtils.pushRoute(ReaderWidget(
+                  bookPath: _bookmarkData.bookPath, isGotoBookmark: true)))
               .then((_) => cubit.refresh());
         }
       },
       child: BlocBuilder<BookmarkListCubit, BookmarkListState>(
         buildWhen: (previous, current) =>
-            previous.isSelecting != current.isSelecting || previous.selectedBookmarks != current.selectedBookmarks,
+            previous.isSelecting != current.isSelecting ||
+            previous.selectedBookmarks != current.selectedBookmarks,
         builder: (BuildContext context, BookmarkListState state) {
           if (state.isSelecting) {
-            final bool isSelected = state.selectedBookmarks.contains(_bookmarkData);
+            final bool isSelected =
+                state.selectedBookmarks.contains(_bookmarkData);
             return Semantics(
               label: appLocalizations.bookmarkListAccessibilityItem,
               onTapHint: appLocalizations.bookmarkListAccessibilitySelectOnTap,
@@ -58,17 +61,23 @@ class BookmarkListSliverListItem extends StatelessWidget {
                       cubit.deselectBookmark(_bookmarkData);
                     }
                   },
-                  semanticLabel: appLocalizations.bookmarkListAccessibilitySelectItem,
+                  semanticLabel:
+                      appLocalizations.bookmarkListAccessibilitySelectItem,
                 ),
-                backgroundColor: isSelected ? Theme.of(context).colorScheme.errorContainer : null,
-                color: isSelected ? Theme.of(context).colorScheme.onErrorContainer : null,
+                backgroundColor: isSelected
+                    ? Theme.of(context).colorScheme.errorContainer
+                    : null,
+                color: isSelected
+                    ? Theme.of(context).colorScheme.onErrorContainer
+                    : null,
               ),
             );
           } else {
             return Semantics(
               label: appLocalizations.bookmarkListAccessibilityItem,
               onTapHint: appLocalizations.bookmarkListAccessibilityOnTap,
-              onLongPressHint: appLocalizations.bookmarkListAccessibilityOnLongPress,
+              onLongPressHint:
+                  appLocalizations.bookmarkListAccessibilityOnLongPress,
               child: BookmarkListDraggableBookmark(_bookmarkData),
             );
           }

@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 /// A utility class for common DateTime operations.
-class DateTimeUtility {
+class DateTimeUtils {
   /// Calculates the number of days between two [DateTime] objects.
   ///
   /// The [from] and [to] parameters are the start and end dates, respectively.
@@ -39,5 +39,5 @@ class DateTimeUtility {
   }
 
   // Private constructor to prevent instantiation.
-  DateTimeUtility._();
+  DateTimeUtils._();
 }

@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:novelglide/toolbox/file_helper.dart';
+import 'package:novelglide/utils/file_utils.dart';
 
 void main() {
   group('FileHelper', () {
@@ -8,7 +8,7 @@ void main() {
       const size = 500; // 500 bytes
 
       // Act
-      final result = FileHelper.getFileSizeString(size);
+      final result = FileUtils.getFileSizeString(size);
 
       // Assert
       expect(result, '500.00 B');
@@ -19,7 +19,7 @@ void main() {
       const size = 1024; // 1 KB
 
       // Act
-      final result = FileHelper.getFileSizeString(size);
+      final result = FileUtils.getFileSizeString(size);
 
       // Assert
       expect(result, '1.00 KB');
@@ -30,7 +30,7 @@ void main() {
       const size = 1048576; // 1 MB
 
       // Act
-      final result = FileHelper.getFileSizeString(size);
+      final result = FileUtils.getFileSizeString(size);
 
       // Assert
       expect(result, '1.00 MB');
@@ -41,7 +41,7 @@ void main() {
       const size = 0;
 
       // Act
-      final result = FileHelper.getFileSizeString(size);
+      final result = FileUtils.getFileSizeString(size);
 
       // Assert
       expect(result, '0.00 B');
@@ -52,7 +52,7 @@ void main() {
       const size = 1099511627776; // 1 TB
 
       // Act
-      final result = FileHelper.getFileSizeString(size);
+      final result = FileUtils.getFileSizeString(size);
 
       // Assert
       expect(result, '1.00 TB');

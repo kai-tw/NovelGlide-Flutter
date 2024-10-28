@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../enum/loading_state_code.dart';
-import '../../toolbox/route_helper.dart';
+import '../../utils/route_utils.dart';
 import '../reader/bloc/reader_cubit.dart';
 import '../reader/bloc/reader_state.dart';
 import 'reader_search.dart';
@@ -27,7 +27,7 @@ class ReaderSearchBtn extends StatelessWidget {
               ? null
               : () {
                   Navigator.of(context).push(
-                    RouteHelper.pushRoute(
+                    RouteUtils.pushRoute(
                       BlocProvider.value(
                         value: cubit.searchCubit,
                         child: const ReaderSearch(),

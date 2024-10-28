@@ -10,9 +10,9 @@ import '../../../data/bookmark_data.dart';
 import '../../../data/collection_data.dart';
 import '../../../data/preference_keys.dart';
 import '../../../enum/loading_state_code.dart';
-import '../../../toolbox/backup_utility.dart';
-import '../../../toolbox/google_drive_api.dart';
-import '../../../toolbox/random_utility.dart';
+import '../../../utils/backup_utils.dart';
+import '../../../utils/google_drive_api.dart';
+import '../../../utils/random_utils.dart';
 
 /// Manages Google Drive backup operations.
 class BackupManagerGoogleDriveCubit
@@ -44,7 +44,7 @@ class BackupManagerGoogleDriveCubit
     if (isReady) {
       // Get the ids of the files
       final libraryId =
-          await _driveApi.getFileId(BackupUtility.libraryArchiveName);
+          await _driveApi.getFileId(BackupUtils.libraryArchiveName);
       final collectionId =
           await _driveApi.getFileId(CollectionData.jsonFileName);
       final bookmarkId = await _driveApi.getFileId(BookmarkData.jsonFileName);
@@ -122,12 +122,12 @@ class BackupManagerGoogleDriveCubit
 
   /// Back up the library to Google Drive.
   Future<bool> backupLibrary() async {
-    final tempFolder = RandomUtility.getAvailableTempFolder();
+    final tempFolder = RandomUtils.getAvailableTempFolder();
     tempFolder.createSync(recursive: true);
-    final zipFile = await BackupUtility.archiveLibrary(tempFolder.path);
+    final zipFile = await BackupUtils.archiveLibrary(tempFolder.path);
     await _driveApi.uploadFile('appDataFolder', zipFile);
     tempFolder.deleteSync(recursive: true);
-    final result = await _driveApi.fileExists(BackupUtility.libraryArchiveName);
+    final result = await _driveApi.fileExists(BackupUtils.libraryArchiveName);
     refresh();
     return result;
   }
@@ -169,7 +169,7 @@ class BackupManagerGoogleDriveCubit
       await _driveApi.deleteFile(state.libraryId!);
     }
     final result =
-        !(await _driveApi.fileExists(BackupUtility.libraryArchiveName));
+        !(await _driveApi.fileExists(BackupUtils.libraryArchiveName));
     refresh();
     return result;
   }
@@ -208,20 +208,20 @@ class BackupManagerGoogleDriveCubit
 
   Future<bool> restoreLibrary() async {
     if (state.libraryId != null) {
-      final tempFolder = RandomUtility.getAvailableTempFolder();
+      final tempFolder = RandomUtils.getAvailableTempFolder();
       tempFolder.createSync(recursive: true);
 
       final zipFile = File(
         join(
           tempFolder.path,
-          BackupUtility.libraryArchiveName,
+          BackupUtils.libraryArchiveName,
         ),
       );
       zipFile.createSync();
 
       // Restore books
       await _driveApi.downloadFile(state.libraryId!, zipFile);
-      await BackupUtility.restoreBackup(tempFolder, zipFile);
+      await BackupUtils.restoreBackup(tempFolder, zipFile);
 
       tempFolder.deleteSync(recursive: true);
     }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../enum/loading_state_code.dart';
-import '../../toolbox/route_helper.dart';
+import '../../utils/route_utils.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import '../table_of_contents/table_of_content.dart';
@@ -40,7 +40,7 @@ class CollectionViewerList extends StatelessWidget {
                     key: ValueKey(data.filePath),
                     onTap: () {
                       Navigator.of(context)
-                          .push(RouteHelper.pushRoute(TableOfContents(data)))
+                          .push(RouteUtils.pushRoute(TableOfContents(data)))
                           .then((_) => cubit.refresh());
                     },
                     leading: const Icon(Icons.book_outlined),

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:path/path.dart';
 
-import '../../../toolbox/file_helper.dart';
+import '../../../utils/file_utils.dart';
 import '../bloc/book_add_bloc.dart';
 
 class BookAddFileInfoWidget extends StatelessWidget {
@@ -36,7 +36,7 @@ class BookAddFileInfoWidget extends StatelessWidget {
             style: textStyle,
           ),
           subtitle: Text(
-            FileHelper.getFileSizeString(fileSize),
+            FileUtils.getFileSizeString(fileSize),
             style: textStyle,
           ),
         );

@@ -1,6 +1,6 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:novelglide/toolbox/css_helper.dart'; // Update with your actual package name
+import 'package:flutter_test/flutter_test.dart';
+import 'package:novelglide/utils/css_utils.dart';
 
 void main() {
   group('CssHelper', () {
@@ -9,7 +9,7 @@ void main() {
       const color = Color.fromARGB(255, 255, 0, 0); // Red color
 
       // Act
-      final result = CssHelper.convertColorToRgba(color);
+      final result = CssUtils.convertColorToRgba(color);
 
       // Assert
       expect(result, 'rgba(255, 0, 0, 1.0)');
@@ -20,7 +20,7 @@ void main() {
       const color = Color.fromARGB(128, 0, 255, 0); // Semi-transparent green
 
       // Act
-      final result = CssHelper.convertColorToRgba(color);
+      final result = CssUtils.convertColorToRgba(color);
 
       // Assert
       expect(result, 'rgba(0, 255, 0, 0.5)');
