@@ -11,40 +11,36 @@ class HomepageNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final HomepageCubit cubit = BlocProvider.of<HomepageCubit>(context);
-    final BookshelfCubit bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
-    final BookmarkListCubit bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
+    final appLocalizations = AppLocalizations.of(context)!;
+    final cubit = BlocProvider.of<HomepageCubit>(context);
+    final bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
+    final bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
 
     return BlocBuilder<HomepageCubit, HomepageState>(
+      buildWhen: (previous, current) => previous.navItem != current.navItem,
       builder: (context, state) {
         return NavigationBar(
           selectedIndex: HomepageNavigationItem.values.indexOf(state.navItem),
           indicatorColor: Colors.transparent,
-          backgroundColor: Colors.black87,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
           destinations: [
-            NavigationDestination(
-              icon: Icon(Icons.shelves, color: Colors.white.withOpacity(0.5)),
-              selectedIcon: const Icon(Icons.shelves, color: Colors.white),
+            _Destination(
+              iconData: Icons.shelves,
               label: appLocalizations.bookshelfTitle,
               enabled: state.navItem != HomepageNavigationItem.bookshelf,
             ),
-            NavigationDestination(
-              icon: Icon(Icons.collections_bookmark_rounded, color: Colors.white.withOpacity(0.5)),
-              selectedIcon: const Icon(Icons.collections_bookmark_rounded, color: Colors.white),
-              label: 'Collection',
+            _Destination(
+              iconData: Icons.collections_bookmark_rounded,
+              label: appLocalizations.collectionTitle,
               enabled: state.navItem != HomepageNavigationItem.collection,
             ),
-            NavigationDestination(
-              icon: Icon(Icons.bookmarks_rounded, color: Colors.white.withOpacity(0.5)),
-              selectedIcon: const Icon(Icons.bookmarks_rounded, color: Colors.white),
+            _Destination(
+              iconData: Icons.bookmarks_rounded,
               label: appLocalizations.bookmarkListTitle,
               enabled: state.navItem != HomepageNavigationItem.bookmark,
             ),
-            NavigationDestination(
-              icon: Icon(Icons.settings, color: Colors.white.withOpacity(0.5)),
-              selectedIcon: const Icon(Icons.settings, color: Colors.white),
+            _Destination(
+              iconData: Icons.settings_rounded,
               label: appLocalizations.settingsTitle,
               enabled: state.navItem != HomepageNavigationItem.settings,
             ),
@@ -59,10 +55,34 @@ class HomepageNavigationBar extends StatelessWidget {
                 break;
               default:
             }
-            cubit.setItem(HomepageNavigationItem.values[index.clamp(0, HomepageNavigationItem.values.length - 1)]);
+            cubit.setItem(HomepageNavigationItem.values[
+                index.clamp(0, HomepageNavigationItem.values.length - 1)]);
           },
         );
       },
+    );
+  }
+}
+
+class _Destination extends StatelessWidget {
+  final IconData iconData;
+  final String label;
+  final bool enabled;
+
+  const _Destination({
+    required this.iconData,
+    required this.label,
+    required this.enabled,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return NavigationDestination(
+      icon: Icon(iconData),
+      selectedIcon: Icon(iconData, color: colorScheme.onSurface),
+      label: label,
+      enabled: enabled,
     );
   }
 }

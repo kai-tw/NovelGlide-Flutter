@@ -11,10 +11,11 @@ class HomepageNavigationRail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final HomepageCubit cubit = BlocProvider.of<HomepageCubit>(context);
-    final BookshelfCubit bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
-    final BookmarkListCubit bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
+    final appLocalizations = AppLocalizations.of(context)!;
+    final cubit = BlocProvider.of<HomepageCubit>(context);
+    final bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
+    final bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
+    final colorScheme = Theme.of(context).colorScheme;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -23,41 +24,43 @@ class HomepageNavigationRail extends StatelessWidget {
             constraints: BoxConstraints(minHeight: constraints.maxHeight),
             child: IntrinsicHeight(
               child: BlocBuilder<HomepageCubit, HomepageState>(
+                buildWhen: (previous, current) =>
+                    previous.navItem != current.navItem,
                 builder: (context, state) {
                   return NavigationRail(
-                    selectedIndex: HomepageNavigationItem.values.indexOf(state.navItem),
+                    selectedIndex:
+                        HomepageNavigationItem.values.indexOf(state.navItem),
                     indicatorColor: Colors.transparent,
-                    unselectedIconTheme: IconThemeData(color: Colors.white.withOpacity(0.5)),
-                    backgroundColor: Colors.transparent,
+                    backgroundColor: colorScheme.surfaceContainer,
                     labelType: NavigationRailLabelType.none,
                     destinations: [
-                      NavigationRailDestination(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        icon: const Icon(Icons.shelves),
-                        selectedIcon: const Icon(Icons.shelves, color: Colors.white),
-                        label: Text(appLocalizations.bookshelfTitle),
-                        disabled: state.navItem == HomepageNavigationItem.bookshelf,
+                      _buildDestination(
+                        context,
+                        iconData: Icons.shelves,
+                        label: appLocalizations.bookshelfTitle,
+                        disabled:
+                            state.navItem == HomepageNavigationItem.bookshelf,
                       ),
-                      NavigationRailDestination(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        icon: const Icon(Icons.collections_bookmark_rounded),
-                        selectedIcon: const Icon(Icons.collections_bookmark_rounded, color: Colors.white),
-                        label: const Text('Collection'),
-                        disabled: state.navItem == HomepageNavigationItem.collection,
+                      _buildDestination(
+                        context,
+                        iconData: Icons.collections_bookmark_rounded,
+                        label: appLocalizations.collectionTitle,
+                        disabled:
+                            state.navItem == HomepageNavigationItem.collection,
                       ),
-                      NavigationRailDestination(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        icon: const Icon(Icons.bookmarks_rounded),
-                        selectedIcon: const Icon(Icons.bookmarks_rounded, color: Colors.white),
-                        label: Text(appLocalizations.bookmarkListTitle),
-                        disabled: state.navItem == HomepageNavigationItem.bookmark,
+                      _buildDestination(
+                        context,
+                        iconData: Icons.bookmarks_rounded,
+                        label: appLocalizations.bookmarkListTitle,
+                        disabled:
+                            state.navItem == HomepageNavigationItem.bookmark,
                       ),
-                      NavigationRailDestination(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        icon: const Icon(Icons.settings),
-                        selectedIcon: const Icon(Icons.settings, color: Colors.white),
-                        label: Text(appLocalizations.settingsTitle),
-                        disabled: state.navItem == HomepageNavigationItem.settings,
+                      _buildDestination(
+                        context,
+                        iconData: Icons.settings,
+                        label: appLocalizations.settingsTitle,
+                        disabled:
+                            state.navItem == HomepageNavigationItem.settings,
                       ),
                     ],
                     onDestinationSelected: (index) {
@@ -70,7 +73,8 @@ class HomepageNavigationRail extends StatelessWidget {
                           break;
                         default:
                       }
-                      cubit.setItem(HomepageNavigationItem.values[index.clamp(0, HomepageNavigationItem.values.length - 1)]);
+                      cubit.setItem(HomepageNavigationItem.values[index.clamp(
+                          0, HomepageNavigationItem.values.length - 1)]);
                     },
                   );
                 },
@@ -79,6 +83,22 @@ class HomepageNavigationRail extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  NavigationRailDestination _buildDestination(
+    BuildContext context, {
+    required IconData iconData,
+    required String label,
+    required bool disabled,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return NavigationRailDestination(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      icon: Icon(iconData),
+      selectedIcon: Icon(iconData, color: colorScheme.onSurface),
+      label: Text(label),
+      disabled: disabled,
     );
   }
 }
