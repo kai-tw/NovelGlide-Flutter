@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+/// A loading indicator.
 class CommonLoading extends StatelessWidget {
   final String? title;
 
@@ -28,6 +29,7 @@ class CommonLoading extends StatelessWidget {
   }
 }
 
+/// The sliver version of [CommonLoading].
 class CommonSliverLoading extends StatelessWidget {
   final String? title;
 
@@ -37,6 +39,26 @@ class CommonSliverLoading extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverFillRemaining(
       child: CommonLoading(title: title),
+    );
+  }
+}
+
+/// A dialog that displays a loading indicator for backup management operations.
+class CommonLoadingDialog extends StatelessWidget {
+  final String? title;
+
+  const CommonLoadingDialog({super.key, this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: SizedBox(
+        width: 200.0,
+        height: 100.0,
+        child: CommonLoading(
+          title: title,
+        ),
+      ),
     );
   }
 }

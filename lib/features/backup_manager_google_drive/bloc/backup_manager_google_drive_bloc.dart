@@ -17,7 +17,7 @@ import '../../../utils/random_utils.dart';
 /// Manages Google Drive backup operations.
 class BackupManagerGoogleDriveCubit
     extends Cubit<BackupManagerGoogleDriveState> {
-  final logger = Logger();
+  final _logger = Logger();
   final _drivePrefKey = PreferenceKeys.backupManager.isGoogleDriveEnabled;
   final _driveApi = GoogleDriveApi.instance;
 
@@ -102,7 +102,7 @@ class BackupManagerGoogleDriveCubit
       try {
         isEnabled ? await _driveApi.signIn() : await _driveApi.signOut();
       } catch (e) {
-        logger.e(e);
+        _logger.e(e);
       }
     }
     return _driveApi.isSignedIn();
@@ -249,7 +249,7 @@ class BackupManagerGoogleDriveCubit
 
   @override
   Future<void> close() {
-    logger.close();
+    _logger.close();
     return super.close();
   }
 }

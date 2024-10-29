@@ -4,9 +4,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logger/logger.dart';
 
 import '../../../enum/loading_state_code.dart';
-import '../../backup_manager/dialog/backup_manager_error_dialog.dart';
-import '../../backup_manager/dialog/backup_manager_loading_dialog.dart';
-import '../../backup_manager/dialog/backup_manager_success_dialog.dart';
+import '../../common_components/common_error_dialog.dart';
+import '../../common_components/common_loading.dart';
+import '../../common_components/common_success_dialog.dart';
 import '../bloc/backup_manager_google_drive_bloc.dart';
 
 class BackupManagerGoogleDriveAll extends StatelessWidget {
@@ -144,16 +144,16 @@ class BackupManagerGoogleDriveAll extends StatelessWidget {
       logger.close();
 
       // Show the error dialog.
-      return BackupManagerErrorDialog(content: snapshot.error.toString());
+      return CommonErrorDialog(content: snapshot.error.toString());
     } else {
       switch (snapshot.connectionState) {
         case ConnectionState.done:
           // Operation done. Show success dialog.
-          return BackupManagerSuccessDialog(content: successLabel);
+          return CommonSuccessDialog(title: Text(successLabel));
 
         default:
           // Show loading dialog while waiting
-          return const BackupManagerLoadingDialog();
+          return const CommonLoadingDialog();
       }
     }
   }

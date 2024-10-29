@@ -14,6 +14,7 @@ class BackupManagerGoogleDriveSwitcher extends StatelessWidget {
     final cubit = BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
     return BlocBuilder<BackupManagerGoogleDriveCubit,
         BackupManagerGoogleDriveState>(
+      buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         return SwitchListTile(
           contentPadding: const EdgeInsets.fromLTRB(16.0, 4.0, 8.0, 4.0),
@@ -26,7 +27,7 @@ class BackupManagerGoogleDriveSwitcher extends StatelessWidget {
             }
 
             await cubit.setEnabled(value);
-            await cubit.refresh();
+            cubit.refresh();
           },
         );
       },
