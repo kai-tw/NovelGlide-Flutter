@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../ad_center/advertisement.dart';
-import '../../../ad_center/advertisement_id.dart';
 import '../../../data/book_data.dart';
+import '../../ads/advertisement.dart';
+import '../../ads/advertisement_id.dart';
 import '../bloc/toc_bloc.dart';
 import '../toc_app_bar.dart';
 import '../toc_fab_section.dart';
@@ -53,7 +53,8 @@ class TocScaffoldMediumView extends StatelessWidget {
                 ),
                 Expanded(
                   child: RefreshIndicator(
-                    onRefresh: () async => BlocProvider.of<TocCubit>(context).refresh(),
+                    onRefresh: () async =>
+                        BlocProvider.of<TocCubit>(context).refresh(),
                     child: PageStorage(
                       bucket: cubit.bucket,
                       child: Scrollbar(
@@ -63,7 +64,8 @@ class TocScaffoldMediumView extends StatelessWidget {
                           controller: cubit.scrollController,
                           slivers: [
                             SliverPadding(
-                              padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 80.0),
+                              padding: const EdgeInsets.fromLTRB(
+                                  24.0, 0.0, 24.0, 80.0),
                               sliver: TocSliverChapterList(bookData: bookData),
                             ),
                           ],

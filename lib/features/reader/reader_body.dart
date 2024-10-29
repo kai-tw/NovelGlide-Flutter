@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../ad_center/advertisement.dart';
-import '../../ad_center/advertisement_id.dart';
+import '../ads/advertisement.dart';
+import '../ads/advertisement_id.dart';
 import 'bloc/reader_cubit.dart';
 import 'widgets/reader_overlap_widget.dart';
 

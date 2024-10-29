@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../ad_center/advertisement.dart';
-import '../../ad_center/advertisement_id.dart';
+import '../ads/advertisement.dart';
+import '../ads/advertisement_id.dart';
 import '../bookmark_list/bloc/bookmark_list_bloc.dart';
 import '../bookmark_list/bookmark_list_sliver_list.dart';
 import '../bookshelf/bloc/bookshelf_bloc.dart';
@@ -18,9 +18,12 @@ class HomepageScaffoldBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomepageCubit cubit = BlocProvider.of<HomepageCubit>(context);
-    final BookshelfCubit bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
-    final CollectionListCubit collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
-    final BookmarkListCubit bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
+    final BookshelfCubit bookshelfCubit =
+        BlocProvider.of<BookshelfCubit>(context);
+    final CollectionListCubit collectionListCubit =
+        BlocProvider.of<CollectionListCubit>(context);
+    final BookmarkListCubit bookmarkListCubit =
+        BlocProvider.of<BookmarkListCubit>(context);
 
     return BlocBuilder<HomepageCubit, HomepageState>(
       buildWhen: (previous, current) => previous.navItem != current.navItem,

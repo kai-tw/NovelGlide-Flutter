@@ -1,26 +1,39 @@
 import 'dart:async';
+
 // import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:logger/logger.dart';
 // import 'package:in_app_purchase/in_app_purchase.dart';
 
 class AdvertisementCubit extends Cubit<AdvertisementState> {
   // late StreamSubscription<List<PurchaseDetails>> _subscription;
   late int _width;
-  final String adUnitId;
-  BannerAd? bannerAd;
+  final String _adUnitId;
 
-  AdvertisementCubit({required this.adUnitId}) : super(const AdvertisementState());
+  final Logger _logger = Logger();
+
+  factory AdvertisementCubit(String adUnitId, int width) {
+    final cubit = AdvertisementCubit._internal(
+      adUnitId,
+      const AdvertisementState(),
+    );
+    cubit.init(width);
+    return cubit;
+  }
+
+  AdvertisementCubit._internal(this._adUnitId, super.initialState);
 
   void init(int width) async {
-    // _width = width;
-    // _subscription = InAppPurchase.instance.purchaseStream.listen(_purchaseSubscriptionHandler, onDone: () {
+    _width = width;
+    // _subscription = InAppPurchase.instance.purchaseStream
+    //     .listen(_purchaseSubscriptionHandler, onDone: () {
     //   _subscription.cancel();
     // }, onError: (error) {});
 
-    // loadAd();
+    loadAd();
 
     // Store disabled.
     // if (Platform.isAndroid && await InAppPurchase.instance.isAvailable()) {
@@ -31,10 +44,11 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
   }
 
   void loadAd() async {
-    final AnchoredAdaptiveBannerAdSize? size = await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(_width);
+    final size =
+        await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(_width);
 
-    bannerAd = BannerAd(
-      adUnitId: adUnitId,
+    BannerAd(
+      adUnitId: _adUnitId,
       request: const AdRequest(),
       size: size ?? AdSize.banner,
       listener: BannerAdListener(
@@ -48,10 +62,11 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
           }
         },
         onAdFailedToLoad: (ad, err) {
+          _logger.e('onAdFailedToLoad: $err');
           ad.dispose();
         },
       ),
-    )..load();
+    ).load();
   }
 
   // void _purchaseSubscriptionHandler(List<PurchaseDetails> purchaseDetailsList) {
@@ -72,8 +87,9 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
 
   @override
   Future<void> close() async {
-    super.close();
     state.bannerAd?.dispose();
+    _logger.close();
+    super.close();
   }
 }
 
