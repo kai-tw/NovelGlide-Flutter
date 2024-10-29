@@ -9,7 +9,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-
 import 'package:novelglide/data/theme_data_record.dart';
 import 'package:novelglide/firebase_options.dart';
 import 'package:novelglide/main.dart';
@@ -31,7 +30,7 @@ void main() {
     // Theme Initialization
     ThemeDataRecord record = await ThemeDataRecord.fromSettings();
     final ThemeData initTheme =
-        record.themeId.getThemeDataByBrightness(brightness: record.brightness);
+        record.themeId.getThemeDataByBrightness(record.brightness);
 
     // Build our app and trigger a frame.
     await tester.pumpWidget(App(initialTheme: initTheme));

@@ -95,7 +95,7 @@ class HomepageNavigationRail extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return NavigationRailDestination(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
-      icon: Icon(iconData),
+      icon: Icon(iconData, color: colorScheme.onSurface.withOpacity(0.64)),
       selectedIcon: Icon(iconData, color: colorScheme.onSurface),
       label: Text(label),
       disabled: disabled,

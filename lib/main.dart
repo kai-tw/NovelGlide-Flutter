@@ -28,7 +28,7 @@ void main() async {
   // Theme Initialization
   final record = await ThemeDataRecord.fromSettings();
   final initialTheme =
-      record.themeId.getThemeDataByBrightness(brightness: record.brightness);
+      record.themeId.getThemeDataByBrightness(record.brightness);
 
   // Log Initialization
   if (kReleaseMode) {

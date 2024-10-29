@@ -4,9 +4,9 @@ import 'theme_template.dart';
 
 class MaterialTheme extends ThemeTemplate {
   static final ThemeData lightTheme =
-      ThemeTemplate.generateThemeByBrightness(_lightColorScheme);
+      ThemeTemplate.getThemeByScheme(_lightColorScheme);
   static final ThemeData darkTheme =
-      ThemeTemplate.generateThemeByBrightness(_darkColorScheme);
+      ThemeTemplate.getThemeByScheme(_darkColorScheme);
 
   /// The color scheme for light theme
   static final ColorScheme _lightColorScheme = ColorScheme.fromSeed(

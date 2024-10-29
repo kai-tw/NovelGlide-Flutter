@@ -66,8 +66,8 @@ class _State extends State<Homepage> with WidgetsBindingObserver {
     ThemeDataRecord record = await ThemeDataRecord.fromSettings();
 
     if (record.brightness == null) {
-      final ThemeData themeData = record.themeId
-          .getThemeDataByBrightness(brightness: record.brightness);
+      final ThemeData themeData =
+          record.themeId.getThemeDataByBrightness(record.brightness);
       _switcherState?.changeTheme(theme: themeData);
     }
   }

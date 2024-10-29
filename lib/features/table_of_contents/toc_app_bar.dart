@@ -26,6 +26,7 @@ class TocAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         PopupMenuButton(
           clipBehavior: Clip.hardEdge,
+          icon: const Icon(Icons.more_vert),
           itemBuilder: (context) {
             return [
               PopupMenuItem(

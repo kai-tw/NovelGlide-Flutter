@@ -79,7 +79,7 @@ class _Destination extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return NavigationDestination(
-      icon: Icon(iconData),
+      icon: Icon(iconData, color: colorScheme.onSurface.withOpacity(0.64)),
       selectedIcon: Icon(iconData, color: colorScheme.onSurface),
       label: label,
       enabled: enabled,

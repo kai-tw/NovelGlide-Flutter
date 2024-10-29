@@ -13,9 +13,9 @@ class ThemeManagerSelectThemeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final String? themeName = _getThemeNameById(context, themeId);
+    final String? themeName = ThemeId.getThemeNameById(context, themeId);
     final Brightness brightness = Theme.of(context).brightness;
-    final ThemeData themeData = themeId.getThemeDataByBrightness(brightness: brightness);
+    final ThemeData themeData = themeId.getThemeDataByBrightness(brightness);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -24,11 +24,13 @@ class ThemeManagerSelectThemeButton extends StatelessWidget {
           builder: (context) {
             return OutlinedButton(
               onPressed: () {
-                ThemeDataRecord(themeId: themeId, brightness: brightness).saveToSettings();
+                ThemeDataRecord(themeId: themeId, brightness: brightness)
+                    .saveToSettings();
                 ThemeSwitcher.of(context).changeTheme(theme: themeData);
               },
               style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 16.0),
                 backgroundColor: themeData.colorScheme.surface,
                 foregroundColor: themeData.colorScheme.onSurface,
                 shape: RoundedRectangleBorder(
@@ -39,7 +41,8 @@ class ThemeManagerSelectThemeButton extends StatelessWidget {
               child: Text(
                 "Aa",
                 overflow: TextOverflow.ellipsis,
-                semanticsLabel: appLocalizations.accessibilityThemeSelectionButton(themeName ?? "Aa"),
+                semanticsLabel: appLocalizations
+                    .accessibilityThemeSelectionButton(themeName ?? "Aa"),
               ),
             );
           },
@@ -50,17 +53,5 @@ class ThemeManagerSelectThemeButton extends StatelessWidget {
         ),
       ],
     );
-  }
-
-  String? _getThemeNameById(BuildContext context, ThemeId id) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    switch (id) {
-      case ThemeId.materialTheme:
-        return appLocalizations.themeListNameMaterial;
-      case ThemeId.yellowTheme:
-        return appLocalizations.themeListNameYellow;
-      default:
-        return appLocalizations.themeListNameDefault;
-    }
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 abstract class ThemeTemplate {
-  // Generates a ThemeData object based on the provided ColorScheme
-  static ThemeData generateThemeByBrightness(ColorScheme colorScheme) {
+  /// Generates a [ThemeData] object based on the provided [ColorScheme]
+  static ThemeData getThemeByScheme(ColorScheme colorScheme) {
     return ThemeData(
       appBarTheme: getAppBarTheme(colorScheme),
       brightness: colorScheme.brightness,
       colorScheme: colorScheme,
-      floatingActionButtonTheme: getFloatingActionButtonTheme(colorScheme),
+      floatingActionButtonTheme: getFabTheme(colorScheme),
       inputDecorationTheme: inputDecorationTheme,
       snackBarTheme: getSnackBarTheme(colorScheme),
       switchTheme: getSwitchTheme(colorScheme),
@@ -16,11 +16,11 @@ abstract class ThemeTemplate {
           borderRadius: BorderRadius.circular(24.0),
         ),
       ),
-      useMaterial3: true, // Ensure Material 3 is used
+      useMaterial3: true,
     );
   }
 
-  // Defines the input decoration theme
+  /// Defines the input decoration theme
   static InputDecorationTheme get inputDecorationTheme => InputDecorationTheme(
         labelStyle: const TextStyle(fontSize: 16),
         contentPadding: const EdgeInsets.all(24.0),
@@ -29,7 +29,7 @@ abstract class ThemeTemplate {
         ),
       );
 
-  // Configures the AppBar theme based on the ColorScheme
+  /// Configures the AppBar theme based on the ColorScheme
   static AppBarTheme getAppBarTheme(ColorScheme colorScheme) {
     return AppBarTheme(
       backgroundColor: colorScheme.surface,
@@ -42,9 +42,8 @@ abstract class ThemeTemplate {
     );
   }
 
-  // Configures the FloatingActionButton theme based on the ColorScheme
-  static FloatingActionButtonThemeData getFloatingActionButtonTheme(
-      ColorScheme colorScheme) {
+  /// Configures the [FloatingActionButton] theme based on the [ColorScheme]
+  static FloatingActionButtonThemeData getFabTheme(ColorScheme colorScheme) {
     return FloatingActionButtonThemeData(
       backgroundColor: colorScheme.primary,
       foregroundColor: colorScheme.onPrimary,
@@ -54,7 +53,7 @@ abstract class ThemeTemplate {
     );
   }
 
-  // Configures the SnackBar theme based on the ColorScheme
+  /// Configures the [SnackBar] theme based on the [ColorScheme]
   static SnackBarThemeData getSnackBarTheme(ColorScheme colorScheme) {
     return SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
@@ -64,7 +63,7 @@ abstract class ThemeTemplate {
     );
   }
 
-  // Configures the Switch theme based on the ColorScheme
+  /// Configures the [Switch] theme based on the [ColorScheme]
   static SwitchThemeData getSwitchTheme(ColorScheme colorScheme) {
     return SwitchThemeData(
       thumbColor: WidgetStateColor.resolveWith((Set<WidgetState> states) {

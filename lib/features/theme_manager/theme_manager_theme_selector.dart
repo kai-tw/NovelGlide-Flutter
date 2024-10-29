@@ -16,9 +16,9 @@ class ThemeManagerThemeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final int crossAxisCount =
-        (MediaQuery.of(context).size.width / _maxCrossAxisExtent).floor();
+    final appLocalizations = AppLocalizations.of(context)!;
+    final crossAxisCount =
+        MediaQuery.of(context).size.width ~/ _maxCrossAxisExtent;
 
     return Container(
       margin: const EdgeInsets.all(16.0),

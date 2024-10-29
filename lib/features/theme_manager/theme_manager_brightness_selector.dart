@@ -97,8 +97,7 @@ class ThemeManagerBrightnessSelector extends StatelessWidget {
     record.saveToSettings();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final themeData =
-          record.themeId.getThemeDataByBrightness(brightness: brightness);
+      final themeData = record.themeId.getThemeDataByBrightness(brightness);
       switcher.changeTheme(theme: themeData);
     });
   }

@@ -6,11 +6,11 @@ import 'theme_template.dart';
 class YellowTheme extends ThemeTemplate {
   /// Light theme configuration using a predefined color scheme.
   static final ThemeData lightTheme =
-      ThemeTemplate.generateThemeByBrightness(_lightColorScheme);
+      ThemeTemplate.getThemeByScheme(_lightColorScheme);
 
   /// Dark theme configuration using a predefined color scheme.
   static final ThemeData darkTheme =
-      ThemeTemplate.generateThemeByBrightness(_darkColorScheme);
+      ThemeTemplate.getThemeByScheme(_darkColorScheme);
 
   /// Color scheme for the light theme, based on a seed color.
   static final ColorScheme _lightColorScheme = ColorScheme.fromSeed(
