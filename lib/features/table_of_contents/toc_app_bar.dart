@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/book_data.dart';
+import '../../utils/route_utils.dart';
 import '../common_components/common_back_button.dart';
 import '../toc_collection_dialog/toc_collection_dialog.dart';
 
@@ -31,11 +32,10 @@ class TocAppBar extends StatelessWidget implements PreferredSizeWidget {
             return [
               PopupMenuItem(
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return TocCollectionDialog(bookData: bookData);
-                    },
+                  Navigator.of(context).push(
+                    RouteUtils.pushRoute(
+                      TocCollectionDialog(bookData: bookData),
+                    ),
                   );
                 },
                 child: ListTile(

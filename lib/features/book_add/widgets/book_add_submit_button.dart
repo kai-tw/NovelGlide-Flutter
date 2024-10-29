@@ -41,7 +41,7 @@ class BookAddSubmitButton extends StatelessWidget {
     cubit.submit().then((_) {
       navigator.pop(true);
     }).catchError((e) {
-      if (e is DuplicateFileException && context.mounted) {
+      if (e is FileDuplicatedException && context.mounted) {
         _showDuplicateFileDialog(
           context,
           appLocalizations,

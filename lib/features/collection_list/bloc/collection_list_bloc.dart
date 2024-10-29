@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/collection_data.dart';
+import '../../../data/collection_repository.dart';
 import '../../../data/preference_keys.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/sort_order_code.dart';
@@ -18,7 +19,7 @@ class CollectionListCubit extends Cubit<CollectionListState> {
 
   // Refreshes the collection list by fetching data and applying saved sort preferences
   Future<void> refresh() async {
-    final collectionList = await CollectionData.getList();
+    final collectionList = CollectionRepository.getList();
     final prefs = await SharedPreferences.getInstance();
 
     final sortOrder = SortOrderCode.fromString(
@@ -44,7 +45,7 @@ class CollectionListCubit extends Cubit<CollectionListState> {
     collectionList.insert(newIndex - (oldIndex < newIndex ? 1 : 0), item);
 
     emit(state.copyWith(collectionList: collectionList));
-    CollectionData.reorder(oldIndex, newIndex);
+    CollectionRepository.reorder(oldIndex, newIndex);
   }
 
   // Sets the selecting mode and clears selected collections
@@ -80,8 +81,10 @@ class CollectionListCubit extends Cubit<CollectionListState> {
   }
 
   // Deletes all selected collections and refreshes the list
-  Future<void> deleteSelectedCollections() async {
-    await Future.wait(state.selectedCollections.map((e) => e.delete()));
+  void deleteSelectedCollections() {
+    for (var e in state.selectedCollections) {
+      CollectionRepository.delete(e);
+    }
     refresh();
   }
 

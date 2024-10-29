@@ -5,12 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/collection_data.dart';
+import '../../../data/collection_repository.dart';
 import '../../../enum/loading_state_code.dart';
 
 class TocCollectionDialogCubit extends Cubit<TocCollectionDialogState> {
   final BookData bookData;
 
-  TocCollectionDialogCubit(this.bookData) : super(const TocCollectionDialogState());
+  TocCollectionDialogCubit(this.bookData)
+      : super(const TocCollectionDialogState());
 
   void init() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -18,10 +20,12 @@ class TocCollectionDialogCubit extends Cubit<TocCollectionDialogState> {
     });
   }
 
-  void refresh() async {
-    List<CollectionData> collectionList = await CollectionData.getList();
-    Set<String> selectedCollections =
-        collectionList.where((e) => e.pathList.contains(bookData.filePath)).map((e) => e.id).toSet();
+  void refresh() {
+    List<CollectionData> collectionList = CollectionRepository.getList();
+    Set<String> selectedCollections = collectionList
+        .where((e) => e.pathList.contains(bookData.filePath))
+        .map((e) => e.id)
+        .toSet();
 
     collectionList.sort((a, b) => compareNatural(a.name, b.name));
 
@@ -33,21 +37,23 @@ class TocCollectionDialogCubit extends Cubit<TocCollectionDialogState> {
   }
 
   void select(String id) {
-    emit(state.copyWith(selectedCollections: {...state.selectedCollections, id}));
+    emit(state
+        .copyWith(selectedCollections: {...state.selectedCollections, id}));
   }
 
   void deselect(String id) {
-    emit(state.copyWith(selectedCollections: {...state.selectedCollections}..remove(id)));
+    emit(state.copyWith(
+        selectedCollections: {...state.selectedCollections}..remove(id)));
   }
 
-  Future<void> save() async {
+  void save() {
     for (CollectionData data in state.collectionList) {
       if (state.selectedCollections.contains(data.id)) {
         data.pathList.add(bookData.filePath);
       } else if (data.pathList.contains(bookData.filePath)) {
         data.pathList.remove(bookData.filePath);
       }
-      await data.save();
+      CollectionRepository.save(data);
     }
   }
 }

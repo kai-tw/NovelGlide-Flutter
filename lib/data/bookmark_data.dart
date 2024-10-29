@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import '../utils/datetime_utils.dart';
 import '../utils/file_path.dart';
 import '../utils/file_utils.dart';
+import '../utils/json_utils.dart';
 
 /// Represents a bookmark with its metadata and operations.
 class BookmarkData {
@@ -36,17 +37,16 @@ class BookmarkData {
   static String get jsonPath => join(FilePath.dataRoot, jsonFileName);
 
   /// Returns the File object for the JSON file storing bookmarks.
-  static File get jsonFile => File(jsonPath);
+  static File get jsonFile {
+    final file = File(jsonPath);
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
+    }
+    return file;
+  }
 
   /// Reads and returns the JSON data from the bookmark file.
-  static Map<String, dynamic> get jsonData {
-    jsonFile.createSync(recursive: true);
-
-    String jsonString = jsonFile.readAsStringSync();
-    jsonString = jsonString.isEmpty ? '{}' : jsonString;
-
-    return jsonDecode(jsonString);
-  }
+  static Map<String, dynamic> get jsonData => JsonUtils.fromFile(jsonFile);
 
   /// Factory constructor to create a BookmarkData instance from a JSON map.
   factory BookmarkData.fromJson(Map<String, dynamic> map) {

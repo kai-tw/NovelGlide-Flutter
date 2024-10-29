@@ -10,6 +10,7 @@ import 'package:novelglide/enum/sort_order_code.dart';
 import 'bookmark_data.dart';
 import 'chapter_data.dart';
 import 'collection_data.dart';
+import 'collection_repository.dart';
 
 /// Represents a book with its metadata and operations.
 class BookData {
@@ -96,11 +97,11 @@ class BookData {
     await Future.wait(bookmarkList.map((e) => e.delete()));
 
     // Delete associated collections.
-    final collectionList = (await CollectionData.getList())
+    final collectionList = CollectionRepository.getList()
         .where((element) => element.pathList.contains(filePath));
     for (CollectionData data in collectionList) {
       data.pathList.remove(filePath);
-      data.save();
+      CollectionRepository.save(data);
     }
 
     return !file.existsSync();

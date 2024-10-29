@@ -31,7 +31,7 @@ class BookAddCubit extends Cubit<BookAddState> {
     final file = File(filePath);
 
     if (file.existsSync()) {
-      throw DuplicateFileException();
+      throw FileDuplicatedException();
     }
 
     // Copy the file to the library path.

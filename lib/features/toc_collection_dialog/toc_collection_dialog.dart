@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data/book_data.dart';
-import '../../enum/window_class.dart';
 import '../common_components/common_back_button.dart';
 import 'bloc/toc_collection_dialog_bloc.dart';
 import 'toc_collection_dialog_list.dart';
@@ -16,25 +15,19 @@ class TocCollectionDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final appLocalizations = AppLocalizations.of(context)!;
 
     return BlocProvider(
       create: (_) => TocCollectionDialogCubit(bookData)..init(),
-      child: Dialog(
-        clipBehavior: Clip.hardEdge,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: WindowClass.compact.maxWidth),
-          child: ScaffoldMessenger(
-            child: Scaffold(
-              appBar: AppBar(
-                leading: const CommonBackButton(),
-                title: Text(appLocalizations.collectionAddToCollections),
-              ),
-              body: const TocCollectionDialogList(),
-              bottomNavigationBar: const TocCollectionDialogNavigation(),
-            ),
-          ),
+      child: Scaffold(
+        appBar: AppBar(
+          leading: const CommonBackButton(),
+          title: Text(appLocalizations.collectionAddToCollections),
         ),
+        body: const SafeArea(
+          child: TocCollectionDialogList(),
+        ),
+        bottomNavigationBar: const TocCollectionDialogNavigation(),
       ),
     );
   }

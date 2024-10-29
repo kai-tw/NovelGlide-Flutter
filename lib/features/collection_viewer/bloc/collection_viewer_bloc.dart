@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/book_data.dart';
 import '../../../data/collection_data.dart';
+import '../../../data/collection_repository.dart';
 import '../../../enum/loading_state_code.dart';
 
 class CollectionViewerCubit extends Cubit<CollectionViewerState> {
@@ -54,7 +55,7 @@ class CollectionViewerCubit extends Cubit<CollectionViewerState> {
 
     collectionData.pathList =
         state.bookList.map<String>((e) => e.filePath).toList();
-    collectionData.save();
+    CollectionRepository.save(collectionData);
   }
 }
 

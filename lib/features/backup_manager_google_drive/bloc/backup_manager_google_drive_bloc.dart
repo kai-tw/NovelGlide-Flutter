@@ -7,7 +7,7 @@ import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../data/bookmark_data.dart';
-import '../../../data/collection_data.dart';
+import '../../../data/collection_repository.dart';
 import '../../../data/preference_keys.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../utils/backup_utils.dart';
@@ -44,7 +44,7 @@ class BackupManagerGoogleDriveCubit
     if (isReady) {
       final fileNameList = [
         BackupUtils.libraryArchiveName,
-        CollectionData.jsonFileName,
+        CollectionRepository.jsonFileName,
         BookmarkData.jsonFileName,
       ];
       final fileIdList = await Future.wait(
@@ -117,11 +117,12 @@ class BackupManagerGoogleDriveCubit
   }
 
   Future<bool> backupCollections() async {
-    final collectionFile = CollectionData.jsonFile;
+    final collectionFile = CollectionRepository.jsonFile;
     if (collectionFile.existsSync()) {
       await _driveApi.uploadFile('appDataFolder', collectionFile);
     }
-    final result = await _driveApi.fileExists(CollectionData.jsonFileName);
+    final result =
+        await _driveApi.fileExists(CollectionRepository.jsonFileName);
     refresh();
     return result;
   }
@@ -160,11 +161,12 @@ class BackupManagerGoogleDriveCubit
 
   Future<bool> deleteCollections() async {
     final collectionFileId =
-        await _driveApi.getFileId(CollectionData.jsonFileName);
+        await _driveApi.getFileId(CollectionRepository.jsonFileName);
     if (collectionFileId != null) {
       await _driveApi.deleteFile(collectionFileId);
     }
-    final result = !(await _driveApi.fileExists(CollectionData.jsonFileName));
+    final result =
+        !(await _driveApi.fileExists(CollectionRepository.jsonFileName));
     refresh();
     return result;
   }
@@ -214,9 +216,9 @@ class BackupManagerGoogleDriveCubit
   }
 
   Future<bool> restoreCollections() async {
-    final id = await _driveApi.getFileId(CollectionData.jsonFileName);
+    final id = await _driveApi.getFileId(CollectionRepository.jsonFileName);
     if (id != null) {
-      await _driveApi.downloadFile(id, CollectionData.jsonFile);
+      await _driveApi.downloadFile(id, CollectionRepository.jsonFile);
     }
     refresh();
     return id != null;

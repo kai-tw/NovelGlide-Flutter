@@ -45,10 +45,11 @@ class _State extends State<ReaderAddBookmarkButton> {
   }
 
   void _onPressed() async {
-    BlocProvider.of<ReaderCubit>(context).saveBookmark();
-
     setState(() => _stateCode = CommonButtonStateCode.success);
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.wait([
+      Future.delayed(const Duration(seconds: 2)),
+      BlocProvider.of<ReaderCubit>(context).saveBookmark(),
+    ]);
     if (mounted) {
       setState(() => _stateCode = CommonButtonStateCode.idle);
     }
