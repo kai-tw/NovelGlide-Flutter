@@ -43,13 +43,15 @@ class _Scaffold extends StatelessWidget {
         ),
         title: Text(appLocalizations.themeManagerTitle),
       ),
-      body: SingleChildScrollView(
-        controller: cubit.scrollController,
-        child: const Column(
-          children: [
-            ThemeManagerThemeSelector(),
-            ThemeManagerBrightnessSelector(),
-          ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          controller: cubit.scrollController,
+          child: const Column(
+            children: [
+              ThemeManagerThemeSelector(),
+              ThemeManagerBrightnessSelector(),
+            ],
+          ),
         ),
       ),
     );
