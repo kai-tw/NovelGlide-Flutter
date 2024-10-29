@@ -13,8 +13,10 @@ class HomepageTabSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
-    double maxWidth = MediaQuery.of(context).size.width - kFloatingActionButtonMargin;
+    final WindowClass windowClass =
+        WindowClass.fromWidth(MediaQuery.of(context).size.width);
+    double maxWidth =
+        MediaQuery.of(context).size.width - kFloatingActionButtonMargin;
 
     if (windowClass != WindowClass.compact) {
       maxWidth *= 0.618;
@@ -28,9 +30,11 @@ class HomepageTabSection extends StatelessWidget {
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: kFloatingActionButtonMargin),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: kFloatingActionButtonMargin),
               child: BlocBuilder<HomepageCubit, HomepageState>(
-                buildWhen: (previous, current) => previous.navItem != current.navItem,
+                buildWhen: (previous, current) =>
+                    previous.navItem != current.navItem,
                 builder: (context, state) {
                   switch (state.navItem) {
                     case HomepageNavigationItem.bookshelf:

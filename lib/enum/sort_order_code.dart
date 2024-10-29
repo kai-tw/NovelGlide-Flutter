@@ -3,7 +3,7 @@ enum SortOrderCode {
   modifiedDate,
   savedTime;
 
-  static SortOrderCode fromString(
+  factory SortOrderCode.fromString(
     String? value, {
     SortOrderCode defaultValue = SortOrderCode.name,
   }) {

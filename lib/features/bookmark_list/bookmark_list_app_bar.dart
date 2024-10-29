@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../enum/window_class.dart';
-import 'widgets/bookmark_list_popup_menu_button.dart';
 import 'widgets/bookmark_list_done_button.dart';
+import 'widgets/bookmark_list_popup_menu_button.dart';
 import 'widgets/bookmark_list_select_button.dart';
 
 class BookmarkListAppBar extends StatelessWidget
@@ -17,7 +17,7 @@ class BookmarkListAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final WindowClass windowClass =
-        WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
+        WindowClass.fromWidth(MediaQuery.of(context).size.width);
 
     return AppBar(
       leading: const Icon(Icons.bookmarks_outlined),

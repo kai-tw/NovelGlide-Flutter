@@ -14,7 +14,7 @@ class TocFabSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final TocCubit cubit = BlocProvider.of<TocCubit>(context);
     final WindowClass windowClass =
-        WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
+        WindowClass.fromWidth(MediaQuery.of(context).size.width);
     double maxWidth =
         MediaQuery.of(context).size.width - kFloatingActionButtonMargin;
 

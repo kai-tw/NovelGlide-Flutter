@@ -14,7 +14,8 @@ class TableOfContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final WindowClass windowClass = WindowClass.getClassByWidth(MediaQuery.of(context).size.width);
+    final WindowClass windowClass =
+        WindowClass.fromWidth(MediaQuery.of(context).size.width);
     Widget scaffold;
 
     switch (windowClass) {

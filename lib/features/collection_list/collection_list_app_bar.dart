@@ -16,7 +16,7 @@ class CollectionListAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     final windowWidth = MediaQuery.of(context).size.width;
-    final windowClass = WindowClass.getClassByWidth(windowWidth);
+    final windowClass = WindowClass.fromWidth(windowWidth);
 
     return AppBar(
       leading: const Icon(Icons.collections_bookmark_outlined),

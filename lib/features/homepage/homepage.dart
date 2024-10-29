@@ -85,7 +85,7 @@ class _Scaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final windowClass = WindowClass.getClassByWidth(screenWidth);
+    final windowClass = WindowClass.fromWidth(screenWidth);
 
     /// Display the homepage based on the window size
     switch (windowClass) {
@@ -180,7 +180,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final windowWidth = MediaQuery.of(context).size.width;
-    final windowClass = WindowClass.getClassByWidth(windowWidth);
+    final windowClass = WindowClass.fromWidth(windowWidth);
     return BlocBuilder<HomepageCubit, HomepageState>(
       buildWhen: (previous, current) => previous.navItem != current.navItem,
       builder: (context, state) {
