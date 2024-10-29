@@ -18,9 +18,6 @@ class ReaderWebServerHandler {
   /// The file path to the book (EPUB) that will be served.
   final String _bookPath;
 
-  /// Getter to check if the server is currently running.
-  bool get isRunning => _server != null;
-
   /// Getter to retrieve the URL of the running server.
   String get url => 'http://$_host:$_port';
 

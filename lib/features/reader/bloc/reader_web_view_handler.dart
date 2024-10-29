@@ -135,14 +135,13 @@ class ReaderWebViewHandler {
     final isUrlAllowed =
         allowList.firstWhereOrNull((url) => request.url.startsWith(url)) !=
             null;
-    final decision = _serverHandler.isRunning && isUrlAllowed
+    final decision = isUrlAllowed
         ? NavigationDecision.navigate // Allow navigation.
         : NavigationDecision.prevent; // Block navigation.
 
     // Log the decision.
     final messageList = [
       'NavigationDecision: The request for "${request.url}" is $decision.',
-      'NavigationDecision: Is server running? ${_serverHandler.isRunning}.',
       'NavigationDecision: Is url allowed?    $isUrlAllowed',
     ];
     for (var log in messageList) {
