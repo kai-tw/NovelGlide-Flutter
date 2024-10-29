@@ -185,7 +185,6 @@ class ReaderCubit extends Cubit<ReaderState> {
   void sendThemeData([ThemeData? newTheme]) {
     currentTheme = newTheme ?? currentTheme;
     if (state.code == LoadingStateCode.loaded) {
-      _logger.i('Send the theme data to the renderer.');
       webViewHandler.sendThemeData(currentTheme, state.readerSettings);
     }
   }
@@ -218,8 +217,10 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   void saveSettings() => state.readerSettings.save();
 
-  void resetSettings() =>
-      emit(state.copyWith(readerSettings: const ReaderSettingsData()));
+  void resetSettings() {
+    emit(state.copyWith(readerSettings: const ReaderSettingsData()));
+    sendThemeData();
+  }
 
   /// ******* Bookmarks ********
 
