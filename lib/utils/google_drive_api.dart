@@ -114,9 +114,7 @@ class GoogleDriveApi {
       q: "name = '$fileName'",
       pageSize: 1,
     );
-    return fileList.files?.isNotEmpty ?? false
-        ? fileList.files?.first.id
-        : null;
+    return fileList.files?.first.id;
   }
 
   /// Retrieves metadata for a file by its ID.

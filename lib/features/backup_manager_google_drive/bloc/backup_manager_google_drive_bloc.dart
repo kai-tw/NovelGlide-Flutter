@@ -42,45 +42,29 @@ class BackupManagerGoogleDriveCubit
     final isReady = await _isApiReady(isEnabled);
 
     if (isReady) {
-      // Get the ids of the files
-      final libraryId =
-          await _driveApi.getFileId(BackupUtils.libraryArchiveName);
-      final collectionId =
-          await _driveApi.getFileId(CollectionData.jsonFileName);
-      final bookmarkId = await _driveApi.getFileId(BookmarkData.jsonFileName);
-      final timeList = [
-        libraryId != null
-            ? (await _driveApi.getMetadataById(
-                libraryId,
-                field: 'modifiedTime',
-              ))
-                .modifiedTime
-            : null,
-        collectionId != null
-            ? (await _driveApi.getMetadataById(
-                collectionId,
-                field: 'modifiedTime',
-              ))
-                .modifiedTime
-            : null,
-        bookmarkId != null
-            ? (await _driveApi.getMetadataById(
-                bookmarkId,
-                field: 'modifiedTime',
-              ))
-                .modifiedTime
-            : null,
-      ].where((e) => e != null).toList();
+      final fileNameList = [
+        BackupUtils.libraryArchiveName,
+        CollectionData.jsonFileName,
+        BookmarkData.jsonFileName,
+      ];
+      final fileIdList = await Future.wait(
+        fileNameList.map((fileName) => _driveApi.getFileId(fileName)),
+      );
+      final timeList = (await Future.wait(
+        fileIdList.whereType<String>().map((fileId) =>
+            _driveApi.getMetadataById(fileId, field: 'modifiedTime')),
+      ))
+          .map((e) => e.modifiedTime)
+          .toList();
 
       if (!isClosed) {
         emit(BackupManagerGoogleDriveState(
           code: LoadingStateCode.loaded,
-          libraryId: libraryId,
-          collectionId: collectionId,
-          bookmarkId: bookmarkId,
-          lastBackupTime: timeList.isEmpty
-              ? null
-              : timeList.reduce((a, b) => a!.isAfter(b!) ? a : b),
+          libraryId: fileIdList[0],
+          collectionId: fileIdList[1],
+          bookmarkId: fileIdList[2],
+          lastBackupTime: timeList.reduce(
+              (a, b) => a?.isAfter(b ?? DateTime.utc(0)) ?? false ? a : b),
         ));
       }
     } else if (!isClosed) {
