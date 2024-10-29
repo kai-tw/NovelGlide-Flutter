@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'preference_keys.dart';
-import 'brightness_extension.dart';
 import '../enum/theme_id.dart';
+import '../utils/brightness_utils.dart';
+import 'preference_keys.dart';
 
 /// Represents a record of theme data, including theme ID and brightness.
 class ThemeDataRecord {
@@ -21,7 +21,7 @@ class ThemeDataRecord {
   factory ThemeDataRecord.fromJson(Map<String, dynamic> json) {
     return ThemeDataRecord(
       themeId: ThemeId.getFromString(json["themeId"]) ?? ThemeId.defaultTheme,
-      brightness: BrightnessExtension.getFromString(json["brightness"]),
+      brightness: BrightnessUtils.getFromString(json["brightness"]),
     );
   }
 
@@ -32,7 +32,7 @@ class ThemeDataRecord {
       themeId: ThemeId.getFromString(
               prefs.getString(PreferenceKeys.theme.themeId)) ??
           ThemeId.defaultTheme,
-      brightness: BrightnessExtension.getFromString(
+      brightness: BrightnessUtils.getFromString(
           prefs.getString(PreferenceKeys.theme.brightness)),
     );
   }
