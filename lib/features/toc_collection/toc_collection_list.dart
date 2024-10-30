@@ -4,16 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../enum/loading_state_code.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
-import 'bloc/toc_collection_dialog_bloc.dart';
+import 'bloc/toc_collection_bloc.dart';
 
-class TocCollectionDialogList extends StatelessWidget {
-  const TocCollectionDialogList({super.key});
+class TocCollectionList extends StatelessWidget {
+  const TocCollectionList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<TocCollectionDialogCubit>(context);
+    final cubit = BlocProvider.of<TocCollectionCubit>(context);
 
-    return BlocBuilder<TocCollectionDialogCubit, TocCollectionDialogState>(
+    return BlocBuilder<TocCollectionCubit, TocCollectionState>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
           previous.selectedCollections != current.selectedCollections,

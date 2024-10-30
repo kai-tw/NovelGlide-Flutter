@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../collection_add/collection_add_dialog.dart';
-import 'bloc/toc_collection_dialog_bloc.dart';
+import 'bloc/toc_collection_bloc.dart';
 
-class TocCollectionDialogNavigation extends StatelessWidget {
-  const TocCollectionDialogNavigation({super.key});
+class TocCollectionNavigation extends StatelessWidget {
+  const TocCollectionNavigation({super.key});
 
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<TocCollectionDialogCubit>(context);
+    final cubit = BlocProvider.of<TocCollectionCubit>(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../data/book_data.dart';
 import '../../utils/route_utils.dart';
 import '../common_components/common_back_button.dart';
-import '../toc_collection_dialog/toc_collection_dialog.dart';
+import '../toc_collection/toc_collection_scaffold.dart';
 
 class TocAppBar extends StatelessWidget implements PreferredSizeWidget {
   final BookData bookData;
@@ -25,27 +25,18 @@ class TocAppBar extends StatelessWidget implements PreferredSizeWidget {
         overflow: TextOverflow.ellipsis,
       ),
       actions: [
-        PopupMenuButton(
-          clipBehavior: Clip.hardEdge,
-          icon: const Icon(Icons.more_vert),
-          itemBuilder: (context) {
-            return [
-              PopupMenuItem(
-                onTap: () {
-                  Navigator.of(context).push(
-                    RouteUtils.pushRoute(
-                      TocCollectionDialog(bookData: bookData),
-                    ),
-                  );
-                },
-                child: ListTile(
-                  leading: const Icon(Icons.collections_bookmark_outlined),
-                  title: Text(appLocalizations.collectionTitle),
-                  trailing: const SizedBox(width: 24.0),
-                ),
+        IconButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              RouteUtils.pushRoute(
+                TocCollectionScaffold(bookData: bookData),
               ),
-            ];
+            );
           },
+          icon: Icon(
+            Icons.collections_bookmark_outlined,
+            semanticLabel: appLocalizations.collectionTitle,
+          ),
         ),
       ],
     );

@@ -8,13 +8,21 @@ import '../../../data/collection_data.dart';
 import '../../../data/collection_repository.dart';
 import '../../../enum/loading_state_code.dart';
 
-class TocCollectionDialogCubit extends Cubit<TocCollectionDialogState> {
+class TocCollectionCubit extends Cubit<TocCollectionState> {
   final BookData bookData;
 
-  TocCollectionDialogCubit(this.bookData)
-      : super(const TocCollectionDialogState());
+  factory TocCollectionCubit(BookData bookData) {
+    final cubit = TocCollectionCubit._internal(
+      bookData,
+      const TocCollectionState(),
+    );
+    cubit._init();
+    return cubit;
+  }
 
-  void init() {
+  TocCollectionCubit._internal(this.bookData, super.initialState);
+
+  void _init() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       refresh();
     });
@@ -29,7 +37,7 @@ class TocCollectionDialogCubit extends Cubit<TocCollectionDialogState> {
 
     collectionList.sort((a, b) => compareNatural(a.name, b.name));
 
-    emit(TocCollectionDialogState(
+    emit(TocCollectionState(
       code: LoadingStateCode.loaded,
       collectionList: collectionList,
       selectedCollections: selectedCollections,
@@ -58,7 +66,7 @@ class TocCollectionDialogCubit extends Cubit<TocCollectionDialogState> {
   }
 }
 
-class TocCollectionDialogState extends Equatable {
+class TocCollectionState extends Equatable {
   final LoadingStateCode code;
   final List<CollectionData> collectionList;
   final Set<String> selectedCollections;
@@ -66,18 +74,18 @@ class TocCollectionDialogState extends Equatable {
   @override
   List<Object?> get props => [code, collectionList, selectedCollections];
 
-  const TocCollectionDialogState({
+  const TocCollectionState({
     this.code = LoadingStateCode.initial,
     this.collectionList = const [],
     this.selectedCollections = const {},
   });
 
-  TocCollectionDialogState copyWith({
+  TocCollectionState copyWith({
     LoadingStateCode? code,
     List<CollectionData>? collectionList,
     Set<String>? selectedCollections,
   }) {
-    return TocCollectionDialogState(
+    return TocCollectionState(
       code: code ?? this.code,
       collectionList: collectionList ?? this.collectionList,
       selectedCollections: selectedCollections ?? this.selectedCollections,
