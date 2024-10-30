@@ -31,9 +31,10 @@ class BookmarkData {
       bookName: map['bookName'] ?? '',
       chapterTitle: map['chapterTitle'] ?? '',
       chapterFileName: map['chapterFileName'] ?? '',
-      startCfi: map['startCfi'] ?? '',
-      savedTime:
-          DateTime.parse(map['savedTime'] ?? DateTime.now().toIso8601String()),
+      startCfi: map['startCfi'],
+      savedTime: map['savedTime'] != null
+          ? DateTime.parse(map['savedTime'])
+          : DateTime.now(),
     );
   }
 

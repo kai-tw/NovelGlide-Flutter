@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../enum/loading_state_code.dart';
 import '../../common_components/common_loading.dart';
@@ -47,18 +48,19 @@ class ReaderOverlapWidget extends StatelessWidget {
   }
 
   Widget _buildLoadingWidget(BuildContext context, ReaderState state) {
+    final appLocalizations = AppLocalizations.of(context)!;
     String? title;
     switch (state.loadingStateCode) {
       case ReaderLoadingStateCode.initial:
-        title = 'Initializing';
+        title = appLocalizations.readerLoadingInitialize;
         break;
 
       case ReaderLoadingStateCode.bookLoading:
-        title = 'Loading the book';
+        title = appLocalizations.readerLoadingBookLoading;
         break;
 
       case ReaderLoadingStateCode.rendering:
-        title = 'Rendering';
+        title = appLocalizations.readerLoadingRendering;
         break;
     }
 
