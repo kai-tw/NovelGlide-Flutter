@@ -39,24 +39,24 @@ class _State extends State<Homepage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return ThemeSwitchingArea(
-      child: ThemeSwitcher.switcher(
-        builder: (context, switcher) {
-          _switcherState = switcher;
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                create: (_) => HomepageCubit(
-                  initialItem: widget.initialItem,
-                ),
-              ),
-              BlocProvider(create: (_) => BookshelfCubit()),
-              BlocProvider(create: (_) => CollectionListCubit()),
-              BlocProvider(create: (_) => BookmarkListCubit()),
-            ],
-            child: const _Scaffold(),
-          );
-        },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => HomepageCubit(
+            initialItem: widget.initialItem,
+          ),
+        ),
+        BlocProvider(create: (_) => BookshelfCubit()),
+        BlocProvider(create: (_) => CollectionListCubit()),
+        BlocProvider(create: (_) => BookmarkListCubit()),
+      ],
+      child: ThemeSwitchingArea(
+        child: ThemeSwitcher.switcher(
+          builder: (context, switcher) {
+            _switcherState = switcher;
+            return const _Scaffold();
+          },
+        ),
       ),
     );
   }

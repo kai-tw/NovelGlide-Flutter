@@ -2,7 +2,7 @@ import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart' show kReleaseMode;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -97,7 +97,9 @@ class App extends StatelessWidget {
           routes: {
             "/": (_) => const Homepage(),
           },
-          builder: (context, child) => AccessibilityTools(child: child),
+          builder: kReleaseMode
+              ? null
+              : (context, child) => AccessibilityTools(child: child),
           // debugShowCheckedModeBanner: false,
         );
       },
