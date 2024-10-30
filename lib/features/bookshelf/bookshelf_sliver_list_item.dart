@@ -17,8 +17,8 @@ class BookshelfSliverListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
+    final appLocalizations = AppLocalizations.of(context)!;
+    final cubit = BlocProvider.of<BookshelfCubit>(context);
 
     return InkWell(
       onTap: () {
@@ -31,9 +31,8 @@ class BookshelfSliverListItem extends StatelessWidget {
           } else {
             showDialog(
               context: context,
-              // TODO: Localize
-              builder: (context) => const CommonErrorDialog(
-                content: "This book doesn't exist.",
+              builder: (context) => CommonErrorDialog(
+                content: appLocalizations.bookshelfBookNotExist,
               ),
             ).then((_) => cubit.refresh());
           }

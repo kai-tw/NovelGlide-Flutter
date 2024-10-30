@@ -38,8 +38,7 @@ enum ThemeId {
       case ThemeId.defaultTheme:
         return appLocalizations.themeListNameDefault;
       case ThemeId.woodenTheme:
-        // TODO: TRANSLATION
-        return 'Wooden';
+        return appLocalizations.themeListNameWooden;
       case ThemeId.materialTheme:
         return appLocalizations.themeListNameMaterial;
       case ThemeId.yellowTheme:
