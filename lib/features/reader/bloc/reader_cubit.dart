@@ -7,10 +7,13 @@ import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../data/book_data.dart';
-import '../../../data/bookmark_data.dart';
-import '../../../data/reader_settings_data.dart';
+import '../../../data_model/book_data.dart';
+import '../../../data_model/bookmark_data.dart';
+import '../../../data_model/reader_settings_data.dart';
 import '../../../enum/loading_state_code.dart';
+import '../../../repository/bookmark_repository.dart';
+import '../../../utils/book_utils.dart';
+import '../../../utils/epub_utils.dart';
 import '../../../utils/file_path.dart';
 import '../../reader_search/bloc/reader_search_cubit.dart';
 import '../../reader_search/bloc/reader_search_result.dart';
@@ -88,7 +91,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     /// Read the book if it is not read yet.
     if (bookData == null) {
       final absolutePath = absolute(FilePath.libraryRoot, bookPath);
-      final epubBook = await BookData.loadEpubBook(absolutePath);
+      final epubBook = await EpubUtils.loadEpubBook(absolutePath);
       bookData = BookData.fromEpubBook(absolutePath, epubBook);
     }
 
@@ -96,7 +99,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       emit(state.copyWith(
         loadingStateCode: ReaderLoadingStateCode.rendering,
         bookName: bookData?.name,
-        bookmarkData: BookmarkData.get(bookPath),
+        bookmarkData: BookmarkRepository.get(bookPath),
         readerSettings: await ReaderSettingsData.load(),
       ));
     }
@@ -226,16 +229,22 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   Future<void> saveBookmark() async {
     _logger.i('Save the bookmark.');
-    final chapterTitle =
-        (await bookData?.findChapterByFileName(state.chapterFileName))?.title;
+    final chapterList = await bookData?.getChapterList();
+    final chapterTitle = BookUtils.getChapterTitleByFileName(
+      chapterList,
+      state.chapterFileName,
+      defaultValue: '-',
+    );
     final data = BookmarkData(
       bookPath: bookPath,
       bookName: state.bookName,
-      chapterTitle: chapterTitle ?? '-',
+      chapterTitle: chapterTitle,
       chapterFileName: state.chapterFileName,
       startCfi: state.startCfi,
       savedTime: DateTime.now(),
-    )..save();
+    );
+
+    BookmarkRepository.save(data);
 
     if (!isClosed) {
       emit(state.copyWith(bookmarkData: data));
@@ -244,7 +253,8 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   void scrollToBookmark() {
     _logger.i('Scroll to the bookmark.');
-    final bookmarkData = state.bookmarkData ?? BookmarkData.get(state.bookName);
+    final bookmarkData =
+        state.bookmarkData ?? BookmarkRepository.get(state.bookName);
     if (bookmarkData?.startCfi != null) {
       goto(bookmarkData!.startCfi!);
     }

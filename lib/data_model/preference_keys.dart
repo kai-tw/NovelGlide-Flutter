@@ -14,27 +14,25 @@ class PreferenceKeys {
 class BackupManagerPref {
   BackupManagerPref._();
 
-  final String isBackupCollections = 'backupManager_isBackupCollections';
-  final String isBackupBookmarks = 'backupManager_isBackupBookmarks';
-  final String isGoogleDriveEnabled = 'backupManager_isBackupToGoogleDrive';
+  final String isGoogleDriveEnabled = 'backupManager.isBackupToGoogleDrive';
 }
 
 /// Preference keys related to the reader settings.
 class ReaderPref {
   ReaderPref._();
 
-  final String fontSize = 'reader_fontSize';
-  final String lineHeight = 'reader_lineHeight';
-  final String autoSave = 'reader_autoSave';
-  final String gestureDetection = 'reader_gestureDetection';
+  final String fontSize = 'reader.fontSize';
+  final String lineHeight = 'reader.lineHeight';
+  final String autoSave = 'reader.autoSave';
+  final String gestureDetection = 'reader.gestureDetection';
 }
 
 /// Preference keys related to theme settings.
 class ThemePref {
   ThemePref._();
 
-  final String themeId = 'theme_themeId';
-  final String brightness = 'theme_brightness';
+  final String themeId = 'theme.themeId';
+  final String brightness = 'theme.brightness';
 }
 
 /// Preference keys related to sort order settings.
@@ -42,15 +40,8 @@ class SortOrderPref {
   final String sortOrder;
   final String isAscending;
 
-  factory SortOrderPref._(String prefix) {
-    return SortOrderPref._internal(
-      '${prefix}_sortOrder',
-      '${prefix}_isAscending',
-    );
-  }
+  factory SortOrderPref._(String prefix) =>
+      SortOrderPref._internal('$prefix.sortOrder', '$prefix.isAscending');
 
-  SortOrderPref._internal(
-    this.sortOrder,
-    this.isAscending,
-  );
+  SortOrderPref._internal(this.sortOrder, this.isAscending);
 }

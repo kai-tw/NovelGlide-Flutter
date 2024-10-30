@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../data/bookmark_data.dart';
+import '../../data_model/bookmark_data.dart';
 
 class BookmarkWidget extends StatelessWidget {
   final BookmarkData _bookmarkData;
@@ -10,7 +10,12 @@ class BookmarkWidget extends StatelessWidget {
   final Color? color;
   final Color? backgroundColor;
 
-  const BookmarkWidget(this._bookmarkData, {super.key, this.leading, this.color, this.backgroundColor, this.trailing});
+  const BookmarkWidget(this._bookmarkData,
+      {super.key,
+      this.leading,
+      this.color,
+      this.backgroundColor,
+      this.trailing});
 
   @override
   Widget build(BuildContext context) {

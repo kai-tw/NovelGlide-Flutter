@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../exceptions/file_exceptions.dart';
+import '../../common_components/common_error_dialog.dart';
 import '../bloc/book_add_bloc.dart';
 
 /// A button widget for submitting the selected book file.
@@ -34,47 +35,22 @@ class BookAddSubmitButton extends StatelessWidget {
 
   /// Handles the submit action.
   void _onSubmitPressed(BuildContext context, BookAddCubit cubit) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final navigator = Navigator.of(context);
-    final themeData = Theme.of(context);
-
-    cubit.submit().then((_) {
-      navigator.pop(true);
-    }).catchError((e) {
-      if (e is FileDuplicatedException && context.mounted) {
-        _showDuplicateFileDialog(
-          context,
-          appLocalizations,
-          themeData,
-          navigator,
-        );
-      }
-    });
+    try {
+      cubit.submit();
+      Navigator.of(context).pop(true);
+    } on FileDuplicatedException catch (_) {
+      _showDuplicateFileDialog(context);
+    }
   }
 
   /// Shows a dialog when a duplicate file is detected.
-  void _showDuplicateFileDialog(
-    BuildContext context,
-    AppLocalizations appLocalizations,
-    ThemeData themeData,
-    NavigatorState navigator,
-  ) {
+  void _showDuplicateFileDialog(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        icon: Icon(
-          Icons.error_rounded,
-          size: 48,
-          color: themeData.colorScheme.error,
-        ),
-        title: Text(appLocalizations.addBookFailed),
-        content: Text(appLocalizations.addBookDuplicated),
-        actions: [
-          TextButton(
-            onPressed: () => navigator.pop(),
-            child: Text(appLocalizations.generalClose),
-          ),
-        ],
+      builder: (context) => CommonErrorDialog(
+        title: appLocalizations.addBookFailed,
+        content: appLocalizations.addBookDuplicated,
       ),
     );
   }

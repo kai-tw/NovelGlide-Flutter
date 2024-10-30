@@ -9,7 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 
-import 'data/theme_data_record.dart';
+import 'data_model/theme_data_record.dart';
 import 'features/homepage/homepage.dart';
 import 'firebase_options.dart';
 import 'utils/file_path.dart';

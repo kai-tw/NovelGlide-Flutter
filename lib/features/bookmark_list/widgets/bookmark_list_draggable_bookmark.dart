@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../data/bookmark_data.dart';
+import '../../../data_model/bookmark_data.dart';
+import '../../../repository/bookmark_repository.dart';
+import '../../common_components/bookmark_widget.dart';
 import '../../common_components/draggable_feedback_widget.dart';
 import '../../common_components/draggable_placeholder_widget.dart';
 import '../bloc/bookmark_list_bloc.dart';
-import '../../common_components/bookmark_widget.dart';
 
 class BookmarkListDraggableBookmark extends StatelessWidget {
   final BookmarkData _data;
@@ -25,7 +26,7 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
         onDragCompleted: () async {
           final messenger = ScaffoldMessenger.of(context);
 
-          await _data.delete();
+          await BookmarkRepository.delete(_data);
           cubit.refresh();
 
           messenger.showSnackBar(

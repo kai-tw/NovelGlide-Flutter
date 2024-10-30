@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../data/reader_settings_data.dart';
+import '../../../data_model/reader_settings_data.dart';
 import '../../reader/bloc/reader_cubit.dart';
 import '../../reader/bloc/reader_state.dart';
 import 'reader_settings_slider.dart';

@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 
+import '../data_model/collection_data.dart';
 import '../utils/file_path.dart';
 import '../utils/json_utils.dart';
 import '../utils/random_utils.dart';
-import 'collection_data.dart';
 
 class CollectionRepository {
   static String jsonFileName = 'collection.json';
@@ -36,6 +36,14 @@ class CollectionRepository {
     jsonFile.writeAsStringSync(jsonEncode(data));
   }
 
+  static CollectionData get(String id) {
+    if (jsonData.containsKey(id)) {
+      return CollectionData.fromJson(jsonData[id]!);
+    } else {
+      return CollectionData(id, id, const <String>[]);
+    }
+  }
+
   /// Retrieves a list of all [CollectionData] instances.
   static List<CollectionData> getList() {
     List<CollectionData> list = [];
@@ -47,25 +55,10 @@ class CollectionRepository {
     return list;
   }
 
-  /// Reorders the collection data based on the given indices.
-  static void reorder(int oldIndex, int newIndex) {
-    newIndex = newIndex - (oldIndex < newIndex ? 1 : 0);
-
-    final oldKey = jsonData.keys.elementAt(oldIndex);
-    jsonData[oldKey] = jsonData.remove(oldKey);
-
-    int loopTime = jsonData.keys.length - newIndex - 1;
-    while (loopTime-- > 0) {
-      // Remove and add the element to move it to last.
-      final key = jsonData.keys.elementAt(newIndex);
-      jsonData[key] = jsonData.remove(key);
-    }
-    jsonFile.writeAsStringSync(jsonEncode(json));
-  }
-
   /// Saves the current [CollectionData] instance to the JSON file.
   static void save(CollectionData data) {
     final json = jsonData;
+    data.pathList = data.pathList.toSet().toList(); // Ensure uniqueness.
     json[data.id] = data.toJson();
     jsonFile.writeAsStringSync(jsonEncode(json));
   }

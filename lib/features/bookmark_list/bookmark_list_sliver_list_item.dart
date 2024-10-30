@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../data/bookmark_data.dart';
+import '../../data_model/bookmark_data.dart';
 import '../../utils/route_utils.dart';
 import '../common_components/bookmark_widget.dart';
 import '../reader/reader.dart';

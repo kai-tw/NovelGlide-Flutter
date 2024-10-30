@@ -17,13 +17,12 @@ class ChapterData extends Equatable {
   });
 
   /// Factory constructor to create a [ChapterData] instance from an [epub.EpubChapter].
-  factory ChapterData.fromEpubChapter(
-      epub.EpubChapter epubChapter, int ordinalNumber) {
+  factory ChapterData.fromEpubChapter(epub.EpubChapter epubChapter) {
     return ChapterData(
       title: epubChapter.Title ?? "",
       fileName: epubChapter.ContentFileName ?? "",
       subChapterList: (epubChapter.SubChapters ?? [])
-          .map((e) => ChapterData.fromEpubChapter(e, ordinalNumber))
+          .map((e) => ChapterData.fromEpubChapter(e))
           .toList(),
     );
   }

@@ -1,6 +1,7 @@
+import 'dart:convert';
+
 import '../utils/file_path.dart';
 import '../utils/file_utils.dart';
-import 'collection_repository.dart';
 
 /// Represents a collection of data with an ID, name, and a list of paths.
 class CollectionData {
@@ -9,15 +10,6 @@ class CollectionData {
   List<String> pathList;
 
   CollectionData(this.id, this.name, this.pathList);
-
-  /// Retrieves a [CollectionData] instance by its ID.
-  factory CollectionData.fromId(String id) {
-    if (CollectionRepository.jsonData.containsKey(id)) {
-      return CollectionData.fromJson(CollectionRepository.jsonData[id]!);
-    } else {
-      return CollectionData(id, id, const <String>[]);
-    }
-  }
 
   /// Creates a [CollectionData] instance from a JSON map.
   factory CollectionData.fromJson(Map<String, dynamic> json) {
@@ -40,4 +32,17 @@ class CollectionData {
                 (e) => FileUtils.getRelativePath(e, FilePath.libraryRoot))
             .toList(),
       };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CollectionData &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  String toString() => jsonEncode(toJson());
 }

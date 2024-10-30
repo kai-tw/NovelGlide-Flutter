@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/book_data.dart';
+import '../../data_model/book_data.dart';
 import 'bloc/reader_cubit.dart';
 import 'reader_scaffold.dart';
 

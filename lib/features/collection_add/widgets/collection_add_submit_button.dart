@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../data/collection_repository.dart';
+import '../../../repository/collection_repository.dart';
 import '../bloc/collection_add_bloc.dart';
 
 class CollectionAddSubmitButton extends StatelessWidget {

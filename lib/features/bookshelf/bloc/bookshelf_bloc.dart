@@ -1,15 +1,19 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../data/book_data.dart';
-import '../../../data/preference_keys.dart';
-import '../../../utils/file_path.dart';
+import '../../../data_model/book_data.dart';
+import '../../../data_model/preference_keys.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/sort_order_code.dart';
+import '../../../repository/book_repository.dart';
+import '../../../utils/book_utils.dart';
+import '../../../utils/epub_utils.dart';
+import '../../../utils/file_path.dart';
 import '../../../utils/mime_resolver.dart';
 
 class BookshelfCubit extends Cubit<BookshelfState> {
@@ -39,19 +43,16 @@ class BookshelfCubit extends Cubit<BookshelfState> {
         .where((e) => MimeResolver.lookupAll(e) == 'application/epub+zip');
     List<BookData> list = [];
 
+    // Only read the books that are not read yet.
     for (File epubFile in fileList) {
-      if (state.bookList.any((element) => element.filePath == epubFile.path)) {
-        // Old book! Reference it.
-        list.add(state.bookList
-            .firstWhere((element) => element.filePath == epubFile.path));
-      } else {
-        // New book! Read it.
-        list.add(BookData.fromEpubBook(
-            epubFile.path, await BookData.loadEpubBook(epubFile.path)));
-      }
+      final target =
+          state.bookList.firstWhereOrNull((e) => e.filePath == epubFile.path) ??
+              BookData.fromEpubBook(
+                  epubFile.path, await EpubUtils.loadEpubBook(epubFile.path));
+      list.add(target);
     }
 
-    list.sort(BookData.sortCompare(sortOrder, isAscending));
+    list.sort(BookUtils.sortCompare(sortOrder, isAscending));
 
     if (!isClosed) {
       emit(BookshelfState(
@@ -79,7 +80,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     prefs.setString(_sortOrderKey, order.toString());
     prefs.setBool(_isAscendingKey, ascending);
 
-    state.bookList.sort(BookData.sortCompare(order, ascending));
+    state.bookList.sort(BookUtils.sortCompare(order, ascending));
     emit(state.copyWith(
       isAscending: ascending,
       sortOrder: order,
@@ -99,9 +100,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   }
 
   void selectAllBooks() {
-    emit(state.copyWith(
-      selectedBooks: state.bookList.toSet(),
-    ));
+    emit(state.copyWith(selectedBooks: state.bookList.toSet()));
   }
 
   void deselectBook(BookData bookData) {
@@ -118,20 +117,21 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   Future<bool> deleteSelectedBooks() async {
     List<BookData> newList = List<BookData>.from(state.bookList);
     for (BookData bookData in state.selectedBooks) {
-      await bookData.delete();
+      await BookRepository.delete(bookData.filePath);
       newList.remove(bookData);
     }
     emit(state.copyWith(bookList: newList));
     return true;
   }
 
-  void deleteBook(BookData bookData) async {
-    await bookData.delete();
+  Future<bool> deleteBook(BookData bookData) async {
+    final isSuccess = await BookRepository.delete(bookData.filePath);
 
     // Update the book list
     List<BookData> newList = List<BookData>.from(state.bookList);
     newList.remove(bookData);
     emit(state.copyWith(bookList: newList));
+    return isSuccess;
   }
 }
 

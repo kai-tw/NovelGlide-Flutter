@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/book_data.dart';
+import '../../../data_model/book_data.dart';
 import '../../common_components/common_delete_drag_target.dart';
 import '../bloc/bookshelf_bloc.dart';
 import 'bookshelf_delete_button.dart';
@@ -34,7 +34,9 @@ class BookshelfOperationPanel extends StatelessWidget {
               position: Tween<Offset>(
                 begin: const Offset(0.0, 3.0),
                 end: const Offset(0.0, 0.0),
-              ).chain(CurveTween(curve: Curves.easeInOutCubicEmphasized)).animate(animation),
+              )
+                  .chain(CurveTween(curve: Curves.easeInOutCubicEmphasized))
+                  .animate(animation),
               child: child,
             );
           },

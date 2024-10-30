@@ -3,11 +3,11 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../data/collection_data.dart';
-import '../../../data/collection_repository.dart';
-import '../../../data/preference_keys.dart';
+import '../../../data_model/collection_data.dart';
+import '../../../data_model/preference_keys.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/sort_order_code.dart';
+import '../../../repository/collection_repository.dart';
 
 class CollectionListCubit extends Cubit<CollectionListState> {
   // Keys for storing sort order and ascending preference in shared preferences
@@ -36,16 +36,6 @@ class CollectionListCubit extends Cubit<CollectionListState> {
       isAscending: isAscending,
       sortOrder: sortOrder,
     ));
-  }
-
-  // Reorders the collection list and updates the state
-  void reorder(int oldIndex, int newIndex) {
-    final collectionList = List<CollectionData>.from(state.collectionList);
-    final item = collectionList.removeAt(oldIndex);
-    collectionList.insert(newIndex - (oldIndex < newIndex ? 1 : 0), item);
-
-    emit(state.copyWith(collectionList: collectionList));
-    CollectionRepository.reorder(oldIndex, newIndex);
   }
 
   // Sets the selecting mode and clears selected collections

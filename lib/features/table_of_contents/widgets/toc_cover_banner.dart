@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/book_data.dart';
+import '../../../data_model/book_data.dart';
 import '../../common_components/common_book_cover_image.dart';
 
 class TocCoverBanner extends StatelessWidget {

@@ -2,10 +2,11 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/book_data.dart';
-import '../../../data/bookmark_data.dart';
-import '../../../data/chapter_data.dart';
+import '../../../data_model/book_data.dart';
+import '../../../data_model/bookmark_data.dart';
+import '../../../data_model/chapter_data.dart';
 import '../../../enum/loading_state_code.dart';
+import '../../../repository/bookmark_repository.dart';
 
 class TocCubit extends Cubit<TocState> {
   final PageStorageBucket bucket = PageStorageBucket();
@@ -19,7 +20,7 @@ class TocCubit extends Cubit<TocState> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       emit(TocState(
         code: LoadingStateCode.loaded,
-        bookmarkData: BookmarkData.get(bookData.filePath),
+        bookmarkData: BookmarkRepository.get(bookData.filePath),
         chapterList: await bookData.getChapterList(),
       ));
     });
@@ -29,7 +30,7 @@ class TocCubit extends Cubit<TocState> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       emit(TocState(
         code: LoadingStateCode.loaded,
-        bookmarkData: BookmarkData.get(bookData.filePath),
+        bookmarkData: BookmarkRepository.get(bookData.filePath),
         chapterList: state.chapterList,
       ));
     });

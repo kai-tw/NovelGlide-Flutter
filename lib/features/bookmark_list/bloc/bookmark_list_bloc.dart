@@ -3,10 +3,11 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../data/bookmark_data.dart';
-import '../../../data/preference_keys.dart';
+import '../../../data_model/bookmark_data.dart';
+import '../../../data_model/preference_keys.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/sort_order_code.dart';
+import '../../../repository/bookmark_repository.dart';
 
 // The BookmarkListCubit class manages the state of the bookmark list.
 class BookmarkListCubit extends Cubit<BookmarkListState> {
@@ -19,7 +20,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
   // Refreshes the bookmark list by fetching it from the data source and sorting it.
   void refresh() async {
     // Fetch the bookmark list from the data source.
-    final List<BookmarkData> bookmarkList = BookmarkData.getList();
+    final bookmarkList = BookmarkRepository.getList();
 
     // Fetch the preference.
     final prefs = await SharedPreferences.getInstance();
@@ -136,7 +137,8 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
 
   // Deletes the selected bookmarks and refreshes the list.
   Future<bool> deleteSelectedBookmarks() async {
-    await Future.wait(state.selectedBookmarks.map((e) => e.delete()));
+    await Future.wait(
+        state.selectedBookmarks.map((e) => BookmarkRepository.delete(e)));
     refresh();
     return true;
   }

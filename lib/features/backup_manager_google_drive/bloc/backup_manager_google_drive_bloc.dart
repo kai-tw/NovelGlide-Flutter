@@ -6,10 +6,10 @@ import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../data/bookmark_data.dart';
-import '../../../data/collection_repository.dart';
-import '../../../data/preference_keys.dart';
+import '../../../data_model/preference_keys.dart';
 import '../../../enum/loading_state_code.dart';
+import '../../../repository/bookmark_repository.dart';
+import '../../../repository/collection_repository.dart';
 import '../../../utils/backup_utils.dart';
 import '../../../utils/google_drive_api.dart';
 import '../../../utils/random_utils.dart';
@@ -45,7 +45,7 @@ class BackupManagerGoogleDriveCubit
       final fileNameList = [
         BackupUtils.libraryArchiveName,
         CollectionRepository.jsonFileName,
-        BookmarkData.jsonFileName,
+        BookmarkRepository.jsonFileName,
       ];
       final fileIdList = await Future.wait(
         fileNameList.map((fileName) => _driveApi.getFileId(fileName)),
@@ -128,11 +128,11 @@ class BackupManagerGoogleDriveCubit
   }
 
   Future<bool> backupBookmarks() async {
-    final bookmarkFile = BookmarkData.jsonFile;
+    final bookmarkFile = BookmarkRepository.jsonFile;
     if (bookmarkFile.existsSync()) {
       await _driveApi.uploadFile('appDataFolder', bookmarkFile);
     }
-    final result = await _driveApi.fileExists(BookmarkData.jsonFileName);
+    final result = await _driveApi.fileExists(BookmarkRepository.jsonFileName);
     refresh();
     return result;
   }
@@ -172,11 +172,13 @@ class BackupManagerGoogleDriveCubit
   }
 
   Future<bool> deleteBookmarks() async {
-    final bookmarkFileId = await _driveApi.getFileId(BookmarkData.jsonFileName);
+    final bookmarkFileId =
+        await _driveApi.getFileId(BookmarkRepository.jsonFileName);
     if (bookmarkFileId != null) {
       await _driveApi.deleteFile(bookmarkFileId);
     }
-    final result = !(await _driveApi.fileExists(BookmarkData.jsonFileName));
+    final result =
+        !(await _driveApi.fileExists(BookmarkRepository.jsonFileName));
     refresh();
     return result;
   }
@@ -225,9 +227,9 @@ class BackupManagerGoogleDriveCubit
   }
 
   Future<bool> restoreBookmarks() async {
-    final id = await _driveApi.getFileId(BookmarkData.jsonFileName);
+    final id = await _driveApi.getFileId(BookmarkRepository.jsonFileName);
     if (id != null) {
-      await _driveApi.downloadFile(id, BookmarkData.jsonFile);
+      await _driveApi.downloadFile(id, BookmarkRepository.jsonFile);
     }
     refresh();
     return id != null;

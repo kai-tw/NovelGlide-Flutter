@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../data/bookmark_data.dart';
-import '../../../data/reader_settings_data.dart';
+import '../../../data_model/bookmark_data.dart';
+import '../../../data_model/reader_settings_data.dart';
 import '../../../enum/loading_state_code.dart';
 
 class ReaderState extends Equatable {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../data/book_data.dart';
+import '../../data_model/book_data.dart';
 import '../../enum/window_class.dart';
 import '../ads/advertisement.dart';
 import '../ads/advertisement_id.dart';

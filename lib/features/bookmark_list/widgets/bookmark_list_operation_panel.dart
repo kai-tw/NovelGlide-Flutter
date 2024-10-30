@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/bookmark_data.dart';
+import '../../../data_model/bookmark_data.dart';
 import '../../common_components/common_delete_drag_target.dart';
 import '../bloc/bookmark_list_bloc.dart';
 import 'bookmark_list_delete_button.dart';
@@ -32,7 +32,9 @@ class BookmarkListOperationPanel extends StatelessWidget {
               position: Tween<Offset>(
                 begin: const Offset(0.0, 3.0),
                 end: const Offset(0.0, 0.0),
-              ).chain(CurveTween(curve: Curves.easeInOutCubicEmphasized)).animate(animation),
+              )
+                  .chain(CurveTween(curve: Curves.easeInOutCubicEmphasized))
+                  .animate(animation),
               child: child,
             );
           },

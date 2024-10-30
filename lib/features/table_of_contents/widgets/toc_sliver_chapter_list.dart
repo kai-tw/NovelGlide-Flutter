@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../data/book_data.dart';
-import '../../../data/chapter_data.dart';
+import '../../../data_model/book_data.dart';
+import '../../../data_model/chapter_data.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../utils/route_utils.dart';
 import '../../common_components/common_list_empty.dart';

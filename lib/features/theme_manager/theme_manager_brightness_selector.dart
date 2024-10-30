@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../data/theme_data_record.dart';
+import '../../data_model/theme_data_record.dart';
 import 'bloc/theme_manager_bloc.dart';
 
 class ThemeManagerBrightnessSelector extends StatelessWidget {

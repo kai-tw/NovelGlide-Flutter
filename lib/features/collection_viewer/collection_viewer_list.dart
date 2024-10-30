@@ -14,7 +14,6 @@ class CollectionViewerList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<CollectionViewerCubit>(context);
-
     return BlocBuilder<CollectionViewerCubit, CollectionViewerState>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
@@ -27,9 +26,7 @@ class CollectionViewerList extends StatelessWidget {
 
           case LoadingStateCode.loaded:
             if (state.bookList.isEmpty) {
-              return const Center(
-                child: CommonListEmpty(),
-              );
+              return const CommonListEmpty();
             } else {
               return ReorderableListView.builder(
                 onReorder: cubit.reorder,

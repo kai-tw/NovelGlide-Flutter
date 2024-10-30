@@ -1,37 +1,36 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/book_data.dart';
-import '../../../data/collection_data.dart';
-import '../../../data/collection_repository.dart';
+import '../../../data_model/book_data.dart';
+import '../../../data_model/collection_data.dart';
 import '../../../enum/loading_state_code.dart';
+import '../../../repository/collection_repository.dart';
+import '../../../utils/epub_utils.dart';
 
 class CollectionViewerCubit extends Cubit<CollectionViewerState> {
   CollectionData collectionData;
 
-  CollectionViewerCubit(this.collectionData)
-      : super(const CollectionViewerState());
-
-  void init() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      refresh();
-    });
+  factory CollectionViewerCubit(CollectionData collectionData) {
+    final cubit = CollectionViewerCubit._internal(
+      collectionData,
+      const CollectionViewerState(),
+    );
+    cubit.refresh();
+    return cubit;
   }
 
+  CollectionViewerCubit._internal(this.collectionData, super.initialState);
+
   void refresh() async {
-    collectionData = CollectionData.fromId(collectionData.id);
+    collectionData = CollectionRepository.get(collectionData.id);
     List<BookData> bookList = [];
 
-    for (String path in collectionData.pathList) {
-      if (state.bookList.where((e) => e.filePath == path).isNotEmpty) {
-        // Already in the list, so copy it.
-        bookList.add(state.bookList.firstWhere((e) => e.filePath == path));
-      } else {
-        // Doesn't exist in the list, so load it.
-        bookList.add(
-            BookData.fromEpubBook(path, await BookData.loadEpubBook(path)));
-      }
+    for (String path in collectionData.pathList.toSet()) {
+      final target =
+          state.bookList.firstWhereOrNull((e) => e.filePath == path) ??
+              BookData.fromEpubBook(path, await EpubUtils.loadEpubBook(path));
+      bookList.add(target);
     }
 
     emit(CollectionViewerState(

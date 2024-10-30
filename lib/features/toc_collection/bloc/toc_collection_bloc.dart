@@ -3,10 +3,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/book_data.dart';
-import '../../../data/collection_data.dart';
-import '../../../data/collection_repository.dart';
+import '../../../data_model/book_data.dart';
+import '../../../data_model/collection_data.dart';
 import '../../../enum/loading_state_code.dart';
+import '../../../repository/collection_repository.dart';
 
 class TocCollectionCubit extends Cubit<TocCollectionState> {
   final BookData bookData;

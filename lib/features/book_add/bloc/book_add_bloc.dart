@@ -3,10 +3,9 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
 
 import '../../../exceptions/file_exceptions.dart';
-import '../../../utils/file_path.dart';
+import '../../../repository/book_repository.dart';
 
 /// Cubit to manage the state of adding a book.
 class BookAddCubit extends Cubit<BookAddState> {
@@ -25,17 +24,12 @@ class BookAddCubit extends Cubit<BookAddState> {
   }
 
   /// Submits the selected file to the library.
-  Future<void> submit() async {
-    final fileName = basename(state.file!.path);
-    final filePath = join(FilePath.libraryRoot, fileName);
-    final file = File(filePath);
-
-    if (file.existsSync()) {
-      throw FileDuplicatedException();
+  void submit() {
+    try {
+      BookRepository.add(state.file!.path);
+    } on FileDuplicatedException catch (_) {
+      rethrow;
     }
-
-    // Copy the file to the library path.
-    state.file?.copySync(file.path);
   }
 
   /// Removes the selected file from the state.

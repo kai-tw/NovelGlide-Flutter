@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/book_data.dart';
+import '../../../data_model/book_data.dart';
 
 class TocBookName extends StatelessWidget {
   final BookData bookData;

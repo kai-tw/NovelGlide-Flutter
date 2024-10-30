@@ -13,8 +13,9 @@ class HomepageFloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final BookshelfCubit bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
-    final CollectionListCubit collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
+    final appLocalizations = AppLocalizations.of(context)!;
+    final bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
+    final collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
 
     return BlocBuilder<HomepageCubit, HomepageState>(
       buildWhen: (previous, current) => previous.navItem != current.navItem,
@@ -36,7 +37,7 @@ class HomepageFloatingActionButton extends StatelessWidget {
               },
               child: Icon(
                 Icons.add,
-                semanticLabel: AppLocalizations.of(context)!.accessibilityAddBookButton,
+                semanticLabel: appLocalizations.accessibilityAddBookButton,
               ),
             );
             break;
@@ -54,7 +55,7 @@ class HomepageFloatingActionButton extends StatelessWidget {
               },
               child: Icon(
                 Icons.add,
-                semanticLabel: AppLocalizations.of(context)!.collectionAddBtn,
+                semanticLabel: appLocalizations.collectionAddBtn,
               ),
             );
             break;
@@ -69,7 +70,9 @@ class HomepageFloatingActionButton extends StatelessWidget {
               position: Tween<Offset>(
                 begin: const Offset(2.0, 0.0),
                 end: const Offset(0.0, 0.0),
-              ).chain(CurveTween(curve: Curves.easeInOutCubicEmphasized)).animate(animation),
+              )
+                  .chain(CurveTween(curve: Curves.easeInOutCubicEmphasized))
+                  .animate(animation),
               child: child,
             );
           },

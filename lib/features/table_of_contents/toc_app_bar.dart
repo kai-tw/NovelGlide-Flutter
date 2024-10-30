@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../data/book_data.dart';
+import '../../data_model/book_data.dart';
 import '../../utils/route_utils.dart';
 import '../common_components/common_back_button.dart';
 import '../toc_collection/toc_collection_scaffold.dart';

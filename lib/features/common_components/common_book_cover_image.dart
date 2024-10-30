@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image/image.dart' as img;
 
-import '../../data/book_data.dart';
+import '../../data_model/book_data.dart';
 
 class CommonBookCoverImage extends StatelessWidget {
   final BookData bookData;
@@ -36,7 +36,8 @@ class CommonBookCoverImage extends StatelessWidget {
                   snapshot.data!,
                   fit: BoxFit.cover,
                   gaplessPlayback: true,
-                  semanticLabel: AppLocalizations.of(context)!.accessibilityBookCover,
+                  semanticLabel:
+                      AppLocalizations.of(context)!.accessibilityBookCover,
                 );
               } else {
                 return const SizedBox.shrink();
@@ -48,7 +49,8 @@ class CommonBookCoverImage extends StatelessWidget {
     }
   }
 
-  Future<Uint8List?> _bitmapOptimize(img.Image image, BoxConstraints constraints) async {
+  Future<Uint8List?> _bitmapOptimize(
+      img.Image image, BoxConstraints constraints) async {
     final double widthRatio = constraints.maxWidth / image.width;
     final double heightRatio = constraints.maxHeight / image.height;
 

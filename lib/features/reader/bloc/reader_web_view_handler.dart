@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../data/reader_settings_data.dart';
+import '../../../data_model/reader_settings_data.dart';
 import '../../../utils/css_utils.dart';
 import 'reader_cubit.dart';
 import 'reader_web_server_handler.dart';
