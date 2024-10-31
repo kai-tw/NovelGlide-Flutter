@@ -9,7 +9,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../data_model/theme_data_record.dart';
 import '../../enum/window_class.dart';
 import '../ads/advertisement.dart';
-import '../ads/advertisement_id.dart';
 import '../book_add/book_add_dialog.dart';
 import '../bookmark_list/bloc/bookmark_list_bloc.dart';
 import '../bookmark_list/bookmark_list_app_bar.dart';

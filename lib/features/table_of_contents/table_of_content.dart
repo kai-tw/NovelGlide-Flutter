@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data_model/book_data.dart';
 import '../../enum/window_class.dart';
 import '../ads/advertisement.dart';
-import '../ads/advertisement_id.dart';
 import 'bloc/toc_bloc.dart';
 import 'toc_app_bar.dart';
 import 'toc_fab_section.dart';

@@ -1,30 +1,22 @@
-import 'dart:async';
+part of '../advertisement.dart';
 
-// import 'dart:io';
-
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:logger/logger.dart';
-// import 'package:in_app_purchase/in_app_purchase.dart';
-
-class AdvertisementCubit extends Cubit<AdvertisementState> {
+class _AdCubit extends Cubit<_State> {
   // late StreamSubscription<List<PurchaseDetails>> _subscription;
   late int _width;
   final String _adUnitId;
 
   final Logger _logger = Logger();
 
-  factory AdvertisementCubit(String adUnitId, int width) {
-    final cubit = AdvertisementCubit._internal(
+  factory _AdCubit(String adUnitId, int width) {
+    final cubit = _AdCubit._internal(
       adUnitId,
-      const AdvertisementState(),
+      const _State(),
     );
     cubit.init(width);
     return cubit;
   }
 
-  AdvertisementCubit._internal(this._adUnitId, super.initialState);
+  _AdCubit._internal(this._adUnitId, super.initialState);
 
   void init(int width) async {
     _width = width;
@@ -58,7 +50,7 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
             state.bannerAd?.dispose();
 
             // Update the state to display the new ad.
-            emit(AdvertisementState(bannerAd: ad as BannerAd));
+            emit(_State(bannerAd: ad as BannerAd));
           }
         },
         onAdFailedToLoad: (ad, err) {
@@ -93,13 +85,13 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
   }
 }
 
-class AdvertisementState extends Equatable {
+class _State extends Equatable {
   final BannerAd? bannerAd;
 
   @override
   List<Object?> get props => [bannerAd];
 
-  const AdvertisementState({
+  const _State({
     this.bannerAd,
   });
 }

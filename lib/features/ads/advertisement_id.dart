@@ -1,4 +1,4 @@
-import 'dart:io';
+part of 'advertisement.dart';
 
 class AdvertisementId {
   static String get adaptiveBanner {
