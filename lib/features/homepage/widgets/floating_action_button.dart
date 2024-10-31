@@ -1,15 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../homepage.dart';
 
-import '../book_add/book_add_dialog.dart';
-import '../bookshelf/bloc/bookshelf_bloc.dart';
-import '../collection_add/collection_add_dialog.dart';
-import '../collection_list/bloc/collection_list_bloc.dart';
-import 'bloc/homepage_bloc.dart';
-
-class HomepageFloatingActionButton extends StatelessWidget {
-  const HomepageFloatingActionButton({super.key});
+class _FloatingActionButton extends StatelessWidget {
+  const _FloatingActionButton();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +9,7 @@ class HomepageFloatingActionButton extends StatelessWidget {
     final bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
     final collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
 
-    return BlocBuilder<HomepageCubit, HomepageState>(
+    return BlocBuilder<HomepageCubit, _HomepageState>(
       buildWhen: (previous, current) => previous.navItem != current.navItem,
       builder: (context, state) {
         Widget? child;

@@ -1,33 +1,31 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+part of '../homepage.dart';
 
-class HomepageCubit extends Cubit<HomepageState> {
+class HomepageCubit extends Cubit<_HomepageState> {
   final PageStorageBucket bookshelfBucket = PageStorageBucket();
   final PageStorageBucket collectionBucket = PageStorageBucket();
   final PageStorageBucket bookmarkBucket = PageStorageBucket();
 
   HomepageCubit({
     HomepageNavigationItem initialItem = HomepageNavigationItem.bookshelf,
-  }) : super(HomepageState(navItem: initialItem));
+  }) : super(_HomepageState(navItem: initialItem));
 
   void setItem(HomepageNavigationItem item) {
     emit(state.copyWith(navItem: item));
   }
 }
 
-class HomepageState extends Equatable {
+class _HomepageState extends Equatable {
   final HomepageNavigationItem navItem;
 
   @override
   List<Object> get props => [navItem];
 
-  const HomepageState({required this.navItem});
+  const _HomepageState({required this.navItem});
 
-  HomepageState copyWith({
+  _HomepageState copyWith({
     HomepageNavigationItem? navItem,
   }) {
-    return HomepageState(
+    return _HomepageState(
       navItem: navItem ?? this.navItem,
     );
   }

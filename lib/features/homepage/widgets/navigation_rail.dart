@@ -1,14 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../homepage.dart';
 
-import '../../bookmark_list/bloc/bookmark_list_bloc.dart';
-import '../../bookshelf/bloc/bookshelf_bloc.dart';
-import '../../collection_list/bloc/collection_list_bloc.dart';
-import '../bloc/homepage_bloc.dart';
-
-class HomepageNavigationRail extends StatelessWidget {
-  const HomepageNavigationRail({super.key});
+class _NavigationRail extends StatelessWidget {
+  const _NavigationRail();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +18,7 @@ class HomepageNavigationRail extends StatelessWidget {
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: constraints.maxHeight),
             child: IntrinsicHeight(
-              child: BlocBuilder<HomepageCubit, HomepageState>(
+              child: BlocBuilder<HomepageCubit, _HomepageState>(
                 buildWhen: (previous, current) =>
                     previous.navItem != current.navItem,
                 builder: (context, state) {

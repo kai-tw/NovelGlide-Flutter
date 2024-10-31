@@ -1,28 +1,49 @@
+library homepage_widget;
+
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data_model/theme_data_record.dart';
 import '../../enum/window_class.dart';
+import '../ads/advertisement.dart';
+import '../ads/advertisement_id.dart';
+import '../book_add/book_add_dialog.dart';
 import '../bookmark_list/bloc/bookmark_list_bloc.dart';
 import '../bookmark_list/bookmark_list_app_bar.dart';
+import '../bookmark_list/bookmark_list_sliver_list.dart';
+import '../bookmark_list/widgets/bookmark_list_operation_panel.dart';
 import '../bookshelf/bloc/bookshelf_bloc.dart';
 import '../bookshelf/bookshelf_app_bar.dart';
+import '../bookshelf/bookshelf_sliver_list.dart';
+import '../bookshelf/widgets/bookshelf_operation_panel.dart';
+import '../collection_add/collection_add_dialog.dart';
 import '../collection_list/bloc/collection_list_bloc.dart';
+import '../collection_list/collection_list.dart';
 import '../collection_list/collection_list_app_bar.dart';
-import 'bloc/homepage_bloc.dart';
-import 'homepage_scaffold_body.dart';
-import 'homepage_tab_section.dart';
-import 'widgets/homepage_navigation_bar.dart';
-import 'widgets/homepage_navigation_rail.dart';
+import '../collection_list/collection_list_operation_panel.dart';
+import '../settings_page/settings_page.dart';
+
+part 'bloc/cubit.dart';
+part 'view/compact_view.dart';
+part 'view/medium_view.dart';
+part 'widgets/app_bar.dart';
+part 'widgets/floating_action_button.dart';
+part 'widgets/floating_action_widget.dart';
+part 'widgets/navigation_bar.dart';
+part 'widgets/navigation_rail.dart';
+part 'widgets/scaffold_body.dart';
 
 /// The homepage of the app
 class Homepage extends StatefulWidget {
   final HomepageNavigationItem initialItem;
 
-  const Homepage(
-      {super.key, this.initialItem = HomepageNavigationItem.bookshelf});
+  const Homepage({
+    super.key,
+    this.initialItem = HomepageNavigationItem.bookshelf,
+  });
 
   @override
   State<Homepage> createState() => _State();
@@ -95,113 +116,5 @@ class _Scaffold extends StatelessWidget {
       default:
         return const _MediumView();
     }
-  }
-}
-
-class _CompactView extends StatelessWidget {
-  const _CompactView();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      appBar: const _AppBar(),
-      body: const HomepageScaffoldBody(),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          height: 64.0,
-          margin: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(36.0),
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).colorScheme.shadow,
-                blurRadius: 16.0,
-                spreadRadius: -10.0,
-                offset: const Offset(0.0, 8.0),
-              ),
-            ],
-          ),
-          clipBehavior: Clip.hardEdge,
-          child: const HomepageNavigationBar(),
-        ),
-      ),
-      floatingActionButton: const HomepageTabSection(),
-    );
-  }
-}
-
-class _MediumView extends StatelessWidget {
-  const _MediumView();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      appBar: const _AppBar(),
-      body: SafeArea(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
-              decoration: BoxDecoration(
-                // color: Colors.black87,
-                borderRadius: BorderRadius.circular(36.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(context).colorScheme.shadow,
-                    blurRadius: 16.0,
-                    spreadRadius: -10.0,
-                    offset: const Offset(0.0, 8.0),
-                  ),
-                ],
-              ),
-              clipBehavior: Clip.hardEdge,
-              child: const HomepageNavigationRail(),
-            ),
-            const Expanded(
-              child: HomepageScaffoldBody(),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: const HomepageTabSection(),
-    );
-  }
-}
-
-class _AppBar extends StatelessWidget implements PreferredSizeWidget {
-  const _AppBar();
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
-
-  @override
-  Widget build(BuildContext context) {
-    final windowWidth = MediaQuery.of(context).size.width;
-    final windowClass = WindowClass.fromWidth(windowWidth);
-    return BlocBuilder<HomepageCubit, HomepageState>(
-      buildWhen: (previous, current) => previous.navItem != current.navItem,
-      builder: (context, state) {
-        switch (state.navItem) {
-          case HomepageNavigationItem.bookshelf:
-            return const BookshelfAppBar();
-
-          case HomepageNavigationItem.collection:
-            return const CollectionListAppBar();
-
-          case HomepageNavigationItem.bookmark:
-            return const BookmarkListAppBar();
-
-          case HomepageNavigationItem.settings:
-            return AppBar(
-              leading: const Icon(Icons.settings_outlined),
-              leadingWidth: windowClass == WindowClass.compact ? null : 100.0,
-              title: Text(AppLocalizations.of(context)!.settingsTitle),
-            );
-        }
-      },
-    );
   }
 }
