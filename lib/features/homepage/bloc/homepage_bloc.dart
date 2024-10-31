@@ -7,8 +7,9 @@ class HomepageCubit extends Cubit<HomepageState> {
   final PageStorageBucket collectionBucket = PageStorageBucket();
   final PageStorageBucket bookmarkBucket = PageStorageBucket();
 
-  HomepageCubit({HomepageNavigationItem initialItem = HomepageNavigationItem.bookshelf})
-      : super(HomepageState(navItem: initialItem));
+  HomepageCubit({
+    HomepageNavigationItem initialItem = HomepageNavigationItem.bookshelf,
+  }) : super(HomepageState(navItem: initialItem));
 
   void setItem(HomepageNavigationItem item) {
     emit(state.copyWith(navItem: item));

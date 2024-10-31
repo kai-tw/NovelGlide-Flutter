@@ -65,7 +65,8 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   }
 
   void unfocused() {
-    emit(state.copyWith(isDragging: false, isSelecting: false));
+    setSelecting(false);
+    setDragging(false);
   }
 
   Future<void> setListOrder({

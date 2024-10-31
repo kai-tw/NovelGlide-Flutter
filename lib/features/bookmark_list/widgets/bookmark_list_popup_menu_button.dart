@@ -26,7 +26,7 @@ class BookmarkListPopupMenuButton extends StatelessWidget {
         if (state.code == LoadingStateCode.loaded && !state.isSelecting) {
           entries.addAll([
             PopupMenuItem(
-              onTap: () => cubit.isSelecting = true,
+              onTap: () => cubit.setSelecting(true),
               child: ListTile(
                 contentPadding: EdgeInsets.zero,
                 dense: true,

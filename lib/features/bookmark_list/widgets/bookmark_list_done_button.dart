@@ -19,7 +19,7 @@ class BookmarkListDoneButton extends StatelessWidget {
 
         if (state.isSelecting) {
           child = TextButton(
-            onPressed: () => cubit.isSelecting = false,
+            onPressed: () => cubit.setSelecting(false),
             child: Text(appLocalizations.generalDone),
           );
         }

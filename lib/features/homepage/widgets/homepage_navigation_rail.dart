@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../bookmark_list/bloc/bookmark_list_bloc.dart';
 import '../../bookshelf/bloc/bookshelf_bloc.dart';
+import '../../collection_list/bloc/collection_list_bloc.dart';
 import '../bloc/homepage_bloc.dart';
 
 class HomepageNavigationRail extends StatelessWidget {
@@ -15,6 +16,7 @@ class HomepageNavigationRail extends StatelessWidget {
     final cubit = BlocProvider.of<HomepageCubit>(context);
     final bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
     final bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
+    final collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
     final colorScheme = Theme.of(context).colorScheme;
 
     return LayoutBuilder(
@@ -70,6 +72,9 @@ class HomepageNavigationRail extends StatelessWidget {
                           break;
                         case HomepageNavigationItem.bookmark:
                           bookmarkListCubit.unfocused();
+                          break;
+                        case HomepageNavigationItem.collection:
+                          collectionListCubit.unfocused();
                           break;
                         default:
                       }

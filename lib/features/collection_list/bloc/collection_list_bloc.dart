@@ -38,6 +38,10 @@ class CollectionListCubit extends Cubit<CollectionListState> {
     ));
   }
 
+  void unfocused() {
+    setSelecting(false);
+  }
+
   // Sets the selecting mode and clears selected collections
   void setSelecting(bool isSelecting) {
     emit(state.copyWith(

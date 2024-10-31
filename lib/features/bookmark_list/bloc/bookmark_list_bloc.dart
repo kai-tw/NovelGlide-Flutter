@@ -43,7 +43,8 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
 
   // When move to the other page, reset the dragging and selecting states.
   void unfocused() {
-    emit(state.copyWith(isDragging: false, isSelecting: false));
+    setSelecting(false);
+    setDragging(false);
   }
 
   // Set the list order
@@ -92,14 +93,13 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
     }
   }
 
-  // Updates the dragging state and emits the new state.
-  set isDragging(bool value) => emit(state.copyWith(isDragging: value));
+  void setSelecting(bool isSelecting) {
+    emit(state.copyWith(isSelecting: isSelecting, selectedBookmarks: const {}));
+  }
 
-  // Updates the selecting state and resets selected bookmarks.
-  set isSelecting(bool value) => emit(state.copyWith(
-        isSelecting: value,
-        selectedBookmarks: const {},
-      ));
+  void setDragging(bool isDragging) {
+    emit(state.copyWith(isDragging: isDragging));
+  }
 
   // Selects a specific bookmark and updates the state.
   void selectBookmark(BookmarkData data) {

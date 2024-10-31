@@ -21,8 +21,8 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
 
     return LayoutBuilder(builder: (context, constraints) {
       return LongPressDraggable(
-        onDragStarted: () => cubit.isDragging = true,
-        onDragEnd: (_) => cubit.isDragging = false,
+        onDragStarted: () => cubit.setDragging(true),
+        onDragEnd: (_) => cubit.setDragging(false),
         onDragCompleted: () async {
           final messenger = ScaffoldMessenger.of(context);
 
