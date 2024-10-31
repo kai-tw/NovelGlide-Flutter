@@ -1,12 +1,9 @@
-import 'package:flutter/material.dart';
+part of '../bookshelf.dart';
 
-import '../../../data_model/book_data.dart';
-import '../../common_components/common_book_cover_image.dart';
-
-class BookshelfBookWidget extends StatelessWidget {
+class _BookWidget extends StatelessWidget {
   final BookData bookData;
 
-  const BookshelfBookWidget({super.key, required this.bookData});
+  const _BookWidget({required this.bookData});
 
   @override
   Widget build(BuildContext context) {

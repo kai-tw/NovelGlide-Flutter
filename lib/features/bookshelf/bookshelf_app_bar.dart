@@ -1,10 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../../enum/window_class.dart';
-import 'widgets/bookshelf_done_button.dart';
-import 'widgets/bookshelf_popup_menu_button.dart';
-import 'widgets/bookshelf_select_button.dart';
+part of 'bookshelf.dart';
 
 class BookshelfAppBar extends StatelessWidget implements PreferredSizeWidget {
   const BookshelfAppBar({super.key});
@@ -23,9 +17,9 @@ class BookshelfAppBar extends StatelessWidget implements PreferredSizeWidget {
       leadingWidth: windowClass == WindowClass.compact ? null : 100.0,
       title: Text(appLocalizations.bookshelfTitle),
       actions: const [
-        BookshelfSelectButton(),
-        BookshelfDoneButton(),
-        BookshelfPopupMenuButton(),
+        _SelectButton(),
+        _DoneButton(),
+        _PopupMenuButton(),
       ],
     );
   }

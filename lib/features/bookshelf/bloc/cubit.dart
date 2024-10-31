@@ -1,27 +1,11 @@
-import 'dart:io';
+part of '../bookshelf.dart';
 
-import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../data_model/book_data.dart';
-import '../../../data_model/preference_keys.dart';
-import '../../../enum/loading_state_code.dart';
-import '../../../enum/sort_order_code.dart';
-import '../../../repository/book_repository.dart';
-import '../../../utils/book_utils.dart';
-import '../../../utils/epub_utils.dart';
-import '../../../utils/file_path.dart';
-import '../../../utils/mime_resolver.dart';
-
-class BookshelfCubit extends Cubit<BookshelfState> {
+class BookshelfCubit extends Cubit<_BookshelfState> {
   final String _sortOrderKey = PreferenceKeys.bookshelf.sortOrder;
   final String _isAscendingKey = PreferenceKeys.bookshelf.isAscending;
 
   factory BookshelfCubit() {
-    final cubit = BookshelfCubit._internal(const BookshelfState());
+    final cubit = BookshelfCubit._internal(const _BookshelfState());
     WidgetsBinding.instance.addPostFrameCallback((_) => cubit.refresh());
     return cubit;
   }
@@ -29,7 +13,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   BookshelfCubit._internal(super.initialState);
 
   Future<void> refresh() async {
-    emit(const BookshelfState(code: LoadingStateCode.loading));
+    emit(const _BookshelfState(code: LoadingStateCode.loading));
 
     // Load the sorting preferences.
     final prefs = await SharedPreferences.getInstance();
@@ -55,7 +39,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
     list.sort(BookUtils.sortCompare(sortOrder, isAscending));
 
     if (!isClosed) {
-      emit(BookshelfState(
+      emit(_BookshelfState(
         code: LoadingStateCode.loaded,
         sortOrder: sortOrder,
         bookList: list,
@@ -136,7 +120,7 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   }
 }
 
-class BookshelfState extends Equatable {
+class _BookshelfState extends Equatable {
   final LoadingStateCode code;
   final SortOrderCode sortOrder;
   final List<BookData> bookList;
@@ -156,7 +140,7 @@ class BookshelfState extends Equatable {
         isAscending
       ];
 
-  const BookshelfState({
+  const _BookshelfState({
     this.code = LoadingStateCode.initial,
     this.sortOrder = SortOrderCode.name,
     this.bookList = const [],
@@ -166,7 +150,7 @@ class BookshelfState extends Equatable {
     this.isAscending = true,
   });
 
-  BookshelfState copyWith({
+  _BookshelfState copyWith({
     LoadingStateCode? code,
     SortOrderCode? sortOrder,
     List<BookData>? bookList,
@@ -175,7 +159,7 @@ class BookshelfState extends Equatable {
     bool? isSelecting,
     bool? isAscending,
   }) {
-    return BookshelfState(
+    return _BookshelfState(
       code: code ?? this.code,
       sortOrder: sortOrder ?? this.sortOrder,
       bookList: bookList ?? this.bookList,

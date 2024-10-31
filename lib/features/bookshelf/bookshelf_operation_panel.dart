@@ -1,17 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../data_model/book_data.dart';
-import '../../common_components/common_delete_drag_target.dart';
-import '../bloc/bookshelf_bloc.dart';
-import 'bookshelf_delete_button.dart';
+part of 'bookshelf.dart';
 
 class BookshelfOperationPanel extends StatelessWidget {
   const BookshelfOperationPanel({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BookshelfCubit, BookshelfState>(
+    return BlocBuilder<BookshelfCubit, _BookshelfState>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
           previous.selectedBooks != current.selectedBooks ||
@@ -20,7 +14,7 @@ class BookshelfOperationPanel extends StatelessWidget {
         Widget child = const SizedBox.shrink();
 
         if (state.isSelecting && state.selectedBooks.isNotEmpty) {
-          child = const BookshelfDeleteButton();
+          child = const _DeleteButton();
         } else if (state.isDragging) {
           child = CommonDeleteDragTarget(
             onWillAcceptWithDetails: (details) => details.data is BookData,

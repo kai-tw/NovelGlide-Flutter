@@ -1,18 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../bookshelf.dart';
 
-import '../bloc/bookshelf_bloc.dart';
-
-class BookshelfDoneButton extends StatelessWidget {
-  const BookshelfDoneButton({super.key});
+class _DoneButton extends StatelessWidget {
+  const _DoneButton();
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
 
-    return BlocBuilder<BookshelfCubit, BookshelfState>(
+    return BlocBuilder<BookshelfCubit, _BookshelfState>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting,
       builder: (context, state) {

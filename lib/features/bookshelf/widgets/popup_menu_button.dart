@@ -1,19 +1,12 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../bookshelf.dart';
 
-import '../../../enum/loading_state_code.dart';
-import '../../../enum/sort_order_code.dart';
-import '../bloc/bookshelf_bloc.dart';
-
-class BookshelfPopupMenuButton extends StatelessWidget {
-  const BookshelfPopupMenuButton({super.key});
+class _PopupMenuButton extends StatelessWidget {
+  const _PopupMenuButton();
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
+    final appLocalizations = AppLocalizations.of(context)!;
+    final cubit = BlocProvider.of<BookshelfCubit>(context);
     return PopupMenuButton(
       icon: const Icon(Icons.more_vert_rounded),
       clipBehavior: Clip.hardEdge,
