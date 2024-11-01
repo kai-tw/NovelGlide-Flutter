@@ -16,8 +16,7 @@ class _NameField extends StatelessWidget {
       ],
       validator: (value) {
         if (value?.isEmpty ?? true) {
-          // TODO: Translate.
-          return 'It cannot be empty';
+          return appLocalizations.collectionAddEmpty;
         } else {
           return null;
         }
