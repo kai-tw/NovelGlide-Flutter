@@ -1,18 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../bookmark_list.dart';
 
-import '../../../data_model/bookmark_data.dart';
-import '../../../repository/bookmark_repository.dart';
-import '../../common_components/bookmark_widget.dart';
-import '../../common_components/draggable_feedback_widget.dart';
-import '../../common_components/draggable_placeholder_widget.dart';
-import '../bloc/bookmark_list_bloc.dart';
-
-class BookmarkListDraggableBookmark extends StatelessWidget {
+class _DraggableBookmark extends StatelessWidget {
   final BookmarkData _data;
 
-  const BookmarkListDraggableBookmark(this._data, {super.key});
+  const _DraggableBookmark(this._data);
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +15,10 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
         onDragStarted: () => cubit.setDragging(true),
         onDragEnd: (_) => cubit.setDragging(false),
         onDragCompleted: () async {
-          final messenger = ScaffoldMessenger.of(context);
-
-          await BookmarkRepository.delete(_data);
+          BookmarkRepository.delete(_data);
           cubit.refresh();
 
-          messenger.showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(appLocalizations.deleteBookmarkSuccessfully),
             ),

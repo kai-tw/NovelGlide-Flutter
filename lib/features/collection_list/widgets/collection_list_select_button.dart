@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../common_components/common_list_select_text_button.dart';
+import '../../common_components/common_select_mode_text_button.dart';
 import '../bloc/collection_list_bloc.dart';
 
 class CollectionListSelectButton extends StatelessWidget {
@@ -19,7 +19,7 @@ class CollectionListSelectButton extends StatelessWidget {
         Widget? child;
 
         if (state.isSelecting) {
-          child = CommonListSelectTextButton(
+          child = CommonSelectModeTextButton(
             isEmpty: state.collectionList.isEmpty,
             isSelectAll:
                 state.selectedCollections.length == state.collectionList.length,

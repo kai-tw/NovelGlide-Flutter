@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class CommonListSelectTextButton extends StatelessWidget {
+class CommonSelectModeTextButton extends StatelessWidget {
   final bool isEmpty;
   final bool isSelectAll;
   final void Function() selectAll;
   final void Function() deselectAll;
 
-  const CommonListSelectTextButton({
+  const CommonSelectModeTextButton({
     super.key,
     required this.isEmpty,
     required this.isSelectAll,

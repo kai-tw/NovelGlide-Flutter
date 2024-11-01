@@ -1,16 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../bookmark_list.dart';
 
-import '../../data_model/bookmark_data.dart';
-import '../../utils/route_utils.dart';
-import '../common_components/bookmark_widget.dart';
-import '../reader/reader.dart';
-import 'bloc/bookmark_list_bloc.dart';
-import 'widgets/bookmark_list_draggable_bookmark.dart';
-
-class BookmarkListSliverListItem extends StatelessWidget {
-  const BookmarkListSliverListItem(this._bookmarkData, {super.key});
+class _ListItem extends StatelessWidget {
+  const _ListItem(this._bookmarkData);
 
   final BookmarkData _bookmarkData;
 
@@ -37,11 +28,11 @@ class BookmarkListSliverListItem extends StatelessWidget {
               .then((_) => cubit.refresh());
         }
       },
-      child: BlocBuilder<BookmarkListCubit, BookmarkListState>(
+      child: BlocBuilder<BookmarkListCubit, _State>(
         buildWhen: (previous, current) =>
             previous.isSelecting != current.isSelecting ||
             previous.selectedBookmarks != current.selectedBookmarks,
-        builder: (BuildContext context, BookmarkListState state) {
+        builder: (BuildContext context, _State state) {
           if (state.isSelecting) {
             final bool isSelected =
                 state.selectedBookmarks.contains(_bookmarkData);
@@ -78,7 +69,7 @@ class BookmarkListSliverListItem extends StatelessWidget {
               onTapHint: appLocalizations.bookmarkListAccessibilityOnTap,
               onLongPressHint:
                   appLocalizations.bookmarkListAccessibilityOnLongPress,
-              child: BookmarkListDraggableBookmark(_bookmarkData),
+              child: _DraggableBookmark(_bookmarkData),
             );
           }
         },

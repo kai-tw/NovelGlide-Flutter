@@ -21,7 +21,7 @@ class BookRepository {
   }
 
   /// Delete the book and associated bookmarks and collections.
-  static Future<bool> delete(String filePath) async {
+  static bool delete(String filePath) {
     final file = File(filePath);
     if (file.existsSync()) {
       file.deleteSync();
@@ -30,7 +30,9 @@ class BookRepository {
     // Delete associated bookmarks.
     final bookmarkList = BookmarkRepository.getList()
         .where((element) => element.bookPath == filePath);
-    await Future.wait(bookmarkList.map((e) => BookmarkRepository.delete(e)));
+    for (final data in bookmarkList) {
+      BookmarkRepository.delete(data);
+    }
 
     // Delete associated collections.
     final collectionList = CollectionRepository.getList()

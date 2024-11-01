@@ -1,17 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../data_model/bookmark_data.dart';
-import '../../common_components/common_delete_drag_target.dart';
-import '../bloc/bookmark_list_bloc.dart';
-import 'bookmark_list_delete_button.dart';
+part of 'bookmark_list.dart';
 
 class BookmarkListOperationPanel extends StatelessWidget {
   const BookmarkListOperationPanel({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BookmarkListCubit, BookmarkListState>(
+    return BlocBuilder<BookmarkListCubit, _State>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
           previous.isDragging != current.isDragging ||
@@ -19,7 +13,7 @@ class BookmarkListOperationPanel extends StatelessWidget {
       builder: (context, state) {
         Widget child = const SizedBox.shrink();
         if (state.isSelecting && state.selectedBookmarks.isNotEmpty) {
-          child = const BookmarkListDeleteButton();
+          child = const _DeleteButton();
         } else if (state.isDragging) {
           child = CommonDeleteDragTarget(
             onWillAcceptWithDetails: (details) => details.data is BookmarkData,

@@ -99,18 +99,18 @@ class BookshelfCubit extends Cubit<_BookshelfState> {
     emit(state.copyWith(selectedBooks: const {}));
   }
 
-  Future<bool> deleteSelectedBooks() async {
+  bool deleteSelectedBooks() {
     List<BookData> newList = List<BookData>.from(state.bookList);
     for (BookData bookData in state.selectedBooks) {
-      await BookRepository.delete(bookData.filePath);
+      BookRepository.delete(bookData.filePath);
       newList.remove(bookData);
     }
     emit(state.copyWith(bookList: newList));
     return true;
   }
 
-  Future<bool> deleteBook(BookData bookData) async {
-    final isSuccess = await BookRepository.delete(bookData.filePath);
+  bool deleteBook(BookData bookData) {
+    final isSuccess = BookRepository.delete(bookData.filePath);
 
     // Update the book list
     List<BookData> newList = List<BookData>.from(state.bookList);

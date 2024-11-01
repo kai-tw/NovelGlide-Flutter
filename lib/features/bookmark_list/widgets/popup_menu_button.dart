@@ -1,14 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../bookmark_list.dart';
 
-import '../../../enum/loading_state_code.dart';
-import '../../../enum/sort_order_code.dart';
-import '../bloc/bookmark_list_bloc.dart';
-
-class BookmarkListPopupMenuButton extends StatelessWidget {
-  const BookmarkListPopupMenuButton({super.key});
+class _PopupMenuButton extends StatelessWidget {
+  const _PopupMenuButton();
 
   @override
   Widget build(BuildContext context) {
@@ -55,18 +48,10 @@ class BookmarkListPopupMenuButton extends StatelessWidget {
                 isAscending: isSelected ? !state.isAscending : null,
               );
             },
-            child: ListTile(
-              contentPadding: EdgeInsets.zero,
-              dense: true,
-              leading: isSelected
-                  ? const Icon(Icons.check_rounded)
-                  : const SizedBox(width: 24.0),
-              title: Text(entry.value),
-              trailing: isSelected
-                  ? Icon(isAscending
-                      ? CupertinoIcons.chevron_up
-                      : CupertinoIcons.chevron_down)
-                  : const SizedBox(width: 24.0),
+            child: CommonPopupMenuSortListTile(
+              isSelected: isSelected,
+              isAscending: isAscending,
+              title: entry.value,
             ),
           ));
         }

@@ -15,7 +15,7 @@ class _SelectButton extends StatelessWidget {
         Widget? child;
 
         if (state.isSelecting) {
-          child = CommonListSelectTextButton(
+          child = CommonSelectModeTextButton(
             isEmpty: state.bookList.isEmpty,
             isSelectAll: state.selectedBooks.length == state.bookList.length,
             selectAll: cubit.selectAllBooks,

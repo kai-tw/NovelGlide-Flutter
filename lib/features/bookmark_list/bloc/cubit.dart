@@ -1,21 +1,12 @@
-import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../data_model/bookmark_data.dart';
-import '../../../data_model/preference_keys.dart';
-import '../../../enum/loading_state_code.dart';
-import '../../../enum/sort_order_code.dart';
-import '../../../repository/bookmark_repository.dart';
+part of '../bookmark_list.dart';
 
 // The BookmarkListCubit class manages the state of the bookmark list.
-class BookmarkListCubit extends Cubit<BookmarkListState> {
+class BookmarkListCubit extends Cubit<_State> {
   final String _sortOrderPrefKey = PreferenceKeys.bookmark.sortOrder;
   final String _ascendingPrefKey = PreferenceKeys.bookmark.isAscending;
 
   // Constructor initializes the state with default values.
-  BookmarkListCubit() : super(const BookmarkListState());
+  BookmarkListCubit() : super(const _State());
 
   // Refreshes the bookmark list by fetching it from the data source and sorting it.
   void refresh() async {
@@ -32,7 +23,7 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
     _sortList(bookmarkList, sortOrder, isAscending);
 
     if (!isClosed) {
-      emit(BookmarkListState(
+      emit(_State(
         code: LoadingStateCode.loaded,
         sortOrder: sortOrder,
         bookmarkList: bookmarkList,
@@ -136,16 +127,17 @@ class BookmarkListCubit extends Cubit<BookmarkListState> {
   }
 
   // Deletes the selected bookmarks and refreshes the list.
-  Future<bool> deleteSelectedBookmarks() async {
-    await Future.wait(
-        state.selectedBookmarks.map((e) => BookmarkRepository.delete(e)));
+  bool deleteSelectedBookmarks() {
+    for (final data in state.selectedBookmarks) {
+      BookmarkRepository.delete(data);
+    }
     refresh();
     return true;
   }
 }
 
 // The BookmarkListState class represents the state of the bookmark list.
-class BookmarkListState extends Equatable {
+class _State extends Equatable {
   final LoadingStateCode code;
   final SortOrderCode sortOrder;
   final List<BookmarkData> bookmarkList;
@@ -166,7 +158,7 @@ class BookmarkListState extends Equatable {
       ];
 
   // Constructor initializes the state with default values.
-  const BookmarkListState({
+  const _State({
     this.code = LoadingStateCode.initial,
     this.sortOrder = SortOrderCode.savedTime,
     this.bookmarkList = const [],
@@ -177,7 +169,7 @@ class BookmarkListState extends Equatable {
   });
 
   // Creates a copy of the current state with updated properties.
-  BookmarkListState copyWith({
+  _State copyWith({
     LoadingStateCode? code,
     SortOrderCode? sortOrder,
     List<BookmarkData>? bookmarkList,
@@ -186,7 +178,7 @@ class BookmarkListState extends Equatable {
     bool? isSelecting,
     bool? isAscending,
   }) {
-    return BookmarkListState(
+    return _State(
       code: code ?? this.code,
       sortOrder: sortOrder ?? this.sortOrder,
       bookmarkList: bookmarkList ?? this.bookmarkList,

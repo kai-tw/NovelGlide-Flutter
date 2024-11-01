@@ -15,10 +15,10 @@ class _DraggableBook extends StatelessWidget {
         return LongPressDraggable(
           onDragStarted: () => cubit.setDragging(true),
           onDragEnd: (_) => cubit.setDragging(false),
-          onDragCompleted: () async {
+          onDragCompleted: () {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(await cubit.deleteBook(bookData)
+                content: Text(cubit.deleteBook(bookData)
                     ? appLocalizations.deleteBookSuccessfully
                     : appLocalizations.deleteBookFailed),
               ),

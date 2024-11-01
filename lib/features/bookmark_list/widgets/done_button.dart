@@ -1,17 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../bookmark_list.dart';
 
-import '../bloc/bookmark_list_bloc.dart';
-
-class BookmarkListDoneButton extends StatelessWidget {
-  const BookmarkListDoneButton({super.key});
+class _DoneButton extends StatelessWidget {
+  const _DoneButton();
 
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
     final cubit = BlocProvider.of<BookmarkListCubit>(context);
-    return BlocBuilder<BookmarkListCubit, BookmarkListState>(
+    return BlocBuilder<BookmarkListCubit, _State>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting,
       builder: (context, state) {

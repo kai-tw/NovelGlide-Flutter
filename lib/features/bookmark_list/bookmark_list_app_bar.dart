@@ -1,10 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../../enum/window_class.dart';
-import 'widgets/bookmark_list_done_button.dart';
-import 'widgets/bookmark_list_popup_menu_button.dart';
-import 'widgets/bookmark_list_select_button.dart';
+part of 'bookmark_list.dart';
 
 class BookmarkListAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -24,9 +18,9 @@ class BookmarkListAppBar extends StatelessWidget
       leadingWidth: windowClass == WindowClass.compact ? null : 100.0,
       title: Text(appLocalizations.bookmarkListTitle),
       actions: const [
-        BookmarkListSelectButton(),
-        BookmarkListDoneButton(),
-        BookmarkListPopupMenuButton(),
+        _SelectButton(),
+        _DoneButton(),
+        _PopupMenuButton(),
       ],
     );
   }

@@ -69,7 +69,7 @@ class BookmarkRepository {
   }
 
   /// Deletes the current bookmark from the JSON file.
-  static Future<void> delete(BookmarkData data) async {
+  static void delete(BookmarkData data) {
     final path = FileUtils.getRelativePath(data.bookPath, FilePath.libraryRoot);
     jsonData.remove(path);
     jsonFile.writeAsStringSync(jsonEncode(jsonData));

@@ -1,16 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+part of '../bookmark_list.dart';
 
-import '../../common_components/common_list_select_text_button.dart';
-import '../bloc/bookmark_list_bloc.dart';
-
-class BookmarkListSelectButton extends StatelessWidget {
-  const BookmarkListSelectButton({super.key});
+class _SelectButton extends StatelessWidget {
+  const _SelectButton();
 
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<BookmarkListCubit>(context);
-    return BlocBuilder<BookmarkListCubit, BookmarkListState>(
+    return BlocBuilder<BookmarkListCubit, _State>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
           previous.bookmarkList != current.bookmarkList ||
@@ -19,7 +15,7 @@ class BookmarkListSelectButton extends StatelessWidget {
         Widget? child;
 
         if (state.isSelecting) {
-          child = CommonListSelectTextButton(
+          child = CommonSelectModeTextButton(
             isEmpty: state.bookmarkList.isEmpty,
             isSelectAll:
                 state.selectedBookmarks.length == state.bookmarkList.length,

@@ -1,12 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../bookmark_list.dart';
 
-import '../../common_components/common_delete_dialog.dart';
-import '../bloc/bookmark_list_bloc.dart';
-
-class BookmarkListDeleteButton extends StatelessWidget {
-  const BookmarkListDeleteButton({super.key});
+class _DeleteButton extends StatelessWidget {
+  const _DeleteButton();
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +25,13 @@ class BookmarkListDeleteButton extends StatelessWidget {
         minimumSize: const Size(double.infinity, 56.0),
       ),
       icon: const Icon(Icons.delete_rounded),
-      label: BlocBuilder<BookmarkListCubit, BookmarkListState>(
-        buildWhen: (previous, current) => previous.selectedBookmarks != current.selectedBookmarks,
+      label: BlocBuilder<BookmarkListCubit, _State>(
+        buildWhen: (previous, current) =>
+            previous.selectedBookmarks != current.selectedBookmarks,
         builder: (context, state) {
-          return Text(appLocalizations.bookmarkListDeleteNumberOfSelectedBookmarks(state.selectedBookmarks.length));
+          return Text(
+              appLocalizations.bookmarkListDeleteNumberOfSelectedBookmarks(
+                  state.selectedBookmarks.length));
         },
       ),
     );
