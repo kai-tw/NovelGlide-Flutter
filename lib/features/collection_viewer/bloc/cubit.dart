@@ -1,28 +1,15 @@
-import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
+part of '../collection_viewer.dart';
 
-import '../../../data_model/book_data.dart';
-import '../../../data_model/collection_data.dart';
-import '../../../enum/loading_state_code.dart';
-import '../../../repository/collection_repository.dart';
-import '../../../utils/epub_utils.dart';
-import '../../../utils/file_path.dart';
-
-class CollectionViewerCubit extends Cubit<CollectionViewerState> {
+class _Cubit extends Cubit<_State> {
   CollectionData collectionData;
 
-  factory CollectionViewerCubit(CollectionData collectionData) {
-    final cubit = CollectionViewerCubit._internal(
-      collectionData,
-      const CollectionViewerState(),
-    );
+  factory _Cubit(CollectionData collectionData) {
+    final cubit = _Cubit._internal(collectionData, const _State());
     cubit.refresh();
     return cubit;
   }
 
-  CollectionViewerCubit._internal(this.collectionData, super.initialState);
+  _Cubit._internal(this.collectionData, super.initialState);
 
   void refresh() async {
     collectionData = CollectionRepository.get(collectionData.id);
@@ -37,7 +24,7 @@ class CollectionViewerCubit extends Cubit<CollectionViewerState> {
       bookList.add(target);
     }
 
-    emit(CollectionViewerState(
+    emit(_State(
       code: LoadingStateCode.loaded,
       bookList: bookList,
     ));
@@ -51,7 +38,7 @@ class CollectionViewerCubit extends Cubit<CollectionViewerState> {
     BookData target = state.bookList.removeAt(oldIndex);
     state.bookList
         .insert(oldIndex < newIndex ? newIndex - 1 : newIndex, target);
-    emit(CollectionViewerState(
+    emit(_State(
       code: LoadingStateCode.loaded,
       bookList: state.bookList,
     ));
@@ -62,23 +49,23 @@ class CollectionViewerCubit extends Cubit<CollectionViewerState> {
   }
 }
 
-class CollectionViewerState extends Equatable {
+class _State extends Equatable {
   final LoadingStateCode code;
   final List<BookData> bookList;
 
   @override
   List<Object?> get props => [code, bookList];
 
-  const CollectionViewerState({
+  const _State({
     this.code = LoadingStateCode.initial,
     this.bookList = const [],
   });
 
-  CollectionViewerState copyWith({
+  _State copyWith({
     LoadingStateCode? code,
     List<BookData>? bookList,
   }) {
-    return CollectionViewerState(
+    return _State(
       code: code ?? this.code,
       bookList: bookList ?? this.bookList,
     );

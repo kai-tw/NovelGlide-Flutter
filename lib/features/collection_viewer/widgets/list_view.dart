@@ -1,20 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+part of '../collection_viewer.dart';
 
-import '../../enum/loading_state_code.dart';
-import '../../utils/route_utils.dart';
-import '../common_components/common_list_empty.dart';
-import '../common_components/common_loading.dart';
-import '../table_of_contents/table_of_content.dart';
-import 'bloc/collection_viewer_bloc.dart';
-
-class CollectionViewerList extends StatelessWidget {
-  const CollectionViewerList({super.key});
+class _ListView extends StatelessWidget {
+  const _ListView();
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<CollectionViewerCubit>(context);
-    return BlocBuilder<CollectionViewerCubit, CollectionViewerState>(
+    final cubit = BlocProvider.of<_Cubit>(context);
+    return BlocBuilder<_Cubit, _State>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
           previous.bookList != current.bookList,
