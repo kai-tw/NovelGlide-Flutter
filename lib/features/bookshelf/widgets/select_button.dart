@@ -6,15 +6,15 @@ class _SelectButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<BookshelfCubit>(context);
-    return BlocBuilder<BookshelfCubit, _State>(
+    return BlocBuilder<BookshelfCubit, CommonListState>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
-          previous.bookList.isNotEmpty != current.bookList.isNotEmpty ||
+          previous.dataList.isNotEmpty != current.dataList.isNotEmpty ||
           previous.isSelectAll != current.isSelectAll,
       builder: (context, state) {
         return CommonListSelectButton(
           isVisible: state.isSelecting,
-          enabled: state.bookList.isNotEmpty,
+          enabled: state.dataList.isNotEmpty,
           isSelectAll: state.isSelectAll,
           selectAll: cubit.selectAllBooks,
           deselectAll: cubit.deselectAllBooks,

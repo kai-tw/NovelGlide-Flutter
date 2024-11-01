@@ -5,14 +5,14 @@ class CollectionListOperationPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CollectionListCubit, _State>(
+    return BlocBuilder<CollectionListCubit, CommonListState>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
-          previous.selectedCollections != current.selectedCollections,
+          previous.selectedSet != current.selectedSet,
       builder: (context, state) {
         Widget child = const SizedBox.shrink();
 
-        if (state.isSelecting && state.selectedCollections.isNotEmpty) {
+        if (state.isSelecting && state.selectedSet.isNotEmpty) {
           child = const _DeleteButton();
         }
 

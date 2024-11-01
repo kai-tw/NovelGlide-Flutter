@@ -19,7 +19,7 @@ class CollectionListAppBar extends StatelessWidget
       title: Text(AppLocalizations.of(context)!.collectionTitle),
       actions: [
         const _SelectButton(),
-        BlocBuilder<CollectionListCubit, _State>(
+        BlocBuilder<CollectionListCubit, CommonListState>(
           buildWhen: (previous, current) =>
               previous.isSelecting != current.isSelecting,
           builder: (context, state) {

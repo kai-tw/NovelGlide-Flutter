@@ -1,12 +1,14 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path/path.dart';
 
 import '../../../data_model/book_data.dart';
 import '../../../data_model/collection_data.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../repository/collection_repository.dart';
 import '../../../utils/epub_utils.dart';
+import '../../../utils/file_path.dart';
 
 class CollectionViewerCubit extends Cubit<CollectionViewerState> {
   CollectionData collectionData;
@@ -26,10 +28,12 @@ class CollectionViewerCubit extends Cubit<CollectionViewerState> {
     collectionData = CollectionRepository.get(collectionData.id);
     List<BookData> bookList = [];
 
-    for (String path in collectionData.pathList.toSet()) {
+    for (final path in collectionData.pathList.toSet()) {
+      final absolutePath = absolute(FilePath.libraryRoot, path);
       final target =
-          state.bookList.firstWhereOrNull((e) => e.filePath == path) ??
-              BookData.fromEpubBook(path, await EpubUtils.loadEpubBook(path));
+          state.bookList.firstWhereOrNull((e) => e.filePath == absolutePath) ??
+              BookData.fromEpubBook(
+                  absolutePath, await EpubUtils.loadEpubBook(absolutePath));
       bookList.add(target);
     }
 

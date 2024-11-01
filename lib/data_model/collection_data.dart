@@ -1,7 +1,8 @@
 import 'dart:convert';
 
+import 'package:path/path.dart';
+
 import '../utils/file_path.dart';
-import '../utils/file_utils.dart';
 
 /// Represents a collection of data with an ID, name, and a list of paths.
 class CollectionData {
@@ -16,10 +17,7 @@ class CollectionData {
     return CollectionData(
       json['id'] as String,
       json['name'] as String,
-      List<String>.from(json['pathList'] ?? [])
-          .map<String>(
-              (e) => FileUtils.getAbsolutePath(e, FilePath.libraryRoot))
-          .toList(),
+      List<String>.from(json['pathList'] ?? []),
     );
   }
 
@@ -28,8 +26,7 @@ class CollectionData {
         'id': id,
         'name': name,
         'pathList': pathList
-            .map<String>(
-                (e) => FileUtils.getRelativePath(e, FilePath.libraryRoot))
+            .map<String>((e) => relative(e, from: FilePath.libraryRoot))
             .toList(),
       };
 

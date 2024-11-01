@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:path/path.dart';
-
 /// A utility class for file-related operations.
 class FileUtils {
   // Private constructor to prevent instantiation of this utility class.
@@ -38,13 +36,5 @@ class FileUtils {
     // Format the size with the specified number of decimal places.
     double fileSize = size / pow(1024, index);
     return '${fileSize.toStringAsFixed(decimals)} ${units[index]}';
-  }
-
-  static String getAbsolutePath(String path, String root) {
-    return isAbsolute(path) ? path : join(root, path);
-  }
-
-  static String getRelativePath(String path, String root) {
-    return isRelative(path) ? path : relative(path, from: root);
   }
 }

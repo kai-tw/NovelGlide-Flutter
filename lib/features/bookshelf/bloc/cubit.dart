@@ -1,11 +1,11 @@
 part of '../bookshelf.dart';
 
-class BookshelfCubit extends Cubit<_State> {
+class BookshelfCubit extends Cubit<CommonListState<BookData>> {
   final String _sortOrderKey = PreferenceKeys.bookshelf.sortOrder;
   final String _isAscendingKey = PreferenceKeys.bookshelf.isAscending;
 
   factory BookshelfCubit() {
-    final cubit = BookshelfCubit._internal(const _State());
+    final cubit = BookshelfCubit._internal(const CommonListState());
     WidgetsBinding.instance.addPostFrameCallback((_) => cubit.refresh());
     return cubit;
   }
@@ -13,7 +13,7 @@ class BookshelfCubit extends Cubit<_State> {
   BookshelfCubit._internal(super.initialState);
 
   Future<void> refresh() async {
-    emit(const _State(code: LoadingStateCode.loading));
+    emit(const CommonListState(code: LoadingStateCode.loading));
 
     // Load the sorting preferences.
     final prefs = await SharedPreferences.getInstance();
@@ -30,7 +30,7 @@ class BookshelfCubit extends Cubit<_State> {
     // Only read the books that are not read yet.
     for (File epubFile in fileList) {
       final target =
-          state.bookList.firstWhereOrNull((e) => e.filePath == epubFile.path) ??
+          state.dataList.firstWhereOrNull((e) => e.filePath == epubFile.path) ??
               BookData.fromEpubBook(
                   epubFile.path, await EpubUtils.loadEpubBook(epubFile.path));
       list.add(target);
@@ -39,10 +39,10 @@ class BookshelfCubit extends Cubit<_State> {
     list.sort(BookUtils.sortCompare(sortOrder, isAscending));
 
     if (!isClosed) {
-      emit(_State(
+      emit(CommonListState(
         code: LoadingStateCode.loaded,
         sortOrder: sortOrder,
-        bookList: list,
+        dataList: list,
         isAscending: isAscending,
       ));
     }
@@ -65,7 +65,7 @@ class BookshelfCubit extends Cubit<_State> {
     prefs.setString(_sortOrderKey, order.toString());
     prefs.setBool(_isAscendingKey, ascending);
 
-    state.bookList.sort(BookUtils.sortCompare(order, ascending));
+    state.dataList.sort(BookUtils.sortCompare(order, ascending));
     emit(state.copyWith(
       isAscending: ascending,
       sortOrder: order,
@@ -77,35 +77,35 @@ class BookshelfCubit extends Cubit<_State> {
   }
 
   void setSelecting(bool isSelecting) {
-    emit(state.copyWith(isSelecting: isSelecting, selectedBooks: const {}));
+    emit(state.copyWith(isSelecting: isSelecting, selectedSet: const {}));
   }
 
   void selectBook(BookData bookData) {
-    emit(state.copyWith(selectedBooks: {...state.selectedBooks, bookData}));
+    emit(state.copyWith(selectedSet: {...state.selectedSet, bookData}));
   }
 
   void selectAllBooks() {
-    emit(state.copyWith(selectedBooks: state.bookList.toSet()));
+    emit(state.copyWith(selectedSet: state.dataList.toSet()));
   }
 
   void deselectBook(BookData bookData) {
-    Set<BookData> newSet = Set<BookData>.from(state.selectedBooks);
+    Set<BookData> newSet = Set<BookData>.from(state.selectedSet);
     newSet.remove(bookData);
 
-    emit(state.copyWith(selectedBooks: newSet));
+    emit(state.copyWith(selectedSet: newSet));
   }
 
   void deselectAllBooks() {
-    emit(state.copyWith(selectedBooks: const {}));
+    emit(state.copyWith(selectedSet: const {}));
   }
 
   bool deleteSelectedBooks() {
-    List<BookData> newList = List<BookData>.from(state.bookList);
-    for (BookData bookData in state.selectedBooks) {
+    List<BookData> newList = List<BookData>.from(state.dataList);
+    for (BookData bookData in state.selectedSet) {
       BookRepository.delete(bookData.filePath);
       newList.remove(bookData);
     }
-    emit(state.copyWith(bookList: newList));
+    emit(state.copyWith(dataList: newList));
     return true;
   }
 
@@ -113,63 +113,9 @@ class BookshelfCubit extends Cubit<_State> {
     final isSuccess = BookRepository.delete(bookData.filePath);
 
     // Update the book list
-    List<BookData> newList = List<BookData>.from(state.bookList);
+    List<BookData> newList = List<BookData>.from(state.dataList);
     newList.remove(bookData);
-    emit(state.copyWith(bookList: newList));
+    emit(state.copyWith(dataList: newList));
     return isSuccess;
-  }
-}
-
-class _State extends Equatable {
-  final LoadingStateCode code;
-  final SortOrderCode sortOrder;
-  final List<BookData> bookList;
-  final Set<BookData> selectedBooks;
-  final bool isDragging;
-  final bool isSelecting;
-  final bool isAscending;
-
-  bool get isSelectAll => selectedBooks.length == bookList.length;
-
-  @override
-  List<Object?> get props => [
-        code,
-        sortOrder,
-        bookList,
-        selectedBooks,
-        isDragging,
-        isSelecting,
-        isAscending,
-        isSelectAll,
-      ];
-
-  const _State({
-    this.code = LoadingStateCode.initial,
-    this.sortOrder = SortOrderCode.name,
-    this.bookList = const [],
-    this.selectedBooks = const {},
-    this.isDragging = false,
-    this.isSelecting = false,
-    this.isAscending = true,
-  });
-
-  _State copyWith({
-    LoadingStateCode? code,
-    SortOrderCode? sortOrder,
-    List<BookData>? bookList,
-    Set<BookData>? selectedBooks,
-    bool? isDragging,
-    bool? isSelecting,
-    bool? isAscending,
-  }) {
-    return _State(
-      code: code ?? this.code,
-      sortOrder: sortOrder ?? this.sortOrder,
-      bookList: bookList ?? this.bookList,
-      selectedBooks: selectedBooks ?? this.selectedBooks,
-      isDragging: isDragging ?? this.isDragging,
-      isSelecting: isSelecting ?? this.isSelecting,
-      isAscending: isAscending ?? this.isAscending,
-    );
   }
 }

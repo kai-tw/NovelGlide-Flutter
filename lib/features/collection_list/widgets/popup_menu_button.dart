@@ -5,7 +5,7 @@ class _PopupMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CollectionListCubit, _State>(
+    return BlocBuilder<CollectionListCubit, CommonListState>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         return PopupMenuButton(

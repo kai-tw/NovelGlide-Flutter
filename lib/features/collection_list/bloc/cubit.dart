@@ -1,12 +1,12 @@
 part of '../collection_list.dart';
 
-class CollectionListCubit extends Cubit<_State> {
+class CollectionListCubit extends Cubit<CommonListState<CollectionData>> {
   // Keys for storing sort order and ascending preference in shared preferences
   final _sortOrderKey = PreferenceKeys.collection.sortOrder;
   final _isAscendingKey = PreferenceKeys.collection.isAscending;
 
   // Constructor initializing the cubit with an initial state
-  CollectionListCubit() : super(const _State());
+  CollectionListCubit() : super(const CommonListState());
 
   // Refreshes the collection list by fetching data and applying saved sort preferences
   Future<void> refresh() async {
@@ -23,7 +23,7 @@ class CollectionListCubit extends Cubit<_State> {
 
     emit(state.copyWith(
       code: LoadingStateCode.loaded,
-      collectionList: collectionList,
+      dataList: collectionList,
       isAscending: isAscending,
       sortOrder: sortOrder,
     ));
@@ -37,37 +37,36 @@ class CollectionListCubit extends Cubit<_State> {
   void setSelecting(bool isSelecting) {
     emit(state.copyWith(
       isSelecting: isSelecting,
-      selectedCollections: {},
+      selectedSet: {},
     ));
   }
 
   // Selects all collections in the list
   void selectAll() {
-    emit(state.copyWith(selectedCollections: state.collectionList.toSet()));
+    emit(state.copyWith(selectedSet: state.dataList.toSet()));
   }
 
   // Selects a specific collection
   void selectCollection(CollectionData data) {
     emit(state.copyWith(
-      selectedCollections: {...state.selectedCollections, data},
+      selectedSet: {...state.selectedSet, data},
     ));
   }
 
   // Deselects all collections
   void deselectAll() {
-    emit(state.copyWith(selectedCollections: const {}));
+    emit(state.copyWith(selectedSet: const {}));
   }
 
   // Deselects a specific collection
   void deselectCollection(CollectionData data) {
-    final newSet = Set<CollectionData>.from(state.selectedCollections)
-      ..remove(data);
-    emit(state.copyWith(selectedCollections: newSet));
+    final newSet = Set<CollectionData>.from(state.selectedSet)..remove(data);
+    emit(state.copyWith(selectedSet: newSet));
   }
 
   // Deletes all selected collections and refreshes the list
   void deleteSelectedCollections() {
-    for (var e in state.selectedCollections) {
+    for (var e in state.selectedSet) {
       CollectionRepository.delete(e);
     }
     refresh();
@@ -80,7 +79,7 @@ class CollectionListCubit extends Cubit<_State> {
   }) async {
     final order = sortOrder ?? state.sortOrder;
     final ascending = isAscending ?? state.isAscending;
-    final list = List<CollectionData>.from(state.collectionList);
+    final list = List<CollectionData>.from(state.dataList);
 
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(_sortOrderKey, order.toString());
@@ -88,7 +87,7 @@ class CollectionListCubit extends Cubit<_State> {
 
     _sortList(list, order, ascending);
     emit(state.copyWith(
-      collectionList: list,
+      dataList: list,
       isAscending: ascending,
       sortOrder: order,
     ));
@@ -103,54 +102,5 @@ class CollectionListCubit extends Cubit<_State> {
     list.sort((a, b) => isAscending
         ? compareNatural(a.name, b.name)
         : compareNatural(b.name, a.name));
-  }
-}
-
-class _State extends Equatable {
-  final LoadingStateCode code;
-  final List<CollectionData> collectionList;
-  final bool isSelecting;
-  final Set<CollectionData> selectedCollections;
-  final bool isAscending;
-  final SortOrderCode sortOrder;
-
-  bool get isSelectAll => selectedCollections.length == collectionList.length;
-
-  @override
-  List<Object?> get props => [
-        code,
-        collectionList,
-        isSelecting,
-        selectedCollections,
-        isAscending,
-        sortOrder,
-        isSelectAll,
-      ];
-
-  const _State({
-    this.code = LoadingStateCode.initial,
-    this.collectionList = const <CollectionData>[],
-    this.isSelecting = false,
-    this.selectedCollections = const <CollectionData>{},
-    this.isAscending = true,
-    this.sortOrder = SortOrderCode.name,
-  });
-
-  _State copyWith({
-    LoadingStateCode? code,
-    List<CollectionData>? collectionList,
-    bool? isSelecting,
-    Set<CollectionData>? selectedCollections,
-    bool? isAscending,
-    SortOrderCode? sortOrder,
-  }) {
-    return _State(
-      code: code ?? this.code,
-      collectionList: collectionList ?? this.collectionList,
-      isSelecting: isSelecting ?? this.isSelecting,
-      selectedCollections: selectedCollections ?? this.selectedCollections,
-      isAscending: isAscending ?? this.isAscending,
-      sortOrder: sortOrder ?? this.sortOrder,
-    );
   }
 }

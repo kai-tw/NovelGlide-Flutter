@@ -58,7 +58,11 @@ class CollectionRepository {
   /// Saves the current [CollectionData] instance to the JSON file.
   static void save(CollectionData data) {
     final json = jsonData;
-    data.pathList = data.pathList.toSet().toList(); // Ensure uniqueness.
+    // Ensure the uniqueness and relative path.
+    data.pathList = data.pathList
+        .toSet()
+        .map<String>((p) => relative(p, from: FilePath.libraryRoot))
+        .toList();
     json[data.id] = data.toJson();
     jsonFile.writeAsStringSync(jsonEncode(json));
   }

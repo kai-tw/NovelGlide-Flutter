@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -36,12 +35,12 @@ class CollectionList extends StatelessWidget {
     final windowWidth = MediaQuery.of(context).size.width;
     final windowClass = WindowClass.fromWidth(windowWidth);
 
-    return BlocBuilder<CollectionListCubit, _State>(
+    return BlocBuilder<CollectionListCubit, CommonListState>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
-          previous.collectionList != current.collectionList ||
+          previous.dataList != current.dataList ||
           previous.isSelecting != current.isSelecting ||
-          previous.selectedCollections != current.selectedCollections,
+          previous.selectedSet != current.selectedSet,
       builder: (context, state) {
         switch (state.code) {
           case LoadingStateCode.initial:
@@ -49,7 +48,7 @@ class CollectionList extends StatelessWidget {
             return const CommonSliverLoading();
 
           case LoadingStateCode.loaded:
-            if (state.collectionList.isEmpty) {
+            if (state.dataList.isEmpty) {
               return CommonSliverListEmpty(
                 title: appLocalizations.collectionNoCollection,
               );
@@ -62,17 +61,17 @@ class CollectionList extends StatelessWidget {
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      final data = state.collectionList[index];
+                      final data = state.dataList[index];
                       return CommonListSelectionListTile(
                         isSelecting: state.isSelecting,
-                        isSelected: state.selectedCollections.contains(data),
+                        isSelected: state.selectedSet.contains(data),
                         leading: const Padding(
                           padding: EdgeInsets.only(left: 4.0, right: 14.0),
                           child: Icon(Icons.folder_rounded),
                         ),
                         title: Text(data.name),
                         onChanged: (_) {
-                          if (state.selectedCollections.contains(data)) {
+                          if (state.selectedSet.contains(data)) {
                             cubit.deselectCollection(data);
                           } else {
                             cubit.selectCollection(data);
@@ -87,7 +86,7 @@ class CollectionList extends StatelessWidget {
                         },
                       );
                     },
-                    childCount: state.collectionList.length,
+                    childCount: state.dataList.length,
                   ),
                 ),
               );

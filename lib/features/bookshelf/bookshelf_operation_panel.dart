@@ -5,15 +5,15 @@ class BookshelfOperationPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BookshelfCubit, _State>(
+    return BlocBuilder<BookshelfCubit, CommonListState>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
-          previous.selectedBooks != current.selectedBooks ||
+          previous.selectedSet != current.selectedSet ||
           previous.isDragging != current.isDragging,
       builder: (context, state) {
         Widget child = const SizedBox.shrink();
 
-        if (state.isSelecting && state.selectedBooks.isNotEmpty) {
+        if (state.isSelecting && state.selectedSet.isNotEmpty) {
           child = const _DeleteButton();
         } else if (state.isDragging) {
           child = CommonDeleteDragTarget(

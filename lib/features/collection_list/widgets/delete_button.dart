@@ -27,12 +27,12 @@ class _DeleteButton extends StatelessWidget {
         minimumSize: const Size(double.infinity, 56.0),
       ),
       icon: const Icon(Icons.delete_rounded),
-      label: BlocBuilder<CollectionListCubit, _State>(
+      label: BlocBuilder<CollectionListCubit, CommonListState>(
         buildWhen: (previous, current) =>
-            previous.selectedCollections != current.selectedCollections,
+            previous.selectedSet != current.selectedSet,
         builder: (context, state) {
-          return Text(appLocalizations
-              .collectionDelete(state.selectedCollections.length));
+          return Text(
+              appLocalizations.collectionDelete(state.selectedSet.length));
         },
       ),
     );

@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,16 +47,16 @@ class Bookshelf extends StatelessWidget {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
 
-    return BlocBuilder<BookshelfCubit, _State>(
+    return BlocBuilder<BookshelfCubit, CommonListState>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
-          previous.bookList != current.bookList ||
+          previous.dataList != current.dataList ||
           previous.isAscending != current.isAscending ||
           previous.sortOrder != current.sortOrder,
       builder: (context, state) {
         switch (state.code) {
           case LoadingStateCode.loaded:
-            if (state.bookList.isEmpty) {
+            if (state.dataList.isEmpty) {
               return CommonSliverListEmpty(
                 title: appLocalizations.bookshelfNoBook,
               );
@@ -72,8 +71,8 @@ class Bookshelf extends StatelessWidget {
                     childAspectRatio: 150 / 300,
                   ),
                   delegate: SliverChildBuilderDelegate(
-                    (context, index) => _SliverListItem(state.bookList[index]),
-                    childCount: state.bookList.length,
+                    (context, index) => _SliverListItem(state.dataList[index]),
+                    childCount: state.dataList.length,
                   ),
                 ),
               );
