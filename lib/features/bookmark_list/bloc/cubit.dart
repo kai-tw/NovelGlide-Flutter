@@ -1,12 +1,12 @@
 part of '../bookmark_list.dart';
 
 // The BookmarkListCubit class manages the state of the bookmark list.
-class BookmarkListCubit extends Cubit<_State> {
+class BookmarkListCubit extends Cubit<CommonListState<BookmarkData>> {
   final String _sortOrderPrefKey = PreferenceKeys.bookmark.sortOrder;
   final String _ascendingPrefKey = PreferenceKeys.bookmark.isAscending;
 
   // Constructor initializes the state with default values.
-  BookmarkListCubit() : super(const _State());
+  BookmarkListCubit() : super(const CommonListState<BookmarkData>());
 
   // Refreshes the bookmark list by fetching it from the data source and sorting it.
   void refresh() async {
@@ -23,10 +23,10 @@ class BookmarkListCubit extends Cubit<_State> {
     _sortList(bookmarkList, sortOrder, isAscending);
 
     if (!isClosed) {
-      emit(_State(
+      emit(CommonListState<BookmarkData>(
         code: LoadingStateCode.loaded,
         sortOrder: sortOrder,
-        bookmarkList: bookmarkList,
+        dataList: bookmarkList,
         isAscending: isAscending,
       ));
     }
@@ -43,7 +43,7 @@ class BookmarkListCubit extends Cubit<_State> {
     SortOrderCode? sortOrder,
     bool? isAscending,
   }) async {
-    List<BookmarkData> list = List.from(state.bookmarkList);
+    List<BookmarkData> list = List.from(state.dataList);
     sortOrder ??= state.sortOrder;
     isAscending ??= state.isAscending;
 
@@ -56,7 +56,7 @@ class BookmarkListCubit extends Cubit<_State> {
 
     if (!isClosed) {
       emit(state.copyWith(
-        bookmarkList: list,
+        dataList: list,
         isAscending: isAscending,
         sortOrder: sortOrder,
       ));
@@ -85,7 +85,7 @@ class BookmarkListCubit extends Cubit<_State> {
   }
 
   void setSelecting(bool isSelecting) {
-    emit(state.copyWith(isSelecting: isSelecting, selectedBookmarks: const {}));
+    emit(state.copyWith(isSelecting: isSelecting, selectedSet: const {}));
   }
 
   void setDragging(bool isDragging) {
@@ -95,8 +95,8 @@ class BookmarkListCubit extends Cubit<_State> {
   // Selects a specific bookmark and updates the state.
   void selectBookmark(BookmarkData data) {
     emit(state.copyWith(
-      selectedBookmarks: {
-        ...state.selectedBookmarks,
+      selectedSet: {
+        ...state.selectedSet,
         data,
       },
     ));
@@ -105,87 +105,33 @@ class BookmarkListCubit extends Cubit<_State> {
   // Selects all bookmarks and updates the state.
   void selectAllBookmarks() {
     emit(state.copyWith(
-      selectedBookmarks: state.bookmarkList.toSet(),
+      selectedSet: state.dataList.toSet(),
     ));
   }
 
   // Deselects a specific bookmark and updates the state.
   void deselectBookmark(BookmarkData data) {
-    Set<BookmarkData> newSet = Set<BookmarkData>.from(state.selectedBookmarks);
+    Set<BookmarkData> newSet = Set<BookmarkData>.from(state.selectedSet);
     newSet.remove(data);
 
     emit(state.copyWith(
-      selectedBookmarks: newSet,
+      selectedSet: newSet,
     ));
   }
 
   // Deselects all bookmarks and updates the state.
   void deselectAllBookmarks() {
     emit(state.copyWith(
-      selectedBookmarks: const {},
+      selectedSet: const {},
     ));
   }
 
   // Deletes the selected bookmarks and refreshes the list.
   bool deleteSelectedBookmarks() {
-    for (final data in state.selectedBookmarks) {
+    for (final data in state.selectedSet) {
       BookmarkRepository.delete(data);
     }
     refresh();
     return true;
-  }
-}
-
-// The BookmarkListState class represents the state of the bookmark list.
-class _State extends Equatable {
-  final LoadingStateCode code;
-  final SortOrderCode sortOrder;
-  final List<BookmarkData> bookmarkList;
-  final Set<BookmarkData> selectedBookmarks;
-  final bool isDragging;
-  final bool isSelecting;
-  final bool isAscending;
-
-  @override
-  List<Object?> get props => [
-        code,
-        sortOrder,
-        bookmarkList,
-        selectedBookmarks,
-        isDragging,
-        isSelecting,
-        isAscending
-      ];
-
-  // Constructor initializes the state with default values.
-  const _State({
-    this.code = LoadingStateCode.initial,
-    this.sortOrder = SortOrderCode.savedTime,
-    this.bookmarkList = const [],
-    this.selectedBookmarks = const {},
-    this.isDragging = false,
-    this.isSelecting = false,
-    this.isAscending = false,
-  });
-
-  // Creates a copy of the current state with updated properties.
-  _State copyWith({
-    LoadingStateCode? code,
-    SortOrderCode? sortOrder,
-    List<BookmarkData>? bookmarkList,
-    Set<BookmarkData>? selectedBookmarks,
-    bool? isDragging,
-    bool? isSelecting,
-    bool? isAscending,
-  }) {
-    return _State(
-      code: code ?? this.code,
-      sortOrder: sortOrder ?? this.sortOrder,
-      bookmarkList: bookmarkList ?? this.bookmarkList,
-      selectedBookmarks: selectedBookmarks ?? this.selectedBookmarks,
-      isDragging: isDragging ?? this.isDragging,
-      isSelecting: isSelecting ?? this.isSelecting,
-      isAscending: isAscending ?? this.isAscending,
-    );
   }
 }

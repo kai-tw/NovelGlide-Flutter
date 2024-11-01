@@ -5,7 +5,7 @@ class BookshelfOperationPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BookshelfCubit, _BookshelfState>(
+    return BlocBuilder<BookshelfCubit, _State>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
           previous.selectedBooks != current.selectedBooks ||

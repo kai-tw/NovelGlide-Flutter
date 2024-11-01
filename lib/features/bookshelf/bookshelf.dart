@@ -23,9 +23,9 @@ import '../common_components/common_book_cover_image.dart';
 import '../common_components/common_delete_dialog.dart';
 import '../common_components/common_delete_drag_target.dart';
 import '../common_components/common_error_dialog.dart';
+import '../common_components/common_list/common_list.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
-import '../common_components/common_select_mode_text_button.dart';
 import '../common_components/draggable_feedback_widget.dart';
 import '../common_components/draggable_placeholder_widget.dart';
 import '../table_of_contents/table_of_content.dart';
@@ -41,14 +41,14 @@ part 'widgets/list_item.dart';
 part 'widgets/popup_menu_button.dart';
 part 'widgets/select_button.dart';
 
-class BookshelfSliverList extends StatelessWidget {
-  const BookshelfSliverList({super.key});
+class Bookshelf extends StatelessWidget {
+  const Bookshelf({super.key});
 
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
 
-    return BlocBuilder<BookshelfCubit, _BookshelfState>(
+    return BlocBuilder<BookshelfCubit, _State>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
           previous.bookList != current.bookList ||

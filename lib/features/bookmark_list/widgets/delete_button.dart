@@ -25,13 +25,13 @@ class _DeleteButton extends StatelessWidget {
         minimumSize: const Size(double.infinity, 56.0),
       ),
       icon: const Icon(Icons.delete_rounded),
-      label: BlocBuilder<BookmarkListCubit, _State>(
+      label: BlocBuilder<BookmarkListCubit, CommonListState>(
         buildWhen: (previous, current) =>
-            previous.selectedBookmarks != current.selectedBookmarks,
+            previous.selectedSet != current.selectedSet,
         builder: (context, state) {
           return Text(
               appLocalizations.bookmarkListDeleteNumberOfSelectedBookmarks(
-                  state.selectedBookmarks.length));
+                  state.selectedSet.length));
         },
       ),
     );

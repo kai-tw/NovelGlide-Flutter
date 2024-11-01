@@ -14,10 +14,10 @@ import '../../repository/bookmark_repository.dart';
 import '../../utils/route_utils.dart';
 import '../common_components/common_delete_dialog.dart';
 import '../common_components/common_delete_drag_target.dart';
+import '../common_components/common_list/common_list.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import '../common_components/common_popup_menu_sort_list_tile.dart';
-import '../common_components/common_select_mode_text_button.dart';
 import '../common_components/draggable_feedback_widget.dart';
 import '../common_components/draggable_placeholder_widget.dart';
 import '../reader/reader.dart';
@@ -27,7 +27,6 @@ part 'bookmark_list_app_bar.dart';
 part 'bookmark_list_operation_panel.dart';
 part 'widgets/bookmark_widget.dart';
 part 'widgets/delete_button.dart';
-part 'widgets/done_button.dart';
 part 'widgets/draggable_bookmark.dart';
 part 'widgets/list_item.dart';
 part 'widgets/popup_menu_button.dart';
@@ -41,7 +40,7 @@ class BookmarkList extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context)!;
     BlocProvider.of<BookmarkListCubit>(context).refresh();
 
-    return BlocBuilder<BookmarkListCubit, _State>(
+    return BlocBuilder<BookmarkListCubit, CommonListState>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         switch (state.code) {
@@ -50,7 +49,7 @@ class BookmarkList extends StatelessWidget {
             return const CommonSliverLoading();
 
           case LoadingStateCode.loaded:
-            if (state.bookmarkList.isEmpty) {
+            if (state.dataList.isEmpty) {
               return CommonSliverListEmpty(
                 title: appLocalizations.bookmarkListNoBookmark,
               );
@@ -61,10 +60,10 @@ class BookmarkList extends StatelessWidget {
                 ),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return _ListItem(state.bookmarkList[index]);
+                    (_, index) {
+                      return _ListItem(state.dataList[index]);
                     },
-                    childCount: state.bookmarkList.length,
+                    childCount: state.dataList.length,
                   ),
                 ),
               );

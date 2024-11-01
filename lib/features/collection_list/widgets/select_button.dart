@@ -1,23 +1,24 @@
-part of '../bookmark_list.dart';
+part of '../collection_list.dart';
 
 class _SelectButton extends StatelessWidget {
   const _SelectButton();
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<BookmarkListCubit>(context);
-    return BlocBuilder<BookmarkListCubit, CommonListState>(
+    final cubit = BlocProvider.of<CollectionListCubit>(context);
+    return BlocBuilder<CollectionListCubit, _State>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
-          previous.dataList.isNotEmpty != current.dataList.isNotEmpty ||
+          previous.collectionList.isNotEmpty !=
+              current.collectionList.isNotEmpty ||
           previous.isSelectAll != current.isSelectAll,
       builder: (context, state) {
         return CommonListSelectButton(
           isVisible: state.isSelecting,
-          enabled: state.dataList.isNotEmpty,
+          enabled: state.collectionList.isNotEmpty,
           isSelectAll: state.isSelectAll,
-          selectAll: cubit.selectAllBookmarks,
-          deselectAll: cubit.deselectAllBookmarks,
+          selectAll: cubit.selectAll,
+          deselectAll: cubit.deselectAll,
         );
       },
     );

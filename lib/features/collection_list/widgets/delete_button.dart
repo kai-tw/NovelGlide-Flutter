@@ -1,17 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../collection_list.dart';
 
-import '../../common_components/common_delete_dialog.dart';
-import '../bloc/collection_list_bloc.dart';
-
-class CollectionListDeleteButton extends StatelessWidget {
-  const CollectionListDeleteButton({super.key});
+class _DeleteButton extends StatelessWidget {
+  const _DeleteButton();
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final CollectionListCubit cubit = BlocProvider.of<CollectionListCubit>(context);
+    final CollectionListCubit cubit =
+        BlocProvider.of<CollectionListCubit>(context);
 
     return ElevatedButton.icon(
       onPressed: () {
@@ -31,10 +27,12 @@ class CollectionListDeleteButton extends StatelessWidget {
         minimumSize: const Size(double.infinity, 56.0),
       ),
       icon: const Icon(Icons.delete_rounded),
-      label: BlocBuilder<CollectionListCubit, CollectionListState>(
-        buildWhen: (previous, current) => previous.selectedCollections != current.selectedCollections,
+      label: BlocBuilder<CollectionListCubit, _State>(
+        buildWhen: (previous, current) =>
+            previous.selectedCollections != current.selectedCollections,
         builder: (context, state) {
-          return Text(appLocalizations.collectionDelete(state.selectedCollections.length));
+          return Text(appLocalizations
+              .collectionDelete(state.selectedCollections.length));
         },
       ),
     );

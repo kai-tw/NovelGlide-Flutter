@@ -5,91 +5,88 @@ class _ScaffoldBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HomepageCubit cubit = BlocProvider.of<HomepageCubit>(context);
-    final BookshelfCubit bookshelfCubit =
-        BlocProvider.of<BookshelfCubit>(context);
-    final CollectionListCubit collectionListCubit =
-        BlocProvider.of<CollectionListCubit>(context);
-    final BookmarkListCubit bookmarkListCubit =
-        BlocProvider.of<BookmarkListCubit>(context);
+    final cubit = BlocProvider.of<HomepageCubit>(context);
+    final bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
+    final collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
+    final bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
 
-    return BlocBuilder<HomepageCubit, _HomepageState>(
-      buildWhen: (previous, current) => previous.navItem != current.navItem,
-      builder: (context, state) {
-        switch (state.navItem) {
-          case HomepageNavigationItem.bookshelf:
-            return Column(
-              children: [
-                Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-                Expanded(
-                  child: PageStorage(
-                    bucket: cubit.bookshelfBucket,
-                    child: RefreshIndicator(
-                      onRefresh: () async => bookshelfCubit.refresh(),
-                      child: const Scrollbar(
-                        child: CustomScrollView(
-                          key: PageStorageKey<String>('homepage-bookshelf'),
-                          slivers: [
-                            BookshelfSliverList(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+    return SafeArea(
+      child: BlocBuilder<HomepageCubit, _HomepageState>(
+        buildWhen: (previous, current) => previous.navItem != current.navItem,
+        builder: (context, state) {
+          switch (state.navItem) {
+            case HomepageNavigationItem.bookshelf:
+              return _ScaffoldBodyColumn(
+                bucket: cubit.bookshelfBucket,
+                bucketKey: 'homepage-bookshelf',
+                onRefresh: () async => bookshelfCubit.refresh(),
+                slivers: const [
+                  Bookshelf(),
+                ],
+              );
+
+            case HomepageNavigationItem.collection:
+              return _ScaffoldBodyColumn(
+                bucket: cubit.collectionBucket,
+                bucketKey: 'homepage-collection',
+                onRefresh: () async => collectionListCubit.refresh(),
+                slivers: const [
+                  CollectionList(),
+                ],
+              );
+
+            case HomepageNavigationItem.bookmark:
+              return _ScaffoldBodyColumn(
+                bucket: cubit.bookmarkBucket,
+                bucketKey: 'homepage-bookmark',
+                onRefresh: () async => bookmarkListCubit.refresh(),
+                slivers: const [
+                  BookmarkList(),
+                ],
+              );
+
+            case HomepageNavigationItem.settings:
+              return const SettingsPage();
+          }
+        },
+      ),
+    );
+  }
+}
+
+class _ScaffoldBodyColumn extends StatelessWidget {
+  final PageStorageBucket bucket;
+  final String bucketKey;
+  final Future<void> Function() onRefresh;
+  final List<Widget> slivers;
+
+  const _ScaffoldBodyColumn({
+    required this.bucket,
+    required this.bucketKey,
+    required this.onRefresh,
+    required this.slivers,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+        Expanded(
+          child: PageStorage(
+            bucket: bucket,
+            child: RefreshIndicator(
+              onRefresh: onRefresh,
+              child: Scrollbar(
+                child: CustomScrollView(
+                  key: PageStorageKey<String>(bucketKey),
+                  slivers: slivers,
                 ),
-              ],
-            );
-
-          case HomepageNavigationItem.collection:
-            return Column(
-              children: [
-                Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-                Expanded(
-                  child: PageStorage(
-                    bucket: cubit.collectionBucket,
-                    child: RefreshIndicator(
-                      onRefresh: () async => collectionListCubit.refresh(),
-                      child: const Scrollbar(
-                        child: CustomScrollView(
-                          key: PageStorageKey<String>('homepage-collection'),
-                          slivers: [
-                            CollectionList(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            );
-
-          case HomepageNavigationItem.bookmark:
-            return Column(
-              children: [
-                Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-                Expanded(
-                  child: PageStorage(
-                    bucket: cubit.bookmarkBucket,
-                    child: RefreshIndicator(
-                      onRefresh: () async => bookmarkListCubit.refresh(),
-                      child: const Scrollbar(
-                        child: CustomScrollView(
-                          key: PageStorageKey<String>('homepage-bookmark'),
-                          slivers: [
-                            BookmarkList(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            );
-
-          case HomepageNavigationItem.settings:
-            return const SettingsPage();
-        }
-      },
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

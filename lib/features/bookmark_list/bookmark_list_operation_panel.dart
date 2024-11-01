@@ -5,14 +5,14 @@ class BookmarkListOperationPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BookmarkListCubit, _State>(
+    return BlocBuilder<BookmarkListCubit, CommonListState>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
           previous.isDragging != current.isDragging ||
-          previous.selectedBookmarks != current.selectedBookmarks,
+          previous.selectedSet != current.selectedSet,
       builder: (context, state) {
         Widget child = const SizedBox.shrink();
-        if (state.isSelecting && state.selectedBookmarks.isNotEmpty) {
+        if (state.isSelecting && state.selectedSet.isNotEmpty) {
           child = const _DeleteButton();
         } else if (state.isDragging) {
           child = CommonDeleteDragTarget(

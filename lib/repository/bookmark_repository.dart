@@ -41,19 +41,17 @@ class BookmarkRepository {
     List<BookmarkData> retList = [];
 
     for (String key in jsonData.keys) {
-      if (jsonData.containsKey(key)) {
-        final data = BookmarkData.fromJson(jsonData[key]!);
+      final data = BookmarkData.fromJson(jsonData[key]!);
 
-        data.bookPath = FileUtils.getAbsolutePath(
-          data.bookPath,
-          FilePath.libraryRoot,
-        );
+      data.bookPath = FileUtils.getAbsolutePath(
+        data.bookPath,
+        FilePath.libraryRoot,
+      );
 
-        if (File(data.bookPath).existsSync()) {
-          retList.add(data);
-        } else {
-          delete(data);
-        }
+      if (File(data.bookPath).existsSync()) {
+        retList.add(data);
+      } else {
+        delete(data);
       }
     }
 
@@ -70,8 +68,9 @@ class BookmarkRepository {
 
   /// Deletes the current bookmark from the JSON file.
   static void delete(BookmarkData data) {
+    final json = jsonData;
     final path = FileUtils.getRelativePath(data.bookPath, FilePath.libraryRoot);
-    jsonData.remove(path);
-    jsonFile.writeAsStringSync(jsonEncode(jsonData));
+    json.remove(path);
+    jsonFile.writeAsStringSync(jsonEncode(json));
   }
 }

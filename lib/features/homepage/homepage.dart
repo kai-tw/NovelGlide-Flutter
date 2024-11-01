@@ -13,10 +13,7 @@ import '../book_add/book_add_dialog.dart';
 import '../bookmark_list/bookmark_list.dart';
 import '../bookshelf/bookshelf.dart';
 import '../collection_add/collection_add_dialog.dart';
-import '../collection_list/bloc/collection_list_bloc.dart';
 import '../collection_list/collection_list.dart';
-import '../collection_list/collection_list_app_bar.dart';
-import '../collection_list/collection_list_operation_panel.dart';
 import '../settings_page/settings_page.dart';
 
 part 'bloc/cubit.dart';
@@ -77,10 +74,10 @@ class _State extends State<Homepage> with WidgetsBindingObserver {
 
   @override
   void didChangePlatformBrightness() async {
-    ThemeDataRecord record = await ThemeDataRecord.fromSettings();
+    final record = await ThemeDataRecord.fromSettings();
 
     if (record.brightness == null) {
-      final ThemeData themeData =
+      final themeData =
           record.themeId.getThemeDataByBrightness(record.brightness);
       _switcherState?.changeTheme(theme: themeData);
     }

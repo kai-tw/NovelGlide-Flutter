@@ -25,7 +25,7 @@ class _DeleteButton extends StatelessWidget {
         minimumSize: const Size(double.infinity, 56.0),
       ),
       icon: const Icon(Icons.delete_rounded),
-      label: BlocBuilder<BookshelfCubit, _BookshelfState>(
+      label: BlocBuilder<BookshelfCubit, _State>(
         buildWhen: (previous, current) =>
             previous.selectedBooks != current.selectedBooks,
         builder: (context, state) {

@@ -1,10 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../../enum/window_class.dart';
-import 'widgets/collection_list_done_button.dart';
-import 'widgets/collection_list_popup_menu_button.dart';
-import 'widgets/collection_list_select_button.dart';
+part of 'collection_list.dart';
 
 class CollectionListAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -17,15 +11,25 @@ class CollectionListAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     final windowWidth = MediaQuery.of(context).size.width;
     final windowClass = WindowClass.fromWidth(windowWidth);
+    final cubit = BlocProvider.of<CollectionListCubit>(context);
 
     return AppBar(
       leading: const Icon(Icons.collections_bookmark_outlined),
       leadingWidth: windowClass == WindowClass.compact ? null : 100.0,
       title: Text(AppLocalizations.of(context)!.collectionTitle),
-      actions: const [
-        CollectionListSelectButton(),
-        CollectionListDoneButton(),
-        CollectionListPopupMenuButton(),
+      actions: [
+        const _SelectButton(),
+        BlocBuilder<CollectionListCubit, _State>(
+          buildWhen: (previous, current) =>
+              previous.isSelecting != current.isSelecting,
+          builder: (context, state) {
+            return CommonListDoneButton(
+              isVisible: state.isSelecting,
+              onPressed: () => cubit.setSelecting(false),
+            );
+          },
+        ),
+        const _PopupMenuButton(),
       ],
     );
   }

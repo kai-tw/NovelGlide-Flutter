@@ -1,21 +1,12 @@
-import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+part of '../collection_list.dart';
 
-import '../../../data_model/collection_data.dart';
-import '../../../data_model/preference_keys.dart';
-import '../../../enum/loading_state_code.dart';
-import '../../../enum/sort_order_code.dart';
-import '../../../repository/collection_repository.dart';
-
-class CollectionListCubit extends Cubit<CollectionListState> {
+class CollectionListCubit extends Cubit<_State> {
   // Keys for storing sort order and ascending preference in shared preferences
   final _sortOrderKey = PreferenceKeys.collection.sortOrder;
   final _isAscendingKey = PreferenceKeys.collection.isAscending;
 
   // Constructor initializing the cubit with an initial state
-  CollectionListCubit() : super(const CollectionListState());
+  CollectionListCubit() : super(const _State());
 
   // Refreshes the collection list by fetching data and applying saved sort preferences
   Future<void> refresh() async {
@@ -115,13 +106,15 @@ class CollectionListCubit extends Cubit<CollectionListState> {
   }
 }
 
-class CollectionListState extends Equatable {
+class _State extends Equatable {
   final LoadingStateCode code;
   final List<CollectionData> collectionList;
   final bool isSelecting;
   final Set<CollectionData> selectedCollections;
   final bool isAscending;
   final SortOrderCode sortOrder;
+
+  bool get isSelectAll => selectedCollections.length == collectionList.length;
 
   @override
   List<Object?> get props => [
@@ -131,9 +124,10 @@ class CollectionListState extends Equatable {
         selectedCollections,
         isAscending,
         sortOrder,
+        isSelectAll,
       ];
 
-  const CollectionListState({
+  const _State({
     this.code = LoadingStateCode.initial,
     this.collectionList = const <CollectionData>[],
     this.isSelecting = false,
@@ -142,7 +136,7 @@ class CollectionListState extends Equatable {
     this.sortOrder = SortOrderCode.name,
   });
 
-  CollectionListState copyWith({
+  _State copyWith({
     LoadingStateCode? code,
     List<CollectionData>? collectionList,
     bool? isSelecting,
@@ -150,7 +144,7 @@ class CollectionListState extends Equatable {
     bool? isAscending,
     SortOrderCode? sortOrder,
   }) {
-    return CollectionListState(
+    return _State(
       code: code ?? this.code,
       collectionList: collectionList ?? this.collectionList,
       isSelecting: isSelecting ?? this.isSelecting,
