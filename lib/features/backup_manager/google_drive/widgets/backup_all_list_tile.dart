@@ -1,36 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:logger/logger.dart';
+part of '../backup_manager_google_drive.dart';
 
-import '../../../enum/loading_state_code.dart';
-import '../../common_components/common_error_dialog.dart';
-import '../../common_components/common_loading.dart';
-import '../../common_components/common_success_dialog.dart';
-import '../bloc/backup_manager_google_drive_bloc.dart';
-
-class BackupManagerGoogleDriveBooks extends StatelessWidget {
-  const BackupManagerGoogleDriveBooks({super.key});
+class _BackupAllListTile extends StatelessWidget {
+  const _BackupAllListTile();
 
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
+    final cubit = BlocProvider.of<_Cubit>(context);
     return ListTile(
       contentPadding: const EdgeInsets.fromLTRB(16.0, 4.0, 8.0, 4.0),
-      title: Text(appLocalizations.backupManagerLabelLibrary),
+      title: Text(appLocalizations.backupManagerLabelAll),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          BlocBuilder<BackupManagerGoogleDriveCubit,
-              BackupManagerGoogleDriveState>(
+          BlocBuilder<_Cubit, _State>(
             buildWhen: (previous, current) => previous.code != current.code,
             builder: (context, state) {
               final isEnabled = state.code == LoadingStateCode.loaded;
               return IconButton(
                 icon: Icon(
                   Icons.backup_outlined,
-                  semanticLabel: appLocalizations.backupManagerBackupLibrary,
+                  semanticLabel: appLocalizations.backupManagerBackupAll,
                 ),
                 onPressed: isEnabled
                     ? () => showDialog(
@@ -38,7 +28,7 @@ class BackupManagerGoogleDriveBooks extends StatelessWidget {
                           barrierDismissible: false,
                           builder: (_) {
                             return FutureBuilder<bool>(
-                              future: cubit.backupLibrary(),
+                              future: cubit.backupAll(),
                               builder: (context, snapshot) => _buildDialog(
                                 context,
                                 snapshot,
@@ -52,18 +42,21 @@ class BackupManagerGoogleDriveBooks extends StatelessWidget {
               );
             },
           ),
-          BlocBuilder<BackupManagerGoogleDriveCubit,
-              BackupManagerGoogleDriveState>(
+          BlocBuilder<_Cubit, _State>(
             buildWhen: (previous, current) =>
                 previous.code != current.code ||
-                previous.libraryId != current.libraryId,
+                previous.libraryId != current.libraryId ||
+                previous.collectionId != current.collectionId ||
+                previous.bookmarkId != current.bookmarkId,
             builder: (context, state) {
               final isEnabled = state.code == LoadingStateCode.loaded &&
-                  state.libraryId != null;
+                      state.libraryId != null ||
+                  state.collectionId != null ||
+                  state.bookmarkId != null;
               return IconButton(
                 icon: Icon(
                   Icons.restore_outlined,
-                  semanticLabel: appLocalizations.backupManagerRestoreLibrary,
+                  semanticLabel: appLocalizations.backupManagerRestoreAll,
                 ),
                 onPressed: isEnabled
                     ? () => showDialog(
@@ -71,7 +64,7 @@ class BackupManagerGoogleDriveBooks extends StatelessWidget {
                           barrierDismissible: false,
                           builder: (_) {
                             return FutureBuilder<bool>(
-                              future: cubit.restoreLibrary(),
+                              future: cubit.restoreAll(),
                               builder: (context, snapshot) => _buildDialog(
                                 context,
                                 snapshot,
@@ -85,19 +78,21 @@ class BackupManagerGoogleDriveBooks extends StatelessWidget {
               );
             },
           ),
-          BlocBuilder<BackupManagerGoogleDriveCubit,
-              BackupManagerGoogleDriveState>(
+          BlocBuilder<_Cubit, _State>(
             buildWhen: (previous, current) =>
                 previous.code != current.code ||
-                previous.libraryId != current.libraryId,
+                previous.libraryId != current.libraryId ||
+                previous.collectionId != current.collectionId ||
+                previous.bookmarkId != current.bookmarkId,
             builder: (context, state) {
               final isEnabled = state.code == LoadingStateCode.loaded &&
-                  state.libraryId != null;
+                      state.libraryId != null ||
+                  state.collectionId != null ||
+                  state.bookmarkId != null;
               return IconButton(
                 icon: Icon(
                   Icons.delete_outlined,
-                  semanticLabel:
-                      appLocalizations.backupManagerDeleteLibraryBackup,
+                  semanticLabel: appLocalizations.backupManagerDeleteAllBackup,
                 ),
                 onPressed: isEnabled
                     ? () => showDialog(
@@ -105,7 +100,7 @@ class BackupManagerGoogleDriveBooks extends StatelessWidget {
                           barrierDismissible: false,
                           builder: (_) {
                             return FutureBuilder<bool>(
-                              future: cubit.deleteLibrary(),
+                              future: cubit.deleteAll(),
                               builder: (context, snapshot) => _buildDialog(
                                 context,
                                 snapshot,

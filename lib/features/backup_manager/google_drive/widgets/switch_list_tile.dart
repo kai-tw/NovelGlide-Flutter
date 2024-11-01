@@ -1,19 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../backup_manager_google_drive.dart';
 
-import '../../../enum/loading_state_code.dart';
-import '../bloc/backup_manager_google_drive_bloc.dart';
-
-class BackupManagerGoogleDriveSwitcher extends StatelessWidget {
-  const BackupManagerGoogleDriveSwitcher({super.key});
+class _SwitchListTile extends StatelessWidget {
+  const _SwitchListTile();
 
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
-    return BlocBuilder<BackupManagerGoogleDriveCubit,
-        BackupManagerGoogleDriveState>(
+    final cubit = BlocProvider.of<_Cubit>(context);
+    return BlocBuilder<_Cubit, _State>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         return SwitchListTile(

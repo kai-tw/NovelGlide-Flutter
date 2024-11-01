@@ -1,19 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../backup_manager_google_drive.dart';
 
-import '../../../enum/loading_state_code.dart';
-import '../../../utils/datetime_utils.dart';
-import '../bloc/backup_manager_google_drive_bloc.dart';
-
-class BackupManagerGoogleDriveTimeTile extends StatelessWidget {
-  const BackupManagerGoogleDriveTimeTile({super.key});
+class _TimeListTile extends StatelessWidget {
+  const _TimeListTile();
 
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<BackupManagerGoogleDriveCubit,
-        BackupManagerGoogleDriveState>(
+    return BlocBuilder<_Cubit, _State>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         final isLoading = state.code == LoadingStateCode.loading;

@@ -1,39 +1,24 @@
-import 'dart:io';
-
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
-import 'package:path/path.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../data_model/preference_keys.dart';
-import '../../../enum/loading_state_code.dart';
-import '../../../repository/bookmark_repository.dart';
-import '../../../repository/collection_repository.dart';
-import '../../../utils/backup_utils.dart';
-import '../../../utils/google_drive_api.dart';
-import '../../../utils/random_utils.dart';
+part of '../backup_manager_google_drive.dart';
 
 /// Manages Google Drive backup operations.
-class BackupManagerGoogleDriveCubit
-    extends Cubit<BackupManagerGoogleDriveState> {
+class _Cubit extends Cubit<_State> {
   final _logger = Logger();
   final _drivePrefKey = PreferenceKeys.backupManager.isGoogleDriveEnabled;
   final _driveApi = GoogleDriveApi.instance;
 
-  factory BackupManagerGoogleDriveCubit() {
-    const initialState = BackupManagerGoogleDriveState();
-    final cubit = BackupManagerGoogleDriveCubit._internal(initialState);
+  factory _Cubit() {
+    const initialState = _State();
+    final cubit = _Cubit._internal(initialState);
     cubit.refresh();
     return cubit;
   }
 
-  BackupManagerGoogleDriveCubit._internal(super.initialState);
+  _Cubit._internal(super.initialState);
 
   /// Refreshes the backup state by checking preferences and updating metadata.
   Future<void> refresh() async {
     emit(
-      const BackupManagerGoogleDriveState(
+      const _State(
         code: LoadingStateCode.loading,
       ),
     );
@@ -58,7 +43,7 @@ class BackupManagerGoogleDriveCubit
           .toList();
 
       if (!isClosed) {
-        emit(BackupManagerGoogleDriveState(
+        emit(_State(
           code: LoadingStateCode.loaded,
           libraryId: fileIdList[0],
           collectionId: fileIdList[1],
@@ -68,7 +53,7 @@ class BackupManagerGoogleDriveCubit
         ));
       }
     } else if (!isClosed) {
-      emit(const BackupManagerGoogleDriveState());
+      emit(const _State());
     }
   }
 
@@ -243,14 +228,14 @@ class BackupManagerGoogleDriveCubit
 }
 
 /// Represents the state of the Google Drive backup manager.
-class BackupManagerGoogleDriveState extends Equatable {
+class _State extends Equatable {
   final LoadingStateCode code;
   final String? libraryId;
   final String? collectionId;
   final String? bookmarkId;
   final DateTime? lastBackupTime;
 
-  const BackupManagerGoogleDriveState({
+  const _State({
     this.code = LoadingStateCode.initial,
     this.libraryId,
     this.collectionId,
@@ -268,14 +253,14 @@ class BackupManagerGoogleDriveState extends Equatable {
       ];
 
   /// Creates a copy of the current state with optional new values.
-  BackupManagerGoogleDriveState copyWith({
+  _State copyWith({
     LoadingStateCode? code,
     String? libraryId,
     String? collectionId,
     String? bookmarkId,
     DateTime? lastBackupTime,
   }) {
-    return BackupManagerGoogleDriveState(
+    return _State(
       code: code ?? this.code,
       libraryId: libraryId ?? this.libraryId,
       collectionId: collectionId ?? this.collectionId,
