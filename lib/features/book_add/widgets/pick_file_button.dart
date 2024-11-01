@@ -1,24 +1,20 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../book_add_dialog.dart';
 
-import '../bloc/book_add_bloc.dart';
-
-class BookAddFilePickingButton extends StatelessWidget {
-  const BookAddFilePickingButton({super.key});
+class _PickFileButton extends StatelessWidget {
+  const _PickFileButton();
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context);
+    final appLocalizations = AppLocalizations.of(context)!;
     final colorScheme = Theme.of(context).colorScheme;
 
-    return BlocBuilder<BookAddCubit, BookAddState>(
+    return BlocBuilder<_Cubit, _State>(
       buildWhen: (previous, current) => previous.file != current.file,
       builder: (context, state) {
         return ElevatedButton.icon(
-          onPressed: BlocProvider.of<BookAddCubit>(context).pickFile,
+          onPressed: BlocProvider.of<_Cubit>(context).pickFile,
           icon: const Icon(Icons.file_open_rounded),
-          label: Text(appLocalizations?.generalSelect ?? 'Select'),
+          label: Text(appLocalizations.generalSelect),
           style: ElevatedButton.styleFrom(
             foregroundColor: state.file == null ? colorScheme.onPrimary : null,
             backgroundColor: state.file == null ? colorScheme.primary : null,

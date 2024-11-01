@@ -1,15 +1,8 @@
-import 'dart:io';
-
-import 'package:equatable/equatable.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../exceptions/file_exceptions.dart';
-import '../../../repository/book_repository.dart';
+part of '../book_add_dialog.dart';
 
 /// Cubit to manage the state of adding a book.
-class BookAddCubit extends Cubit<BookAddState> {
-  BookAddCubit() : super(const BookAddState());
+class _Cubit extends Cubit<_State> {
+  _Cubit() : super(const _State());
 
   /// Allows the user to pick a file.
   Future<void> pickFile() async {
@@ -19,7 +12,7 @@ class BookAddCubit extends Cubit<BookAddState> {
     );
 
     if (!isClosed) {
-      emit(BookAddState(file: _getFileFromResult(result)));
+      emit(_State(file: _getFileFromResult(result)));
     }
   }
 
@@ -33,7 +26,7 @@ class BookAddCubit extends Cubit<BookAddState> {
   }
 
   /// Removes the selected file from the state.
-  void removeFile() => emit(const BookAddState());
+  void removeFile() => emit(const _State());
 
   /// Helper method to extract a File from the FilePickerResult.
   File? _getFileFromResult(FilePickerResult? result) {
@@ -44,11 +37,11 @@ class BookAddCubit extends Cubit<BookAddState> {
 }
 
 /// State representing the current file being added.
-class BookAddState extends Equatable {
+class _State extends Equatable {
   final File? file;
 
   @override
   List<Object?> get props => [file];
 
-  const BookAddState({this.file});
+  const _State({this.file});
 }

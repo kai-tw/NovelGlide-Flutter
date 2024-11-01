@@ -1,18 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:path/path.dart';
+part of '../book_add_dialog.dart';
 
-import '../../../utils/file_utils.dart';
-import '../bloc/book_add_bloc.dart';
-
-class BookAddFileInfoWidget extends StatelessWidget {
-  const BookAddFileInfoWidget({super.key});
+class _FileInfoListTile extends StatelessWidget {
+  const _FileInfoListTile();
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<BookAddCubit, BookAddState>(
+    return BlocBuilder<_Cubit, _State>(
       buildWhen: (previous, current) => previous.file != current.file,
       builder: (context, state) {
         final fileName = state.file != null

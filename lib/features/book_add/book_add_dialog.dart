@@ -1,13 +1,26 @@
+import 'dart:io';
+
+import 'package:equatable/equatable.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:path/path.dart';
 
 import '../../enum/window_class.dart';
+import '../../exceptions/file_exceptions.dart';
+import '../../repository/book_repository.dart';
+import '../../utils/file_utils.dart';
 import '../common_components/common_back_button.dart';
-import 'bloc/book_add_bloc.dart';
-import 'widgets/book_add_file_info_widget.dart';
-import 'widgets/book_add_file_picking_button.dart';
-import 'widgets/book_add_submit_button.dart';
+import '../common_components/common_error_dialog.dart';
+
+part 'bloc/cubit.dart';
+part 'dialog/file_duplicate_error_dialog.dart';
+part 'widgets/file_info_list_tile.dart';
+part 'widgets/form.dart';
+part 'widgets/form_file_helper_text.dart';
+part 'widgets/pick_file_button.dart';
+part 'widgets/submit_button.dart';
 
 class BookAddDialog extends StatelessWidget {
   const BookAddDialog({super.key});
@@ -15,65 +28,19 @@ class BookAddDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Container(
+      child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: WindowClass.compact.maxWidth),
-        child: Stack(
+        child: const Stack(
           children: [
-            _buildForm(context),
-            _buildCloseButton(),
+            _Form(),
+            Positioned(
+              top: 4.0,
+              right: 4.0,
+              child: CommonBackButton(iconData: Icons.close_rounded),
+            ),
           ],
         ),
       ),
-    );
-  }
-
-  /// Builds the form with file info, helper text, and action buttons.
-  Widget _buildForm(BuildContext context) {
-    return Form(
-      child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: BlocProvider(
-          create: (context) => BookAddCubit(),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const BookAddFileInfoWidget(),
-              _buildHelperText(context),
-              _buildActionButtons(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  /// Builds the helper text for file type.
-  Widget _buildHelperText(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 48.0),
-      child: Text('${AppLocalizations.of(context)!.fileTypeHelperText} epub'),
-    );
-  }
-
-  /// Builds the action buttons for file picking and submission.
-  Widget _buildActionButtons() {
-    return const OverflowBar(
-      alignment: MainAxisAlignment.spaceBetween,
-      overflowAlignment: OverflowBarAlignment.center,
-      overflowSpacing: 10.0,
-      children: [
-        BookAddFilePickingButton(),
-        BookAddSubmitButton(),
-      ],
-    );
-  }
-
-  /// Builds the close button positioned at the top-right corner.
-  Widget _buildCloseButton() {
-    return const Positioned(
-      top: 4.0,
-      right: 4.0,
-      child: CommonBackButton(iconData: Icons.close_rounded),
     );
   }
 }
