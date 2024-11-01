@@ -1,20 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../collection_add_dialog.dart';
 
-import '../../../repository/collection_repository.dart';
-import '../bloc/collection_add_bloc.dart';
-
-class CollectionAddSubmitButton extends StatelessWidget {
-  const CollectionAddSubmitButton({super.key});
+class _SubmitButton extends StatelessWidget {
+  const _SubmitButton();
 
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<CollectionAddCubit, CollectionAddState>(
+    return BlocBuilder<_Cubit, _State>(
       buildWhen: (previous, current) => previous.name != current.name,
       builder: (context, state) {
-        final isDisabled = state.name == null || state.name!.isEmpty;
+        final isDisabled = state.name?.isEmpty ?? true;
         return ElevatedButton.icon(
           onPressed: isDisabled ? null : () => _onPressed(context, state),
           style: ElevatedButton.styleFrom(
@@ -30,13 +25,12 @@ class CollectionAddSubmitButton extends StatelessWidget {
 
   Future<void> _onPressed(
     BuildContext context,
-    CollectionAddState state,
+    _State state,
   ) async {
     final appLocalizations = AppLocalizations.of(context)!;
+    final cubit = BlocProvider.of<_Cubit>(context);
     if (Form.of(context).validate()) {
-      Form.of(context).save();
-
-      CollectionRepository.create(state.name!);
+      cubit.submit();
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

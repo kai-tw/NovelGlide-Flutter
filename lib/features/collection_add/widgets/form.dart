@@ -1,12 +1,7 @@
-import 'package:flutter/material.dart';
+part of '../collection_add_dialog.dart';
 
-import 'widgets/collection_add_cancel_button.dart';
-import 'widgets/collection_add_name_field.dart';
-import 'widgets/collection_add_submit_button.dart';
-import 'widgets/collection_add_title.dart';
-
-class CollectionAddForm extends StatelessWidget {
-  const CollectionAddForm({super.key});
+class _Form extends StatelessWidget {
+  const _Form();
 
   @override
   Widget build(BuildContext context) {
@@ -17,16 +12,16 @@ class CollectionAddForm extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CollectionAddTitle(),
+            _TitleText(),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 24.0),
-              child: CollectionAddNameField(),
+              child: _NameField(),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                CollectionAddCancelButton(),
-                CollectionAddSubmitButton(),
+                _CancelButton(),
+                _SubmitButton(),
               ],
             ),
           ],
