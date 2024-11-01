@@ -6,7 +6,13 @@ class DraggablePlaceholderWidget extends StatelessWidget {
   final double? height;
   final EdgeInsets? padding;
 
-  const DraggablePlaceholderWidget({super.key, required this.child, this.width, this.height, this.padding});
+  const DraggablePlaceholderWidget({
+    super.key,
+    required this.child,
+    this.width,
+    this.height,
+    this.padding,
+  });
 
   @override
   Widget build(BuildContext context) {

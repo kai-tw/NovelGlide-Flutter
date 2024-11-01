@@ -7,8 +7,8 @@ class _DraggableBookmark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
+    final appLocalizations = AppLocalizations.of(context)!;
+    final cubit = BlocProvider.of<BookmarkListCubit>(context);
 
     return LayoutBuilder(builder: (context, constraints) {
       return LongPressDraggable(
@@ -33,10 +33,18 @@ class _DraggableBookmark extends StatelessWidget {
           width: constraints.maxWidth,
           child: BookmarkWidget(_data),
         ),
-        child: Container(
-          width: constraints.maxWidth,
-          color: Colors.transparent,
-          child: BookmarkWidget(_data),
+        child: BookmarkWidget(
+          _data,
+          onTap: () => Navigator.of(context)
+              .push(
+                RouteUtils.pushRoute(
+                  ReaderWidget(
+                    bookPath: _data.bookPath,
+                    isGotoBookmark: true,
+                  ),
+                ),
+              )
+              .then((_) => cubit.refresh()),
         ),
       );
     });

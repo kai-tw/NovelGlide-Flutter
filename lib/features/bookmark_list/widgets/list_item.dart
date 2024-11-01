@@ -1,79 +1,38 @@
 part of '../bookmark_list.dart';
 
 class _ListItem extends StatelessWidget {
-  const _ListItem(this._bookmarkData);
-
   final BookmarkData _bookmarkData;
+
+  const _ListItem(this._bookmarkData);
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
+    final cubit = BlocProvider.of<BookmarkListCubit>(context);
 
-    return InkWell(
-      borderRadius: BorderRadius.circular(24.0),
-      onTap: () {
-        final NavigatorState navigator = Navigator.of(context);
-
-        if (cubit.state.isSelecting) {
-          if (cubit.state.selectedBookmarks.contains(_bookmarkData)) {
-            cubit.deselectBookmark(_bookmarkData);
-          } else {
-            cubit.selectBookmark(_bookmarkData);
-          }
+    return BlocBuilder<BookmarkListCubit, _State>(
+      buildWhen: (previous, current) =>
+          previous.isSelecting != current.isSelecting ||
+          previous.selectedBookmarks.contains(_bookmarkData) !=
+              current.selectedBookmarks.contains(_bookmarkData),
+      builder: (context, state) {
+        if (state.isSelecting) {
+          final isSelected = state.selectedBookmarks.contains(_bookmarkData);
+          return BookmarkWidget(
+            _bookmarkData,
+            isSelecting: state.isSelecting,
+            isSelected: isSelected,
+            onChanged: (bool? value) {
+              if (value == true) {
+                cubit.selectBookmark(_bookmarkData);
+              } else {
+                cubit.deselectBookmark(_bookmarkData);
+              }
+            },
+          );
         } else {
-          navigator
-              .push(RouteUtils.pushRoute(ReaderWidget(
-                  bookPath: _bookmarkData.bookPath, isGotoBookmark: true)))
-              .then((_) => cubit.refresh());
+          return _DraggableBookmark(_bookmarkData);
         }
       },
-      child: BlocBuilder<BookmarkListCubit, _State>(
-        buildWhen: (previous, current) =>
-            previous.isSelecting != current.isSelecting ||
-            previous.selectedBookmarks != current.selectedBookmarks,
-        builder: (BuildContext context, _State state) {
-          if (state.isSelecting) {
-            final bool isSelected =
-                state.selectedBookmarks.contains(_bookmarkData);
-            return Semantics(
-              label: appLocalizations.bookmarkListAccessibilityItem,
-              onTapHint: appLocalizations.bookmarkListAccessibilitySelectOnTap,
-              child: BookmarkWidget(
-                _bookmarkData,
-                trailing: Checkbox(
-                  value: isSelected,
-                  activeColor: Colors.transparent,
-                  checkColor: Theme.of(context).colorScheme.onErrorContainer,
-                  onChanged: (bool? value) {
-                    if (value == true) {
-                      cubit.selectBookmark(_bookmarkData);
-                    } else {
-                      cubit.deselectBookmark(_bookmarkData);
-                    }
-                  },
-                  semanticLabel:
-                      appLocalizations.bookmarkListAccessibilitySelectItem,
-                ),
-                backgroundColor: isSelected
-                    ? Theme.of(context).colorScheme.errorContainer
-                    : null,
-                color: isSelected
-                    ? Theme.of(context).colorScheme.onErrorContainer
-                    : null,
-              ),
-            );
-          } else {
-            return Semantics(
-              label: appLocalizations.bookmarkListAccessibilityItem,
-              onTapHint: appLocalizations.bookmarkListAccessibilityOnTap,
-              onLongPressHint:
-                  appLocalizations.bookmarkListAccessibilityOnLongPress,
-              child: _DraggableBookmark(_bookmarkData),
-            );
-          }
-        },
-      ),
     );
   }
 }

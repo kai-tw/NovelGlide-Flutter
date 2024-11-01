@@ -6,7 +6,13 @@ class DraggableFeedbackWidget extends StatelessWidget {
   final double? height;
   final EdgeInsets? padding;
 
-  const DraggableFeedbackWidget({super.key, required this.child, this.width, this.height, this.padding});
+  const DraggableFeedbackWidget({
+    super.key,
+    required this.child,
+    this.width,
+    this.height,
+    this.padding,
+  });
 
   @override
   Widget build(BuildContext context) {

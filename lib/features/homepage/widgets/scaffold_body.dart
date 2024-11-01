@@ -76,7 +76,7 @@ class _ScaffoldBody extends StatelessWidget {
                         child: CustomScrollView(
                           key: PageStorageKey<String>('homepage-bookmark'),
                           slivers: [
-                            BookmarkListSliverList(),
+                            BookmarkList(),
                           ],
                         ),
                       ),

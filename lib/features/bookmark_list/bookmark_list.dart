@@ -12,7 +12,6 @@ import '../../enum/sort_order_code.dart';
 import '../../enum/window_class.dart';
 import '../../repository/bookmark_repository.dart';
 import '../../utils/route_utils.dart';
-import '../common_components/bookmark_widget.dart';
 import '../common_components/common_delete_dialog.dart';
 import '../common_components/common_delete_drag_target.dart';
 import '../common_components/common_list_empty.dart';
@@ -26,6 +25,7 @@ import '../reader/reader.dart';
 part 'bloc/cubit.dart';
 part 'bookmark_list_app_bar.dart';
 part 'bookmark_list_operation_panel.dart';
+part 'widgets/bookmark_widget.dart';
 part 'widgets/delete_button.dart';
 part 'widgets/done_button.dart';
 part 'widgets/draggable_bookmark.dart';
@@ -33,8 +33,8 @@ part 'widgets/list_item.dart';
 part 'widgets/popup_menu_button.dart';
 part 'widgets/select_button.dart';
 
-class BookmarkListSliverList extends StatelessWidget {
-  const BookmarkListSliverList({super.key});
+class BookmarkList extends StatelessWidget {
+  const BookmarkList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +42,13 @@ class BookmarkListSliverList extends StatelessWidget {
     BlocProvider.of<BookmarkListCubit>(context).refresh();
 
     return BlocBuilder<BookmarkListCubit, _State>(
+      buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         switch (state.code) {
+          case LoadingStateCode.initial:
+          case LoadingStateCode.loading:
+            return const CommonSliverLoading();
+
           case LoadingStateCode.loaded:
             if (state.bookmarkList.isEmpty) {
               return CommonSliverListEmpty(
@@ -64,10 +69,6 @@ class BookmarkListSliverList extends StatelessWidget {
                 ),
               );
             }
-
-          case LoadingStateCode.initial:
-          case LoadingStateCode.loading:
-            return const CommonSliverLoading();
         }
       },
     );
