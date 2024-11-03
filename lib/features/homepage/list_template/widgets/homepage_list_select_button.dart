@@ -37,7 +37,7 @@ class HomepageListSelectButton<M extends HomepageListCubit<T>, T>
           duration: const Duration(milliseconds: 300),
           transitionBuilder: (child, animation) =>
               FadeTransition(opacity: animation, child: child),
-          child: child,
+          child: child ?? const SizedBox.shrink(),
         );
       },
     );

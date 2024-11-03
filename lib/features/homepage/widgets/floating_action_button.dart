@@ -40,10 +40,11 @@ class _FloatingActionButton extends StatelessWidget {
                 showDialog(
                   context: context,
                   barrierDismissible: false,
-                  useRootNavigator: false,
                   builder: (context) => const CollectionAddDialog(),
-                ).then((_) {
-                  collectionListCubit.refresh();
+                ).then((isSuccess) {
+                  if (isSuccess == true) {
+                    collectionListCubit.refresh();
+                  }
                 });
               },
               child: Icon(
@@ -63,13 +64,13 @@ class _FloatingActionButton extends StatelessWidget {
               position: Tween<Offset>(
                 begin: const Offset(2.0, 0.0),
                 end: const Offset(0.0, 0.0),
-              )
-                  .chain(CurveTween(curve: Curves.easeInOutCubicEmphasized))
-                  .animate(animation),
+              ).animate(animation),
               child: child,
             );
           },
-          child: child,
+          switchInCurve: Curves.easeInOutCubicEmphasized,
+          switchOutCurve: Curves.easeInOutCubicEmphasized,
+          child: child ?? const SizedBox.shrink(),
         );
       },
     );

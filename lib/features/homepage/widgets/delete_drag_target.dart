@@ -25,12 +25,12 @@ class _DeleteDragTarget<M extends Cubit<HomepageListState<T>>, T>
               position: Tween<Offset>(
                 begin: const Offset(0.0, 3.0),
                 end: const Offset(0.0, 0.0),
-              )
-                  .chain(CurveTween(curve: Curves.easeInOutCubicEmphasized))
-                  .animate(animation),
+              ).animate(animation),
               child: child,
             );
           },
+          switchInCurve: Curves.easeInOutCubicEmphasized,
+          switchOutCurve: Curves.easeInOutCubicEmphasized,
           child: child ?? const SizedBox.shrink(),
         );
       },

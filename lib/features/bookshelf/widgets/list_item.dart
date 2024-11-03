@@ -59,12 +59,14 @@ class _SliverListItem extends StatelessWidget {
               buildWhen: (previous, current) =>
                   previous.isSelecting != current.isSelecting,
               builder: (context, state) {
+                final isSelecting = state.isSelecting;
                 return AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
-                  transitionBuilder: (child, animation) =>
-                      FadeTransition(opacity: animation, child: child),
-                  child:
-                      state.isSelecting ? _Checkbox(bookData: bookData) : null,
+                  transitionBuilder: (child, animation) => FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  ),
+                  child: isSelecting ? _Checkbox(bookData: bookData) : null,
                 );
               },
             ),
