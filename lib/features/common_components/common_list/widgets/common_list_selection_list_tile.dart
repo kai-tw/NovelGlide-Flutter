@@ -22,12 +22,10 @@ class CommonListSelectionListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const normalPadding = EdgeInsets.symmetric(horizontal: 12.0);
     if (isSelecting) {
       return CheckboxListTile(
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16.0,
-          vertical: 4.0,
-        ),
+        contentPadding: _compensatedPadding ?? normalPadding,
         value: isSelected,
         onChanged: onChanged,
         secondary: leading,
@@ -36,14 +34,22 @@ class CommonListSelectionListTile extends StatelessWidget {
       );
     } else {
       return ListTile(
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 12.0,
-        ),
+        contentPadding: normalPadding,
         onTap: onTap,
         leading: leading,
         title: title,
         subtitle: subtitle,
       );
     }
+  }
+
+  EdgeInsets? get _compensatedPadding {
+    if (Platform.isIOS) {
+      return const EdgeInsets.symmetric(
+        horizontal: 16.0,
+        vertical: 4.0,
+      );
+    }
+    return null;
   }
 }
