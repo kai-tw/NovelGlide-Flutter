@@ -1,18 +1,14 @@
-import 'package:flutter/material.dart';
+part of '../table_of_contents.dart';
 
-import '../../../data_model/book_data.dart';
-import '../../common_components/common_book_cover_image.dart';
-
-class TocCoverBanner extends StatelessWidget {
+class _CoverBanner extends StatelessWidget {
   final BookData bookData;
-  final double? aspectRatio;
 
-  const TocCoverBanner({super.key, this.aspectRatio, required this.bookData});
+  const _CoverBanner({required this.bookData});
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
+      builder: (context, constraints) {
         return Container(
           width: constraints.maxWidth,
           height: constraints.maxHeight,

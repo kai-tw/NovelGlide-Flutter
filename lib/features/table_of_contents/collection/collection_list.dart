@@ -1,19 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+part of '../table_of_contents.dart';
 
-import '../../enum/loading_state_code.dart';
-import '../common_components/common_list_empty.dart';
-import '../common_components/common_loading.dart';
-import 'bloc/toc_collection_bloc.dart';
-
-class TocCollectionList extends StatelessWidget {
-  const TocCollectionList({super.key});
+class _CollectionList extends StatelessWidget {
+  const _CollectionList();
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<TocCollectionCubit>(context);
+    final cubit = BlocProvider.of<_CollectionCubit>(context);
 
-    return BlocBuilder<TocCollectionCubit, TocCollectionState>(
+    return BlocBuilder<_CollectionCubit, _CollectionState>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
           previous.selectedCollections != current.selectedCollections,

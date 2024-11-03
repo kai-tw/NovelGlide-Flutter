@@ -27,7 +27,7 @@ import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import '../common_components/draggable_feedback_widget.dart';
 import '../common_components/draggable_placeholder_widget.dart';
-import '../table_of_contents/table_of_content.dart';
+import '../table_of_contents/table_of_contents.dart';
 
 part 'bloc/cubit.dart';
 part 'bookshelf_app_bar.dart';

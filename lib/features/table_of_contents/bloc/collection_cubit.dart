@@ -1,26 +1,18 @@
-import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+part of '../table_of_contents.dart';
 
-import '../../../data_model/book_data.dart';
-import '../../../data_model/collection_data.dart';
-import '../../../enum/loading_state_code.dart';
-import '../../../repository/collection_repository.dart';
-
-class TocCollectionCubit extends Cubit<TocCollectionState> {
+class _CollectionCubit extends Cubit<_CollectionState> {
   final BookData bookData;
 
-  factory TocCollectionCubit(BookData bookData) {
-    final cubit = TocCollectionCubit._internal(
+  factory _CollectionCubit(BookData bookData) {
+    final cubit = _CollectionCubit._internal(
       bookData,
-      const TocCollectionState(),
+      const _CollectionState(),
     );
     cubit._init();
     return cubit;
   }
 
-  TocCollectionCubit._internal(this.bookData, super.initialState);
+  _CollectionCubit._internal(this.bookData, super.initialState);
 
   void _init() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -37,7 +29,7 @@ class TocCollectionCubit extends Cubit<TocCollectionState> {
 
     collectionList.sort((a, b) => compareNatural(a.name, b.name));
 
-    emit(TocCollectionState(
+    emit(_CollectionState(
       code: LoadingStateCode.loaded,
       collectionList: collectionList,
       selectedCollections: selectedCollections,
@@ -66,7 +58,7 @@ class TocCollectionCubit extends Cubit<TocCollectionState> {
   }
 }
 
-class TocCollectionState extends Equatable {
+class _CollectionState extends Equatable {
   final LoadingStateCode code;
   final List<CollectionData> collectionList;
   final Set<String> selectedCollections;
@@ -74,18 +66,18 @@ class TocCollectionState extends Equatable {
   @override
   List<Object?> get props => [code, collectionList, selectedCollections];
 
-  const TocCollectionState({
+  const _CollectionState({
     this.code = LoadingStateCode.initial,
     this.collectionList = const [],
     this.selectedCollections = const {},
   });
 
-  TocCollectionState copyWith({
+  _CollectionState copyWith({
     LoadingStateCode? code,
     List<CollectionData>? collectionList,
     Set<String>? selectedCollections,
   }) {
-    return TocCollectionState(
+    return _CollectionState(
       code: code ?? this.code,
       collectionList: collectionList ?? this.collectionList,
       selectedCollections: selectedCollections ?? this.selectedCollections,

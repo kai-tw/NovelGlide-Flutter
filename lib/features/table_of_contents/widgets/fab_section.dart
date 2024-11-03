@@ -1,18 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../table_of_contents.dart';
 
-import '../../enum/window_class.dart';
-import '../../utils/route_utils.dart';
-import '../reader/reader.dart';
-import 'bloc/toc_bloc.dart';
-
-class TocFabSection extends StatelessWidget {
-  const TocFabSection({super.key});
+class _FabSection extends StatelessWidget {
+  const _FabSection();
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<TocCubit>(context);
+    final cubit = BlocProvider.of<_Cubit>(context);
     final windowWidth = MediaQuery.of(context).size.width;
     final windowClass = WindowClass.fromWidth(windowWidth);
     double maxWidth = windowWidth - kFloatingActionButtonMargin;
@@ -24,8 +17,8 @@ class TocFabSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(left: kFloatingActionButtonMargin),
       constraints: BoxConstraints(maxWidth: maxWidth),
-      child: BlocBuilder<TocCubit, TocState>(
-        builder: (BuildContext context, TocState state) {
+      child: BlocBuilder<_Cubit, _State>(
+        builder: (BuildContext context, _State state) {
           List<Widget> children = [
             ElevatedButton.icon(
               onPressed: () {

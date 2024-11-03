@@ -14,7 +14,7 @@ import '../../utils/route_utils.dart';
 import '../common_components/common_back_button.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
-import '../table_of_contents/table_of_content.dart';
+import '../table_of_contents/table_of_contents.dart';
 
 part 'bloc/cubit.dart';
 part 'widgets/list_view.dart';

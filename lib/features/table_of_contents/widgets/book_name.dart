@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
+part of '../table_of_contents.dart';
 
-import '../../../data_model/book_data.dart';
-
-class TocBookName extends StatelessWidget {
+class _BookName extends StatelessWidget {
   final BookData bookData;
 
-  const TocBookName({super.key, required this.bookData});
+  const _BookName({required this.bookData});
 
   @override
   Widget build(BuildContext context) {

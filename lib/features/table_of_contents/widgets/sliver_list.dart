@@ -1,25 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../table_of_contents.dart';
 
-import '../../../data_model/book_data.dart';
-import '../../../data_model/chapter_data.dart';
-import '../../../enum/loading_state_code.dart';
-import '../../../utils/route_utils.dart';
-import '../../common_components/common_list_empty.dart';
-import '../../common_components/common_loading.dart';
-import '../../reader/reader.dart';
-import '../bloc/toc_bloc.dart';
-
-class TocSliverChapterList extends StatelessWidget {
+class _SliverList extends StatelessWidget {
   final BookData bookData;
 
-  const TocSliverChapterList({super.key, required this.bookData});
+  const _SliverList({required this.bookData});
 
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<TocCubit, TocState>(
+    return BlocBuilder<_Cubit, _State>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
           previous.chapterList != current.chapterList ||
@@ -43,8 +32,8 @@ class TocSliverChapterList extends StatelessWidget {
     );
   }
 
-  Widget _buildList(BuildContext context, TocState state) {
-    final cubit = BlocProvider.of<TocCubit>(context);
+  Widget _buildList(BuildContext context, _State state) {
+    final cubit = BlocProvider.of<_Cubit>(context);
     final allChapterList = _constructChapterTree(state.chapterList, 0);
 
     return SliverList(

@@ -1,24 +1,16 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+part of '../table_of_contents.dart';
 
-import '../../../data_model/book_data.dart';
-import '../../../data_model/bookmark_data.dart';
-import '../../../data_model/chapter_data.dart';
-import '../../../enum/loading_state_code.dart';
-import '../../../repository/bookmark_repository.dart';
-
-class TocCubit extends Cubit<TocState> {
+class _Cubit extends Cubit<_State> {
   final PageStorageBucket bucket = PageStorageBucket();
   final ScrollController scrollController = ScrollController();
   BookData bookData;
 
-  TocCubit(this.bookData) : super(const TocState());
+  _Cubit(this.bookData) : super(const _State());
 
   Future<void> init() async {
-    emit(const TocState(code: LoadingStateCode.loading));
+    emit(const _State(code: LoadingStateCode.loading));
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      emit(TocState(
+      emit(_State(
         code: LoadingStateCode.loaded,
         bookmarkData: BookmarkRepository.get(bookData.filePath),
         chapterList: await bookData.getChapterList(),
@@ -28,7 +20,7 @@ class TocCubit extends Cubit<TocState> {
 
   void refresh() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      emit(TocState(
+      emit(_State(
         code: LoadingStateCode.loaded,
         bookmarkData: BookmarkRepository.get(bookData.filePath),
         chapterList: state.chapterList,
@@ -37,7 +29,7 @@ class TocCubit extends Cubit<TocState> {
   }
 }
 
-class TocState extends Equatable {
+class _State extends Equatable {
   final LoadingStateCode code;
   final BookmarkData? bookmarkData;
   final List<ChapterData> chapterList;
@@ -45,7 +37,7 @@ class TocState extends Equatable {
   @override
   List<Object?> get props => [code, bookmarkData, chapterList];
 
-  const TocState({
+  const _State({
     this.code = LoadingStateCode.initial,
     this.bookmarkData,
     this.chapterList = const [],

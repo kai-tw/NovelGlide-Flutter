@@ -1,17 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../table_of_contents.dart';
 
-import '../collection_add/collection_add_dialog.dart';
-import 'bloc/toc_collection_bloc.dart';
-
-class TocCollectionNavigation extends StatelessWidget {
-  const TocCollectionNavigation({super.key});
+class _CollectionNavigation extends StatelessWidget {
+  const _CollectionNavigation();
 
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<TocCollectionCubit>(context);
+    final cubit = BlocProvider.of<_CollectionCubit>(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
