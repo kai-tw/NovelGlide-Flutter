@@ -31,7 +31,7 @@ class _SliverListItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(24.0),
       child: Stack(
         children: [
-          BlocBuilder<BookshelfCubit, CommonListState>(
+          BlocBuilder<BookshelfCubit, _State>(
             buildWhen: (previous, current) =>
                 previous.isSelecting != current.isSelecting,
             builder: (context, state) {
@@ -55,7 +55,7 @@ class _SliverListItem extends StatelessWidget {
           Positioned(
             top: 16.0,
             left: 16.0,
-            child: BlocBuilder<BookshelfCubit, CommonListState>(
+            child: BlocBuilder<BookshelfCubit, _State>(
               buildWhen: (previous, current) =>
                   previous.isSelecting != current.isSelecting,
               builder: (context, state) {
@@ -92,7 +92,7 @@ class _Checkbox extends StatelessWidget {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
     final cubit = BlocProvider.of<BookshelfCubit>(context);
-    return BlocBuilder<BookshelfCubit, CommonListState>(
+    return BlocBuilder<BookshelfCubit, _State>(
       buildWhen: (previous, current) =>
           previous.selectedSet != current.selectedSet,
       builder: (context, state) {

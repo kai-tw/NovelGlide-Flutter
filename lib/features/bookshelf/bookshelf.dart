@@ -19,7 +19,6 @@ import '../../utils/mime_resolver.dart';
 import '../../utils/route_utils.dart';
 import '../common_components/common_book_cover_image.dart';
 import '../common_components/common_delete_dialog.dart';
-import '../common_components/common_delete_drag_target.dart';
 import '../common_components/common_error_dialog.dart';
 import '../common_components/common_list/common_list.dart';
 import '../common_components/common_list_empty.dart';
@@ -31,7 +30,6 @@ import '../table_of_contents/table_of_contents.dart';
 
 part 'bloc/cubit.dart';
 part 'bookshelf_app_bar.dart';
-part 'bookshelf_operation_panel.dart';
 part 'widgets/book_widget.dart';
 part 'widgets/done_button.dart';
 part 'widgets/draggable_book.dart';
@@ -46,7 +44,7 @@ class Bookshelf extends StatelessWidget {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
 
-    return BlocBuilder<BookshelfCubit, CommonListState>(
+    return BlocBuilder<BookshelfCubit, _State>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
           previous.dataList != current.dataList ||

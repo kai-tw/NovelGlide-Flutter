@@ -8,11 +8,14 @@ class CommonDeleteDragTarget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final appLocalizations = AppLocalizations.of(context)!;
     return DragTarget(
       builder: (context, candidateData, rejectedData) {
         return Container(
-          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 32.0),
+          padding: const EdgeInsets.symmetric(
+            vertical: 16.0,
+            horizontal: 32.0,
+          ),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.error,
             borderRadius: BorderRadius.circular(36.0),

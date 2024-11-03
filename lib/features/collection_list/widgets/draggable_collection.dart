@@ -1,21 +1,21 @@
-part of '../bookmark_list.dart';
+part of '../collection_list.dart';
 
-class _DraggableBookmark extends StatelessWidget {
-  final BookmarkData _data;
+class _DraggableCollection extends StatelessWidget {
+  final CollectionData _data;
 
-  const _DraggableBookmark(this._data);
+  const _DraggableCollection(this._data);
 
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<BookmarkListCubit>(context);
+    final cubit = BlocProvider.of<CollectionListCubit>(context);
 
     return LayoutBuilder(builder: (context, constraints) {
       return LongPressDraggable(
         onDragStarted: () => cubit.setDragging(true),
         onDragEnd: (_) => cubit.setDragging(false),
         onDragCompleted: () async {
-          BookmarkRepository.delete(_data);
+          CollectionRepository.delete(_data);
           cubit.refresh();
 
           ScaffoldMessenger.of(context).showSnackBar(
@@ -27,22 +27,19 @@ class _DraggableBookmark extends StatelessWidget {
         data: _data,
         feedback: DraggableFeedbackWidget(
           width: constraints.maxWidth,
-          child: _BookmarkWidget(_data),
+          child: _CollectionWidget(_data),
         ),
         childWhenDragging: DraggablePlaceholderWidget(
           width: constraints.maxWidth,
-          child: _BookmarkWidget(_data),
+          child: _CollectionWidget(_data),
         ),
-        child: _BookmarkWidget(
+        child: _CollectionWidget(
           _data,
           onTap: () {
             Navigator.of(context)
                 .push(
                   RouteUtils.pushRoute(
-                    ReaderWidget(
-                      bookPath: _data.bookPath,
-                      isGotoBookmark: true,
-                    ),
+                    CollectionViewer(collectionData: _data),
                   ),
                 )
                 .then((_) => cubit.refresh());

@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../data_model/book_data.dart';
+import '../../data_model/bookmark_data.dart';
+import '../../data_model/collection_data.dart';
 import '../../data_model/theme_data_record.dart';
 import '../../enum/window_class.dart';
 import '../ads/advertisement.dart';
@@ -14,12 +17,15 @@ import '../bookmark_list/bookmark_list.dart';
 import '../bookshelf/bookshelf.dart';
 import '../collection_add/collection_add_dialog.dart';
 import '../collection_list/collection_list.dart';
+import '../common_components/common_delete_drag_target.dart';
+import '../common_components/common_list/common_list.dart';
 import '../settings_page/settings_page.dart';
 
 part 'bloc/cubit.dart';
 part 'view/compact_view.dart';
 part 'view/medium_view.dart';
 part 'widgets/app_bar.dart';
+part 'widgets/delete_drag_target.dart';
 part 'widgets/floating_action_button.dart';
 part 'widgets/floating_action_widget.dart';
 part 'widgets/navigation_bar.dart';

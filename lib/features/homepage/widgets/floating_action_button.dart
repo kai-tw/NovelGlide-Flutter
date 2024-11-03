@@ -40,6 +40,7 @@ class _FloatingActionButton extends StatelessWidget {
                 showDialog(
                   context: context,
                   barrierDismissible: false,
+                  useRootNavigator: false,
                   builder: (context) => const CollectionAddDialog(),
                 ).then((_) {
                   collectionListCubit.refresh();

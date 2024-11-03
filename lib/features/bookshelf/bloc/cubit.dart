@@ -1,5 +1,7 @@
 part of '../bookshelf.dart';
 
+typedef _State = CommonListState<BookData>;
+
 class BookshelfCubit extends Cubit<CommonListState<BookData>> {
   final String _sortOrderKey = PreferenceKeys.bookshelf.sortOrder;
   final String _isAscendingKey = PreferenceKeys.bookshelf.isAscending;

@@ -8,7 +8,6 @@ class _ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<BookmarkListCubit>(context);
-
     return BlocBuilder<BookmarkListCubit, CommonListState>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
@@ -17,7 +16,7 @@ class _ListItem extends StatelessWidget {
       builder: (context, state) {
         if (state.isSelecting) {
           final isSelected = state.selectedSet.contains(_bookmarkData);
-          return BookmarkWidget(
+          return _BookmarkWidget(
             _bookmarkData,
             isSelecting: state.isSelecting,
             isSelected: isSelected,

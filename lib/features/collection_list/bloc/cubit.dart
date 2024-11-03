@@ -1,12 +1,20 @@
 part of '../collection_list.dart';
 
-class CollectionListCubit extends Cubit<CommonListState<CollectionData>> {
+typedef _State = CommonListState<CollectionData>;
+
+class CollectionListCubit extends Cubit<_State> {
   // Keys for storing sort order and ascending preference in shared preferences
   final _sortOrderKey = PreferenceKeys.collection.sortOrder;
   final _isAscendingKey = PreferenceKeys.collection.isAscending;
 
   // Constructor initializing the cubit with an initial state
-  CollectionListCubit() : super(const CommonListState());
+  factory CollectionListCubit() {
+    final cubit = CollectionListCubit._internal(const _State());
+    cubit.refresh();
+    return cubit;
+  }
+
+  CollectionListCubit._internal(super.initialState);
 
   // Refreshes the collection list by fetching data and applying saved sort preferences
   Future<void> refresh() async {
@@ -39,6 +47,11 @@ class CollectionListCubit extends Cubit<CommonListState<CollectionData>> {
       isSelecting: isSelecting,
       selectedSet: {},
     ));
+  }
+
+  // Set the dragging mode
+  void setDragging(bool isDragging) {
+    emit(state.copyWith(isDragging: isDragging));
   }
 
   // Selects all collections in the list

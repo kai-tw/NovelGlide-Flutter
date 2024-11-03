@@ -17,11 +17,15 @@ import '../common_components/common_list/common_list.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import '../common_components/common_popup_menu_sort_list_tile.dart';
+import '../common_components/draggable_feedback_widget.dart';
+import '../common_components/draggable_placeholder_widget.dart';
 
 part 'bloc/cubit.dart';
 part 'collection_list_app_bar.dart';
-part 'collection_list_operation_panel.dart';
-part 'widgets/delete_button.dart';
+part 'widgets/collection_widget.dart';
+part 'widgets/done_button.dart';
+part 'widgets/draggable_collection.dart';
+part 'widgets/list_item.dart';
 part 'widgets/popup_menu_button.dart';
 part 'widgets/select_button.dart';
 
@@ -31,11 +35,10 @@ class CollectionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<CollectionListCubit>(context)..refresh();
     final windowWidth = MediaQuery.of(context).size.width;
     final windowClass = WindowClass.fromWidth(windowWidth);
 
-    return BlocBuilder<CollectionListCubit, CommonListState>(
+    return BlocBuilder<CollectionListCubit, _State>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
           previous.dataList != current.dataList ||
@@ -61,30 +64,7 @@ class CollectionList extends StatelessWidget {
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      final data = state.dataList[index];
-                      return CommonListSelectionListTile(
-                        isSelecting: state.isSelecting,
-                        isSelected: state.selectedSet.contains(data),
-                        leading: const Padding(
-                          padding: EdgeInsets.only(left: 4.0, right: 14.0),
-                          child: Icon(Icons.folder_rounded),
-                        ),
-                        title: Text(data.name),
-                        onChanged: (_) {
-                          if (state.selectedSet.contains(data)) {
-                            cubit.deselectCollection(data);
-                          } else {
-                            cubit.selectCollection(data);
-                          }
-                        },
-                        onTap: () {
-                          Navigator.of(context).push(
-                            RouteUtils.pushRoute(
-                              CollectionViewer(collectionData: data),
-                            ),
-                          );
-                        },
-                      );
+                      return _ListItem(state.dataList[index]);
                     },
                     childCount: state.dataList.length,
                   ),

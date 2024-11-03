@@ -13,10 +13,11 @@ class _PopupMenuButton extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       itemBuilder: (BuildContext context) {
         final state = cubit.state;
+        final isLoaded = state.code == LoadingStateCode.loaded;
         List<PopupMenuEntry<dynamic>> entries = [];
 
-        // Edit mode button
-        if (state.code == LoadingStateCode.loaded && !state.isSelecting) {
+        /// Selecting mode
+        if (isLoaded && !state.isSelecting) {
           entries.addAll([
             PopupMenuItem(
               onTap: () => cubit.setSelecting(true),
@@ -32,7 +33,7 @@ class _PopupMenuButton extends StatelessWidget {
           ]);
         }
 
-        // The sorting button
+        /// Sorting Section
         final sortMap = {
           SortOrderCode.name: appLocalizations.bookmarkListSortName,
           SortOrderCode.savedTime: appLocalizations.bookmarkListSortSavedTime,
@@ -45,7 +46,7 @@ class _PopupMenuButton extends StatelessWidget {
             onTap: () {
               cubit.setListOrder(
                 sortOrder: !isSelected ? entry.key : null,
-                isAscending: isSelected ? !state.isAscending : null,
+                isAscending: isSelected ? !isAscending : null,
               );
             },
             child: CommonPopupMenuSortListTile(
@@ -54,6 +55,32 @@ class _PopupMenuButton extends StatelessWidget {
               title: entry.value,
             ),
           ));
+        }
+
+        /// Operation Section
+        if (isLoaded && state.isSelecting) {
+          entries.addAll([
+            const PopupMenuDivider(),
+            PopupMenuItem(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CommonDeleteDialog(
+                      onDelete: () => cubit.deleteSelectedBookmarks(),
+                    );
+                  },
+                );
+              },
+              enabled: state.selectedSet.isNotEmpty,
+              child: ListTile(
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+                leading: const Icon(Icons.delete_rounded),
+                title: Text(appLocalizations.generalDelete),
+              ),
+            ),
+          ]);
         }
 
         return entries;

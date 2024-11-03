@@ -1,15 +1,14 @@
 part of '../bookmark_list.dart';
 
-class BookmarkWidget extends StatelessWidget {
+class _BookmarkWidget extends StatelessWidget {
   final BookmarkData _bookmarkData;
   final bool isSelecting;
   final bool isSelected;
   final void Function(bool?)? onChanged;
   final void Function()? onTap;
 
-  const BookmarkWidget(
+  const _BookmarkWidget(
     this._bookmarkData, {
-    super.key,
     this.isSelecting = false,
     this.isSelected = false,
     this.onChanged,

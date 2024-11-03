@@ -1,24 +1,26 @@
-part of 'collection_list.dart';
+part of '../homepage.dart';
 
-class CollectionListOperationPanel extends StatelessWidget {
-  const CollectionListOperationPanel({super.key});
+class _DeleteDragTarget<M extends Cubit<CommonListState<T>>, T>
+    extends StatelessWidget {
+  const _DeleteDragTarget();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CollectionListCubit, CommonListState>(
+    return BlocBuilder<M, CommonListState<T>>(
       buildWhen: (previous, current) =>
-          previous.isSelecting != current.isSelecting ||
-          previous.selectedSet != current.selectedSet,
+          previous.isDragging != current.isDragging,
       builder: (context, state) {
-        Widget child = const SizedBox.shrink();
+        Widget? child;
 
-        if (state.isSelecting && state.selectedSet.isNotEmpty) {
-          child = const _DeleteButton();
+        if (state.isDragging) {
+          child = CommonDeleteDragTarget(
+            onWillAcceptWithDetails: (details) => details.data is T,
+          );
         }
 
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 200),
-          transitionBuilder: (Widget child, Animation<double> animation) {
+          transitionBuilder: (child, animation) {
             return SlideTransition(
               position: Tween<Offset>(
                 begin: const Offset(0.0, 3.0),

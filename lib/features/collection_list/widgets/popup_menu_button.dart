@@ -5,7 +5,7 @@ class _PopupMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CollectionListCubit, CommonListState>(
+    return BlocBuilder<CollectionListCubit, _State>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         return PopupMenuButton(
@@ -19,28 +19,29 @@ class _PopupMenuButton extends StatelessWidget {
   }
 
   List<PopupMenuEntry> _itemBuilder(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
     final cubit = BlocProvider.of<CollectionListCubit>(context);
     final state = cubit.state;
-    final appLocalizations = AppLocalizations.of(context)!;
 
     List<PopupMenuEntry> entries = [];
 
-    if (state.code == LoadingStateCode.loaded && !state.isSelecting) {
-      /// Edit mode button
-      entries.add(PopupMenuItem(
-        onTap: () => cubit.setSelecting(true),
-        child: ListTile(
-          leading: const SizedBox(width: 24.0),
-          title: Text(appLocalizations.generalSelect),
-          trailing: const Icon(Icons.check_circle_outline_rounded),
+    /// Selecting mode
+    if (state.code.isLoaded && !state.isSelecting) {
+      entries.addAll([
+        PopupMenuItem(
+          onTap: () => cubit.setSelecting(true),
+          child: ListTile(
+            leading: const SizedBox(width: 24.0),
+            title: Text(appLocalizations.generalSelect),
+            trailing: const Icon(Icons.check_circle_outline_rounded),
+          ),
         ),
-      ));
-
-      /// Divider
-      entries.add(const PopupMenuDivider());
+        const PopupMenuDivider(),
+      ]);
     }
 
-    Map<SortOrderCode, String> sortMap = {
+    /// Sorting Section
+    final sortMap = {
       SortOrderCode.name: appLocalizations.generalName,
     };
 
@@ -60,6 +61,32 @@ class _PopupMenuButton extends StatelessWidget {
           ),
         ),
       );
+    }
+
+    /// Operation Section
+    if (state.code.isLoaded && state.isSelecting) {
+      entries.addAll([
+        const PopupMenuDivider(),
+        PopupMenuItem(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return CommonDeleteDialog(
+                  onDelete: () => cubit.deleteSelectedCollections(),
+                );
+              },
+            );
+          },
+          enabled: state.selectedSet.isNotEmpty,
+          child: ListTile(
+            contentPadding: EdgeInsets.zero,
+            dense: true,
+            leading: const Icon(Icons.delete_rounded),
+            title: Text(appLocalizations.generalDelete),
+          ),
+        ),
+      ]);
     }
 
     return entries;

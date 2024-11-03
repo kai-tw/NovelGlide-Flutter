@@ -23,20 +23,24 @@ class _FloatingActionWidget extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: kFloatingActionButtonMargin),
+                horizontal: kFloatingActionButtonMargin,
+              ),
               child: BlocBuilder<HomepageCubit, _HomepageState>(
                 buildWhen: (previous, current) =>
                     previous.navItem != current.navItem,
                 builder: (context, state) {
                   switch (state.navItem) {
                     case HomepageNavigationItem.bookshelf:
-                      return const BookshelfOperationPanel();
+                      return const _DeleteDragTarget<BookshelfCubit,
+                          BookData>();
 
                     case HomepageNavigationItem.collection:
-                      return const CollectionListOperationPanel();
+                      return const _DeleteDragTarget<CollectionListCubit,
+                          CollectionData>();
 
                     case HomepageNavigationItem.bookmark:
-                      return const BookmarkListOperationPanel();
+                      return const _DeleteDragTarget<BookmarkListCubit,
+                          BookmarkData>();
 
                     default:
                       return const SizedBox.shrink();

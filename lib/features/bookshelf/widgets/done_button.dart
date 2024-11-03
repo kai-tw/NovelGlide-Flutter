@@ -8,7 +8,7 @@ class _DoneButton extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
 
-    return BlocBuilder<BookshelfCubit, CommonListState>(
+    return BlocBuilder<BookshelfCubit, _State>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting,
       builder: (context, state) {

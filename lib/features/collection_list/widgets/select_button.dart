@@ -6,7 +6,7 @@ class _SelectButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<CollectionListCubit>(context);
-    return BlocBuilder<CollectionListCubit, CommonListState>(
+    return BlocBuilder<CollectionListCubit, _State>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
           previous.dataList.isNotEmpty != current.dataList.isNotEmpty ||
