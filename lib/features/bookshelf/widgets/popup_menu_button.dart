@@ -10,43 +10,13 @@ class _PopupMenuButton extends StatelessWidget {
     return PopupMenuButton(
       icon: const Icon(Icons.more_vert_rounded),
       clipBehavior: Clip.hardEdge,
-      itemBuilder: (BuildContext context) {
+      itemBuilder: (context) {
+        final isLoaded = cubit.state.code == LoadingStateCode.loaded;
         List<PopupMenuEntry<dynamic>> entries = [];
 
-        final Map<SortOrderCode, String> sortMap = {
-          SortOrderCode.name: appLocalizations.bookshelfSortName,
-          SortOrderCode.modifiedDate:
-              appLocalizations.bookshelfSortLastModified,
-        };
-
-        for (MapEntry<SortOrderCode, String> entry in sortMap.entries) {
-          bool isSelected = cubit.state.sortOrder == entry.key;
-          entries.add(
-            PopupMenuItem(
-              onTap: () => isSelected
-                  ? cubit.setListOrder(isAscending: !cubit.state.isAscending)
-                  : cubit.setListOrder(sortOrder: entry.key),
-              child: ListTile(
-                contentPadding: EdgeInsets.zero,
-                dense: true,
-                leading: isSelected
-                    ? const Icon(Icons.check_rounded)
-                    : const SizedBox(width: 24.0),
-                title: Text(entry.value),
-                trailing: isSelected
-                    ? Icon(cubit.state.isAscending
-                        ? CupertinoIcons.chevron_up
-                        : CupertinoIcons.chevron_down)
-                    : const SizedBox(width: 24.0),
-              ),
-            ),
-          );
-        }
-
-        /// Edit mode
-        if (cubit.state.code == LoadingStateCode.loaded &&
-            !cubit.state.isSelecting) {
-          entries.insertAll(0, [
+        /// Selecting mode
+        if (isLoaded && !cubit.state.isSelecting) {
+          entries.addAll([
             PopupMenuItem(
               onTap: () => cubit.setSelecting(true),
               child: ListTile(
@@ -58,6 +28,55 @@ class _PopupMenuButton extends StatelessWidget {
               ),
             ),
             const PopupMenuDivider(),
+          ]);
+        }
+
+        /// Sorting Section
+        final sortMap = {
+          SortOrderCode.name: appLocalizations.bookshelfSortName,
+          SortOrderCode.modifiedDate:
+              appLocalizations.bookshelfSortLastModified,
+        };
+
+        for (final entry in sortMap.entries) {
+          final isSelected = cubit.state.sortOrder == entry.key;
+          entries.add(
+            PopupMenuItem(
+              onTap: () => isSelected
+                  ? cubit.setListOrder(isAscending: !cubit.state.isAscending)
+                  : cubit.setListOrder(sortOrder: entry.key),
+              child: CommonPopupMenuSortListTile(
+                isSelected: isSelected,
+                isAscending: cubit.state.isAscending,
+                title: entry.value,
+              ),
+            ),
+          );
+        }
+
+        /// Operation Section
+        if (isLoaded && cubit.state.isSelecting) {
+          entries.addAll([
+            const PopupMenuDivider(),
+            PopupMenuItem(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CommonDeleteDialog(
+                      onDelete: () => cubit.deleteSelectedBooks(),
+                    );
+                  },
+                );
+              },
+              enabled: cubit.state.selectedSet.isNotEmpty,
+              child: ListTile(
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+                leading: const Icon(Icons.delete_rounded),
+                title: Text(appLocalizations.generalDelete),
+              ),
+            ),
           ]);
         }
 

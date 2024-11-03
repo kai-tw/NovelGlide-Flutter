@@ -7,15 +7,11 @@ class BookshelfOperationPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BookshelfCubit, CommonListState>(
       buildWhen: (previous, current) =>
-          previous.isSelecting != current.isSelecting ||
-          previous.selectedSet != current.selectedSet ||
           previous.isDragging != current.isDragging,
       builder: (context, state) {
-        Widget child = const SizedBox.shrink();
+        Widget? child;
 
-        if (state.isSelecting && state.selectedSet.isNotEmpty) {
-          child = const _DeleteButton();
-        } else if (state.isDragging) {
+        if (state.isDragging) {
           child = CommonDeleteDragTarget(
             onWillAcceptWithDetails: (details) => details.data is BookData,
           );
