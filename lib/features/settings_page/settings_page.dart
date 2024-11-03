@@ -15,9 +15,9 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final WindowClass windowClass =
-        WindowClass.fromWidth(MediaQuery.of(context).size.width);
+    final appLocalizations = AppLocalizations.of(context)!;
+    final windowWidth = MediaQuery.of(context).size.width;
+    final windowClass = WindowClass.fromWidth(windowWidth);
 
     final List<Widget> buttonList = [
       ListTile(
