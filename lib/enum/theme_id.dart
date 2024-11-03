@@ -47,7 +47,11 @@ enum ThemeId {
   }
 
   /// Retrieve a [ThemeId] from a string representation.
-  static ThemeId? getFromString(String? str) {
-    return ThemeId.values.firstWhereOrNull((e) => e.toString() == str);
+  static ThemeId getFromString(
+    String? str, {
+    ThemeId defaultValue = ThemeId.defaultTheme,
+  }) {
+    return ThemeId.values.firstWhereOrNull((e) => e.toString() == str) ??
+        defaultValue;
   }
 }

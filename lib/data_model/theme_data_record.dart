@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,43 +15,24 @@ class ThemeDataRecord {
     this.brightness,
   });
 
-  /// Creates a [ThemeDataRecord] from a JSON map.
-  factory ThemeDataRecord.fromJson(Map<String, dynamic> json) {
-    return ThemeDataRecord(
-      themeId: ThemeId.getFromString(json["themeId"]) ?? ThemeId.defaultTheme,
-      brightness: BrightnessUtils.getFromString(json["brightness"]),
-    );
-  }
-
   /// Loads the theme data from shared preferences.
   static Future<ThemeDataRecord> fromSettings() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final prefs = await SharedPreferences.getInstance();
+    final themeId = prefs.getString(PreferenceKeys.theme.themeId);
+    final brightness = prefs.getString(PreferenceKeys.theme.brightness);
     return ThemeDataRecord(
-      themeId: ThemeId.getFromString(
-              prefs.getString(PreferenceKeys.theme.themeId)) ??
-          ThemeId.defaultTheme,
-      brightness: BrightnessUtils.getFromString(
-          prefs.getString(PreferenceKeys.theme.brightness)),
+      themeId: ThemeId.getFromString(themeId),
+      brightness: BrightnessUtils.getFromString(brightness),
     );
   }
 
-  /// Converts the theme data to a JSON string.
-  String toJson() {
-    return jsonEncode({
-      "themeId": themeId.toString(),
-      "brightness": brightness?.toString(),
-    });
+  static Future<void> saveId(ThemeId themeId) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(PreferenceKeys.theme.themeId, themeId.toString());
   }
 
-  /// Saves the current theme data to shared preferences.
-  Future<void> saveToSettings() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(PreferenceKeys.theme.themeId, themeId.toString());
-
-    if (brightness != null) {
-      prefs.setString(PreferenceKeys.theme.brightness, brightness!.toString());
-    } else {
-      prefs.remove(PreferenceKeys.theme.brightness);
-    }
+  static Future<void> saveBrightness(Brightness? brightness) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(PreferenceKeys.theme.brightness, brightness.toString());
   }
 }
