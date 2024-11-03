@@ -18,8 +18,8 @@ import '../bookshelf/bookshelf.dart';
 import '../collection_add/collection_add_dialog.dart';
 import '../collection_list/collection_list.dart';
 import '../common_components/common_delete_drag_target.dart';
-import '../common_components/common_list/common_list.dart';
 import '../settings_page/settings_page.dart';
+import 'list_template/list_template.dart';
 
 part 'bloc/cubit.dart';
 part 'view/compact_view.dart';

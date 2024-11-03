@@ -20,22 +20,20 @@ import '../../utils/route_utils.dart';
 import '../common_components/common_book_cover_image.dart';
 import '../common_components/common_delete_dialog.dart';
 import '../common_components/common_error_dialog.dart';
-import '../common_components/common_list/common_list.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import '../common_components/common_popup_menu_sort_list_tile.dart';
 import '../common_components/draggable_feedback_widget.dart';
 import '../common_components/draggable_placeholder_widget.dart';
+import '../homepage/list_template/list_template.dart';
 import '../table_of_contents/table_of_contents.dart';
 
 part 'bloc/cubit.dart';
 part 'bookshelf_app_bar.dart';
 part 'widgets/book_widget.dart';
-part 'widgets/done_button.dart';
 part 'widgets/draggable_book.dart';
 part 'widgets/list_item.dart';
 part 'widgets/popup_menu_button.dart';
-part 'widgets/select_button.dart';
 
 class Bookshelf extends StatelessWidget {
   const Bookshelf({super.key});

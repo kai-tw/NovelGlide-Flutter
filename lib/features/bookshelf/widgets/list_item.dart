@@ -76,9 +76,9 @@ class _SliverListItem extends StatelessWidget {
 
   static void onTap(BookshelfCubit cubit, BookData bookData) {
     if (cubit.state.selectedSet.contains(bookData)) {
-      cubit.deselectBook(bookData);
+      cubit.deselectSingle(bookData);
     } else {
-      cubit.selectBook(bookData);
+      cubit.selectSingle(bookData);
     }
   }
 }

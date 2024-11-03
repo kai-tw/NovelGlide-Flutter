@@ -24,7 +24,7 @@ class _BookmarkWidget extends StatelessWidget {
     return Card(
       color: Colors.transparent,
       shadowColor: Colors.transparent,
-      child: CommonListSelectionListTile(
+      child: HomepageSelectionListTile(
         isSelecting: isSelecting,
         isSelected: isSelected,
         leading: const Padding(

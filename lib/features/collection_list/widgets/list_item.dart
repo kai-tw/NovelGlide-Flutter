@@ -22,9 +22,9 @@ class _ListItem extends StatelessWidget {
             isSelected: isSelected,
             onChanged: (bool? value) {
               if (value == true) {
-                cubit.selectCollection(_collectionData);
+                cubit.selectSingle(_collectionData);
               } else {
-                cubit.deselectCollection(_collectionData);
+                cubit.deselectSingle(_collectionData);
               }
             },
           );

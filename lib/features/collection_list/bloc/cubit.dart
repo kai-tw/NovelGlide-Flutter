@@ -1,8 +1,8 @@
 part of '../collection_list.dart';
 
-typedef _State = CommonListState<CollectionData>;
+typedef _State = HomepageListState<CollectionData>;
 
-class CollectionListCubit extends Cubit<_State> {
+class CollectionListCubit extends HomepageListCubit<CollectionData> {
   // Keys for storing sort order and ascending preference in shared preferences
   final _sortOrderKey = PreferenceKeys.collection.sortOrder;
   final _isAscendingKey = PreferenceKeys.collection.isAscending;
@@ -35,46 +35,6 @@ class CollectionListCubit extends Cubit<_State> {
       isAscending: isAscending,
       sortOrder: sortOrder,
     ));
-  }
-
-  void unfocused() {
-    setSelecting(false);
-  }
-
-  // Sets the selecting mode and clears selected collections
-  void setSelecting(bool isSelecting) {
-    emit(state.copyWith(
-      isSelecting: isSelecting,
-      selectedSet: {},
-    ));
-  }
-
-  // Set the dragging mode
-  void setDragging(bool isDragging) {
-    emit(state.copyWith(isDragging: isDragging));
-  }
-
-  // Selects all collections in the list
-  void selectAll() {
-    emit(state.copyWith(selectedSet: state.dataList.toSet()));
-  }
-
-  // Selects a specific collection
-  void selectCollection(CollectionData data) {
-    emit(state.copyWith(
-      selectedSet: {...state.selectedSet, data},
-    ));
-  }
-
-  // Deselects all collections
-  void deselectAll() {
-    emit(state.copyWith(selectedSet: const {}));
-  }
-
-  // Deselects a specific collection
-  void deselectCollection(CollectionData data) {
-    final newSet = Set<CollectionData>.from(state.selectedSet)..remove(data);
-    emit(state.copyWith(selectedSet: newSet));
   }
 
   // Deletes all selected collections and refreshes the list

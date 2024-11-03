@@ -1,13 +1,13 @@
 part of '../bookshelf.dart';
 
-typedef _State = CommonListState<BookData>;
+typedef _State = HomepageListState<BookData>;
 
-class BookshelfCubit extends Cubit<CommonListState<BookData>> {
+class BookshelfCubit extends HomepageListCubit<BookData> {
   final String _sortOrderKey = PreferenceKeys.bookshelf.sortOrder;
   final String _isAscendingKey = PreferenceKeys.bookshelf.isAscending;
 
   factory BookshelfCubit() {
-    final cubit = BookshelfCubit._internal(const CommonListState());
+    final cubit = BookshelfCubit._internal(const HomepageListState());
     WidgetsBinding.instance.addPostFrameCallback((_) => cubit.refresh());
     return cubit;
   }
@@ -15,7 +15,7 @@ class BookshelfCubit extends Cubit<CommonListState<BookData>> {
   BookshelfCubit._internal(super.initialState);
 
   Future<void> refresh() async {
-    emit(const CommonListState(code: LoadingStateCode.loading));
+    emit(const HomepageListState(code: LoadingStateCode.loading));
 
     // Load the sorting preferences.
     final prefs = await SharedPreferences.getInstance();
@@ -41,18 +41,13 @@ class BookshelfCubit extends Cubit<CommonListState<BookData>> {
     list.sort(BookUtils.sortCompare(sortOrder, isAscending));
 
     if (!isClosed) {
-      emit(CommonListState(
+      emit(HomepageListState(
         code: LoadingStateCode.loaded,
         sortOrder: sortOrder,
         dataList: list,
         isAscending: isAscending,
       ));
     }
-  }
-
-  void unfocused() {
-    setSelecting(false);
-    setDragging(false);
   }
 
   Future<void> setListOrder({
@@ -72,33 +67,6 @@ class BookshelfCubit extends Cubit<CommonListState<BookData>> {
       isAscending: ascending,
       sortOrder: order,
     ));
-  }
-
-  void setDragging(bool isDragging) {
-    emit(state.copyWith(isDragging: isDragging));
-  }
-
-  void setSelecting(bool isSelecting) {
-    emit(state.copyWith(isSelecting: isSelecting, selectedSet: const {}));
-  }
-
-  void selectBook(BookData bookData) {
-    emit(state.copyWith(selectedSet: {...state.selectedSet, bookData}));
-  }
-
-  void selectAllBooks() {
-    emit(state.copyWith(selectedSet: state.dataList.toSet()));
-  }
-
-  void deselectBook(BookData bookData) {
-    Set<BookData> newSet = Set<BookData>.from(state.selectedSet);
-    newSet.remove(bookData);
-
-    emit(state.copyWith(selectedSet: newSet));
-  }
-
-  void deselectAllBooks() {
-    emit(state.copyWith(selectedSet: const {}));
   }
 
   bool deleteSelectedBooks() {

@@ -1,12 +1,12 @@
 part of '../bookmark_list.dart';
 
 // The BookmarkListCubit class manages the state of the bookmark list.
-class BookmarkListCubit extends Cubit<CommonListState<BookmarkData>> {
+class BookmarkListCubit extends HomepageListCubit<BookmarkData> {
   final String _sortOrderPrefKey = PreferenceKeys.bookmark.sortOrder;
   final String _ascendingPrefKey = PreferenceKeys.bookmark.isAscending;
 
   // Constructor initializes the state with default values.
-  BookmarkListCubit() : super(const CommonListState<BookmarkData>());
+  BookmarkListCubit() : super(const HomepageListState<BookmarkData>());
 
   // Refreshes the bookmark list by fetching it from the data source and sorting it.
   void refresh() async {
@@ -23,19 +23,13 @@ class BookmarkListCubit extends Cubit<CommonListState<BookmarkData>> {
     _sortList(bookmarkList, sortOrder, isAscending);
 
     if (!isClosed) {
-      emit(CommonListState<BookmarkData>(
+      emit(HomepageListState<BookmarkData>(
         code: LoadingStateCode.loaded,
         sortOrder: sortOrder,
         dataList: bookmarkList,
         isAscending: isAscending,
       ));
     }
-  }
-
-  // When move to the other page, reset the dragging and selecting states.
-  void unfocused() {
-    setSelecting(false);
-    setDragging(false);
   }
 
   // Set the list order
@@ -82,48 +76,6 @@ class BookmarkListCubit extends Cubit<CommonListState<BookmarkData>> {
             : b.savedTime.compareTo(a.savedTime));
         break;
     }
-  }
-
-  void setSelecting(bool isSelecting) {
-    emit(state.copyWith(isSelecting: isSelecting, selectedSet: const {}));
-  }
-
-  void setDragging(bool isDragging) {
-    emit(state.copyWith(isDragging: isDragging));
-  }
-
-  // Selects a specific bookmark and updates the state.
-  void selectBookmark(BookmarkData data) {
-    emit(state.copyWith(
-      selectedSet: {
-        ...state.selectedSet,
-        data,
-      },
-    ));
-  }
-
-  // Selects all bookmarks and updates the state.
-  void selectAllBookmarks() {
-    emit(state.copyWith(
-      selectedSet: state.dataList.toSet(),
-    ));
-  }
-
-  // Deselects a specific bookmark and updates the state.
-  void deselectBookmark(BookmarkData data) {
-    Set<BookmarkData> newSet = Set<BookmarkData>.from(state.selectedSet);
-    newSet.remove(data);
-
-    emit(state.copyWith(
-      selectedSet: newSet,
-    ));
-  }
-
-  // Deselects all bookmarks and updates the state.
-  void deselectAllBookmarks() {
-    emit(state.copyWith(
-      selectedSet: const {},
-    ));
   }
 
   // Deletes the selected bookmarks and refreshes the list.

@@ -1,6 +1,6 @@
-part of '../common_list.dart';
+part of '../list_template.dart';
 
-class CommonListSelectionListTile extends StatelessWidget {
+class HomepageSelectionListTile extends StatelessWidget {
   final bool isSelecting;
   final bool isSelected;
   final Widget? leading;
@@ -9,7 +9,7 @@ class CommonListSelectionListTile extends StatelessWidget {
   final void Function(bool?)? onChanged;
   final void Function()? onTap;
 
-  const CommonListSelectionListTile({
+  const HomepageSelectionListTile({
     super.key,
     this.isSelecting = false,
     this.isSelected = false,
