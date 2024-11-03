@@ -31,7 +31,7 @@ class _DeleteDragTarget<M extends Cubit<HomepageListState<T>>, T>
               child: child,
             );
           },
-          child: child,
+          child: child ?? const SizedBox.shrink(),
         );
       },
     );
