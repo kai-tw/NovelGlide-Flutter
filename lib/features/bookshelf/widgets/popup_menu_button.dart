@@ -66,11 +66,11 @@ class _PopupMenuButton extends StatelessWidget {
                   ),
                 ));
               },
-              child: const ListTile(
+              child: ListTile(
                 contentPadding: EdgeInsets.zero,
                 dense: true,
-                leading: Icon(Icons.collections),
-                title: Text('Add to Collection'),
+                leading: const Icon(Icons.collections_bookmark_rounded),
+                title: Text(appLocalizations.addToCollection),
               ),
             ),
             PopupMenuItem(
