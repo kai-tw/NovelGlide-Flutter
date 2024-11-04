@@ -60,6 +60,21 @@ class _PopupMenuButton extends StatelessWidget {
             const PopupMenuDivider(),
             PopupMenuItem(
               onTap: () {
+                Navigator.of(context).push(RouteUtils.pushRoute(
+                  CollectionAddBookScaffold(
+                    dataSet: cubit.state.selectedSet,
+                  ),
+                ));
+              },
+              child: const ListTile(
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+                leading: Icon(Icons.collections),
+                title: Text('Add to Collection'),
+              ),
+            ),
+            PopupMenuItem(
+              onTap: () {
                 showDialog(
                   context: context,
                   builder: (context) {

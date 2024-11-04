@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import '../data_model/bookmark_data.dart';
 import '../utils/file_path.dart';
 import '../utils/json_utils.dart';
+import 'book_repository.dart';
 
 class BookmarkRepository {
   BookmarkRepository._();
@@ -29,7 +30,7 @@ class BookmarkRepository {
 
   /// Retrieves a bookmark by its book path.
   static BookmarkData? get(String bookPath) {
-    bookPath = relative(bookPath, from: FilePath.libraryRoot);
+    bookPath = BookRepository.getBookRelativePath(bookPath);
     return jsonData.containsKey(bookPath)
         ? BookmarkData.fromJson(jsonData[bookPath]!)
         : null;
@@ -56,7 +57,7 @@ class BookmarkRepository {
   /// Saves the current bookmark to the JSON file.
   static void save(BookmarkData data) async {
     final json = jsonData;
-    final path = relative(data.bookPath, from: FilePath.libraryRoot);
+    final path = BookRepository.getBookRelativePath(data.bookPath);
     json[path] = data.toJson();
     jsonFile.writeAsStringSync(jsonEncode(json));
   }
@@ -64,7 +65,7 @@ class BookmarkRepository {
   /// Deletes the current bookmark from the JSON file.
   static void delete(BookmarkData data) {
     final json = jsonData;
-    final path = relative(data.bookPath, from: FilePath.libraryRoot);
+    final path = BookRepository.getBookRelativePath(data.bookPath);
     json.remove(path);
     jsonFile.writeAsStringSync(jsonEncode(json));
   }

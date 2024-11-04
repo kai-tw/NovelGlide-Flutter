@@ -21,7 +21,7 @@ class GoogleDriveApi {
   ];
 
   static final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: _scopes);
-  drive.DriveApi? driveApi;
+  drive.DriveApi? _driveApi;
 
   /// Factory constructor to return the singleton instance.
   factory GoogleDriveApi() => _instance;
@@ -45,19 +45,19 @@ class GoogleDriveApi {
     if (httpClient == null) {
       throw GoogleDriveSignInException();
     } else {
-      driveApi = drive.DriveApi(httpClient);
+      _driveApi = drive.DriveApi(httpClient);
     }
   }
 
   /// Signs out the user and clears the Drive API client.
   Future<void> signOut() async {
     await _googleSignIn.signOut();
-    driveApi = null;
+    _driveApi = null;
   }
 
   /// Checks if the user is signed in and the Drive API client is initialized.
   Future<bool> isSignedIn() async =>
-      await _googleSignIn.isSignedIn() && driveApi != null;
+      await _googleSignIn.isSignedIn() && _driveApi != null;
 
   /// Lists files in Google Drive with optional query parameters.
   Future<drive.FileList> list({
@@ -77,7 +77,7 @@ class GoogleDriveApi {
     String? teamDriveId,
     String? $fields,
   }) async {
-    return await driveApi!.files.list(
+    return await _driveApi!.files.list(
       corpora: corpora,
       driveId: driveId,
       includeItemsFromAllDrives: includeItemsFromAllDrives,
@@ -109,7 +109,7 @@ class GoogleDriveApi {
     String fileName, {
     String spaces = 'appDataFolder',
   }) async {
-    final drive.FileList fileList = await driveApi!.files.list(
+    final drive.FileList fileList = await _driveApi!.files.list(
       spaces: spaces,
       q: "name = '$fileName'",
       pageSize: 1,
@@ -121,19 +121,19 @@ class GoogleDriveApi {
 
   /// Retrieves metadata for a file by its ID.
   Future<drive.File> getMetadataById(String fileId, {String? field}) async {
-    return await driveApi!.files.get(fileId, $fields: field) as drive.File;
+    return await _driveApi!.files.get(fileId, $fields: field) as drive.File;
   }
 
   /// Copies a file to specified parent folders.
   Future<void> copyFile(String fileId, List<String> parents) async {
     drive.File request = drive.File();
     request.parents = parents;
-    await driveApi!.files.copy(request, fileId);
+    await _driveApi!.files.copy(request, fileId);
   }
 
   /// Deletes a file by its ID.
   Future<void> deleteFile(String fileId) async {
-    await driveApi!.files.delete(fileId);
+    await _driveApi!.files.delete(fileId);
   }
 
   /// Uploads a file to Google Drive, updating if it already exists.
@@ -147,10 +147,10 @@ class GoogleDriveApi {
     final drive.Media media = drive.Media(file.openRead(), file.lengthSync());
 
     if (fileId != null) {
-      await driveApi!.files.update(driveFile, fileId, uploadMedia: media);
+      await _driveApi!.files.update(driveFile, fileId, uploadMedia: media);
     } else {
       driveFile.parents = [spaces];
-      await driveApi!.files.create(driveFile, uploadMedia: media);
+      await _driveApi!.files.create(driveFile, uploadMedia: media);
     }
   }
 
@@ -160,7 +160,7 @@ class GoogleDriveApi {
     final completer = Completer();
     List<int> buffer = [];
 
-    drive.Media media = await GoogleDriveApi.instance.driveApi!.files.get(
+    drive.Media media = await GoogleDriveApi.instance._driveApi!.files.get(
       fileId,
       downloadOptions: drive.DownloadOptions.fullMedia,
     ) as drive.Media;

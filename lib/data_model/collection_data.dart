@@ -1,9 +1,5 @@
 import 'dart:convert';
 
-import 'package:path/path.dart';
-
-import '../utils/file_path.dart';
-
 /// Represents a collection of data with an ID, name, and a list of paths.
 class CollectionData {
   final String id;
@@ -25,9 +21,7 @@ class CollectionData {
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
-        'pathList': pathList
-            .map<String>((e) => relative(e, from: FilePath.libraryRoot))
-            .toList(),
+        'pathList': pathList,
       };
 
   @override
@@ -35,7 +29,9 @@ class CollectionData {
       identical(this, other) ||
       other is CollectionData &&
           runtimeType == other.runtimeType &&
-          id == other.id;
+          name == other.name &&
+          id == other.id &&
+          pathList == other.pathList;
 
   @override
   int get hashCode => id.hashCode;

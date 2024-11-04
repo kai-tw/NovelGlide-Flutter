@@ -7,6 +7,7 @@ import '../data_model/collection_data.dart';
 import '../utils/file_path.dart';
 import '../utils/json_utils.dart';
 import '../utils/random_utils.dart';
+import 'book_repository.dart';
 
 class CollectionRepository {
   static String jsonFileName = 'collection.json';
@@ -58,10 +59,9 @@ class CollectionRepository {
   /// Saves the current [CollectionData] instance to the JSON file.
   static void save(CollectionData data) {
     final json = jsonData;
-    // Ensure the uniqueness and relative path.
     data.pathList = data.pathList
         .toSet()
-        .map<String>((p) => relative(p, from: FilePath.libraryRoot))
+        .map<String>((e) => BookRepository.getBookRelativePath(e))
         .toList();
     json[data.id] = data.toJson();
     jsonFile.writeAsStringSync(jsonEncode(json));

@@ -72,6 +72,7 @@ class _Cubit extends Cubit<_State> {
         isEnabled ? await _driveApi.signIn() : await _driveApi.signOut();
       } catch (e) {
         _logger.e(e);
+        return false;
       }
     }
     return _driveApi.isSignedIn();

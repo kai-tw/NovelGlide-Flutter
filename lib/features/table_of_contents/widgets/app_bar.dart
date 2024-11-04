@@ -23,7 +23,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () {
             Navigator.of(context).push(
               RouteUtils.pushRoute(
-                _CollectionScaffold(bookData: bookData),
+                CollectionAddBookScaffold(dataSet: {bookData}),
               ),
             );
           },

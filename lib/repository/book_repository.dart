@@ -5,6 +5,7 @@ import 'package:path/path.dart';
 import '../data_model/collection_data.dart';
 import '../exceptions/file_exceptions.dart';
 import '../utils/file_path.dart';
+import '../utils/file_utils.dart';
 import 'bookmark_repository.dart';
 import 'collection_repository.dart';
 
@@ -43,5 +44,9 @@ class BookRepository {
     }
 
     return !file.existsSync();
+  }
+
+  static String getBookRelativePath(String filePath) {
+    return FileUtils.getRelativePath(filePath, from: FilePath.libraryRoot);
   }
 }

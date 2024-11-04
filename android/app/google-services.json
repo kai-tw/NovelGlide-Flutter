@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "569892023598",
     "project_id": "novelglide",
-    "storage_bucket": "novelglide.appspot.com"
+    "storage_bucket": "novelglide.firebasestorage.app"
   },
   "client": [
     {

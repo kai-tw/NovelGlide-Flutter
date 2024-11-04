@@ -27,10 +27,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -49,7 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '569892023598',
     projectId: 'novelglide',
     authDomain: 'novelglide.firebaseapp.com',
-    storageBucket: 'novelglide.appspot.com',
+    storageBucket: 'novelglide.firebasestorage.app',
     measurementId: 'G-WNWCR8X82T',
   );
 
@@ -58,7 +55,7 @@ class DefaultFirebaseOptions {
     appId: '1:569892023598:android:3953d49865cefc345b1ebf',
     messagingSenderId: '569892023598',
     projectId: 'novelglide',
-    storageBucket: 'novelglide.appspot.com',
+    storageBucket: 'novelglide.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -66,18 +63,31 @@ class DefaultFirebaseOptions {
     appId: '1:569892023598:ios:e04daa603be98e525b1ebf',
     messagingSenderId: '569892023598',
     projectId: 'novelglide',
-    storageBucket: 'novelglide.appspot.com',
+    storageBucket: 'novelglide.firebasestorage.app',
+    androidClientId: '569892023598-5rnntoehoskm05rdev8obri1ufl52qgb.apps.googleusercontent.com',
     iosClientId: '569892023598-8n0gc07djd8f9no1n7a33e2c6bhiusjs.apps.googleusercontent.com',
     iosBundleId: 'com.kaiwu.novelglide',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyAnhJ4bNpMOplz7PyrEiZKqFfbb9CTaAh8',
-    appId: '1:569892023598:ios:8339a8192cdc64985b1ebf',
+    appId: '1:569892023598:ios:e04daa603be98e525b1ebf',
     messagingSenderId: '569892023598',
     projectId: 'novelglide',
-    storageBucket: 'novelglide.appspot.com',
-    iosClientId: '569892023598-mrm8i4c261qf7d1r3uoc9mvcqsr3kc7p.apps.googleusercontent.com',
-    iosBundleId: 'com.kaiwu.novelglide.RunnerTests',
+    storageBucket: 'novelglide.firebasestorage.app',
+    androidClientId: '569892023598-5rnntoehoskm05rdev8obri1ufl52qgb.apps.googleusercontent.com',
+    iosClientId: '569892023598-8n0gc07djd8f9no1n7a33e2c6bhiusjs.apps.googleusercontent.com',
+    iosBundleId: 'com.kaiwu.novelglide',
   );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyC95F4EtMgBl-BoveitRVcTtkGzqjdlNfw',
+    appId: '1:569892023598:web:5a5cb08852945a2f5b1ebf',
+    messagingSenderId: '569892023598',
+    projectId: 'novelglide',
+    authDomain: 'novelglide.firebaseapp.com',
+    storageBucket: 'novelglide.firebasestorage.app',
+    measurementId: 'G-V5QDVJ1TH2',
+  );
+
 }

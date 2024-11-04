@@ -1,12 +1,12 @@
-part of '../table_of_contents.dart';
+part of '../collection_add_book_scaffold.dart';
 
-class _CollectionNavigation extends StatelessWidget {
-  const _CollectionNavigation();
+class _Navigation extends StatelessWidget {
+  const _Navigation();
 
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<_CollectionCubit>(context);
+    final cubit = BlocProvider.of<_Cubit>(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
