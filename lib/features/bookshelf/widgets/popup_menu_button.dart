@@ -19,13 +19,7 @@ class _PopupMenuButton extends StatelessWidget {
           entries.addAll([
             PopupMenuItem(
               onTap: () => cubit.setSelecting(true),
-              child: ListTile(
-                contentPadding: EdgeInsets.zero,
-                dense: true,
-                leading: const SizedBox(width: 24.0),
-                title: Text(appLocalizations.generalSelect),
-                trailing: const Icon(Icons.check_circle_outline_rounded),
-              ),
+              child: const CommonListSelectModeButton(),
             ),
             const PopupMenuDivider(),
           ]);
@@ -45,7 +39,7 @@ class _PopupMenuButton extends StatelessWidget {
               onTap: () => isSelected
                   ? cubit.setListOrder(isAscending: !cubit.state.isAscending)
                   : cubit.setListOrder(sortOrder: entry.key),
-              child: CommonPopupMenuSortListTile(
+              child: CommonListSortButton(
                 isSelected: isSelected,
                 isAscending: cubit.state.isAscending,
                 title: entry.value,
@@ -73,24 +67,10 @@ class _PopupMenuButton extends StatelessWidget {
                 title: Text(appLocalizations.addToCollection),
               ),
             ),
-            PopupMenuItem(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return CommonDeleteDialog(
-                      onDelete: () => cubit.deleteSelectedBooks(),
-                    );
-                  },
-                );
-              },
+            CommonListDeleteButton.helper(
+              context: context,
+              onDelete: () => cubit.deleteSelectedBooks(),
               enabled: cubit.state.selectedSet.isNotEmpty,
-              child: ListTile(
-                contentPadding: EdgeInsets.zero,
-                dense: true,
-                leading: const Icon(Icons.delete_rounded),
-                title: Text(appLocalizations.generalDelete),
-              ),
             ),
           ]);
         }

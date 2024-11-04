@@ -69,4 +69,14 @@ class BookmarkRepository {
     json.remove(path);
     jsonFile.writeAsStringSync(jsonEncode(json));
   }
+
+  /// Deletes the bookmark that is associated with the book.
+  static void deleteAssociatedBook(String path) {
+    final bookmarkList = getList().where((e) =>
+        BookRepository.getBookRelativePath(e.bookPath) ==
+        BookRepository.getBookRelativePath(path));
+    for (final data in bookmarkList) {
+      delete(data);
+    }
+  }
 }

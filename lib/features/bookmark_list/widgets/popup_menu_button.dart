@@ -20,15 +20,8 @@ class _PopupMenuButton extends StatelessWidget {
         if (isLoaded && !state.isSelecting) {
           entries.addAll([
             PopupMenuItem(
-              onTap: () => cubit.setSelecting(true),
-              child: ListTile(
-                contentPadding: EdgeInsets.zero,
-                dense: true,
-                leading: const SizedBox(width: 24.0),
-                title: Text(appLocalizations.generalSelect),
-                trailing: const Icon(Icons.check_circle_outline_rounded),
-              ),
-            ),
+                onTap: () => cubit.setSelecting(true),
+                child: const CommonListSelectModeButton()),
             const PopupMenuDivider(),
           ]);
         }
@@ -49,7 +42,7 @@ class _PopupMenuButton extends StatelessWidget {
                 isAscending: isSelected ? !isAscending : null,
               );
             },
-            child: CommonPopupMenuSortListTile(
+            child: CommonListSortButton(
               isSelected: isSelected,
               isAscending: isAscending,
               title: entry.value,
@@ -73,12 +66,7 @@ class _PopupMenuButton extends StatelessWidget {
                 );
               },
               enabled: state.selectedSet.isNotEmpty,
-              child: ListTile(
-                contentPadding: EdgeInsets.zero,
-                dense: true,
-                leading: const Icon(Icons.delete_rounded),
-                title: Text(appLocalizations.generalDelete),
-              ),
+              child: const CommonListDeleteButton(),
             ),
           ]);
         }

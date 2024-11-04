@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 
-import '../data_model/collection_data.dart';
 import '../exceptions/file_exceptions.dart';
 import '../utils/file_path.dart';
 import '../utils/file_utils.dart';
@@ -14,11 +13,12 @@ class BookRepository {
 
   /// Add a book to the library.
   static void add(String filePath) {
+    final destination = join(FilePath.libraryRoot, basename(filePath));
     final file = File(filePath);
-    if (file.existsSync()) {
+    if (File(destination).existsSync()) {
       throw FileDuplicatedException();
     }
-    file.copySync(join(FilePath.libraryRoot, basename(filePath)));
+    file.copySync(destination);
   }
 
   /// Delete the book and associated bookmarks and collections.
@@ -29,19 +29,10 @@ class BookRepository {
     }
 
     // Delete associated bookmarks.
-    final bookmarkList = BookmarkRepository.getList()
-        .where((element) => element.bookPath == filePath);
-    for (final data in bookmarkList) {
-      BookmarkRepository.delete(data);
-    }
+    BookmarkRepository.deleteAssociatedBook(filePath);
 
     // Delete associated collections.
-    final collectionList = CollectionRepository.getList()
-        .where((element) => element.pathList.contains(filePath));
-    for (CollectionData data in collectionList) {
-      data.pathList.remove(filePath);
-      CollectionRepository.save(data);
-    }
+    CollectionRepository.deleteAssociatedBook(filePath);
 
     return !file.existsSync();
   }

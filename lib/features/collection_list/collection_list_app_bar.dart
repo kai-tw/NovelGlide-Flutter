@@ -17,8 +17,8 @@ class CollectionListAppBar extends StatelessWidget
       leadingWidth: windowClass == WindowClass.compact ? null : 100.0,
       title: Text(AppLocalizations.of(context)!.collectionTitle),
       actions: const [
-        HomepageListSelectButton<CollectionListCubit, CollectionData>(),
-        HomepageListDoneButton<CollectionListCubit, CollectionData>(),
+        CommonListSelectAllButton<CollectionListCubit, CollectionData>(),
+        CommonListDoneButton<CollectionListCubit, CollectionData>(),
         _PopupMenuButton(),
       ],
     );

@@ -18,13 +18,14 @@ class _CollectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.zero,
       color: Colors.transparent,
       shadowColor: Colors.transparent,
-      child: HomepageSelectionListTile(
+      child: CommonListSelectableListTile(
         isSelecting: isSelecting,
         isSelected: isSelected,
         leading: const Padding(
-          padding: EdgeInsets.only(left: 4.0, right: 14.0),
+          padding: EdgeInsets.only(right: 14.0),
           child: Icon(Icons.folder_rounded),
         ),
         title: Text(collectionData.name),

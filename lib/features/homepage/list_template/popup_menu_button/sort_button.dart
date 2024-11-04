@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of '../list_template.dart';
 
-class CommonPopupMenuSortListTile extends StatelessWidget {
+class CommonListSortButton extends StatelessWidget {
   final bool isSelected;
   final bool isAscending;
   final String title;
 
-  const CommonPopupMenuSortListTile({
+  const CommonListSortButton({
     super.key,
     required this.isSelected,
     required this.isAscending,

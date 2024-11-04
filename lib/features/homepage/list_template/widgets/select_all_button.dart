@@ -1,13 +1,13 @@
 part of '../list_template.dart';
 
-class HomepageListSelectButton<M extends HomepageListCubit<T>, T>
+class CommonListSelectAllButton<M extends CommonListCubit<T>, T>
     extends StatelessWidget {
-  const HomepageListSelectButton({super.key});
+  const CommonListSelectAllButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<M>(context);
-    return BlocBuilder<M, HomepageListState<T>>(
+    return BlocBuilder<M, CommonListState<T>>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
           previous.dataList.isNotEmpty != current.dataList.isNotEmpty ||

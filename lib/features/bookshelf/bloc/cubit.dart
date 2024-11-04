@@ -1,13 +1,13 @@
 part of '../bookshelf.dart';
 
-typedef _State = HomepageListState<BookData>;
+typedef _State = CommonListState<BookData>;
 
-class BookshelfCubit extends HomepageListCubit<BookData> {
+class BookshelfCubit extends CommonListCubit<BookData> {
   final String _sortOrderKey = PreferenceKeys.bookshelf.sortOrder;
   final String _isAscendingKey = PreferenceKeys.bookshelf.isAscending;
 
   factory BookshelfCubit() {
-    final cubit = BookshelfCubit._internal(const HomepageListState());
+    final cubit = BookshelfCubit._internal(const CommonListState());
     WidgetsBinding.instance.addPostFrameCallback((_) => cubit.refresh());
     return cubit;
   }
@@ -15,7 +15,7 @@ class BookshelfCubit extends HomepageListCubit<BookData> {
   BookshelfCubit._internal(super.initialState);
 
   Future<void> refresh() async {
-    emit(const HomepageListState(code: LoadingStateCode.loading));
+    emit(const CommonListState(code: LoadingStateCode.loading));
 
     // Load the sorting preferences.
     final prefs = await SharedPreferences.getInstance();
@@ -41,7 +41,7 @@ class BookshelfCubit extends HomepageListCubit<BookData> {
     list.sort(BookUtils.sortCompare(sortOrder, isAscending));
 
     if (!isClosed) {
-      emit(HomepageListState(
+      emit(CommonListState(
         code: LoadingStateCode.loaded,
         sortOrder: sortOrder,
         dataList: list,

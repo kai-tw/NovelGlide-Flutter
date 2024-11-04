@@ -1,6 +1,6 @@
 part of '../list_template.dart';
 
-class HomepageListState<T> extends Equatable {
+class CommonListState<T> extends Equatable {
   final LoadingStateCode code;
   final SortOrderCode sortOrder;
   final List<T> dataList;
@@ -23,7 +23,7 @@ class HomepageListState<T> extends Equatable {
       ];
 
   // Constructor initializes the state with default values.
-  const HomepageListState({
+  const CommonListState({
     this.code = LoadingStateCode.initial,
     this.sortOrder = SortOrderCode.name,
     this.dataList = const [],
@@ -34,7 +34,7 @@ class HomepageListState<T> extends Equatable {
   });
 
   // Creates a copy of the current state with updated properties.
-  HomepageListState<T> copyWith({
+  CommonListState<T> copyWith({
     LoadingStateCode? code,
     SortOrderCode? sortOrder,
     List<T>? dataList,
@@ -43,7 +43,7 @@ class HomepageListState<T> extends Equatable {
     bool? isSelecting,
     bool? isAscending,
   }) {
-    return HomepageListState<T>(
+    return CommonListState<T>(
       code: code ?? this.code,
       sortOrder: sortOrder ?? this.sortOrder,
       dataList: dataList ?? this.dataList,

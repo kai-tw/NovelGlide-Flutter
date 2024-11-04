@@ -1,6 +1,8 @@
 part of '../collection_viewer.dart';
 
-class _Cubit extends Cubit<_State> {
+typedef _State = CommonListState<BookData>;
+
+class _Cubit extends CommonListCubit<BookData> {
   CollectionData collectionData;
 
   factory _Cubit(CollectionData collectionData) {
@@ -18,7 +20,7 @@ class _Cubit extends Cubit<_State> {
     for (final path in collectionData.pathList.toSet()) {
       final absolutePath = absolute(FilePath.libraryRoot, path);
       final target =
-          state.bookList.firstWhereOrNull((e) => e.filePath == absolutePath) ??
+          state.dataList.firstWhereOrNull((e) => e.filePath == absolutePath) ??
               BookData.fromEpubBook(
                   absolutePath, await EpubUtils.loadEpubBook(absolutePath));
       bookList.add(target);
@@ -26,7 +28,7 @@ class _Cubit extends Cubit<_State> {
 
     emit(_State(
       code: LoadingStateCode.loaded,
-      bookList: bookList,
+      dataList: bookList,
     ));
   }
 
@@ -35,39 +37,23 @@ class _Cubit extends Cubit<_State> {
       return;
     }
 
-    BookData target = state.bookList.removeAt(oldIndex);
-    state.bookList
+    BookData target = state.dataList.removeAt(oldIndex);
+    state.dataList
         .insert(oldIndex < newIndex ? newIndex - 1 : newIndex, target);
     emit(_State(
       code: LoadingStateCode.loaded,
-      bookList: state.bookList,
+      dataList: state.dataList,
     ));
 
     collectionData.pathList =
-        state.bookList.map<String>((e) => e.filePath).toList();
+        state.dataList.map<String>((e) => e.filePath).toList();
     CollectionRepository.save(collectionData);
   }
-}
 
-class _State extends Equatable {
-  final LoadingStateCode code;
-  final List<BookData> bookList;
-
-  @override
-  List<Object?> get props => [code, bookList];
-
-  const _State({
-    this.code = LoadingStateCode.initial,
-    this.bookList = const [],
-  });
-
-  _State copyWith({
-    LoadingStateCode? code,
-    List<BookData>? bookList,
-  }) {
-    return _State(
-      code: code ?? this.code,
-      bookList: bookList ?? this.bookList,
-    );
+  void remove() {
+    collectionData.pathList.removeWhere((p) => state.selectedSet
+        .any((e) => BookRepository.getBookRelativePath(e.filePath) == p));
+    CollectionRepository.save(collectionData);
+    refresh();
   }
 }

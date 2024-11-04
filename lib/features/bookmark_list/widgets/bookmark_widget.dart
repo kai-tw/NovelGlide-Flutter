@@ -22,9 +22,10 @@ class _BookmarkWidget extends StatelessWidget {
     final savedTimeString = _getSavedTimeString(daysPassed, appLocalizations);
 
     return Card(
+      margin: EdgeInsets.zero,
       color: Colors.transparent,
       shadowColor: Colors.transparent,
-      child: HomepageSelectionListTile(
+      child: CommonListSelectableListTile(
         isSelecting: isSelecting,
         isSelected: isSelected,
         leading: const Padding(

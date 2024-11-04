@@ -1,7 +1,7 @@
 part of '../list_template.dart';
 
-abstract class HomepageListCubit<T> extends Cubit<HomepageListState<T>> {
-  HomepageListCubit(super.initialState);
+abstract class CommonListCubit<T> extends Cubit<CommonListState<T>> {
+  CommonListCubit(super.initialState);
 
   void unfocused() {
     setSelecting(false);

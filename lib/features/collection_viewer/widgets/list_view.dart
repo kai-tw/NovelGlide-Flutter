@@ -9,7 +9,8 @@ class _ListView extends StatelessWidget {
     return BlocBuilder<_Cubit, _State>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
-          previous.bookList != current.bookList,
+          previous.dataList != current.dataList ||
+          previous.isSelecting != current.isSelecting,
       builder: (context, state) {
         switch (state.code) {
           case LoadingStateCode.initial:
@@ -17,24 +18,20 @@ class _ListView extends StatelessWidget {
             return const CommonLoading();
 
           case LoadingStateCode.loaded:
-            if (state.bookList.isEmpty) {
+            if (state.dataList.isEmpty) {
               return const CommonListEmpty();
             } else {
               return ReorderableListView.builder(
                 onReorder: cubit.reorder,
-                itemCount: state.bookList.length,
+                buildDefaultDragHandles:
+                    !state.isSelecting && state.dataList.length > 1,
+                itemCount: state.dataList.length,
                 itemBuilder: (context, index) {
-                  final data = state.bookList[index];
-                  return ListTile(
+                  final data = state.dataList[index];
+                  return _ListItem(
+                    bookData: data,
                     key: ValueKey(data.filePath),
-                    onTap: () {
-                      Navigator.of(context)
-                          .push(RouteUtils.pushRoute(TableOfContents(data)))
-                          .then((_) => cubit.refresh());
-                    },
-                    leading: const Icon(Icons.book_outlined),
-                    title: Text(data.name),
-                    trailing: const Icon(Icons.drag_handle_rounded),
+                    isSelecting: state.isSelecting,
                   );
                 },
               );

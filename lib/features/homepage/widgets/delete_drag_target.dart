@@ -1,12 +1,12 @@
 part of '../homepage.dart';
 
-class _DeleteDragTarget<M extends Cubit<HomepageListState<T>>, T>
+class _DeleteDragTarget<M extends Cubit<CommonListState<T>>, T>
     extends StatelessWidget {
   const _DeleteDragTarget();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<M, HomepageListState<T>>(
+    return BlocBuilder<M, CommonListState<T>>(
       buildWhen: (previous, current) =>
           previous.isDragging != current.isDragging,
       builder: (context, state) {

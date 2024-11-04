@@ -73,4 +73,25 @@ class CollectionRepository {
     json.remove(data.id);
     jsonFile.writeAsStringSync(jsonEncode(json));
   }
+
+  /// Deletes the book from the collection.
+  static void deleteBook(String path, String id) {
+    final relativePath = BookRepository.getBookRelativePath(path);
+    final json = jsonData;
+    if (json[id] != null) {
+      final data = CollectionData.fromJson(json[id]!);
+      data.pathList.remove(relativePath);
+      json[id] = data.toJson();
+      jsonFile.writeAsStringSync(jsonEncode(json));
+    }
+  }
+
+  /// Deletes the book from all collections.
+  static void deleteAssociatedBook(String path) {
+    final collectionList = getList().where(
+        (e) => e.pathList.contains(BookRepository.getBookRelativePath(path)));
+    for (CollectionData data in collectionList) {
+      deleteBook(path, data.id);
+    }
+  }
 }

@@ -1,12 +1,12 @@
 part of '../bookmark_list.dart';
 
 // The BookmarkListCubit class manages the state of the bookmark list.
-class BookmarkListCubit extends HomepageListCubit<BookmarkData> {
+class BookmarkListCubit extends CommonListCubit<BookmarkData> {
   final String _sortOrderPrefKey = PreferenceKeys.bookmark.sortOrder;
   final String _ascendingPrefKey = PreferenceKeys.bookmark.isAscending;
 
   // Constructor initializes the state with default values.
-  BookmarkListCubit() : super(const HomepageListState<BookmarkData>());
+  BookmarkListCubit() : super(const CommonListState<BookmarkData>());
 
   // Refreshes the bookmark list by fetching it from the data source and sorting it.
   void refresh() async {
@@ -23,7 +23,7 @@ class BookmarkListCubit extends HomepageListCubit<BookmarkData> {
     _sortList(bookmarkList, sortOrder, isAscending);
 
     if (!isClosed) {
-      emit(HomepageListState<BookmarkData>(
+      emit(CommonListState<BookmarkData>(
         code: LoadingStateCode.loaded,
         sortOrder: sortOrder,
         dataList: bookmarkList,

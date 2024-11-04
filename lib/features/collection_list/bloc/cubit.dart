@@ -1,8 +1,8 @@
 part of '../collection_list.dart';
 
-typedef _State = HomepageListState<CollectionData>;
+typedef _State = CommonListState<CollectionData>;
 
-class CollectionListCubit extends HomepageListCubit<CollectionData> {
+class CollectionListCubit extends CommonListCubit<CollectionData> {
   // Keys for storing sort order and ascending preference in shared preferences
   final _sortOrderKey = PreferenceKeys.collection.sortOrder;
   final _isAscendingKey = PreferenceKeys.collection.isAscending;

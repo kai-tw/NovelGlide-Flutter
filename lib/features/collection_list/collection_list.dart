@@ -15,7 +15,6 @@ import '../collection_viewer/collection_viewer.dart';
 import '../common_components/common_delete_dialog.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
-import '../common_components/common_popup_menu_sort_list_tile.dart';
 import '../common_components/draggable_feedback_widget.dart';
 import '../common_components/draggable_placeholder_widget.dart';
 import '../homepage/list_template/list_template.dart';
