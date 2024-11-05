@@ -12,12 +12,11 @@ import '../../enum/window_class.dart';
 import '../../repository/collection_repository.dart';
 import '../../utils/route_utils.dart';
 import '../collection_viewer/collection_viewer.dart';
-import '../common_components/common_delete_dialog.dart';
+import '../common_components/common_list/list_template.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import '../common_components/draggable_feedback_widget.dart';
 import '../common_components/draggable_placeholder_widget.dart';
-import '../homepage/list_template/list_template.dart';
 
 part 'bloc/cubit.dart';
 part 'collection_list_app_bar.dart';

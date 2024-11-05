@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/sort_order_code.dart';
-import '../../common_components/common_delete_dialog.dart';
+import '../common_delete_dialog.dart';
 
 part 'bloc/cubit.dart';
 part 'bloc/state.dart';
