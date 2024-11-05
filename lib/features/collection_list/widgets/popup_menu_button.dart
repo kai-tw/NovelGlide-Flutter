@@ -63,10 +63,19 @@ class _PopupMenuButton extends StatelessWidget {
     if (state.code.isLoaded && state.isSelecting) {
       entries.addAll([
         const PopupMenuDivider(),
-        CommonListDeleteButton.helper(
-          context: context,
-          onDelete: () => cubit.deleteSelectedCollections(),
-          enabled: state.selectedSet.isNotEmpty,
+        PopupMenuItem(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return CommonDeleteDialog(
+                  onDelete: () => cubit.deleteSelectedCollections(),
+                );
+              },
+            );
+          },
+          enabled: cubit.state.selectedSet.isNotEmpty,
+          child: const CommonListDeleteButton(),
         ),
       ]);
     }

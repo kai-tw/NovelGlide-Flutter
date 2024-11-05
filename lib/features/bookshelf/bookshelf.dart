@@ -19,6 +19,7 @@ import '../../utils/mime_resolver.dart';
 import '../../utils/route_utils.dart';
 import '../collection_add_book/collection_add_book_scaffold.dart';
 import '../common_components/common_book_cover_image.dart';
+import '../common_components/common_delete_dialog.dart';
 import '../common_components/common_error_dialog.dart';
 import '../common_components/common_list/list_template.dart';
 import '../common_components/common_list_empty.dart';

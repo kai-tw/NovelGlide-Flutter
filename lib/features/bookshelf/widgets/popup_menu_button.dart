@@ -67,10 +67,19 @@ class _PopupMenuButton extends StatelessWidget {
                 title: Text(appLocalizations.addToCollection),
               ),
             ),
-            CommonListDeleteButton.helper(
-              context: context,
-              onDelete: () => cubit.deleteSelectedBooks(),
+            PopupMenuItem(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CommonDeleteDialog(
+                      onDelete: () => cubit.deleteSelectedBooks(),
+                    );
+                  },
+                );
+              },
               enabled: cubit.state.selectedSet.isNotEmpty,
+              child: const CommonListDeleteButton(),
             ),
           ]);
         }

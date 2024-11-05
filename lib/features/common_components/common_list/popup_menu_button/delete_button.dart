@@ -13,23 +13,4 @@ class CommonListDeleteButton extends StatelessWidget {
       title: Text(appLocalizations.generalDelete),
     );
   }
-
-  static PopupMenuItem<dynamic> helper({
-    required BuildContext context,
-    void Function()? onDelete,
-    bool enabled = true,
-  }) {
-    return PopupMenuItem(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return CommonDeleteDialog(onDelete: onDelete);
-          },
-        );
-      },
-      enabled: enabled,
-      child: const CommonListDeleteButton(),
-    );
-  }
 }
