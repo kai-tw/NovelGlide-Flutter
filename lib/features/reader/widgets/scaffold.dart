@@ -7,6 +7,9 @@ class _Scaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final windowWidth = MediaQuery.of(context).size.width;
     final windowClass = WindowClass.fromWidth(windowWidth);
+    final cubit = BlocProvider.of<_ReaderCubit>(context);
+
+    cubit.sendThemeData(Theme.of(context));
 
     switch (windowClass) {
       case WindowClass.compact:

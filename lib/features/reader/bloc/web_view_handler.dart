@@ -46,9 +46,11 @@ class _WebViewHandler {
       // Handle navigation requests.
       onNavigationRequest: _onNavigationRequest,
       // Log web resource errors.
-      onWebResourceError: (error) => _logger.e('Web resource error: $error'),
+      onWebResourceError: (error) => _logger
+          .e('Web Resource Error: <${error.errorCode}> ${error.description}'),
       // Log HTTP errors.
-      onHttpError: (error) => _logger.e('HTTP error: $error'),
+      onHttpError: (error) => _logger.e(
+          'HTTP Error: <${error.response?.statusCode}> ${error.response?.uri}'),
     ));
   }
 
@@ -83,7 +85,7 @@ class _WebViewHandler {
       // Set link color to inherit.
       "a": {
         "color": "inherit !important",
-      }
+      },
     };
     // Run JavaScript to set the theme data in the WebView.
     controller

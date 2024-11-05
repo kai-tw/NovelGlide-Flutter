@@ -10,6 +10,11 @@ class ThemeDataRecord {
   ThemeId themeId;
   Brightness? brightness;
 
+  static Future<ThemeData> get currentTheme async {
+    final record = await ThemeDataRecord.fromSettings();
+    return record.themeId.getThemeDataByBrightness(record.brightness);
+  }
+
   ThemeDataRecord({
     this.themeId = ThemeId.defaultTheme,
     this.brightness,
