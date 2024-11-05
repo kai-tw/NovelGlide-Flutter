@@ -25,9 +25,7 @@ void main() async {
   await FilePath.ensureInitialized();
 
   // Theme Initialization
-  final record = await ThemeDataRecord.fromSettings();
-  final initialTheme =
-      record.themeId.getThemeDataByBrightness(record.brightness);
+  final initialTheme = await ThemeDataRecord.currentTheme;
 
   // Log Initialization
   LogSystem.ensureInitialized();

@@ -28,9 +28,7 @@ void main() {
     await FilePath.ensureInitialized();
 
     // Theme Initialization
-    ThemeDataRecord record = await ThemeDataRecord.fromSettings();
-    final ThemeData initTheme =
-        record.themeId.getThemeDataByBrightness(record.brightness);
+    final ThemeData initTheme = await ThemeDataRecord.currentTheme;
 
     // Build our app and trigger a frame.
     await tester.pumpWidget(App(initialTheme: initTheme));
