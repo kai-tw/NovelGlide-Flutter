@@ -79,4 +79,9 @@ class BookmarkRepository {
       delete(data);
     }
   }
+
+  /// Reset the bookmark repository.
+  static void reset() {
+    jsonFile.writeAsStringSync('{}');
+  }
 }

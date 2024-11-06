@@ -94,4 +94,9 @@ class CollectionRepository {
       deleteBook(path, data.id);
     }
   }
+
+  /// Reset the collection repository.
+  static void reset() {
+    jsonFile.writeAsStringSync('{}');
+  }
 }

@@ -44,4 +44,11 @@ class BookRepository {
   static String getBookAbsolutePath(String filePath) {
     return absolute(FilePath.libraryRoot, filePath);
   }
+
+  /// Reset the book repository.
+  static void reset() {
+    final directory = Directory(FilePath.libraryRoot);
+    directory.deleteSync(recursive: true);
+    directory.createSync(recursive: true);
+  }
 }

@@ -8,6 +8,7 @@ import '../about_page/about_page_scaffold.dart';
 import '../backup_manager/backup_manager_scaffold.dart';
 import '../developer_page/developer_page.dart';
 // import '../store/store_scaffold.dart';
+import '../reset_page/reset_page.dart';
 import '../theme_manager/theme_manager.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -48,6 +49,18 @@ class SettingsPage extends StatelessWidget {
       //   ),
       //   title: Text(appLocalizations.storeTitle),
       // ),
+      ListTile(
+        onTap: () => Navigator.of(context).push(
+          RouteUtils.pushRoute(const ResetPage()),
+        ),
+        leading: const Padding(
+          padding: EdgeInsets.only(right: 12.0),
+          child: Icon(Icons.refresh_rounded),
+        ),
+
+        /// TODO: Localize
+        title: const Text('Reset'),
+      ),
       ListTile(
         onTap: () => Navigator.of(context).push(
           RouteUtils.pushRoute(const AboutPageScaffold()),
