@@ -57,9 +57,7 @@ class SettingsPage extends StatelessWidget {
           padding: EdgeInsets.only(right: 12.0),
           child: Icon(Icons.refresh_rounded),
         ),
-
-        /// TODO: Localize
-        title: const Text('Reset'),
+        title: Text(appLocalizations.resetPageTitle),
       ),
       ListTile(
         onTap: () => Navigator.of(context).push(
