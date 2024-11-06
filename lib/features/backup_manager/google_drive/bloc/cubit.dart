@@ -17,11 +17,7 @@ class _Cubit extends Cubit<_State> {
 
   /// Refreshes the backup state by checking preferences and updating metadata.
   Future<void> refresh() async {
-    emit(
-      const _State(
-        code: LoadingStateCode.loading,
-      ),
-    );
+    emit(const _State(code: LoadingStateCode.loading));
     final prefs = await SharedPreferences.getInstance();
     final isEnabled = prefs.getBool(_drivePrefKey) ?? false;
     final isReady = await _isApiReady(isEnabled);
@@ -32,15 +28,19 @@ class _Cubit extends Cubit<_State> {
         CollectionRepository.jsonFileName,
         BookmarkRepository.jsonFileName,
       ];
-      final fileIdList = await Future.wait(
+      final fileIdList = await Future.wait<String?>(
         fileNameList.map((fileName) => _driveApi.getFileId(fileName)),
       );
-      final timeList = (await Future.wait(
+      final timeList = (await Future.wait<drive.File>(
         fileIdList.whereType<String>().map((fileId) =>
             _driveApi.getMetadataById(fileId, field: 'modifiedTime')),
       ))
           .map((e) => e.modifiedTime)
+          .whereType<DateTime>()
           .toList();
+      final lastBackupTime = timeList.isNotEmpty
+          ? timeList.reduce((a, b) => a.isAfter(b) ? a : b)
+          : null;
 
       if (!isClosed) {
         emit(_State(
@@ -48,8 +48,7 @@ class _Cubit extends Cubit<_State> {
           libraryId: fileIdList[0],
           collectionId: fileIdList[1],
           bookmarkId: fileIdList[2],
-          lastBackupTime: timeList.reduce(
-              (a, b) => a?.isAfter(b ?? DateTime.utc(0)) ?? false ? a : b),
+          lastBackupTime: lastBackupTime,
         ));
       }
     } else if (!isClosed) {
