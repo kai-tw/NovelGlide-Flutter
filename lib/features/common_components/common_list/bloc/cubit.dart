@@ -3,6 +3,13 @@ part of '../list_template.dart';
 abstract class CommonListCubit<T> extends Cubit<CommonListState<T>> {
   CommonListCubit(super.initialState);
 
+  Future<void> refresh();
+
+  Future<void> dragToRefresh() async {
+    emit(CommonListState<T>(code: LoadingStateCode.loading));
+    await refresh();
+  }
+
   void unfocused() {
     setSelecting(false);
     setDragging(false);

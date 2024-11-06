@@ -17,6 +17,7 @@ class CollectionListCubit extends CommonListCubit<CollectionData> {
   CollectionListCubit._internal(super.initialState);
 
   // Refreshes the collection list by fetching data and applying saved sort preferences
+  @override
   Future<void> refresh() async {
     final collectionList = CollectionRepository.getList();
     final prefs = await SharedPreferences.getInstance();

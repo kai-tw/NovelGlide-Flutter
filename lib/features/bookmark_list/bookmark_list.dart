@@ -32,6 +32,7 @@ class BookmarkList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
+
     BlocProvider.of<BookmarkListCubit>(context).refresh();
 
     return BlocBuilder<BookmarkListCubit, CommonListState>(

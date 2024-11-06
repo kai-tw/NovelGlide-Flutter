@@ -19,7 +19,7 @@ class _ScaffoldBody extends StatelessWidget {
               return _ScaffoldBodyColumn(
                 bucket: cubit.bookshelfBucket,
                 bucketKey: 'homepage-bookshelf',
-                onRefresh: () async => bookshelfCubit.refresh(),
+                onRefresh: () async => bookshelfCubit.dragToRefresh(),
                 slivers: const [
                   Bookshelf(),
                 ],
@@ -29,7 +29,7 @@ class _ScaffoldBody extends StatelessWidget {
               return _ScaffoldBodyColumn(
                 bucket: cubit.collectionBucket,
                 bucketKey: 'homepage-collection',
-                onRefresh: () async => collectionListCubit.refresh(),
+                onRefresh: () async => collectionListCubit.dragToRefresh(),
                 slivers: const [
                   CollectionList(),
                 ],
@@ -39,7 +39,7 @@ class _ScaffoldBody extends StatelessWidget {
               return _ScaffoldBodyColumn(
                 bucket: cubit.bookmarkBucket,
                 bucketKey: 'homepage-bookmark',
-                onRefresh: () async => bookmarkListCubit.refresh(),
+                onRefresh: () async => bookmarkListCubit.dragToRefresh(),
                 slivers: const [
                   BookmarkList(),
                 ],

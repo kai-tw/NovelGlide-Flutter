@@ -35,6 +35,8 @@ class CollectionList extends StatelessWidget {
     final windowWidth = MediaQuery.of(context).size.width;
     final windowClass = WindowClass.fromWidth(windowWidth);
 
+    BlocProvider.of<CollectionListCubit>(context).refresh();
+
     return BlocBuilder<CollectionListCubit, _State>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||

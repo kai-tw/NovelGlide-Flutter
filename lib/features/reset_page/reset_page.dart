@@ -4,7 +4,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data_model/preference_keys.dart';
-import '../../data_model/reader_settings_data.dart';
 import '../../data_model/theme_data_record.dart';
 import '../../repository/book_repository.dart';
 import '../../repository/bookmark_repository.dart';

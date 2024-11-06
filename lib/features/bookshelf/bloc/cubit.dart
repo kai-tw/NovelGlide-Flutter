@@ -14,9 +14,8 @@ class BookshelfCubit extends CommonListCubit<BookData> {
 
   BookshelfCubit._internal(super.initialState);
 
+  @override
   Future<void> refresh() async {
-    emit(const CommonListState(code: LoadingStateCode.loading));
-
     // Load the sorting preferences.
     final prefs = await SharedPreferences.getInstance();
     final sortOrder = SortOrderCode.fromString(prefs.getString(_sortOrderKey));

@@ -42,6 +42,8 @@ class Bookshelf extends StatelessWidget {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
 
+    BlocProvider.of<BookshelfCubit>(context).refresh();
+
     return BlocBuilder<BookshelfCubit, _State>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||

@@ -13,7 +13,8 @@ class _Cubit extends CommonListCubit<BookData> {
 
   _Cubit._internal(this.collectionData, super.initialState);
 
-  void refresh() async {
+  @override
+  Future<void> refresh() async {
     collectionData = CollectionRepository.get(collectionData.id);
     List<BookData> bookList = [];
 
