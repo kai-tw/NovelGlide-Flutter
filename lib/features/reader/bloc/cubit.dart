@@ -27,7 +27,7 @@ class _ReaderCubit extends Cubit<_ReaderState> {
     final cubit = _ReaderCubit._internal(
       initialState,
       currentTheme: currentTheme,
-      bookPath: bookPath,
+      bookPath: BookRepository.getBookAbsolutePath(bookPath),
       bookData: bookData,
     );
     cubit._initialize(destination: destination, isGotoBookmark: isGotoBookmark);
@@ -53,7 +53,7 @@ class _ReaderCubit extends Cubit<_ReaderState> {
 
     /// Read the book if it is not read yet.
     if (bookData == null) {
-      final absolutePath = path.absolute(FilePath.libraryRoot, bookPath);
+      final absolutePath = BookRepository.getBookAbsolutePath(bookPath);
       final epubBook = await EpubUtils.loadEpubBook(absolutePath);
       bookData = BookData.fromEpubBook(absolutePath, epubBook);
     }

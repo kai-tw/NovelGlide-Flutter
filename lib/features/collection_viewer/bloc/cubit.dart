@@ -18,7 +18,7 @@ class _Cubit extends CommonListCubit<BookData> {
     List<BookData> bookList = [];
 
     for (final path in collectionData.pathList.toSet()) {
-      final absolutePath = absolute(FilePath.libraryRoot, path);
+      final absolutePath = BookRepository.getBookAbsolutePath(path);
       final target =
           state.dataList.firstWhereOrNull((e) => e.filePath == absolutePath) ??
               BookData.fromEpubBook(

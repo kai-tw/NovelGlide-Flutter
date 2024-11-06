@@ -53,4 +53,24 @@ class BookmarkData {
   /// Returns a JSON string representation of the bookmark.
   @override
   String toString() => jsonEncode(toJson());
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! BookmarkData) return false;
+
+    return other.bookPath == bookPath &&
+        other.chapterTitle == chapterTitle &&
+        other.chapterFileName == chapterFileName &&
+        other.startCfi == startCfi &&
+        other.savedTime == savedTime;
+  }
+
+  @override
+  int get hashCode =>
+      bookPath.hashCode ^
+      chapterTitle.hashCode ^
+      chapterFileName.hashCode ^
+      startCfi.hashCode ^
+      savedTime.hashCode;
 }

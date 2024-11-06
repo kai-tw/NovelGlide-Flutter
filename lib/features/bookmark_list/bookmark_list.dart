@@ -35,7 +35,9 @@ class BookmarkList extends StatelessWidget {
     BlocProvider.of<BookmarkListCubit>(context).refresh();
 
     return BlocBuilder<BookmarkListCubit, CommonListState>(
-      buildWhen: (previous, current) => previous.code != current.code,
+      buildWhen: (previous, current) =>
+          previous.code != current.code ||
+          previous.dataList != current.dataList,
       builder: (context, state) {
         switch (state.code) {
           case LoadingStateCode.initial:

@@ -40,4 +40,8 @@ class BookRepository {
   static String getBookRelativePath(String filePath) {
     return FileUtils.getRelativePath(filePath, from: FilePath.libraryRoot);
   }
+
+  static String getBookAbsolutePath(String filePath) {
+    return absolute(FilePath.libraryRoot, filePath);
+  }
 }

@@ -42,7 +42,7 @@ class BookmarkRepository {
 
     for (String key in jsonData.keys) {
       final data = BookmarkData.fromJson(jsonData[key]!);
-      final path = absolute(FilePath.libraryRoot, data.bookPath);
+      final path = BookRepository.getBookAbsolutePath(data.bookPath);
 
       if (File(path).existsSync()) {
         retList.add(data);
@@ -57,8 +57,8 @@ class BookmarkRepository {
   /// Saves the current bookmark to the JSON file.
   static void save(BookmarkData data) async {
     final json = jsonData;
-    final path = BookRepository.getBookRelativePath(data.bookPath);
-    json[path] = data.toJson();
+    data.bookPath = BookRepository.getBookRelativePath(data.bookPath);
+    json[data.bookPath] = data.toJson();
     jsonFile.writeAsStringSync(jsonEncode(json));
   }
 
