@@ -13,31 +13,37 @@ class _ResetCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _ResetTile(
+          _ListTile(
             onDelete: () async {
               final prefs = await SharedPreferences.getInstance();
               prefs.remove(PreferenceKeys.bookshelf.sortOrder);
               prefs.remove(PreferenceKeys.bookshelf.isAscending);
             },
+            iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetBookshelf,
+            deleteLabel: appLocalizations.generalReset,
           ),
-          _ResetTile(
+          _ListTile(
             onDelete: () async {
               final prefs = await SharedPreferences.getInstance();
               prefs.remove(PreferenceKeys.collection.sortOrder);
               prefs.remove(PreferenceKeys.collection.isAscending);
             },
+            iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetCollectionList,
+            deleteLabel: appLocalizations.generalReset,
           ),
-          _ResetTile(
+          _ListTile(
             onDelete: () async {
               final prefs = await SharedPreferences.getInstance();
               prefs.remove(PreferenceKeys.bookmark.sortOrder);
               prefs.remove(PreferenceKeys.bookmark.isAscending);
             },
+            iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetBookmarkList,
+            deleteLabel: appLocalizations.generalReset,
           ),
-          _ResetTile(
+          _ListTile(
             onDelete: () async {
               final prefs = await SharedPreferences.getInstance();
               prefs.remove(PreferenceKeys.reader.autoSave);
@@ -45,10 +51,12 @@ class _ResetCard extends StatelessWidget {
               prefs.remove(PreferenceKeys.reader.gestureDetection);
               prefs.remove(PreferenceKeys.reader.lineHeight);
             },
+            iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetReader,
+            deleteLabel: appLocalizations.generalReset,
           ),
           ThemeSwitcher.switcher(builder: (_, switcher) {
-            return _ResetTile(
+            return _ListTile(
               onDelete: () async {
                 final prefs = await SharedPreferences.getInstance();
                 prefs.remove(PreferenceKeys.theme.themeId);
@@ -57,11 +65,13 @@ class _ResetCard extends StatelessWidget {
                 final record = await ThemeDataRecord.currentTheme;
                 switcher.changeTheme(theme: record);
               },
+              iconData: Icons.refresh_rounded,
               title: appLocalizations.resetPageResetThemeManager,
+              deleteLabel: appLocalizations.generalReset,
             );
           }),
           ThemeSwitcher.switcher(builder: (context, switcher) {
-            return _ResetTile(
+            return _ListTile(
               onDelete: () async {
                 final prefs = await SharedPreferences.getInstance();
                 prefs.clear();
@@ -69,7 +79,9 @@ class _ResetCard extends StatelessWidget {
                 final record = await ThemeDataRecord.currentTheme;
                 switcher.changeTheme(theme: record);
               },
+              iconData: Icons.refresh_rounded,
               title: appLocalizations.resetPageResetPreference,
+              deleteLabel: appLocalizations.generalReset,
             );
           }),
         ],

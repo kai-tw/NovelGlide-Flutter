@@ -13,44 +13,20 @@ class _DeleteCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          ListTile(
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => CommonDeleteDialog(
-                  title: appLocalizations.resetPageDeleteAllBooks,
-                  onDelete: () => BookRepository.reset(),
-                ),
-              );
-            },
-            leading: const Icon(Icons.delete_forever_rounded),
-            title: Text(appLocalizations.resetPageDeleteAllBooks),
+          _ListTile(
+            onDelete: () async => BookRepository.reset(),
+            iconData: Icons.delete_forever_rounded,
+            title: appLocalizations.resetPageDeleteAllBooks,
           ),
-          ListTile(
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => CommonDeleteDialog(
-                  title: appLocalizations.resetPageDeleteAllCollections,
-                  onDelete: () => CollectionRepository.reset(),
-                ),
-              );
-            },
-            leading: const Icon(Icons.delete_forever_rounded),
-            title: Text(appLocalizations.resetPageDeleteAllCollections),
+          _ListTile(
+            onDelete: () async => CollectionRepository.reset(),
+            iconData: Icons.delete_forever_rounded,
+            title: appLocalizations.resetPageDeleteAllCollections,
           ),
-          ListTile(
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) => CommonDeleteDialog(
-                  title: appLocalizations.resetPageDeleteAllBookmarks,
-                  onDelete: () => BookmarkRepository.reset(),
-                ),
-              );
-            },
-            leading: const Icon(Icons.delete_forever_rounded),
-            title: Text(appLocalizations.resetPageDeleteAllBookmarks),
+          _ListTile(
+            onDelete: () async => BookmarkRepository.reset(),
+            iconData: Icons.delete_forever_rounded,
+            title: appLocalizations.resetPageDeleteAllBookmarks,
           ),
         ],
       ),

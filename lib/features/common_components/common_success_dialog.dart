@@ -8,7 +8,7 @@ class CommonSuccessDialog extends StatelessWidget {
   // Constructor for the dialog, requiring a content string
   const CommonSuccessDialog({
     super.key,
-    required this.title,
+    this.title,
     this.content,
   });
 
@@ -17,10 +17,10 @@ class CommonSuccessDialog extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context)!;
 
     return AlertDialog(
-      icon: const Icon(
+      icon: Icon(
         Icons.check_rounded,
         color: Colors.green,
-        // size: 50.0,
+        size: title == null && content == null ? 50.0 : null,
       ),
       title: title,
       content: content,

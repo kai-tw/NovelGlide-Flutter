@@ -88,9 +88,7 @@ class DeveloperPage extends StatelessWidget {
             ListTile(
               onTap: () => showDialog(
                 context: context,
-                builder: (context) => const CommonSuccessDialog(
-                  title: Text('Dialog'),
-                ),
+                builder: (context) => const CommonSuccessDialog(),
               ),
               title: const Text('Success Dialog'),
             ),
