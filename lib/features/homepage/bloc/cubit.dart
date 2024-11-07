@@ -5,9 +5,7 @@ class HomepageCubit extends Cubit<_HomepageState> {
   final PageStorageBucket collectionBucket = PageStorageBucket();
   final PageStorageBucket bookmarkBucket = PageStorageBucket();
 
-  HomepageCubit({
-    HomepageNavigationItem initialItem = HomepageNavigationItem.bookshelf,
-  }) : super(_HomepageState(navItem: initialItem));
+  HomepageCubit() : super(const _HomepageState());
 
   void setItem(HomepageNavigationItem item) {
     emit(state.copyWith(navItem: item));
@@ -20,7 +18,7 @@ class _HomepageState extends Equatable {
   @override
   List<Object> get props => [navItem];
 
-  const _HomepageState({required this.navItem});
+  const _HomepageState({this.navItem = HomepageNavigationItem.bookshelf});
 
   _HomepageState copyWith({
     HomepageNavigationItem? navItem,

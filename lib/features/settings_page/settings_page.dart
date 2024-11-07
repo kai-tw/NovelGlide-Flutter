@@ -22,7 +22,7 @@ class SettingsPage extends StatelessWidget {
 
     final List<Widget> buttonList = [
       ListTile(
-        onTap: () => Navigator.of(context).pushReplacement(
+        onTap: () => Navigator.of(context).push(
           RouteUtils.pushRoute(const ThemeManager()),
         ),
         leading: const Padding(

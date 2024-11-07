@@ -34,12 +34,7 @@ part 'widgets/scaffold_body.dart';
 
 /// The homepage of the app
 class Homepage extends StatefulWidget {
-  final HomepageNavigationItem initialItem;
-
-  const Homepage({
-    super.key,
-    this.initialItem = HomepageNavigationItem.bookshelf,
-  });
+  const Homepage({super.key});
 
   @override
   State<Homepage> createState() => _State();
@@ -58,11 +53,7 @@ class _State extends State<Homepage> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => HomepageCubit(
-            initialItem: widget.initialItem,
-          ),
-        ),
+        BlocProvider(create: (_) => HomepageCubit()),
         BlocProvider(create: (_) => BookshelfCubit()),
         BlocProvider(create: (_) => CollectionListCubit()),
         BlocProvider(create: (_) => BookmarkListCubit()),
@@ -83,8 +74,7 @@ class _State extends State<Homepage> with WidgetsBindingObserver {
     final record = await ThemeDataRecord.fromSettings();
 
     if (record.brightness == null) {
-      final themeData =
-          record.themeId.getThemeDataByBrightness(record.brightness);
+      final themeData = await ThemeDataRecord.currentTheme;
       _switcherState?.changeTheme(theme: themeData);
     }
   }
