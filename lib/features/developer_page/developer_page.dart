@@ -1,13 +1,30 @@
+import 'package:equatable/equatable.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:googleapis/drive/v3.dart' as drive;
 
+import '../../utils/datetime_utils.dart';
 import '../../utils/file_path.dart';
+import '../../utils/google_drive_api.dart';
 import '../../utils/route_utils.dart';
 import '../common_components/common_back_button.dart';
 import '../common_components/common_error_dialog.dart';
+import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import '../common_components/common_success_dialog.dart';
-import 'developer_page_google_drive_file_manager.dart';
+
+part 'bloc/google_drive_cubit.dart';
+part 'cards/backup_card.dart';
+part 'cards/card_template.dart';
+part 'cards/device_info_card.dart';
+part 'cards/dialog_card.dart';
+part 'cards/file_path_card.dart';
+part 'cards/firebase_card.dart';
+part 'cards/google_drive_card.dart';
+part 'dialog/backup_progress_dialog.dart';
+part 'widgets/google_drive_bottom_sheet.dart';
+part 'widgets/google_drive_file_manager.dart';
 
 class DeveloperPage extends StatelessWidget {
   const DeveloperPage({super.key});
@@ -21,95 +38,13 @@ class DeveloperPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView(
-          children: [
-            ListTile(
-              title: const Text('Device'),
-              titleTextStyle: Theme.of(context).textTheme.titleLarge,
-            ),
-            ListTile(
-              title: const Text('devicePixelRatio'),
-              subtitle: Text("${MediaQuery.of(context).devicePixelRatio}"),
-            ),
-            ListTile(
-              title: const Text('size.width'),
-              subtitle: Text("${MediaQuery.of(context).size.width}"),
-            ),
-            ListTile(
-              title: const Text('size.height'),
-              subtitle: Text("${MediaQuery.of(context).size.height}"),
-            ),
-            ListTile(
-              title: const Text('Orientation'),
-              subtitle: Text("${MediaQuery.of(context).orientation}"),
-            ),
-            ListTile(
-              title: const Text('Platform brightness'),
-              subtitle: Text("${MediaQuery.of(context).platformBrightness}"),
-            ),
-            const Divider(),
-            ListTile(
-              title: const Text('File Paths'),
-              titleTextStyle: Theme.of(context).textTheme.titleLarge,
-            ),
-            ListTile(
-              title: const Text('libraryRoot'),
-              subtitle: Text(FilePath.libraryRoot),
-            ),
-            ListTile(
-              title: const Text('dataRoot'),
-              subtitle: Text(FilePath.dataRoot),
-            ),
-            const Divider(),
-            ListTile(
-              title: const Text('Firebase'),
-              titleTextStyle: Theme.of(context).textTheme.titleLarge,
-            ),
-            ListTile(
-              onTap: () => FirebaseCrashlytics.instance.crash(),
-              leading: const Icon(Icons.error_outline_rounded),
-              title: const Text('Force crash'),
-            ),
-            const Divider(),
-            ListTile(
-              title: const Text('Google Drive'),
-              titleTextStyle: Theme.of(context).textTheme.titleLarge,
-            ),
-            ListTile(
-              onTap: () => Navigator.of(context).push(RouteUtils.pushRoute(
-                  const DeveloperPageGoogleDriveFileManager())),
-              leading: const Icon(Icons.folder),
-              title: const Text('File Browser'),
-            ),
-            const Divider(),
-            ListTile(
-              title: const Text('Dialog'),
-              titleTextStyle: Theme.of(context).textTheme.titleLarge,
-            ),
-            ListTile(
-              onTap: () => showDialog(
-                context: context,
-                builder: (context) => const CommonSuccessDialog(),
-              ),
-              title: const Text('Success Dialog'),
-            ),
-            ListTile(
-              onTap: () => showDialog(
-                context: context,
-                builder: (context) => const CommonLoadingDialog(
-                  title: 'Loading Dialog',
-                ),
-              ),
-              title: const Text('Loading Dialog'),
-            ),
-            ListTile(
-              onTap: () => showDialog(
-                context: context,
-                builder: (context) => const CommonErrorDialog(
-                  content: 'Error Dialog',
-                ),
-              ),
-              title: const Text('Error Dialog'),
-            ),
+          children: const [
+            _DeviceInfoCard(),
+            _FilePathCard(),
+            _DialogCard(),
+            _BackupCard(),
+            _FirebaseCard(),
+            _GoogleDriveCard(),
           ],
         ),
       ),

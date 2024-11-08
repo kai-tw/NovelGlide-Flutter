@@ -38,15 +38,4 @@ class _ListTile extends StatelessWidget {
       title: Text(title),
     );
   }
-
-// TODO: Remove
-// void _showSuccessSnackBar(BuildContext context) {
-//   ScaffoldMessenger.of(context).showSnackBar(
-//     SnackBar(
-//       content: Text(
-//         appLocalizations.resetPageResetSuccessfully,
-//       ),
-//     ),
-//   );
-// }
 }

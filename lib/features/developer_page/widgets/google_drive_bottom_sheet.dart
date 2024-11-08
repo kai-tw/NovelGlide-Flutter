@@ -1,18 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:googleapis/drive/v3.dart' as drive;
+part of '../developer_page.dart';
 
-import '../common_components/common_loading.dart';
-import 'bloc/developer_page_google_drive_select_bloc.dart';
-
-class DeveloperPageGoogleDriveBottomSheet extends StatelessWidget {
+class _GoogleDriveBottomSheet extends StatelessWidget {
   final drive.File file;
 
-  const DeveloperPageGoogleDriveBottomSheet({super.key, required this.file});
+  const _GoogleDriveBottomSheet({required this.file});
 
   @override
   Widget build(BuildContext context) {
-    final DeveloperPageGoogleDriveSelectCubit cubit = BlocProvider.of<DeveloperPageGoogleDriveSelectCubit>(context);
+    final cubit = BlocProvider.of<_GoogleDriveCubit>(context);
     return DraggableScrollableSheet(
       initialChildSize: 0.3,
       minChildSize: 0.25,
@@ -42,7 +37,8 @@ class DeveloperPageGoogleDriveBottomSheet extends StatelessWidget {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return AlertDialog(
-                              icon: const Icon(Icons.check_rounded, color: Colors.green, size: 60.0),
+                              icon: const Icon(Icons.check_rounded,
+                                  color: Colors.green, size: 60.0),
                               content: const Text("Delete Successfully"),
                               actions: [
                                 TextButton.icon(
@@ -57,7 +53,8 @@ class DeveloperPageGoogleDriveBottomSheet extends StatelessWidget {
                             );
                           } else {
                             return const AlertDialog(
-                              content: SizedBox.square(dimension: 100.0, child: CommonLoading()),
+                              content: SizedBox.square(
+                                  dimension: 100.0, child: CommonLoading()),
                             );
                           }
                         },
@@ -83,7 +80,8 @@ class DeveloperPageGoogleDriveBottomSheet extends StatelessWidget {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return AlertDialog(
-                              icon: const Icon(Icons.check_rounded, color: Colors.green, size: 60.0),
+                              icon: const Icon(Icons.check_rounded,
+                                  color: Colors.green, size: 60.0),
                               content: const Text("Copy Successfully"),
                               actions: [
                                 TextButton.icon(
@@ -95,7 +93,8 @@ class DeveloperPageGoogleDriveBottomSheet extends StatelessWidget {
                             );
                           } else {
                             return const AlertDialog(
-                              content: SizedBox.square(dimension: 100.0, child: CommonLoading()),
+                              content: SizedBox.square(
+                                  dimension: 100.0, child: CommonLoading()),
                             );
                           }
                         },

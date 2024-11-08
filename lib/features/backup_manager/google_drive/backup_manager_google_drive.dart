@@ -21,13 +21,20 @@ import '../../common_components/common_error_dialog.dart';
 import '../../common_components/common_loading.dart';
 import '../../common_components/common_success_dialog.dart';
 
+part 'bloc/backup_book_process_cubit.dart';
 part 'bloc/cubit.dart';
+part 'bloc/process_dialog_state.dart';
+part 'dialog/backup_book_process_dialog.dart';
 part 'widgets/backup_all_list_tile.dart';
 part 'widgets/backup_book_list_tile.dart';
 part 'widgets/backup_bookmark_list_tile.dart';
 part 'widgets/backup_collection_list_tile.dart';
+part 'widgets/buttons/backup_book_button.dart';
+part 'widgets/buttons/delete_book_button.dart';
+part 'widgets/buttons/restore_book_button.dart';
 part 'widgets/switch_list_tile.dart';
 part 'widgets/time_list_tile.dart';
+part 'widgets/utils/dialog_builder.dart';
 
 class BackupManagerGoogleDrive extends StatelessWidget {
   const BackupManagerGoogleDrive({super.key});

@@ -1,33 +1,23 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:googleapis/drive/v3.dart' as drive;
+part of '../developer_page.dart';
 
-import '../../utils/datetime_utils.dart';
-import '../common_components/common_back_button.dart';
-import '../common_components/common_list_empty.dart';
-import '../common_components/common_loading.dart';
-import 'bloc/developer_page_google_drive_select_bloc.dart';
-import 'developer_page_google_drive_bottom_sheet.dart';
-
-class DeveloperPageGoogleDriveFileManager extends StatelessWidget {
-  const DeveloperPageGoogleDriveFileManager({super.key});
+class _GoogleDriveFileManager extends StatelessWidget {
+  const _GoogleDriveFileManager();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => DeveloperPageGoogleDriveSelectCubit()..init(),
-      child: _BackupManagerGoogleDriveFileManager(key: key),
+      create: (context) => _GoogleDriveCubit()..init(),
+      child: const _GoogleDriveFileManagerContent(),
     );
   }
 }
 
-class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
-  const _BackupManagerGoogleDriveFileManager({super.key});
+class _GoogleDriveFileManagerContent extends StatelessWidget {
+  const _GoogleDriveFileManagerContent();
 
   @override
   Widget build(BuildContext context) {
-    final DeveloperPageGoogleDriveSelectCubit cubit =
-        BlocProvider.of<DeveloperPageGoogleDriveSelectCubit>(context);
+    final cubit = BlocProvider.of<_GoogleDriveCubit>(context);
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
@@ -39,44 +29,43 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
           child: Scrollbar(
             child: CustomScrollView(
               slivers: [
-                BlocBuilder<DeveloperPageGoogleDriveSelectCubit,
-                    DeveloperPageGoogleDriveSelectState>(
+                BlocBuilder<_GoogleDriveCubit, _GoogleDriveState>(
                   buildWhen: (previous, current) =>
                       previous.errorCode != current.errorCode,
                   builder: (context, state) {
                     switch (state.errorCode) {
-                      case BackupManagerGoogleDriveErrorCode.unInitialized:
+                      case _GoogleDriveErrorCode.unInitialized:
                         return const SliverFillRemaining(
                           child: Center(
                             child: CommonLoading(),
                           ),
                         );
 
-                      case BackupManagerGoogleDriveErrorCode.signInError:
+                      case _GoogleDriveErrorCode.signInError:
                         return const SliverFillRemaining(
                           child: Center(
                             child: Text("Failed to sign in to Google Drive"),
                           ),
                         );
 
-                      case BackupManagerGoogleDriveErrorCode.permissionDenied:
+                      case _GoogleDriveErrorCode.permissionDenied:
                         return const SliverFillRemaining(
                           child: Center(
                             child: Text("Permission denied"),
                           ),
                         );
 
-                      case BackupManagerGoogleDriveErrorCode.unknownError:
+                      case _GoogleDriveErrorCode.unknownError:
                         return const SliverFillRemaining(
                           child: Center(
                             child: Text("Unknown error"),
                           ),
                         );
 
-                      case BackupManagerGoogleDriveErrorCode.emptyFolder:
+                      case _GoogleDriveErrorCode.emptyFolder:
                         return const CommonSliverListEmpty();
 
-                      case BackupManagerGoogleDriveErrorCode.normal:
+                      case _GoogleDriveErrorCode.normal:
                         return SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) {
@@ -129,9 +118,9 @@ class _BackupManagerGoogleDriveFileManager extends StatelessWidget {
                                         showDragHandle: true,
                                         builder: (_) => BlocProvider.value(
                                           value: cubit,
-                                          child:
-                                              DeveloperPageGoogleDriveBottomSheet(
-                                                  file: file),
+                                          child: _GoogleDriveBottomSheet(
+                                            file: file,
+                                          ),
                                         ),
                                       );
                                     },
