@@ -1,7 +1,7 @@
 part of '../../backup_manager_google_drive.dart';
 
-class _DeleteBookButton extends StatelessWidget {
-  const _DeleteBookButton();
+class _RestoreBookmarkButton extends StatelessWidget {
+  const _RestoreBookmarkButton();
 
   @override
   Widget build(BuildContext context) {
@@ -9,13 +9,13 @@ class _DeleteBookButton extends StatelessWidget {
     return BlocBuilder<_Cubit, _State>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
-          previous.libraryId != current.libraryId,
+          previous.bookmarkId != current.bookmarkId,
       builder: (context, state) {
-        final isEnabled = state.code.isLoaded && state.libraryId != null;
+        final isEnabled = state.code.isLoaded && state.bookmarkId != null;
         return IconButton(
           icon: Icon(
-            Icons.delete_outlined,
-            semanticLabel: appLocalizations.backupManagerDeleteLibraryBackup,
+            Icons.restore_outlined,
+            semanticLabel: appLocalizations.backupManagerRestoreBookmark,
           ),
           onPressed: isEnabled ? () => _onPressed(context) : null,
         );
@@ -26,7 +26,7 @@ class _DeleteBookButton extends StatelessWidget {
   void _onPressed(BuildContext context) {
     final cubit = BlocProvider.of<_Cubit>(context);
 
-    if (cubit.state.libraryId == null) {
+    if (cubit.state.bookmarkId == null) {
       cubit.refresh();
       return;
     }
@@ -35,9 +35,10 @@ class _DeleteBookButton extends StatelessWidget {
       context: context,
       barrierDismissible: false,
       builder: (_) => BlocProvider(
-        create: (_) => _ProcessCubit()..deleteLibrary(cubit.state.libraryId!),
+        create: (_) =>
+            _ProcessCubit()..restoreBookmarks(cubit.state.bookmarkId!),
         child: const _ProcessAllDialog(),
       ),
-    ).then((value) => cubit.refresh());
+    );
   }
 }

@@ -9,6 +9,7 @@ import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 
 import '../exceptions/exception_template.dart';
+import 'int_utils.dart';
 import 'mime_resolver.dart';
 
 /// A singleton class to interact with Google Drive API.
@@ -138,13 +139,13 @@ class GoogleDriveApi {
 
   /// Uploads a file to Google Drive, updating if it already exists.
   Future<void> uploadFile(String spaces, File file) async {
-    final String? fileId = await getFileId(basename(file.path));
+    final fileId = await getFileId(basename(file.path));
 
-    final drive.File driveFile = drive.File();
+    final driveFile = drive.File();
     driveFile.name = basename(file.path);
     driveFile.mimeType = MimeResolver.lookupAll(file);
 
-    final drive.Media media = drive.Media(file.openRead(), file.lengthSync());
+    final media = drive.Media(file.openRead(), file.lengthSync());
 
     if (fileId != null) {
       await _driveApi!.files.update(driveFile, fileId, uploadMedia: media);
@@ -155,30 +156,37 @@ class GoogleDriveApi {
   }
 
   /// Downloads a file from Google Drive and saves it locally.
-  Future<void> downloadFile(String fileId, File saveFile) async {
+  Future<void> downloadFile(
+    String fileId,
+    File saveFile, {
+    void Function(int, int)? onDownload,
+    void Function()? onDone,
+    void Function(Object)? onError,
+  }) async {
     final logger = Logger();
     final completer = Completer();
     List<int> buffer = [];
 
-    drive.Media media = await GoogleDriveApi.instance._driveApi!.files.get(
+    final fileStat = await instance.getMetadataById(fileId, field: 'size');
+    final fileSize = IntUtils.parse(fileStat.size);
+
+    drive.Media media = await instance._driveApi!.files.get(
       fileId,
       downloadOptions: drive.DownloadOptions.fullMedia,
     ) as drive.Media;
 
-    logger.i(
-      'Google Drive Api: Starting file download.\n'
-      '                  File ID: $fileId\n'
-      '                  Destination Path: ${saveFile.path}',
-    );
+    logger.i('Google Drive Api: Starting file download.');
 
     media.stream.listen((List<int> data) {
       buffer.addAll(data);
+      onDownload?.call(buffer.length, fileSize);
     }, onDone: () {
       saveFile.writeAsBytesSync(buffer);
       buffer.clear();
       completer.complete();
     }, onError: (e) {
       logger.e('Google Drive Api: $e');
+      completer.completeError(e);
     });
 
     await completer.future;

@@ -74,145 +74,17 @@ class _Cubit extends Cubit<_State> {
 
   /// Creates a backup and uploads it to Google Drive.
   Future<bool> backupAll() async {
-    final result = !(await Future.wait([
-      backupLibrary(),
-      backupCollections(),
-      backupBookmarks(),
-    ]))
-        .contains(false);
-    refresh();
-    return result;
-  }
-
-  /// Back up the library to Google Drive.
-  Future<bool> backupLibrary() async {
-    final tempFolder = RandomUtils.getAvailableTempFolder();
-    tempFolder.createSync(recursive: true);
-    final zipFile = await BackupUtils.archiveLibrary(tempFolder.path);
-    await _driveApi.uploadFile('appDataFolder', zipFile);
-    tempFolder.deleteSync(recursive: true);
-    final result = await _driveApi.fileExists(BackupUtils.libraryArchiveName);
-    refresh();
-    return result;
-  }
-
-  Future<bool> backupCollections() async {
-    final collectionFile = CollectionRepository.jsonFile;
-    if (collectionFile.existsSync()) {
-      await _driveApi.uploadFile('appDataFolder', collectionFile);
-    }
-    final result =
-        await _driveApi.fileExists(CollectionRepository.jsonFileName);
-    refresh();
-    return result;
-  }
-
-  Future<bool> backupBookmarks() async {
-    final bookmarkFile = BookmarkRepository.jsonFile;
-    if (bookmarkFile.existsSync()) {
-      await _driveApi.uploadFile('appDataFolder', bookmarkFile);
-    }
-    final result = await _driveApi.fileExists(BookmarkRepository.jsonFileName);
-    refresh();
-    return result;
+    return false;
   }
 
   /// Deletes the existing backup from Google Drive.
   Future<bool> deleteAll() async {
-    final result = !(await Future.wait([
-      deleteLibrary(),
-      deleteCollections(),
-      deleteBookmarks(),
-    ]))
-        .contains(false);
-    refresh();
-    return result;
-  }
-
-  Future<bool> deleteLibrary() async {
-    if (state.libraryId != null) {
-      await _driveApi.deleteFile(state.libraryId!);
-    }
-    final result =
-        !(await _driveApi.fileExists(BackupUtils.libraryArchiveName));
-    refresh();
-    return result;
-  }
-
-  Future<bool> deleteCollections() async {
-    final collectionFileId =
-        await _driveApi.getFileId(CollectionRepository.jsonFileName);
-    if (collectionFileId != null) {
-      await _driveApi.deleteFile(collectionFileId);
-    }
-    final result =
-        !(await _driveApi.fileExists(CollectionRepository.jsonFileName));
-    refresh();
-    return result;
-  }
-
-  Future<bool> deleteBookmarks() async {
-    final bookmarkFileId =
-        await _driveApi.getFileId(BookmarkRepository.jsonFileName);
-    if (bookmarkFileId != null) {
-      await _driveApi.deleteFile(bookmarkFileId);
-    }
-    final result =
-        !(await _driveApi.fileExists(BookmarkRepository.jsonFileName));
-    refresh();
-    return result;
+    return false;
   }
 
   /// Restores a backup from Google Drive.
   Future<bool> restoreAll() async {
-    await Future.wait([
-      restoreLibrary(),
-      restoreCollections(),
-      restoreBookmarks(),
-    ]);
-    refresh();
-    return true;
-  }
-
-  Future<bool> restoreLibrary() async {
-    if (state.libraryId != null) {
-      final tempFolder = RandomUtils.getAvailableTempFolder();
-      tempFolder.createSync(recursive: true);
-
-      final zipFile = File(
-        join(
-          tempFolder.path,
-          BackupUtils.libraryArchiveName,
-        ),
-      );
-      zipFile.createSync();
-
-      // Restore books
-      await _driveApi.downloadFile(state.libraryId!, zipFile);
-      await BackupUtils.restoreBackup(tempFolder, zipFile);
-
-      tempFolder.deleteSync(recursive: true);
-    }
-    refresh();
-    return state.libraryId != null;
-  }
-
-  Future<bool> restoreCollections() async {
-    final id = await _driveApi.getFileId(CollectionRepository.jsonFileName);
-    if (id != null) {
-      await _driveApi.downloadFile(id, CollectionRepository.jsonFile);
-    }
-    refresh();
-    return id != null;
-  }
-
-  Future<bool> restoreBookmarks() async {
-    final id = await _driveApi.getFileId(BookmarkRepository.jsonFileName);
-    if (id != null) {
-      await _driveApi.downloadFile(id, BookmarkRepository.jsonFile);
-    }
-    refresh();
-    return id != null;
+    return false;
   }
 
   @override

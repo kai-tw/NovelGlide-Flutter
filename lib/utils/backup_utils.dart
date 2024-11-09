@@ -32,7 +32,11 @@ class BackupUtils {
     return zipFile;
   }
 
-  static Future<void> restoreBackup(Directory tempFolder, File zipFile) async {
+  static Future<void> restoreBackup(
+    Directory tempFolder,
+    File zipFile, {
+    void Function(double)? onExtracting,
+  }) async {
     final libraryFolder = Directory(FilePath.libraryRoot);
 
     // Clear the Library folder.
@@ -42,6 +46,13 @@ class BackupUtils {
     await ZipFile.extractToDirectory(
       zipFile: zipFile,
       destinationDir: libraryFolder,
+      onExtracting: (entry, progress) {
+        // Only extract epub files.
+        onExtracting?.call(progress);
+        return extension(entry.name) == '.epub'
+            ? ZipFileOperation.includeItem
+            : ZipFileOperation.skipItem;
+      },
     );
   }
 

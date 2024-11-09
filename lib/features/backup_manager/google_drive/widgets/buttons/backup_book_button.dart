@@ -6,7 +6,6 @@ class _BackupBookButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<_Cubit>(context);
     return BlocBuilder<_Cubit, _State>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
@@ -16,15 +15,21 @@ class _BackupBookButton extends StatelessWidget {
             Icons.backup_outlined,
             semanticLabel: appLocalizations.backupManagerBackupLibrary,
           ),
-          onPressed: isEnabled
-              ? () => showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (_) => const _BackupBookProcessDialog(),
-                  ).then((value) => cubit.refresh())
-              : null,
+          onPressed: isEnabled ? () => _onPressed(context) : null,
         );
       },
     );
+  }
+
+  void _onPressed(BuildContext context) {
+    final cubit = BlocProvider.of<_Cubit>(context);
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => BlocProvider(
+        create: (_) => _ProcessCubit()..backupLibrary(),
+        child: const _ProcessAllDialog(),
+      ),
+    ).then((value) => cubit.refresh());
   }
 }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CommonSuccessDialog extends StatelessWidget {
-  final Widget? title;
-  final Widget? content;
+  final String? title;
+  final String? content;
 
   // Constructor for the dialog, requiring a content string
   const CommonSuccessDialog({
@@ -22,8 +22,8 @@ class CommonSuccessDialog extends StatelessWidget {
         color: Colors.green,
         size: title == null && content == null ? 50.0 : null,
       ),
-      title: title,
-      content: content,
+      title: title != null ? Text(title!) : null,
+      content: content != null ? Text(content!) : null,
       actions: [
         ElevatedButton.icon(
           onPressed: () => Navigator.of(context).pop(),

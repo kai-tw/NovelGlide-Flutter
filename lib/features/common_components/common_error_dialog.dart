@@ -3,9 +3,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CommonErrorDialog extends StatelessWidget {
   final String? title;
-  final String content;
+  final String? content;
 
-  const CommonErrorDialog({super.key, this.title, required this.content});
+  const CommonErrorDialog({super.key, this.title, this.content});
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +13,8 @@ class CommonErrorDialog extends StatelessWidget {
     return AlertDialog(
       icon: const Icon(Icons.error_outline_rounded),
       iconColor: Theme.of(context).colorScheme.error,
-      title: Text(title ?? appLocalizations.exceptionUnknownError),
-      content: Text(content),
+      title: title != null ? Text(title!) : null,
+      content: content != null ? Text(content!) : null,
       actions: [
         TextButton.icon(
           onPressed: () => Navigator.of(context).pop(),
