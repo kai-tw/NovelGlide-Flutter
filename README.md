@@ -34,9 +34,4 @@ A first attempt to develop a cross-platform app.
 
 ## Download Links
 
-- [Google Play Store](https://play.google.com/store/apps/details?id=com.kai_wu.novelglide) (
-  still in closed beta testing)
-
-## Guide
-
-- [如何加入 NovelGlide 封閉測試](https://blog.kai-wu.net/2024/10/how-to-apply-for-novelglide-beta-testing.html)
+- [Google Play Store](https://play.google.com/store/apps/details?id=com.kai_wu.novelglide)
