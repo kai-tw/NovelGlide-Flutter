@@ -57,6 +57,7 @@ part 'settings/slider/settings_slider.dart';
 part 'settings/switcher/settings_auto_save_switch.dart';
 part 'settings/switcher/settings_gesture_switcher.dart';
 part 'widgets/app_bar.dart';
+part 'widgets/chapter_title.dart';
 part 'widgets/gesture_detector.dart';
 part 'widgets/overlap_widget.dart';
 part 'widgets/pagination.dart';

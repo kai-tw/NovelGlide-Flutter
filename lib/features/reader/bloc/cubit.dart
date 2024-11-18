@@ -34,8 +34,7 @@ class _ReaderCubit extends Cubit<_ReaderState> {
     return cubit;
   }
 
-  _ReaderCubit._internal(
-    super.initialState, {
+  _ReaderCubit._internal(super.initialState, {
     required this.currentTheme,
     required this.bookPath,
     this.bookData,
@@ -101,7 +100,8 @@ class _ReaderCubit extends Cubit<_ReaderState> {
             state.copyWith(
               atStart: jsonValue['atStart'],
               atEnd: jsonValue['atEnd'],
-              chapterFileName: jsonValue['href'],
+              chapterTitle: jsonValue['chapterTitle'],
+              chapterFileName: jsonValue['chapterFileName'],
               isRtl: jsonValue['isRtl'],
               startCfi: jsonValue['startCfi'],
               localCurrent: jsonValue['localCurrent'],
@@ -113,11 +113,12 @@ class _ReaderCubit extends Cubit<_ReaderState> {
             _searchCubit.setResultList(
               jsonValue['searchResultList']
                   .map<_SearchResult>(
-                    (e) => _SearchResult(
+                    (e) =>
+                    _SearchResult(
                       cfi: e['cfi'],
                       excerpt: e['excerpt'],
                     ),
-                  )
+              )
                   .toList(),
             );
           }
@@ -192,16 +193,10 @@ class _ReaderCubit extends Cubit<_ReaderState> {
 
   Future<void> saveBookmark() async {
     _logger.i('Save the bookmark.');
-    final chapterList = await bookData?.getChapterList();
-    final chapterTitle = BookUtils.getChapterTitleByFileName(
-      chapterList,
-      state.chapterFileName,
-      defaultValue: '-',
-    );
     final data = BookmarkData(
       bookPath: bookPath,
       bookName: state.bookName,
-      chapterTitle: chapterTitle,
+      chapterTitle: state.chapterTitle,
       chapterFileName: state.chapterFileName,
       startCfi: state.startCfi,
       savedTime: DateTime.now(),

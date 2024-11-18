@@ -12,11 +12,12 @@ class _ScaffoldBody extends StatelessWidget {
         Column(
           children: [
             Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
+            const _ChapterTitle(),
             Expanded(
               child:
                   WebViewWidget(controller: cubit._webViewHandler.controller),
             ),
-            // const ReaderPagination(),
+            const _Pagination(),
           ],
         ),
 
