@@ -1,8 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../data_model/theme_data_record.dart';
+part of '../theme_manager.dart';
 
 class ThemeManagerCubit extends Cubit<ThemeManagerState> {
   final ScrollController scrollController = ScrollController();

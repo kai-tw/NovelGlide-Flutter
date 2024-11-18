@@ -19,7 +19,7 @@ import '../../../utils/datetime_utils.dart';
 import '../../../utils/google_drive_api.dart';
 import '../../../utils/random_utils.dart';
 import '../../common_components/common_error_dialog.dart';
-import '../../settings_page/setings_card.dart';
+import '../../settings_page/settings_card.dart';
 
 part 'bloc/cubit.dart';
 part 'bloc/process_cubit.dart';

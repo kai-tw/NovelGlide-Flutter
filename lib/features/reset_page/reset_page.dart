@@ -11,7 +11,7 @@ import '../../repository/collection_repository.dart';
 import '../common_components/common_back_button.dart';
 import '../common_components/common_delete_dialog.dart';
 import '../common_components/common_success_dialog.dart';
-import '../settings_page/setings_card.dart';
+import '../settings_page/settings_card.dart';
 
 part 'cards/delete_card.dart';
 part 'cards/reset_card.dart';

@@ -1,12 +1,7 @@
-import 'package:animated_theme_switcher/animated_theme_switcher.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+part of '../theme_manager.dart';
 
-import '../../../data_model/theme_data_record.dart';
-import '../../../enum/theme_id.dart';
-
-class ThemeManagerSelectThemeButton extends StatelessWidget {
-  const ThemeManagerSelectThemeButton({super.key, required this.themeId});
+class _ThemeSwitcher extends StatelessWidget {
+  const _ThemeSwitcher({required this.themeId});
 
   final ThemeId themeId;
 
