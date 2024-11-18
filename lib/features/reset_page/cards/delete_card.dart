@@ -6,7 +6,7 @@ class _DeleteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    return Card(
+    return SettingsCard(
       margin: const EdgeInsets.symmetric(
         vertical: 12.0,
         horizontal: 24.0,
