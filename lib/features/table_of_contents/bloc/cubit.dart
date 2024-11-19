@@ -12,7 +12,7 @@ class _Cubit extends Cubit<_State> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       emit(_State(
         code: LoadingStateCode.loaded,
-        bookmarkData: BookmarkRepository.get(bookData.filePath),
+        bookmarkData: BookmarkRepository.get(bookData.absoluteFilePath),
         chapterList: await bookData.getChapterList(),
       ));
     });
@@ -22,7 +22,7 @@ class _Cubit extends Cubit<_State> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       emit(_State(
         code: LoadingStateCode.loaded,
-        bookmarkData: BookmarkRepository.get(bookData.filePath),
+        bookmarkData: BookmarkRepository.get(bookData.absoluteFilePath),
         chapterList: state.chapterList,
       ));
     });

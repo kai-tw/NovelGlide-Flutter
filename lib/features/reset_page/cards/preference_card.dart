@@ -1,7 +1,9 @@
 part of '../reset_page.dart';
 
-class _ResetCard extends StatelessWidget {
-  const _ResetCard();
+class _PreferenceCard extends StatelessWidget {
+  const _PreferenceCard();
+
+  /// TODO: Localization
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,15 @@ class _ResetCard extends StatelessWidget {
         horizontal: 24.0,
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, bottom: 12.0),
+            child: Text(
+              'Preferences',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+          ),
           _ListTile(
             onDelete: () async {
               final prefs = await SharedPreferences.getInstance();

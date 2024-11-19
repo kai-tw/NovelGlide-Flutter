@@ -7,14 +7,16 @@ import '../../data_model/preference_keys.dart';
 import '../../data_model/theme_data_record.dart';
 import '../../repository/book_repository.dart';
 import '../../repository/bookmark_repository.dart';
+import '../../repository/cache_repository.dart';
 import '../../repository/collection_repository.dart';
 import '../common_components/common_back_button.dart';
 import '../common_components/common_delete_dialog.dart';
 import '../common_components/common_success_dialog.dart';
 import '../settings_page/settings_card.dart';
 
-part 'cards/delete_card.dart';
-part 'cards/reset_card.dart';
+part 'cards/cache_card.dart';
+part 'cards/data_card.dart';
+part 'cards/preference_card.dart';
 part 'widgets/list_tile.dart';
 
 class ResetPage extends StatelessWidget {
@@ -33,8 +35,9 @@ class ResetPage extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _DeleteCard(),
-                _ResetCard(),
+                _PreferenceCard(),
+                _CacheCard(),
+                _DataCard(),
               ],
             ),
           ),

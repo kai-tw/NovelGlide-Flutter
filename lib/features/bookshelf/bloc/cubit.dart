@@ -30,10 +30,9 @@ class BookshelfCubit extends CommonListCubit<BookData> {
 
     // Only read the books that are not read yet.
     for (File epubFile in fileList) {
-      final target =
-          state.dataList.firstWhereOrNull((e) => e.filePath == epubFile.path) ??
-              BookData.fromEpub(
-                  epubFile.path, await EpubUtils.loadEpubBook(epubFile.path));
+      final target = state.dataList
+              .firstWhereOrNull((e) => e.absoluteFilePath == epubFile.path) ??
+          await BookRepository.get(epubFile.path);
       list.add(target);
     }
 
@@ -71,7 +70,7 @@ class BookshelfCubit extends CommonListCubit<BookData> {
   bool deleteSelectedBooks() {
     List<BookData> newList = List<BookData>.from(state.dataList);
     for (BookData bookData in state.selectedSet) {
-      BookRepository.delete(bookData.filePath);
+      BookRepository.delete(bookData.absoluteFilePath);
       newList.remove(bookData);
     }
     emit(state.copyWith(dataList: newList));
@@ -79,7 +78,7 @@ class BookshelfCubit extends CommonListCubit<BookData> {
   }
 
   bool deleteBook(BookData bookData) {
-    final isSuccess = BookRepository.delete(bookData.filePath);
+    final isSuccess = BookRepository.delete(bookData.absoluteFilePath);
 
     // Update the book list
     List<BookData> newList = List<BookData>.from(state.dataList);

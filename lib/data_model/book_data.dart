@@ -1,45 +1,35 @@
 import 'dart:io';
 
-import 'package:epubx/epubx.dart' as epub;
+import 'package:equatable/equatable.dart';
 import 'package:image/image.dart';
 
 import '../utils/epub_utils.dart';
 import 'chapter_data.dart';
 
 /// Represents a book with its metadata and operations.
-class BookData {
-  final String filePath;
-  String name;
-  Image? _coverImage;
+class BookData extends Equatable {
+  final String absoluteFilePath;
+  final String name;
+  final Image? coverImage;
 
-  Image? get coverImage => _coverImage;
-
-  File get _file => File(filePath);
+  File get _file => File(absoluteFilePath);
 
   bool get isExist => _file.existsSync();
 
   DateTime get modifiedDate => _file.statSync().modified;
 
-  /// Constructor for creating a BookData instance.
-  BookData._internal(this.filePath, this.name, this._coverImage);
+  @override
+  List<Object?> get props => [absoluteFilePath, name, coverImage];
 
-  /// Factory constructor to create a BookData instance from an EpubBook.
-  factory BookData.fromEpub(String path, epub.EpubBook epubBook) {
-    return BookData._internal(path, epubBook.Title ?? '', epubBook.CoverImage);
-  }
+  /// Constructor for creating a BookData instance.
+  const BookData({
+    required this.absoluteFilePath,
+    required this.name,
+    this.coverImage,
+  });
 
   /// Retrieve a list of chapters from the book.
   Future<List<ChapterData>> getChapterList() async {
-    return EpubUtils.getChapterList(filePath);
+    return EpubUtils.getChapterList(absoluteFilePath);
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is BookData &&
-          runtimeType == other.runtimeType &&
-          filePath == other.filePath;
-
-  @override
-  int get hashCode => filePath.hashCode;
 }

@@ -19,11 +19,10 @@ class _Cubit extends CommonListCubit<BookData> {
     List<BookData> bookList = [];
 
     for (final path in collectionData.pathList.toSet()) {
-      final absolutePath = BookRepository.getBookAbsolutePath(path);
-      final target =
-          state.dataList.firstWhereOrNull((e) => e.filePath == absolutePath) ??
-              BookData.fromEpub(
-                  absolutePath, await EpubUtils.loadEpubBook(absolutePath));
+      final absolutePath = BookRepository.getAbsolutePath(path);
+      final target = state.dataList
+              .firstWhereOrNull((e) => e.absoluteFilePath == absolutePath) ??
+          await BookRepository.get(absolutePath);
       bookList.add(target);
     }
 
@@ -47,13 +46,13 @@ class _Cubit extends CommonListCubit<BookData> {
     ));
 
     collectionData.pathList =
-        state.dataList.map<String>((e) => e.filePath).toList();
+        state.dataList.map<String>((e) => e.absoluteFilePath).toList();
     CollectionRepository.save(collectionData);
   }
 
   void remove() {
     collectionData.pathList.removeWhere((p) => state.selectedSet
-        .any((e) => BookRepository.getBookRelativePath(e.filePath) == p));
+        .any((e) => BookRepository.getRelativePath(e.absoluteFilePath) == p));
     CollectionRepository.save(collectionData);
     refresh();
   }

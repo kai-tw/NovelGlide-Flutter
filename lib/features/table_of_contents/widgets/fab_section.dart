@@ -25,7 +25,7 @@ class _FabSection extends StatelessWidget {
                 Navigator.of(context)
                     .push(RouteUtils.pushRoute(
                       ReaderWidget(
-                        bookPath: cubit.bookData.filePath,
+                        bookPath: cubit.bookData.absoluteFilePath,
                         bookData: cubit.bookData,
                       ),
                     ))
@@ -52,7 +52,7 @@ class _FabSection extends StatelessWidget {
                   Navigator.of(context)
                       .push(RouteUtils.pushRoute(
                         ReaderWidget(
-                          bookPath: cubit.bookData.filePath,
+                          bookPath: cubit.bookData.absoluteFilePath,
                           bookData: cubit.bookData,
                           isGotoBookmark: true,
                         ),

@@ -55,7 +55,7 @@ class CollectionRepository {
     final json = getJsonData();
     data.pathList = data.pathList
         .toSet()
-        .map<String>((e) => BookRepository.getBookRelativePath(e))
+        .map<String>((e) => BookRepository.getRelativePath(e))
         .toList();
     json[data.id] = data.toJson();
     jsonFile.writeAsStringSync(jsonEncode(json));
@@ -70,7 +70,7 @@ class CollectionRepository {
 
   /// Deletes the book from the collection.
   static void deleteBook(String path, String id) {
-    final relativePath = BookRepository.getBookRelativePath(path);
+    final relativePath = BookRepository.getRelativePath(path);
     final json = getJsonData();
     if (json[id] != null) {
       final data = CollectionData.fromJson(json[id]!);
@@ -83,7 +83,7 @@ class CollectionRepository {
   /// Deletes the book from all collections.
   static void deleteAssociatedBook(String path) {
     final collectionList = getList().where(
-        (e) => e.pathList.contains(BookRepository.getBookRelativePath(path)));
+        (e) => e.pathList.contains(BookRepository.getRelativePath(path)));
     for (CollectionData data in collectionList) {
       deleteBook(path, data.id);
     }

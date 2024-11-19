@@ -10,11 +10,8 @@ class _WebViewHandler {
   /// The ReaderWebServerHandler instance that handles the web server.
   late final _ServerHandler _serverHandler = _readerCubit._serverHandler;
 
-  /// The destination URL for navigation.
   String? _destination;
-
-  /// Flag indicating if the navigation is to a bookmark.
-  bool _isGotoBookmark = false;
+  String? _savedLocation;
 
   /// Logger instance for logging events and errors.
   final Logger _logger;
@@ -23,32 +20,22 @@ class _WebViewHandler {
   _WebViewHandler(this._readerCubit, this._logger);
 
   /// Initializes the WebView with optional destination and bookmark flag.
-  void initialize({String? destination, bool isGotoBookmark = false}) {
-    // Set the destination URL.
+  void initialize({String? destination, String? savedLocation}) {
     _destination = destination;
-    // Set the bookmark flag.
-    _isGotoBookmark = isGotoBookmark;
+    _savedLocation = savedLocation;
 
-    // Configure the WebView settings.
-    // Disable zooming in the WebView.
+    // JavaScript Initialization
     controller.enableZoom(false);
-    // Allow unrestricted JavaScript execution.
     controller.setJavaScriptMode(JavaScriptMode.unrestricted);
-    // Set the background color to transparent.
     controller.setBackgroundColor(Colors.transparent);
 
     // Set up the navigation delegate to handle page events.
     controller.setNavigationDelegate(NavigationDelegate(
-      // Log when a page starts loading.
       onPageStarted: (url) => _logger.i('Page started loading: $url'),
-      // Handle actions when a page finishes loading.
       onPageFinished: _onPageFinished,
-      // Handle navigation requests.
       onNavigationRequest: _onNavigationRequest,
-      // Log web resource errors.
       onWebResourceError: (error) => _logger
           .e('Web Resource Error: <${error.errorCode}> ${error.description}'),
-      // Log HTTP errors.
       onHttpError: (error) => _logger.e(
           'HTTP Error: <${error.response?.statusCode}> ${error.response?.uri}'),
     ));
@@ -100,20 +87,11 @@ class _WebViewHandler {
     // Construct the appApi channel for communication.
     controller.runJavaScript('window.readerApi.setAppApi()');
 
-    final startCfi = _readerCubit.state.bookmarkData?.startCfi;
-    // final isAutoSave = _readerCubit.state.readerSettings.autoSave;
-
     // Navigate to the specified destination or bookmark.
-    if (_destination != null) {
-      // Navigate to the destination.
-      controller.runJavaScript('window.readerApi.main("$_destination")');
-    } else if (startCfi != null && _isGotoBookmark) {
-      // Navigate to the bookmark.
-      controller.runJavaScript('window.readerApi.main("$startCfi")');
-    } else {
-      // Default navigation.
-      controller.runJavaScript('window.readerApi.main()');
-    }
+    final args = [_destination, _savedLocation]
+        .map((e) => e != null ? "'$e'" : e)
+        .join(',');
+    controller.runJavaScript('window.readerApi.main($args)');
   }
 
   /// Handles navigation requests and determines if they should be allowed or blocked.

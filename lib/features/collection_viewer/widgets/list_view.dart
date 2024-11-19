@@ -30,7 +30,7 @@ class _ListView extends StatelessWidget {
                   final data = state.dataList[index];
                   return _ListItem(
                     bookData: data,
-                    key: ValueKey(data.filePath),
+                    key: ValueKey(data.absoluteFilePath),
                     isSelecting: state.isSelecting,
                   );
                 },

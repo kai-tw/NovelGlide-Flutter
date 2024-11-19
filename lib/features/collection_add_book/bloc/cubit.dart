@@ -4,7 +4,7 @@ class _Cubit extends Cubit<_State> {
   final Set<BookData> dataSet;
 
   Set<String> get pathSet => dataSet
-      .map((e) => BookRepository.getBookRelativePath(e.filePath))
+      .map((e) => BookRepository.getRelativePath(e.absoluteFilePath))
       .toSet();
 
   factory _Cubit(Set<BookData> dataSet) {
@@ -63,7 +63,7 @@ class _Cubit extends Cubit<_State> {
 
   void save() {
     final pathList = dataSet
-        .map((e) => BookRepository.getBookRelativePath(e.filePath))
+        .map((e) => BookRepository.getRelativePath(e.absoluteFilePath))
         .toSet();
     for (CollectionData data in state.collectionList) {
       if (state.selectedCollections.contains(data.id)) {

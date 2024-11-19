@@ -27,7 +27,7 @@ class _ReaderCubit extends Cubit<_ReaderState> {
     final cubit = _ReaderCubit._internal(
       initialState,
       currentTheme: currentTheme,
-      bookPath: BookRepository.getBookAbsolutePath(bookPath),
+      bookPath: BookRepository.getAbsolutePath(bookPath),
       bookData: bookData,
     );
     cubit._initialize(destination: destination, isGotoBookmark: isGotoBookmark);
@@ -52,24 +52,25 @@ class _ReaderCubit extends Cubit<_ReaderState> {
     ));
 
     /// Read the book if it is not read yet.
-    if (bookData == null) {
-      final absolutePath = BookRepository.getBookAbsolutePath(bookPath);
-      final epubBook = await EpubUtils.loadEpubBook(absolutePath);
-      bookData = BookData.fromEpub(absolutePath, epubBook);
-    }
+    final absolutePath = BookRepository.getAbsolutePath(bookPath);
+    bookData ??= await BookRepository.get(absolutePath);
+
+    final newState = state.copyWith(
+      loadingStateCode: ReaderLoadingStateCode.rendering,
+      bookName: bookData?.name,
+      bookmarkData: BookmarkRepository.get(bookPath),
+      readerSettings: await ReaderSettingsData.load(),
+    );
 
     if (!isClosed) {
-      emit(state.copyWith(
-        loadingStateCode: ReaderLoadingStateCode.rendering,
-        bookName: bookData?.name,
-        bookmarkData: BookmarkRepository.get(bookPath),
-        readerSettings: await ReaderSettingsData.load(),
-      ));
+      emit(newState);
     }
 
     _webViewHandler.initialize(
-      destination: destination,
-      isGotoBookmark: isGotoBookmark,
+      destination: isGotoBookmark
+          ? newState.bookmarkData?.startCfi ?? destination
+          : destination,
+      savedLocation: CacheRepository.getLocation(bookPath),
     );
 
     await Future.wait([
@@ -80,11 +81,17 @@ class _ReaderCubit extends Cubit<_ReaderState> {
   }
 
   /// JavaScript Channel Message Processor
-  void onAppApiMessage(JavaScriptMessage message) async {
-    Map<String, dynamic> request = jsonDecode(message.message);
+  void onAppApiMessage(JavaScriptMessage message) {
+    final request = jsonDecode(message.message);
     _logger.i('JS Channel Receive the ${request['route']} request.');
 
     switch (request['route']) {
+      case 'saveLocation':
+        if (bookData != null) {
+          CacheRepository.storeLocation(bookPath, request['data']);
+        }
+        break;
+
       case 'loadDone':
         if (!isClosed) {
           _logger.i('The book has been loaded.');
@@ -134,7 +141,7 @@ class _ReaderCubit extends Cubit<_ReaderState> {
         break;
 
       default:
-        _logger.i('Unknown app api message: $message.');
+        _logger.i('Unknown app api message.');
     }
   }
 

@@ -1,7 +1,9 @@
 part of '../reset_page.dart';
 
-class _DeleteCard extends StatelessWidget {
-  const _DeleteCard();
+class _DataCard extends StatelessWidget {
+  const _DataCard();
+
+  /// TODO: Localization
 
   @override
   Widget build(BuildContext context) {
@@ -12,11 +14,14 @@ class _DeleteCard extends StatelessWidget {
         horizontal: 24.0,
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _ListTile(
-            onDelete: () async => BookRepository.reset(),
-            iconData: Icons.delete_forever_rounded,
-            title: appLocalizations.resetPageDeleteAllBooks,
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, bottom: 12.0),
+            child: Text(
+              'Data',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
           ),
           _ListTile(
             onDelete: () async => CollectionRepository.reset(),
@@ -27,6 +32,11 @@ class _DeleteCard extends StatelessWidget {
             onDelete: () async => BookmarkRepository.reset(),
             iconData: Icons.delete_forever_rounded,
             title: appLocalizations.resetPageDeleteAllBookmarks,
+          ),
+          _ListTile(
+            onDelete: () async => BookRepository.reset(),
+            iconData: Icons.delete_forever_rounded,
+            title: appLocalizations.resetPageDeleteAllBooks,
           ),
         ],
       ),

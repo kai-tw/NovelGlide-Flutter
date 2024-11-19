@@ -19,6 +19,10 @@ class _FilePathCard extends StatelessWidget {
           title: const Text('dataRoot'),
           subtitle: Text(FilePath.dataRoot),
         ),
+        ListTile(
+          title: const Text('tempFolder'),
+          subtitle: Text(FilePath.tempFolder),
+        ),
       ],
     );
   }

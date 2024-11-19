@@ -22,7 +22,7 @@ class BookmarkRepository {
 
   /// Retrieves a bookmark by its book path.
   static BookmarkData? get(String bookPath) {
-    bookPath = BookRepository.getBookRelativePath(bookPath);
+    bookPath = BookRepository.getRelativePath(bookPath);
     return jsonData.containsKey(bookPath)
         ? BookmarkData.fromJson(jsonData[bookPath]!)
         : null;
@@ -34,7 +34,7 @@ class BookmarkRepository {
 
     for (String key in jsonData.keys) {
       final data = BookmarkData.fromJson(jsonData[key]!);
-      final path = BookRepository.getBookAbsolutePath(data.bookPath);
+      final path = BookRepository.getAbsolutePath(data.bookPath);
 
       if (File(path).existsSync()) {
         retList.add(data);
@@ -49,7 +49,7 @@ class BookmarkRepository {
   /// Saves the current bookmark to the JSON file.
   static void save(BookmarkData data) async {
     final json = jsonData;
-    data.bookPath = BookRepository.getBookRelativePath(data.bookPath);
+    data.bookPath = BookRepository.getRelativePath(data.bookPath);
     json[data.bookPath] = data.toJson();
     jsonFile.writeAsStringSync(jsonEncode(json));
   }
@@ -57,7 +57,7 @@ class BookmarkRepository {
   /// Deletes the current bookmark from the JSON file.
   static void delete(BookmarkData data) {
     final json = jsonData;
-    final path = BookRepository.getBookRelativePath(data.bookPath);
+    final path = BookRepository.getRelativePath(data.bookPath);
     json.remove(path);
     jsonFile.writeAsStringSync(jsonEncode(json));
   }
@@ -65,8 +65,8 @@ class BookmarkRepository {
   /// Deletes the bookmark that is associated with the book.
   static void deleteAssociatedBook(String path) {
     final bookmarkList = getList().where((e) =>
-        BookRepository.getBookRelativePath(e.bookPath) ==
-        BookRepository.getBookRelativePath(path));
+        BookRepository.getRelativePath(e.bookPath) ==
+        BookRepository.getRelativePath(path));
     for (final data in bookmarkList) {
       delete(data);
     }

@@ -53,7 +53,7 @@ class _SliverList extends StatelessWidget {
                     RouteUtils.pushRoute(
                       ReaderWidget(
                         bookData: bookData,
-                        bookPath: bookData.filePath,
+                        bookPath: bookData.absoluteFilePath,
                         gotoDestination: chapterData.fileName,
                       ),
                     ),

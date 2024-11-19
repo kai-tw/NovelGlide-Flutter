@@ -11,8 +11,10 @@ class JsonUtils {
     String jsonString = file.readAsStringSync();
     jsonString = jsonString.isEmpty ? '{}' : jsonString;
     try {
+      file.writeAsStringSync(jsonString);
       return jsonDecode(jsonString);
     } catch (e) {
+      file.writeAsStringSync('{}');
       return {};
     }
   }
