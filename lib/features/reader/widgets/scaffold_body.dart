@@ -12,7 +12,7 @@ class _ScaffoldBody extends StatelessWidget {
         Column(
           children: [
             Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
-            const _ChapterTitle(),
+            const _Breadcrumb(),
             Expanded(
               child:
                   WebViewWidget(controller: cubit._webViewHandler.controller),

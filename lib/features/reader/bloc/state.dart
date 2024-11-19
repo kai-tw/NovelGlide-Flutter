@@ -4,7 +4,7 @@ class _ReaderState extends Equatable {
   final LoadingStateCode code;
   final ReaderLoadingStateCode loadingStateCode;
   final String bookName;
-  final String chapterTitle;
+  final String breadcrumb;
   final String chapterFileName;
   final String startCfi;
   final bool atStart;
@@ -28,7 +28,7 @@ class _ReaderState extends Equatable {
         code,
         loadingStateCode,
         bookName,
-        chapterTitle,
+        breadcrumb,
         chapterFileName,
         atStart,
         atEnd,
@@ -45,7 +45,7 @@ class _ReaderState extends Equatable {
     this.code = LoadingStateCode.initial,
     this.loadingStateCode = ReaderLoadingStateCode.initial,
     required this.bookName,
-    this.chapterTitle = '',
+    this.breadcrumb = '',
     this.chapterFileName = '',
     this.startCfi = '',
     this.atStart = true,
@@ -63,7 +63,7 @@ class _ReaderState extends Equatable {
     LoadingStateCode? code,
     ReaderLoadingStateCode? loadingStateCode,
     String? bookName,
-    String? chapterTitle,
+    String? breadcrumb,
     String? chapterFileName,
     String? startCfi,
     bool? atStart,
@@ -80,7 +80,7 @@ class _ReaderState extends Equatable {
       code: code ?? this.code,
       loadingStateCode: loadingStateCode ?? this.loadingStateCode,
       bookName: bookName ?? this.bookName,
-      chapterTitle: chapterTitle ?? this.chapterTitle,
+      breadcrumb: breadcrumb ?? this.breadcrumb,
       chapterFileName: chapterFileName ?? this.chapterFileName,
       startCfi: startCfi ?? this.startCfi,
       atStart: atStart ?? this.atStart,

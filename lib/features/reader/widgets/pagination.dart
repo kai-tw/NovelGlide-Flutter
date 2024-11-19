@@ -10,7 +10,10 @@ class _Pagination extends StatelessWidget {
           previous.localCurrent != current.localCurrent ||
           previous.localTotal != current.localTotal,
       builder: (context, state) {
-        return Text("${state.localCurrent} / ${state.localTotal}");
+        return Text(
+          "${state.localCurrent} / ${state.localTotal}",
+          style: Theme.of(context).textTheme.labelMedium,
+        );
       },
     );
   }

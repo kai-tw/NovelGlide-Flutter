@@ -108,7 +108,7 @@ class _ReaderCubit extends Cubit<_ReaderState> {
             state.copyWith(
               atStart: jsonValue['atStart'],
               atEnd: jsonValue['atEnd'],
-              chapterTitle: jsonValue['chapterTitle'],
+              breadcrumb: jsonValue['breadcrumb'],
               chapterFileName: jsonValue['chapterFileName'],
               isRtl: jsonValue['isRtl'],
               startCfi: jsonValue['startCfi'],
@@ -203,7 +203,7 @@ class _ReaderCubit extends Cubit<_ReaderState> {
     final data = BookmarkData(
       bookPath: bookPath,
       bookName: state.bookName,
-      chapterTitle: state.chapterTitle,
+      chapterTitle: state.breadcrumb,
       chapterFileName: state.chapterFileName,
       startCfi: state.startCfi,
       savedTime: DateTime.now(),
