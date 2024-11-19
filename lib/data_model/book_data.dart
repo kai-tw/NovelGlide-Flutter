@@ -10,27 +10,22 @@ import 'chapter_data.dart';
 class BookData {
   final String filePath;
   String name;
-  Image? coverImage;
+  Image? _coverImage;
 
-  /// Returns the file object for the book.
+  Image? get coverImage => _coverImage;
+
   File get _file => File(filePath);
 
-  /// Checks if the book file exists.
   bool get isExist => _file.existsSync();
 
-  /// Returns the last modified date of the book file.
   DateTime get modifiedDate => _file.statSync().modified;
 
   /// Constructor for creating a BookData instance.
-  BookData({required this.filePath, required this.name, this.coverImage});
+  BookData._internal(this.filePath, this.name, this._coverImage);
 
   /// Factory constructor to create a BookData instance from an EpubBook.
-  factory BookData.fromEpubBook(String path, epub.EpubBook epubBook) {
-    return BookData(
-      filePath: path,
-      name: epubBook.Title ?? '',
-      coverImage: epubBook.CoverImage,
-    );
+  factory BookData.fromEpub(String path, epub.EpubBook epubBook) {
+    return BookData._internal(path, epubBook.Title ?? '', epubBook.CoverImage);
   }
 
   /// Retrieve a list of chapters from the book.

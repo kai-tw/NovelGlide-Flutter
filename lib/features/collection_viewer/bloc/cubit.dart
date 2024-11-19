@@ -22,7 +22,7 @@ class _Cubit extends CommonListCubit<BookData> {
       final absolutePath = BookRepository.getBookAbsolutePath(path);
       final target =
           state.dataList.firstWhereOrNull((e) => e.filePath == absolutePath) ??
-              BookData.fromEpubBook(
+              BookData.fromEpub(
                   absolutePath, await EpubUtils.loadEpubBook(absolutePath));
       bookList.add(target);
     }

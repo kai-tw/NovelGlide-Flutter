@@ -32,7 +32,7 @@ class BookshelfCubit extends CommonListCubit<BookData> {
     for (File epubFile in fileList) {
       final target =
           state.dataList.firstWhereOrNull((e) => e.filePath == epubFile.path) ??
-              BookData.fromEpubBook(
+              BookData.fromEpub(
                   epubFile.path, await EpubUtils.loadEpubBook(epubFile.path));
       list.add(target);
     }

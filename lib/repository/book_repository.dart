@@ -5,11 +5,21 @@ import 'package:path/path.dart';
 import '../exceptions/file_exceptions.dart';
 import '../utils/file_path.dart';
 import '../utils/file_utils.dart';
+import '../utils/json_utils.dart';
 import 'bookmark_repository.dart';
 import 'collection_repository.dart';
+import 'repository_interface.dart';
 
 class BookRepository {
   BookRepository._();
+
+  static String jsonFileName = 'book.json';
+
+  static String get jsonPath => RepositoryInterface.getJsonPath(jsonFileName);
+
+  static File get jsonFile => RepositoryInterface.getJsonFile(jsonPath);
+
+  static Map<String, dynamic> get jsonData => JsonUtils.fromFile(jsonFile);
 
   /// Add a book to the library.
   static void add(String filePath) {

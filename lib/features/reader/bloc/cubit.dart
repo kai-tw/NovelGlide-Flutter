@@ -34,7 +34,8 @@ class _ReaderCubit extends Cubit<_ReaderState> {
     return cubit;
   }
 
-  _ReaderCubit._internal(super.initialState, {
+  _ReaderCubit._internal(
+    super.initialState, {
     required this.currentTheme,
     required this.bookPath,
     this.bookData,
@@ -54,7 +55,7 @@ class _ReaderCubit extends Cubit<_ReaderState> {
     if (bookData == null) {
       final absolutePath = BookRepository.getBookAbsolutePath(bookPath);
       final epubBook = await EpubUtils.loadEpubBook(absolutePath);
-      bookData = BookData.fromEpubBook(absolutePath, epubBook);
+      bookData = BookData.fromEpub(absolutePath, epubBook);
     }
 
     if (!isClosed) {
@@ -113,12 +114,11 @@ class _ReaderCubit extends Cubit<_ReaderState> {
             _searchCubit.setResultList(
               jsonValue['searchResultList']
                   .map<_SearchResult>(
-                    (e) =>
-                    _SearchResult(
+                    (e) => _SearchResult(
                       cfi: e['cfi'],
                       excerpt: e['excerpt'],
                     ),
-              )
+                  )
                   .toList(),
             );
           }

@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:path/path.dart';
-
 import '../data_model/bookmark_data.dart';
-import '../utils/file_path.dart';
 import '../utils/json_utils.dart';
 import 'book_repository.dart';
+import 'repository_interface.dart';
 
 class BookmarkRepository {
   BookmarkRepository._();
@@ -14,16 +12,10 @@ class BookmarkRepository {
   static String jsonFileName = 'bookmark.json';
 
   /// Returns the path to the JSON file storing bookmarks.
-  static String get jsonPath => join(FilePath.dataRoot, jsonFileName);
+  static String get jsonPath => RepositoryInterface.getJsonPath(jsonFileName);
 
   /// Returns the File object for the JSON file storing bookmarks.
-  static File get jsonFile {
-    final file = File(jsonPath);
-    if (!file.existsSync()) {
-      file.createSync(recursive: true);
-    }
-    return file;
-  }
+  static File get jsonFile => RepositoryInterface.getJsonFile(jsonPath);
 
   /// Reads and returns the JSON data from the bookmark file.
   static Map<String, dynamic> get jsonData => JsonUtils.fromFile(jsonFile);

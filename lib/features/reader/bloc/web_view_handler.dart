@@ -131,13 +131,10 @@ class _WebViewHandler {
         : NavigationDecision.prevent; // Block navigation.
 
     // Log the decision.
-    final messageList = [
-      'NavigationDecision: The request for "${request.url}" is $decision.',
-      'NavigationDecision: Is url allowed?    $isUrlAllowed',
-    ];
-    for (var log in messageList) {
-      _logger.i(log);
-    }
+
+    _logger.i(
+        'NavigationDecision: The request for "${request.url}" is $decision.\n'
+        'NavigationDecision: Is url allowed?    $isUrlAllowed');
     return decision;
   }
 }

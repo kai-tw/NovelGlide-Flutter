@@ -1,35 +1,27 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:path/path.dart';
-
 import '../data_model/collection_data.dart';
-import '../utils/file_path.dart';
 import '../utils/json_utils.dart';
 import '../utils/random_utils.dart';
 import 'book_repository.dart';
+import 'repository_interface.dart';
 
 class CollectionRepository {
   static String jsonFileName = 'collection.json';
 
-  static String get jsonPath => join(FilePath.dataRoot, jsonFileName);
+  static String get jsonPath => RepositoryInterface.getJsonPath(jsonFileName);
 
-  static File get jsonFile {
-    final file = File(jsonPath);
-    if (!file.existsSync()) {
-      file.createSync(recursive: true);
-    }
-    return file;
-  }
+  static File get jsonFile => RepositoryInterface.getJsonFile(jsonPath);
 
-  static Map<String, dynamic> get jsonData => JsonUtils.fromFile(jsonFile);
+  static Map<String, dynamic> getJsonData() => JsonUtils.fromFile(jsonFile);
 
   /// Creates a new empty collection with a unique ID.
   static void create(String name) {
-    final data = jsonData;
+    final data = getJsonData();
     String id = RandomUtils.getRandomString(10);
 
-    while (jsonData.containsKey(id)) {
+    while (data.containsKey(id)) {
       id = RandomUtils.getRandomString(10);
     }
 
@@ -38,8 +30,9 @@ class CollectionRepository {
   }
 
   static CollectionData get(String id) {
-    if (jsonData.containsKey(id)) {
-      return CollectionData.fromJson(jsonData[id]!);
+    final data = getJsonData();
+    if (data.containsKey(id)) {
+      return CollectionData.fromJson(data[id]!);
     } else {
       return CollectionData(id, id, const <String>[]);
     }
@@ -47,10 +40,11 @@ class CollectionRepository {
 
   /// Retrieves a list of all [CollectionData] instances.
   static List<CollectionData> getList() {
+    final data = getJsonData();
     List<CollectionData> list = [];
 
-    for (var key in jsonData.keys) {
-      list.add(CollectionData.fromJson(jsonData[key]!));
+    for (var key in data.keys) {
+      list.add(CollectionData.fromJson(data[key]!));
     }
 
     return list;
@@ -58,7 +52,7 @@ class CollectionRepository {
 
   /// Saves the current [CollectionData] instance to the JSON file.
   static void save(CollectionData data) {
-    final json = jsonData;
+    final json = getJsonData();
     data.pathList = data.pathList
         .toSet()
         .map<String>((e) => BookRepository.getBookRelativePath(e))
@@ -69,7 +63,7 @@ class CollectionRepository {
 
   /// Deletes the current [CollectionData] instance from the JSON file.
   static void delete(CollectionData data) {
-    final json = jsonData;
+    final json = getJsonData();
     json.remove(data.id);
     jsonFile.writeAsStringSync(jsonEncode(json));
   }
@@ -77,7 +71,7 @@ class CollectionRepository {
   /// Deletes the book from the collection.
   static void deleteBook(String path, String id) {
     final relativePath = BookRepository.getBookRelativePath(path);
-    final json = jsonData;
+    final json = getJsonData();
     if (json[id] != null) {
       final data = CollectionData.fromJson(json[id]!);
       data.pathList.remove(relativePath);
