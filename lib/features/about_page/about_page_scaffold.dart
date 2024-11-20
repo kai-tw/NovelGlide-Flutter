@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -91,7 +92,7 @@ class _AppVersion extends StatelessWidget {
             child: ListTile(
               contentPadding: EdgeInsets.zero,
               leading: Icon(osLogo),
-              title: Text('v$version ($buildVersion)'),
+              title: Text('v$version${kDebugMode ? ' ($buildVersion)' : ''}'),
               visualDensity: VisualDensity.compact,
             ),
           );
