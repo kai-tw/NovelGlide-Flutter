@@ -113,7 +113,7 @@ class _PrivacyButton extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context)!;
     return TextButton.icon(
       onPressed: () => launchUrl(
-        Uri.parse('https://blog.kai-wu.net/p/novelglide-privacy-policy.html'),
+        Uri.parse('https://www.kai-wu.net/novelglide-privacy-policy'),
       ),
       icon: const Icon(Icons.shield_rounded),
       label: Text(appLocalizations.privacyPolicy),
