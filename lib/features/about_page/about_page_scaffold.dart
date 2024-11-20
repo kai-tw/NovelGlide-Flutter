@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../common_components/app_icon.dart';
 import '../common_components/common_back_button.dart';
@@ -34,7 +33,6 @@ class AboutPageScaffold extends StatelessWidget {
               ),
               _AppName(),
               _AppVersion(),
-              _PrivacyButton(),
             ],
           ),
         ),
@@ -100,23 +98,6 @@ class _AppVersion extends StatelessWidget {
           return const SizedBox.shrink();
         }
       },
-    );
-  }
-}
-
-/// Displays the privacy policy button.
-class _PrivacyButton extends StatelessWidget {
-  const _PrivacyButton();
-
-  @override
-  Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    return TextButton.icon(
-      onPressed: () => launchUrl(
-        Uri.parse('https://www.kai-wu.net/novelglide-privacy-policy'),
-      ),
-      icon: const Icon(Icons.shield_rounded),
-      label: Text(appLocalizations.privacyPolicy),
     );
   }
 }
