@@ -3,8 +3,6 @@ part of '../reset_page.dart';
 class _PreferenceCard extends StatelessWidget {
   const _PreferenceCard();
 
-  /// TODO: Localization
-
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
@@ -19,7 +17,7 @@ class _PreferenceCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 12.0),
             child: Text(
-              'Preferences',
+              appLocalizations.resetPagePreferenceTitle,
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),

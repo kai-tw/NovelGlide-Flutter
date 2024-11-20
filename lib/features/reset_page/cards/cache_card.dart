@@ -3,10 +3,9 @@ part of '../reset_page.dart';
 class _CacheCard extends StatelessWidget {
   const _CacheCard();
 
-  /// TODO: Localization
-
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
     return SettingsCard(
       margin: const EdgeInsets.symmetric(
         vertical: 12.0,
@@ -18,14 +17,14 @@ class _CacheCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 12.0),
             child: Text(
-              'Cache',
+              appLocalizations.resetPageCacheTitle,
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           _ListTile(
             onDelete: () async => CacheRepository.clear(),
             iconData: Icons.delete_forever_rounded,
-            title: 'Clear all Cache',
+            title: appLocalizations.resetPageCacheClear,
             isDangerous: false,
           ),
         ],
