@@ -7,13 +7,9 @@ class _Pagination extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<_ReaderCubit, _ReaderState>(
       buildWhen: (previous, current) =>
-          previous.localCurrent != current.localCurrent ||
-          previous.localTotal != current.localTotal,
+          previous.percentage != current.percentage,
       builder: (context, state) {
-        return Text(
-          "${state.localCurrent} / ${state.localTotal}",
-          style: Theme.of(context).textTheme.labelMedium,
-        );
+        return LinearProgressIndicator(value: state.percentage);
       },
     );
   }

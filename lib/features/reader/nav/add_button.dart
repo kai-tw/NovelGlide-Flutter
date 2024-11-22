@@ -59,12 +59,9 @@ class _State extends State<_AddButton> {
 
   void _resetState([_ReaderState? readerState]) {
     readerState ??= BlocProvider.of<_ReaderCubit>(context).state;
-    final isLoaded = readerState.code == LoadingStateCode.loaded;
     final isAutoSave = readerState.readerSettings.autoSave;
-    final isBookmarked =
-        readerState.bookmarkData?.startCfi == readerState.startCfi;
 
-    if (isLoaded && !isAutoSave && !isBookmarked) {
+    if (readerState.code.isLoaded && !isAutoSave) {
       setState(() => _stateCode = CommonButtonStateCode.idle);
     } else {
       setState(() => _stateCode = CommonButtonStateCode.disabled);

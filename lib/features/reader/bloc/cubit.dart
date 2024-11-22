@@ -34,8 +34,7 @@ class _ReaderCubit extends Cubit<_ReaderState> {
     return cubit;
   }
 
-  _ReaderCubit._internal(
-    super.initialState, {
+  _ReaderCubit._internal(super.initialState, {
     required this.currentTheme,
     required this.bookPath,
     this.bookData,
@@ -112,8 +111,7 @@ class _ReaderCubit extends Cubit<_ReaderState> {
               chapterFileName: jsonValue['chapterFileName'],
               isRtl: jsonValue['isRtl'],
               startCfi: jsonValue['startCfi'],
-              localCurrent: jsonValue['localCurrent'],
-              localTotal: jsonValue['localTotal'],
+              percentage: jsonValue['percentage'],
             ),
           );
 
@@ -121,11 +119,12 @@ class _ReaderCubit extends Cubit<_ReaderState> {
             _searchCubit.setResultList(
               jsonValue['searchResultList']
                   .map<_SearchResult>(
-                    (e) => _SearchResult(
+                    (e) =>
+                    _SearchResult(
                       cfi: e['cfi'],
                       excerpt: e['excerpt'],
                     ),
-                  )
+              )
                   .toList(),
             );
           }

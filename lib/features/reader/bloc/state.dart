@@ -10,8 +10,7 @@ class _ReaderState extends Equatable {
   final bool atStart;
   final bool atEnd;
   final bool isRtl;
-  final int localCurrent;
-  final int localTotal;
+  final double percentage;
 
   /// Errors
   final WebResourceError? webResourceError;
@@ -33,8 +32,7 @@ class _ReaderState extends Equatable {
         atStart,
         atEnd,
         isRtl,
-        localCurrent,
-        localTotal,
+        percentage,
         webResourceError,
         httpResponseError,
         bookmarkData,
@@ -51,8 +49,7 @@ class _ReaderState extends Equatable {
     this.atStart = true,
     this.atEnd = false,
     this.isRtl = false,
-    this.localCurrent = 0,
-    this.localTotal = 0,
+    this.percentage = 0,
     this.webResourceError,
     this.httpResponseError,
     this.bookmarkData,
@@ -69,8 +66,7 @@ class _ReaderState extends Equatable {
     bool? atStart,
     bool? atEnd,
     bool? isRtl,
-    int? localCurrent,
-    int? localTotal,
+    double? percentage,
     WebResourceError? webResourceError,
     HttpResponseError? httpResponseError,
     BookmarkData? bookmarkData,
@@ -86,8 +82,7 @@ class _ReaderState extends Equatable {
       atStart: atStart ?? this.atStart,
       atEnd: atEnd ?? this.atEnd,
       isRtl: isRtl ?? this.isRtl,
-      localCurrent: localCurrent ?? this.localCurrent,
-      localTotal: localTotal ?? this.localTotal,
+      percentage: percentage ?? this.percentage,
       webResourceError: webResourceError ?? this.webResourceError,
       httpResponseError: httpResponseError ?? this.httpResponseError,
       bookmarkData: bookmarkData ?? this.bookmarkData,

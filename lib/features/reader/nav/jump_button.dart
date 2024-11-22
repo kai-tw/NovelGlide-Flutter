@@ -19,11 +19,9 @@ class _JumpToButton extends StatelessWidget {
         final colorScheme = theme.colorScheme;
 
         final isNotLoaded = state.code != LoadingStateCode.loaded;
-        final isAtBookmark = state.bookmarkData?.startCfi == state.startCfi;
         final isAutoSave = state.readerSettings.autoSave;
         final isNotBookmarked = state.bookmarkData == null;
-        final isDisabled =
-            isNotBookmarked || isAtBookmark || isAutoSave || isNotLoaded;
+        final isDisabled = isNotBookmarked || isAutoSave || isNotLoaded;
 
         return IconButton(
           icon: Icon(
@@ -31,8 +29,7 @@ class _JumpToButton extends StatelessWidget {
             semanticLabel: appLocalizations.accessibilityReaderBookmarkButton,
           ),
           style: IconButton.styleFrom(
-            disabledForegroundColor:
-                isAtBookmark && !isAutoSave ? colorScheme.error : null,
+            disabledForegroundColor: !isAutoSave ? colorScheme.error : null,
           ),
           onPressed: isDisabled ? null : cubit.scrollToBookmark,
         );
