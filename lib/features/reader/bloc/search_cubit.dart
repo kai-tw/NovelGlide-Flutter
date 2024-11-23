@@ -47,14 +47,22 @@ class _SearchCubit extends Cubit<_SearchState> {
         .runJavaScript('window.readerApi.searchInCurrentChapter("$query")');
   }
 
-  void setResultList(List<_SearchResult> resultList) {
-    _logger.i('Set the result list.');
-    emit(
-      state.copyWith(
-        code: LoadingStateCode.loaded,
-        resultList: resultList,
-      ),
-    );
+  void setResultList(dynamic rawList) {
+    if (rawList is List) {
+      _logger.i('Set the result list.');
+      emit(
+        state.copyWith(
+          code: LoadingStateCode.loaded,
+          resultList: _parseResultList(rawList),
+        ),
+      );
+    }
+  }
+
+  List<_SearchResult> _parseResultList(List<dynamic> rawList) {
+    return rawList
+        .map((e) => _SearchResult(cfi: e['cfi'], excerpt: e['excerpt']))
+        .toList();
   }
 
   void setQuery(String query) {
