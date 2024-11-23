@@ -23,10 +23,12 @@ import '../../enum/loading_state_code.dart';
 import '../../enum/window_class.dart';
 import '../../repository/book_repository.dart';
 import '../../repository/cache_repository.dart';
+import '../../utils/int_utils.dart';
 import '../../utils/route_utils.dart';
 import '../ads/advertisement.dart';
 import '../common_components/common_back_button.dart';
 import '../common_components/common_loading.dart';
+import 'settings/reader_bottom_sheet.dart';
 
 part 'bloc/cubit.dart';
 part 'bloc/gesture_handler.dart';
@@ -47,14 +49,6 @@ part 'search/search_range_selector.dart';
 part 'search/search_result_list.dart';
 part 'search/search_scaffold.dart';
 part 'search/search_submit_button.dart';
-part 'settings/bottom_sheet.dart';
-part 'settings/settings_card.dart';
-part 'settings/settings_reset_button.dart';
-part 'settings/slider/settings_font_size_slider.dart';
-part 'settings/slider/settings_line_height_slider.dart';
-part 'settings/slider/settings_slider.dart';
-part 'settings/switcher/settings_auto_save_switch.dart';
-part 'settings/switcher/settings_gesture_switcher.dart';
 part 'widgets/app_bar.dart';
 part 'widgets/breadcrumb.dart';
 part 'widgets/gesture_detector.dart';
@@ -80,7 +74,7 @@ class ReaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => _ReaderCubit(
+      create: (_) => ReaderCubit(
         bookData: bookData,
         bookPath: bookPath,
         currentTheme: Theme.of(context),

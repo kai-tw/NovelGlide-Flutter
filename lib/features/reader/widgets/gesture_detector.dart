@@ -5,8 +5,8 @@ class _GestureDetector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<_ReaderCubit>(context);
-    return BlocBuilder<_ReaderCubit, _ReaderState>(
+    final cubit = BlocProvider.of<ReaderCubit>(context);
+    return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (prev, curr) => prev.readerSettings != curr.readerSettings,
       builder: (context, state) {
         if (state.readerSettings.gestureDetection) {

@@ -5,14 +5,31 @@ class _Pagination extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<_ReaderCubit, _ReaderState>(
-      buildWhen: (previous, current) =>
-          previous.chapterCurrentPage != current.chapterCurrentPage ||
-          previous.chapterTotalPage != current.chapterTotalPage ||
-          previous.percentage != current.percentage,
+    return BlocBuilder<ReaderCubit, ReaderState>(
+      buildWhen: (prev, curr) =>
+          prev.readerSettings.pageNumType != curr.readerSettings.pageNumType ||
+          curr.readerSettings.pageNumType != ReaderSettingsPageNumType.hidden &&
+              prev.chapterCurrentPage != curr.chapterCurrentPage ||
+          prev.chapterTotalPage != curr.chapterTotalPage,
       builder: (context, state) {
-        return Text('${state.chapterCurrentPage} / ${state.chapterTotalPage}');
-        // return LinearProgressIndicator(value: state.percentage);
+        switch (state.readerSettings.pageNumType) {
+          case ReaderSettingsPageNumType.hidden:
+            return const SizedBox();
+
+          case ReaderSettingsPageNumType.number:
+            return Text(
+                '${state.chapterCurrentPage} / ${state.chapterTotalPage}');
+
+          case ReaderSettingsPageNumType.percentage:
+            final percentage =
+                state.chapterCurrentPage / state.chapterTotalPage;
+            return Text('${percentage.toStringAsFixed(1)}%');
+
+          case ReaderSettingsPageNumType.progressBar:
+            final percentage =
+                state.chapterCurrentPage / state.chapterTotalPage;
+            return LinearProgressIndicator(value: percentage);
+        }
       },
     );
   }

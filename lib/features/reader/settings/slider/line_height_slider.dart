@@ -1,17 +1,17 @@
-part of '../../reader.dart';
+part of '../reader_bottom_sheet.dart';
 
-class _SettingsLineHeightSlider extends StatelessWidget {
-  const _SettingsLineHeightSlider();
+class _LineHeightSlider extends StatelessWidget {
+  const _LineHeightSlider();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<_ReaderCubit, _ReaderState>(
+    return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) =>
           previous.readerSettings.lineHeight !=
           current.readerSettings.lineHeight,
       builder: (context, state) {
         final appLocalizations = AppLocalizations.of(context)!;
-        final cubit = BlocProvider.of<_ReaderCubit>(context);
+        final cubit = BlocProvider.of<ReaderCubit>(context);
         return _SettingsSlider(
           leading: Icon(
             Icons.density_small_rounded,

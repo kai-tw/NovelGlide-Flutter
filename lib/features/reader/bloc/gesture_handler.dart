@@ -2,7 +2,7 @@ part of '../reader.dart';
 
 class _GestureHandler {
   static const double sensitivity = 50;
-  final _ReaderCubit readerCubit;
+  final ReaderCubit readerCubit;
   double? startDragX;
 
   _GestureHandler(this.readerCubit);

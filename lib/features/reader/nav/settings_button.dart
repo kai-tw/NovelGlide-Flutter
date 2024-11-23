@@ -6,10 +6,10 @@ class _SettingsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<_ReaderCubit, _ReaderState>(
+    return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
-        final _ReaderCubit cubit = BlocProvider.of<_ReaderCubit>(context);
+        final cubit = BlocProvider.of<ReaderCubit>(context);
         final isDisabled = state.code != LoadingStateCode.loaded;
         return IconButton(
           icon: Icon(
@@ -24,7 +24,7 @@ class _SettingsButton extends StatelessWidget {
     );
   }
 
-  void _navigateToSettingsPage(BuildContext context, _ReaderCubit cubit) {
+  void _navigateToSettingsPage(BuildContext context, ReaderCubit cubit) {
     showModalBottomSheet(
       context: context,
       scrollControlDisabledMaxHeightRatio: 1.0,
@@ -33,7 +33,7 @@ class _SettingsButton extends StatelessWidget {
       builder: (BuildContext context) {
         return BlocProvider.value(
           value: cubit,
-          child: const _BottomSheet(),
+          child: const ReaderBottomSheet(),
         );
       },
     );

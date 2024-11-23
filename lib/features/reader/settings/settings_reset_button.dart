@@ -1,4 +1,4 @@
-part of '../reader.dart';
+part of 'reader_bottom_sheet.dart';
 
 class _SettingsResetButton extends StatefulWidget {
   const _SettingsResetButton();
@@ -43,7 +43,7 @@ class _SettingsResetButtonState extends State<_SettingsResetButton> {
 
   void _onPressed() {
     final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<_ReaderCubit>(context);
+    final cubit = BlocProvider.of<ReaderCubit>(context);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

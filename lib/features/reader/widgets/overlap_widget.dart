@@ -5,7 +5,7 @@ class _OverlapWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<_ReaderCubit, _ReaderState>(
+    return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         Widget child;
@@ -45,7 +45,7 @@ class _LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<_ReaderCubit, _ReaderState>(
+    return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) =>
           previous.loadingStateCode != current.loadingStateCode,
       builder: (context, state) {

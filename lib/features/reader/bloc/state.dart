@@ -1,6 +1,6 @@
 part of '../reader.dart';
 
-class _ReaderState extends Equatable {
+class ReaderState extends Equatable {
   final LoadingStateCode code;
   final ReaderLoadingStateCode loadingStateCode;
   final String bookName;
@@ -10,7 +10,6 @@ class _ReaderState extends Equatable {
   final bool atStart;
   final bool atEnd;
   final bool isRtl;
-  final double percentage;
   final int chapterCurrentPage;
   final int chapterTotalPage;
 
@@ -34,7 +33,6 @@ class _ReaderState extends Equatable {
         atStart,
         atEnd,
         isRtl,
-        percentage,
         chapterCurrentPage,
         chapterTotalPage,
         webResourceError,
@@ -43,7 +41,7 @@ class _ReaderState extends Equatable {
         readerSettings,
       ];
 
-  const _ReaderState({
+  const ReaderState({
     this.code = LoadingStateCode.initial,
     this.loadingStateCode = ReaderLoadingStateCode.initial,
     required this.bookName,
@@ -53,7 +51,6 @@ class _ReaderState extends Equatable {
     this.atStart = true,
     this.atEnd = false,
     this.isRtl = false,
-    this.percentage = 0,
     this.chapterCurrentPage = 0,
     this.chapterTotalPage = 0,
     this.webResourceError,
@@ -62,7 +59,7 @@ class _ReaderState extends Equatable {
     required this.readerSettings,
   });
 
-  _ReaderState copyWith({
+  ReaderState copyWith({
     LoadingStateCode? code,
     ReaderLoadingStateCode? loadingStateCode,
     String? bookName,
@@ -80,7 +77,7 @@ class _ReaderState extends Equatable {
     BookmarkData? bookmarkData,
     ReaderSettingsData? readerSettings,
   }) {
-    return _ReaderState(
+    return ReaderState(
       code: code ?? this.code,
       loadingStateCode: loadingStateCode ?? this.loadingStateCode,
       bookName: bookName ?? this.bookName,
@@ -90,7 +87,6 @@ class _ReaderState extends Equatable {
       atStart: atStart ?? this.atStart,
       atEnd: atEnd ?? this.atEnd,
       isRtl: isRtl ?? this.isRtl,
-      percentage: percentage ?? this.percentage,
       chapterCurrentPage: chapterCurrentPage ?? this.chapterCurrentPage,
       chapterTotalPage: chapterTotalPage ?? this.chapterTotalPage,
       webResourceError: webResourceError ?? this.webResourceError,

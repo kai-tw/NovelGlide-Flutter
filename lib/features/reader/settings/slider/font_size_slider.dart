@@ -1,16 +1,16 @@
-part of '../../reader.dart';
+part of '../reader_bottom_sheet.dart';
 
-class _SettingsFontSizeSlider extends StatelessWidget {
-  const _SettingsFontSizeSlider();
+class _FontSizeSlider extends StatelessWidget {
+  const _FontSizeSlider();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<_ReaderCubit, _ReaderState>(
+    return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) =>
           previous.readerSettings.fontSize != current.readerSettings.fontSize,
       builder: (context, state) {
         final appLocalizations = AppLocalizations.of(context)!;
-        final cubit = BlocProvider.of<_ReaderCubit>(context);
+        final cubit = BlocProvider.of<ReaderCubit>(context);
         return _SettingsSlider(
           leading: Icon(
             Icons.format_size_rounded,

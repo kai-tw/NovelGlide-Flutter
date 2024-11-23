@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,28 +18,42 @@ class ReaderSettingsData extends Equatable {
 
   final bool autoSave;
   final bool gestureDetection;
+  final bool isSmoothScroll;
+
+  final ReaderSettingsPageNumType pageNumType;
+
+  static final ReaderPref _readerKey = PreferenceKeys.reader;
 
   @override
-  List<Object?> get props => [fontSize, lineHeight, autoSave, gestureDetection];
+  List<Object?> get props => [
+        fontSize,
+        lineHeight,
+        autoSave,
+        gestureDetection,
+        isSmoothScroll,
+        pageNumType,
+      ];
 
   const ReaderSettingsData({
     this.fontSize = defaultFontSize,
     this.lineHeight = defaultLineHeight,
     this.autoSave = false,
     this.gestureDetection = true,
+    this.isSmoothScroll = false,
+    this.pageNumType = ReaderSettingsPageNumType.number,
   });
 
   /// Loads the reader settings from shared preferences.
   static Future<ReaderSettingsData> load() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return ReaderSettingsData(
-      fontSize:
-      prefs.getDouble(PreferenceKeys.reader.fontSize) ?? defaultFontSize,
-      lineHeight: prefs.getDouble(PreferenceKeys.reader.lineHeight) ??
-          defaultLineHeight,
-      autoSave: prefs.getBool(PreferenceKeys.reader.autoSave) ?? false,
-      gestureDetection:
-      prefs.getBool(PreferenceKeys.reader.gestureDetection) ?? true,
+      fontSize: prefs.getDouble(_readerKey.fontSize) ?? defaultFontSize,
+      lineHeight: prefs.getDouble(_readerKey.lineHeight) ?? defaultLineHeight,
+      autoSave: prefs.getBool(_readerKey.autoSave) ?? false,
+      gestureDetection: prefs.getBool(_readerKey.gestureDetection) ?? true,
+      isSmoothScroll: prefs.getBool(_readerKey.isSmoothScroll) ?? false,
+      pageNumType: ReaderSettingsPageNumType.fromString(
+          prefs.getString(_readerKey.pageNumType)),
     );
   }
 
@@ -48,31 +63,47 @@ class ReaderSettingsData extends Equatable {
     double? lineHeight,
     bool? autoSave,
     bool? gestureDetection,
+    bool? isSmoothScroll,
+    ReaderSettingsPageNumType? pageNumType,
   }) {
     return ReaderSettingsData(
       fontSize: (fontSize ?? this.fontSize).clamp(minFontSize, maxFontSize),
       lineHeight:
-      (lineHeight ?? this.lineHeight).clamp(minLineHeight, maxLineHeight),
+          (lineHeight ?? this.lineHeight).clamp(minLineHeight, maxLineHeight),
       autoSave: autoSave ?? this.autoSave,
       gestureDetection: gestureDetection ?? this.gestureDetection,
+      isSmoothScroll: isSmoothScroll ?? this.isSmoothScroll,
+      pageNumType: pageNumType ?? this.pageNumType,
     );
   }
-
-  /// Converts the settings to a JSON map.
-  Map<String, dynamic> toJson() =>
-      {
-        'font_size': fontSize,
-        'line_height': lineHeight,
-        'auto_save': autoSave,
-        'gesture_detection': gestureDetection,
-      };
 
   /// Saves the current settings to shared preferences.
   Future<void> save() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setDouble(PreferenceKeys.reader.fontSize, fontSize);
-    prefs.setDouble(PreferenceKeys.reader.lineHeight, lineHeight);
-    prefs.setBool(PreferenceKeys.reader.autoSave, autoSave);
-    prefs.setBool(PreferenceKeys.reader.gestureDetection, gestureDetection);
+    prefs.setDouble(_readerKey.fontSize, fontSize);
+    prefs.setDouble(_readerKey.lineHeight, lineHeight);
+    prefs.setBool(_readerKey.autoSave, autoSave);
+    prefs.setBool(_readerKey.gestureDetection, gestureDetection);
+    prefs.setBool(_readerKey.isSmoothScroll, isSmoothScroll);
+    prefs.setString(_readerKey.pageNumType, pageNumType.toString());
+  }
+}
+
+enum ReaderSettingsPageNumType {
+  hidden,
+  number,
+  percentage,
+  progressBar;
+
+  static ReaderSettingsPageNumType fromString(
+    String? value, {
+    ReaderSettingsPageNumType defaultValue = number,
+  }) {
+    if (value == null) {
+      return defaultValue;
+    }
+    return ReaderSettingsPageNumType.values
+            .firstWhereOrNull((e) => e.toString() == value) ??
+        defaultValue;
   }
 }

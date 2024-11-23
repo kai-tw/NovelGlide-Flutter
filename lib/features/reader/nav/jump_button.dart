@@ -6,15 +6,15 @@ class _JumpToButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<_ReaderCubit, _ReaderState>(
+    return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) =>
           previous.readerSettings.autoSave != current.readerSettings.autoSave ||
           previous.bookmarkData?.startCfi != current.bookmarkData?.startCfi ||
           previous.code != current.code ||
           previous.startCfi != current.startCfi,
-      builder: (BuildContext context, _ReaderState state) {
+      builder: (BuildContext context, ReaderState state) {
         final appLocalizations = AppLocalizations.of(context)!;
-        final cubit = BlocProvider.of<_ReaderCubit>(context);
+        final cubit = BlocProvider.of<ReaderCubit>(context);
 
         final isNotLoaded = state.code != LoadingStateCode.loaded;
         final isAutoSave = state.readerSettings.autoSave;

@@ -1,4 +1,4 @@
-part of '../../reader.dart';
+part of '../reader_bottom_sheet.dart';
 
 class _SettingsSlider extends StatelessWidget {
   final Widget leading;

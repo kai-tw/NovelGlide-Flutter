@@ -25,6 +25,8 @@ class ReaderPref {
   final String lineHeight = 'reader.lineHeight';
   final String autoSave = 'reader.autoSave';
   final String gestureDetection = 'reader.gestureDetection';
+  final String isSmoothScroll = 'reader.isSmoothScroll';
+  final String pageNumType = 'reader.pageNumType';
 }
 
 /// Preference keys related to theme settings.

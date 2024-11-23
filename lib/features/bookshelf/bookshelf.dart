@@ -13,7 +13,6 @@ import '../../enum/sort_order_code.dart';
 import '../../enum/window_class.dart';
 import '../../repository/book_repository.dart';
 import '../../utils/book_utils.dart';
-import '../../utils/epub_utils.dart';
 import '../../utils/file_path.dart';
 import '../../utils/mime_resolver.dart';
 import '../../utils/route_utils.dart';

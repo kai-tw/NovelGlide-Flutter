@@ -1,6 +1,6 @@
 part of '../reader.dart';
 
-class _ReaderCubit extends Cubit<_ReaderState> {
+class ReaderCubit extends Cubit<ReaderState> {
   /// Reader
   final String bookPath;
   BookData? bookData;
@@ -13,18 +13,18 @@ class _ReaderCubit extends Cubit<_ReaderState> {
   late final _LifecycleHandler _lifecycleHandler = _LifecycleHandler(this);
   final Logger _logger = Logger();
 
-  factory _ReaderCubit({
+  factory ReaderCubit({
     required String bookPath,
     required ThemeData currentTheme,
     BookData? bookData,
     String? destination,
     bool isGotoBookmark = false,
   }) {
-    final initialState = _ReaderState(
+    final initialState = ReaderState(
       bookName: bookData?.name ?? '',
       readerSettings: const ReaderSettingsData(),
     );
-    final cubit = _ReaderCubit._internal(
+    final cubit = ReaderCubit._internal(
       initialState,
       currentTheme: currentTheme,
       bookPath: BookRepository.getAbsolutePath(bookPath),
@@ -34,7 +34,7 @@ class _ReaderCubit extends Cubit<_ReaderState> {
     return cubit;
   }
 
-  _ReaderCubit._internal(
+  ReaderCubit._internal(
     super.initialState, {
     required this.currentTheme,
     required this.bookPath,
@@ -112,18 +112,21 @@ class _ReaderCubit extends Cubit<_ReaderState> {
               chapterFileName: jsonValue['chapterFileName'],
               isRtl: jsonValue['isRtl'],
               startCfi: jsonValue['startCfi'],
-              percentage: jsonValue['percentage'],
-              chapterCurrentPage: jsonValue['chapterCurrentPage'],
-              chapterTotalPage: jsonValue['chapterTotalPage'],
+              chapterCurrentPage:
+                  IntUtils.parse(jsonValue['chapterCurrentPage']),
+              chapterTotalPage: IntUtils.parse(jsonValue['chapterTotalPage']),
             ),
           );
-
-          _searchCubit.setResultList(jsonValue['searchResultList']);
 
           if (state.readerSettings.autoSave) {
             saveBookmark();
           }
         }
+        break;
+
+      case 'setSearchResultList':
+        final Map<String, dynamic> jsonValue = request['data'];
+        _searchCubit.setResultList(jsonValue['searchResultList']);
         break;
 
       case 'log':
@@ -137,21 +140,21 @@ class _ReaderCubit extends Cubit<_ReaderState> {
 
   /// ******* Communication ********
 
-  void prevPage() =>
-      _webViewHandler.controller.runJavaScript('window.readerApi.prevPage()');
+  void prevPage() => _webViewHandler.prevPage();
 
-  void nextPage() =>
-      _webViewHandler.controller.runJavaScript('window.readerApi.nextPage()');
+  void nextPage() => _webViewHandler.nextPage();
 
-  void goto(String cfi) =>
-      _webViewHandler.controller.runJavaScript('window.readerApi.goto("$cfi")');
+  void goto(String cfi) => _webViewHandler.goto(cfi);
 
   void sendThemeData([ThemeData? newTheme]) {
     currentTheme = newTheme ?? currentTheme;
-    if (state.code == LoadingStateCode.loaded) {
+    if (state.code.isLoaded) {
       _webViewHandler.sendThemeData(currentTheme, state.readerSettings);
     }
   }
+
+  void setSmoothScroll(bool isSmoothScroll) =>
+      _webViewHandler.setSmoothScroll(isSmoothScroll);
 
   /// ******* Settings ********
 
@@ -160,12 +163,16 @@ class _ReaderCubit extends Cubit<_ReaderState> {
     double? lineHeight,
     bool? autoSave,
     bool? gestureDetection,
+    bool? isSmoothScroll,
+    ReaderSettingsPageNumType? pageNumType,
   }) {
     final settings = state.readerSettings.copyWith(
       fontSize: fontSize,
       lineHeight: lineHeight,
       autoSave: autoSave,
       gestureDetection: gestureDetection,
+      isSmoothScroll: isSmoothScroll,
+      pageNumType: pageNumType,
     );
 
     emit(state.copyWith(readerSettings: settings));
@@ -176,6 +183,10 @@ class _ReaderCubit extends Cubit<_ReaderState> {
 
     if (autoSave == true) {
       saveBookmark();
+    }
+
+    if (isSmoothScroll != null) {
+      setSmoothScroll(isSmoothScroll);
     }
   }
 

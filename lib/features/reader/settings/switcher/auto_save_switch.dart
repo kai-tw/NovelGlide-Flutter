@@ -1,12 +1,12 @@
-part of '../../reader.dart';
+part of '../reader_bottom_sheet.dart';
 
-class _SettingsAutoSaveSwitch extends StatelessWidget {
-  const _SettingsAutoSaveSwitch();
+class _AutoSaveSwitch extends StatelessWidget {
+  const _AutoSaveSwitch();
 
   @override
   Widget build(BuildContext context) {
-    final _ReaderCubit cubit = BlocProvider.of<_ReaderCubit>(context);
-    return BlocBuilder<_ReaderCubit, _ReaderState>(
+    final cubit = BlocProvider.of<ReaderCubit>(context);
+    return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) =>
           previous.readerSettings.autoSave != current.readerSettings.autoSave,
       builder: (context, state) {

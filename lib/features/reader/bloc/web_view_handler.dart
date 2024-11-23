@@ -2,13 +2,13 @@ part of '../reader.dart';
 
 class _WebViewHandler {
   /// The ReaderCubit instance that manages the state of the reader.
-  final _ReaderCubit _readerCubit;
+  final ReaderCubit readerCubit;
 
   /// The WebViewController instance that controls the WebView.
   final WebViewController controller = WebViewController();
 
   /// The ReaderWebServerHandler instance that handles the web server.
-  late final _ServerHandler _serverHandler = _readerCubit._serverHandler;
+  late final _ServerHandler _serverHandler = readerCubit._serverHandler;
 
   String? _destination;
   String? _savedLocation;
@@ -17,7 +17,7 @@ class _WebViewHandler {
   final Logger _logger;
 
   /// Constructor to initialize the ReaderWebViewHandler with the ReaderCubit and Logger.
-  _WebViewHandler(this._readerCubit, this._logger);
+  _WebViewHandler(this.readerCubit, this._logger);
 
   /// Initializes the WebView with optional destination and bookmark flag.
   void initialize({String? destination, String? savedLocation}) {
@@ -46,7 +46,7 @@ class _WebViewHandler {
     // Handle messages received from the JavaScript channel.
     return controller.addJavaScriptChannel(
       'appApi',
-      onMessageReceived: _readerCubit.onAppApiMessage,
+      onMessageReceived: readerCubit.onAppApiMessage,
     );
   }
 
@@ -55,28 +55,6 @@ class _WebViewHandler {
     // Load the server URL in the WebView.
     _logger.i('Request to load: ${_serverHandler.url}');
     return controller.loadRequest(Uri.parse(_serverHandler.url));
-  }
-
-  /// Sends theme data to the WebView for styling.
-  void sendThemeData(ThemeData themeData, ReaderSettingsData settings) {
-    // Construct a JSON object with theme data.
-    final Map<String, dynamic> json = {
-      "body": {
-        // Convert color to CSS RGBA format.
-        "color": CssUtils.convertColorToRgba(themeData.colorScheme.onSurface),
-        // Set font size.
-        "font-size": "${settings.fontSize.toStringAsFixed(1)}px",
-        // Set line height.
-        "line-height": settings.lineHeight.toStringAsFixed(1),
-      },
-      // Set link color to inherit.
-      "a": {
-        "color": "inherit !important",
-      },
-    };
-    // Run JavaScript to set the theme data in the WebView.
-    controller
-        .runJavaScript('window.readerApi.setThemeData(${jsonEncode(json)})');
   }
 
   /// Handles actions when a page finishes loading.
@@ -114,5 +92,34 @@ class _WebViewHandler {
         'NavigationDecision: The request for "${request.url}" is $decision.\n'
         'NavigationDecision: Is url allowed?    $isUrlAllowed');
     return decision;
+  }
+
+  /// Communication
+
+  void prevPage() => controller.runJavaScript('window.readerApi.prevPage()');
+
+  void nextPage() => controller.runJavaScript('window.readerApi.nextPage()');
+
+  void goto(String cfi) =>
+      controller.runJavaScript('window.readerApi.goto("$cfi")');
+
+  void sendThemeData(ThemeData themeData, ReaderSettingsData settings) {
+    final Map<String, dynamic> json = {
+      "body": {
+        "color": CssUtils.convertColorToRgba(themeData.colorScheme.onSurface),
+        "font-size": "${settings.fontSize.toStringAsFixed(1)}px",
+        "line-height": settings.lineHeight.toStringAsFixed(1),
+      },
+      "a": {
+        "color": "inherit !important",
+      },
+    };
+    controller
+        .runJavaScript('window.readerApi.setThemeData(${jsonEncode(json)})');
+  }
+
+  void setSmoothScroll(bool isSmoothScroll) {
+    controller
+        .runJavaScript('window.readerApi.setSmoothScroll($isSmoothScroll)');
   }
 }

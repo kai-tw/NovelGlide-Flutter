@@ -16,6 +16,9 @@ abstract class ThemeTemplate {
           borderRadius: BorderRadius.circular(24.0),
         ),
       ),
+      dropdownMenuTheme: DropdownMenuThemeData(
+        inputDecorationTheme: inputDecorationTheme,
+      ),
       useMaterial3: true,
     );
   }

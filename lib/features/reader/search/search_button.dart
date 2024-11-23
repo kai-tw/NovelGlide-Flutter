@@ -5,7 +5,7 @@ class _SearchButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<_ReaderCubit, _ReaderState>(
+    return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         final isDisabled = state.code != LoadingStateCode.loaded;
@@ -21,7 +21,7 @@ class _SearchButton extends StatelessWidget {
   }
 
   void _onPressed(BuildContext context) {
-    final cubit = BlocProvider.of<_ReaderCubit>(context);
+    final cubit = BlocProvider.of<ReaderCubit>(context);
     Navigator.of(context).push(
       RouteUtils.pushRoute(
         BlocProvider.value(

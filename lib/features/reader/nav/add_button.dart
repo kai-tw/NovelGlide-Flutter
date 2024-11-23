@@ -17,7 +17,7 @@ class _State extends State<_AddButton> {
     final isIdle = _stateCode == CommonButtonStateCode.idle;
     final isLoading = _stateCode == CommonButtonStateCode.loading;
     final isSuccess = _stateCode == CommonButtonStateCode.success;
-    return BlocListener<_ReaderCubit, _ReaderState>(
+    return BlocListener<ReaderCubit, ReaderState>(
       listenWhen: (previous, current) =>
           previous.readerSettings.autoSave != current.readerSettings.autoSave ||
           previous.code != current.code ||
@@ -46,7 +46,7 @@ class _State extends State<_AddButton> {
     _stateCode = CommonButtonStateCode.loading;
     setState(() => _stateCode = CommonButtonStateCode.loading);
 
-    await BlocProvider.of<_ReaderCubit>(context).saveBookmark();
+    await BlocProvider.of<ReaderCubit>(context).saveBookmark();
     if (mounted) {
       setState(() => _stateCode = CommonButtonStateCode.success);
     }
@@ -57,8 +57,8 @@ class _State extends State<_AddButton> {
     }
   }
 
-  void _resetState([_ReaderState? readerState]) {
-    readerState ??= BlocProvider.of<_ReaderCubit>(context).state;
+  void _resetState([ReaderState? readerState]) {
+    readerState ??= BlocProvider.of<ReaderCubit>(context).state;
     final isAutoSave = readerState.readerSettings.autoSave;
 
     if (readerState.code.isLoaded && !isAutoSave) {

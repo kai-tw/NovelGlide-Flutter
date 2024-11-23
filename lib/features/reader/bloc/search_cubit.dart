@@ -1,10 +1,10 @@
 part of '../reader.dart';
 
 class _SearchCubit extends Cubit<_SearchState> {
-  final _ReaderCubit readerCubit;
+  final ReaderCubit readerCubit;
   final Logger _logger;
 
-  factory _SearchCubit(_ReaderCubit readerCubit, Logger logger) {
+  factory _SearchCubit(ReaderCubit readerCubit, Logger logger) {
     const initialState = _SearchState();
     final cubit = _SearchCubit._internal(
       initialState,

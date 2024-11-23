@@ -10,9 +10,9 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       leading: const CommonBackButton(),
-      title: BlocBuilder<_ReaderCubit, _ReaderState>(
+      title: BlocBuilder<ReaderCubit, ReaderState>(
         buildWhen: (previous, current) => previous.bookName != current.bookName,
-        builder: (BuildContext context, _ReaderState state) {
+        builder: (BuildContext context, ReaderState state) {
           return Text(state.bookName);
         },
       ),

@@ -6,10 +6,10 @@ class _NextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<_ReaderCubit>(context);
-    return BlocBuilder<_ReaderCubit, _ReaderState>(
+    final cubit = BlocProvider.of<ReaderCubit>(context);
+    return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) => previous.code != current.code,
-      builder: (BuildContext context, _ReaderState state) {
+      builder: (BuildContext context, ReaderState state) {
         final isDisabled = state.code != LoadingStateCode.loaded;
         return IconButton(
           icon: Icon(
