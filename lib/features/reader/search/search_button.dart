@@ -5,7 +5,6 @@ class _SearchButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<_ReaderCubit>(context);
     return BlocBuilder<_ReaderCubit, _ReaderState>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
@@ -15,20 +14,21 @@ class _SearchButton extends StatelessWidget {
             Icons.search,
             semanticLabel: AppLocalizations.of(context)!.readerSearch,
           ),
-          onPressed: isDisabled
-              ? null
-              : () {
-                  Navigator.of(context).push(
-                    RouteUtils.pushRoute(
-                      BlocProvider.value(
-                        value: cubit._searchCubit,
-                        child: const _SearchScaffold(),
-                      ),
-                    ),
-                  );
-                },
+          onPressed: isDisabled ? null : () => _onPressed(context),
         );
       },
+    );
+  }
+
+  void _onPressed(BuildContext context) {
+    final cubit = BlocProvider.of<_ReaderCubit>(context);
+    Navigator.of(context).push(
+      RouteUtils.pushRoute(
+        BlocProvider.value(
+          value: cubit._searchCubit,
+          child: const _SearchScaffold(),
+        ),
+      ),
     );
   }
 }

@@ -15,8 +15,6 @@ class _JumpToButton extends StatelessWidget {
       builder: (BuildContext context, _ReaderState state) {
         final appLocalizations = AppLocalizations.of(context)!;
         final cubit = BlocProvider.of<_ReaderCubit>(context);
-        final theme = Theme.of(context);
-        final colorScheme = theme.colorScheme;
 
         final isNotLoaded = state.code != LoadingStateCode.loaded;
         final isAutoSave = state.readerSettings.autoSave;
@@ -27,9 +25,6 @@ class _JumpToButton extends StatelessWidget {
           icon: Icon(
             Icons.bookmark_rounded,
             semanticLabel: appLocalizations.accessibilityReaderBookmarkButton,
-          ),
-          style: IconButton.styleFrom(
-            disabledForegroundColor: !isAutoSave ? colorScheme.error : null,
           ),
           onPressed: isDisabled ? null : cubit.scrollToBookmark,
         );
