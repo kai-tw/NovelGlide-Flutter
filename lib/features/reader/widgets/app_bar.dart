@@ -17,7 +17,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         },
       ),
       actions: const [
-        _SearchButton(),
+        SearchButton(),
       ],
     );
   }

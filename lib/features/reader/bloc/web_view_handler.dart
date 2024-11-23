@@ -94,7 +94,9 @@ class _WebViewHandler {
     return decision;
   }
 
+  /// *************************************************************************
   /// Communication
+  /// *************************************************************************
 
   void prevPage() => controller.runJavaScript('window.readerApi.prevPage()');
 
@@ -116,6 +118,15 @@ class _WebViewHandler {
     };
     controller
         .runJavaScript('window.readerApi.setThemeData(${jsonEncode(json)})');
+  }
+
+  void searchInWholeBook(String query) {
+    controller.runJavaScript('window.readerApi.searchInWholeBook("$query")');
+  }
+
+  void searchInCurrentChapter(String query) {
+    controller
+        .runJavaScript('window.readerApi.searchInCurrentChapter("$query")');
   }
 
   void setSmoothScroll(bool isSmoothScroll) {

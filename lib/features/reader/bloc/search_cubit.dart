@@ -1,12 +1,12 @@
-part of '../reader.dart';
+part of '../search/search_scaffold.dart';
 
-class _SearchCubit extends Cubit<_SearchState> {
+class SearchCubit extends Cubit<_SearchState> {
   final ReaderCubit readerCubit;
   final Logger _logger;
 
-  factory _SearchCubit(ReaderCubit readerCubit, Logger logger) {
+  factory SearchCubit(ReaderCubit readerCubit, Logger logger) {
     const initialState = _SearchState();
-    final cubit = _SearchCubit._internal(
+    final cubit = SearchCubit._internal(
       initialState,
       readerCubit,
       logger,
@@ -14,7 +14,7 @@ class _SearchCubit extends Cubit<_SearchState> {
     return cubit;
   }
 
-  _SearchCubit._internal(
+  SearchCubit._internal(
     super.initialState,
     this.readerCubit,
     this._logger,
@@ -33,18 +33,14 @@ class _SearchCubit extends Cubit<_SearchState> {
     }
   }
 
-  /// Communication
-
   void _searchInWholeBook(String query) {
     _logger.i('Search "$query" in the whole book.');
-    readerCubit._webViewHandler.controller
-        .runJavaScript('window.readerApi.searchInWholeBook("$query")');
+    readerCubit.searchInWholeBook(query);
   }
 
   void _searchInCurrentChapter(String query) {
     _logger.i('Search "$query" in the current chapter.');
-    readerCubit._webViewHandler.controller
-        .runJavaScript('window.readerApi.searchInCurrentChapter("$query")');
+    readerCubit.searchInCurrentChapter(query);
   }
 
   void setResultList(dynamic rawList) {

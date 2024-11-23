@@ -1,4 +1,4 @@
-part of '../reader.dart';
+part of 'search_scaffold.dart';
 
 class _SearchResultList extends StatelessWidget {
   const _SearchResultList();
@@ -6,7 +6,7 @@ class _SearchResultList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<_SearchCubit, _SearchState>(
+    return BlocBuilder<SearchCubit, _SearchState>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
           previous.resultList != current.resultList,
@@ -41,7 +41,7 @@ class _SearchResultList extends StatelessWidget {
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
-    final cubit = BlocProvider.of<_SearchCubit>(context);
+    final cubit = BlocProvider.of<SearchCubit>(context);
     final state = cubit.state;
 
     final query = state.query;

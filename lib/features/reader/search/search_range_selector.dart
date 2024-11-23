@@ -1,4 +1,4 @@
-part of '../reader.dart';
+part of 'search_scaffold.dart';
 
 class _SearchRangeSelector extends StatelessWidget {
   const _SearchRangeSelector();
@@ -6,8 +6,8 @@ class _SearchRangeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<_SearchCubit>(context);
-    return BlocBuilder<_SearchCubit, _SearchState>(
+    final cubit = BlocProvider.of<SearchCubit>(context);
+    return BlocBuilder<SearchCubit, _SearchState>(
       builder: (context, state) {
         return SegmentedButton(
           segments: [

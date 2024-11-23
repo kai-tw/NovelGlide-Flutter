@@ -1,12 +1,12 @@
-part of '../reader.dart';
+part of 'search_scaffold.dart';
 
 class _SearchSubmitButton extends StatelessWidget {
   const _SearchSubmitButton();
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<_SearchCubit>(context);
-    return BlocBuilder<_SearchCubit, _SearchState>(
+    final cubit = BlocProvider.of<SearchCubit>(context);
+    return BlocBuilder<SearchCubit, _SearchState>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
           previous.query.isEmpty != current.query.isEmpty,

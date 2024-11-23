@@ -1,20 +1,19 @@
-part of '../reader.dart';
+part of 'search_scaffold.dart';
 
-class _SearchButton extends StatelessWidget {
-  const _SearchButton();
+class SearchButton extends StatelessWidget {
+  const SearchButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
-        final isDisabled = state.code != LoadingStateCode.loaded;
         return IconButton(
           icon: Icon(
             Icons.search,
             semanticLabel: AppLocalizations.of(context)!.readerSearch,
           ),
-          onPressed: isDisabled ? null : () => _onPressed(context),
+          onPressed: !state.code.isLoaded ? null : () => _onPressed(context),
         );
       },
     );
@@ -25,8 +24,8 @@ class _SearchButton extends StatelessWidget {
     Navigator.of(context).push(
       RouteUtils.pushRoute(
         BlocProvider.value(
-          value: cubit._searchCubit,
-          child: const _SearchScaffold(),
+          value: cubit.searchCubit,
+          child: const SearchScaffold(),
         ),
       ),
     );

@@ -8,7 +8,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   late final _ServerHandler _serverHandler = _ServerHandler(bookPath, _logger);
   late final _WebViewHandler _webViewHandler = _WebViewHandler(this, _logger);
-  late final _SearchCubit _searchCubit = _SearchCubit(this, _logger);
+  late final SearchCubit searchCubit = SearchCubit(this, _logger);
   late final _GestureHandler _gestureHandler = _GestureHandler(this);
   late final _LifecycleHandler _lifecycleHandler = _LifecycleHandler(this);
   final Logger _logger = Logger();
@@ -126,7 +126,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
       case 'setSearchResultList':
         final Map<String, dynamic> jsonValue = request['data'];
-        _searchCubit.setResultList(jsonValue['searchResultList']);
+        searchCubit.setResultList(jsonValue['searchResultList']);
         break;
 
       case 'log':
@@ -152,6 +152,12 @@ class ReaderCubit extends Cubit<ReaderState> {
       _webViewHandler.sendThemeData(currentTheme, state.readerSettings);
     }
   }
+
+  void searchInWholeBook(String query) =>
+      _webViewHandler.searchInWholeBook(query);
+
+  void searchInCurrentChapter(String query) =>
+      _webViewHandler.searchInCurrentChapter(query);
 
   void setSmoothScroll(bool isSmoothScroll) =>
       _webViewHandler.setSmoothScroll(isSmoothScroll);
@@ -229,7 +235,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   @override
   Future<void> close() async {
     await _serverHandler.stop();
-    await _searchCubit.close();
+    await searchCubit.close();
     _logger.close();
     _lifecycleHandler.dispose();
     super.close();
