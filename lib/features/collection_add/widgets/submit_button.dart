@@ -13,6 +13,7 @@ class _SubmitButton extends StatelessWidget {
         return ElevatedButton.icon(
           onPressed: isDisabled ? null : () => _onPressed(context, state),
           style: ElevatedButton.styleFrom(
+            iconColor: Theme.of(context).colorScheme.onPrimary,
             foregroundColor: Theme.of(context).colorScheme.onPrimary,
             backgroundColor: Theme.of(context).colorScheme.primary,
           ),

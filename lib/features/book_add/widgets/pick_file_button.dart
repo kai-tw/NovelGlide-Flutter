@@ -16,6 +16,7 @@ class _PickFileButton extends StatelessWidget {
           icon: const Icon(Icons.file_open_rounded),
           label: Text(appLocalizations.generalSelect),
           style: ElevatedButton.styleFrom(
+            iconColor: state.file == null ? colorScheme.onPrimary : null,
             foregroundColor: state.file == null ? colorScheme.onPrimary : null,
             backgroundColor: state.file == null ? colorScheme.primary : null,
           ),

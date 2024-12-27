@@ -38,6 +38,7 @@ class CommonDeleteDialog extends StatelessWidget {
             onDelete?.call();
           },
           style: TextButton.styleFrom(
+            iconColor: Theme.of(context).colorScheme.error,
             foregroundColor: Theme.of(context).colorScheme.error,
           ),
           icon: Icon(deleteIcon ?? Icons.delete_rounded),

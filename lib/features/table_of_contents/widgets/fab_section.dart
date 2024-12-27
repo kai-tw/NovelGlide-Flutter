@@ -32,6 +32,7 @@ class _FabSection extends StatelessWidget {
                     .then((_) => cubit.refresh());
               },
               style: ElevatedButton.styleFrom(
+                iconColor: Theme.of(context).colorScheme.onPrimary,
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 padding: const EdgeInsets.symmetric(
@@ -60,6 +61,7 @@ class _FabSection extends StatelessWidget {
                       .then((_) => cubit.refresh());
                 },
                 style: ElevatedButton.styleFrom(
+                  iconColor: Theme.of(context).colorScheme.onPrimary,
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   padding: const EdgeInsets.symmetric(

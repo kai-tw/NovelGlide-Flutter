@@ -19,6 +19,7 @@ class _SubmitButton extends StatelessWidget {
           icon: const Icon(Icons.send_rounded),
           label: Text(AppLocalizations.of(context)!.generalSubmit),
           style: ElevatedButton.styleFrom(
+            iconColor: colorScheme.onPrimary,
             foregroundColor: colorScheme.onPrimary,
             backgroundColor: colorScheme.primary,
           ),
