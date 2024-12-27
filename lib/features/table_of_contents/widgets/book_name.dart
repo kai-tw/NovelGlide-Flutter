@@ -11,7 +11,7 @@ class _BookName extends StatelessWidget {
       margin: const EdgeInsets.all(8.0),
       padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
+        color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
         borderRadius: const BorderRadius.all(Radius.circular(16.0)),
       ),
       clipBehavior: Clip.hardEdge,

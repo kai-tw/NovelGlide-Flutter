@@ -21,11 +21,11 @@ class DraggableFeedbackWidget extends StatelessWidget {
       height: height,
       padding: padding,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface.withOpacity(0.9),
+        color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(16.0),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.shadow.withOpacity(0.2),
+            color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.2),
             blurRadius: 8.0,
             spreadRadius: 0.0,
             offset: const Offset(0.0, 4.0),

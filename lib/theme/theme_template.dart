@@ -71,7 +71,7 @@ abstract class ThemeTemplate {
     return SwitchThemeData(
       thumbColor: WidgetStateColor.resolveWith((Set<WidgetState> states) {
         if (states.contains(WidgetState.disabled)) {
-          return colorScheme.onSurface.withOpacity(0.38);
+          return colorScheme.onSurface.withValues(alpha: 0.38);
         }
         if (states.contains(WidgetState.selected)) {
           return colorScheme.onPrimary;

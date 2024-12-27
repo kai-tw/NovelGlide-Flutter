@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

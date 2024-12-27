@@ -34,7 +34,7 @@ class StoreSubscriptionPlanWidget extends StatelessWidget {
                   color: Theme.of(context)
                       .colorScheme
                       .outline
-                      .withOpacity(state.activeSubscriptionId == productDetails?.id ? 1 : 0.5),
+                      .withValues(alpha: state.activeSubscriptionId == productDetails?.id ? 1 : 0.5),
                   width: 2.0,
                 ),
               ),
@@ -66,7 +66,7 @@ class StoreSubscriptionPlanWidget extends StatelessWidget {
                                 TextSpan(
                                   text: productDetails != null ? " / ${appLocalizations.storePerMonth}" : "",
                                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                                       ),
                                 ),
                               ],

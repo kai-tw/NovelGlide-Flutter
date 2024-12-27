@@ -7,10 +7,10 @@ class CssUtils {
   /// The [color] parameter is the color to convert.
   /// Returns a string in the format 'rgba(red, green, blue, alpha)'.
   static String convertColorToRgba(Color color) {
-    final red = color.red;
-    final green = color.green;
-    final blue = color.blue;
-    final alpha = (color.alpha / 255).toStringAsFixed(1);
+    final red = color.r;
+    final green = color.g;
+    final blue = color.b;
+    final alpha = (color.a / 255).toStringAsFixed(1);
 
     return 'rgba($red, $green, $blue, $alpha)';
   }

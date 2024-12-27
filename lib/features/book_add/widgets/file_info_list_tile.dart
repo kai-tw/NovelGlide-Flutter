@@ -17,7 +17,7 @@ class _FileInfoListTile extends StatelessWidget {
           color: Theme.of(context)
               .colorScheme
               .onSurface
-              .withOpacity(state.file == null ? 0.7 : 1.0),
+              .withValues(alpha: state.file == null ? 0.7 : 1.0),
         );
 
         return ListTile(
