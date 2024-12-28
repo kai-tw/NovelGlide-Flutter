@@ -10,7 +10,7 @@ class CssUtils {
     final red = color.r;
     final green = color.g;
     final blue = color.b;
-    final alpha = (color.a / 255).toStringAsFixed(1);
+    final alpha = color.a.toStringAsFixed(1);
 
     return 'rgba($red, $green, $blue, $alpha)';
   }
