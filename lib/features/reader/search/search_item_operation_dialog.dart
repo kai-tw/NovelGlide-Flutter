@@ -9,7 +9,8 @@ class _SearchItemOperationDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
     return Dialog(
-      child: Padding(
+      child: Container(
+        constraints: BoxConstraints(maxWidth: WindowClass.compact.maxWidth),
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,

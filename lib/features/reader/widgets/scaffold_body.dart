@@ -25,7 +25,9 @@ class _ScaffoldBody extends StatelessWidget {
                   controller: cubit._webViewHandler.controller,
                   gestureRecognizers: {
                     Factory<LongPressGestureRecognizer>(
-                      () => LongPressGestureRecognizer(),
+                      () => LongPressGestureRecognizer(
+                        duration: const Duration(milliseconds: 100),
+                      ),
                     ),
                   },
                 ),
