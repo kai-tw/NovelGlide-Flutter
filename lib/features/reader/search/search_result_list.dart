@@ -28,11 +28,22 @@ class _SearchResultList extends StatelessWidget {
                 child: Text(appLocalizations.readerSearchNoResult),
               );
             } else {
-              return Scrollbar(
-                child: ListView.builder(
-                  itemBuilder: _itemBuilder,
-                  itemCount: resultList.length,
-                ),
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Text(appLocalizations
+                        .readerSearchResultCount(resultList.length)),
+                  ),
+                  Expanded(
+                    child: Scrollbar(
+                      child: ListView.builder(
+                        itemBuilder: _itemBuilder,
+                        itemCount: resultList.length,
+                      ),
+                    ),
+                  ),
+                ],
               );
             }
         }
@@ -49,29 +60,47 @@ class _SearchResultList extends StatelessWidget {
     final excerpt = result.excerpt.replaceAll(RegExp(r'\s+'), ' ');
 
     // Highlight the keyword
-    final keywordIndex = excerpt.indexOf(RegExp(query, caseSensitive: false));
-    final prefix = excerpt.substring(0, keywordIndex);
-    final target = excerpt.substring(keywordIndex, keywordIndex + query.length);
-    final suffix = excerpt.substring(keywordIndex + query.length);
+    final children = <InlineSpan>[];
+    String excerptPart = excerpt;
+    while (excerptPart.contains(RegExp(query, caseSensitive: false))) {
+      final keywordIndex =
+          excerptPart.indexOf(RegExp(query, caseSensitive: false));
+
+      // prefix part
+      if (keywordIndex > 0) {
+        children.add(TextSpan(text: excerptPart.substring(0, keywordIndex)));
+      }
+
+      // keyword part
+      children.add(TextSpan(
+        text: excerptPart.substring(keywordIndex, keywordIndex + query.length),
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.error,
+          fontWeight: FontWeight.bold,
+        ),
+      ));
+      excerptPart = excerptPart.substring(keywordIndex + query.length);
+    }
+
+    // Remaining part
+    if (excerptPart.isNotEmpty) {
+      children.add(TextSpan(text: excerptPart));
+    }
 
     return ListTile(
       onTap: () {
         Navigator.of(context).pop();
         cubit.readerCubit.goto(result.cfi);
       },
+      onLongPress: () {
+        showDialog(
+          context: context,
+          builder: (_) => _SearchItemOperationDialog(result),
+        );
+      },
       title: Text.rich(
         TextSpan(
-          children: [
-            TextSpan(text: prefix),
-            TextSpan(
-              text: target,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.error,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            TextSpan(text: suffix),
-          ],
+          children: children,
         ),
       ),
     );
