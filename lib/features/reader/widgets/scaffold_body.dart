@@ -14,8 +14,22 @@ class _ScaffoldBody extends StatelessWidget {
             Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
             const _Breadcrumb(),
             Expanded(
-              child:
-                  WebViewWidget(controller: cubit._webViewHandler.controller),
+              child: GestureDetector(
+                behavior: HitTestBehavior.translucent,
+
+                /// Swipe to prev/next page
+                onHorizontalDragStart: cubit._gestureHandler.onStart,
+                onHorizontalDragEnd: cubit._gestureHandler.onEnd,
+                onHorizontalDragCancel: cubit._gestureHandler.onCancel,
+                child: WebViewWidget(
+                  controller: cubit._webViewHandler.controller,
+                  gestureRecognizers: {
+                    Factory<LongPressGestureRecognizer>(
+                      () => LongPressGestureRecognizer(),
+                    ),
+                  },
+                ),
+              ),
             ),
             const _Pagination(),
           ],

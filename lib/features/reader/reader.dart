@@ -4,6 +4,8 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +46,6 @@ part 'nav/previous_button.dart';
 part 'nav/settings_button.dart';
 part 'widgets/app_bar.dart';
 part 'widgets/breadcrumb.dart';
-part 'widgets/gesture_detector.dart';
 part 'widgets/overlap_widget.dart';
 part 'widgets/pagination.dart';
 part 'widgets/scaffold.dart';

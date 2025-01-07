@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logger/logger.dart';
 
 import '../../../enum/loading_state_code.dart';
+import '../../../enum/window_class.dart';
 import '../../../utils/route_utils.dart';
 import '../../common_components/common_back_button.dart';
 import '../../common_components/common_loading.dart';
@@ -26,38 +27,38 @@ class SearchScaffold extends StatelessWidget {
       appBar: AppBar(
         leading: const CommonBackButton(),
       ),
-      body: Column(
-        children: [
-          const Expanded(
-            child: _SearchResultList(),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerHigh,
-              borderRadius: BorderRadius.circular(24.0),
-            ),
-            child: const SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _SearchRangeSelector(),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(16.0, 24.0, 0.0, 24.0),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: WindowClass.compact.maxWidth),
+          child: Column(
+            children: [
+              const Expanded(
+                child: _SearchResultList(),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                  borderRadius: BorderRadius.circular(24.0),
+                ),
+                child: const SafeArea(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(16.0, 8.0, 0.0, 8.0),
                     child: Row(
                       children: [
                         Expanded(
                           child: _SearchField(),
                         ),
+                        _SearchRangeSelector(),
                         _SearchSubmitButton(),
                       ],
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

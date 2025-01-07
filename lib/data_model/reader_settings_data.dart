@@ -17,7 +17,6 @@ class ReaderSettingsData extends Equatable {
   static const double maxLineHeight = 3.0;
 
   final bool autoSave;
-  final bool gestureDetection;
   final bool isSmoothScroll;
 
   final ReaderSettingsPageNumType pageNumType;
@@ -29,7 +28,6 @@ class ReaderSettingsData extends Equatable {
         fontSize,
         lineHeight,
         autoSave,
-        gestureDetection,
         isSmoothScroll,
         pageNumType,
       ];
@@ -38,7 +36,6 @@ class ReaderSettingsData extends Equatable {
     this.fontSize = defaultFontSize,
     this.lineHeight = defaultLineHeight,
     this.autoSave = false,
-    this.gestureDetection = true,
     this.isSmoothScroll = false,
     this.pageNumType = ReaderSettingsPageNumType.number,
   });
@@ -50,7 +47,6 @@ class ReaderSettingsData extends Equatable {
       fontSize: prefs.getDouble(_readerKey.fontSize) ?? defaultFontSize,
       lineHeight: prefs.getDouble(_readerKey.lineHeight) ?? defaultLineHeight,
       autoSave: prefs.getBool(_readerKey.autoSave) ?? false,
-      gestureDetection: prefs.getBool(_readerKey.gestureDetection) ?? true,
       isSmoothScroll: prefs.getBool(_readerKey.isSmoothScroll) ?? false,
       pageNumType: ReaderSettingsPageNumType.fromString(
           prefs.getString(_readerKey.pageNumType)),
@@ -71,7 +67,6 @@ class ReaderSettingsData extends Equatable {
       lineHeight:
           (lineHeight ?? this.lineHeight).clamp(minLineHeight, maxLineHeight),
       autoSave: autoSave ?? this.autoSave,
-      gestureDetection: gestureDetection ?? this.gestureDetection,
       isSmoothScroll: isSmoothScroll ?? this.isSmoothScroll,
       pageNumType: pageNumType ?? this.pageNumType,
     );
@@ -83,7 +78,6 @@ class ReaderSettingsData extends Equatable {
     prefs.setDouble(_readerKey.fontSize, fontSize);
     prefs.setDouble(_readerKey.lineHeight, lineHeight);
     prefs.setBool(_readerKey.autoSave, autoSave);
-    prefs.setBool(_readerKey.gestureDetection, gestureDetection);
     prefs.setBool(_readerKey.isSmoothScroll, isSmoothScroll);
     prefs.setString(_readerKey.pageNumType, pageNumType.toString());
   }

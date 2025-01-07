@@ -15,7 +15,6 @@ part 'slider/font_size_slider.dart';
 part 'slider/line_height_slider.dart';
 part 'slider/settings_slider.dart';
 part 'switcher/auto_save_switch.dart';
-part 'switcher/gesture_switcher.dart';
 part 'switcher/smooth_scroll_switch.dart';
 
 class ReaderBottomSheet extends StatelessWidget {
@@ -49,7 +48,6 @@ class ReaderBottomSheet extends StatelessWidget {
                 child: Column(
                   children: [
                     _AutoSaveSwitch(),
-                    _GestureSwitcher(),
                     _SmoothScrollSwitch(),
                   ],
                 ),

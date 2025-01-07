@@ -12,7 +12,7 @@ class _OverlapWidget extends StatelessWidget {
 
         switch (state.code) {
           case LoadingStateCode.loaded:
-            child = const _GestureDetector();
+            child = const SizedBox.shrink();
             break;
 
           default:

@@ -7,31 +7,64 @@ class _SearchRangeSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
     final cubit = BlocProvider.of<SearchCubit>(context);
-    return BlocBuilder<SearchCubit, _SearchState>(
-      builder: (context, state) {
-        return SegmentedButton(
-          segments: [
-            ButtonSegment(
-              value: ReaderSearchRange.currentChapter,
-              icon: const Icon(Icons.insert_drive_file_rounded),
-              label: Text(appLocalizations.readerSearchCurrentChapter),
-            ),
-            ButtonSegment(
-              value: ReaderSearchRange.all,
-              icon: const Icon(Icons.menu_book_rounded),
-              label: Text(appLocalizations.readerSearchAllRange),
-            ),
-          ],
-          style: SegmentedButton.styleFrom(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(16.0)),
-            ),
-          ),
-          expandedInsets: const EdgeInsets.symmetric(horizontal: 4.0),
-          selected: {state.range},
-          onSelectionChanged: (value) => cubit.setRange(value.first),
-        );
-      },
+    return IntrinsicWidth(
+      child: BlocBuilder<SearchCubit, _SearchState>(
+        builder: (context, state) {
+          return Row(
+            children: [
+              _SearchRangeButton(
+                isSelected: state.range == ReaderSearchRange.currentChapter,
+                onPressed: () =>
+                    cubit.setRange(ReaderSearchRange.currentChapter),
+                label: appLocalizations.readerSearchCurrentChapter,
+                icon: Icons.insert_drive_file_outlined,
+              ),
+              _SearchRangeButton(
+                isSelected: state.range == ReaderSearchRange.all,
+                onPressed: () => cubit.setRange(ReaderSearchRange.all),
+                label: appLocalizations.readerSearchAllRange,
+                icon: Icons.book_outlined,
+              ),
+            ],
+          );
+        },
+      ),
     );
+  }
+}
+
+class _SearchRangeButton extends StatelessWidget {
+  final bool isSelected;
+  final String label;
+  final IconData icon;
+  final Function() onPressed;
+
+  const _SearchRangeButton({
+    required this.isSelected,
+    required this.onPressed,
+    required this.label,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (isSelected) {
+      return TextButton.icon(
+        onPressed: null,
+        icon: Icon(icon),
+        label: Text(label),
+        style: TextButton.styleFrom(
+          disabledBackgroundColor: Theme.of(context).colorScheme.primary,
+          disabledForegroundColor: Theme.of(context).colorScheme.onPrimary,
+          iconColor: Theme.of(context).colorScheme.onPrimary,
+        ),
+      );
+    } else {
+      return IconButton(
+        onPressed: onPressed,
+        icon: const Icon(Icons.book_outlined),
+        tooltip: label,
+      );
+    }
   }
 }
