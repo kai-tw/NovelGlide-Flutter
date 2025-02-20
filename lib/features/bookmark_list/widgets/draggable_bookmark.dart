@@ -41,7 +41,8 @@ class _DraggableBookmark extends StatelessWidget {
                   RouteUtils.pushRoute(
                     ReaderWidget(
                       bookPath: _data.bookPath,
-                      isGotoBookmark: true,
+                      destinationType: ReaderDestinationType.bookmark,
+                      destination: _data.startCfi,
                     ),
                   ),
                 )

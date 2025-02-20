@@ -6,9 +6,9 @@ class _SearchRangeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<SearchCubit>(context);
+    final cubit = BlocProvider.of<ReaderSearchCubit>(context);
     return IntrinsicWidth(
-      child: BlocBuilder<SearchCubit, _SearchState>(
+      child: BlocBuilder<ReaderSearchCubit, ReaderSearchState>(
         builder: (context, state) {
           return Row(
             children: [

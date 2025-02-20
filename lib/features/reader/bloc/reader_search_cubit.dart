@@ -1,51 +1,33 @@
-part of '../search/search_scaffold.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SearchCubit extends Cubit<_SearchState> {
-  final ReaderCubit readerCubit;
-  final Logger _logger;
+import '../../../enum/loading_state_code.dart';
 
-  factory SearchCubit(ReaderCubit readerCubit, Logger logger) {
-    const initialState = _SearchState();
-    final cubit = SearchCubit._internal(
-      initialState,
-      readerCubit,
-      logger,
-    );
-    return cubit;
-  }
+class ReaderSearchCubit extends Cubit<ReaderSearchState> {
+  final Function(String)? searchInCurrentChapter;
+  final Function(String)? searchInWholeBook;
+  final Function(String)? goto;
 
-  SearchCubit._internal(
-    super.initialState,
-    this.readerCubit,
-    this._logger,
-  );
+  ReaderSearchCubit({
+    this.searchInCurrentChapter,
+    this.searchInWholeBook,
+    this.goto,
+  }) : super(const ReaderSearchState());
 
   void startSearch() {
-    _logger.i('Start a search query.');
     emit(state.copyWith(code: LoadingStateCode.loading));
     switch (state.range) {
       case ReaderSearchRange.currentChapter:
-        _searchInCurrentChapter(state.query);
+        searchInCurrentChapter?.call(state.query);
         break;
       case ReaderSearchRange.all:
-        _searchInWholeBook(state.query);
+        searchInWholeBook?.call(state.query);
         break;
     }
   }
 
-  void _searchInWholeBook(String query) {
-    _logger.i('Search "$query" in the whole book.');
-    readerCubit.searchInWholeBook(query);
-  }
-
-  void _searchInCurrentChapter(String query) {
-    _logger.i('Search "$query" in the current chapter.');
-    readerCubit.searchInCurrentChapter(query);
-  }
-
   void setResultList(dynamic rawList) {
     if (rawList is List) {
-      _logger.i('Set the result list.');
       emit(
         state.copyWith(
           code: LoadingStateCode.loaded,
@@ -55,9 +37,9 @@ class SearchCubit extends Cubit<_SearchState> {
     }
   }
 
-  List<_SearchResult> _parseResultList(List<dynamic> rawList) {
+  List<ReaderSearchResult> _parseResultList(List<dynamic> rawList) {
     return rawList
-        .map((e) => _SearchResult(cfi: e['cfi'], excerpt: e['excerpt']))
+        .map((e) => ReaderSearchResult(cfi: e['cfi'], excerpt: e['excerpt']))
         .toList();
   }
 
@@ -70,11 +52,11 @@ class SearchCubit extends Cubit<_SearchState> {
   }
 }
 
-class _SearchState extends Equatable {
+class ReaderSearchState extends Equatable {
   final LoadingStateCode code;
   final ReaderSearchRange range;
   final String query;
-  final List<_SearchResult> resultList;
+  final List<ReaderSearchResult> resultList;
 
   @override
   List<Object?> get props => [
@@ -84,20 +66,20 @@ class _SearchState extends Equatable {
         resultList,
       ];
 
-  const _SearchState({
+  const ReaderSearchState({
     this.code = LoadingStateCode.initial,
     this.query = '',
     this.range = ReaderSearchRange.currentChapter,
     this.resultList = const [],
   });
 
-  _SearchState copyWith({
+  ReaderSearchState copyWith({
     LoadingStateCode? code,
     String? query,
     ReaderSearchRange? range,
-    List<_SearchResult>? resultList,
+    List<ReaderSearchResult>? resultList,
   }) {
-    return _SearchState(
+    return ReaderSearchState(
       code: code ?? this.code,
       query: query ?? this.query,
       range: range ?? this.range,
@@ -106,14 +88,14 @@ class _SearchState extends Equatable {
   }
 }
 
-class _SearchResult extends Equatable {
+class ReaderSearchResult extends Equatable {
   final String cfi;
   final String excerpt;
 
   @override
   List<Object?> get props => [cfi, excerpt];
 
-  const _SearchResult({
+  const ReaderSearchResult({
     required this.cfi,
     required this.excerpt,
   });

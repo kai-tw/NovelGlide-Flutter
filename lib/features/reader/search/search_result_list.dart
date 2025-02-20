@@ -6,7 +6,7 @@ class _SearchResultList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<SearchCubit, _SearchState>(
+    return BlocBuilder<ReaderSearchCubit, ReaderSearchState>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
           previous.resultList != current.resultList,
@@ -52,7 +52,7 @@ class _SearchResultList extends StatelessWidget {
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
-    final cubit = BlocProvider.of<SearchCubit>(context);
+    final cubit = BlocProvider.of<ReaderSearchCubit>(context);
     final state = cubit.state;
 
     final query = state.query;
@@ -90,7 +90,7 @@ class _SearchResultList extends StatelessWidget {
     return ListTile(
       onTap: () {
         Navigator.of(context).pop();
-        cubit.readerCubit.goto(result.cfi);
+        cubit.goto?.call(result.cfi);
       },
       onLongPress: () {
         showDialog(

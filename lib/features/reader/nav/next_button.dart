@@ -19,7 +19,9 @@ class _NextButton extends StatelessWidget {
           ),
           onPressed: isDisabled
               ? null
-              : () => cubit.state.isRtl ? cubit.prevPage() : cubit.nextPage(),
+              : () => cubit.state.isRtl
+                  ? cubit.webViewHandler.prevPage()
+                  : cubit.webViewHandler.nextPage(),
         );
       },
     );

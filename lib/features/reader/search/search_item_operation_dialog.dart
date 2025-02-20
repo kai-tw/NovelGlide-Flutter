@@ -1,7 +1,7 @@
 part of 'search_scaffold.dart';
 
 class _SearchItemOperationDialog extends StatelessWidget {
-  final _SearchResult result;
+  final ReaderSearchResult result;
 
   const _SearchItemOperationDialog(this.result);
 

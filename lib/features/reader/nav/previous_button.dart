@@ -19,7 +19,9 @@ class _PreviousButton extends StatelessWidget {
           ),
           onPressed: isDisabled
               ? null
-              : () => cubit.state.isRtl ? cubit.nextPage() : cubit.prevPage(),
+              : () => cubit.state.isRtl
+                  ? cubit.webViewHandler.nextPage()
+                  : cubit.webViewHandler.prevPage(),
         );
       },
     );

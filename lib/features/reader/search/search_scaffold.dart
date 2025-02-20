@@ -10,9 +10,10 @@ import '../../../enum/window_class.dart';
 import '../../../utils/route_utils.dart';
 import '../../common_components/common_back_button.dart';
 import '../../common_components/common_loading.dart';
-import '../reader.dart';
+import '../bloc/reader_cubit.dart';
+import '../bloc/reader_search_cubit.dart';
+import '../bloc/reader_state.dart';
 
-part '../bloc/search_cubit.dart';
 part 'search_button.dart';
 part 'search_field.dart';
 part 'search_item_operation_dialog.dart';

@@ -1,4 +1,9 @@
-part of '../reader.dart';
+import 'package:equatable/equatable.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../../data_model/bookmark_data.dart';
+import '../../../data_model/reader_settings_data.dart';
+import '../../../enum/loading_state_code.dart';
 
 class ReaderState extends Equatable {
   final LoadingStateCode code;
@@ -44,7 +49,7 @@ class ReaderState extends Equatable {
   const ReaderState({
     this.code = LoadingStateCode.initial,
     this.loadingStateCode = ReaderLoadingStateCode.initial,
-    required this.bookName,
+    this.bookName = '',
     this.breadcrumb = '',
     this.chapterFileName = '',
     this.startCfi = '',
@@ -56,7 +61,7 @@ class ReaderState extends Equatable {
     this.webResourceError,
     this.httpResponseError,
     this.bookmarkData,
-    required this.readerSettings,
+    this.readerSettings = const ReaderSettingsData(),
   });
 
   ReaderState copyWith({

@@ -7,7 +7,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../data_model/reader_settings_data.dart';
 import '../../../enum/common_button_state_code.dart';
 import '../../settings_page/settings_card.dart';
-import '../reader.dart';
+import '../bloc/reader_cubit.dart';
+import '../bloc/reader_state.dart';
 
 part 'selector/page_num_selector.dart';
 part 'settings_reset_button.dart';
