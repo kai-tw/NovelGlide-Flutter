@@ -16,9 +16,9 @@ import '../../../utils/int_utils.dart';
 import 'reader_destination_type.dart';
 import 'reader_gesture_handler.dart';
 import 'reader_search_cubit.dart';
+import 'reader_server_handler.dart';
 import 'reader_state.dart';
 import 'reader_web_view_handler.dart';
-import 'server_handler.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
   final String bookPath;
