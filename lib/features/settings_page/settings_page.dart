@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:novelglide/features/tts_settings/tts_settings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../enum/window_class.dart';
@@ -9,7 +10,7 @@ import '../about_page/about_page_scaffold.dart';
 import '../backup_manager/backup_manager_scaffold.dart';
 import '../developer_page/developer_page.dart';
 import '../reset_page/reset_page.dart';
-import '../theme_manager/theme_manager.dart';
+import 'widgets/settings_list_tile.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -20,29 +21,29 @@ class SettingsPage extends StatelessWidget {
     final windowWidth = MediaQuery.of(context).size.width;
     final windowClass = WindowClass.fromWidth(windowWidth);
 
-    final List<Widget> buttonList = [
-      _ListTile(
+    final buttonList = [
+      SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          RouteUtils.pushRoute(const ThemeManager()),
+          RouteUtils.pushRoute(const TtsSettings()),
         ),
-        iconData: Icons.format_paint_rounded,
-        title: appLocalizations.themeManagerTitle,
+        iconData: Icons.volume_up_rounded,
+        title: appLocalizations.ttsSettingsTitle,
       ),
-      _ListTile(
+      SettingsListTile(
         onTap: () => Navigator.of(context).push(
           RouteUtils.pushRoute(const BackupManagerScaffold()),
         ),
         iconData: Icons.cloud_rounded,
         title: appLocalizations.backupManagerTitle,
       ),
-      _ListTile(
+      SettingsListTile(
         onTap: () => Navigator.of(context).push(
           RouteUtils.pushRoute(const ResetPage()),
         ),
         iconData: Icons.refresh_rounded,
         title: appLocalizations.resetPageTitle,
       ),
-      _ListTile(
+      SettingsListTile(
         onTap: () => launchUrl(
           Uri.parse(
               'https://www.kai-wu.net/%E6%84%8F%E8%A6%8B%E5%9B%9E%E9%A5%8B/'),
@@ -50,14 +51,14 @@ class SettingsPage extends StatelessWidget {
         iconData: Icons.feedback_rounded,
         title: appLocalizations.settingsFeedback,
       ),
-      _ListTile(
+      SettingsListTile(
         onTap: () => launchUrl(
           Uri.parse('https://www.kai-wu.net/novelglide-privacy-policy'),
         ),
         iconData: Icons.shield_rounded,
         title: appLocalizations.privacyPolicy,
       ),
-      _ListTile(
+      SettingsListTile(
         onTap: () => Navigator.of(context).push(
           RouteUtils.pushRoute(const AboutPageScaffold()),
         ),
@@ -68,7 +69,7 @@ class SettingsPage extends StatelessWidget {
 
     if (kDebugMode) {
       buttonList.add(
-        _ListTile(
+        SettingsListTile(
           onTap: () => Navigator.of(context)
               .push(RouteUtils.pushRoute(const DeveloperPage())),
           iconData: Icons.code_rounded,
@@ -90,30 +91,6 @@ class SettingsPage extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _ListTile extends StatelessWidget {
-  final void Function()? onTap;
-  final IconData iconData;
-  final String title;
-
-  const _ListTile({
-    this.onTap,
-    required this.iconData,
-    required this.title,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onTap,
-      leading: Padding(
-        padding: const EdgeInsets.only(right: 12.0),
-        child: Icon(iconData),
-      ),
-      title: Text(title),
     );
   }
 }

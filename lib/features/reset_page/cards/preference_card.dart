@@ -63,35 +63,6 @@ class _PreferenceCard extends StatelessWidget {
             title: appLocalizations.resetPageResetReader,
             deleteLabel: appLocalizations.generalReset,
           ),
-          ThemeSwitcher.switcher(builder: (_, switcher) {
-            return _ListTile(
-              onDelete: () async {
-                final prefs = await SharedPreferences.getInstance();
-                prefs.remove(PreferenceKeys.theme.themeId);
-                prefs.remove(PreferenceKeys.theme.brightness);
-
-                final record = await ThemeDataRecord.currentTheme;
-                switcher.changeTheme(theme: record);
-              },
-              iconData: Icons.refresh_rounded,
-              title: appLocalizations.resetPageResetThemeManager,
-              deleteLabel: appLocalizations.generalReset,
-            );
-          }),
-          ThemeSwitcher.switcher(builder: (context, switcher) {
-            return _ListTile(
-              onDelete: () async {
-                final prefs = await SharedPreferences.getInstance();
-                prefs.clear();
-
-                final record = await ThemeDataRecord.currentTheme;
-                switcher.changeTheme(theme: record);
-              },
-              iconData: Icons.refresh_rounded,
-              title: appLocalizations.resetPageResetPreference,
-              deleteLabel: appLocalizations.generalReset,
-            );
-          }),
         ],
       ),
     );

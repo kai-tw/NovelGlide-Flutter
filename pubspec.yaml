@@ -39,7 +39,6 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   accessibility_tools: ^2.2.1
-  animated_theme_switcher: ^2.0.10
   bitmap: ^0.2.0
   collection: ^1.18.0
   epubx: ^4.0.0

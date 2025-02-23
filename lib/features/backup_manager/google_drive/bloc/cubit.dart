@@ -3,7 +3,7 @@ part of '../backup_manager_google_drive.dart';
 /// Manages Google Drive backup operations.
 class _Cubit extends Cubit<_State> {
   final _logger = Logger();
-  final _drivePrefKey = PreferenceKeys.backupManager.isGoogleDriveEnabled;
+  final _drivePrefKey = PreferenceKeys.backupManager.isBackupToGoogleDrive;
   final _driveApi = GoogleDriveApi.instance;
 
   factory _Cubit() {

@@ -5,10 +5,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data_model/collection_data.dart';
-import '../../data_model/preference_keys.dart';
 import '../../enum/loading_state_code.dart';
 import '../../enum/sort_order_code.dart';
 import '../../enum/window_class.dart';
+import '../../preference_keys/preference_keys.dart';
 import '../../repository/collection_repository.dart';
 import '../../utils/route_utils.dart';
 import '../collection_viewer/collection_viewer.dart';

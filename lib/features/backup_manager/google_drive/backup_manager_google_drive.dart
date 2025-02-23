@@ -10,8 +10,8 @@ import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../data_model/preference_keys.dart';
 import '../../../enum/loading_state_code.dart';
+import '../../../preference_keys/preference_keys.dart';
 import '../../../repository/bookmark_repository.dart';
 import '../../../repository/collection_repository.dart';
 import '../../../utils/backup_utils.dart';
