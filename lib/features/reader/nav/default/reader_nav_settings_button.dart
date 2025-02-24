@@ -1,8 +1,13 @@
-part of '../reader.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-/// Settings button
-class _SettingsButton extends StatelessWidget {
-  const _SettingsButton();
+import '../../bloc/reader_cubit.dart';
+import '../../bloc/reader_state.dart';
+import '../../settings/reader_bottom_sheet.dart';
+
+class ReaderNavSettingsButton extends StatelessWidget {
+  const ReaderNavSettingsButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -10,15 +15,15 @@ class _SettingsButton extends StatelessWidget {
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         final cubit = BlocProvider.of<ReaderCubit>(context);
-        final isDisabled = state.code != LoadingStateCode.loaded;
         return IconButton(
           icon: Icon(
             Icons.settings_rounded,
             semanticLabel:
                 AppLocalizations.of(context)!.accessibilityReaderSettingsButton,
           ),
-          onPressed:
-              isDisabled ? null : () => _navigateToSettingsPage(context, cubit),
+          onPressed: state.code.isLoaded
+              ? () => _navigateToSettingsPage(context, cubit)
+              : null,
         );
       },
     );
@@ -29,7 +34,8 @@ class _SettingsButton extends StatelessWidget {
       context: context,
       scrollControlDisabledMaxHeightRatio: 1.0,
       showDragHandle: true,
-      barrierColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
+      barrierColor:
+          Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
       builder: (BuildContext context) {
         return BlocProvider.value(
           value: cubit,

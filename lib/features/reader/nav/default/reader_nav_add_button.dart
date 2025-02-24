@@ -1,14 +1,19 @@
-part of '../reader.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-/// Add bookmark button
-class _AddButton extends StatefulWidget {
-  const _AddButton();
+import '../../../../enum/common_button_state_code.dart';
+import '../../bloc/reader_cubit.dart';
+import '../../bloc/reader_state.dart';
+
+class ReaderNavAddButton extends StatefulWidget {
+  const ReaderNavAddButton({super.key});
 
   @override
-  State<_AddButton> createState() => _State();
+  State<ReaderNavAddButton> createState() => _State();
 }
 
-class _State extends State<_AddButton> {
+class _State extends State<ReaderNavAddButton> {
   CommonButtonStateCode _stateCode = CommonButtonStateCode.disabled;
 
   @override

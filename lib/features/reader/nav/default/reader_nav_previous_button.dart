@@ -1,27 +1,30 @@
-part of '../reader.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-/// Previous chapter button
-class _PreviousButton extends StatelessWidget {
-  const _PreviousButton();
+import '../../bloc/reader_cubit.dart';
+import '../../bloc/reader_state.dart';
+
+class ReaderNavPreviousButton extends StatelessWidget {
+  const ReaderNavPreviousButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) => previous.code != current.code,
-      builder: (BuildContext context, ReaderState state) {
-        final isDisabled = state.code != LoadingStateCode.loaded;
+      builder: (context, state) {
         return IconButton(
           icon: Icon(
             Icons.arrow_back_ios_rounded,
             semanticLabel: AppLocalizations.of(context)!
                 .accessibilityReaderPrevChapterButton,
           ),
-          onPressed: isDisabled
-              ? null
-              : () => cubit.state.isRtl
+          onPressed: state.code.isLoaded
+              ? () => cubit.state.isRtl
                   ? cubit.webViewHandler.nextPage()
-                  : cubit.webViewHandler.prevPage(),
+                  : cubit.webViewHandler.prevPage()
+              : null,
         );
       },
     );

@@ -9,6 +9,8 @@ import '../../../data_model/book_data.dart';
 import '../../../data_model/bookmark_data.dart';
 import '../../../data_model/reader_settings_data.dart';
 import '../../../enum/loading_state_code.dart';
+import '../../../enum/reader_loading_state_code.dart';
+import '../../../enum/reader_navigation_state_code.dart';
 import '../../../repository/book_repository.dart';
 import '../../../repository/bookmark_repository.dart';
 import '../../../repository/cache_repository.dart';
@@ -88,6 +90,10 @@ class ReaderCubit extends Cubit<ReaderState> {
     ));
 
     webViewHandler.request();
+  }
+
+  void setNavState(ReaderNavigationStateCode code) {
+    emit(state.copyWith(navigationStateCode: code));
   }
 
   /// JavaScript Channel Message Processor
@@ -205,14 +211,6 @@ class ReaderCubit extends Cubit<ReaderState> {
 
     if (!isClosed) {
       emit(state.copyWith(bookmarkData: data));
-    }
-  }
-
-  void scrollToBookmark() {
-    final bookmarkData =
-        state.bookmarkData ?? BookmarkRepository.get(state.bookName);
-    if (bookmarkData?.startCfi != null) {
-      webViewHandler.goto(bookmarkData!.startCfi!);
     }
   }
 

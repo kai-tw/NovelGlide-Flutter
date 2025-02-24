@@ -4,6 +4,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../../data_model/bookmark_data.dart';
 import '../../../data_model/reader_settings_data.dart';
 import '../../../enum/loading_state_code.dart';
+import '../../../enum/reader_loading_state_code.dart';
+import '../../../enum/reader_navigation_state_code.dart';
 
 class ReaderState extends Equatable {
   final LoadingStateCode code;
@@ -17,6 +19,7 @@ class ReaderState extends Equatable {
   final bool isRtl;
   final int chapterCurrentPage;
   final int chapterTotalPage;
+  final ReaderNavigationStateCode navigationStateCode;
 
   /// Errors
   final WebResourceError? webResourceError;
@@ -40,6 +43,7 @@ class ReaderState extends Equatable {
         isRtl,
         chapterCurrentPage,
         chapterTotalPage,
+        navigationStateCode,
         webResourceError,
         httpResponseError,
         bookmarkData,
@@ -58,6 +62,7 @@ class ReaderState extends Equatable {
     this.isRtl = false,
     this.chapterCurrentPage = 0,
     this.chapterTotalPage = 0,
+    this.navigationStateCode = ReaderNavigationStateCode.defaultState,
     this.webResourceError,
     this.httpResponseError,
     this.bookmarkData,
@@ -77,6 +82,7 @@ class ReaderState extends Equatable {
     double? percentage,
     int? chapterCurrentPage,
     int? chapterTotalPage,
+    ReaderNavigationStateCode? navigationStateCode,
     WebResourceError? webResourceError,
     HttpResponseError? httpResponseError,
     BookmarkData? bookmarkData,
@@ -94,6 +100,7 @@ class ReaderState extends Equatable {
       isRtl: isRtl ?? this.isRtl,
       chapterCurrentPage: chapterCurrentPage ?? this.chapterCurrentPage,
       chapterTotalPage: chapterTotalPage ?? this.chapterTotalPage,
+      navigationStateCode: navigationStateCode ?? this.navigationStateCode,
       webResourceError: webResourceError ?? this.webResourceError,
       httpResponseError: httpResponseError ?? this.httpResponseError,
       bookmarkData: bookmarkData ?? this.bookmarkData,
@@ -101,5 +108,3 @@ class ReaderState extends Equatable {
     );
   }
 }
-
-enum ReaderLoadingStateCode { initial, bookLoading, rendering }

@@ -22,12 +22,12 @@ class ReaderWebViewHandler {
 
     controller.setNavigationDelegate(NavigationDelegate(
       onPageFinished: (url) async {
-        controller.runJavaScript('window.readerApi.setAppApi()');
-
-        final args = [destination, savedLocation]
-            .map((e) => e != null ? "'$e'" : e)
-            .join(',');
-        controller.runJavaScript('window.readerApi.main($args)');
+        controller.runJavaScript(
+            'window.communicationService.setChannel(window.appApi)');
+        send('main', {
+          'destination': destination,
+          'savedLocation': savedLocation,
+        });
       },
       onNavigationRequest: (request) {
         final isUrlAllowed =
@@ -37,6 +37,11 @@ class ReaderWebViewHandler {
             : NavigationDecision.prevent;
       },
     ));
+  }
+
+  void send(String route, [Object? data]) {
+    controller.runJavaScript('window.communicationService.receive("$route", '
+        '${data != null ? jsonEncode(data) : 'undefined'})');
   }
 
   Future<void> addAppApiChannel(Function(JavaScriptMessage) onMessageReceived) {
@@ -54,15 +59,14 @@ class ReaderWebViewHandler {
   /// Communication
   /// *************************************************************************
 
-  void prevPage() => controller.runJavaScript('window.readerApi.prevPage()');
+  void prevPage() => send('prevPage');
 
-  void nextPage() => controller.runJavaScript('window.readerApi.nextPage()');
+  void nextPage() => send('nextPage');
 
-  void goto(String cfi) =>
-      controller.runJavaScript('window.readerApi.goto("$cfi")');
+  void goto(String cfi) => send('goto', cfi);
 
   void sendThemeData(ThemeData themeData, ReaderSettingsData settings) {
-    final Map<String, dynamic> json = {
+    send('setThemeData', {
       "body": {
         "color": CssUtils.convertColorToRgba(themeData.colorScheme.onSurface),
         "font-size": "${settings.fontSize.toStringAsFixed(1)}px",
@@ -71,22 +75,14 @@ class ReaderWebViewHandler {
       "a": {
         "color": "inherit !important",
       },
-    };
-    controller
-        .runJavaScript('window.readerApi.setThemeData(${jsonEncode(json)})');
+    });
   }
 
-  void searchInWholeBook(String query) {
-    controller.runJavaScript('window.readerApi.searchInWholeBook("$query")');
-  }
+  void searchInWholeBook(String query) => send('searchInWholeBook', query);
 
-  void searchInCurrentChapter(String query) {
-    controller
-        .runJavaScript('window.readerApi.searchInCurrentChapter("$query")');
-  }
+  void searchInCurrentChapter(String query) =>
+      send('searchInCurrentChapter', query);
 
-  void setSmoothScroll(bool isSmoothScroll) {
-    controller
-        .runJavaScript('window.readerApi.setSmoothScroll($isSmoothScroll)');
-  }
+  void setSmoothScroll(bool isSmoothScroll) =>
+      send('setSmoothScroll', isSmoothScroll);
 }
