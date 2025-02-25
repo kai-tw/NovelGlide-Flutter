@@ -1,12 +1,13 @@
-part of '../../backup_manager_google_drive.dart';
+part of '../backup_manager_process_all_dialog.dart';
 
-class _ProcessAllBookmarkTile extends StatelessWidget {
-  const _ProcessAllBookmarkTile();
+class _BookmarkTile extends StatelessWidget {
+  const _BookmarkTile();
 
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<_ProcessCubit, _ProcessState>(
+    return BlocBuilder<ProcessAllDialogCubit,
+        BackupManagerProcessAllDialogState>(
       buildWhen: (previous, current) =>
           previous.isBookmarkRunning != current.isBookmarkRunning ||
           previous.bookmarkStep != current.bookmarkStep ||
@@ -22,28 +23,28 @@ class _ProcessAllBookmarkTile extends StatelessWidget {
         }
 
         switch (state.bookmarkStep) {
-          case _ProcessStep.upload:
+          case BackupManagerProcessStepCode.upload:
             return ListTile(
               leading: const Icon(Icons.upload_outlined),
               title: Text(appLocalizations.backupManagerLabelBookmark),
               trailing: const CircularProgressIndicator(),
             );
 
-          case _ProcessStep.download:
+          case BackupManagerProcessStepCode.download:
             return ListTile(
               leading: const Icon(Icons.download_outlined),
               title: Text(appLocalizations.backupManagerLabelBookmark),
               trailing: const CircularProgressIndicator(),
             );
 
-          case _ProcessStep.delete:
+          case BackupManagerProcessStepCode.delete:
             return ListTile(
               leading: const Icon(Icons.delete_outlined),
               title: Text(appLocalizations.backupManagerLabelBookmark),
               trailing: const CircularProgressIndicator(),
             );
 
-          case _ProcessStep.done:
+          case BackupManagerProcessStepCode.done:
             return ListTile(
               iconColor: Colors.green,
               textColor: Colors.green,
@@ -51,7 +52,7 @@ class _ProcessAllBookmarkTile extends StatelessWidget {
               title: Text(appLocalizations.backupManagerLabelBookmark),
             );
 
-          case _ProcessStep.error:
+          case BackupManagerProcessStepCode.error:
             return ListTile(
               iconColor: Theme.of(context).colorScheme.error,
               textColor: Theme.of(context).colorScheme.error,

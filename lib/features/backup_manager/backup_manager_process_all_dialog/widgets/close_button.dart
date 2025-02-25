@@ -1,14 +1,14 @@
-part of '../../backup_manager_google_drive.dart';
+part of '../backup_manager_process_all_dialog.dart';
 
-class _ProcessAllButtonBar extends StatelessWidget {
-  const _ProcessAllButtonBar();
+class _CloseButton extends StatelessWidget {
+  const _CloseButton();
 
   @override
   Widget build(BuildContext context) {
     return OverflowBar(
       alignment: MainAxisAlignment.end,
       children: [
-        BlocBuilder<_ProcessCubit, _ProcessState>(
+        BlocBuilder<ProcessAllDialogCubit, BackupManagerProcessAllDialogState>(
             buildWhen: (previous, current) =>
                 previous.isLibraryRunning != current.isLibraryRunning ||
                 previous.isCollectionRunning != current.isCollectionRunning ||
@@ -18,11 +18,11 @@ class _ProcessAllButtonBar extends StatelessWidget {
                 previous.bookmarkStep != current.bookmarkStep,
             builder: (context, state) {
               final isLibraryFinished = !state.isLibraryRunning ||
-                  state.libraryStep == _ProcessStep.done;
+                  state.libraryStep == BackupManagerProcessStepCode.done;
               final isCollectionFinished = !state.isCollectionRunning ||
-                  state.collectionStep == _ProcessStep.done;
+                  state.collectionStep == BackupManagerProcessStepCode.done;
               final isBookmarkFinished = !state.isBookmarkRunning ||
-                  state.bookmarkStep == _ProcessStep.done;
+                  state.bookmarkStep == BackupManagerProcessStepCode.done;
               final isFinished = isLibraryFinished &&
                   isCollectionFinished &&
                   isBookmarkFinished;

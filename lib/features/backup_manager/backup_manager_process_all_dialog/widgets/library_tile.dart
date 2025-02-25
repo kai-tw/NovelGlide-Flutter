@@ -1,12 +1,13 @@
-part of '../../backup_manager_google_drive.dart';
+part of '../backup_manager_process_all_dialog.dart';
 
-class _ProcessAllLibraryTile extends StatelessWidget {
-  const _ProcessAllLibraryTile();
+class _LibraryTile extends StatelessWidget {
+  const _LibraryTile();
 
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<_ProcessCubit, _ProcessState>(
+    return BlocBuilder<ProcessAllDialogCubit,
+        BackupManagerProcessAllDialogState>(
       buildWhen: (previous, current) =>
           previous.libraryStep != current.libraryStep ||
           previous.libraryProgress != current.libraryProgress,
@@ -21,7 +22,7 @@ class _ProcessAllLibraryTile extends StatelessWidget {
         }
 
         switch (state.libraryStep) {
-          case _ProcessStep.zip:
+          case BackupManagerProcessStepCode.zip:
             return ListTile(
               leading: const Icon(Icons.folder_zip_outlined),
               title: Text(appLocalizations.backupManagerLabelLibrary),
@@ -30,14 +31,14 @@ class _ProcessAllLibraryTile extends StatelessWidget {
               ),
             );
 
-          case _ProcessStep.upload:
+          case BackupManagerProcessStepCode.upload:
             return ListTile(
               leading: const Icon(Icons.upload_outlined),
               title: Text(appLocalizations.backupManagerLabelLibrary),
               trailing: const CircularProgressIndicator(),
             );
 
-          case _ProcessStep.unzip:
+          case BackupManagerProcessStepCode.unzip:
             return ListTile(
               leading: const Icon(Icons.folder_zip_outlined),
               title: Text(appLocalizations.backupManagerLabelLibrary),
@@ -46,21 +47,21 @@ class _ProcessAllLibraryTile extends StatelessWidget {
               ),
             );
 
-          case _ProcessStep.download:
+          case BackupManagerProcessStepCode.download:
             return ListTile(
               leading: const Icon(Icons.download_outlined),
               title: Text(appLocalizations.backupManagerLabelLibrary),
               trailing: const CircularProgressIndicator(),
             );
 
-          case _ProcessStep.delete:
+          case BackupManagerProcessStepCode.delete:
             return ListTile(
               leading: const Icon(Icons.delete_outlined),
               title: Text(appLocalizations.backupManagerLabelLibrary),
               trailing: const CircularProgressIndicator(),
             );
 
-          case _ProcessStep.done:
+          case BackupManagerProcessStepCode.done:
             return ListTile(
               iconColor: Colors.green,
               textColor: Colors.green,
@@ -68,7 +69,7 @@ class _ProcessAllLibraryTile extends StatelessWidget {
               title: Text(appLocalizations.backupManagerLabelLibrary),
             );
 
-          case _ProcessStep.error:
+          case BackupManagerProcessStepCode.error:
             return ListTile(
               iconColor: Theme.of(context).colorScheme.error,
               textColor: Theme.of(context).colorScheme.error,

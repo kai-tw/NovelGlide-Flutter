@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../enum/window_class.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../../utils/route_utils.dart';
-import '../about_page/about_page_scaffold.dart';
+import '../about_page/about_page.dart';
 import '../backup_manager/backup_manager_scaffold.dart';
 import '../developer_page/developer_page.dart';
 import '../reset_page/reset_page.dart';
@@ -60,7 +60,7 @@ class SettingsPage extends StatelessWidget {
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          RouteUtils.pushRoute(const AboutPageScaffold()),
+          RouteUtils.pushRoute(const AboutPage()),
         ),
         iconData: Icons.info_outline,
         title: appLocalizations.settingsPageAbout,

@@ -1,4 +1,4 @@
-part of 'advertisement.dart';
+part of 'advertisement_cubit.dart';
 
 class AdvertisementId {
   static String get adaptiveBanner {
