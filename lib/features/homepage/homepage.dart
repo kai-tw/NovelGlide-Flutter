@@ -3,12 +3,12 @@ library homepage_widget;
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../data_model/book_data.dart';
 import '../../data_model/bookmark_data.dart';
 import '../../data_model/collection_data.dart';
 import '../../enum/window_class.dart';
+import '../../generated/i18n/app_localizations.dart';
 import '../ads/advertisement.dart';
 import '../book_add/book_add_dialog.dart';
 import '../bookmark_list/bookmark_list.dart';

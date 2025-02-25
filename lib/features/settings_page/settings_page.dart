@@ -1,15 +1,15 @@
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:novelglide/features/tts_settings/tts_settings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../enum/window_class.dart';
+import '../../generated/i18n/app_localizations.dart';
 import '../../utils/route_utils.dart';
 import '../about_page/about_page_scaffold.dart';
 import '../backup_manager/backup_manager_scaffold.dart';
 import '../developer_page/developer_page.dart';
 import '../reset_page/reset_page.dart';
+import '../tts_settings/tts_settings.dart';
 import 'widgets/settings_list_tile.dart';
 
 class SettingsPage extends StatelessWidget {

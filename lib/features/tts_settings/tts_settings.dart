@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../generated/i18n/app_localizations.dart';
 import '../common_components/common_back_button.dart';
 import 'bloc/tts_settings_cubit.dart';
 import 'widgets/tts_settings_demo_section.dart';

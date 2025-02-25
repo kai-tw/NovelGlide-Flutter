@@ -4,13 +4,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../enum/loading_state_code.dart';
+import '../../../generated/i18n/app_localizations.dart';
 import '../../../preference_keys/preference_keys.dart';
 import '../../../repository/bookmark_repository.dart';
 import '../../../repository/collection_repository.dart';

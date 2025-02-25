@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/window_class.dart';
+import '../../../generated/i18n/app_localizations.dart';
 import '../../../utils/route_utils.dart';
 import '../../common_components/common_back_button.dart';
 import '../../common_components/common_loading.dart';

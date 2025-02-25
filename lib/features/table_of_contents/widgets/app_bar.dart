@@ -10,7 +10,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final appLocalizations = AppLocalizations.of(context)!;
     return AppBar(
       leading: const CommonBackButton(),
       title: Text(

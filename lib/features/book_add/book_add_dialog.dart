@@ -4,11 +4,11 @@ import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:path/path.dart';
 
 import '../../enum/window_class.dart';
 import '../../exceptions/file_exceptions.dart';
+import '../../generated/i18n/app_localizations.dart';
 import '../../repository/book_repository.dart';
 import '../../utils/file_utils.dart';
 import '../common_components/common_back_button.dart';

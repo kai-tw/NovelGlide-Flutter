@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../generated/i18n/app_localizations.dart';
 import '../../preference_keys/preference_keys.dart';
 import '../../repository/book_repository.dart';
 import '../../repository/bookmark_repository.dart';

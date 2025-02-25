@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+
+import '../../generated/i18n/app_localizations.dart';
 
 /// A loading indicator.
 class CommonLoading extends StatelessWidget {

@@ -3,11 +3,11 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'features/homepage/homepage.dart';
 import 'firebase_options.dart';
+import 'generated/i18n/app_localizations.dart';
 import 'log_system/log_system.dart';
 import 'theme/default_theme.dart';
 import 'utils/file_path.dart';
