@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../data_model/tts_data.dart';
 import '../preference_keys/preference_keys.dart';
 
 class TtsService extends FlutterTts {
@@ -80,27 +77,11 @@ class TtsService extends FlutterTts {
     speechRate = defaultSpeedRate;
   }
 
-  Future<List<TtsData>> getDataList() async {
-    List<String> languageList = (await getLanguages)
-        .map((e) => e.toString())
-        .whereType<String>()
-        .toList();
+  Future<List<String>> getDataList() async {
+    List<String> languageList =
+        (await getLanguages).map<String>((e) => e.toString()).toList();
     languageList.sort();
 
-    Map<String, bool> installedList = <String, bool>{};
-
-    if (Platform.isAndroid) {
-      Map<Object?, Object?> result = await areLanguagesInstalled(languageList);
-      installedList =
-          result.map((key, value) => MapEntry(key.toString(), value as bool));
-    }
-
-    return List.generate(
-      languageList.length,
-      (index) => TtsData(
-        languageCode: languageList[index],
-        isInstalled: installedList[languageList[index]] ?? Platform.isIOS,
-      ),
-    );
+    return languageList;
   }
 }

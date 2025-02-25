@@ -1,0 +1,2 @@
+/Users/kai/GitHub/NovelGlide-Flutter/android/app/.cxx/Debug/4o2my352/x86/CMakeFiles/edit_cache.dir
+/Users/kai/GitHub/NovelGlide-Flutter/android/app/.cxx/Debug/4o2my352/x86/CMakeFiles/rebuild_cache.dir

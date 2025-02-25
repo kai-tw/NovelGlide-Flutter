@@ -6,7 +6,7 @@ import '../../enum/window_class.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../../utils/route_utils.dart';
 import '../about_page/about_page.dart';
-import '../backup_manager/backup_manager_scaffold.dart';
+import '../backup_manager/backup_manager.dart';
 import '../developer_page/developer_page.dart';
 import '../reset_page/reset_page.dart';
 import '../tts_settings/tts_settings.dart';
@@ -31,7 +31,7 @@ class SettingsPage extends StatelessWidget {
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          RouteUtils.pushRoute(const BackupManagerScaffold()),
+          RouteUtils.pushRoute(const BackupManager()),
         ),
         iconData: Icons.cloud_rounded,
         title: appLocalizations.backupManagerTitle,

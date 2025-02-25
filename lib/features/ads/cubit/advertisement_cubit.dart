@@ -19,7 +19,7 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
       adUnitId,
       const AdvertisementState(),
     );
-    cubit.init(width);
+    // cubit.init(width);
     return cubit;
   }
 

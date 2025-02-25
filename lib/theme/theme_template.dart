@@ -19,6 +19,12 @@ abstract class ThemeTemplate {
       dropdownMenuTheme: DropdownMenuThemeData(
         inputDecorationTheme: inputDecorationTheme,
       ),
+      sliderTheme: const SliderThemeData(
+        year2023: false,
+      ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        year2023: false,
+      ),
       useMaterial3: true,
     );
   }

@@ -6,7 +6,8 @@ class _TimeListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<_Cubit, _State>(
+    return BlocBuilder<BackupManagerGoogleDriveCubit,
+        BackupManagerGoogleDriveState>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         final isLoading = state.code == LoadingStateCode.loading;

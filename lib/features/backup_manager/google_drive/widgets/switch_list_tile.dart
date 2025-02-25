@@ -6,8 +6,9 @@ class _SwitchListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<_Cubit>(context);
-    return BlocBuilder<_Cubit, _State>(
+    final cubit = BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
+    return BlocBuilder<BackupManagerGoogleDriveCubit,
+        BackupManagerGoogleDriveState>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         return SwitchListTile(

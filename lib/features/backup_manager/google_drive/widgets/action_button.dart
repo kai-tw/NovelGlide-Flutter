@@ -12,7 +12,7 @@ class _ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<_Cubit>(context);
+    final cubit = BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
     IconData iconData;
     String label;
 
@@ -79,7 +79,8 @@ class _ActionButton extends StatelessWidget {
         break;
     }
 
-    return BlocBuilder<_Cubit, _State>(
+    return BlocBuilder<BackupManagerGoogleDriveCubit,
+        BackupManagerGoogleDriveState>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         final isEnabled = state.code.isLoaded;
