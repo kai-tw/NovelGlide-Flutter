@@ -16,19 +16,19 @@ class _FontSizeSlider extends StatelessWidget {
             Icons.format_size_rounded,
             color: Theme.of(context).colorScheme.primary,
             size: ReaderSettingsData.minFontSize,
-            semanticLabel: appLocalizations.accessibilityFontSizeSliderMinIcon,
+            semanticLabel: appLocalizations.readerMinFontSize,
           ),
           trailing: Icon(
             Icons.format_size_rounded,
             color: Theme.of(context).colorScheme.primary,
             size: ReaderSettingsData.maxFontSize,
-            semanticLabel: appLocalizations.accessibilityFontSizeSliderMaxIcon,
+            semanticLabel: appLocalizations.readerMaxFontSize,
           ),
           min: ReaderSettingsData.minFontSize,
           max: ReaderSettingsData.maxFontSize,
           value: state.readerSettings.fontSize,
           semanticFormatterCallback: (value) {
-            return '${appLocalizations.accessibilityFontSizeSlider} ${value.toStringAsFixed(1)}';
+            return '${appLocalizations.readerFontSizeSlider} ${value.toStringAsFixed(1)}';
           },
           onChanged: (value) {
             cubit.setSettings(fontSize: value);

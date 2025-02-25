@@ -1,19 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+part of 'reader_default_navigation.dart';
 
-import '../../../../enum/common_button_state_code.dart';
-import '../../../../generated/i18n/app_localizations.dart';
-import '../../bloc/reader_cubit.dart';
-import '../../bloc/reader_state.dart';
-
-class ReaderNavAddButton extends StatefulWidget {
-  const ReaderNavAddButton({super.key});
+class ReaderNavBookmarkButton extends StatefulWidget {
+  const ReaderNavBookmarkButton({super.key});
 
   @override
-  State<ReaderNavAddButton> createState() => _State();
+  State<ReaderNavBookmarkButton> createState() => _State();
 }
 
-class _State extends State<ReaderNavAddButton> {
+class _State extends State<ReaderNavBookmarkButton> {
   CommonButtonStateCode _stateCode = CommonButtonStateCode.disabled;
 
   @override
@@ -37,8 +31,8 @@ class _State extends State<ReaderNavAddButton> {
       child: IconButton(
         icon: Icon(
           isSuccess ? Icons.check_rounded : Icons.bookmark_add_rounded,
-          semanticLabel: appLocalizations.accessibilityReaderAddBookmarkButton,
         ),
+        tooltip: appLocalizations.readerBookmark,
         style: IconButton.styleFrom(
           disabledForegroundColor: isSuccess ? Colors.green : null,
         ),

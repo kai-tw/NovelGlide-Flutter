@@ -14,7 +14,7 @@ class _SmoothScrollSwitch extends StatelessWidget {
       builder: (context, state) {
         return SwitchListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text(appLocalizations.readerSettingsFlippingAnime),
+          title: Text(appLocalizations.readerFlippingAnime),
           value: state.readerSettings.isSmoothScroll,
           onChanged: (value) {
             cubit.setSettings(isSmoothScroll: value);

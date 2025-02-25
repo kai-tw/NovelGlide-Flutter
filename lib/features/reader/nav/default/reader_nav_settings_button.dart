@@ -1,26 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../generated/i18n/app_localizations.dart';
-import '../../bloc/reader_cubit.dart';
-import '../../bloc/reader_state.dart';
-import '../../settings/reader_bottom_sheet.dart';
+part of 'reader_default_navigation.dart';
 
 class ReaderNavSettingsButton extends StatelessWidget {
   const ReaderNavSettingsButton({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
+    final cubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
-        final cubit = BlocProvider.of<ReaderCubit>(context);
         return IconButton(
-          icon: Icon(
-            Icons.settings_rounded,
-            semanticLabel:
-                AppLocalizations.of(context)!.accessibilityReaderSettingsButton,
-          ),
+          icon: const Icon(Icons.settings_rounded),
+          tooltip: appLocalizations.readerSettings,
           onPressed: state.code.isLoaded
               ? () => _navigateToSettingsPage(context, cubit)
               : null,

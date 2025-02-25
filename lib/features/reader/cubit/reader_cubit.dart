@@ -1,8 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shelf/shelf.dart';
+import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data_model/book_data.dart';
@@ -14,13 +19,15 @@ import '../../../enum/reader_navigation_state_code.dart';
 import '../../../repository/book_repository.dart';
 import '../../../repository/bookmark_repository.dart';
 import '../../../repository/cache_repository.dart';
+import '../../../utils/css_utils.dart';
 import '../../../utils/int_utils.dart';
-import 'reader_destination_type.dart';
-import 'reader_gesture_handler.dart';
-import 'reader_search_cubit.dart';
-import 'reader_server_handler.dart';
-import 'reader_state.dart';
-import 'reader_web_view_handler.dart';
+
+part 'reader_destination_type.dart';
+part 'reader_gesture_handler.dart';
+part 'reader_search_cubit.dart';
+part 'reader_server_handler.dart';
+part 'reader_state.dart';
+part 'reader_web_view_handler.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
   final String bookPath;

@@ -1,11 +1,4 @@
-import 'dart:async';
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-
-import '../../../data_model/reader_settings_data.dart';
-import '../../../utils/css_utils.dart';
+part of 'reader_cubit.dart';
 
 class ReaderWebViewHandler {
   final String url;

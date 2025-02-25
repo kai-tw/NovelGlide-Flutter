@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of 'reader_cubit.dart';
 
 class ReaderGestureHandler {
   final Function()? onSwipeLeft;

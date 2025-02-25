@@ -1,7 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../enum/loading_state_code.dart';
+part of 'reader_cubit.dart';
 
 class ReaderSearchCubit extends Cubit<ReaderSearchState> {
   final Function(String)? searchInCurrentChapter;

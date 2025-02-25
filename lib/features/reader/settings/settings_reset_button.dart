@@ -16,13 +16,13 @@ class _SettingsResetButtonState extends State<_SettingsResetButton> {
     IconData iconData = Icons.refresh_rounded;
     Color backgroundColor = Theme.of(context).colorScheme.error;
     Color foregroundColor = Theme.of(context).colorScheme.onError;
-    String text = appLocalizations.readerSettingsResetButton;
+    String text = appLocalizations.readerResetSettings;
 
     if (_stateCode == CommonButtonStateCode.success) {
       iconData = Icons.check_rounded;
       backgroundColor = Colors.green;
       foregroundColor = Colors.white;
-      text = appLocalizations.readerSettingsResetButtonDone;
+      text = appLocalizations.readerResetDone;
     }
 
     return Align(

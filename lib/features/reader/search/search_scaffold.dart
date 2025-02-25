@@ -8,9 +8,7 @@ import '../../../generated/i18n/app_localizations.dart';
 import '../../../utils/route_utils.dart';
 import '../../common_components/common_back_button.dart';
 import '../../common_components/common_loading.dart';
-import '../bloc/reader_cubit.dart';
-import '../bloc/reader_search_cubit.dart';
-import '../bloc/reader_state.dart';
+import '../cubit/reader_cubit.dart';
 
 part 'search_button.dart';
 part 'search_field.dart';

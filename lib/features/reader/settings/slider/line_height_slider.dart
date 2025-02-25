@@ -16,20 +16,18 @@ class _LineHeightSlider extends StatelessWidget {
           leading: Icon(
             Icons.density_small_rounded,
             color: Theme.of(context).colorScheme.primary,
-            semanticLabel:
-                appLocalizations.accessibilityLineHeightSliderMinIcon,
+            semanticLabel: appLocalizations.readerMinLineHeight,
           ),
           trailing: Icon(
             Icons.density_large_rounded,
             color: Theme.of(context).colorScheme.primary,
-            semanticLabel:
-                appLocalizations.accessibilityLineHeightSliderMaxIcon,
+            semanticLabel: appLocalizations.readerMaxLineHeight,
           ),
           min: ReaderSettingsData.minLineHeight,
           max: ReaderSettingsData.maxLineHeight,
           value: state.readerSettings.lineHeight,
           semanticFormatterCallback: (value) {
-            return '${appLocalizations.accessibilityLineHeightSlider} ${value.toStringAsFixed(1)}';
+            return '${appLocalizations.readerLineHeightSlider} ${value.toStringAsFixed(1)}';
           },
           onChanged: (value) {
             cubit.setSettings(lineHeight: value);

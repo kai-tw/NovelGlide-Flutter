@@ -1,11 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-
-import '../../../data_model/bookmark_data.dart';
-import '../../../data_model/reader_settings_data.dart';
-import '../../../enum/loading_state_code.dart';
-import '../../../enum/reader_loading_state_code.dart';
-import '../../../enum/reader_navigation_state_code.dart';
+part of 'reader_cubit.dart';
 
 class ReaderState extends Equatable {
   final LoadingStateCode code;

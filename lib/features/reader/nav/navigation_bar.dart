@@ -2,13 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../enum/reader_navigation_state_code.dart';
-import '../bloc/reader_cubit.dart';
-import '../bloc/reader_state.dart';
-import 'default/reader_nav_add_button.dart';
-import 'default/reader_nav_next_button.dart';
-import 'default/reader_nav_previous_button.dart';
-import 'default/reader_nav_settings_button.dart';
-import 'default/reader_nav_tts_button.dart';
+import '../cubit/reader_cubit.dart';
+import 'default/reader_default_navigation.dart';
 import 'tts/reader_nav_tts_close_button.dart';
 
 class ReaderNavigationBar extends StatelessWidget {
@@ -35,7 +30,7 @@ class ReaderNavigationBar extends StatelessWidget {
                 children: [
                   ReaderNavPreviousButton(),
                   ReaderNavNextButton(),
-                  ReaderNavAddButton(),
+                  ReaderNavBookmarkButton(),
                   ReaderNavTtsButton(),
                   ReaderNavSettingsButton(),
                 ],
