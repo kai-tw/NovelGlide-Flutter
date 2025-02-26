@@ -68,7 +68,7 @@ packages:
   bloc:
     dependency: transitive
     description:
-      name: cubit
+      name: bloc
       sha256: "106842ad6569f0b60297619e9e0b1885c2fb9bf84812935490e6c5275777804e"
       url: "https://pub.dev"
     source: hosted
@@ -822,18 +822,18 @@ packages:
     dependency: "direct main"
     description:
       name: talker
-      sha256: "04e5a12409717dc3d5b3f80a16c4a38f6b9c4cc4df6e368640b543993386bdc7"
+      sha256: "5ab7d974ad92042b3e2382441c41ec4c6e5b3fa2b4b024d8ccbfc4bc2244b7bb"
       url: "https://pub.dev"
     source: hosted
-    version: "4.6.13"
+    version: "4.6.14"
   talker_logger:
     dependency: transitive
     description:
       name: talker_logger
-      sha256: da499df6aaa5d31232e58fb5975a00764746d76d7c1cbdfbe870ec67c017a5be
+      sha256: "16ff0cfdf011f65b37957c9ff7ef7043dd9f1c8af3ccb4a44ac4a448defb9eb5"
       url: "https://pub.dev"
     source: hosted
-    version: "4.6.13"
+    version: "4.6.14"
   term_glyph:
     dependency: transitive
     description:
