@@ -34,6 +34,12 @@ class BookRepository {
     file.copySync(destination);
   }
 
+  /// Get is the book is in the library.
+  static bool exists(String filePath) {
+    final destination = join(FilePath.libraryRoot, basename(filePath));
+    return File(destination).existsSync();
+  }
+
   /// Get the book data from the file path.
   static Future<BookData> get(String filePath) async {
     final absolutePath = getAbsolutePath(filePath);
