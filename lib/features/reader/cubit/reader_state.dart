@@ -13,6 +13,7 @@ class ReaderState extends Equatable {
   final int chapterCurrentPage;
   final int chapterTotalPage;
   final ReaderNavigationStateCode navigationStateCode;
+  final TtsServiceState ttsState;
 
   /// Errors
   final WebResourceError? webResourceError;
@@ -37,6 +38,7 @@ class ReaderState extends Equatable {
         chapterCurrentPage,
         chapterTotalPage,
         navigationStateCode,
+        ttsState,
         webResourceError,
         httpResponseError,
         bookmarkData,
@@ -56,6 +58,7 @@ class ReaderState extends Equatable {
     this.chapterCurrentPage = 0,
     this.chapterTotalPage = 0,
     this.navigationStateCode = ReaderNavigationStateCode.defaultState,
+    this.ttsState = TtsServiceState.initial,
     this.webResourceError,
     this.httpResponseError,
     this.bookmarkData,
@@ -76,6 +79,7 @@ class ReaderState extends Equatable {
     int? chapterCurrentPage,
     int? chapterTotalPage,
     ReaderNavigationStateCode? navigationStateCode,
+    TtsServiceState? ttsState,
     WebResourceError? webResourceError,
     HttpResponseError? httpResponseError,
     BookmarkData? bookmarkData,
@@ -94,6 +98,7 @@ class ReaderState extends Equatable {
       chapterCurrentPage: chapterCurrentPage ?? this.chapterCurrentPage,
       chapterTotalPage: chapterTotalPage ?? this.chapterTotalPage,
       navigationStateCode: navigationStateCode ?? this.navigationStateCode,
+      ttsState: ttsState ?? this.ttsState,
       webResourceError: webResourceError ?? this.webResourceError,
       httpResponseError: httpResponseError ?? this.httpResponseError,
       bookmarkData: bookmarkData ?? this.bookmarkData,

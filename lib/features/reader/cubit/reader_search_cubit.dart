@@ -24,14 +24,13 @@ class ReaderSearchCubit extends Cubit<ReaderSearchState> {
   }
 
   void setResultList(dynamic rawList) {
-    if (rawList is List) {
-      emit(
-        state.copyWith(
-          code: LoadingStateCode.loaded,
-          resultList: _parseResultList(rawList),
-        ),
-      );
-    }
+    assert(rawList is List<dynamic>);
+    emit(
+      state.copyWith(
+        code: LoadingStateCode.loaded,
+        resultList: _parseResultList(rawList),
+      ),
+    );
   }
 
   List<ReaderSearchResult> _parseResultList(List<dynamic> rawList) {

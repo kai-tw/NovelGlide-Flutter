@@ -16,9 +16,11 @@ import '../../../data_model/reader_settings_data.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/reader_loading_state_code.dart';
 import '../../../enum/reader_navigation_state_code.dart';
+import '../../../enum/tts_service_state.dart';
 import '../../../repository/book_repository.dart';
 import '../../../repository/bookmark_repository.dart';
 import '../../../repository/cache_repository.dart';
+import '../../../services/tts_service.dart';
 import '../../../utils/css_utils.dart';
 import '../../../utils/int_utils.dart';
 
@@ -27,6 +29,7 @@ part 'reader_gesture_handler.dart';
 part 'reader_search_cubit.dart';
 part 'reader_server_handler.dart';
 part 'reader_state.dart';
+part 'reader_tts_handler.dart';
 part 'reader_web_view_handler.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
@@ -77,12 +80,16 @@ class ReaderCubit extends Cubit<ReaderState> {
       savedLocation: CacheRepository.getLocation(bookPath),
     );
 
+    webViewHandler.register('saveLocation', _receiveSaveLocation);
+    webViewHandler.register('loadDone', _receiveLoadDone);
+    webViewHandler.register('setState', _receiveSetState);
+    webViewHandler.register('setSearchResultList', _receiveSetSearchResultList);
+
     late ReaderSettingsData readerSettingsData;
     await Future.wait<dynamic>([
       BookRepository.get(absolutePath).then((value) => bookData = value),
       ReaderSettingsData.load().then((value) => readerSettingsData = value),
       _serverHandler.start(),
-      webViewHandler.addAppApiChannel(onAppApiMessage),
     ]);
 
     if (isClosed) {
@@ -103,57 +110,6 @@ class ReaderCubit extends Cubit<ReaderState> {
     emit(state.copyWith(navigationStateCode: code));
   }
 
-  /// JavaScript Channel Message Processor
-  void onAppApiMessage(JavaScriptMessage message) {
-    final request = jsonDecode(message.message);
-
-    switch (request['route']) {
-      case 'saveLocation':
-        if (bookData != null) {
-          CacheRepository.storeLocation(bookPath, request['data']);
-        }
-        break;
-
-      case 'loadDone':
-        if (!isClosed) {
-          _serverHandler.stop();
-          emit(state.copyWith(code: LoadingStateCode.loaded));
-          sendThemeData();
-        }
-        break;
-
-      case 'setState':
-        if (!isClosed) {
-          final Map<String, dynamic> jsonValue = request['data'];
-          emit(
-            state.copyWith(
-              atStart: jsonValue['atStart'],
-              atEnd: jsonValue['atEnd'],
-              breadcrumb: jsonValue['breadcrumb'],
-              chapterFileName: jsonValue['chapterFileName'],
-              isRtl: jsonValue['isRtl'],
-              startCfi: jsonValue['startCfi'],
-              chapterCurrentPage:
-                  IntUtils.parse(jsonValue['chapterCurrentPage']),
-              chapterTotalPage: IntUtils.parse(jsonValue['chapterTotalPage']),
-            ),
-          );
-
-          if (state.readerSettings.autoSave) {
-            saveBookmark();
-          }
-        }
-        break;
-
-      case 'setSearchResultList':
-        final Map<String, dynamic> jsonValue = request['data'];
-        searchCubit.setResultList(jsonValue['searchResultList']);
-        break;
-
-      default:
-    }
-  }
-
   void sendThemeData([ThemeData? newTheme]) {
     currentTheme = newTheme ?? currentTheme;
     if (state.code.isLoaded) {
@@ -161,7 +117,9 @@ class ReaderCubit extends Cubit<ReaderState> {
     }
   }
 
-  /// ******* Settings ********
+  /// *************************************************************************
+  /// Settings
+  /// *************************************************************************
 
   void setSettings({
     double? fontSize,
@@ -202,7 +160,9 @@ class ReaderCubit extends Cubit<ReaderState> {
     sendThemeData();
   }
 
-  /// ******* Bookmarks ********
+  /// *************************************************************************
+  /// Bookmarks
+  /// *************************************************************************
 
   Future<void> saveBookmark() async {
     final data = BookmarkData(
@@ -221,6 +181,21 @@ class ReaderCubit extends Cubit<ReaderState> {
     }
   }
 
+  /// *************************************************************************
+  /// TTS
+  /// *************************************************************************
+
+  late final _ttsHandler = ReaderTTSHandler(onReady: _onTTSServiceReady);
+
+  void _onTTSServiceReady() {
+    emit(state.copyWith(ttsState: TtsServiceState.stopped));
+    // TODO: Receive the request from the web page.
+  }
+
+  /// *************************************************************************
+  /// Lifecycle
+  /// *************************************************************************
+
   void _onLifecycleChanged(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.detached:
@@ -229,6 +204,52 @@ class ReaderCubit extends Cubit<ReaderState> {
       default:
     }
   }
+
+  /// *************************************************************************
+  /// Communication
+  /// *************************************************************************
+
+  void _receiveSaveLocation(data) {
+    assert(data is String);
+    if (bookData != null) {
+      CacheRepository.storeLocation(bookPath, data);
+    }
+  }
+
+  void _receiveLoadDone(_) {
+    _serverHandler.stop();
+    emit(state.copyWith(code: LoadingStateCode.loaded));
+    sendThemeData();
+  }
+
+  void _receiveSetState(jsonValue) {
+    assert(jsonValue is Map<String, dynamic>);
+    emit(
+      state.copyWith(
+        atStart: jsonValue['atStart'],
+        atEnd: jsonValue['atEnd'],
+        breadcrumb: jsonValue['breadcrumb'],
+        chapterFileName: jsonValue['chapterFileName'],
+        isRtl: jsonValue['isRtl'],
+        startCfi: jsonValue['startCfi'],
+        chapterCurrentPage: IntUtils.parse(jsonValue['chapterCurrentPage']),
+        chapterTotalPage: IntUtils.parse(jsonValue['chapterTotalPage']),
+      ),
+    );
+
+    if (state.readerSettings.autoSave) {
+      saveBookmark();
+    }
+  }
+
+  void _receiveSetSearchResultList(jsonValue) {
+    assert(jsonValue is Map<String, dynamic>);
+    searchCubit.setResultList(jsonValue['searchResultList']);
+  }
+
+  /// *************************************************************************
+  /// Miscellaneous
+  /// *************************************************************************
 
   @override
   Future<void> close() async {

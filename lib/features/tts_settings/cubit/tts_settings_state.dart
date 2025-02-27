@@ -26,14 +26,14 @@ class TtsSettingsState extends Equatable {
 
   TtsSettingsState copyWith({
     TtsServiceState? ttsState,
-    List<String>? dataList,
+    List<String>? languageList,
     double? pitch,
     double? volume,
     double? speechRate,
   }) {
     return TtsSettingsState(
       ttsState: ttsState ?? this.ttsState,
-      languageList: dataList ?? this.languageList,
+      languageList: languageList ?? this.languageList,
       pitch: pitch ?? this.pitch,
       volume: volume ?? this.volume,
       speechRate: speechRate ?? this.speechRate,

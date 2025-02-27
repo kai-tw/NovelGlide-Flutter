@@ -30,7 +30,7 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
     if (!isClosed) {
       emit(state.copyWith(
         ttsState: TtsServiceState.stopped,
-        dataList: dataList,
+        languageList: dataList,
         pitch: _ttsService.pitch,
         volume: _ttsService.volume,
         speechRate: _ttsService.speechRate,

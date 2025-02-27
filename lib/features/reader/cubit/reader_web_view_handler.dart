@@ -3,6 +3,7 @@ part of 'reader_cubit.dart';
 class ReaderWebViewHandler {
   final String url;
   final controller = WebViewController();
+  final _channelMap = <String, void Function(dynamic)>{};
 
   ReaderWebViewHandler({
     required this.url,
@@ -10,8 +11,9 @@ class ReaderWebViewHandler {
 
   void initialize({String? destination, String? savedLocation}) {
     controller.enableZoom(false);
-    controller.setJavaScriptMode(JavaScriptMode.unrestricted);
     controller.setBackgroundColor(Colors.transparent);
+    controller.setJavaScriptMode(JavaScriptMode.unrestricted);
+    controller.addJavaScriptChannel('appApi', onMessageReceived: receive);
 
     controller.setNavigationDelegate(NavigationDelegate(
       onPageFinished: (url) async {
@@ -37,11 +39,14 @@ class ReaderWebViewHandler {
         '${data != null ? jsonEncode(data) : 'undefined'})');
   }
 
-  Future<void> addAppApiChannel(Function(JavaScriptMessage) onMessageReceived) {
-    return controller.addJavaScriptChannel(
-      'appApi',
-      onMessageReceived: onMessageReceived,
-    );
+  void receive(JavaScriptMessage message) {
+    Map<String, dynamic> data = jsonDecode(message.message);
+    assert(data['route'] is String);
+    _channelMap[data['route']]?.call(data['data']);
+  }
+
+  void register(String route, void Function(dynamic) handler) {
+    _channelMap[route] = handler;
   }
 
   Future<void> request() {

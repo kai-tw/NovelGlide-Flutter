@@ -14,7 +14,10 @@ class _SubmitButton extends StatelessWidget {
       builder: (context, state) {
         return ElevatedButton.icon(
           onPressed: state.isValid
-              ? () => BookRepository.add(cubit.state.filePath!)
+              ? () {
+                  BookRepository.add(cubit.state.filePath!);
+                  Navigator.of(context).pop(true);
+                }
               : null,
           icon: const Icon(Icons.send_rounded),
           label: Text(appLocalizations.generalSubmit),

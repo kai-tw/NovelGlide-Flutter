@@ -47,13 +47,17 @@ class TtsService extends FlutterTts {
 
   Future<void> _init(void Function()? onReady) async {
     prefs = await SharedPreferences.getInstance();
+    await reload();
+    onReady?.call();
+  }
+
+  Future<void> reload() async {
     _pitch = prefs.getDouble(PreferenceKeys.tts.pitch);
     _volume = prefs.getDouble(PreferenceKeys.tts.volume);
     _speechRate = prefs.getDouble(PreferenceKeys.tts.speedRate);
     await setPitch(pitch);
     await setVolume(volume);
     await setSpeechRate(speechRate);
-    onReady?.call();
   }
 
   @override
