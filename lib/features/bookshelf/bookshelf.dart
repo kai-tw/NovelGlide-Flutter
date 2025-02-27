@@ -1,20 +1,11 @@
-import 'dart:io';
-
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data_model/book_data.dart';
 import '../../enum/loading_state_code.dart';
 import '../../enum/sort_order_code.dart';
 import '../../enum/window_class.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../../preference_keys/preference_keys.dart';
-import '../../repository/book_repository.dart';
-import '../../utils/book_utils.dart';
-import '../../utils/file_path.dart';
-import '../../utils/mime_resolver.dart';
 import '../../utils/route_utils.dart';
 import '../collection_add_book/collection_add_book_scaffold.dart';
 import '../common_components/common_book_cover_image.dart';
@@ -26,8 +17,8 @@ import '../common_components/common_loading.dart';
 import '../common_components/draggable_feedback_widget.dart';
 import '../common_components/draggable_placeholder_widget.dart';
 import '../table_of_contents/table_of_contents.dart';
+import 'cubit/cubit.dart';
 
-part 'bloc/cubit.dart';
 part 'bookshelf_app_bar.dart';
 part 'widgets/book_widget.dart';
 part 'widgets/draggable_book.dart';
@@ -43,7 +34,7 @@ class Bookshelf extends StatelessWidget {
 
     BlocProvider.of<BookshelfCubit>(context).refresh();
 
-    return BlocBuilder<BookshelfCubit, _State>(
+    return BlocBuilder<BookshelfCubit, CommonListState<BookData>>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
           previous.dataList != current.dataList ||

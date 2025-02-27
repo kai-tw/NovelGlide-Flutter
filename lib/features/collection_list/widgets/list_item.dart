@@ -8,7 +8,7 @@ class _ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<CollectionListCubit>(context);
-    return BlocBuilder<CollectionListCubit, _State>(
+    return BlocBuilder<CollectionListCubit, CommonListState<CollectionData>>(
       buildWhen: (previous, current) =>
           previous.isSelecting != current.isSelecting ||
           previous.selectedSet.contains(_collectionData) !=

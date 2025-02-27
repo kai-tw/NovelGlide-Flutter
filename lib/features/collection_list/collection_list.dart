@@ -1,14 +1,11 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data_model/collection_data.dart';
 import '../../enum/loading_state_code.dart';
 import '../../enum/sort_order_code.dart';
 import '../../enum/window_class.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../../preference_keys/preference_keys.dart';
 import '../../repository/collection_repository.dart';
 import '../../utils/route_utils.dart';
 import '../collection_viewer/collection_viewer.dart';
@@ -18,8 +15,8 @@ import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import '../common_components/draggable_feedback_widget.dart';
 import '../common_components/draggable_placeholder_widget.dart';
+import 'cubit/cubit.dart';
 
-part 'bloc/cubit.dart';
 part 'collection_list_app_bar.dart';
 part 'widgets/collection_widget.dart';
 part 'widgets/draggable_collection.dart';
@@ -37,7 +34,7 @@ class CollectionList extends StatelessWidget {
 
     BlocProvider.of<CollectionListCubit>(context).refresh();
 
-    return BlocBuilder<CollectionListCubit, _State>(
+    return BlocBuilder<CollectionListCubit, CommonListState<CollectionData>>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
           previous.dataList != current.dataList ||

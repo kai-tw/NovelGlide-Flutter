@@ -1,25 +1,44 @@
-part of '../bookshelf.dart';
+import 'dart:io';
 
-typedef _State = CommonListState<BookData>;
+import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../data_model/book_data.dart';
+import '../../../enum/loading_state_code.dart';
+import '../../../enum/sort_order_code.dart';
+import '../../../preference_keys/preference_keys.dart';
+import '../../../repository/book_repository.dart';
+import '../../../utils/book_utils.dart';
+import '../../../utils/file_path.dart';
+import '../../../utils/mime_resolver.dart';
+import '../../common_components/common_list/list_template.dart';
 
 class BookshelfCubit extends CommonListCubit<BookData> {
-  final String _sortOrderKey = PreferenceKeys.bookshelf.sortOrder;
-  final String _isAscendingKey = PreferenceKeys.bookshelf.isAscending;
+  final _sortOrderKey = PreferenceKeys.bookshelf.sortOrder;
+  final _isAscendingKey = PreferenceKeys.bookshelf.isAscending;
+  late final SharedPreferences _prefs;
 
   factory BookshelfCubit() {
-    final cubit = BookshelfCubit._internal(const CommonListState());
-    WidgetsBinding.instance.addPostFrameCallback((_) => cubit.refresh());
+    final cubit = BookshelfCubit._(const CommonListState());
+    cubit._init();
     return cubit;
   }
 
-  BookshelfCubit._internal(super.initialState);
+  BookshelfCubit._(super.initialState);
+
+  Future<void> _init() async {
+    _prefs = await SharedPreferences.getInstance();
+    WidgetsBinding.instance.addPostFrameCallback((_) => refresh());
+  }
 
   @override
   Future<void> refresh() async {
     // Load the sorting preferences.
-    final prefs = await SharedPreferences.getInstance();
-    final sortOrder = SortOrderCode.fromString(prefs.getString(_sortOrderKey));
-    final isAscending = prefs.getBool(_isAscendingKey) ?? true;
+    final sortOrder =
+        SortOrderCode.fromString(_prefs.getString(_sortOrderKey)) ??
+            SortOrderCode.name;
+    final isAscending = _prefs.getBool(_isAscendingKey) ?? true;
 
     final folder = Directory(FilePath.libraryRoot);
     final fileList = folder
@@ -48,17 +67,12 @@ class BookshelfCubit extends CommonListCubit<BookData> {
     }
   }
 
-  Future<void> setListOrder({
-    SortOrderCode? sortOrder,
-    bool? isAscending,
-  }) async {
+  void setListOrder({SortOrderCode? sortOrder, bool? isAscending}) {
     final order = sortOrder ?? state.sortOrder;
     final ascending = isAscending ?? state.isAscending;
 
-    // Save the sorting preferences.
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString(_sortOrderKey, order.toString());
-    prefs.setBool(_isAscendingKey, ascending);
+    _prefs.setString(_sortOrderKey, order.toString());
+    _prefs.setBool(_isAscendingKey, ascending);
 
     state.dataList.sort(BookUtils.sortCompare(order, ascending));
     emit(state.copyWith(
@@ -80,7 +94,6 @@ class BookshelfCubit extends CommonListCubit<BookData> {
   bool deleteBook(BookData bookData) {
     final isSuccess = BookRepository.delete(bookData.absoluteFilePath);
 
-    // Update the book list
     List<BookData> newList = List<BookData>.from(state.dataList);
     newList.remove(bookData);
     emit(state.copyWith(dataList: newList));

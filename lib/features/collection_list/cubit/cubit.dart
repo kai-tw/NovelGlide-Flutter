@@ -1,32 +1,40 @@
-part of '../collection_list.dart';
+import 'package:collection/collection.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-typedef _State = CommonListState<CollectionData>;
+import '../../../data_model/collection_data.dart';
+import '../../../enum/loading_state_code.dart';
+import '../../../enum/sort_order_code.dart';
+import '../../../preference_keys/preference_keys.dart';
+import '../../../repository/collection_repository.dart';
+import '../../common_components/common_list/list_template.dart';
 
 class CollectionListCubit extends CommonListCubit<CollectionData> {
-  // Keys for storing sort order and ascending preference in shared preferences
   final _sortOrderKey = PreferenceKeys.collection.sortOrder;
   final _isAscendingKey = PreferenceKeys.collection.isAscending;
+  late final SharedPreferences _prefs;
 
-  // Constructor initializing the cubit with an initial state
   factory CollectionListCubit() {
-    final cubit = CollectionListCubit._internal(const _State());
-    cubit.refresh();
+    final cubit =
+        CollectionListCubit._(const CommonListState<CollectionData>());
+    cubit._init();
     return cubit;
   }
 
-  CollectionListCubit._internal(super.initialState);
+  CollectionListCubit._(super.initialState);
 
-  // Refreshes the collection list by fetching data and applying saved sort preferences
+  Future<void> _init() async {
+    _prefs = await SharedPreferences.getInstance();
+    refresh();
+  }
+
   @override
   Future<void> refresh() async {
     final collectionList = CollectionRepository.getList();
-    final prefs = await SharedPreferences.getInstance();
 
-    final sortOrder = SortOrderCode.fromString(
-      prefs.getString(_sortOrderKey),
-      defaultValue: SortOrderCode.name,
-    );
-    final isAscending = prefs.getBool(_isAscendingKey) ?? true;
+    final sortOrder =
+        SortOrderCode.fromString(_prefs.getString(_sortOrderKey)) ??
+            SortOrderCode.name;
+    final isAscending = _prefs.getBool(_isAscendingKey) ?? true;
 
     _sortList(collectionList, sortOrder, isAscending);
 
@@ -38,7 +46,6 @@ class CollectionListCubit extends CommonListCubit<CollectionData> {
     ));
   }
 
-  // Deletes all selected collections and refreshes the list
   void deleteSelectedCollections() {
     for (var e in state.selectedSet) {
       CollectionRepository.delete(e);
@@ -46,18 +53,13 @@ class CollectionListCubit extends CommonListCubit<CollectionData> {
     refresh();
   }
 
-  // Sets the list order and saves preferences
-  Future<void> setListOrder({
-    SortOrderCode? sortOrder,
-    bool? isAscending,
-  }) async {
+  void setListOrder({SortOrderCode? sortOrder, bool? isAscending}) {
     final order = sortOrder ?? state.sortOrder;
     final ascending = isAscending ?? state.isAscending;
     final list = List<CollectionData>.from(state.dataList);
 
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString(_sortOrderKey, order.toString());
-    prefs.setBool(_isAscendingKey, ascending);
+    _prefs.setString(_sortOrderKey, order.toString());
+    _prefs.setBool(_isAscendingKey, ascending);
 
     _sortList(list, order, ascending);
     emit(state.copyWith(
