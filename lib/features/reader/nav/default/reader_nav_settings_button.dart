@@ -8,14 +8,16 @@ class ReaderNavSettingsButton extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context)!;
     final cubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) => previous.code != current.code,
+      buildWhen: (previous, current) =>
+          previous.code != current.code ||
+          previous.ttsState != current.ttsState,
       builder: (context, state) {
+        final isEnabled = state.code.isLoaded || state.ttsState.isStopped;
         return IconButton(
           icon: const Icon(Icons.settings_rounded),
           tooltip: appLocalizations.readerSettings,
-          onPressed: state.code.isLoaded
-              ? () => _navigateToSettingsPage(context, cubit)
-              : null,
+          onPressed:
+              isEnabled ? () => _navigateToSettingsPage(context, cubit) : null,
         );
       },
     );

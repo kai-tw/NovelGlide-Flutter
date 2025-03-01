@@ -18,6 +18,7 @@ class BookshelfCubit extends CommonListCubit<BookData> {
   final _sortOrderKey = PreferenceKeys.bookshelf.sortOrder;
   final _isAscendingKey = PreferenceKeys.bookshelf.isAscending;
   late final SharedPreferences _prefs;
+  bool _isInitialized = false;
 
   factory BookshelfCubit() {
     final cubit = BookshelfCubit._(const CommonListState());
@@ -29,12 +30,16 @@ class BookshelfCubit extends CommonListCubit<BookData> {
 
   Future<void> _init() async {
     _prefs = await SharedPreferences.getInstance();
+    _isInitialized = true;
     WidgetsBinding.instance.addPostFrameCallback((_) => refresh());
   }
 
   @override
   Future<void> refresh() async {
-    // Load the sorting preferences.
+    if (!_isInitialized) {
+      return;
+    }
+
     final sortOrder =
         SortOrderCode.fromString(_prefs.getString(_sortOrderKey)) ??
             SortOrderCode.name;

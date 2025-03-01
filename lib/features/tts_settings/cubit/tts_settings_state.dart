@@ -7,6 +7,7 @@ class TtsSettingsState extends Equatable {
     this.pitch = TtsService.defaultPitch,
     this.volume = TtsService.defaultVolume,
     this.speechRate = TtsService.defaultSpeedRate,
+    this.languageCode = "",
   });
 
   final TtsServiceState ttsState;
@@ -14,6 +15,7 @@ class TtsSettingsState extends Equatable {
   final double pitch;
   final double volume;
   final double speechRate;
+  final String languageCode;
 
   @override
   List<Object?> get props => [
@@ -22,6 +24,7 @@ class TtsSettingsState extends Equatable {
         pitch,
         volume,
         speechRate,
+        languageCode,
       ];
 
   TtsSettingsState copyWith({
@@ -30,6 +33,7 @@ class TtsSettingsState extends Equatable {
     double? pitch,
     double? volume,
     double? speechRate,
+    String? languageCode,
   }) {
     return TtsSettingsState(
       ttsState: ttsState ?? this.ttsState,
@@ -37,6 +41,7 @@ class TtsSettingsState extends Equatable {
       pitch: pitch ?? this.pitch,
       volume: volume ?? this.volume,
       speechRate: speechRate ?? this.speechRate,
+      languageCode: languageCode ?? this.languageCode,
     );
   }
 }

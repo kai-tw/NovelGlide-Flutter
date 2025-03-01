@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../enum/tts_service_state.dart';
 import '../../generated/i18n/app_localizations.dart';
+import '../../utils/language_code_utils.dart';
 import '../common_components/common_back_button.dart';
 import 'cubit/tts_settings_cubit.dart';
 
+part 'dialog/language_select_dialog.dart';
 part 'widgets/demo_section.dart';
 part 'widgets/slider.dart';
 
@@ -37,6 +39,39 @@ class _PageScaffold extends StatelessWidget {
         child: Column(
           children: [
             const _DemoSection(),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+              ),
+              child: ListTile(
+                leading: const Icon(Icons.language),
+                title: Text(appLocalizations.ttsSettingsSelectLanguage),
+                subtitle: BlocBuilder<TtsSettingsCubit, TtsSettingsState>(
+                  buildWhen: (previous, current) =>
+                      previous.ttsState != current.ttsState ||
+                      previous.languageCode != current.languageCode,
+                  builder: (context, state) {
+                    return Text(
+                      LanguageCodeUtils.getName(
+                        context,
+                        state.languageCode,
+                      ),
+                    );
+                  },
+                ),
+                onTap: () async {
+                  final languageCode = await showDialog<String>(
+                    context: context,
+                    builder: (_) => _LanguageSelectDialog(
+                      languageCodeList: cubit.state.languageList,
+                    ),
+                  );
+                  if (languageCode != null) {
+                    cubit.setLanguageCode(languageCode);
+                  }
+                },
+              ),
+            ),
             _Slider(
               title: appLocalizations.ttsSettingsPitch,
               buildWhen: (previous, current) =>

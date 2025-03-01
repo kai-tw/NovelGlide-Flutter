@@ -45,11 +45,10 @@ class ReaderCubit extends Cubit<ReaderState> {
     goto: webViewHandler.goto,
   );
   late final gestureHandler = ReaderGestureHandler(
-    onSwipeLeft: () =>
-        state.isRtl ? webViewHandler.nextPage() : webViewHandler.prevPage(),
-    onSwipeRight: () =>
-        state.isRtl ? webViewHandler.prevPage() : webViewHandler.nextPage(),
+    onSwipeLeft: previousPage,
+    onSwipeRight: nextPage,
   );
+  late final ReaderTTSHandler ttsHandler;
   late final _lifecycle =
       AppLifecycleListener(onStateChange: _onLifecycleChanged);
 
@@ -84,6 +83,11 @@ class ReaderCubit extends Cubit<ReaderState> {
     webViewHandler.register('loadDone', _receiveLoadDone);
     webViewHandler.register('setState', _receiveSetState);
     webViewHandler.register('setSearchResultList', _receiveSetSearchResultList);
+
+    ttsHandler = ReaderTTSHandler(
+      webViewHandler: webViewHandler,
+      onTtsStateChanged: _onTtsStateChanged,
+    );
 
     late ReaderSettingsData readerSettingsData;
     await Future.wait<dynamic>([
@@ -182,14 +186,37 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   /// *************************************************************************
+  /// Page Navigation
+  /// *************************************************************************
+
+  void previousPage() {
+    if (!state.ttsState.isStopped) {
+      return;
+    }
+    if (state.isRtl) {
+      webViewHandler.nextPage();
+    } else {
+      webViewHandler.prevPage();
+    }
+  }
+
+  void nextPage() {
+    if (!state.ttsState.isStopped) {
+      return;
+    }
+    if (state.isRtl) {
+      webViewHandler.prevPage();
+    } else {
+      webViewHandler.nextPage();
+    }
+  }
+
+  /// *************************************************************************
   /// TTS
   /// *************************************************************************
 
-  late final _ttsHandler = ReaderTTSHandler(onReady: _onTTSServiceReady);
-
-  void _onTTSServiceReady() {
-    emit(state.copyWith(ttsState: TtsServiceState.stopped));
-    // TODO: Receive the request from the web page.
+  void _onTtsStateChanged(TtsServiceState state) {
+    if (!isClosed) emit(this.state.copyWith(ttsState: state));
   }
 
   /// *************************************************************************
@@ -256,6 +283,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     await _serverHandler.stop();
     await searchCubit.close();
     _lifecycle.dispose();
+    ttsHandler.dispose();
     super.close();
   }
 }

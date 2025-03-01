@@ -30,7 +30,7 @@ class _DemoSection extends StatelessWidget {
                         ? cubit.play
                         : null,
                     icon: const Icon(Icons.play_arrow),
-                    label: Text(appLocalizations.ttsSettingsPlay),
+                    label: Text(appLocalizations.ttsPlay),
                   ),
                   TextButton.icon(
                     onPressed: state.ttsState == TtsServiceState.playing ||
@@ -38,7 +38,7 @@ class _DemoSection extends StatelessWidget {
                         ? cubit.pause
                         : null,
                     icon: const Icon(Icons.pause),
-                    label: Text(appLocalizations.ttsSettingsPause),
+                    label: Text(appLocalizations.ttsPause),
                   ),
                   TextButton.icon(
                     onPressed: state.ttsState == TtsServiceState.playing ||
@@ -47,7 +47,7 @@ class _DemoSection extends StatelessWidget {
                         ? cubit.stop
                         : null,
                     icon: const Icon(Icons.stop),
-                    label: Text(appLocalizations.ttsSettingsStop),
+                    label: Text(appLocalizations.ttsStop),
                   ),
                   TextButton.icon(
                     onPressed: state.ttsState == TtsServiceState.stopped

@@ -8,16 +8,15 @@ class ReaderNavPreviousButton extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context)!;
     final cubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) => previous.code != current.code,
+      buildWhen: (previous, current) =>
+          previous.code != current.code ||
+          previous.ttsState != current.ttsState,
       builder: (context, state) {
+        final isEnabled = state.code.isLoaded && state.ttsState.isStopped;
         return IconButton(
           icon: const Icon(Icons.arrow_back_ios_rounded),
           tooltip: appLocalizations.readerPreviousChapter,
-          onPressed: state.code.isLoaded
-              ? () => cubit.state.isRtl
-                  ? cubit.webViewHandler.nextPage()
-                  : cubit.webViewHandler.prevPage()
-              : null,
+          onPressed: isEnabled ? cubit.previousPage : null,
         );
       },
     );

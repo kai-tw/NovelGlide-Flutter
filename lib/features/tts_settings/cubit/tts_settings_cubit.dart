@@ -34,6 +34,7 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
         pitch: _ttsService.pitch,
         volume: _ttsService.volume,
         speechRate: _ttsService.speechRate,
+        languageCode: _ttsService.languageCode,
       ));
     }
   }
@@ -59,7 +60,6 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
 
   void stop() async {
     await _ttsService.stop();
-    if (state.ttsState == TtsServiceState.paused) _onSpeakEnd();
   }
 
   void reset() {
@@ -97,6 +97,12 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
     if (isEnd) {
       _ttsService.speechRate = speechRate;
     }
+  }
+
+  void setLanguageCode(String languageCode) {
+    if (isClosed) return;
+    emit(state.copyWith(languageCode: languageCode));
+    _ttsService.languageCode = languageCode;
   }
 
   void _onSpeakStart() {

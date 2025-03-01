@@ -21,12 +21,13 @@ class _State extends State<ReaderNavBookmarkButton> {
           previous.readerSettings.autoSave != current.readerSettings.autoSave ||
           previous.code != current.code ||
           previous.bookmarkData != current.bookmarkData ||
-          previous.startCfi != current.startCfi,
+          previous.startCfi != current.startCfi ||
+          previous.ttsState != current.ttsState,
       listener: (_, readerState) {
         if (isLoading || isSuccess) {
           return;
         }
-        _resetState(readerState);
+        _resetState();
       },
       child: IconButton(
         icon: Icon(
@@ -56,11 +57,13 @@ class _State extends State<ReaderNavBookmarkButton> {
     }
   }
 
-  void _resetState([ReaderState? readerState]) {
-    readerState ??= BlocProvider.of<ReaderCubit>(context).state;
+  void _resetState() {
+    final readerState = BlocProvider.of<ReaderCubit>(context).state;
     final isAutoSave = readerState.readerSettings.autoSave;
 
-    if (readerState.code.isLoaded && !isAutoSave) {
+    if (readerState.code.isLoaded &&
+        !isAutoSave &&
+        readerState.ttsState.isStopped) {
       setState(() => _stateCode = CommonButtonStateCode.idle);
     } else {
       setState(() => _stateCode = CommonButtonStateCode.disabled);

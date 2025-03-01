@@ -5,7 +5,7 @@ class _ScaffoldBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
+    final cubit = BlocProvider.of<ReaderCubit>(context);
     return Stack(
       children: [
         /// Reader WebView

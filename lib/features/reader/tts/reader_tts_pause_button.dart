@@ -11,10 +11,17 @@ class ReaderTtsPauseButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
     final cubit = BlocProvider.of<ReaderCubit>(context);
-    return IconButton(
-      icon: const Icon(Icons.pause_rounded),
-      tooltip: "Pause",
-      onPressed: () => print("Pause"),
+    return BlocBuilder<ReaderCubit, ReaderState>(
+      buildWhen: (previous, current) => previous.ttsState != current.ttsState,
+      builder: (context, state) {
+        final isEnabled =
+            state.ttsState.isPlaying || state.ttsState.isContinued;
+        return IconButton(
+          icon: const Icon(Icons.pause_rounded),
+          tooltip: appLocalizations.ttsPause,
+          onPressed: isEnabled ? cubit.ttsHandler.pauseButtonPressed : null,
+        );
+      },
     );
   }
 }

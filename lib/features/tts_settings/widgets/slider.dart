@@ -21,13 +21,12 @@ class _Slider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
         children: [
           Text(
-            appLocalizations.ttsSettingsPitch,
+            title,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           BlocBuilder<TtsSettingsCubit, TtsSettingsState>(

@@ -1,7 +1,6 @@
 import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -57,9 +56,7 @@ class App extends StatelessWidget {
       routes: {
         "/": (_) => const Homepage(),
       },
-      builder: kReleaseMode
-          ? null
-          : (context, child) => AccessibilityTools(child: child),
+      builder: (context, child) => AccessibilityTools(child: child),
       // debugShowCheckedModeBanner: false,
     );
   }

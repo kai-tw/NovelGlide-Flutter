@@ -169,7 +169,7 @@ class LanguageCodeUtils {
       case 'en-GB':
         return appLocalizations.languageCodeEnGB;
       default:
-        return "Unknown Language: $code";
+        return appLocalizations.languageCodeUnknown(code);
     }
   }
 }
