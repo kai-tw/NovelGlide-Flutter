@@ -60,14 +60,16 @@ class _PageScaffold extends StatelessWidget {
                   },
                 ),
                 onTap: () async {
-                  final languageCode = await showDialog<String>(
-                    context: context,
-                    builder: (_) => _LanguageSelectDialog(
-                      languageCodeList: cubit.state.languageList,
-                    ),
-                  );
-                  if (languageCode != null) {
-                    cubit.setLanguageCode(languageCode);
+                  if (cubit.state.ttsState.isStopped) {
+                    final languageCode = await showDialog<String>(
+                      context: context,
+                      builder: (_) => _LanguageSelectDialog(
+                        languageCodeList: cubit.state.languageList,
+                      ),
+                    );
+                    if (languageCode != null) {
+                      cubit.setLanguageCode(languageCode);
+                    }
                   }
                 },
               ),

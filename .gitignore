@@ -53,3 +53,4 @@ app_untranslated.txt
 # Project specific
 assets/renderer/*
 /lib/generated/
+/android/app/.cxx
