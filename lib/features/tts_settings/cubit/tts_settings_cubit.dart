@@ -63,9 +63,13 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
   }
 
   void reset() {
-    setPitch(TtsService.defaultPitch, true);
-    setVolume(TtsService.defaultVolume, true);
-    setSpeechRate(TtsService.defaultSpeedRate, true);
+    _ttsService.reset();
+    emit(state.copyWith(
+      pitch: _ttsService.pitch,
+      volume: _ttsService.volume,
+      speechRate: _ttsService.speechRate,
+      languageCode: _ttsService.languageCode,
+    ));
   }
 
   @override

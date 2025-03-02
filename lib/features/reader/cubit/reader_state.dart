@@ -7,9 +7,6 @@ class ReaderState extends Equatable {
   final String breadcrumb;
   final String chapterFileName;
   final String startCfi;
-  final bool atStart;
-  final bool atEnd;
-  final bool isRtl;
   final int chapterCurrentPage;
   final int chapterTotalPage;
   final ReaderNavigationStateCode navigationStateCode;
@@ -32,9 +29,6 @@ class ReaderState extends Equatable {
         bookName,
         breadcrumb,
         chapterFileName,
-        atStart,
-        atEnd,
-        isRtl,
         chapterCurrentPage,
         chapterTotalPage,
         navigationStateCode,
@@ -52,9 +46,6 @@ class ReaderState extends Equatable {
     this.breadcrumb = '',
     this.chapterFileName = '',
     this.startCfi = '',
-    this.atStart = true,
-    this.atEnd = false,
-    this.isRtl = false,
     this.chapterCurrentPage = 0,
     this.chapterTotalPage = 0,
     this.navigationStateCode = ReaderNavigationStateCode.defaultState,
@@ -72,9 +63,6 @@ class ReaderState extends Equatable {
     String? breadcrumb,
     String? chapterFileName,
     String? startCfi,
-    bool? atStart,
-    bool? atEnd,
-    bool? isRtl,
     double? percentage,
     int? chapterCurrentPage,
     int? chapterTotalPage,
@@ -92,9 +80,6 @@ class ReaderState extends Equatable {
       breadcrumb: breadcrumb ?? this.breadcrumb,
       chapterFileName: chapterFileName ?? this.chapterFileName,
       startCfi: startCfi ?? this.startCfi,
-      atStart: atStart ?? this.atStart,
-      atEnd: atEnd ?? this.atEnd,
-      isRtl: isRtl ?? this.isRtl,
       chapterCurrentPage: chapterCurrentPage ?? this.chapterCurrentPage,
       chapterTotalPage: chapterTotalPage ?? this.chapterTotalPage,
       navigationStateCode: navigationStateCode ?? this.navigationStateCode,

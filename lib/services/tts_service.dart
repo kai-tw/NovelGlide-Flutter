@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,6 +7,7 @@ class TtsService extends FlutterTts {
   static const double defaultPitch = 1.0;
   static const double defaultVolume = 1.0;
   static const double defaultSpeedRate = 0.5;
+  static const String defaultLanguageCode = "en-US";
 
   late final SharedPreferences prefs;
   String? _pausedText;
@@ -21,7 +20,7 @@ class TtsService extends FlutterTts {
   double get pitch => _pitch ?? defaultPitch;
   double get volume => _volume ?? defaultVolume;
   double get speechRate => _speechRate ?? defaultSpeedRate;
-  String get languageCode => _languageCode ?? Platform.localeName;
+  String get languageCode => _languageCode ?? defaultLanguageCode;
 
   set pitch(double value) {
     _pitch = value;
@@ -44,6 +43,7 @@ class TtsService extends FlutterTts {
   set languageCode(String value) {
     _languageCode = value;
     prefs.setString(PreferenceKeys.tts.languageCode, value);
+    print(value);
     setLanguage(value);
   }
 
@@ -69,7 +69,7 @@ class TtsService extends FlutterTts {
     await setPitch(pitch);
     await setVolume(volume);
     await setSpeechRate(speechRate);
-    await setLanguage(_languageCode ?? Platform.localeName);
+    await setLanguage(languageCode);
   }
 
   @override
@@ -99,7 +99,7 @@ class TtsService extends FlutterTts {
     pitch = defaultPitch;
     volume = defaultVolume;
     speechRate = defaultSpeedRate;
-    languageCode = "";
+    languageCode = defaultLanguageCode;
   }
 
   Future<List<String>> getDataList() async {

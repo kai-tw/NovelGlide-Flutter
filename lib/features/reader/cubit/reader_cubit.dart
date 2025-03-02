@@ -193,22 +193,14 @@ class ReaderCubit extends Cubit<ReaderState> {
     if (!state.ttsState.isStopped) {
       return;
     }
-    if (state.isRtl) {
-      webViewHandler.nextPage();
-    } else {
-      webViewHandler.prevPage();
-    }
+    webViewHandler.prevPage();
   }
 
   void nextPage() {
     if (!state.ttsState.isStopped) {
       return;
     }
-    if (state.isRtl) {
-      webViewHandler.prevPage();
-    } else {
-      webViewHandler.nextPage();
-    }
+    webViewHandler.nextPage();
   }
 
   /// *************************************************************************
@@ -246,23 +238,23 @@ class ReaderCubit extends Cubit<ReaderState> {
   void _receiveLoadDone(_) {
     _serverHandler.stop();
     emit(state.copyWith(code: LoadingStateCode.loaded));
+
+    // Send theme data after the page is loaded.
     sendThemeData();
+
+    // Set smooth scroll.
+    webViewHandler.setSmoothScroll(state.readerSettings.isSmoothScroll);
   }
 
   void _receiveSetState(jsonValue) {
     assert(jsonValue is Map<String, dynamic>);
-    emit(
-      state.copyWith(
-        atStart: jsonValue['atStart'],
-        atEnd: jsonValue['atEnd'],
-        breadcrumb: jsonValue['breadcrumb'],
-        chapterFileName: jsonValue['chapterFileName'],
-        isRtl: jsonValue['isRtl'],
-        startCfi: jsonValue['startCfi'],
-        chapterCurrentPage: IntUtils.parse(jsonValue['chapterCurrentPage']),
-        chapterTotalPage: IntUtils.parse(jsonValue['chapterTotalPage']),
-      ),
-    );
+    emit(state.copyWith(
+      breadcrumb: jsonValue['breadcrumb'],
+      chapterFileName: jsonValue['chapterFileName'],
+      startCfi: jsonValue['startCfi'],
+      chapterCurrentPage: IntUtils.parse(jsonValue['chapterCurrentPage']),
+      chapterTotalPage: IntUtils.parse(jsonValue['chapterTotalPage']),
+    ));
 
     if (state.readerSettings.autoSave) {
       saveBookmark();

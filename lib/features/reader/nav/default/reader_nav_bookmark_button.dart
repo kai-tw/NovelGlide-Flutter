@@ -62,6 +62,7 @@ class _State extends State<ReaderNavBookmarkButton> {
     final isAutoSave = readerState.readerSettings.autoSave;
 
     if (readerState.code.isLoaded &&
+        readerState.bookmarkData?.startCfi != readerState.startCfi &&
         !isAutoSave &&
         readerState.ttsState.isStopped) {
       setState(() => _stateCode = CommonButtonStateCode.idle);
