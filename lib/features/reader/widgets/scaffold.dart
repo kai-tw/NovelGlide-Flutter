@@ -31,7 +31,7 @@ class _CompactView extends StatelessWidget {
       body: SafeArea(
         child: _ScaffoldBody(),
       ),
-      bottomNavigationBar: SafeArea(child: _NavigationBar()),
+      bottomNavigationBar: SafeArea(child: ReaderNavigationBar()),
     );
   }
 }
@@ -46,7 +46,7 @@ class _MediumView extends StatelessWidget {
       body: SafeArea(
         child: Row(
           children: [
-            _NavigationRail(),
+            ReaderNavigationRail(),
             Expanded(child: _ScaffoldBody()),
           ],
         ),

@@ -1,24 +1,17 @@
-import 'dart:io';
-
-import 'package:equatable/equatable.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:path/path.dart';
 
 import '../../enum/window_class.dart';
-import '../../exceptions/file_exceptions.dart';
+import '../../generated/i18n/app_localizations.dart';
 import '../../repository/book_repository.dart';
 import '../../utils/file_utils.dart';
 import '../common_components/common_back_button.dart';
-import '../common_components/common_error_dialog.dart';
+import 'cubit/cubit.dart';
 
-part 'bloc/cubit.dart';
-part 'dialog/file_duplicate_error_dialog.dart';
-part 'widgets/file_info_list_tile.dart';
 part 'widgets/form.dart';
-part 'widgets/form_file_helper_text.dart';
+part 'widgets/helper_text.dart';
+part 'widgets/info_tile.dart';
 part 'widgets/pick_file_button.dart';
 part 'widgets/submit_button.dart';
 

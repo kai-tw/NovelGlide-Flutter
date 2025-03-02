@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../generated/i18n/app_localizations.dart';
 
 class CommonBackButton extends StatelessWidget {
   final dynamic popValue;
@@ -17,7 +18,7 @@ class CommonBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final appLocalizations = AppLocalizations.of(context)!;
     return IconButton(
       onPressed: onPressed ?? () => Navigator.of(context).pop(popValue),
       style: style,

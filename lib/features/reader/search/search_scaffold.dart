@@ -1,18 +1,15 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:logger/logger.dart';
 
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/window_class.dart';
+import '../../../generated/i18n/app_localizations.dart';
 import '../../../utils/route_utils.dart';
 import '../../common_components/common_back_button.dart';
 import '../../common_components/common_loading.dart';
-import '../reader.dart';
+import '../cubit/reader_cubit.dart';
 
-part '../bloc/search_cubit.dart';
 part 'search_button.dart';
 part 'search_field.dart';
 part 'search_item_operation_dialog.dart';

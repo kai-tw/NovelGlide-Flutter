@@ -9,12 +9,12 @@ class _Form extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(24.0),
         child: BlocProvider(
-          create: (context) => _Cubit(),
+          create: (context) => BookAddCubit(),
           child: const Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              _FileInfoListTile(),
-              _FormFileHelperText(),
+              _InfoTile(),
+              _HelperText(),
               OverflowBar(
                 alignment: MainAxisAlignment.spaceBetween,
                 overflowAlignment: OverflowBarAlignment.center,

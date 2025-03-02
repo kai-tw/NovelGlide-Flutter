@@ -5,8 +5,8 @@ class _SearchSubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<SearchCubit>(context);
-    return BlocBuilder<SearchCubit, _SearchState>(
+    final cubit = BlocProvider.of<ReaderSearchCubit>(context);
+    return BlocBuilder<ReaderSearchCubit, ReaderSearchState>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
           previous.query.isEmpty != current.query.isEmpty,

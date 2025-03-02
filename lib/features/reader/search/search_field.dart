@@ -5,8 +5,8 @@ class _SearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SearchCubit cubit = context.read<SearchCubit>();
-    return BlocBuilder<SearchCubit, _SearchState>(
+    final ReaderSearchCubit cubit = context.read<ReaderSearchCubit>();
+    return BlocBuilder<ReaderSearchCubit, ReaderSearchState>(
       buildWhen: (previous, current) => previous.code != current.code,
       builder: (context, state) {
         return TextFormField(

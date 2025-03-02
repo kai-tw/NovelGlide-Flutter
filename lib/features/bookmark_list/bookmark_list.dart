@@ -1,14 +1,11 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data_model/bookmark_data.dart';
-import '../../data_model/preference_keys.dart';
 import '../../enum/loading_state_code.dart';
 import '../../enum/sort_order_code.dart';
 import '../../enum/window_class.dart';
+import '../../generated/i18n/app_localizations.dart';
 import '../../repository/bookmark_repository.dart';
 import '../../utils/route_utils.dart';
 import '../common_components/common_delete_dialog.dart';
@@ -17,9 +14,10 @@ import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import '../common_components/draggable_feedback_widget.dart';
 import '../common_components/draggable_placeholder_widget.dart';
+import '../reader/cubit/reader_cubit.dart';
 import '../reader/reader.dart';
+import 'cubit/cubit.dart';
 
-part 'bloc/cubit.dart';
 part 'bookmark_list_app_bar.dart';
 part 'widgets/bookmark_widget.dart';
 part 'widgets/draggable_bookmark.dart';

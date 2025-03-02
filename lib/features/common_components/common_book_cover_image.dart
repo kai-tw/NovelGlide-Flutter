@@ -3,10 +3,10 @@ import 'dart:typed_data';
 
 import 'package:bitmap/bitmap.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image/image.dart' as img;
 
 import '../../data_model/book_data.dart';
+import '../../generated/i18n/app_localizations.dart';
 
 class CommonBookCoverImage extends StatelessWidget {
   final BookData bookData;

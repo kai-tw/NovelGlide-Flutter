@@ -5,7 +5,7 @@ class _ScaffoldBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
+    final cubit = BlocProvider.of<ReaderCubit>(context);
     return Stack(
       children: [
         /// Reader WebView
@@ -18,11 +18,11 @@ class _ScaffoldBody extends StatelessWidget {
                 behavior: HitTestBehavior.translucent,
 
                 /// Swipe to prev/next page
-                onHorizontalDragStart: cubit._gestureHandler.onStart,
-                onHorizontalDragEnd: cubit._gestureHandler.onEnd,
-                onHorizontalDragCancel: cubit._gestureHandler.onCancel,
+                onHorizontalDragStart: cubit.gestureHandler.onStart,
+                onHorizontalDragEnd: cubit.gestureHandler.onEnd,
+                onHorizontalDragCancel: cubit.gestureHandler.onCancel,
                 child: WebViewWidget(
-                  controller: cubit._webViewHandler.controller,
+                  controller: cubit.webViewHandler.controller,
                   gestureRecognizers: {
                     Factory<LongPressGestureRecognizer>(
                       () => LongPressGestureRecognizer(

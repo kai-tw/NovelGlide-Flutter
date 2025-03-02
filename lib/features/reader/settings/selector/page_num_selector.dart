@@ -15,17 +15,15 @@ class _PageNumSelector extends StatelessWidget {
         builder: (context, state) {
           return DropdownMenu<ReaderSettingsPageNumType>(
             width: constraints.maxWidth,
-            label: Text(appLocalizations.readerSettingsPageNumTypeLabel),
-            helperText: appLocalizations.readerSettingsPageNumTypeHelperText,
+            label: Text(appLocalizations.readerPageNumTypeLabel),
+            helperText: appLocalizations.readerPageNumTypeHelperText,
             trailingIcon: Icon(
               Icons.keyboard_arrow_down_rounded,
-              semanticLabel:
-                  appLocalizations.readerSettingsPageNumTypeHelperText,
+              semanticLabel: appLocalizations.readerPageNumTypeHelperText,
             ),
             selectedTrailingIcon: Icon(
               Icons.keyboard_arrow_up_rounded,
-              semanticLabel:
-                  appLocalizations.readerSettingsPageNumTypeHelperText,
+              semanticLabel: appLocalizations.readerPageNumTypeHelperText,
             ),
             initialSelection: state.readerSettings.pageNumType,
             onSelected: (value) {
@@ -49,16 +47,16 @@ class _PageNumSelector extends StatelessWidget {
     String label;
     switch (type) {
       case ReaderSettingsPageNumType.hidden:
-        label = appLocalizations.readerSettingsPageNumTypeHidden;
+        label = appLocalizations.readerPageNumTypeHidden;
         break;
       case ReaderSettingsPageNumType.number:
-        label = appLocalizations.readerSettingsPageNumTypeNumber;
+        label = appLocalizations.readerPageNumTypeNumber;
         break;
       case ReaderSettingsPageNumType.percentage:
-        label = appLocalizations.readerSettingsPageNumTypePercentage;
+        label = appLocalizations.readerPageNumTypePercentage;
         break;
       case ReaderSettingsPageNumType.progressBar:
-        label = appLocalizations.readerSettingsPageNumTypeProgressBar;
+        label = appLocalizations.readerPageNumTypeProgressBar;
         break;
     }
     return DropdownMenuEntry<ReaderSettingsPageNumType>(

@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'preference_keys.dart';
+import '../preference_keys/preference_keys.dart';
 
 /// Represents the settings for a reader, including font size, line height, and other preferences.
 class ReaderSettingsData extends Equatable {
@@ -20,8 +20,6 @@ class ReaderSettingsData extends Equatable {
   final bool isSmoothScroll;
 
   final ReaderSettingsPageNumType pageNumType;
-
-  static final ReaderPref _readerKey = PreferenceKeys.reader;
 
   @override
   List<Object?> get props => [
@@ -44,12 +42,15 @@ class ReaderSettingsData extends Equatable {
   static Future<ReaderSettingsData> load() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return ReaderSettingsData(
-      fontSize: prefs.getDouble(_readerKey.fontSize) ?? defaultFontSize,
-      lineHeight: prefs.getDouble(_readerKey.lineHeight) ?? defaultLineHeight,
-      autoSave: prefs.getBool(_readerKey.autoSave) ?? false,
-      isSmoothScroll: prefs.getBool(_readerKey.isSmoothScroll) ?? false,
+      fontSize:
+          prefs.getDouble(PreferenceKeys.reader.fontSize) ?? defaultFontSize,
+      lineHeight: prefs.getDouble(PreferenceKeys.reader.lineHeight) ??
+          defaultLineHeight,
+      autoSave: prefs.getBool(PreferenceKeys.reader.autoSave) ?? false,
+      isSmoothScroll:
+          prefs.getBool(PreferenceKeys.reader.isSmoothScroll) ?? false,
       pageNumType: ReaderSettingsPageNumType.fromString(
-          prefs.getString(_readerKey.pageNumType)),
+          prefs.getString(PreferenceKeys.reader.pageNumType)),
     );
   }
 
@@ -75,11 +76,11 @@ class ReaderSettingsData extends Equatable {
   /// Saves the current settings to shared preferences.
   Future<void> save() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setDouble(_readerKey.fontSize, fontSize);
-    prefs.setDouble(_readerKey.lineHeight, lineHeight);
-    prefs.setBool(_readerKey.autoSave, autoSave);
-    prefs.setBool(_readerKey.isSmoothScroll, isSmoothScroll);
-    prefs.setString(_readerKey.pageNumType, pageNumType.toString());
+    prefs.setDouble(PreferenceKeys.reader.fontSize, fontSize);
+    prefs.setDouble(PreferenceKeys.reader.lineHeight, lineHeight);
+    prefs.setBool(PreferenceKeys.reader.autoSave, autoSave);
+    prefs.setBool(PreferenceKeys.reader.isSmoothScroll, isSmoothScroll);
+    prefs.setString(PreferenceKeys.reader.pageNumType, pageNumType.toString());
   }
 }
 

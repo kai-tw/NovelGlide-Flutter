@@ -9,7 +9,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:novelglide/data_model/theme_data_record.dart';
 import 'package:novelglide/firebase_options.dart';
 import 'package:novelglide/main.dart';
 import 'package:novelglide/utils/file_path.dart';
@@ -27,11 +26,8 @@ void main() {
     // File Path Initialization
     await FilePath.ensureInitialized();
 
-    // Theme Initialization
-    final ThemeData initTheme = await ThemeDataRecord.currentTheme;
-
     // Build our app and trigger a frame.
-    await tester.pumpWidget(App(initialTheme: initTheme));
+    await tester.pumpWidget(const App());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

@@ -2,12 +2,12 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:path/path.dart';
 
 import '../../data_model/book_data.dart';
 import '../../data_model/collection_data.dart';
 import '../../enum/loading_state_code.dart';
+import '../../generated/i18n/app_localizations.dart';
 import '../../repository/book_repository.dart';
 import '../../repository/collection_repository.dart';
 import '../collection_add/collection_add_dialog.dart';

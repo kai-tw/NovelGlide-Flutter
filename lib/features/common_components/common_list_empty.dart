@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../generated/i18n/app_localizations.dart';
 import '../../utils/emoticon_collection.dart';
 
 class CommonListEmpty extends StatelessWidget {
@@ -10,7 +10,7 @@ class CommonListEmpty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final appLocalizations = AppLocalizations.of(context)!;
     return SafeArea(
       child: Center(
         child: Column(

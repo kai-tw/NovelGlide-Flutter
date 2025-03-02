@@ -55,7 +55,8 @@ class _FabSection extends StatelessWidget {
                         ReaderWidget(
                           bookPath: cubit.bookData.absoluteFilePath,
                           bookData: cubit.bookData,
-                          isGotoBookmark: true,
+                          destinationType: ReaderDestinationType.bookmark,
+                          destination: state.bookmarkData?.startCfi,
                         ),
                       ))
                       .then((_) => cubit.refresh());

@@ -12,8 +12,7 @@ class _AutoSaveSwitch extends StatelessWidget {
       builder: (context, state) {
         return SwitchListTile(
           contentPadding: EdgeInsets.zero,
-          title:
-              Text(AppLocalizations.of(context)!.readerSettingsAutoSaveSwitch),
+          title: Text(AppLocalizations.of(context)!.readerAutoSave),
           value: state.readerSettings.autoSave,
           onChanged: (bool value) {
             cubit.setSettings(autoSave: value);
