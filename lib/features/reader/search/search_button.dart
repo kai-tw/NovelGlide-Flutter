@@ -5,6 +5,7 @@ class SearchButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) =>
           previous.code != current.code ||
@@ -12,10 +13,8 @@ class SearchButton extends StatelessWidget {
       builder: (context, state) {
         final isEnabled = state.code.isLoaded && state.ttsState.isStopped;
         return IconButton(
-          icon: Icon(
-            Icons.search,
-            semanticLabel: AppLocalizations.of(context)!.readerSearch,
-          ),
+          icon: const Icon(Icons.search),
+          tooltip: appLocalizations.readerSearch,
           onPressed: isEnabled ? () => _onPressed(context) : null,
         );
       },

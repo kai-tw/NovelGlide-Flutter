@@ -11,6 +11,12 @@ class _State extends State<ReaderNavBookmarkButton> {
   CommonButtonStateCode _stateCode = CommonButtonStateCode.disabled;
 
   @override
+  void initState() {
+    super.initState();
+    _resetState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
     final isIdle = _stateCode == CommonButtonStateCode.idle;
@@ -59,11 +65,10 @@ class _State extends State<ReaderNavBookmarkButton> {
 
   void _resetState() {
     final readerState = BlocProvider.of<ReaderCubit>(context).state;
-    final isAutoSave = readerState.readerSettings.autoSave;
 
     if (readerState.code.isLoaded &&
         readerState.bookmarkData?.startCfi != readerState.startCfi &&
-        !isAutoSave &&
+        !readerState.readerSettings.autoSave &&
         readerState.ttsState.isStopped) {
       setState(() => _stateCode = CommonButtonStateCode.idle);
     } else {

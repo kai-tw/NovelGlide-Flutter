@@ -16,11 +16,10 @@ import '../../../data_model/reader_settings_data.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/reader_loading_state_code.dart';
 import '../../../enum/reader_navigation_state_code.dart';
-import '../../../enum/tts_service_state.dart';
 import '../../../repository/book_repository.dart';
 import '../../../repository/bookmark_repository.dart';
 import '../../../repository/cache_repository.dart';
-import '../../../services/tts_service.dart';
+import '../../../services/tts/tts_service.dart';
 import '../../../utils/css_utils.dart';
 import '../../../utils/int_utils.dart';
 
@@ -207,8 +206,8 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// TTS
   /// *************************************************************************
 
-  void _onTtsStateChanged(TtsServiceState state) {
-    if (!isClosed) emit(this.state.copyWith(ttsState: state));
+  void _onTtsStateChanged(TtsServiceState ttsState) {
+    if (!isClosed) emit(state.copyWith(ttsState: ttsState));
   }
 
   /// *************************************************************************

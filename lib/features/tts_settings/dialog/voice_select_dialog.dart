@@ -1,9 +1,9 @@
 part of '../tts_settings.dart';
 
-class _LanguageSelectDialog extends StatelessWidget {
-  final List<String> languageCodeList;
+class _VoiceSelectDialog extends StatelessWidget {
+  final List<TtsVoiceData> voiceList;
 
-  const _LanguageSelectDialog({required this.languageCodeList});
+  const _VoiceSelectDialog({required this.voiceList});
 
   @override
   Widget build(BuildContext context) {
@@ -14,23 +14,24 @@ class _LanguageSelectDialog extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              appLocalizations.ttsSettingsSelectLanguage,
+              appLocalizations.ttsSettingsSelectVoice,
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: languageCodeList.length,
+              itemCount: voiceList.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(
-                    LanguageCodeUtils.getName(
+                  title: Text(voiceList[index].name),
+                  subtitle: Text(
+                    TtsUtils.getNameFromLanguageCode(
                       context,
-                      languageCodeList[index],
+                      voiceList[index].locale,
                     ),
                   ),
                   onTap: () {
-                    Navigator.of(context).pop(languageCodeList[index]);
+                    Navigator.of(context).pop(voiceList[index]);
                   },
                 );
               },

@@ -11,12 +11,20 @@ class _DemoSection extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
       child: Column(
         children: [
-          TextField(
-            controller: cubit.controller,
-            decoration: InputDecoration(
-              labelText: appLocalizations.ttsSettingsTypeHere,
-            ),
-          ),
+          BlocBuilder<TtsSettingsCubit, TtsSettingsState>(
+              buildWhen: (previous, current) =>
+                  previous.isTextEmpty != current.isTextEmpty,
+              builder: (context, state) {
+                return TextField(
+                  controller: cubit.controller,
+                  decoration: InputDecoration(
+                    labelText: appLocalizations.ttsSettingsTypeHere,
+                    errorText: state.isTextEmpty
+                        ? appLocalizations.ttsSettingsTypeSomeWords
+                        : null,
+                  ),
+                );
+              }),
           BlocBuilder<TtsSettingsCubit, TtsSettingsState>(
             buildWhen: (previous, current) =>
                 previous.ttsState != current.ttsState,

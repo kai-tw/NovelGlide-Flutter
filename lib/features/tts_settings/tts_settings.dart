@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../enum/tts_service_state.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../../utils/language_code_utils.dart';
+import '../../services/tts/tts_service.dart';
 import '../common_components/common_back_button.dart';
 import 'cubit/tts_settings_cubit.dart';
 
-part 'dialog/language_select_dialog.dart';
+part 'dialog/voice_select_dialog.dart';
 part 'widgets/demo_section.dart';
 part 'widgets/slider.dart';
 
@@ -45,30 +44,32 @@ class _PageScaffold extends StatelessWidget {
               ),
               child: ListTile(
                 leading: const Icon(Icons.language),
-                title: Text(appLocalizations.ttsSettingsSelectLanguage),
+                title: Text(appLocalizations.ttsSettingsSelectVoice),
                 subtitle: BlocBuilder<TtsSettingsCubit, TtsSettingsState>(
                   buildWhen: (previous, current) =>
                       previous.ttsState != current.ttsState ||
-                      previous.languageCode != current.languageCode,
+                      previous.voiceData != current.voiceData,
                   builder: (context, state) {
                     return Text(
-                      LanguageCodeUtils.getName(
-                        context,
-                        state.languageCode,
-                      ),
+                      state.voiceData?.locale == null
+                          ? appLocalizations.generalDefault
+                          : TtsUtils.getNameFromLanguageCode(
+                              context,
+                              state.voiceData!.locale,
+                            ),
                     );
                   },
                 ),
                 onTap: () async {
                   if (cubit.state.ttsState.isStopped) {
-                    final languageCode = await showDialog<String>(
+                    final voiceData = await showDialog<TtsVoiceData>(
                       context: context,
-                      builder: (_) => _LanguageSelectDialog(
-                        languageCodeList: cubit.state.languageList,
+                      builder: (_) => _VoiceSelectDialog(
+                        voiceList: cubit.state.voiceList,
                       ),
                     );
-                    if (languageCode != null) {
-                      cubit.setLanguageCode(languageCode);
+                    if (voiceData != null) {
+                      cubit.setVoiceData(voiceData);
                     }
                   }
                 },

@@ -1,13 +1,20 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../preference_keys/preference_keys.dart';
+import '../../generated/i18n/app_localizations.dart';
+import '../../preference_keys/preference_keys.dart';
+
+part 'tts_service_state.dart';
+part 'tts_utils.dart';
+part 'tts_voice_data.dart';
 
 class TtsService extends FlutterTts {
   static const double defaultPitch = 1.0;
   static const double defaultVolume = 1.0;
   static const double defaultSpeedRate = 0.5;
-  static const String defaultLanguageCode = "en-US";
 
   late final SharedPreferences prefs;
   String? _pausedText;
@@ -15,12 +22,12 @@ class TtsService extends FlutterTts {
   double? _pitch;
   double? _volume;
   double? _speechRate;
-  String? _languageCode;
+  TtsVoiceData? _voiceData;
 
   double get pitch => _pitch ?? defaultPitch;
   double get volume => _volume ?? defaultVolume;
   double get speechRate => _speechRate ?? defaultSpeedRate;
-  String get languageCode => _languageCode ?? defaultLanguageCode;
+  TtsVoiceData? get voiceData => _voiceData;
 
   set pitch(double value) {
     _pitch = value;
@@ -40,11 +47,15 @@ class TtsService extends FlutterTts {
     setSpeechRate(value);
   }
 
-  set languageCode(String value) {
-    _languageCode = value;
-    prefs.setString(PreferenceKeys.tts.languageCode, value);
-    print(value);
-    setLanguage(value);
+  set voiceData(TtsVoiceData? value) {
+    _voiceData = value;
+    if (value == null) {
+      prefs.remove(PreferenceKeys.tts.voiceData);
+      clearVoice();
+    } else {
+      prefs.setString(PreferenceKeys.tts.voiceData, value.toJson());
+      setVoice(value.toMap());
+    }
   }
 
   factory TtsService({void Function()? onReady}) {
@@ -65,11 +76,18 @@ class TtsService extends FlutterTts {
     _pitch = prefs.getDouble(PreferenceKeys.tts.pitch);
     _volume = prefs.getDouble(PreferenceKeys.tts.volume);
     _speechRate = prefs.getDouble(PreferenceKeys.tts.speedRate);
-    _languageCode = prefs.getString(PreferenceKeys.tts.languageCode);
+
     await setPitch(pitch);
     await setVolume(volume);
     await setSpeechRate(speechRate);
-    await setLanguage(languageCode);
+
+    final voiceData = prefs.getString(PreferenceKeys.tts.voiceData);
+    _voiceData = voiceData == null ? null : TtsVoiceData.fromJson(voiceData);
+    if (_voiceData == null) {
+      clearVoice();
+    } else {
+      await setVoice(_voiceData!.toMap());
+    }
   }
 
   @override
@@ -89,34 +107,29 @@ class TtsService extends FlutterTts {
 
   @override
   Future<void> stop() async {
-    await super.stop();
     _pausedText = null;
     _pausedStartOffset = null;
     cancelHandler?.call();
+    await super.stop();
   }
 
-  void reset() async {
+  void reset() {
     pitch = defaultPitch;
     volume = defaultVolume;
     speechRate = defaultSpeedRate;
-    languageCode = defaultLanguageCode;
+    voiceData = null;
   }
 
-  Future<List<String>> getDataList() async {
-    List<String> languageList =
-        (await getLanguages).map<String>((e) => e.toString()).toList();
+  Future<List<TtsVoiceData>> get voiceList async {
+    List<TtsVoiceData> voices = (await getVoices).map<TtsVoiceData>((cur) {
+      return TtsVoiceData(
+        name: cur['name'],
+        locale: cur['locale'],
+      );
+    }).toList();
 
-    final availableList =
-        (await Future.wait(languageList.map((e) => isLanguageAvailable(e))))
-            .map((e) => e as bool)
-            .toList();
+    voices.sort((a, b) => a.locale.compareTo(b.locale));
 
-    languageList = languageList
-        .where((e) => availableList[languageList.indexOf(e)])
-        .toList();
-
-    languageList.sort();
-
-    return languageList;
+    return voices;
   }
 }

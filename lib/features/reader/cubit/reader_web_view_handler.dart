@@ -42,7 +42,6 @@ class ReaderWebViewHandler {
   void receive(JavaScriptMessage message) {
     Map<String, dynamic> data = jsonDecode(message.message);
     assert(data['route'] is String);
-    print('Received: ${data['route']} ${data['data']}');
     _channelMap[data['route']]?.call(data['data']);
   }
 

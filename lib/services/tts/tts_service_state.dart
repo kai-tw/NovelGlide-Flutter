@@ -1,3 +1,5 @@
+part of 'tts_service.dart';
+
 enum TtsServiceState {
   initial,
   playing,

@@ -5,6 +5,7 @@ class ReaderTTSHandler {
   final ReaderWebViewHandler webViewHandler;
   final void Function(TtsServiceState state) onTtsStateChanged;
   bool isPaused = false;
+  bool isCanceled = false;
 
   factory ReaderTTSHandler({
     required ReaderWebViewHandler webViewHandler,
@@ -47,6 +48,7 @@ class ReaderTTSHandler {
   /// TTS is playing
   void _onPlaying() {
     isPaused = false;
+    isCanceled = false;
     onTtsStateChanged(TtsServiceState.playing);
   }
 
@@ -58,6 +60,10 @@ class ReaderTTSHandler {
 
   /// TTS is completed
   void _onComplete() {
+    if (isCanceled) {
+      isCanceled = false;
+      return;
+    }
     isPaused = false;
     webViewHandler.send('ttsNext');
   }
@@ -65,6 +71,7 @@ class ReaderTTSHandler {
   /// TTS is cancelled
   void _onCancel() {
     isPaused = false;
+    isCanceled = true;
     onTtsStateChanged(TtsServiceState.stopped);
   }
 

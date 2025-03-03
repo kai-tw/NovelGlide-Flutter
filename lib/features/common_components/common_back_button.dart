@@ -22,10 +22,8 @@ class CommonBackButton extends StatelessWidget {
     return IconButton(
       onPressed: onPressed ?? () => Navigator.of(context).pop(popValue),
       style: style,
-      icon: Icon(
-        iconData,
-        semanticLabel: appLocalizations.accessibilityBackButton,
-      ),
+      icon: Icon(iconData),
+      tooltip: appLocalizations.accessibilityBackButton,
     );
   }
 }

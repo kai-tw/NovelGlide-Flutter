@@ -2,8 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../enum/tts_service_state.dart';
-import '../../../services/tts_service.dart';
+import '../../../services/tts/tts_service.dart';
 
 part 'tts_settings_state.dart';
 
@@ -26,15 +25,15 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
     _ttsService.setContinueHandler(_onSpeakContinue);
     _ttsService.setErrorHandler(_onSpeakEnd);
 
-    final dataList = await _ttsService.getDataList();
+    final dataList = await _ttsService.voiceList;
     if (!isClosed) {
       emit(state.copyWith(
         ttsState: TtsServiceState.stopped,
-        languageList: dataList,
+        voiceList: dataList,
         pitch: _ttsService.pitch,
         volume: _ttsService.volume,
         speechRate: _ttsService.speechRate,
-        languageCode: _ttsService.languageCode,
+        voiceData: _ttsService.voiceData,
       ));
     }
   }
@@ -44,12 +43,17 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
       case TtsServiceState.paused:
         await _ttsService.resume();
         break;
+
       case TtsServiceState.stopped:
         final text = controller.text;
+
+        emit(state.copyWith(isTextEmpty: text.isEmpty));
+
         if (text.isNotEmpty) {
           await _ttsService.speak(text);
         }
         break;
+
       default:
     }
   }
@@ -68,7 +72,8 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
       pitch: _ttsService.pitch,
       volume: _ttsService.volume,
       speechRate: _ttsService.speechRate,
-      languageCode: _ttsService.languageCode,
+      voiceData: _ttsService.voiceData,
+      isVoiceNull: true,
     ));
   }
 
@@ -103,10 +108,10 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
     }
   }
 
-  void setLanguageCode(String languageCode) {
+  void setVoiceData(TtsVoiceData voiceData) {
     if (isClosed) return;
-    emit(state.copyWith(languageCode: languageCode));
-    _ttsService.languageCode = languageCode;
+    emit(state.copyWith(voiceData: voiceData));
+    _ttsService.voiceData = voiceData;
   }
 
   void _onSpeakStart() {

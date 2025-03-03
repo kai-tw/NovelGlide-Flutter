@@ -27,10 +27,8 @@ class _FloatingActionButton extends StatelessWidget {
                   }
                 });
               },
-              child: Icon(
-                Icons.add,
-                semanticLabel: appLocalizations.accessibilityAddBookButton,
-              ),
+              tooltip: appLocalizations.accessibilityAddBookButton,
+              child: const Icon(Icons.add),
             );
             break;
 
@@ -47,10 +45,8 @@ class _FloatingActionButton extends StatelessWidget {
                   }
                 });
               },
-              child: Icon(
-                Icons.add,
-                semanticLabel: appLocalizations.collectionAddBtn,
-              ),
+              tooltip: appLocalizations.collectionAddBtn,
+              child: const Icon(Icons.add),
             );
             break;
 
