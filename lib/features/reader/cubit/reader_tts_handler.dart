@@ -101,6 +101,7 @@ class ReaderTTSHandler {
   /// Stop TTS
   void stopButtonPressed() {
     _ttsService.stop();
+    webViewHandler.send('ttsStop');
   }
 
   /// Messages
