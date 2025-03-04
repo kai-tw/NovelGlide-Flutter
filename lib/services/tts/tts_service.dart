@@ -8,7 +8,6 @@ import '../../generated/i18n/app_localizations.dart';
 import '../../preference_keys/preference_keys.dart';
 
 part 'tts_service_state.dart';
-part 'tts_utils.dart';
 part 'tts_voice_data.dart';
 
 class TtsService extends FlutterTts {

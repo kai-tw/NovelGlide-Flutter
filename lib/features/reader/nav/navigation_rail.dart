@@ -4,8 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../enum/reader_navigation_state_code.dart';
 import '../cubit/reader_cubit.dart';
 import '../tts/reader_tts_close_button.dart';
-import '../tts/reader_tts_pause_button.dart';
-import '../tts/reader_tts_play_button.dart';
+import '../tts/reader_tts_play_pause_button.dart';
 import '../tts/reader_tts_settings_button.dart';
 import '../tts/reader_tts_stop_button.dart';
 import 'default/reader_default_navigation.dart';
@@ -26,8 +25,7 @@ class ReaderNavigationRail extends StatelessWidget {
                 children: [
                   ReaderTtsSettingsButton(),
                   ReaderTtsCloseButton(),
-                  ReaderTtsPlayButton(),
-                  ReaderTtsPauseButton(),
+                  ReaderTtsPlayPauseButton(),
                   ReaderTtsStopButton(),
                 ],
               );

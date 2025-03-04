@@ -9,6 +9,7 @@ import 'cubit/tts_settings_cubit.dart';
 part 'dialog/voice_select_dialog.dart';
 part 'widgets/demo_section.dart';
 part 'widgets/slider.dart';
+part 'widgets/voice_select_tile.dart';
 
 class TtsSettings extends StatelessWidget {
   const TtsSettings({super.key});
@@ -38,43 +39,7 @@ class _PageScaffold extends StatelessWidget {
         child: Column(
           children: [
             const _DemoSection(),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 8.0,
-              ),
-              child: ListTile(
-                leading: const Icon(Icons.language),
-                title: Text(appLocalizations.ttsSettingsSelectVoice),
-                subtitle: BlocBuilder<TtsSettingsCubit, TtsSettingsState>(
-                  buildWhen: (previous, current) =>
-                      previous.ttsState != current.ttsState ||
-                      previous.voiceData != current.voiceData,
-                  builder: (context, state) {
-                    return Text(
-                      state.voiceData?.locale == null
-                          ? appLocalizations.generalDefault
-                          : TtsUtils.getNameFromLanguageCode(
-                              context,
-                              state.voiceData!.locale,
-                            ),
-                    );
-                  },
-                ),
-                onTap: () async {
-                  if (cubit.state.ttsState.isStopped) {
-                    final voiceData = await showDialog<TtsVoiceData>(
-                      context: context,
-                      builder: (_) => _VoiceSelectDialog(
-                        voiceList: cubit.state.voiceList,
-                      ),
-                    );
-                    if (voiceData != null) {
-                      cubit.setVoiceData(voiceData);
-                    }
-                  }
-                },
-              ),
-            ),
+            const _VoiceSelectTile(),
             _Slider(
               title: appLocalizations.ttsSettingsPitch,
               buildWhen: (previous, current) =>

@@ -35,6 +35,7 @@ class ReaderTTSHandler {
   /// TTS service is ready
   void _onReady() {
     webViewHandler.register('ttsPlay', _ttsPlay);
+    webViewHandler.register('ttsStop', _ttsStop);
     webViewHandler.register('ttsEnd', _ttsEnd);
     onTtsStateChanged(TtsServiceState.stopped);
 
@@ -109,8 +110,14 @@ class ReaderTTSHandler {
     _ttsService.speak(data as String);
   }
 
+  /// Stop TTS
+  void _ttsStop(_) {
+    _ttsService.stop();
+  }
+
   /// Terminate TTS
-  void _ttsEnd(dynamic data) {
+  void _ttsEnd(_) {
+    _ttsService.stop();
     _onCancel();
   }
 
