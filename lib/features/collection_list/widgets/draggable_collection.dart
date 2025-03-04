@@ -20,7 +20,7 @@ class _DraggableCollection extends StatelessWidget {
 
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(appLocalizations.deleteBookmarkSuccessfully),
+              content: Text(appLocalizations.deleteCollectionSuccessfully),
             ),
           );
         },
