@@ -7,6 +7,7 @@ class _PopupMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton(
       icon: const Icon(Icons.more_vert_rounded),
+      clipBehavior: Clip.hardEdge,
       itemBuilder: _itemBuilder,
     );
   }
