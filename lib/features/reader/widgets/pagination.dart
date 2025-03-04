@@ -22,7 +22,8 @@ class _Pagination extends StatelessWidget {
 
           case ReaderSettingsPageNumType.percentage:
             final percentage =
-                state.chapterCurrentPage / state.chapterTotalPage;
+                (state.chapterCurrentPage / state.chapterTotalPage * 100)
+                    .clamp(0, 100);
             return Text('${percentage.toStringAsFixed(1)}%');
 
           case ReaderSettingsPageNumType.progressBar:
