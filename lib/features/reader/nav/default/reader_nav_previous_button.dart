@@ -15,7 +15,7 @@ class ReaderNavPreviousButton extends StatelessWidget {
         final isEnabled = state.code.isLoaded && state.ttsState.isStopped;
         return IconButton(
           icon: const Icon(Icons.arrow_back_ios_rounded),
-          tooltip: appLocalizations.readerPreviousChapter,
+          tooltip: appLocalizations.readerPreviousPage,
           onPressed: isEnabled ? cubit.previousPage : null,
         );
       },

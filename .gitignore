@@ -51,6 +51,6 @@ app.*.map.json
 app_untranslated.txt
 
 # Project specific
-assets/renderer/*
+assets/renderer/**
 /lib/generated/
-/android/app/.cxx
+/android/app/.cxx/**
