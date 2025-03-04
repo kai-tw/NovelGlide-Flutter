@@ -31,8 +31,10 @@ class _SettingsResetButtonState extends State<_SettingsResetButton> {
         icon: Icon(iconData),
         label: Text(text),
         style: FilledButton.styleFrom(
+          iconColor: foregroundColor,
           backgroundColor: backgroundColor,
           foregroundColor: foregroundColor,
+          disabledIconColor: foregroundColor,
           disabledBackgroundColor: backgroundColor,
           disabledForegroundColor: foregroundColor,
         ),
