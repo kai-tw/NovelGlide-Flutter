@@ -16,16 +16,18 @@ class _SwitchListTile extends StatelessWidget {
           title: Text(appLocalizations.backupManagerGoogleDrive),
           secondary: const Icon(Icons.cloud_rounded),
           value: state.code == LoadingStateCode.loaded,
-          onChanged: (value) async {
-            try {
-              await cubit.setEnabled(value);
-              cubit.refresh();
-            } catch (e) {
-              if (context.mounted) {
-                _errorHandler(context, e);
-              }
-            }
-          },
+          onChanged: state.code != LoadingStateCode.loading
+              ? (value) async {
+                  try {
+                    await cubit.setEnabled(value);
+                    cubit.refresh();
+                  } catch (e) {
+                    if (context.mounted) {
+                      _errorHandler(context, e);
+                    }
+                  }
+                }
+              : null,
         );
       },
     );
