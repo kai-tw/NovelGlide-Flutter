@@ -56,7 +56,10 @@ android {
         applicationId "com.kai_wu.novelglide"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        // flutter.minSdkVersion = 21
+//        minSdkVersion flutter.minSdkVersion
+        // AdMob requires a minimum SDK version of 23.
+        minSdkVersion 23
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

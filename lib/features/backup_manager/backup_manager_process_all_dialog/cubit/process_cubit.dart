@@ -16,7 +16,6 @@ part 'target_type.dart';
 part 'task_type.dart';
 
 class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
-  final _driveApi = GoogleDriveApi.instance;
   final String libraryId;
   final String collectionId;
   final String bookmarkId;
@@ -113,10 +112,11 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
 
     // Upload the zip file
     emit(state.copyWith(libraryStep: BackupManagerProcessStepCode.upload));
-    await _driveApi.uploadFile('appDataFolder', zipFile);
+    await GoogleDriveApi.uploadFile('appDataFolder', zipFile);
     tempFolder.deleteSync(recursive: true);
 
-    final result = await _driveApi.fileExists(BackupUtils.libraryArchiveName);
+    final result =
+        await GoogleDriveApi.fileExists(BackupUtils.libraryArchiveName);
     emit(state.copyWith(
       libraryStep: result
           ? BackupManagerProcessStepCode.done
@@ -131,10 +131,11 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
       bookmarkStep: BackupManagerProcessStepCode.upload,
     ));
     final bookmarkFile = BookmarkRepository.jsonFile;
-    await _driveApi.uploadFile('appDataFolder', bookmarkFile);
+    await GoogleDriveApi.uploadFile('appDataFolder', bookmarkFile);
 
     // Emit the result
-    final result = await _driveApi.fileExists(BookmarkRepository.jsonFileName);
+    final result =
+        await GoogleDriveApi.fileExists(BookmarkRepository.jsonFileName);
     emit(state.copyWith(
       bookmarkStep: result
           ? BackupManagerProcessStepCode.done
@@ -148,10 +149,10 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
       collectionStep: BackupManagerProcessStepCode.upload,
     ));
     final collectionFile = CollectionRepository.jsonFile;
-    await _driveApi.uploadFile('appDataFolder', collectionFile);
+    await GoogleDriveApi.uploadFile('appDataFolder', collectionFile);
 
     final result =
-        await _driveApi.fileExists(CollectionRepository.jsonFileName);
+        await GoogleDriveApi.fileExists(CollectionRepository.jsonFileName);
     emit(state.copyWith(
       collectionStep: result
           ? BackupManagerProcessStepCode.done
@@ -172,9 +173,9 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
       isLibraryRunning: true,
       libraryStep: BackupManagerProcessStepCode.delete,
     ));
-    await _driveApi.deleteFile(libraryId);
+    await GoogleDriveApi.deleteFile(libraryId);
     final result =
-        !(await _driveApi.fileExists(BackupUtils.libraryArchiveName));
+        !(await GoogleDriveApi.fileExists(BackupUtils.libraryArchiveName));
     emit(state.copyWith(
       libraryStep: result
           ? BackupManagerProcessStepCode.done
@@ -187,9 +188,9 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
       isBookmarkRunning: true,
       bookmarkStep: BackupManagerProcessStepCode.delete,
     ));
-    await _driveApi.deleteFile(bookmarkId);
+    await GoogleDriveApi.deleteFile(bookmarkId);
     final result =
-        !(await _driveApi.fileExists(BookmarkRepository.jsonFileName));
+        !(await GoogleDriveApi.fileExists(BookmarkRepository.jsonFileName));
     emit(state.copyWith(
       bookmarkStep: result
           ? BackupManagerProcessStepCode.done
@@ -202,9 +203,9 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
       isCollectionRunning: true,
       collectionStep: BackupManagerProcessStepCode.delete,
     ));
-    await _driveApi.deleteFile(collectionId);
+    await GoogleDriveApi.deleteFile(collectionId);
     final result =
-        !(await _driveApi.fileExists(CollectionRepository.jsonFileName));
+        !(await GoogleDriveApi.fileExists(CollectionRepository.jsonFileName));
     emit(state.copyWith(
       collectionStep: result
           ? BackupManagerProcessStepCode.done
@@ -236,7 +237,7 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
     )..createSync();
 
     // Download the zip file
-    await _driveApi.downloadFile(
+    await GoogleDriveApi.downloadFile(
       libraryId,
       zipFile,
       onDownload: (downloaded, total) {
@@ -269,7 +270,7 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
       isBookmarkRunning: true,
       bookmarkStep: BackupManagerProcessStepCode.download,
     ));
-    await _driveApi.downloadFile(bookmarkId, BookmarkRepository.jsonFile);
+    await GoogleDriveApi.downloadFile(bookmarkId, BookmarkRepository.jsonFile);
     emit(state.copyWith(bookmarkStep: BackupManagerProcessStepCode.done));
   }
 
@@ -278,7 +279,8 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
       isCollectionRunning: true,
       collectionStep: BackupManagerProcessStepCode.download,
     ));
-    await _driveApi.downloadFile(collectionId, CollectionRepository.jsonFile);
+    await GoogleDriveApi.downloadFile(
+        collectionId, CollectionRepository.jsonFile);
     emit(state.copyWith(collectionStep: BackupManagerProcessStepCode.done));
   }
 }

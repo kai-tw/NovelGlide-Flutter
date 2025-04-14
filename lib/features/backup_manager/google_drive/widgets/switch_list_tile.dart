@@ -16,24 +16,38 @@ class _SwitchListTile extends StatelessWidget {
           title: Text(appLocalizations.backupManagerGoogleDrive),
           secondary: const Icon(Icons.cloud_rounded),
           value: state.code == LoadingStateCode.loaded,
-          onChanged: (value) {
-            if (state.code == LoadingStateCode.loading) {
-              return;
-            }
-
-            cubit.setEnabled(value).then((_) {
+          onChanged: (value) async {
+            try {
+              await cubit.setEnabled(value);
               cubit.refresh();
-            }).catchError((err) {
+            } catch (e) {
               if (context.mounted) {
-                showDialog(
-                  context: context,
-                  builder: (context) => CommonErrorDialog(
-                    content: err.toString(),
-                  ),
-                );
+                _errorHandler(context, e);
               }
-            });
+            }
           },
+        );
+      },
+    );
+  }
+
+  void _errorHandler(BuildContext context, Object e) {
+    final appLocalizations = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (context) {
+        if (e is GoogleDriveSignInException) {
+          return CommonErrorDialog(
+            content: appLocalizations.exceptionGoogleDriveSignIn,
+          );
+        }
+        if (e is GoogleDrivePermissionDeniedException) {
+          return CommonErrorDialog(
+            content: appLocalizations.exceptionGoogleDrivePermissionDenied,
+          );
+        }
+        return CommonErrorDialog(
+          content: appLocalizations.exceptionUnknownError,
         );
       },
     );

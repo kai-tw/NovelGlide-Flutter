@@ -17,8 +17,6 @@ part 'backup_manager_google_drive_state.dart';
 class BackupManagerGoogleDriveCubit
     extends Cubit<BackupManagerGoogleDriveState> {
   final _logger = Logger();
-  final _drivePrefKey = PreferenceKeys.backupManager.isBackupToGoogleDrive;
-  final _driveApi = GoogleDriveApi.instance;
 
   factory BackupManagerGoogleDriveCubit() {
     const initialState = BackupManagerGoogleDriveState();
@@ -32,22 +30,25 @@ class BackupManagerGoogleDriveCubit
   /// Refreshes the backup state by checking preferences and updating metadata.
   Future<void> refresh() async {
     emit(const BackupManagerGoogleDriveState(code: LoadingStateCode.loading));
+    final key = PreferenceKeys.backupManager.isBackupToGoogleDrive;
     final prefs = await SharedPreferences.getInstance();
-    final isEnabled = prefs.getBool(_drivePrefKey) ?? false;
-    final isReady = await _isApiReady(isEnabled);
 
-    if (isReady) {
+    setEnabled(prefs.getBool(key) ?? false);
+
+    final isSignedIn = await GoogleDriveApi.isSignedIn();
+
+    if (isSignedIn) {
       final fileNameList = [
         BackupUtils.libraryArchiveName,
         CollectionRepository.jsonFileName,
         BookmarkRepository.jsonFileName,
       ];
       final fileIdList = await Future.wait<String?>(
-        fileNameList.map((fileName) => _driveApi.getFileId(fileName)),
+        fileNameList.map((fileName) => GoogleDriveApi.getFileId(fileName)),
       );
       final timeList = (await Future.wait<drive.File>(
         fileIdList.whereType<String>().map((fileId) =>
-            _driveApi.getMetadataById(fileId, field: 'modifiedTime')),
+            GoogleDriveApi.getMetadataById(fileId, field: 'modifiedTime')),
       ))
           .map((e) => e.modifiedTime)
           .whereType<DateTime>()
@@ -72,18 +73,17 @@ class BackupManagerGoogleDriveCubit
 
   /// Sets the backup enabled state and manages sign-in status.
   Future<void> setEnabled(bool isEnabled) async {
+    final key = PreferenceKeys.backupManager.isBackupToGoogleDrive;
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_drivePrefKey, await _isApiReady(isEnabled));
-  }
-
-  /// Checks if the Google Drive is ready to be used.
-  Future<bool> _isApiReady(bool isEnabled) async {
-    final isSignedIn = await _driveApi.isSignedIn();
+    final isSignedIn = await GoogleDriveApi.isSignedIn();
 
     if (isEnabled != isSignedIn) {
-      isEnabled ? await _driveApi.signIn() : await _driveApi.signOut();
+      isEnabled
+          ? await GoogleDriveApi.signIn()
+          : await GoogleDriveApi.signOut();
     }
-    return _driveApi.isSignedIn();
+
+    await prefs.setBool(key, await GoogleDriveApi.isSignedIn());
   }
 
   /// Creates a backup and uploads it to Google Drive.

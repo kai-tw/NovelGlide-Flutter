@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 
 import '../data_model/book_data.dart';
-import '../exceptions/file_exceptions.dart';
+import '../exceptions/exceptions.dart';
 import '../utils/epub_utils.dart';
 import '../utils/file_path.dart';
 import '../utils/file_utils.dart';

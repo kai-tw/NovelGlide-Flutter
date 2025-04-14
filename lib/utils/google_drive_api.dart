@@ -8,30 +8,24 @@ import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 
-import '../exceptions/exception_template.dart';
+import '../exceptions/exceptions.dart';
 import 'int_utils.dart';
 import 'mime_resolver.dart';
 
-/// A singleton class to interact with Google Drive API.
+/// Google Drive API.
 class GoogleDriveApi {
-  static GoogleDriveApi get instance => _instance;
-  static final GoogleDriveApi _instance = GoogleDriveApi._internal();
-  static final List<String> _scopes = [
+  GoogleDriveApi._();
+
+  static final _scopes = [
     drive.DriveApi.driveAppdataScope,
     drive.DriveApi.driveFileScope,
   ];
 
-  static final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: _scopes);
-  drive.DriveApi? _driveApi;
-
-  /// Factory constructor to return the singleton instance.
-  factory GoogleDriveApi() => _instance;
-
-  /// Internal constructor for singleton pattern.
-  GoogleDriveApi._internal();
+  static final _googleSignIn = GoogleSignIn(scopes: _scopes);
+  static drive.DriveApi? _driveApi;
 
   /// Signs in the user and initializes the Drive API client.
-  Future<void> signIn() async {
+  static Future<void> signIn() async {
     if (await _googleSignIn.signInSilently() == null &&
         await _googleSignIn.signIn() == null) {
       throw GoogleDriveSignInException();
@@ -51,54 +45,19 @@ class GoogleDriveApi {
   }
 
   /// Signs out the user and clears the Drive API client.
-  Future<void> signOut() async {
+  static Future<void> signOut() async {
     await _googleSignIn.signOut();
     _driveApi = null;
   }
 
   /// Checks if the user is signed in and the Drive API client is initialized.
-  Future<bool> isSignedIn() async =>
+  static Future<bool> isSignedIn() async =>
       await _googleSignIn.isSignedIn() && _driveApi != null;
 
-  /// Lists files in Google Drive with optional query parameters.
-  Future<drive.FileList> list({
-    String? corpora,
-    String? driveId,
-    bool? includeItemsFromAllDrives,
-    String? includeLabels,
-    String? includePermissionsForView,
-    bool? includeTeamDriveItems,
-    String? orderBy,
-    int? pageSize,
-    String? pageToken,
-    String? q,
-    String? spaces,
-    bool? supportsAllDrives,
-    bool? supportsTeamDrives,
-    String? teamDriveId,
-    String? $fields,
-  }) async {
-    return await _driveApi!.files.list(
-      corpora: corpora,
-      driveId: driveId,
-      includeItemsFromAllDrives: includeItemsFromAllDrives,
-      includeLabels: includeLabels,
-      includePermissionsForView: includePermissionsForView,
-      includeTeamDriveItems: includeTeamDriveItems,
-      orderBy: orderBy,
-      pageSize: pageSize,
-      pageToken: pageToken,
-      q: q,
-      spaces: spaces,
-      supportsAllDrives: supportsAllDrives,
-      supportsTeamDrives: supportsTeamDrives,
-      teamDriveId: teamDriveId,
-      $fields: $fields,
-    );
-  }
+  static drive.FilesResource get files => _driveApi!.files;
 
   /// Checks if the file exists in Google Drive.
-  Future<bool> fileExists(
+  static Future<bool> fileExists(
     String fileName, {
     String spaces = 'appDataFolder',
   }) async {
@@ -106,11 +65,11 @@ class GoogleDriveApi {
   }
 
   /// Retrieves the file ID for a given file name in the app data folder.
-  Future<String?> getFileId(
+  static Future<String?> getFileId(
     String fileName, {
     String spaces = 'appDataFolder',
   }) async {
-    final drive.FileList fileList = await _driveApi!.files.list(
+    final drive.FileList fileList = await files.list(
       spaces: spaces,
       q: "name = '$fileName'",
       pageSize: 1,
@@ -121,24 +80,25 @@ class GoogleDriveApi {
   }
 
   /// Retrieves metadata for a file by its ID.
-  Future<drive.File> getMetadataById(String fileId, {String? field}) async {
-    return await _driveApi!.files.get(fileId, $fields: field) as drive.File;
+  static Future<drive.File> getMetadataById(String fileId,
+      {String? field}) async {
+    return await files.get(fileId, $fields: field) as drive.File;
   }
 
   /// Copies a file to specified parent folders.
-  Future<void> copyFile(String fileId, List<String> parents) async {
+  static Future<void> copyFile(String fileId, List<String> parents) async {
     drive.File request = drive.File();
     request.parents = parents;
-    await _driveApi!.files.copy(request, fileId);
+    await files.copy(request, fileId);
   }
 
   /// Deletes a file by its ID.
-  Future<void> deleteFile(String fileId) async {
-    await _driveApi!.files.delete(fileId);
+  static Future<void> deleteFile(String fileId) async {
+    await files.delete(fileId);
   }
 
   /// Uploads a file to Google Drive, updating if it already exists.
-  Future<void> uploadFile(String spaces, File file) async {
+  static Future<void> uploadFile(String spaces, File file) async {
     final fileId = await getFileId(basename(file.path));
 
     final driveFile = drive.File();
@@ -148,15 +108,15 @@ class GoogleDriveApi {
     final media = drive.Media(file.openRead(), file.lengthSync());
 
     if (fileId != null) {
-      await _driveApi!.files.update(driveFile, fileId, uploadMedia: media);
+      await files.update(driveFile, fileId, uploadMedia: media);
     } else {
       driveFile.parents = [spaces];
-      await _driveApi!.files.create(driveFile, uploadMedia: media);
+      await files.create(driveFile, uploadMedia: media);
     }
   }
 
   /// Downloads a file from Google Drive and saves it locally.
-  Future<void> downloadFile(
+  static Future<void> downloadFile(
     String fileId,
     File saveFile, {
     void Function(int, int)? onDownload,
@@ -167,10 +127,10 @@ class GoogleDriveApi {
     final completer = Completer();
     List<int> buffer = [];
 
-    final fileStat = await instance.getMetadataById(fileId, field: 'size');
+    final fileStat = await getMetadataById(fileId, field: 'size');
     final fileSize = IntUtils.parse(fileStat.size);
 
-    drive.Media media = await instance._driveApi!.files.get(
+    drive.Media media = await files.get(
       fileId,
       downloadOptions: drive.DownloadOptions.fullMedia,
     ) as drive.Media;
@@ -194,17 +154,4 @@ class GoogleDriveApi {
     logger.i('Google Drive Api: Download File Complete.');
     logger.close();
   }
-}
-
-/// Exception thrown when Google Drive sign-in fails.
-class GoogleDriveSignInException extends ExceptionTemplate {
-  @override
-  final message = 'Google Drive sign-in failed. Please try again.';
-}
-
-/// Exception thrown when Google Drive permissions are denied.
-class GoogleDrivePermissionDeniedException implements ExceptionTemplate {
-  @override
-  final message =
-      'Google Drive permissions were denied. Please check your settings and try again.';
 }

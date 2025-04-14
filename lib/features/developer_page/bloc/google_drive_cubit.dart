@@ -5,25 +5,20 @@ class _GoogleDriveCubit extends Cubit<_GoogleDriveState> {
 
   Future<void> init() async {
     try {
-      await GoogleDriveApi.instance.signIn();
+      await GoogleDriveApi.signIn();
     } catch (e) {
-      switch (e.runtimeType) {
-        case GoogleDriveSignInException _:
-          emit(const _GoogleDriveState(
-            errorCode: _GoogleDriveErrorCode.signInError,
-          ));
-          break;
-
-        case GoogleDrivePermissionDeniedException _:
-          emit(const _GoogleDriveState(
-            errorCode: _GoogleDriveErrorCode.permissionDenied,
-          ));
-          break;
-
-        default:
-          emit(const _GoogleDriveState(
-            errorCode: _GoogleDriveErrorCode.unknownError,
-          ));
+      if (e is GoogleDriveSignInException) {
+        emit(const _GoogleDriveState(
+          errorCode: _GoogleDriveErrorCode.signInError,
+        ));
+      } else if (e is GoogleDrivePermissionDeniedException) {
+        emit(const _GoogleDriveState(
+          errorCode: _GoogleDriveErrorCode.permissionDenied,
+        ));
+      } else {
+        emit(const _GoogleDriveState(
+          errorCode: _GoogleDriveErrorCode.unknownError,
+        ));
       }
     }
     await refresh();
@@ -33,7 +28,7 @@ class _GoogleDriveCubit extends Cubit<_GoogleDriveState> {
     emit(const _GoogleDriveState(
       errorCode: _GoogleDriveErrorCode.unInitialized,
     ));
-    drive.FileList? fileList = await GoogleDriveApi.instance.list(
+    drive.FileList? fileList = await GoogleDriveApi.files.list(
       spaces: 'appDataFolder',
       orderBy: 'modifiedTime desc',
       $fields: 'files(name,createdTime,id,mimeType,modifiedTime)',
@@ -49,12 +44,12 @@ class _GoogleDriveCubit extends Cubit<_GoogleDriveState> {
   }
 
   Future<bool> deleteFile(String fileId) async {
-    await GoogleDriveApi.instance.deleteFile(fileId);
+    await GoogleDriveApi.deleteFile(fileId);
     return true;
   }
 
   Future<bool> copyToDrive(String fileId) async {
-    await GoogleDriveApi.instance.copyFile(fileId, ['root']);
+    await GoogleDriveApi.copyFile(fileId, ['root']);
     return true;
   }
 }

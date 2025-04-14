@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import '../exceptions/file_exceptions.dart';
+import '../exceptions/exceptions.dart';
 
 class JsonUtils {
   static Map<String, dynamic> fromFile(File file) {
