@@ -6,10 +6,9 @@ class _HelperText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<BookAddCubit>(context);
-    final allowedExtensions = cubit.allowedExtensions.join(', ');
+    final allowedExtensions = BookAddCubit.allowedExtensions.join(', ');
     return Padding(
-      padding: const EdgeInsets.only(bottom: 48.0),
+      padding: const EdgeInsets.only(bottom: 24.0),
       child: BlocBuilder<BookAddCubit, BookAddState>(
         buildWhen: (previous, current) => previous.file != current.file,
         builder: (context, state) {
@@ -17,13 +16,24 @@ class _HelperText extends StatelessWidget {
             Text('${appLocalizations.fileTypeHelperText} $allowedExtensions'),
           ];
 
-          if (!state.isEmpty && state.fileExists) {
-            children.add(
-              Text(
-                appLocalizations.addBookDuplicated,
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
-              ),
-            );
+          if (!state.isEmpty) {
+            if (state.fileExists) {
+              children.add(
+                Text(
+                  appLocalizations.addBookDuplicated,
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                ),
+              );
+            }
+
+            if (!state.isExtensionValid) {
+              children.add(
+                Text(
+                  appLocalizations.fileTypeForbidden,
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                ),
+              );
+            }
           }
 
           return Column(

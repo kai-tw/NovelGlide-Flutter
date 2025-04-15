@@ -12,21 +12,32 @@ class _SubmitButton extends StatelessWidget {
     return BlocBuilder<BookAddCubit, BookAddState>(
       buildWhen: (previous, current) => previous.file != current.file,
       builder: (context, state) {
-        return ElevatedButton.icon(
-          onPressed: state.isValid
-              ? () {
-                  BookRepository.add(cubit.state.filePath!);
-                  Navigator.of(context).pop(true);
-                }
-              : null,
-          icon: const Icon(Icons.send_rounded),
-          label: Text(appLocalizations.generalSubmit),
-          style: ElevatedButton.styleFrom(
-            iconColor: colorScheme.onPrimary,
-            foregroundColor: colorScheme.onPrimary,
-            backgroundColor: colorScheme.primary,
-          ),
-        );
+        if (state.isValid) {
+          return ElevatedButton.icon(
+            onPressed: () {
+              BookRepository.add(cubit.state.filePath!);
+              Navigator.of(context).pop(true);
+            },
+            icon: const Icon(Icons.send_rounded),
+            label: Text(appLocalizations.generalSubmit),
+            style: ElevatedButton.styleFrom(
+              iconColor: colorScheme.onPrimary,
+              foregroundColor: colorScheme.onPrimary,
+              backgroundColor: colorScheme.primary,
+            ),
+          );
+        } else {
+          return IconButton(
+            onPressed: null,
+            icon: const Icon(Icons.send_rounded),
+            tooltip: appLocalizations.generalSubmit,
+            style: ElevatedButton.styleFrom(
+              iconColor: colorScheme.onPrimary,
+              foregroundColor: colorScheme.onPrimary,
+              backgroundColor: colorScheme.primary,
+            ),
+          );
+        }
       },
     );
   }

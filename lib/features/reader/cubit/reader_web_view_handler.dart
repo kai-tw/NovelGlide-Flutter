@@ -64,18 +64,7 @@ class ReaderWebViewHandler {
 
   void goto(String cfi) => send('goto', cfi);
 
-  void sendThemeData(ThemeData themeData, ReaderSettingsData settings) {
-    send('setThemeData', {
-      "body": {
-        "color": CssUtils.convertColorToRgba(themeData.colorScheme.onSurface),
-        "font-size": "${settings.fontSize.toStringAsFixed(1)}px",
-        "line-height": settings.lineHeight.toStringAsFixed(1),
-      },
-      "a": {
-        "color": "inherit !important",
-      },
-    });
-  }
+  void sendThemeData(Map<String, dynamic> data) => send('setThemeData', data);
 
   void searchInWholeBook(String query) => send('searchInWholeBook', query);
 

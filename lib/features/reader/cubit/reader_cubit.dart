@@ -20,7 +20,6 @@ import '../../../repository/book_repository.dart';
 import '../../../repository/bookmark_repository.dart';
 import '../../../repository/cache_repository.dart';
 import '../../../services/tts/tts_service.dart';
-import '../../../utils/css_utils.dart';
 import '../../../utils/int_utils.dart';
 
 part 'reader_destination_type.dart';
@@ -116,7 +115,19 @@ class ReaderCubit extends Cubit<ReaderState> {
   void sendThemeData([ThemeData? newTheme]) {
     currentTheme = newTheme ?? currentTheme;
     if (state.code.isLoaded) {
-      webViewHandler.sendThemeData(currentTheme, state.readerSettings);
+      Map<String, dynamic> data = {
+        "body": {
+          "color": "inherit",
+          "font-size": "${state.readerSettings.fontSize.toStringAsFixed(1)}px",
+          "line-height": state.readerSettings.lineHeight.toStringAsFixed(1),
+          "background": "#ffffff",
+        },
+        "a": {
+          "color": "inherit",
+        },
+      };
+
+      webViewHandler.sendThemeData(data);
     }
   }
 
@@ -128,7 +139,6 @@ class ReaderCubit extends Cubit<ReaderState> {
     double? fontSize,
     double? lineHeight,
     bool? autoSave,
-    bool? gestureDetection,
     bool? isSmoothScroll,
     ReaderSettingsPageNumType? pageNumType,
   }) {
@@ -136,7 +146,6 @@ class ReaderCubit extends Cubit<ReaderState> {
       fontSize: fontSize,
       lineHeight: lineHeight,
       autoSave: autoSave,
-      gestureDetection: gestureDetection,
       isSmoothScroll: isSmoothScroll,
       pageNumType: pageNumType,
     );

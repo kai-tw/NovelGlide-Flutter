@@ -20,6 +20,7 @@ class _FloatingActionButton extends StatelessWidget {
               onPressed: () {
                 showDialog(
                   context: context,
+                  barrierDismissible: false,
                   builder: (context) => const BookAddDialog(),
                 ).then((isSuccess) {
                   if (isSuccess == true) {

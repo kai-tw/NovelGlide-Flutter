@@ -59,7 +59,6 @@ class ReaderSettingsData extends Equatable {
     double? fontSize,
     double? lineHeight,
     bool? autoSave,
-    bool? gestureDetection,
     bool? isSmoothScroll,
     ReaderSettingsPageNumType? pageNumType,
   }) {

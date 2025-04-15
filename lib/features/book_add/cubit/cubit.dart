@@ -10,7 +10,7 @@ part 'state.dart';
 
 /// Cubit to manage the state of adding a book.
 class BookAddCubit extends Cubit<BookAddState> {
-  final allowedExtensions = <String>['epub'];
+  static final allowedExtensions = ['epub'];
 
   BookAddCubit() : super(const BookAddState());
 
@@ -25,7 +25,7 @@ class BookAddCubit extends Cubit<BookAddState> {
     if (!isClosed) {
       emit(
         BookAddState(
-          file: path == null ? null : File(path),
+          file: path != null ? File(path) : null,
         ),
       );
     }
