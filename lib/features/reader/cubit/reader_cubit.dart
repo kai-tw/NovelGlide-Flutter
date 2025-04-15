@@ -20,6 +20,7 @@ import '../../../repository/book_repository.dart';
 import '../../../repository/bookmark_repository.dart';
 import '../../../repository/cache_repository.dart';
 import '../../../services/tts/tts_service.dart';
+import '../../../utils/css_utils.dart';
 import '../../../utils/int_utils.dart';
 
 part 'reader_destination_type.dart';
@@ -126,6 +127,13 @@ class ReaderCubit extends Cubit<ReaderState> {
           "color": "inherit",
         },
       };
+
+      if (state.readerSettings.isUsingThemeStyle) {
+        data["body"]["color"] =
+            CssUtils.convertColorToRgba(currentTheme.colorScheme.onSurface);
+        data["body"]["background"] =
+            CssUtils.convertColorToRgba(currentTheme.colorScheme.surface);
+      }
 
       webViewHandler.sendThemeData(data);
     }

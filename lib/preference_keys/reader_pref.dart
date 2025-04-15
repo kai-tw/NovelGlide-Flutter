@@ -3,6 +3,6 @@ class ReaderPref {
   final lineHeight = 'reader.lineHeight';
   final isAutoSaving = 'reader.autoSave';
   final isSmoothScroll = 'reader.isSmoothScroll';
-  final isOverwriteColor = 'reader.isOverwriteColor';
+  final isUsingThemeStyle = 'reader.isUsingThemeStyle';
   final pageNumType = 'reader.pageNumType';
 }
