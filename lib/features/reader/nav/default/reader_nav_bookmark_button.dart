@@ -24,7 +24,7 @@ class _State extends State<ReaderNavBookmarkButton> {
     final isSuccess = _stateCode == CommonButtonStateCode.success;
     return BlocListener<ReaderCubit, ReaderState>(
       listenWhen: (previous, current) =>
-          previous.readerSettings.autoSave != current.readerSettings.autoSave ||
+          previous.readerSettings.isAutoSaving != current.readerSettings.isAutoSaving ||
           previous.code != current.code ||
           previous.bookmarkData != current.bookmarkData ||
           previous.startCfi != current.startCfi ||
@@ -68,7 +68,7 @@ class _State extends State<ReaderNavBookmarkButton> {
 
     if (readerState.code.isLoaded &&
         readerState.bookmarkData?.startCfi != readerState.startCfi &&
-        !readerState.readerSettings.autoSave &&
+        !readerState.readerSettings.isAutoSaving &&
         readerState.ttsState.isStopped) {
       setState(() => _stateCode = CommonButtonStateCode.idle);
     } else {

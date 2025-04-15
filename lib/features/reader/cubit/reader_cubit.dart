@@ -145,7 +145,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     final settings = state.readerSettings.copyWith(
       fontSize: fontSize,
       lineHeight: lineHeight,
-      autoSave: autoSave,
+      isAutoSaving: autoSave,
       isSmoothScroll: isSmoothScroll,
       pageNumType: pageNumType,
     );
@@ -264,7 +264,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       chapterTotalPage: IntUtils.parse(jsonValue['chapterTotalPage']),
     ));
 
-    if (state.readerSettings.autoSave) {
+    if (state.readerSettings.isAutoSaving) {
       saveBookmark();
     }
   }

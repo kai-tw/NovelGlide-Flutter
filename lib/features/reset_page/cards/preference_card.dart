@@ -53,11 +53,7 @@ class _PreferenceCard extends StatelessWidget {
           ),
           _ListTile(
             onDelete: () async {
-              final prefs = await SharedPreferences.getInstance();
-              prefs.remove(PreferenceKeys.reader.autoSave);
-              prefs.remove(PreferenceKeys.reader.fontSize);
-              prefs.remove(PreferenceKeys.reader.gestureDetection);
-              prefs.remove(PreferenceKeys.reader.lineHeight);
+              await ReaderSettingsData().save();
             },
             iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetReader,

@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,25 +6,29 @@ import '../preference_keys/preference_keys.dart';
 /// Represents the settings for a reader, including font size, line height, and other preferences.
 class ReaderSettingsData extends Equatable {
   final double fontSize;
-  static const double defaultFontSize = 16.0;
-  static const double minFontSize = 12.0;
-  static const double maxFontSize = 32.0;
+  static const defaultFontSize = 16.0;
+  static const minFontSize = 12.0;
+  static const maxFontSize = 32.0;
 
   final double lineHeight;
-  static const double defaultLineHeight = 1.5;
-  static const double minLineHeight = 1.0;
-  static const double maxLineHeight = 3.0;
+  static const defaultLineHeight = 1.5;
+  static const minLineHeight = 1.0;
+  static const maxLineHeight = 3.0;
 
-  final bool autoSave;
+  final bool isAutoSaving;
+  static const defaultIsAutoSaving = false;
+
   final bool isSmoothScroll;
+  static const defaultIsSmoothScroll = false;
 
   final ReaderSettingsPageNumType pageNumType;
+  static const defaultPageNumType = ReaderSettingsPageNumType.number;
 
   @override
   List<Object?> get props => [
         fontSize,
         lineHeight,
-        autoSave,
+        isAutoSaving,
         isSmoothScroll,
         pageNumType,
       ];
@@ -33,9 +36,9 @@ class ReaderSettingsData extends Equatable {
   const ReaderSettingsData({
     this.fontSize = defaultFontSize,
     this.lineHeight = defaultLineHeight,
-    this.autoSave = false,
-    this.isSmoothScroll = false,
-    this.pageNumType = ReaderSettingsPageNumType.number,
+    this.isAutoSaving = defaultIsAutoSaving,
+    this.isSmoothScroll = defaultIsSmoothScroll,
+    this.pageNumType = defaultPageNumType,
   });
 
   /// Loads the reader settings from shared preferences.
@@ -46,11 +49,13 @@ class ReaderSettingsData extends Equatable {
           prefs.getDouble(PreferenceKeys.reader.fontSize) ?? defaultFontSize,
       lineHeight: prefs.getDouble(PreferenceKeys.reader.lineHeight) ??
           defaultLineHeight,
-      autoSave: prefs.getBool(PreferenceKeys.reader.autoSave) ?? false,
-      isSmoothScroll:
-          prefs.getBool(PreferenceKeys.reader.isSmoothScroll) ?? false,
-      pageNumType: ReaderSettingsPageNumType.fromString(
-          prefs.getString(PreferenceKeys.reader.pageNumType)),
+      isAutoSaving: prefs.getBool(PreferenceKeys.reader.isAutoSaving) ??
+          defaultIsAutoSaving,
+      isSmoothScroll: prefs.getBool(PreferenceKeys.reader.isSmoothScroll) ??
+          defaultIsSmoothScroll,
+      pageNumType: ReaderSettingsPageNumType.values[
+          prefs.getInt(PreferenceKeys.reader.pageNumType) ??
+              defaultPageNumType.index],
     );
   }
 
@@ -58,7 +63,7 @@ class ReaderSettingsData extends Equatable {
   ReaderSettingsData copyWith({
     double? fontSize,
     double? lineHeight,
-    bool? autoSave,
+    bool? isAutoSaving,
     bool? isSmoothScroll,
     ReaderSettingsPageNumType? pageNumType,
   }) {
@@ -66,7 +71,7 @@ class ReaderSettingsData extends Equatable {
       fontSize: (fontSize ?? this.fontSize).clamp(minFontSize, maxFontSize),
       lineHeight:
           (lineHeight ?? this.lineHeight).clamp(minLineHeight, maxLineHeight),
-      autoSave: autoSave ?? this.autoSave,
+      isAutoSaving: isAutoSaving ?? this.isAutoSaving,
       isSmoothScroll: isSmoothScroll ?? this.isSmoothScroll,
       pageNumType: pageNumType ?? this.pageNumType,
     );
@@ -77,27 +82,10 @@ class ReaderSettingsData extends Equatable {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setDouble(PreferenceKeys.reader.fontSize, fontSize);
     prefs.setDouble(PreferenceKeys.reader.lineHeight, lineHeight);
-    prefs.setBool(PreferenceKeys.reader.autoSave, autoSave);
+    prefs.setBool(PreferenceKeys.reader.isAutoSaving, isAutoSaving);
     prefs.setBool(PreferenceKeys.reader.isSmoothScroll, isSmoothScroll);
-    prefs.setString(PreferenceKeys.reader.pageNumType, pageNumType.toString());
+    prefs.setInt(PreferenceKeys.reader.pageNumType, pageNumType.index);
   }
 }
 
-enum ReaderSettingsPageNumType {
-  hidden,
-  number,
-  percentage,
-  progressBar;
-
-  static ReaderSettingsPageNumType fromString(
-    String? value, {
-    ReaderSettingsPageNumType defaultValue = number,
-  }) {
-    if (value == null) {
-      return defaultValue;
-    }
-    return ReaderSettingsPageNumType.values
-            .firstWhereOrNull((e) => e.toString() == value) ??
-        defaultValue;
-  }
-}
+enum ReaderSettingsPageNumType { hidden, number, percentage, progressBar }
