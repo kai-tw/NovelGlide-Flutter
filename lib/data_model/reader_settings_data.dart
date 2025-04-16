@@ -21,9 +21,6 @@ class ReaderSettingsData extends Equatable {
   final bool isSmoothScroll;
   static const defaultIsSmoothScroll = false;
 
-  final bool isUsingThemeStyle;
-  static const defaultIsUsingThemeStyle = false;
-
   final ReaderSettingsPageNumType pageNumType;
   static const defaultPageNumType = ReaderSettingsPageNumType.number;
 
@@ -33,7 +30,6 @@ class ReaderSettingsData extends Equatable {
         lineHeight,
         isAutoSaving,
         isSmoothScroll,
-        isUsingThemeStyle,
         pageNumType,
       ];
 
@@ -42,7 +38,6 @@ class ReaderSettingsData extends Equatable {
     this.lineHeight = defaultLineHeight,
     this.isAutoSaving = defaultIsAutoSaving,
     this.isSmoothScroll = defaultIsSmoothScroll,
-    this.isUsingThemeStyle = defaultIsUsingThemeStyle,
     this.pageNumType = defaultPageNumType,
   });
 
@@ -58,9 +53,6 @@ class ReaderSettingsData extends Equatable {
           defaultIsAutoSaving,
       isSmoothScroll: prefs.getBool(PreferenceKeys.reader.isSmoothScroll) ??
           defaultIsSmoothScroll,
-      isUsingThemeStyle:
-          prefs.getBool(PreferenceKeys.reader.isUsingThemeStyle) ??
-              defaultIsUsingThemeStyle,
       pageNumType: ReaderSettingsPageNumType.values[
           prefs.getInt(PreferenceKeys.reader.pageNumType) ??
               defaultPageNumType.index],
@@ -73,7 +65,6 @@ class ReaderSettingsData extends Equatable {
     double? lineHeight,
     bool? isAutoSaving,
     bool? isSmoothScroll,
-    bool? isUsingThemeStyle,
     ReaderSettingsPageNumType? pageNumType,
   }) {
     return ReaderSettingsData(
@@ -82,7 +73,6 @@ class ReaderSettingsData extends Equatable {
           (lineHeight ?? this.lineHeight).clamp(minLineHeight, maxLineHeight),
       isAutoSaving: isAutoSaving ?? this.isAutoSaving,
       isSmoothScroll: isSmoothScroll ?? this.isSmoothScroll,
-      isUsingThemeStyle: isUsingThemeStyle ?? this.isUsingThemeStyle,
       pageNumType: pageNumType ?? this.pageNumType,
     );
   }
@@ -94,7 +84,6 @@ class ReaderSettingsData extends Equatable {
     prefs.setDouble(PreferenceKeys.reader.lineHeight, lineHeight);
     prefs.setBool(PreferenceKeys.reader.isAutoSaving, isAutoSaving);
     prefs.setBool(PreferenceKeys.reader.isSmoothScroll, isSmoothScroll);
-    prefs.setBool(PreferenceKeys.reader.isUsingThemeStyle, isUsingThemeStyle);
     prefs.setInt(PreferenceKeys.reader.pageNumType, pageNumType.index);
   }
 }

@@ -40,6 +40,8 @@ class BookshelfCubit extends CommonListCubit<BookData> {
       return;
     }
 
+    emit(state.copyWith(code: LoadingStateCode.loading));
+
     final sortOrder =
         SortOrderCode.fromString(_prefs.getString(_sortOrderKey)) ??
             SortOrderCode.name;

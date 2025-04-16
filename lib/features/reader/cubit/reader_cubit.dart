@@ -116,26 +116,10 @@ class ReaderCubit extends Cubit<ReaderState> {
   void sendThemeData([ThemeData? newTheme]) {
     currentTheme = newTheme ?? currentTheme;
     if (state.code.isLoaded) {
-      Map<String, dynamic> data = {
-        "body": {
-          "color": "inherit",
-          "font-size": "${state.readerSettings.fontSize.toStringAsFixed(1)}px",
-          "line-height": state.readerSettings.lineHeight.toStringAsFixed(1),
-          "background": "#ffffff",
-        },
-        "a": {
-          "color": "inherit",
-        },
-      };
-
-      if (state.readerSettings.isUsingThemeStyle) {
-        data["body"]["color"] =
-            CssUtils.convertColorToRgba(currentTheme.colorScheme.onSurface);
-        data["body"]["background"] =
-            CssUtils.convertColorToRgba(currentTheme.colorScheme.surface);
-      }
-
-      webViewHandler.sendThemeData(data);
+      webViewHandler.setFontColor(
+          CssUtils.convertColorToRgba(currentTheme.colorScheme.onSurface));
+      webViewHandler.setFontSize(state.readerSettings.fontSize);
+      webViewHandler.setLineHeight(state.readerSettings.lineHeight);
     }
   }
 
