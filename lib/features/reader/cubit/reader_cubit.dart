@@ -26,6 +26,9 @@ import '../../../utils/int_utils.dart';
 part 'reader_destination_type.dart';
 part 'reader_gesture_handler.dart';
 part 'reader_search_cubit.dart';
+part 'reader_search_range.dart';
+part 'reader_search_result.dart';
+part 'reader_search_state.dart';
 part 'reader_server_handler.dart';
 part 'reader_state.dart';
 part 'reader_tts_handler.dart';
@@ -38,11 +41,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   late final _serverHandler = ReaderServerHandler(bookPath);
   late final webViewHandler = ReaderWebViewHandler(url: _serverHandler.url);
-  late final searchCubit = ReaderSearchCubit(
-    searchInCurrentChapter: webViewHandler.searchInCurrentChapter,
-    searchInWholeBook: webViewHandler.searchInWholeBook,
-    goto: webViewHandler.goto,
-  );
+  late final searchCubit = ReaderSearchCubit(webViewHandler: webViewHandler);
   late final gestureHandler = ReaderGestureHandler(
     onSwipeLeft: previousPage,
     onSwipeRight: nextPage,
@@ -81,7 +80,6 @@ class ReaderCubit extends Cubit<ReaderState> {
     webViewHandler.register('saveLocation', _receiveSaveLocation);
     webViewHandler.register('loadDone', _receiveLoadDone);
     webViewHandler.register('setState', _receiveSetState);
-    webViewHandler.register('setSearchResultList', _receiveSetSearchResultList);
 
     ttsHandler = ReaderTTSHandler(
       webViewHandler: webViewHandler,
@@ -168,7 +166,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Bookmarks
   /// *************************************************************************
 
-  Future<void> saveBookmark() async {
+  void saveBookmark() {
     final data = BookmarkData(
       bookPath: bookPath,
       bookName: state.bookName,
@@ -180,9 +178,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
     BookmarkRepository.save(data);
 
-    if (!isClosed) {
-      emit(state.copyWith(bookmarkData: data));
-    }
+    emit(state.copyWith(bookmarkData: data));
   }
 
   /// *************************************************************************
@@ -259,11 +255,6 @@ class ReaderCubit extends Cubit<ReaderState> {
     if (state.readerSettings.isAutoSaving) {
       saveBookmark();
     }
-  }
-
-  void _receiveSetSearchResultList(jsonValue) {
-    assert(jsonValue is Map<String, dynamic>);
-    searchCubit.setResultList(jsonValue['searchResultList']);
   }
 
   /// *************************************************************************
