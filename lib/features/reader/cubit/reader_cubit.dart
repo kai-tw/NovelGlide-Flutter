@@ -125,34 +125,35 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Settings
   /// *************************************************************************
 
-  void setSettings({
-    double? fontSize,
-    double? lineHeight,
-    bool? autoSave,
-    bool? isSmoothScroll,
-    ReaderSettingsPageNumType? pageNumType,
-  }) {
-    final settings = state.readerSettings.copyWith(
-      fontSize: fontSize,
-      lineHeight: lineHeight,
-      isAutoSaving: autoSave,
-      isSmoothScroll: isSmoothScroll,
-      pageNumType: pageNumType,
-    );
+  set fontSize(double value) {
+    emit(state.copyWith(
+        readerSettings: state.readerSettings.copyWith(fontSize: value)));
+    sendThemeData();
+  }
 
-    emit(state.copyWith(readerSettings: settings));
+  set lineHeight(double value) {
+    emit(state.copyWith(
+        readerSettings: state.readerSettings.copyWith(lineHeight: value)));
+    sendThemeData();
+  }
 
-    if (fontSize != null || lineHeight != null) {
-      sendThemeData();
-    }
-
-    if (autoSave == true) {
+  set isAutoSaving(bool value) {
+    emit(state.copyWith(
+        readerSettings: state.readerSettings.copyWith(isAutoSaving: value)));
+    if (value) {
       saveBookmark();
     }
+  }
 
-    if (isSmoothScroll != null) {
-      webViewHandler.setSmoothScroll(isSmoothScroll);
-    }
+  set isSmoothScroll(bool value) {
+    emit(state.copyWith(
+        readerSettings: state.readerSettings.copyWith(isSmoothScroll: value)));
+    webViewHandler.setSmoothScroll(value);
+  }
+
+  set pageNumType(ReaderSettingsPageNumType value) {
+    emit(state.copyWith(
+        readerSettings: state.readerSettings.copyWith(pageNumType: value)));
   }
 
   void saveSettings() => state.readerSettings.save();
