@@ -19,43 +19,40 @@ class _State extends State<ReaderNavBookmarkButton> {
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    final isIdle = _stateCode == CommonButtonStateCode.idle;
-    final isLoading = _stateCode == CommonButtonStateCode.loading;
-    final isSuccess = _stateCode == CommonButtonStateCode.success;
     return BlocListener<ReaderCubit, ReaderState>(
       listenWhen: (previous, current) =>
-          previous.readerSettings.isAutoSaving != current.readerSettings.isAutoSaving ||
+          previous.readerSettings.isAutoSaving !=
+              current.readerSettings.isAutoSaving ||
           previous.code != current.code ||
           previous.bookmarkData != current.bookmarkData ||
           previous.startCfi != current.startCfi ||
           previous.ttsState != current.ttsState,
       listener: (_, readerState) {
-        if (isLoading || isSuccess) {
+        if (_stateCode.isLoading || _stateCode.isSuccess) {
           return;
         }
         _resetState();
       },
       child: IconButton(
         icon: Icon(
-          isSuccess ? Icons.check_rounded : Icons.bookmark_add_rounded,
+          _stateCode.isSuccess
+              ? Icons.check_rounded
+              : Icons.bookmark_add_rounded,
         ),
         tooltip: appLocalizations.readerBookmark,
         style: IconButton.styleFrom(
-          disabledForegroundColor: isSuccess ? Colors.green : null,
+          disabledForegroundColor: _stateCode.isSuccess ? Colors.green : null,
         ),
-        onPressed: isIdle ? _onPressed : null,
+        onPressed: _stateCode.isIdle ? _onPressed : null,
       ),
     );
   }
 
   void _onPressed() async {
-    _stateCode = CommonButtonStateCode.loading;
     setState(() => _stateCode = CommonButtonStateCode.loading);
 
-    await BlocProvider.of<ReaderCubit>(context).saveBookmark();
-    if (mounted) {
-      setState(() => _stateCode = CommonButtonStateCode.success);
-    }
+    BlocProvider.of<ReaderCubit>(context).saveBookmark();
+    setState(() => _stateCode = CommonButtonStateCode.success);
 
     await Future.delayed(const Duration(seconds: 2));
     if (mounted) {

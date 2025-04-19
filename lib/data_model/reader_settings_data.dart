@@ -44,18 +44,56 @@ class ReaderSettingsData extends Equatable {
   /// Loads the reader settings from shared preferences.
   static Future<ReaderSettingsData> load() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    double fontSize, lineHeight;
+    bool isAutoSaving, isSmoothScroll;
+    int pageNumType;
+
+    // Load font size
+    try {
+      fontSize =
+          prefs.getDouble(PreferenceKeys.reader.fontSize) ?? defaultFontSize;
+    } catch (_) {
+      fontSize = defaultFontSize;
+    }
+
+    // Load line height
+    try {
+      lineHeight = prefs.getDouble(PreferenceKeys.reader.lineHeight) ??
+          defaultLineHeight;
+    } catch (_) {
+      lineHeight = defaultLineHeight;
+    }
+
+    // Load auto-saving preference
+    try {
+      isAutoSaving = prefs.getBool(PreferenceKeys.reader.isAutoSaving) ??
+          defaultIsAutoSaving;
+    } catch (_) {
+      isAutoSaving = defaultIsAutoSaving;
+    }
+
+    // Load smooth scroll preference
+    try {
+      isSmoothScroll = prefs.getBool(PreferenceKeys.reader.isSmoothScroll) ??
+          defaultIsSmoothScroll;
+    } catch (_) {
+      isSmoothScroll = defaultIsSmoothScroll;
+    }
+
+    // Load page number type
+    try {
+      pageNumType = prefs.getInt(PreferenceKeys.reader.pageNumType) ??
+          defaultPageNumType.index;
+    } catch (_) {
+      pageNumType = defaultPageNumType.index;
+    }
+
     return ReaderSettingsData(
-      fontSize:
-          prefs.getDouble(PreferenceKeys.reader.fontSize) ?? defaultFontSize,
-      lineHeight: prefs.getDouble(PreferenceKeys.reader.lineHeight) ??
-          defaultLineHeight,
-      isAutoSaving: prefs.getBool(PreferenceKeys.reader.isAutoSaving) ??
-          defaultIsAutoSaving,
-      isSmoothScroll: prefs.getBool(PreferenceKeys.reader.isSmoothScroll) ??
-          defaultIsSmoothScroll,
-      pageNumType: ReaderSettingsPageNumType.values[
-          prefs.getInt(PreferenceKeys.reader.pageNumType) ??
-              defaultPageNumType.index],
+      fontSize: fontSize.clamp(minFontSize, maxFontSize),
+      lineHeight: lineHeight.clamp(minLineHeight, maxLineHeight),
+      isAutoSaving: isAutoSaving,
+      isSmoothScroll: isSmoothScroll,
+      pageNumType: ReaderSettingsPageNumType.values[pageNumType],
     );
   }
 

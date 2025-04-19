@@ -90,7 +90,7 @@ class _SearchResultList extends StatelessWidget {
     return ListTile(
       onTap: () {
         Navigator.of(context).pop();
-        cubit.goto?.call(result.cfi);
+        cubit.webViewHandler.goto(result.cfi);
       },
       onLongPress: () {
         showDialog(

@@ -30,10 +30,10 @@ class _LineHeightSlider extends StatelessWidget {
             return '${appLocalizations.readerLineHeightSlider} ${value.toStringAsFixed(1)}';
           },
           onChanged: (value) {
-            cubit.setSettings(lineHeight: value);
+            cubit.lineHeight = value;
           },
           onChangeEnd: (value) {
-            cubit.setSettings(lineHeight: value);
+            cubit.lineHeight = value;
             cubit.saveSettings();
           },
         );

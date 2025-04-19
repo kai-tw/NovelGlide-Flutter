@@ -16,7 +16,7 @@ class _AutoSaveSwitch extends StatelessWidget {
           title: Text(AppLocalizations.of(context)!.readerAutoSave),
           value: state.readerSettings.isAutoSaving,
           onChanged: (bool value) {
-            cubit.setSettings(autoSave: value);
+            cubit.isAutoSaving = value;
             cubit.saveSettings();
           },
         );

@@ -20,11 +20,15 @@ import '../../../repository/book_repository.dart';
 import '../../../repository/bookmark_repository.dart';
 import '../../../repository/cache_repository.dart';
 import '../../../services/tts/tts_service.dart';
+import '../../../utils/css_utils.dart';
 import '../../../utils/int_utils.dart';
 
 part 'reader_destination_type.dart';
 part 'reader_gesture_handler.dart';
 part 'reader_search_cubit.dart';
+part 'reader_search_range.dart';
+part 'reader_search_result.dart';
+part 'reader_search_state.dart';
 part 'reader_server_handler.dart';
 part 'reader_state.dart';
 part 'reader_tts_handler.dart';
@@ -37,11 +41,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   late final _serverHandler = ReaderServerHandler(bookPath);
   late final webViewHandler = ReaderWebViewHandler(url: _serverHandler.url);
-  late final searchCubit = ReaderSearchCubit(
-    searchInCurrentChapter: webViewHandler.searchInCurrentChapter,
-    searchInWholeBook: webViewHandler.searchInWholeBook,
-    goto: webViewHandler.goto,
-  );
+  late final searchCubit = ReaderSearchCubit(webViewHandler: webViewHandler);
   late final gestureHandler = ReaderGestureHandler(
     onSwipeLeft: previousPage,
     onSwipeRight: nextPage,
@@ -80,7 +80,6 @@ class ReaderCubit extends Cubit<ReaderState> {
     webViewHandler.register('saveLocation', _receiveSaveLocation);
     webViewHandler.register('loadDone', _receiveLoadDone);
     webViewHandler.register('setState', _receiveSetState);
-    webViewHandler.register('setSearchResultList', _receiveSetSearchResultList);
 
     ttsHandler = ReaderTTSHandler(
       webViewHandler: webViewHandler,
@@ -115,19 +114,10 @@ class ReaderCubit extends Cubit<ReaderState> {
   void sendThemeData([ThemeData? newTheme]) {
     currentTheme = newTheme ?? currentTheme;
     if (state.code.isLoaded) {
-      Map<String, dynamic> data = {
-        "body": {
-          "color": "inherit",
-          "font-size": "${state.readerSettings.fontSize.toStringAsFixed(1)}px",
-          "line-height": state.readerSettings.lineHeight.toStringAsFixed(1),
-          "background": "#ffffff",
-        },
-        "a": {
-          "color": "inherit",
-        },
-      };
-
-      webViewHandler.sendThemeData(data);
+      webViewHandler.setFontColor(
+          CssUtils.convertColorToRgba(currentTheme.colorScheme.onSurface));
+      webViewHandler.setFontSize(state.readerSettings.fontSize);
+      webViewHandler.setLineHeight(state.readerSettings.lineHeight);
     }
   }
 
@@ -135,34 +125,35 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Settings
   /// *************************************************************************
 
-  void setSettings({
-    double? fontSize,
-    double? lineHeight,
-    bool? autoSave,
-    bool? isSmoothScroll,
-    ReaderSettingsPageNumType? pageNumType,
-  }) {
-    final settings = state.readerSettings.copyWith(
-      fontSize: fontSize,
-      lineHeight: lineHeight,
-      isAutoSaving: autoSave,
-      isSmoothScroll: isSmoothScroll,
-      pageNumType: pageNumType,
-    );
+  set fontSize(double value) {
+    emit(state.copyWith(
+        readerSettings: state.readerSettings.copyWith(fontSize: value)));
+    sendThemeData();
+  }
 
-    emit(state.copyWith(readerSettings: settings));
+  set lineHeight(double value) {
+    emit(state.copyWith(
+        readerSettings: state.readerSettings.copyWith(lineHeight: value)));
+    sendThemeData();
+  }
 
-    if (fontSize != null || lineHeight != null) {
-      sendThemeData();
-    }
-
-    if (autoSave == true) {
+  set isAutoSaving(bool value) {
+    emit(state.copyWith(
+        readerSettings: state.readerSettings.copyWith(isAutoSaving: value)));
+    if (value) {
       saveBookmark();
     }
+  }
 
-    if (isSmoothScroll != null) {
-      webViewHandler.setSmoothScroll(isSmoothScroll);
-    }
+  set isSmoothScroll(bool value) {
+    emit(state.copyWith(
+        readerSettings: state.readerSettings.copyWith(isSmoothScroll: value)));
+    webViewHandler.setSmoothScroll(value);
+  }
+
+  set pageNumType(ReaderSettingsPageNumType value) {
+    emit(state.copyWith(
+        readerSettings: state.readerSettings.copyWith(pageNumType: value)));
   }
 
   void saveSettings() => state.readerSettings.save();
@@ -176,7 +167,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Bookmarks
   /// *************************************************************************
 
-  Future<void> saveBookmark() async {
+  void saveBookmark() {
     final data = BookmarkData(
       bookPath: bookPath,
       bookName: state.bookName,
@@ -188,9 +179,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
     BookmarkRepository.save(data);
 
-    if (!isClosed) {
-      emit(state.copyWith(bookmarkData: data));
-    }
+    emit(state.copyWith(bookmarkData: data));
   }
 
   /// *************************************************************************
@@ -267,11 +256,6 @@ class ReaderCubit extends Cubit<ReaderState> {
     if (state.readerSettings.isAutoSaving) {
       saveBookmark();
     }
-  }
-
-  void _receiveSetSearchResultList(jsonValue) {
-    assert(jsonValue is Map<String, dynamic>);
-    searchCubit.setResultList(jsonValue['searchResultList']);
   }
 
   /// *************************************************************************

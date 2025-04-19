@@ -27,8 +27,10 @@ class _PageNumSelector extends StatelessWidget {
             ),
             initialSelection: state.readerSettings.pageNumType,
             onSelected: (value) {
-              cubit.setSettings(pageNumType: value);
-              cubit.saveSettings();
+              if (value != null) {
+                cubit.pageNumType = value;
+                cubit.saveSettings();
+              }
             },
             dropdownMenuEntries: ReaderSettingsPageNumType.values
                 .map<DropdownMenuEntry<ReaderSettingsPageNumType>>(

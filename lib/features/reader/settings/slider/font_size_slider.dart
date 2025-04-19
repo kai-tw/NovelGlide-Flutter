@@ -31,10 +31,10 @@ class _FontSizeSlider extends StatelessWidget {
             return '${appLocalizations.readerFontSizeSlider} ${value.toStringAsFixed(1)}';
           },
           onChanged: (value) {
-            cubit.setSettings(fontSize: value);
+            cubit.fontSize = value;
           },
           onChangeEnd: (value) {
-            cubit.setSettings(fontSize: value);
+            cubit.fontSize = value;
             cubit.saveSettings();
           },
         );

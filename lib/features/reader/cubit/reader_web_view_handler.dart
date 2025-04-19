@@ -64,7 +64,11 @@ class ReaderWebViewHandler {
 
   void goto(String cfi) => send('goto', cfi);
 
-  void sendThemeData(Map<String, dynamic> data) => send('setThemeData', data);
+  void setFontColor(String color) => send('setFontColor', color);
+
+  void setFontSize(double fontSize) => send('setFontSize', fontSize);
+
+  void setLineHeight(double lineHeight) => send('setLineHeight', lineHeight);
 
   void searchInWholeBook(String query) => send('searchInWholeBook', query);
 
