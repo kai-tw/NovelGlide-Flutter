@@ -50,14 +50,17 @@ class CommonBookCoverImage extends StatelessWidget {
   }
 
   Future<Uint8List?> _bitmapOptimize(
-      img.Image image, BoxConstraints constraints) async {
+    img.Image image,
+    BoxConstraints constraints,
+  ) async {
+    const ratio = 4;
     final double widthRatio = constraints.maxWidth / image.width;
     final double heightRatio = constraints.maxHeight / image.height;
 
     final double maxRatio = max(widthRatio, heightRatio);
 
-    final int displayWidth = (image.width * maxRatio).truncate();
-    final int displayHeight = (image.height * maxRatio).truncate();
+    final int displayWidth = (image.width * maxRatio * ratio).truncate();
+    final int displayHeight = (image.height * maxRatio * ratio).truncate();
 
     return Bitmap.fromHeadless(image.width, image.height, image.getBytes())
         .apply(BitmapResize.to(width: displayWidth, height: displayHeight))

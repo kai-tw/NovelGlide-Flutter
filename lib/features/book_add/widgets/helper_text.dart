@@ -13,7 +13,10 @@ class _HelperText extends StatelessWidget {
         buildWhen: (previous, current) => previous.file != current.file,
         builder: (context, state) {
           final children = <Widget>[
-            Text('${appLocalizations.fileTypeHelperText} $allowedExtensions'),
+            Text(
+              '${appLocalizations.fileTypeHelperText} $allowedExtensions',
+              textAlign: TextAlign.center,
+            ),
           ];
 
           if (!state.isEmpty) {
@@ -21,6 +24,7 @@ class _HelperText extends StatelessWidget {
               children.add(
                 Text(
                   appLocalizations.addBookDuplicated,
+                  textAlign: TextAlign.center,
                   style: TextStyle(color: Theme.of(context).colorScheme.error),
                 ),
               );
@@ -30,6 +34,7 @@ class _HelperText extends StatelessWidget {
               children.add(
                 Text(
                   appLocalizations.fileTypeForbidden,
+                  textAlign: TextAlign.center,
                   style: TextStyle(color: Theme.of(context).colorScheme.error),
                 ),
               );

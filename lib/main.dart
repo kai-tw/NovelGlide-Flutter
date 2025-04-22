@@ -45,13 +45,7 @@ class App extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('en'),
-        Locale.fromSubtags(
-            languageCode: 'zh', scriptCode: 'Hans', countryCode: 'CN'),
-        Locale.fromSubtags(
-            languageCode: 'zh', scriptCode: 'Hant', countryCode: 'TW'),
-      ],
+      supportedLocales: AppLocalizations.supportedLocales,
       initialRoute: "/",
       routes: {
         "/": (_) => const Homepage(),

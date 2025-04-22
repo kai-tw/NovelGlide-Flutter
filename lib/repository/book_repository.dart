@@ -47,7 +47,7 @@ class BookRepository {
     return BookData(
       absoluteFilePath: absolutePath,
       name: epubBook.Title ?? '',
-      coverImage: epubBook.CoverImage,
+      coverImage: EpubUtils.findCoverImage(epubBook),
     );
   }
 

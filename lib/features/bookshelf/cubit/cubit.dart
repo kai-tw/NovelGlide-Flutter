@@ -40,8 +40,6 @@ class BookshelfCubit extends CommonListCubit<BookData> {
       return;
     }
 
-    emit(state.copyWith(code: LoadingStateCode.loading));
-
     final sortOrder =
         SortOrderCode.fromString(_prefs.getString(_sortOrderKey)) ??
             SortOrderCode.name;
@@ -53,24 +51,25 @@ class BookshelfCubit extends CommonListCubit<BookData> {
         .whereType<File>()
         .where((e) => MimeResolver.lookupAll(e) == 'application/epub+zip');
     List<BookData> list = [];
+    List<BookData> oldList = List<BookData>.from(state.dataList);
 
     // Only read the books that are not read yet.
     for (File epubFile in fileList) {
-      final target = state.dataList
+      final target = oldList
               .firstWhereOrNull((e) => e.absoluteFilePath == epubFile.path) ??
           await BookRepository.get(epubFile.path);
+
       list.add(target);
-    }
+      list.sort(BookUtils.sortCompare(sortOrder, isAscending));
 
-    list.sort(BookUtils.sortCompare(sortOrder, isAscending));
-
-    if (!isClosed) {
-      emit(CommonListState(
-        code: LoadingStateCode.loaded,
-        sortOrder: sortOrder,
-        dataList: list,
-        isAscending: isAscending,
-      ));
+      if (!isClosed) {
+        emit(CommonListState(
+          code: LoadingStateCode.loaded,
+          sortOrder: sortOrder,
+          dataList: List<BookData>.from(list), // Make a copy.
+          isAscending: isAscending,
+        ));
+      }
     }
   }
 

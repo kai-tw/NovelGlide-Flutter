@@ -6,7 +6,7 @@ abstract class CommonListCubit<T> extends Cubit<CommonListState<T>> {
   Future<void> refresh();
 
   Future<void> dragToRefresh() async {
-    emit(CommonListState<T>(code: LoadingStateCode.loading));
+    emit(state.copyWith(code: LoadingStateCode.loading));
     await refresh();
   }
 
