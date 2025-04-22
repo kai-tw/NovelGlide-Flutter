@@ -11,16 +11,18 @@ class BookmarkRepository {
 
   static String jsonFileName = 'bookmark.json';
 
-  /// Returns the path to the JSON file storing bookmarks.
   static String get jsonPath => RepositoryInterface.getJsonPath(jsonFileName);
 
-  /// Returns the File object for the JSON file storing bookmarks.
   static File get jsonFile => RepositoryInterface.getJsonFile(jsonPath);
 
-  /// Reads and returns the JSON data from the bookmark file.
+  /// JSON data getter
   static Map<String, dynamic> get jsonData => JsonUtils.fromFile(jsonFile);
 
-  /// Retrieves a bookmark by its book path.
+  /// JSON data setter
+  static set jsonData(Map<String, dynamic> json) =>
+      jsonFile.writeAsStringSync(jsonEncode(json));
+
+  /// Retrieve a bookmark by its book path.
   static BookmarkData? get(String bookPath) {
     bookPath = BookRepository.getRelativePath(bookPath);
     return jsonData.containsKey(bookPath)
@@ -28,7 +30,7 @@ class BookmarkRepository {
         : null;
   }
 
-  /// Retrieves a list of all bookmarks.
+  /// Retrieve a list of all bookmarks.
   static List<BookmarkData> getList() {
     List<BookmarkData> retList = [];
 
@@ -46,24 +48,27 @@ class BookmarkRepository {
     return retList;
   }
 
-  /// Saves the current bookmark to the JSON file.
+  /// Save the current bookmark to the JSON file.
   static void save(BookmarkData data) async {
     final json = jsonData;
-    data.bookPath = BookRepository.getRelativePath(data.bookPath);
-    json[data.bookPath] = data.toJson();
-    jsonFile.writeAsStringSync(jsonEncode(json));
+    final savedData = data.copyWith(
+      bookPath: BookRepository.getAbsolutePath(data.bookPath),
+      savedTime: DateTime.now(),
+    );
+    json[savedData.bookPath] = savedData.toJson();
+    jsonData = json;
   }
 
-  /// Deletes the current bookmark from the JSON file.
+  /// Delete the current bookmark from the JSON file.
   static void delete(BookmarkData data) {
     final json = jsonData;
     final path = BookRepository.getRelativePath(data.bookPath);
     json.remove(path);
-    jsonFile.writeAsStringSync(jsonEncode(json));
+    jsonData = json;
   }
 
-  /// Deletes the bookmark that is associated with the book.
-  static void deleteAssociatedBook(String path) {
+  /// Delete the bookmark by path.
+  static void deleteByPath(String path) {
     final bookmarkList = getList().where((e) =>
         BookRepository.getRelativePath(e.bookPath) ==
         BookRepository.getRelativePath(path));
@@ -73,7 +78,5 @@ class BookmarkRepository {
   }
 
   /// Reset the bookmark repository.
-  static void reset() {
-    jsonFile.writeAsStringSync('{}');
-  }
+  static void reset() => jsonData = {};
 }

@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
+
 import '../utils/datetime_utils.dart';
 
 /// Represents a bookmark with its metadata and operations.
-class BookmarkData {
-  String bookPath;
+class BookmarkData extends Equatable {
+  final String bookPath;
   final String bookName;
   final String chapterTitle;
   final String chapterFileName;
@@ -14,8 +16,12 @@ class BookmarkData {
   /// Calculates the number of days passed since the bookmark was saved.
   int get daysPassed => DateTimeUtils.daysPassed(savedTime);
 
+  @override
+  List<Object?> get props =>
+      [bookPath, bookName, chapterTitle, chapterFileName, startCfi, savedTime];
+
   /// Constructor for creating a BookmarkData instance.
-  BookmarkData({
+  const BookmarkData({
     required this.bookPath,
     required this.bookName,
     required this.chapterTitle,
@@ -54,23 +60,22 @@ class BookmarkData {
   @override
   String toString() => jsonEncode(toJson());
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! BookmarkData) return false;
-
-    return other.bookPath == bookPath &&
-        other.chapterTitle == chapterTitle &&
-        other.chapterFileName == chapterFileName &&
-        other.startCfi == startCfi &&
-        other.savedTime == savedTime;
+  /// Copy with new values.
+  BookmarkData copyWith({
+    String? bookPath,
+    String? bookName,
+    String? chapterTitle,
+    String? chapterFileName,
+    String? startCfi,
+    DateTime? savedTime,
+  }) {
+    return BookmarkData(
+      bookPath: bookPath ?? this.bookPath,
+      bookName: bookName ?? this.bookName,
+      chapterTitle: chapterTitle ?? this.chapterTitle,
+      chapterFileName: chapterFileName ?? this.chapterFileName,
+      startCfi: startCfi ?? this.startCfi,
+      savedTime: savedTime ?? this.savedTime,
+    );
   }
-
-  @override
-  int get hashCode =>
-      bookPath.hashCode ^
-      chapterTitle.hashCode ^
-      chapterFileName.hashCode ^
-      startCfi.hashCode ^
-      savedTime.hashCode;
 }

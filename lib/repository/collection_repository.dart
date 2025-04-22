@@ -14,11 +14,16 @@ class CollectionRepository {
 
   static File get jsonFile => RepositoryInterface.getJsonFile(jsonPath);
 
-  static Map<String, dynamic> getJsonData() => JsonUtils.fromFile(jsonFile);
+  /// JSON data getter
+  static Map<String, dynamic> get jsonData => JsonUtils.fromFile(jsonFile);
 
-  /// Creates a new empty collection with a unique ID.
+  /// JSON data setter
+  static set jsonData(Map<String, dynamic> json) =>
+      jsonFile.writeAsStringSync(jsonEncode(json));
+
+  /// Create a new empty collection with a unique ID.
   static void create(String name) {
-    final data = getJsonData();
+    final data = jsonData;
     String id = RandomUtils.getRandomString(10);
 
     while (data.containsKey(id)) {
@@ -26,62 +31,60 @@ class CollectionRepository {
     }
 
     data[id] = CollectionData(id, name, const <String>[]).toJson();
-    jsonFile.writeAsStringSync(jsonEncode(data));
+    jsonData = data;
   }
 
   static CollectionData get(String id) {
-    final data = getJsonData();
-    if (data.containsKey(id)) {
-      return CollectionData.fromJson(data[id]!);
+    if (jsonData.containsKey(id)) {
+      return CollectionData.fromJson(jsonData[id]!);
     } else {
       return CollectionData(id, id, const <String>[]);
     }
   }
 
-  /// Retrieves a list of all [CollectionData] instances.
+  /// Retrieve a list of all [CollectionData] instances.
   static List<CollectionData> getList() {
-    final data = getJsonData();
     List<CollectionData> list = [];
 
-    for (var key in data.keys) {
-      list.add(CollectionData.fromJson(data[key]!));
+    for (var key in jsonData.keys) {
+      list.add(CollectionData.fromJson(jsonData[key]!));
     }
 
     return list;
   }
 
-  /// Saves the current [CollectionData] instance to the JSON file.
+  /// Save the current [CollectionData] instance to the JSON file.
   static void save(CollectionData data) {
-    final json = getJsonData();
+    final json = jsonData;
     data.pathList = data.pathList
         .toSet()
         .map<String>((e) => BookRepository.getRelativePath(e))
         .toList();
     json[data.id] = data.toJson();
-    jsonFile.writeAsStringSync(jsonEncode(json));
+    jsonData = json;
   }
 
-  /// Deletes the current [CollectionData] instance from the JSON file.
+  /// Delete the current [CollectionData] instance from the JSON file.
   static void delete(CollectionData data) {
-    final json = getJsonData();
+    final json = jsonData;
     json.remove(data.id);
-    jsonFile.writeAsStringSync(jsonEncode(json));
+    jsonData = json;
   }
 
-  /// Deletes the book from the collection.
+  /// Delete the book from the collection.
   static void deleteBook(String path, String id) {
     final relativePath = BookRepository.getRelativePath(path);
-    final json = getJsonData();
+    final json = jsonData;
     if (json[id] != null) {
       final data = CollectionData.fromJson(json[id]!);
       data.pathList.remove(relativePath);
       json[id] = data.toJson();
-      jsonFile.writeAsStringSync(jsonEncode(json));
+      jsonData = json;
     }
   }
 
-  /// Deletes the book from all collections.
-  static void deleteAssociatedBook(String path) {
+  /// Delete the book from all collections.
+  static void deleteByPath(String path) {
     final collectionList = getList().where(
         (e) => e.pathList.contains(BookRepository.getRelativePath(path)));
     for (CollectionData data in collectionList) {
@@ -90,7 +93,5 @@ class CollectionRepository {
   }
 
   /// Reset the collection repository.
-  static void reset() {
-    jsonFile.writeAsStringSync('{}');
-  }
+  static void reset() => jsonData = {};
 }

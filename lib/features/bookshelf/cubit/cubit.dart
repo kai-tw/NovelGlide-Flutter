@@ -40,9 +40,14 @@ class BookshelfCubit extends CommonListCubit<BookData> {
       return;
     }
 
-    final sortOrder =
-        SortOrderCode.fromString(_prefs.getString(_sortOrderKey)) ??
-            SortOrderCode.name;
+    int sortOrder;
+    try {
+      sortOrder = _prefs.getInt(_sortOrderKey) ?? SortOrderCode.name.index;
+    } catch (_) {
+      sortOrder = SortOrderCode.name.index;
+    }
+
+    final sortOrderCode = SortOrderCode.values[sortOrder];
     final isAscending = _prefs.getBool(_isAscendingKey) ?? true;
 
     final folder = Directory(FilePath.libraryRoot);
@@ -60,12 +65,12 @@ class BookshelfCubit extends CommonListCubit<BookData> {
           await BookRepository.get(epubFile.path);
 
       list.add(target);
-      list.sort(BookUtils.sortCompare(sortOrder, isAscending));
+      list.sort(BookUtils.sortCompare(sortOrderCode, isAscending));
 
       if (!isClosed) {
         emit(CommonListState(
           code: LoadingStateCode.loaded,
-          sortOrder: sortOrder,
+          sortOrder: sortOrderCode,
           dataList: List<BookData>.from(list), // Make a copy.
           isAscending: isAscending,
         ));
@@ -77,7 +82,7 @@ class BookshelfCubit extends CommonListCubit<BookData> {
     final order = sortOrder ?? state.sortOrder;
     final ascending = isAscending ?? state.isAscending;
 
-    _prefs.setString(_sortOrderKey, order.toString());
+    _prefs.setInt(_sortOrderKey, order.index);
     _prefs.setBool(_isAscendingKey, ascending);
 
     state.dataList.sort(BookUtils.sortCompare(order, ascending));

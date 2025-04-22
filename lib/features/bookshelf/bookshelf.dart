@@ -48,8 +48,10 @@ class Bookshelf extends StatelessWidget {
                 title: appLocalizations.bookshelfNoBook,
               );
             } else {
+              // Avoid books from being covered by the navigation bar.
               final bottomPadding =
                   MediaQuery.of(context).padding.bottom + 48.0;
+
               return SliverPadding(
                 padding: EdgeInsets.only(bottom: bottomPadding),
                 sliver: SliverGrid(

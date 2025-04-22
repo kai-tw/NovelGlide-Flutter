@@ -29,15 +29,19 @@ class BookmarkListCubit extends CommonListCubit<BookmarkData> {
   Future<void> refresh() async {
     final bookmarkList = BookmarkRepository.getList();
 
-    final sortOrder =
-        SortOrderCode.fromString(_prefs.getString(_sortOrderPrefKey)) ??
-            SortOrderCode.savedTime;
+    int sortOrder;
+    try {
+      sortOrder = _prefs.getInt(_sortOrderPrefKey) ?? SortOrderCode.name.index;
+    } catch (_) {
+      sortOrder = SortOrderCode.name.index;
+    }
+    final sortOrderCode = SortOrderCode.values[sortOrder];
     final isAscending = _prefs.getBool(_ascendingPrefKey) ?? false;
-    _sortList(bookmarkList, sortOrder, isAscending);
+    _sortList(bookmarkList, sortOrderCode, isAscending);
 
     emit(CommonListState<BookmarkData>(
       code: LoadingStateCode.loaded,
-      sortOrder: sortOrder,
+      sortOrder: sortOrderCode,
       dataList: bookmarkList,
       isAscending: isAscending,
     ));
@@ -48,7 +52,7 @@ class BookmarkListCubit extends CommonListCubit<BookmarkData> {
     sortOrder ??= state.sortOrder;
     isAscending ??= state.isAscending;
 
-    _prefs.setString(_sortOrderPrefKey, sortOrder.toString());
+    _prefs.setInt(_sortOrderPrefKey, sortOrder.index);
     _prefs.setBool(_ascendingPrefKey, isAscending);
 
     _sortList(list, sortOrder, isAscending);

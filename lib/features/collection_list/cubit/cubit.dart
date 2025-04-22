@@ -31,18 +31,22 @@ class CollectionListCubit extends CommonListCubit<CollectionData> {
   Future<void> refresh() async {
     final collectionList = CollectionRepository.getList();
 
-    final sortOrder =
-        SortOrderCode.fromString(_prefs.getString(_sortOrderKey)) ??
-            SortOrderCode.name;
+    int sortOrder;
+    try {
+      sortOrder = _prefs.getInt(_sortOrderKey) ?? SortOrderCode.name.index;
+    } catch (_) {
+      sortOrder = SortOrderCode.name.index;
+    }
+    final sortOrderCode = SortOrderCode.values[sortOrder];
     final isAscending = _prefs.getBool(_isAscendingKey) ?? true;
 
-    _sortList(collectionList, sortOrder, isAscending);
+    _sortList(collectionList, sortOrderCode, isAscending);
 
     emit(state.copyWith(
       code: LoadingStateCode.loaded,
       dataList: collectionList,
       isAscending: isAscending,
-      sortOrder: sortOrder,
+      sortOrder: sortOrderCode,
     ));
   }
 
@@ -58,7 +62,7 @@ class CollectionListCubit extends CommonListCubit<CollectionData> {
     final ascending = isAscending ?? state.isAscending;
     final list = List<CollectionData>.from(state.dataList);
 
-    _prefs.setString(_sortOrderKey, order.toString());
+    _prefs.setInt(_sortOrderKey, order.index);
     _prefs.setBool(_isAscendingKey, ascending);
 
     _sortList(list, order, ascending);

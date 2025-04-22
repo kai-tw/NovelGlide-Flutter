@@ -1,4 +1,1 @@
-enum ReaderNavigationStateCode {
-  defaultState,
-  ttsState,
-}
+enum ReaderNavigationStateCode { defaultState, ttsState }

@@ -18,7 +18,7 @@ import '../../../enum/reader_loading_state_code.dart';
 import '../../../enum/reader_navigation_state_code.dart';
 import '../../../repository/book_repository.dart';
 import '../../../repository/bookmark_repository.dart';
-import '../../../repository/cache_repository.dart';
+import '../../../repository/cache_repository/cache_repository.dart';
 import '../../../services/tts/tts_service.dart';
 import '../../../utils/css_utils.dart';
 import '../../../utils/int_utils.dart';
@@ -74,7 +74,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       destination: destinationType == ReaderDestinationType.bookmark
           ? bookmarkData?.startCfi ?? destination
           : destination,
-      savedLocation: CacheRepository.getLocation(bookPath),
+      savedLocation: CacheRepository.locationCache.get(bookPath),
     );
 
     webViewHandler.register('saveLocation', _receiveSaveLocation);
@@ -228,7 +228,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   void _receiveSaveLocation(data) {
     assert(data is String);
     if (bookData != null) {
-      CacheRepository.storeLocation(bookPath, data);
+      CacheRepository.locationCache.store(bookPath, data);
     }
   }
 

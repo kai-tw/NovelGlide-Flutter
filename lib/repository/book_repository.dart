@@ -7,22 +7,12 @@ import '../exceptions/exceptions.dart';
 import '../utils/epub_utils.dart';
 import '../utils/file_path.dart';
 import '../utils/file_utils.dart';
-import '../utils/json_utils.dart';
 import 'bookmark_repository.dart';
-import 'cache_repository.dart';
+import 'cache_repository/cache_repository.dart';
 import 'collection_repository.dart';
-import 'repository_interface.dart';
 
 class BookRepository {
   BookRepository._();
-
-  static String jsonFileName = 'book.json';
-
-  static String get jsonPath => RepositoryInterface.getJsonPath(jsonFileName);
-
-  static File get jsonFile => RepositoryInterface.getJsonFile(jsonPath);
-
-  static Map<String, dynamic> get jsonData => JsonUtils.fromFile(jsonFile);
 
   /// Add a book to the library.
   static void add(String filePath) {
@@ -60,13 +50,13 @@ class BookRepository {
     }
 
     // Delete associated bookmarks.
-    BookmarkRepository.deleteAssociatedBook(absolutePath);
+    BookmarkRepository.deleteByPath(absolutePath);
 
     // Delete associated collections.
-    CollectionRepository.deleteAssociatedBook(absolutePath);
+    CollectionRepository.deleteByPath(absolutePath);
 
     // Delete locations cache.
-    CacheRepository.deleteLocation(absolutePath);
+    CacheRepository.locationCache.delete(absolutePath);
 
     return !file.existsSync();
   }
@@ -89,6 +79,6 @@ class BookRepository {
 
     BookmarkRepository.reset();
     CollectionRepository.reset();
-    CacheRepository.clearLocation();
+    CacheRepository.locationCache.clear();
   }
 }

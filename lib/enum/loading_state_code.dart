@@ -3,7 +3,6 @@ enum LoadingStateCode {
   loading,
   loaded;
 
-  const LoadingStateCode();
-
+  bool get isLoading => this == LoadingStateCode.loading;
   bool get isLoaded => this == LoadingStateCode.loaded;
 }

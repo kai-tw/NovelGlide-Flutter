@@ -6,7 +6,7 @@ import '../../generated/i18n/app_localizations.dart';
 import '../../preference_keys/preference_keys.dart';
 import '../../repository/book_repository.dart';
 import '../../repository/bookmark_repository.dart';
-import '../../repository/cache_repository.dart';
+import '../../repository/cache_repository/cache_repository.dart';
 import '../../repository/collection_repository.dart';
 import '../common_components/common_back_button.dart';
 import '../common_components/common_delete_dialog.dart';
