@@ -3,9 +3,7 @@ part of '../collection_add_book_scaffold.dart';
 class _Cubit extends Cubit<_State> {
   final Set<BookData> dataSet;
 
-  Set<String> get pathSet => dataSet
-      .map((e) => BookRepository.getRelativePath(e.absoluteFilePath))
-      .toSet();
+  Set<String> get pathSet => dataSet.map((e) => e.relativeFilePath).toSet();
 
   factory _Cubit(Set<BookData> dataSet) {
     final cubit = _Cubit._internal(
@@ -62,9 +60,7 @@ class _Cubit extends Cubit<_State> {
   }
 
   void save() {
-    final pathList = dataSet
-        .map((e) => BookRepository.getRelativePath(e.absoluteFilePath))
-        .toSet();
+    final pathList = dataSet.map((e) => e.relativeFilePath).toSet();
     for (CollectionData data in state.collectionList) {
       if (state.selectedCollections.contains(data.id)) {
         data.pathList.addAll(pathList);

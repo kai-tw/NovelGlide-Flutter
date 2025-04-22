@@ -52,7 +52,7 @@ class BookmarkRepository {
   static void save(BookmarkData data) async {
     final json = jsonData;
     final savedData = data.copyWith(
-      bookPath: BookRepository.getAbsolutePath(data.bookPath),
+      bookPath: BookRepository.getRelativePath(data.bookPath),
       savedTime: DateTime.now(),
     );
     json[savedData.bookPath] = savedData.toJson();

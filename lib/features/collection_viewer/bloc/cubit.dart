@@ -51,8 +51,8 @@ class _Cubit extends CommonListCubit<BookData> {
   }
 
   void remove() {
-    collectionData.pathList.removeWhere((p) => state.selectedSet
-        .any((e) => BookRepository.getRelativePath(e.absoluteFilePath) == p));
+    collectionData.pathList.removeWhere(
+        (p) => state.selectedSet.any((e) => e.relativeFilePath == p));
     CollectionRepository.save(collectionData);
     refresh();
   }

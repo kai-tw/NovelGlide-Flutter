@@ -47,17 +47,21 @@ class _LoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (previous, current) =>
-          previous.loadingStateCode != current.loadingStateCode,
+          previous.readerLoadingCode != current.readerLoadingCode,
       builder: (context, state) {
         final appLocalizations = AppLocalizations.of(context)!;
         String? title;
-        switch (state.loadingStateCode) {
+        switch (state.readerLoadingCode) {
           case ReaderLoadingStateCode.initial:
             title = appLocalizations.readerLoadingInitialize;
             break;
 
           case ReaderLoadingStateCode.bookLoading:
             title = appLocalizations.readerLoadingBookLoading;
+            break;
+
+          case ReaderLoadingStateCode.locationGenerating:
+            title = appLocalizations.readerLoadingLocationGenerating;
             break;
 
           case ReaderLoadingStateCode.rendering:

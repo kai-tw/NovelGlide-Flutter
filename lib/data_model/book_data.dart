@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:image/image.dart';
 
+import '../repository/book_repository.dart';
 import '../utils/epub_utils.dart';
 import 'chapter_data.dart';
 
@@ -17,6 +18,9 @@ class BookData extends Equatable {
   bool get isExist => _file.existsSync();
 
   DateTime get modifiedDate => _file.statSync().modified;
+
+  String get relativeFilePath =>
+      BookRepository.getRelativePath(absoluteFilePath);
 
   @override
   List<Object?> get props => [absoluteFilePath, name, coverImage];

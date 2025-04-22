@@ -1,1 +1,6 @@
-enum ReaderLoadingStateCode { initial, bookLoading, rendering }
+enum ReaderLoadingStateCode {
+  initial,
+  bookLoading,
+  locationGenerating,
+  rendering
+}

@@ -64,7 +64,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     emit(state.copyWith(
       bookName: bookData?.name,
       code: LoadingStateCode.loading,
-      loadingStateCode: ReaderLoadingStateCode.bookLoading,
+      readerLoadingCode: ReaderLoadingStateCode.bookLoading,
     ));
 
     final absolutePath = BookRepository.getAbsolutePath(bookPath);
@@ -77,6 +77,8 @@ class ReaderCubit extends Cubit<ReaderState> {
       savedLocation: CacheRepository.locationCache.get(bookPath),
     );
 
+    webViewHandler.register(
+        'startGenerateLocation', _receiveStartGenerateLocation);
     webViewHandler.register('saveLocation', _receiveSaveLocation);
     webViewHandler.register('loadDone', _receiveLoadDone);
     webViewHandler.register('setState', _receiveSetState);
@@ -98,7 +100,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     }
 
     emit(state.copyWith(
-      loadingStateCode: ReaderLoadingStateCode.rendering,
+      readerLoadingCode: ReaderLoadingStateCode.rendering,
       bookName: bookData?.name,
       bookmarkData: bookmarkData,
       readerSettings: readerSettingsData,
@@ -224,6 +226,12 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// *************************************************************************
   /// Communication
   /// *************************************************************************
+
+  void _receiveStartGenerateLocation(_) {
+    emit(state.copyWith(
+      readerLoadingCode: ReaderLoadingStateCode.locationGenerating,
+    ));
+  }
 
   void _receiveSaveLocation(data) {
     assert(data is String);

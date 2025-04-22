@@ -20,6 +20,10 @@ class _BookmarkWidget extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context)!;
     final daysPassed = _bookmarkData.daysPassed;
     final savedTimeString = _getSavedTimeString(daysPassed, appLocalizations);
+    final subtitle = (_bookmarkData.chapterTitle.isNotEmpty
+            ? '${_bookmarkData.chapterTitle}\n'
+            : '') +
+        savedTimeString;
 
     return Card(
       margin: EdgeInsets.zero,
@@ -33,7 +37,7 @@ class _BookmarkWidget extends StatelessWidget {
           child: Icon(Icons.bookmark_rounded),
         ),
         title: Text(_bookmarkData.bookName),
-        subtitle: Text('${_bookmarkData.chapterTitle}\n$savedTimeString'),
+        subtitle: Text(subtitle),
         onChanged: onChanged,
         onTap: onTap,
       ),
