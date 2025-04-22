@@ -1,7 +1,7 @@
-import 'backup_manager_pref.dart';
-import 'reader_pref.dart';
-import 'sort_order_pref.dart';
-import 'tts_pref.dart';
+part 'backup_manager_pref.dart';
+part 'reader_pref.dart';
+part 'sort_order_pref.dart';
+part 'tts_pref.dart';
 
 class PreferenceKeys {
   PreferenceKeys._();

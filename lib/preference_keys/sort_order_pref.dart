@@ -1,3 +1,5 @@
+part of 'preference_keys.dart';
+
 class SortOrderPref {
   final String sortOrder;
   final String isAscending;

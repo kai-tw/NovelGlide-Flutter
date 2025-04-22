@@ -1,3 +1,5 @@
+part of 'preference_keys.dart';
+
 class ReaderPref {
   final fontSize = 'reader.fontSize';
   final lineHeight = 'reader.lineHeight';

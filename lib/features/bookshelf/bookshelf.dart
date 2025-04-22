@@ -21,6 +21,7 @@ import 'cubit/cubit.dart';
 
 part 'bookshelf_app_bar.dart';
 part 'widgets/book_widget.dart';
+part 'widgets/checkbox.dart';
 part 'widgets/draggable_book.dart';
 part 'widgets/list_item.dart';
 part 'widgets/popup_menu_button.dart';
