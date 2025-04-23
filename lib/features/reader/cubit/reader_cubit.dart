@@ -14,7 +14,6 @@ import '../../../data_model/book_data.dart';
 import '../../../data_model/bookmark_data.dart';
 import '../../../data_model/reader_settings_data.dart';
 import '../../../enum/loading_state_code.dart';
-import '../../../enum/reader_loading_state_code.dart';
 import '../../../enum/reader_navigation_state_code.dart';
 import '../../../repository/book_repository.dart';
 import '../../../repository/bookmark_repository.dart';
@@ -25,9 +24,10 @@ import '../../../utils/int_utils.dart';
 
 part 'reader_destination_type.dart';
 part 'reader_gesture_handler.dart';
+part 'reader_loading_state_code.dart';
 part 'reader_search_cubit.dart';
-part 'reader_search_range.dart';
-part 'reader_search_result.dart';
+part 'reader_search_range_code.dart';
+part 'reader_search_result_data.dart';
 part 'reader_search_state.dart';
 part 'reader_server_handler.dart';
 part 'reader_state.dart';
@@ -63,8 +63,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   }) async {
     emit(state.copyWith(
       bookName: bookData?.name,
-      code: LoadingStateCode.loading,
-      readerLoadingCode: ReaderLoadingStateCode.bookLoading,
+      code: ReaderLoadingStateCode.bookLoading,
     ));
 
     final absolutePath = BookRepository.getAbsolutePath(bookPath);
@@ -77,8 +76,6 @@ class ReaderCubit extends Cubit<ReaderState> {
       savedLocation: CacheRepository.locationCache.get(bookPath),
     );
 
-    webViewHandler.register(
-        'startGenerateLocation', _receiveStartGenerateLocation);
     webViewHandler.register('saveLocation', _receiveSaveLocation);
     webViewHandler.register('loadDone', _receiveLoadDone);
     webViewHandler.register('setState', _receiveSetState);
@@ -95,12 +92,10 @@ class ReaderCubit extends Cubit<ReaderState> {
       _serverHandler.start(),
     ]);
 
-    if (isClosed) {
-      return;
-    }
+    if (isClosed) return;
 
     emit(state.copyWith(
-      readerLoadingCode: ReaderLoadingStateCode.rendering,
+      code: ReaderLoadingStateCode.rendering,
       bookName: bookData?.name,
       bookmarkData: bookmarkData,
       readerSettings: readerSettingsData,
@@ -227,12 +222,6 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Communication
   /// *************************************************************************
 
-  void _receiveStartGenerateLocation(_) {
-    emit(state.copyWith(
-      readerLoadingCode: ReaderLoadingStateCode.locationGenerating,
-    ));
-  }
-
   void _receiveSaveLocation(data) {
     assert(data is String);
     if (bookData != null) {
@@ -242,7 +231,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   void _receiveLoadDone(_) {
     _serverHandler.stop();
-    emit(state.copyWith(code: LoadingStateCode.loaded));
+    emit(state.copyWith(code: ReaderLoadingStateCode.loaded));
 
     // Send theme data after the page is loaded.
     sendThemeData();

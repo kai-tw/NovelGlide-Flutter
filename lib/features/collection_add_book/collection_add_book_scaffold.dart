@@ -8,7 +8,6 @@ import '../../data_model/book_data.dart';
 import '../../data_model/collection_data.dart';
 import '../../enum/loading_state_code.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../../repository/book_repository.dart';
 import '../../repository/collection_repository.dart';
 import '../collection_add/collection_add_dialog.dart';
 import '../common_components/common_back_button.dart';

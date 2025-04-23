@@ -6,8 +6,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data_model/reader_settings_data.dart';
 import '../../data_model/book_data.dart';
-import '../../enum/loading_state_code.dart';
-import '../../enum/reader_loading_state_code.dart';
 import '../../enum/window_class.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../ads/advertisement.dart';
@@ -20,6 +18,7 @@ import 'search/search_scaffold.dart';
 
 part 'widgets/app_bar.dart';
 part 'widgets/breadcrumb.dart';
+part 'widgets/loading_widget.dart';
 part 'widgets/overlap_widget.dart';
 part 'widgets/pagination.dart';
 part 'widgets/scaffold.dart';

@@ -15,10 +15,10 @@ class ReaderSearchCubit extends Cubit<ReaderSearchState> {
   void startSearch() {
     emit(state.copyWith(code: LoadingStateCode.loading));
     switch (state.range) {
-      case ReaderSearchRange.currentChapter:
+      case ReaderSearchRangeCode.currentChapter:
         webViewHandler.searchInCurrentChapter(state.query);
         break;
-      case ReaderSearchRange.all:
+      case ReaderSearchRangeCode.all:
         webViewHandler.searchInWholeBook(state.query);
         break;
     }
@@ -32,8 +32,8 @@ class ReaderSearchCubit extends Cubit<ReaderSearchState> {
       state.copyWith(
         code: LoadingStateCode.loaded,
         resultList: rawList
-            .map(
-                (e) => ReaderSearchResult(cfi: e['cfi'], excerpt: e['excerpt']))
+            .map((e) =>
+                ReaderSearchResultData(cfi: e['cfi'], excerpt: e['excerpt']))
             .toList(),
       ),
     );
@@ -43,7 +43,7 @@ class ReaderSearchCubit extends Cubit<ReaderSearchState> {
     emit(state.copyWith(query: query.trim()));
   }
 
-  void setRange(ReaderSearchRange range) {
+  void setRange(ReaderSearchRangeCode range) {
     emit(state.copyWith(range: range));
   }
 }
