@@ -1,75 +1,46 @@
 part of 'reader_default_navigation.dart';
 
-class ReaderNavBookmarkButton extends StatefulWidget {
+class ReaderNavBookmarkButton extends StatelessWidget {
   const ReaderNavBookmarkButton({super.key});
-
-  @override
-  State<ReaderNavBookmarkButton> createState() => _State();
-}
-
-class _State extends State<ReaderNavBookmarkButton> {
-  CommonButtonStateCode _stateCode = CommonButtonStateCode.disabled;
-
-  @override
-  void initState() {
-    super.initState();
-    _resetState();
-  }
 
   @override
   Widget build(BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
-    return BlocListener<ReaderCubit, ReaderState>(
-      listenWhen: (previous, current) =>
-          previous.readerSettings.isAutoSaving !=
-              current.readerSettings.isAutoSaving ||
+    final cubit = BlocProvider.of<ReaderCubit>(context);
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return BlocBuilder<ReaderCubit, ReaderState>(
+      buildWhen: (previous, current) =>
           previous.code != current.code ||
           previous.bookmarkData != current.bookmarkData ||
           previous.startCfi != current.startCfi ||
-          previous.ttsState != current.ttsState,
-      listener: (_, readerState) {
-        if (_stateCode.isLoading || _stateCode.isSuccess) {
-          return;
-        }
-        _resetState();
+          previous.ttsState != current.ttsState ||
+          previous.readerSettings.isAutoSaving !=
+              current.readerSettings.isAutoSaving,
+      builder: (context, state) {
+        // Was the current page bookmarked?
+        final isBookmarked = !state.readerSettings.isAutoSaving &&
+            state.bookmarkData?.startCfi == state.startCfi;
+
+        // Can the current page be bookmarked?
+        final isEnabled = state.code.isLoaded &&
+            state.ttsState.isStopped &&
+            !state.readerSettings.isAutoSaving &&
+            state.bookmarkData?.startCfi != state.startCfi;
+
+        return IconButton(
+          icon: Icon(
+            isBookmarked
+                ? Icons.bookmark_rounded
+                : Icons.bookmark_outline_rounded,
+          ),
+          tooltip: appLocalizations.readerBookmark,
+          style: IconButton.styleFrom(
+            disabledForegroundColor: isBookmarked ? colorScheme.error : null,
+          ),
+          onPressed: isEnabled ? () => cubit.saveBookmark() : null,
+        );
       },
-      child: IconButton(
-        icon: Icon(
-          _stateCode.isSuccess
-              ? Icons.check_rounded
-              : Icons.bookmark_add_rounded,
-        ),
-        tooltip: appLocalizations.readerBookmark,
-        style: IconButton.styleFrom(
-          disabledForegroundColor: _stateCode.isSuccess ? Colors.green : null,
-        ),
-        onPressed: _stateCode.isIdle ? _onPressed : null,
-      ),
     );
-  }
-
-  void _onPressed() async {
-    setState(() => _stateCode = CommonButtonStateCode.loading);
-
-    BlocProvider.of<ReaderCubit>(context).saveBookmark();
-    setState(() => _stateCode = CommonButtonStateCode.success);
-
-    await Future.delayed(const Duration(seconds: 2));
-    if (mounted) {
-      _resetState();
-    }
-  }
-
-  void _resetState() {
-    final readerState = BlocProvider.of<ReaderCubit>(context).state;
-
-    if (readerState.code.isLoaded &&
-        readerState.bookmarkData?.startCfi != readerState.startCfi &&
-        !readerState.readerSettings.isAutoSaving &&
-        readerState.ttsState.isStopped) {
-      setState(() => _stateCode = CommonButtonStateCode.idle);
-    } else {
-      setState(() => _stateCode = CommonButtonStateCode.disabled);
-    }
   }
 }
