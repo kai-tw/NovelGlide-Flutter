@@ -5,13 +5,14 @@ class _SubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final colorScheme = Theme.of(context).colorScheme;
-    final cubit = BlocProvider.of<BookAddCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final BookAddCubit cubit = BlocProvider.of<BookAddCubit>(context);
 
     return BlocBuilder<BookAddCubit, BookAddState>(
-      buildWhen: (previous, current) => previous.file != current.file,
-      builder: (context, state) {
+      buildWhen: (BookAddState previous, BookAddState current) =>
+          previous.file != current.file,
+      builder: (BuildContext context, BookAddState state) {
         if (state.isValid) {
           return ElevatedButton.icon(
             onPressed: () {

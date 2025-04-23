@@ -1,29 +1,6 @@
 part of 'process_cubit.dart';
 
 class BackupManagerProcessAllDialogState extends Equatable {
-  final bool isLibraryRunning;
-  final bool isCollectionRunning;
-  final bool isBookmarkRunning;
-  final BackupManagerProcessStepCode libraryStep;
-  final BackupManagerProcessStepCode collectionStep;
-  final BackupManagerProcessStepCode bookmarkStep;
-  final double libraryProgress;
-  final double collectionProgress;
-  final double bookmarkProgress;
-
-  @override
-  List<Object?> get props => [
-        isLibraryRunning,
-        isCollectionRunning,
-        isBookmarkRunning,
-        libraryStep,
-        collectionStep,
-        bookmarkStep,
-        libraryProgress,
-        collectionProgress,
-        bookmarkProgress,
-      ];
-
   const BackupManagerProcessAllDialogState({
     this.isLibraryRunning = false,
     this.isCollectionRunning = false,
@@ -35,6 +12,29 @@ class BackupManagerProcessAllDialogState extends Equatable {
     this.collectionProgress = 0,
     this.bookmarkProgress = 0,
   });
+
+  final bool isLibraryRunning;
+  final bool isCollectionRunning;
+  final bool isBookmarkRunning;
+  final BackupManagerProcessStepCode libraryStep;
+  final BackupManagerProcessStepCode collectionStep;
+  final BackupManagerProcessStepCode bookmarkStep;
+  final double libraryProgress;
+  final double collectionProgress;
+  final double bookmarkProgress;
+
+  @override
+  List<Object?> get props => <Object?>[
+        isLibraryRunning,
+        isCollectionRunning,
+        isBookmarkRunning,
+        libraryStep,
+        collectionStep,
+        bookmarkStep,
+        libraryProgress,
+        collectionProgress,
+        bookmarkProgress,
+      ];
 
   BackupManagerProcessAllDialogState copyWith({
     bool? isLibraryRunning,

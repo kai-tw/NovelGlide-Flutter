@@ -5,11 +5,12 @@ class _SubmitButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<_Cubit, _State>(
-      buildWhen: (previous, current) => previous.name != current.name,
-      builder: (context, state) {
-        final isDisabled = state.name?.isEmpty ?? true;
+      buildWhen: (_State previous, _State current) =>
+          previous.name != current.name,
+      builder: (BuildContext context, _State state) {
+        final bool isDisabled = state.name?.isEmpty ?? true;
         return ElevatedButton.icon(
           onPressed: isDisabled ? null : () => _onPressed(context, state),
           style: ElevatedButton.styleFrom(
@@ -28,8 +29,8 @@ class _SubmitButton extends StatelessWidget {
     BuildContext context,
     _State state,
   ) async {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<_Cubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
     if (Form.of(context).validate()) {
       cubit.submit();
 

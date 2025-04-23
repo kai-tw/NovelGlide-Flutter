@@ -1,9 +1,9 @@
 part of '../bookshelf.dart';
 
 class _DraggableBook extends StatelessWidget {
-  final BookData bookData;
-
   const _DraggableBook(this.bookData);
+
+  final BookData bookData;
 
   @override
   Widget build(BuildContext context) {
@@ -11,8 +11,8 @@ class _DraggableBook extends StatelessWidget {
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
 
     return LayoutBuilder(
-      builder: (context, constraints) {
-        return LongPressDraggable(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return LongPressDraggable<BookData>(
           onDragStarted: () => cubit.setDragging(true),
           onDragEnd: (_) => cubit.setDragging(false),
           onDragCompleted: () {

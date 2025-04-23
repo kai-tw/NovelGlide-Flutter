@@ -5,17 +5,18 @@ class _ListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<_Cubit>(context);
+    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
 
     return BlocBuilder<_Cubit, _State>(
-      buildWhen: (previous, current) =>
+      buildWhen: (_State previous, _State current) =>
           previous.code != current.code ||
           previous.collectionList != current.collectionList ||
           previous.selectedCollections != current.selectedCollections,
-      builder: (context, state) {
+      builder: (BuildContext context, _State state) {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
+          case LoadingStateCode.backgroundLoading:
             return const CommonLoading();
 
           case LoadingStateCode.loaded:
@@ -24,13 +25,14 @@ class _ListView extends StatelessWidget {
             } else {
               return ListView.builder(
                 itemCount: state.collectionList.length,
-                itemBuilder: (context, index) {
-                  final data = state.collectionList[index];
-                  final isSelected = state.selectedCollections.contains(data.id)
-                      ? data.pathList.toSet().containsAll(cubit.pathSet)
-                          ? true
-                          : null
-                      : false;
+                itemBuilder: (BuildContext context, int index) {
+                  final CollectionData data = state.collectionList[index];
+                  final bool? isSelected =
+                      state.selectedCollections.contains(data.id)
+                          ? data.pathList.toSet().containsAll(cubit.pathSet)
+                              ? true
+                              : null
+                          : false;
 
                   return CheckboxListTile(
                     contentPadding:
@@ -39,7 +41,7 @@ class _ListView extends StatelessWidget {
                     secondary: const Icon(Icons.folder),
                     tristate: true,
                     value: isSelected,
-                    onChanged: (value) {
+                    onChanged: (bool? value) {
                       if (value == true) {
                         cubit.select(data.id);
                       } else {

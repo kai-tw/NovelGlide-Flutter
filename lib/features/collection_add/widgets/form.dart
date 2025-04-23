@@ -11,7 +11,7 @@ class _Form extends StatelessWidget {
         padding: EdgeInsets.all(24.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             _TitleText(),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 24.0),
@@ -19,7 +19,7 @@ class _Form extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+              children: <Widget>[
                 _CancelButton(),
                 _SubmitButton(),
               ],

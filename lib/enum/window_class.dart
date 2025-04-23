@@ -14,17 +14,17 @@ enum WindowClass {
   /// The window size is greater than 1600 pixels
   extraLarge(1600, double.infinity);
 
-  final double minWidth;
-  final double maxWidth;
-
   const WindowClass(this.minWidth, this.maxWidth);
 
   factory WindowClass.fromWidth(double width) {
-    for (final windowClass in WindowClass.values) {
+    for (final WindowClass windowClass in WindowClass.values) {
       if (windowClass.minWidth <= width && width < windowClass.maxWidth) {
         return windowClass;
       }
     }
     return WindowClass.extraLarge;
   }
+
+  final double minWidth;
+  final double maxWidth;
 }

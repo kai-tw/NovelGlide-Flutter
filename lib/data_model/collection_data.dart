@@ -2,10 +2,6 @@ import 'dart:convert';
 
 /// Represents a collection of data with an ID, name, and a list of paths.
 class CollectionData {
-  final String id;
-  final String name;
-  List<String> pathList;
-
   CollectionData(this.id, this.name, this.pathList);
 
   /// Creates a [CollectionData] instance from a JSON map.
@@ -13,16 +9,22 @@ class CollectionData {
     return CollectionData(
       json['id'] as String,
       json['name'] as String,
-      List<String>.from(json['pathList'] ?? []),
+      List<String>.from(json['pathList'] ?? <String>[]),
     );
   }
 
+  final String id;
+  final String name;
+  List<String> pathList;
+
   /// Converts the [CollectionData] instance to a JSON map.
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'pathList': pathList,
-      };
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'pathList': pathList,
+    };
+  }
 
   @override
   bool operator ==(Object other) =>

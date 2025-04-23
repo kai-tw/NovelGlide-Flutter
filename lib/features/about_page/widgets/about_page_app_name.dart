@@ -10,7 +10,7 @@ class AboutPageAppName extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: FutureBuilder<PackageInfo>(
         future: PackageInfo.fromPlatform(),
-        builder: (context, snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<PackageInfo> snapshot) {
           if (snapshot.hasData) {
             return Text(
               snapshot.data!.appName,

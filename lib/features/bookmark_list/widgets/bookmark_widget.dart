@@ -1,12 +1,6 @@
 part of '../bookmark_list.dart';
 
 class _BookmarkWidget extends StatelessWidget {
-  final BookmarkData _bookmarkData;
-  final bool isSelecting;
-  final bool isSelected;
-  final void Function(bool?)? onChanged;
-  final void Function()? onTap;
-
   const _BookmarkWidget(
     this._bookmarkData, {
     this.isSelecting = false,
@@ -15,12 +9,19 @@ class _BookmarkWidget extends StatelessWidget {
     this.onTap,
   });
 
+  final BookmarkData _bookmarkData;
+  final bool isSelecting;
+  final bool isSelected;
+  final void Function(bool?)? onChanged;
+  final void Function()? onTap;
+
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final daysPassed = _bookmarkData.daysPassed;
-    final savedTimeString = _getSavedTimeString(daysPassed, appLocalizations);
-    final subtitle = (_bookmarkData.chapterTitle.isNotEmpty
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final int daysPassed = _bookmarkData.daysPassed;
+    final String savedTimeString =
+        _getSavedTimeString(daysPassed, appLocalizations);
+    final String subtitle = (_bookmarkData.chapterTitle.isNotEmpty
             ? '${_bookmarkData.chapterTitle}\n'
             : '') +
         savedTimeString;
@@ -48,7 +49,7 @@ class _BookmarkWidget extends StatelessWidget {
     int daysPassed,
     AppLocalizations appLocalizations,
   ) {
-    String savedTimeString = "";
+    String savedTimeString = '';
 
     switch (daysPassed) {
       case 0:

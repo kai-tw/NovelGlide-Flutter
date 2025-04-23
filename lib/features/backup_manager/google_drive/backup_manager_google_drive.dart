@@ -21,14 +21,14 @@ class BackupManagerGoogleDrive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final titleList = [
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final List<String> titleList = <String>[
       appLocalizations.backupManagerLabelAll,
       appLocalizations.backupManagerLabelLibrary,
       appLocalizations.backupManagerLabelCollection,
       appLocalizations.backupManagerLabelBookmark,
     ];
-    final childrenList = [
+    final List<StatelessWidget> childrenList = <StatelessWidget>[
       const _SwitchListTile(),
       const _TimeListTile(),
       const Divider(),
@@ -40,7 +40,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
           title: titleList[i],
           children: BackupManagerTaskType.values
               .map(
-                (taskType) => _ActionButton(
+                (BackupManagerTaskType taskType) => _ActionButton(
                   targetType: BackupManagerTargetType.values[i],
                   taskType: taskType,
                 ),
@@ -50,7 +50,7 @@ class BackupManagerGoogleDrive extends StatelessWidget {
       );
     }
 
-    return BlocProvider(
+    return BlocProvider<BackupManagerGoogleDriveCubit>(
       create: (_) => BackupManagerGoogleDriveCubit(),
       child: SettingsCard(
         child: Column(

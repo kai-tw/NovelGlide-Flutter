@@ -7,23 +7,25 @@ class _CloseButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OverflowBar(
       alignment: MainAxisAlignment.end,
-      children: [
+      children: <Widget>[
         BlocBuilder<ProcessAllDialogCubit, BackupManagerProcessAllDialogState>(
-            buildWhen: (previous, current) =>
+            buildWhen: (BackupManagerProcessAllDialogState previous,
+                    BackupManagerProcessAllDialogState current) =>
                 previous.isLibraryRunning != current.isLibraryRunning ||
                 previous.isCollectionRunning != current.isCollectionRunning ||
                 previous.isBookmarkRunning != current.isBookmarkRunning ||
                 previous.libraryStep != current.libraryStep ||
                 previous.collectionStep != current.collectionStep ||
                 previous.bookmarkStep != current.bookmarkStep,
-            builder: (context, state) {
-              final isLibraryFinished = !state.isLibraryRunning ||
+            builder: (BuildContext context,
+                BackupManagerProcessAllDialogState state) {
+              final bool isLibraryFinished = !state.isLibraryRunning ||
                   state.libraryStep == BackupManagerProcessStepCode.done;
-              final isCollectionFinished = !state.isCollectionRunning ||
+              final bool isCollectionFinished = !state.isCollectionRunning ||
                   state.collectionStep == BackupManagerProcessStepCode.done;
-              final isBookmarkFinished = !state.isBookmarkRunning ||
+              final bool isBookmarkFinished = !state.isBookmarkRunning ||
                   state.bookmarkStep == BackupManagerProcessStepCode.done;
-              final isFinished = isLibraryFinished &&
+              final bool isFinished = isLibraryFinished &&
                   isCollectionFinished &&
                   isBookmarkFinished;
               return TextButton.icon(

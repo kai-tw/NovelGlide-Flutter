@@ -5,7 +5,7 @@ class _CancelButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return TextButton.icon(
       onPressed: () {
         Navigator.of(context).pop();

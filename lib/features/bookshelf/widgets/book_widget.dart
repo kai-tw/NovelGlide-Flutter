@@ -1,14 +1,14 @@
 part of '../bookshelf.dart';
 
 class _BookWidget extends StatelessWidget {
-  final BookData bookData;
-
   const _BookWidget({required this.bookData});
+
+  final BookData bookData;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [
+      children: <Widget>[
         Padding(
           padding: const EdgeInsets.only(bottom: 16.0),
           child: AspectRatio(

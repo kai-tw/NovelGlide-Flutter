@@ -1,17 +1,18 @@
 part of '../bookmark_list.dart';
 
 class _DraggableBookmark extends StatelessWidget {
-  final BookmarkData _data;
-
   const _DraggableBookmark(this._data);
+
+  final BookmarkData _data;
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<BookmarkListCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
 
-    return LayoutBuilder(builder: (context, constraints) {
-      return LongPressDraggable(
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      return LongPressDraggable<BookmarkData>(
         onDragStarted: () => cubit.setDragging(true),
         onDragEnd: (_) => cubit.setDragging(false),
         onDragCompleted: () async {

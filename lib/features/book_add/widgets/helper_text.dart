@@ -5,14 +5,15 @@ class _HelperText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final allowedExtensions = BookAddCubit.allowedExtensions.join(', ');
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final String allowedExtensions = BookAddCubit.allowedExtensions.join(', ');
     return Padding(
       padding: const EdgeInsets.only(bottom: 24.0),
       child: BlocBuilder<BookAddCubit, BookAddState>(
-        buildWhen: (previous, current) => previous.file != current.file,
-        builder: (context, state) {
-          final children = <Widget>[
+        buildWhen: (BookAddState previous, BookAddState current) =>
+            previous.file != current.file,
+        builder: (BuildContext context, BookAddState state) {
+          final List<Widget> children = <Widget>[
             Text(
               '${appLocalizations.fileTypeHelperText} $allowedExtensions',
               textAlign: TextAlign.center,

@@ -9,17 +9,17 @@ class BackupManager extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        title: Text(appLocalizations?.backupManagerTitle ?? 'Backup Manager'),
+        title: Text(appLocalizations.backupManagerTitle),
       ),
       body: const SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            children: [
+            children: <Widget>[
               BackupManagerGoogleDrive(),
             ],
           ),

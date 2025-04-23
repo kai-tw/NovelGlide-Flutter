@@ -9,13 +9,8 @@ part 'advertisement_id.dart';
 part 'advertisement_state.dart';
 
 class AdvertisementCubit extends Cubit<AdvertisementState> {
-  late int _width;
-  final String _adUnitId;
-
-  final Logger _logger = Logger();
-
-  factory AdvertisementCubit(String adUnitId, int width) {
-    final cubit = AdvertisementCubit._internal(
+  factory AdvertisementCubit(String adUnitId) {
+    final AdvertisementCubit cubit = AdvertisementCubit._internal(
       adUnitId,
       const AdvertisementState(),
     );
@@ -24,13 +19,13 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
   }
 
   AdvertisementCubit._internal(this._adUnitId, super.initialState);
+  late int _width;
+  final String _adUnitId;
 
-  void init(int width) async {
-    loadAd();
-  }
+  final Logger _logger = Logger();
 
-  void loadAd() async {
-    final size =
+  Future<void> loadAd() async {
+    final AnchoredAdaptiveBannerAdSize? size =
         await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(_width);
 
     BannerAd(
@@ -38,7 +33,7 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
       request: const AdRequest(),
       size: size ?? AdSize.banner,
       listener: BannerAdListener(
-        onAdLoaded: (ad) {
+        onAdLoaded: (Ad ad) {
           if (!isClosed) {
             // Dispose of the old ad.
             state.bannerAd?.dispose();
@@ -47,7 +42,7 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
             emit(AdvertisementState(bannerAd: ad as BannerAd));
           }
         },
-        onAdFailedToLoad: (ad, err) {
+        onAdFailedToLoad: (Ad ad, LoadAdError err) {
           _logger.e('onAdFailedToLoad: $err');
           ad.dispose();
         },

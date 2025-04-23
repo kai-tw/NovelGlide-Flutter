@@ -15,18 +15,19 @@ import '../../../utils/mime_resolver.dart';
 import '../../common_components/common_list/list_template.dart';
 
 class BookshelfCubit extends CommonListCubit<BookData> {
-  final _sortOrderKey = PreferenceKeys.bookshelf.sortOrder;
-  final _isAscendingKey = PreferenceKeys.bookshelf.isAscending;
-  late final SharedPreferences _prefs;
-  bool _isInitialized = false;
-
   factory BookshelfCubit() {
-    final cubit = BookshelfCubit._(const CommonListState());
+    final BookshelfCubit cubit =
+        BookshelfCubit._(const CommonListState<BookData>());
     cubit._init();
     return cubit;
   }
 
   BookshelfCubit._(super.initialState);
+
+  final String _sortOrderKey = PreferenceKeys.bookshelf.sortOrder;
+  final String _isAscendingKey = PreferenceKeys.bookshelf.isAscending;
+  late final SharedPreferences _prefs;
+  bool _isInitialized = false;
 
   Future<void> _init() async {
     _prefs = await SharedPreferences.getInstance();
@@ -36,9 +37,13 @@ class BookshelfCubit extends CommonListCubit<BookData> {
 
   @override
   Future<void> refresh() async {
-    if (!_isInitialized) {
+    if (!_isInitialized ||
+        state.code.isLoading ||
+        state.code.isBackgroundLoading) {
       return;
     }
+
+    emit(state.copyWith(code: LoadingStateCode.loading));
 
     int sortOrder;
     try {
@@ -47,49 +52,53 @@ class BookshelfCubit extends CommonListCubit<BookData> {
       sortOrder = SortOrderCode.name.index;
     }
 
-    final sortOrderCode = SortOrderCode.values[sortOrder];
-    final isAscending = _prefs.getBool(_isAscendingKey) ?? true;
+    final SortOrderCode sortOrderCode = SortOrderCode.values[sortOrder];
+    final bool isAscending = _prefs.getBool(_isAscendingKey) ?? true;
 
-    final folder = Directory(FilePath.libraryRoot);
-    final fileList = folder
+    final Directory folder = Directory(FilePath.libraryRoot);
+    final Iterable<File> fileList = folder
         .listSync()
         .whereType<File>()
-        .where((e) => MimeResolver.lookupAll(e) == 'application/epub+zip');
+        .where((File e) => MimeResolver.lookupAll(e) == 'application/epub+zip');
 
     if (fileList.isEmpty) {
-      emit(CommonListState(
+      emit(CommonListState<BookData>(
         code: LoadingStateCode.loaded,
         sortOrder: sortOrderCode,
         isAscending: isAscending,
       ));
     } else {
-      List<BookData> list = [];
-      List<BookData> oldList = List<BookData>.from(state.dataList);
+      final List<BookData> list = <BookData>[];
+      final List<BookData> oldList = List<BookData>.from(state.dataList);
 
       // Only read the books that are not read yet.
       for (File epubFile in fileList) {
-        final target = oldList
-                .firstWhereOrNull((e) => e.absoluteFilePath == epubFile.path) ??
+        final BookData target = oldList.firstWhereOrNull(
+                (BookData e) => e.absoluteFilePath == epubFile.path) ??
             await BookRepository.get(epubFile.path);
 
         list.add(target);
         list.sort(BookUtils.sortCompare(sortOrderCode, isAscending));
 
         if (!isClosed) {
-          emit(CommonListState(
-            code: LoadingStateCode.loaded,
+          emit(CommonListState<BookData>(
+            code: LoadingStateCode.backgroundLoading,
             sortOrder: sortOrderCode,
             dataList: List<BookData>.from(list), // Make a copy.
             isAscending: isAscending,
           ));
         }
       }
+
+      if (!isClosed) {
+        emit(state.copyWith(code: LoadingStateCode.loaded));
+      }
     }
   }
 
   void setListOrder({SortOrderCode? sortOrder, bool? isAscending}) {
-    final order = sortOrder ?? state.sortOrder;
-    final ascending = isAscending ?? state.isAscending;
+    final SortOrderCode order = sortOrder ?? state.sortOrder;
+    final bool ascending = isAscending ?? state.isAscending;
 
     _prefs.setInt(_sortOrderKey, order.index);
     _prefs.setBool(_isAscendingKey, ascending);
@@ -102,7 +111,7 @@ class BookshelfCubit extends CommonListCubit<BookData> {
   }
 
   bool deleteSelectedBooks() {
-    List<BookData> newList = List<BookData>.from(state.dataList);
+    final List<BookData> newList = List<BookData>.from(state.dataList);
     for (BookData bookData in state.selectedSet) {
       BookRepository.delete(bookData.absoluteFilePath);
       newList.remove(bookData);
@@ -112,9 +121,9 @@ class BookshelfCubit extends CommonListCubit<BookData> {
   }
 
   bool deleteBook(BookData bookData) {
-    final isSuccess = BookRepository.delete(bookData.absoluteFilePath);
+    final bool isSuccess = BookRepository.delete(bookData.absoluteFilePath);
 
-    List<BookData> newList = List<BookData>.from(state.dataList);
+    final List<BookData> newList = List<BookData>.from(state.dataList);
     newList.remove(bookData);
     emit(state.copyWith(dataList: newList));
     return isSuccess;

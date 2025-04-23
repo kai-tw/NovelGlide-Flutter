@@ -5,21 +5,21 @@ class _PopupMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<BookmarkListCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
 
-    return PopupMenuButton(
+    return PopupMenuButton<void>(
       icon: const Icon(Icons.more_vert_rounded),
       clipBehavior: Clip.hardEdge,
       itemBuilder: (BuildContext context) {
-        final state = cubit.state;
-        final isLoaded = state.code == LoadingStateCode.loaded;
-        List<PopupMenuEntry<dynamic>> entries = [];
+        final CommonListState<BookmarkData> state = cubit.state;
+        final bool isLoaded = state.code == LoadingStateCode.loaded;
+        final List<PopupMenuEntry<void>> entries = <PopupMenuEntry<void>>[];
 
         /// Selecting mode
         if (isLoaded && !state.isSelecting) {
-          entries.addAll([
-            PopupMenuItem(
+          entries.addAll(<PopupMenuEntry<void>>[
+            PopupMenuItem<void>(
                 onTap: () => cubit.setSelecting(true),
                 child: const CommonListSelectModeButton()),
             const PopupMenuDivider(),
@@ -27,15 +27,15 @@ class _PopupMenuButton extends StatelessWidget {
         }
 
         /// Sorting Section
-        final sortMap = {
+        final Map<SortOrderCode, String> sortMap = <SortOrderCode, String>{
           SortOrderCode.name: appLocalizations.bookmarkListSortName,
           SortOrderCode.savedTime: appLocalizations.bookmarkListSortSavedTime,
         };
 
-        for (final entry in sortMap.entries) {
-          final isSelected = state.sortOrder == entry.key;
-          final isAscending = state.isAscending;
-          entries.add(PopupMenuItem(
+        for (final MapEntry<SortOrderCode, String> entry in sortMap.entries) {
+          final bool isSelected = state.sortOrder == entry.key;
+          final bool isAscending = state.isAscending;
+          entries.add(PopupMenuItem<void>(
             onTap: () {
               cubit.setListOrder(
                 sortOrder: !isSelected ? entry.key : null,
@@ -52,13 +52,13 @@ class _PopupMenuButton extends StatelessWidget {
 
         /// Operation Section
         if (isLoaded && state.isSelecting) {
-          entries.addAll([
+          entries.addAll(<PopupMenuEntry<void>>[
             const PopupMenuDivider(),
-            PopupMenuItem(
+            PopupMenuItem<void>(
               onTap: () {
                 showDialog(
                   context: context,
-                  builder: (context) {
+                  builder: (BuildContext context) {
                     return CommonDeleteDialog(
                       onDelete: () => cubit.deleteSelectedBookmarks(),
                     );

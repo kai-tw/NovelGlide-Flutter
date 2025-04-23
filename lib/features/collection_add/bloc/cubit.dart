@@ -13,10 +13,10 @@ class _Cubit extends Cubit<_State> {
 }
 
 class _State extends Equatable {
+  const _State({this.name});
+
   final String? name;
 
   @override
-  List<Object?> get props => [name];
-
-  const _State({this.name});
+  List<Object?> get props => <Object?>[name];
 }

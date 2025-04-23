@@ -7,26 +7,27 @@ import 'cubit/advertisement_cubit.dart';
 export 'cubit/advertisement_cubit.dart';
 
 class Advertisement extends StatelessWidget {
-  final String adUnitId;
+  const Advertisement({super.key, required this.adType});
 
-  const Advertisement({super.key, required this.adUnitId});
+  final AdvertisementType adType;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-      final width = constraints.maxWidth.truncate();
-      return BlocProvider(
-        create: (context) => AdvertisementCubit(adUnitId, width),
+      return BlocProvider<AdvertisementCubit>(
+        create: (BuildContext context) => AdvertisementCubit(adType.id),
         child: BlocBuilder<AdvertisementCubit, AdvertisementState>(
-          builder: (context, state) {
-            return state.bannerAd == null
-                ? const SizedBox.shrink()
-                : SizedBox(
-                    width: constraints.maxWidth,
-                    height: state.bannerAd!.size.height.toDouble(),
-                    child: AdWidget(ad: state.bannerAd!),
-                  );
+          builder: (BuildContext context, AdvertisementState state) {
+            if (state.bannerAd == null) {
+              return const SizedBox.shrink();
+            } else {
+              return SizedBox(
+                width: constraints.maxWidth,
+                height: state.bannerAd!.size.height.toDouble(),
+                child: AdWidget(ad: state.bannerAd!),
+              );
+            }
           },
         ),
       );

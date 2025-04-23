@@ -5,13 +5,15 @@ class _CollectionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<ProcessAllDialogCubit,
         BackupManagerProcessAllDialogState>(
-      buildWhen: (previous, current) =>
+      buildWhen: (BackupManagerProcessAllDialogState previous,
+              BackupManagerProcessAllDialogState current) =>
           previous.collectionStep != current.collectionStep ||
           previous.collectionProgress != current.collectionProgress,
-      builder: (context, state) {
+      builder:
+          (BuildContext context, BackupManagerProcessAllDialogState state) {
         // Disable state.
         if (!state.isCollectionRunning) {
           return ListTile(

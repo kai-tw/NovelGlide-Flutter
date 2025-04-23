@@ -19,15 +19,15 @@ part 'widgets/list_view.dart';
 part 'widgets/navigation.dart';
 
 class CollectionAddBookScaffold extends StatelessWidget {
-  final Set<BookData> dataSet;
-
   const CollectionAddBookScaffold({super.key, required this.dataSet});
+
+  final Set<BookData> dataSet;
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
-    return BlocProvider(
+    return BlocProvider<_Cubit>(
       create: (_) => _Cubit(dataSet),
       child: Scaffold(
         appBar: AppBar(

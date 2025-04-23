@@ -5,13 +5,15 @@ class _LibraryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<ProcessAllDialogCubit,
         BackupManagerProcessAllDialogState>(
-      buildWhen: (previous, current) =>
+      buildWhen: (BackupManagerProcessAllDialogState previous,
+              BackupManagerProcessAllDialogState current) =>
           previous.libraryStep != current.libraryStep ||
           previous.libraryProgress != current.libraryProgress,
-      builder: (context, state) {
+      builder:
+          (BuildContext context, BackupManagerProcessAllDialogState state) {
         // Disable state.
         if (!state.isLibraryRunning) {
           return ListTile(

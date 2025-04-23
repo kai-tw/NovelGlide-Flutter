@@ -16,15 +16,15 @@ part 'target_type.dart';
 part 'task_type.dart';
 
 class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
-  final String libraryId;
-  final String collectionId;
-  final String bookmarkId;
-
   ProcessAllDialogCubit({
     required this.libraryId,
     required this.collectionId,
     required this.bookmarkId,
   }) : super(const BackupManagerProcessAllDialogState());
+
+  final String libraryId;
+  final String collectionId;
+  final String bookmarkId;
 
   Future<void> start(
     BackupManagerTaskType taskType,
@@ -83,7 +83,7 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
   }
 
   Future<void> backupAll() async {
-    Future.wait([
+    Future.wait(<Future<void>>[
       backupLibrary(),
       backupBookmarks(),
       backupCollections(),
@@ -96,13 +96,13 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
       libraryStep: BackupManagerProcessStepCode.idle,
     ));
 
-    final tempFolder = RandomUtils.getAvailableTempFolder()
+    final Directory tempFolder = RandomUtils.getAvailableTempFolder()
       ..createSync(recursive: true);
 
     // Zip the library
-    final zipFile = await BackupUtils.archiveLibrary(
+    final File zipFile = await BackupUtils.archiveLibrary(
       tempFolder.path,
-      onZipping: (progress) {
+      onZipping: (double progress) {
         emit(state.copyWith(
           libraryStep: BackupManagerProcessStepCode.zip,
           libraryProgress: progress / 100,
@@ -115,7 +115,7 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
     await GoogleDriveApi.uploadFile('appDataFolder', zipFile);
     tempFolder.deleteSync(recursive: true);
 
-    final result =
+    final bool result =
         await GoogleDriveApi.fileExists(BackupUtils.libraryArchiveName);
     emit(state.copyWith(
       libraryStep: result
@@ -130,11 +130,11 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
       isBookmarkRunning: true,
       bookmarkStep: BackupManagerProcessStepCode.upload,
     ));
-    final bookmarkFile = BookmarkRepository.jsonFile;
+    final File bookmarkFile = BookmarkRepository.jsonFile;
     await GoogleDriveApi.uploadFile('appDataFolder', bookmarkFile);
 
     // Emit the result
-    final result =
+    final bool result =
         await GoogleDriveApi.fileExists(BookmarkRepository.jsonFileName);
     emit(state.copyWith(
       bookmarkStep: result
@@ -148,10 +148,10 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
       isCollectionRunning: true,
       collectionStep: BackupManagerProcessStepCode.upload,
     ));
-    final collectionFile = CollectionRepository.jsonFile;
+    final File collectionFile = CollectionRepository.jsonFile;
     await GoogleDriveApi.uploadFile('appDataFolder', collectionFile);
 
-    final result =
+    final bool result =
         await GoogleDriveApi.fileExists(CollectionRepository.jsonFileName);
     emit(state.copyWith(
       collectionStep: result
@@ -161,7 +161,7 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
   }
 
   Future<void> deleteAll() async {
-    await Future.wait([
+    await Future.wait(<Future<void>>[
       deleteLibrary(),
       deleteCollections(),
       deleteBookmarks(),
@@ -174,7 +174,7 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
       libraryStep: BackupManagerProcessStepCode.delete,
     ));
     await GoogleDriveApi.deleteFile(libraryId);
-    final result =
+    final bool result =
         !(await GoogleDriveApi.fileExists(BackupUtils.libraryArchiveName));
     emit(state.copyWith(
       libraryStep: result
@@ -189,7 +189,7 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
       bookmarkStep: BackupManagerProcessStepCode.delete,
     ));
     await GoogleDriveApi.deleteFile(bookmarkId);
-    final result =
+    final bool result =
         !(await GoogleDriveApi.fileExists(BookmarkRepository.jsonFileName));
     emit(state.copyWith(
       bookmarkStep: result
@@ -204,7 +204,7 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
       collectionStep: BackupManagerProcessStepCode.delete,
     ));
     await GoogleDriveApi.deleteFile(collectionId);
-    final result =
+    final bool result =
         !(await GoogleDriveApi.fileExists(CollectionRepository.jsonFileName));
     emit(state.copyWith(
       collectionStep: result
@@ -214,7 +214,7 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
   }
 
   Future<void> restoreAll() async {
-    await Future.wait([
+    await Future.wait(<Future<void>>[
       restoreLibrary(),
       restoreCollections(),
       restoreBookmarks(),
@@ -226,10 +226,10 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
       isLibraryRunning: true,
       libraryStep: BackupManagerProcessStepCode.idle,
     ));
-    final tempFolder = RandomUtils.getAvailableTempFolder();
+    final Directory tempFolder = RandomUtils.getAvailableTempFolder();
     tempFolder.createSync(recursive: true);
 
-    final zipFile = File(
+    final File zipFile = File(
       join(
         tempFolder.path,
         BackupUtils.libraryArchiveName,
@@ -240,7 +240,7 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
     await GoogleDriveApi.downloadFile(
       libraryId,
       zipFile,
-      onDownload: (downloaded, total) {
+      onDownload: (int downloaded, int total) {
         emit(state.copyWith(
           libraryStep: BackupManagerProcessStepCode.download,
           libraryProgress: (downloaded / total).clamp(0, 1),
@@ -253,7 +253,7 @@ class ProcessAllDialogCubit extends Cubit<BackupManagerProcessAllDialogState> {
     await BackupUtils.restoreBackup(
       tempFolder,
       zipFile,
-      onExtracting: (progress) {
+      onExtracting: (double progress) {
         emit(state.copyWith(
           libraryStep: BackupManagerProcessStepCode.unzip,
           libraryProgress: progress / 100,

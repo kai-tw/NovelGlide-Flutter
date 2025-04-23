@@ -10,12 +10,6 @@ part 'widgets/collection_tile.dart';
 part 'widgets/library_tile.dart';
 
 class BackupManagerProcessAllDialog extends StatelessWidget {
-  final BackupManagerTargetType targetType;
-  final BackupManagerTaskType taskType;
-  final String libraryId;
-  final String collectionId;
-  final String bookmarkId;
-
   const BackupManagerProcessAllDialog({
     super.key,
     required this.taskType,
@@ -25,9 +19,15 @@ class BackupManagerProcessAllDialog extends StatelessWidget {
     required this.bookmarkId,
   });
 
+  final BackupManagerTargetType targetType;
+  final BackupManagerTaskType taskType;
+  final String libraryId;
+  final String collectionId;
+  final String bookmarkId;
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<ProcessAllDialogCubit>(
       create: (_) => ProcessAllDialogCubit(
         libraryId: libraryId,
         collectionId: collectionId,
@@ -40,7 +40,7 @@ class BackupManagerProcessAllDialog extends StatelessWidget {
             padding: EdgeInsets.all(24.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: [
+              children: <Widget>[
                 _LibraryTile(),
                 _CollectionTile(),
                 _BookmarkTile(),

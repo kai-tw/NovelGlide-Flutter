@@ -1,12 +1,6 @@
 part of 'backup_manager_google_drive_cubit.dart';
 
 class BackupManagerGoogleDriveState extends Equatable {
-  final LoadingStateCode code;
-  final String? libraryId;
-  final String? collectionId;
-  final String? bookmarkId;
-  final DateTime? lastBackupTime;
-
   const BackupManagerGoogleDriveState({
     this.code = LoadingStateCode.initial,
     this.libraryId,
@@ -15,8 +9,14 @@ class BackupManagerGoogleDriveState extends Equatable {
     this.lastBackupTime,
   });
 
+  final LoadingStateCode code;
+  final String? libraryId;
+  final String? collectionId;
+  final String? bookmarkId;
+  final DateTime? lastBackupTime;
+
   @override
-  List<Object?> get props => [
+  List<Object?> get props => <Object?>[
         code,
         libraryId,
         collectionId,

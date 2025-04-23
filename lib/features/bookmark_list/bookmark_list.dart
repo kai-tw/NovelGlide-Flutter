@@ -14,11 +14,13 @@ import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import '../common_components/draggable_feedback_widget.dart';
 import '../common_components/draggable_placeholder_widget.dart';
+import '../homepage/homepage.dart';
 import '../reader/cubit/reader_cubit.dart';
 import '../reader/reader.dart';
 import 'cubit/cubit.dart';
 
 part 'bookmark_list_app_bar.dart';
+part 'bookmark_list_scaffold_body.dart';
 part 'widgets/bookmark_widget.dart';
 part 'widgets/draggable_bookmark.dart';
 part 'widgets/list_item.dart';
@@ -29,18 +31,20 @@ class BookmarkList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     BlocProvider.of<BookmarkListCubit>(context).refresh();
 
-    return BlocBuilder<BookmarkListCubit, CommonListState>(
-      buildWhen: (previous, current) =>
+    return BlocBuilder<BookmarkListCubit, CommonListState<BookmarkData>>(
+      buildWhen: (CommonListState<BookmarkData> previous,
+              CommonListState<BookmarkData> current) =>
           previous.code != current.code ||
           previous.dataList != current.dataList,
-      builder: (context, state) {
+      builder: (BuildContext context, CommonListState<BookmarkData> state) {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
+          case LoadingStateCode.backgroundLoading:
             return const CommonSliverLoading();
 
           case LoadingStateCode.loaded:
@@ -55,7 +59,7 @@ class BookmarkList extends StatelessWidget {
                 ),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    (_, index) {
+                    (_, int index) {
                       return _ListItem(state.dataList[index]);
                     },
                     childCount: state.dataList.length,

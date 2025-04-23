@@ -5,11 +5,6 @@ abstract class CommonListCubit<T> extends Cubit<CommonListState<T>> {
 
   Future<void> refresh();
 
-  Future<void> dragToRefresh() async {
-    emit(state.copyWith(code: LoadingStateCode.loading));
-    await refresh();
-  }
-
   void unfocused() {
     setSelecting(false);
     setDragging(false);

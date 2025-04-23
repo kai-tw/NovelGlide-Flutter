@@ -7,18 +7,18 @@ class _Form extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(24.0),
-      child: BlocProvider(
-        create: (context) => BookAddCubit(),
+      child: BlocProvider<BookAddCubit>(
+        create: (_) => BookAddCubit(),
         child: const Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             _InfoTile(),
             _HelperText(),
             OverflowBar(
               alignment: MainAxisAlignment.spaceBetween,
               overflowAlignment: OverflowBarAlignment.center,
               overflowSpacing: 10.0,
-              children: [
+              children: <Widget>[
                 _PickFileButton(),
                 _SubmitButton(),
               ],

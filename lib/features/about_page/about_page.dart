@@ -11,7 +11,7 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
@@ -22,7 +22,7 @@ class AboutPage extends StatelessWidget {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: <Widget>[
               AppIcon(
                 margin: EdgeInsets.symmetric(vertical: 24.0),
                 width: 100,

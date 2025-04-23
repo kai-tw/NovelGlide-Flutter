@@ -5,10 +5,11 @@ class _InfoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<BookAddCubit, BookAddState>(
-      buildWhen: (previous, current) => previous.file != current.file,
-      builder: (context, state) {
+      buildWhen: (BookAddState previous, BookAddState current) =>
+          previous.file != current.file,
+      builder: (BuildContext context, BookAddState state) {
         return ListTile(
           contentPadding: const EdgeInsets.only(bottom: 16.0),
           leading: const Icon(Icons.book_outlined, size: 48),

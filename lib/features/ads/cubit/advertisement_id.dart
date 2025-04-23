@@ -1,13 +1,15 @@
 part of 'advertisement_cubit.dart';
 
-class AdvertisementId {
-  static String get adaptiveBanner {
-    if (Platform.isAndroid) {
-      return 'ca-app-pub-1579558558142906/6034508731';
-    } else if (Platform.isIOS) {
-      return 'ca-app-pub-1579558558142906/3980025184';
-    } else {
-      throw UnsupportedError('Unsupported platform');
-    }
-  }
+enum AdvertisementType {
+  adaptiveBanner(
+    android: 'ca-app-pub-1579558558142906/6034508731',
+    ios: 'ca-app-pub-1579558558142906/3980025184',
+  );
+
+  const AdvertisementType({required this.android, required this.ios});
+
+  final String android;
+  final String ios;
+
+  String get id => Platform.isAndroid ? android : ios;
 }

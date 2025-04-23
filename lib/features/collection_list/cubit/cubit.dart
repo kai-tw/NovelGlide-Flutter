@@ -29,6 +29,8 @@ class CollectionListCubit extends CommonListCubit<CollectionData> {
 
   @override
   Future<void> refresh() async {
+    emit(state.copyWith(code: LoadingStateCode.loading));
+
     final collectionList = CollectionRepository.getList();
 
     int sortOrder;

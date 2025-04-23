@@ -1,12 +1,8 @@
 part of '../collection_add_book_scaffold.dart';
 
 class _Cubit extends Cubit<_State> {
-  final Set<BookData> dataSet;
-
-  Set<String> get pathSet => dataSet.map((e) => e.relativeFilePath).toSet();
-
   factory _Cubit(Set<BookData> dataSet) {
-    final cubit = _Cubit._internal(
+    final _Cubit cubit = _Cubit._internal(
       dataSet,
       const _State(),
     );
@@ -16,6 +12,11 @@ class _Cubit extends Cubit<_State> {
 
   _Cubit._internal(this.dataSet, super.initialState);
 
+  final Set<BookData> dataSet;
+
+  Set<String> get pathSet =>
+      dataSet.map((BookData e) => e.relativeFilePath).toSet();
+
   void _init() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       refresh();
@@ -23,17 +24,18 @@ class _Cubit extends Cubit<_State> {
   }
 
   void refresh() {
-    List<CollectionData> collectionList = CollectionRepository.getList();
-    Set<String> selectedCollections = collectionList
-        .where((e) => e.pathList
-            .map((e) => basename(e))
+    final List<CollectionData> collectionList = CollectionRepository.getList();
+    final Set<String> selectedCollections = collectionList
+        .where((CollectionData e) => e.pathList
+            .map((String e) => basename(e))
             .toSet()
             .intersection(pathSet.toSet())
             .isNotEmpty)
-        .map((e) => e.id)
+        .map((CollectionData e) => e.id)
         .toSet();
 
-    collectionList.sort((a, b) => compareNatural(a.name, b.name));
+    collectionList.sort(
+        (CollectionData a, CollectionData b) => compareNatural(a.name, b.name));
 
     emit(_State(
       code: LoadingStateCode.loaded,
@@ -43,29 +45,33 @@ class _Cubit extends Cubit<_State> {
   }
 
   void select(String id) {
-    final newList = List<CollectionData>.from(state.collectionList);
-    final target = newList.firstWhere((e) => e.id == id);
-    final set = target.pathList.toSet();
+    final List<CollectionData> newList =
+        List<CollectionData>.from(state.collectionList);
+    final CollectionData target =
+        newList.firstWhere((CollectionData e) => e.id == id);
+    final Set<String> set = target.pathList.toSet();
     set.addAll(pathSet);
     target.pathList = set.toList();
     emit(state.copyWith(
       collectionList: newList,
-      selectedCollections: {...state.selectedCollections, id},
+      selectedCollections: <String>{...state.selectedCollections, id},
     ));
   }
 
   void deselect(String id) {
     emit(state.copyWith(
-        selectedCollections: {...state.selectedCollections}..remove(id)));
+        selectedCollections: <String>{...state.selectedCollections}
+          ..remove(id)));
   }
 
   void save() {
-    final pathList = dataSet.map((e) => e.relativeFilePath).toSet();
+    final Set<String> pathList =
+        dataSet.map((BookData e) => e.relativeFilePath).toSet();
     for (CollectionData data in state.collectionList) {
       if (state.selectedCollections.contains(data.id)) {
         data.pathList.addAll(pathList);
       } else {
-        data.pathList.removeWhere((e) => pathList.contains(e));
+        data.pathList.removeWhere((String e) => pathList.contains(e));
       }
       CollectionRepository.save(data);
     }
@@ -73,18 +79,19 @@ class _Cubit extends Cubit<_State> {
 }
 
 class _State extends Equatable {
+  const _State({
+    this.code = LoadingStateCode.initial,
+    this.collectionList = const <CollectionData>[],
+    this.selectedCollections = const <String>{},
+  });
+
   final LoadingStateCode code;
   final List<CollectionData> collectionList;
   final Set<String> selectedCollections;
 
   @override
-  List<Object?> get props => [code, collectionList, selectedCollections];
-
-  const _State({
-    this.code = LoadingStateCode.initial,
-    this.collectionList = const [],
-    this.selectedCollections = const {},
-  });
+  List<Object?> get props =>
+      <Object?>[code, collectionList, selectedCollections];
 
   _State copyWith({
     LoadingStateCode? code,

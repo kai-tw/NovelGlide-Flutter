@@ -13,7 +13,7 @@ class _PopupMenuButton extends StatelessWidget {
   }
 
   List<PopupMenuEntry<dynamic>> _itemBuilder(BuildContext context) {
-    final cubit = BlocProvider.of<_Cubit>(context);
+    final cubit = BlocProvider.of<CollectionViewerCubit>(context);
     final isLoaded = cubit.state.code.isLoaded;
     List<PopupMenuEntry<dynamic>> entries = [];
 

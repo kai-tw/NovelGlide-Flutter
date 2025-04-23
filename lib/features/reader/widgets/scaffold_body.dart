@@ -11,7 +11,6 @@ class _ScaffoldBody extends StatelessWidget {
         /// Reader WebView
         Column(
           children: [
-            Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
             const _Breadcrumb(),
             Expanded(
               child: GestureDetector(

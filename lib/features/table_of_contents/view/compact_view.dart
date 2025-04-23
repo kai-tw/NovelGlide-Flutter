@@ -11,7 +11,6 @@ class _CompactView extends StatelessWidget {
     return SafeArea(
       child: Column(
         children: [
-          Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
           Expanded(
             child: RefreshIndicator(
               onRefresh: () async => cubit.refresh(),

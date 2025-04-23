@@ -5,14 +5,16 @@ class _BookmarkTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<ProcessAllDialogCubit,
         BackupManagerProcessAllDialogState>(
-      buildWhen: (previous, current) =>
+      buildWhen: (BackupManagerProcessAllDialogState previous,
+              BackupManagerProcessAllDialogState current) =>
           previous.isBookmarkRunning != current.isBookmarkRunning ||
           previous.bookmarkStep != current.bookmarkStep ||
           previous.bookmarkProgress != current.bookmarkProgress,
-      builder: (context, state) {
+      builder:
+          (BuildContext context, BackupManagerProcessAllDialogState state) {
         // Disable state.
         if (!state.isBookmarkRunning) {
           return ListTile(

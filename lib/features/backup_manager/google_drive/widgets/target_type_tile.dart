@@ -1,13 +1,13 @@
 part of '../backup_manager_google_drive.dart';
 
 class _TargetTypeTile extends StatelessWidget {
-  final String title;
-  final List<Widget> children;
-
   const _TargetTypeTile({
     required this.title,
     required this.children,
   });
+
+  final String title;
+  final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {

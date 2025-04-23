@@ -1,18 +1,19 @@
 part of '../backup_manager_google_drive.dart';
 
 class _ActionButton extends StatelessWidget {
-  final BackupManagerTargetType targetType;
-  final BackupManagerTaskType taskType;
-
   const _ActionButton({
     required this.targetType,
     required this.taskType,
   });
 
+  final BackupManagerTargetType targetType;
+  final BackupManagerTaskType taskType;
+
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final BackupManagerGoogleDriveCubit cubit =
+        BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
     IconData iconData;
     String label;
 
@@ -81,9 +82,11 @@ class _ActionButton extends StatelessWidget {
 
     return BlocBuilder<BackupManagerGoogleDriveCubit,
         BackupManagerGoogleDriveState>(
-      buildWhen: (previous, current) => previous.code != current.code,
-      builder: (context, state) {
-        final isEnabled = state.code.isLoaded;
+      buildWhen: (BackupManagerGoogleDriveState previous,
+              BackupManagerGoogleDriveState current) =>
+          previous.code != current.code,
+      builder: (BuildContext context, BackupManagerGoogleDriveState state) {
+        final bool isEnabled = state.code.isLoaded;
         return IconButton(
           icon: Icon(
             iconData,
@@ -101,7 +104,7 @@ class _ActionButton extends StatelessWidget {
                       collectionId: cubit.state.collectionId!,
                       bookmarkId: cubit.state.bookmarkId!,
                     ),
-                  ).then((value) => cubit.refresh());
+                  ).then((_) => cubit.refresh());
                 }
               : null,
         );

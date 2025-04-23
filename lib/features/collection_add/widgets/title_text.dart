@@ -5,7 +5,7 @@ class _TitleText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Text(
       appLocalizations.collectionAddTitle,
       style: Theme.of(context).textTheme.titleLarge,

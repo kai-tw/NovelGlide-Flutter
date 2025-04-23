@@ -10,17 +10,17 @@ part 'state.dart';
 
 /// Cubit to manage the state of adding a book.
 class BookAddCubit extends Cubit<BookAddState> {
-  static final allowedExtensions = ['epub'];
-
   BookAddCubit() : super(const BookAddState());
+
+  static final List<String> allowedExtensions = <String>['epub'];
 
   /// Allows the user to pick a file.
   Future<void> pickFile() async {
-    final result = await FilePicker.platform.pickFiles(
+    final FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: allowedExtensions,
     );
-    final path = result?.files.single.path;
+    final String? path = result?.files.single.path;
 
     if (!isClosed) {
       emit(

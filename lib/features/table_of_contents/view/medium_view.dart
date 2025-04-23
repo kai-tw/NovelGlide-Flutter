@@ -34,7 +34,6 @@ class _MediumView extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Advertisement(adUnitId: AdvertisementId.adaptiveBanner),
                   ],
                 ),
               ),

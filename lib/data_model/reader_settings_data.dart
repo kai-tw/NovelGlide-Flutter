@@ -5,34 +5,6 @@ import '../preference_keys/preference_keys.dart';
 
 /// Represents the settings for a reader, including font size, line height, and other preferences.
 class ReaderSettingsData extends Equatable {
-  final double fontSize;
-  static const defaultFontSize = 16.0;
-  static const minFontSize = 12.0;
-  static const maxFontSize = 32.0;
-
-  final double lineHeight;
-  static const defaultLineHeight = 1.5;
-  static const minLineHeight = 1.0;
-  static const maxLineHeight = 3.0;
-
-  final bool isAutoSaving;
-  static const defaultIsAutoSaving = false;
-
-  final bool isSmoothScroll;
-  static const defaultIsSmoothScroll = false;
-
-  final ReaderSettingsPageNumType pageNumType;
-  static const defaultPageNumType = ReaderSettingsPageNumType.number;
-
-  @override
-  List<Object?> get props => [
-        fontSize,
-        lineHeight,
-        isAutoSaving,
-        isSmoothScroll,
-        pageNumType,
-      ];
-
   const ReaderSettingsData({
     this.fontSize = defaultFontSize,
     this.lineHeight = defaultLineHeight,
@@ -40,6 +12,35 @@ class ReaderSettingsData extends Equatable {
     this.isSmoothScroll = defaultIsSmoothScroll,
     this.pageNumType = defaultPageNumType,
   });
+
+  final double fontSize;
+  static const double defaultFontSize = 16.0;
+  static const double minFontSize = 12.0;
+  static const double maxFontSize = 32.0;
+
+  final double lineHeight;
+  static const double defaultLineHeight = 1.5;
+  static const double minLineHeight = 1.0;
+  static const double maxLineHeight = 3.0;
+
+  final bool isAutoSaving;
+  static const bool defaultIsAutoSaving = false;
+
+  final bool isSmoothScroll;
+  static const bool defaultIsSmoothScroll = false;
+
+  final ReaderSettingsPageNumType pageNumType;
+  static const ReaderSettingsPageNumType defaultPageNumType =
+      ReaderSettingsPageNumType.number;
+
+  @override
+  List<Object?> get props => <Object?>[
+        fontSize,
+        lineHeight,
+        isAutoSaving,
+        isSmoothScroll,
+        pageNumType,
+      ];
 
   /// Loads the reader settings from shared preferences.
   static Future<ReaderSettingsData> load() async {

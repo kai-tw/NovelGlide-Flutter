@@ -24,7 +24,7 @@ class BookAddDialog extends StatelessWidget {
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: WindowClass.compact.maxWidth),
         child: const Stack(
-          children: [
+          children: <Widget>[
             _Form(),
             Positioned(
               top: 4.0,

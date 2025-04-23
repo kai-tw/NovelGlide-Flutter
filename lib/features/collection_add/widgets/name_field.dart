@@ -5,23 +5,23 @@ class _NameField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<_Cubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
     return TextFormField(
       decoration: InputDecoration(
         labelText: appLocalizations.collectionName,
       ),
-      inputFormatters: [
+      inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.singleLineFormatter,
       ],
-      validator: (value) {
+      validator: (String? value) {
         if (value?.isEmpty ?? true) {
           return appLocalizations.collectionAddEmpty;
         } else {
           return null;
         }
       },
-      onChanged: (value) {
+      onChanged: (String value) {
         cubit.setName(value);
       },
     );

@@ -8,7 +8,6 @@ import '../../../data_model/reader_settings_data.dart';
 import '../../data_model/book_data.dart';
 import '../../enum/window_class.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../ads/advertisement.dart';
 import '../common_components/common_back_button.dart';
 import '../common_components/common_loading.dart';
 import 'cubit/reader_cubit.dart';

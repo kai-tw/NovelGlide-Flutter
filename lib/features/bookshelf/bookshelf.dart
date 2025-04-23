@@ -16,12 +16,14 @@ import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import '../common_components/draggable_feedback_widget.dart';
 import '../common_components/draggable_placeholder_widget.dart';
+import '../homepage/homepage.dart';
 import '../table_of_contents/table_of_contents.dart';
 import 'cubit/cubit.dart';
 
 part 'bookshelf_app_bar.dart';
+part 'bookshelf_loading_indicator.dart';
+part 'bookshelf_scaffold_body.dart';
 part 'widgets/book_widget.dart';
-part 'widgets/checkbox.dart';
 part 'widgets/draggable_book.dart';
 part 'widgets/list_item.dart';
 part 'widgets/popup_menu_button.dart';
@@ -31,18 +33,24 @@ class Bookshelf extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     BlocProvider.of<BookshelfCubit>(context).refresh();
 
     return BlocBuilder<BookshelfCubit, CommonListState<BookData>>(
-      buildWhen: (previous, current) =>
+      buildWhen: (CommonListState<BookData> previous,
+              CommonListState<BookData> current) =>
           previous.code != current.code ||
           previous.dataList != current.dataList ||
           previous.isAscending != current.isAscending ||
           previous.sortOrder != current.sortOrder,
-      builder: (context, state) {
+      builder: (BuildContext context, CommonListState<BookData> state) {
         switch (state.code) {
+          case LoadingStateCode.initial:
+          case LoadingStateCode.loading:
+            return const CommonSliverLoading();
+
+          case LoadingStateCode.backgroundLoading:
           case LoadingStateCode.loaded:
             if (state.dataList.isEmpty) {
               return CommonSliverListEmpty(
@@ -50,9 +58,8 @@ class Bookshelf extends StatelessWidget {
               );
             } else {
               // Avoid books from being covered by the navigation bar.
-              final bottomPadding =
+              final double bottomPadding =
                   MediaQuery.of(context).padding.bottom + 48.0;
-
               return SliverPadding(
                 padding: EdgeInsets.only(bottom: bottomPadding),
                 sliver: SliverGrid(
@@ -61,16 +68,13 @@ class Bookshelf extends StatelessWidget {
                     childAspectRatio: 150 / 300,
                   ),
                   delegate: SliverChildBuilderDelegate(
-                    (context, index) => _SliverListItem(state.dataList[index]),
+                    (BuildContext context, int index) =>
+                        _SliverListItem(state.dataList[index]),
                     childCount: state.dataList.length,
                   ),
                 ),
               );
             }
-
-          case LoadingStateCode.initial:
-          case LoadingStateCode.loading:
-            return const CommonSliverLoading();
         }
       },
     );

@@ -1,21 +1,22 @@
 part of '../bookmark_list.dart';
 
 class _ListItem extends StatelessWidget {
-  final BookmarkData _bookmarkData;
-
   const _ListItem(this._bookmarkData);
+
+  final BookmarkData _bookmarkData;
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<BookmarkListCubit>(context);
-    return BlocBuilder<BookmarkListCubit, CommonListState>(
-      buildWhen: (previous, current) =>
+    final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
+    return BlocBuilder<BookmarkListCubit, CommonListState<BookmarkData>>(
+      buildWhen: (CommonListState<BookmarkData> previous,
+              CommonListState<BookmarkData> current) =>
           previous.isSelecting != current.isSelecting ||
           previous.selectedSet.contains(_bookmarkData) !=
               current.selectedSet.contains(_bookmarkData),
-      builder: (context, state) {
+      builder: (BuildContext context, CommonListState<BookmarkData> state) {
         if (state.isSelecting) {
-          final isSelected = state.selectedSet.contains(_bookmarkData);
+          final bool isSelected = state.selectedSet.contains(_bookmarkData);
           return _BookmarkWidget(
             _bookmarkData,
             isSelecting: state.isSelecting,

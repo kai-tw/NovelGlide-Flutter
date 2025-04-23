@@ -17,6 +17,7 @@ class _SliverList extends StatelessWidget {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
+          case LoadingStateCode.backgroundLoading:
             return const CommonSliverLoading();
 
           case LoadingStateCode.loaded:

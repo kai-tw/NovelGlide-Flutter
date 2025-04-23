@@ -53,7 +53,7 @@ class _PreferenceCard extends StatelessWidget {
           ),
           _ListTile(
             onDelete: () async {
-              await ReaderSettingsData().save();
+              await const ReaderSettingsData().save();
             },
             iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetReader,

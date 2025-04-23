@@ -5,19 +5,22 @@ class _SwitchListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final BackupManagerGoogleDriveCubit cubit =
+        BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
     return BlocBuilder<BackupManagerGoogleDriveCubit,
         BackupManagerGoogleDriveState>(
-      buildWhen: (previous, current) => previous.code != current.code,
-      builder: (context, state) {
+      buildWhen: (BackupManagerGoogleDriveState previous,
+              BackupManagerGoogleDriveState current) =>
+          previous.code != current.code,
+      builder: (BuildContext context, BackupManagerGoogleDriveState state) {
         return SwitchListTile(
           contentPadding: const EdgeInsets.fromLTRB(16.0, 4.0, 8.0, 4.0),
           title: Text(appLocalizations.backupManagerGoogleDrive),
           secondary: const Icon(Icons.cloud_rounded),
           value: state.code == LoadingStateCode.loaded,
           onChanged: state.code != LoadingStateCode.loading
-              ? (value) async {
+              ? (bool value) async {
                   try {
                     await cubit.setEnabled(value);
                     cubit.refresh();
@@ -34,10 +37,10 @@ class _SwitchListTile extends StatelessWidget {
   }
 
   void _errorHandler(BuildContext context, Object e) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         if (e is GoogleDriveSignInException) {
           return CommonErrorDialog(
             content: appLocalizations.exceptionGoogleDriveSignIn,

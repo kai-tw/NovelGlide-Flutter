@@ -1,6 +1,8 @@
 part of 'cubit.dart';
 
 class BookAddState extends Equatable {
+  const BookAddState({this.file});
+
   final File? file;
 
   bool get isEmpty => file == null;
@@ -14,12 +16,10 @@ class BookAddState extends Equatable {
   bool get isExtensionValid => filePath == null
       ? false
       : BookAddCubit.allowedExtensions
-          .any((extension) => filePath!.endsWith(extension));
+          .any((String extension) => filePath!.endsWith(extension));
 
   bool get isValid => !isEmpty && !fileExists && isExtensionValid;
 
   @override
-  List<Object?> get props => [file];
-
-  const BookAddState({this.file});
+  List<Object?> get props => <Object?>[file];
 }

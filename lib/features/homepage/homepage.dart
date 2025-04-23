@@ -7,7 +7,6 @@ import '../../data_model/bookmark_data.dart';
 import '../../data_model/collection_data.dart';
 import '../../enum/window_class.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../ads/advertisement.dart';
 import '../book_add/book_add_dialog.dart';
 import '../bookmark_list/bookmark_list.dart';
 import '../bookmark_list/cubit/cubit.dart';

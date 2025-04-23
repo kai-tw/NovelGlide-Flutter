@@ -20,10 +20,10 @@ class AboutPageAppVersion extends StatelessWidget {
 
     return FutureBuilder<PackageInfo>(
       future: PackageInfo.fromPlatform(),
-      builder: (context, snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<PackageInfo> snapshot) {
         if (snapshot.hasData) {
-          final version = snapshot.data!.version;
-          final buildVersion = snapshot.data!.buildNumber;
+          final String version = snapshot.data!.version;
+          final String buildVersion = snapshot.data!.buildNumber;
           return IntrinsicWidth(
             child: ListTile(
               contentPadding: EdgeInsets.zero,

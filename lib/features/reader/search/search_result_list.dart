@@ -20,6 +20,7 @@ class _SearchResultList extends StatelessWidget {
             );
 
           case LoadingStateCode.loading:
+          case LoadingStateCode.backgroundLoading:
             return const Center(child: CommonLoading());
 
           case LoadingStateCode.loaded:

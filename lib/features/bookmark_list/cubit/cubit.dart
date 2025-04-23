@@ -9,17 +9,16 @@ import '../../../repository/bookmark_repository.dart';
 import '../../common_components/common_list/list_template.dart';
 
 class BookmarkListCubit extends CommonListCubit<BookmarkData> {
-  final _sortOrderPrefKey = PreferenceKeys.bookmark.sortOrder;
-  final _ascendingPrefKey = PreferenceKeys.bookmark.isAscending;
-  late final SharedPreferences _prefs;
-
   factory BookmarkListCubit() {
-    final instance = BookmarkListCubit._();
+    final BookmarkListCubit instance = BookmarkListCubit._();
     instance._init();
     return instance;
   }
 
   BookmarkListCubit._() : super(const CommonListState<BookmarkData>());
+  final String _sortOrderPrefKey = PreferenceKeys.bookmark.sortOrder;
+  final String _ascendingPrefKey = PreferenceKeys.bookmark.isAscending;
+  late final SharedPreferences _prefs;
 
   Future<void> _init() async {
     _prefs = await SharedPreferences.getInstance();
@@ -27,7 +26,9 @@ class BookmarkListCubit extends CommonListCubit<BookmarkData> {
 
   @override
   Future<void> refresh() async {
-    final bookmarkList = BookmarkRepository.getList();
+    emit(state.copyWith(code: LoadingStateCode.loading));
+
+    final List<BookmarkData> bookmarkList = BookmarkRepository.getList();
 
     int sortOrder;
     try {
@@ -35,8 +36,8 @@ class BookmarkListCubit extends CommonListCubit<BookmarkData> {
     } catch (_) {
       sortOrder = SortOrderCode.name.index;
     }
-    final sortOrderCode = SortOrderCode.values[sortOrder];
-    final isAscending = _prefs.getBool(_ascendingPrefKey) ?? false;
+    final SortOrderCode sortOrderCode = SortOrderCode.values[sortOrder];
+    final bool isAscending = _prefs.getBool(_ascendingPrefKey) ?? false;
     _sortList(bookmarkList, sortOrderCode, isAscending);
 
     emit(CommonListState<BookmarkData>(
@@ -48,7 +49,7 @@ class BookmarkListCubit extends CommonListCubit<BookmarkData> {
   }
 
   void setListOrder({SortOrderCode? sortOrder, bool? isAscending}) {
-    List<BookmarkData> list = List.from(state.dataList);
+    final List<BookmarkData> list = List<BookmarkData>.from(state.dataList);
     sortOrder ??= state.sortOrder;
     isAscending ??= state.isAscending;
 
@@ -71,13 +72,13 @@ class BookmarkListCubit extends CommonListCubit<BookmarkData> {
   ) {
     switch (sortOrder) {
       case SortOrderCode.name:
-        list.sort((a, b) => isAscending
+        list.sort((BookmarkData a, BookmarkData b) => isAscending
             ? compareNatural(a.bookPath, b.bookPath)
             : compareNatural(b.bookPath, a.bookPath));
         break;
 
       default:
-        list.sort((a, b) => isAscending
+        list.sort((BookmarkData a, BookmarkData b) => isAscending
             ? a.savedTime.compareTo(b.savedTime)
             : b.savedTime.compareTo(a.savedTime));
         break;
@@ -85,9 +86,7 @@ class BookmarkListCubit extends CommonListCubit<BookmarkData> {
   }
 
   bool deleteSelectedBookmarks() {
-    for (final data in state.selectedSet) {
-      BookmarkRepository.delete(data);
-    }
+    state.selectedSet.forEach(BookmarkRepository.delete);
     refresh();
     return true;
   }

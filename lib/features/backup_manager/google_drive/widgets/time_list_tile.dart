@@ -5,12 +5,14 @@ class _TimeListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<BackupManagerGoogleDriveCubit,
         BackupManagerGoogleDriveState>(
-      buildWhen: (previous, current) => previous.code != current.code,
-      builder: (context, state) {
-        final isLoading = state.code == LoadingStateCode.loading;
+      buildWhen: (BackupManagerGoogleDriveState previous,
+              BackupManagerGoogleDriveState current) =>
+          previous.code != current.code,
+      builder: (BuildContext context, BackupManagerGoogleDriveState state) {
+        final bool isLoading = state.code == LoadingStateCode.loading;
         return ListTile(
           contentPadding: const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
           leading: const Icon(Icons.calendar_today_rounded),

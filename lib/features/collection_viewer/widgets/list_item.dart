@@ -1,20 +1,22 @@
 part of '../collection_viewer.dart';
 
 class _ListItem extends StatelessWidget {
-  final bool isSelecting;
   final BookData bookData;
+  final bool isSelecting;
+  final bool isDraggable;
 
   const _ListItem({
     super.key,
     required this.bookData,
     this.isSelecting = false,
+    this.isDraggable = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<_Cubit>(context);
+    final cubit = BlocProvider.of<CollectionViewerCubit>(context);
     if (isSelecting) {
-      return BlocBuilder<_Cubit, _State>(
+      return BlocBuilder<CollectionViewerCubit, CommonListState<BookData>>(
         key: key,
         buildWhen: (previous, current) =>
             previous.selectedSet.contains(bookData) !=
@@ -45,7 +47,7 @@ class _ListItem extends StatelessWidget {
         },
         leading: const Icon(Icons.book_outlined),
         title: Text(bookData.name),
-        trailing: const Icon(Icons.drag_handle_rounded),
+        trailing: isDraggable ? const Icon(Icons.drag_handle_rounded) : null,
       );
     }
   }

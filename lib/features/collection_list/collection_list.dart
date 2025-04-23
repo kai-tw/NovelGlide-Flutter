@@ -15,9 +15,11 @@ import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
 import '../common_components/draggable_feedback_widget.dart';
 import '../common_components/draggable_placeholder_widget.dart';
+import '../homepage/homepage.dart';
 import 'cubit/cubit.dart';
 
 part 'collection_list_app_bar.dart';
+part 'collection_list_scaffold_body.dart';
 part 'widgets/collection_widget.dart';
 part 'widgets/draggable_collection.dart';
 part 'widgets/list_item.dart';
@@ -44,6 +46,7 @@ class CollectionList extends StatelessWidget {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
+          case LoadingStateCode.backgroundLoading:
             return const CommonSliverLoading();
 
           case LoadingStateCode.loaded:
