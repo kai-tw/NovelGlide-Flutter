@@ -3,12 +3,6 @@ import 'package:flutter/material.dart';
 import '../../generated/i18n/app_localizations.dart';
 
 class CommonDeleteDialog extends StatelessWidget {
-  final String? title;
-  final String? content;
-  final IconData? deleteIcon;
-  final String? deleteLabel;
-  final void Function()? onDelete;
-
   const CommonDeleteDialog({
     super.key,
     this.onDelete,
@@ -18,14 +12,20 @@ class CommonDeleteDialog extends StatelessWidget {
     this.deleteLabel,
   });
 
+  final String? title;
+  final String? content;
+  final IconData? deleteIcon;
+  final String? deleteLabel;
+  final void Function()? onDelete;
+
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return AlertDialog(
       title: Text(title ?? appLocalizations.dialogDeleteTitle),
       content: Text(content ?? appLocalizations.dialogDeleteContent),
-      actions: [
+      actions: <Widget>[
         TextButton.icon(
           onPressed: () {
             Navigator.of(context).pop();

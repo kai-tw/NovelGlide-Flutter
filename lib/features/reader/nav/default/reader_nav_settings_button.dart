@@ -5,14 +5,14 @@ class ReaderNavSettingsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<ReaderCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) =>
+      buildWhen: (ReaderState previous, ReaderState current) =>
           previous.code != current.code ||
           previous.ttsState != current.ttsState,
-      builder: (context, state) {
-        final isEnabled = state.code.isLoaded || state.ttsState.isStopped;
+      builder: (BuildContext context, ReaderState state) {
+        final bool isEnabled = state.code.isLoaded || state.ttsState.isStopped;
         return IconButton(
           icon: const Icon(Icons.settings_rounded),
           tooltip: appLocalizations.readerSettings,
@@ -31,7 +31,7 @@ class ReaderNavSettingsButton extends StatelessWidget {
       barrierColor:
           Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2),
       builder: (BuildContext context) {
-        return BlocProvider.value(
+        return BlocProvider<ReaderCubit>.value(
           value: cubit,
           child: const ReaderBottomSheet(),
         );

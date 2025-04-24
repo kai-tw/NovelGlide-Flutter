@@ -1,14 +1,6 @@
 part of '../tts_settings.dart';
 
 class _Slider extends StatelessWidget {
-  final String title;
-  final BlocBuilderCondition<TtsSettingsState> buildWhen;
-  final Function(double, bool) onChanged;
-  final double min;
-  final double max;
-  final int divisions;
-  final double Function(TtsSettingsState) valueSelector;
-
   const _Slider({
     required this.title,
     required this.buildWhen,
@@ -19,25 +11,33 @@ class _Slider extends StatelessWidget {
     required this.valueSelector,
   });
 
+  final String title;
+  final BlocBuilderCondition<TtsSettingsState> buildWhen;
+  final Function(double, bool) onChanged;
+  final double min;
+  final double max;
+  final int divisions;
+  final double Function(TtsSettingsState) valueSelector;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
-        children: [
+        children: <Widget>[
           Text(
             title,
             style: Theme.of(context).textTheme.titleMedium,
           ),
           BlocBuilder<TtsSettingsCubit, TtsSettingsState>(
             buildWhen: buildWhen,
-            builder: (context, state) {
+            builder: (BuildContext context, TtsSettingsState state) {
               return Slider(
                 value: valueSelector(state),
                 onChanged: state.ttsState == TtsServiceState.stopped
-                    ? (value) => onChanged(value, false)
+                    ? (double value) => onChanged(value, false)
                     : null,
-                onChangeEnd: (value) => onChanged(value, true),
+                onChangeEnd: (double value) => onChanged(value, true),
                 min: min,
                 max: max,
                 divisions: divisions,

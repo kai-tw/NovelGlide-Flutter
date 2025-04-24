@@ -1,13 +1,14 @@
 part of 'reader_cubit.dart';
 
 class ReaderWebViewHandler {
-  final String url;
-  final controller = WebViewController();
-  final _channelMap = <String, void Function(dynamic)>{};
-
   ReaderWebViewHandler({
     required this.url,
   });
+
+  final String url;
+  final WebViewController controller = WebViewController();
+  final Map<String, void Function(dynamic p1)> _channelMap =
+      <String, void Function(dynamic)>{};
 
   void initialize({String? destination, String? savedLocation}) {
     controller.enableZoom(false);
@@ -16,17 +17,17 @@ class ReaderWebViewHandler {
     controller.addJavaScriptChannel('appApi', onMessageReceived: receive);
 
     controller.setNavigationDelegate(NavigationDelegate(
-      onPageFinished: (url) async {
+      onPageFinished: (String url) async {
         controller.runJavaScript(
             'window.communicationService.setChannel(window.appApi)');
-        send('main', {
+        send('main', <String, String?>{
           'destination': destination,
           'savedLocation': savedLocation,
         });
       },
-      onNavigationRequest: (request) {
-        final isUrlAllowed =
-            [url, 'about:srcdoc'].any((url) => request.url.startsWith(url));
+      onNavigationRequest: (NavigationRequest request) {
+        final bool isUrlAllowed = <String>[url, 'about:srcdoc']
+            .any((String url) => request.url.startsWith(url));
         return isUrlAllowed
             ? NavigationDecision.navigate
             : NavigationDecision.prevent;
@@ -40,7 +41,7 @@ class ReaderWebViewHandler {
   }
 
   void receive(JavaScriptMessage message) {
-    Map<String, dynamic> data = jsonDecode(message.message);
+    final Map<String, dynamic> data = jsonDecode(message.message);
     assert(data['route'] is String);
     _channelMap[data['route']]?.call(data['data']);
     debugPrint("Receive: ${data['route']} ${data['data']}");

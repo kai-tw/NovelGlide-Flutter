@@ -11,6 +11,13 @@ part 'tts_service_state.dart';
 part 'tts_voice_data.dart';
 
 class TtsService extends FlutterTts {
+  factory TtsService({void Function()? onReady}) {
+    final TtsService instance = TtsService._();
+    instance.setProgressHandler();
+    return instance.._init(onReady);
+  }
+
+  TtsService._() : super();
   static const double defaultPitch = 1.0;
   static const double defaultVolume = 1.0;
   static const double defaultSpeedRate = 0.5;
@@ -24,8 +31,11 @@ class TtsService extends FlutterTts {
   TtsVoiceData? _voiceData;
 
   double get pitch => _pitch ?? defaultPitch;
+
   double get volume => _volume ?? defaultVolume;
+
   double get speechRate => _speechRate ?? defaultSpeedRate;
+
   TtsVoiceData? get voiceData => _voiceData;
 
   set pitch(double value) {
@@ -57,14 +67,6 @@ class TtsService extends FlutterTts {
     }
   }
 
-  factory TtsService({void Function()? onReady}) {
-    final instance = TtsService._();
-    instance.setProgressHandler();
-    return instance.._init(onReady);
-  }
-
-  TtsService._() : super();
-
   Future<void> _init(void Function()? onReady) async {
     prefs = await SharedPreferences.getInstance();
     await reload();
@@ -80,7 +82,7 @@ class TtsService extends FlutterTts {
     await setVolume(volume);
     await setSpeechRate(speechRate);
 
-    final voiceData = prefs.getString(PreferenceKeys.tts.voiceData);
+    final String? voiceData = prefs.getString(PreferenceKeys.tts.voiceData);
     _voiceData = voiceData == null ? null : TtsVoiceData.fromJson(voiceData);
     if (_voiceData == null) {
       clearVoice();
@@ -91,7 +93,8 @@ class TtsService extends FlutterTts {
 
   @override
   void setProgressHandler([Function(String, int, int, String)? callback]) {
-    super.setProgressHandler((text, startOffset, endOffset, word) {
+    super.setProgressHandler(
+        (String text, int startOffset, int endOffset, String word) {
       _pausedText = text;
       _pausedStartOffset = startOffset;
       callback?.call(text, startOffset, endOffset, word);
@@ -120,14 +123,15 @@ class TtsService extends FlutterTts {
   }
 
   Future<List<TtsVoiceData>> get voiceList async {
-    List<TtsVoiceData> voices = (await getVoices).map<TtsVoiceData>((cur) {
-      return TtsVoiceData(
-        name: cur['name'],
-        locale: cur['locale'],
-      );
-    }).toList();
+    final List<TtsVoiceData> voices = (await getVoices)
+        .map<TtsVoiceData>((dynamic cur) => TtsVoiceData(
+              name: cur['name'],
+              locale: cur['locale'],
+            ))
+        .toList();
 
-    voices.sort((a, b) => a.locale.compareTo(b.locale));
+    voices
+        .sort((TtsVoiceData a, TtsVoiceData b) => a.locale.compareTo(b.locale));
 
     return voices;
   }

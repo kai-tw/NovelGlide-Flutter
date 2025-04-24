@@ -1,6 +1,17 @@
 part of '../list_template.dart';
 
 class CommonListState<T> extends Equatable {
+  // Constructor initializes the state with default values.
+  const CommonListState({
+    this.code = LoadingStateCode.initial,
+    this.sortOrder = SortOrderCode.name,
+    this.dataList = const <Never>[],
+    this.selectedSet = const <Never>{},
+    this.isDragging = false,
+    this.isSelecting = false,
+    this.isAscending = false,
+  });
+
   final LoadingStateCode code;
   final SortOrderCode sortOrder;
   final List<T> dataList;
@@ -12,7 +23,7 @@ class CommonListState<T> extends Equatable {
   bool get isSelectAll => selectedSet.length == dataList.length;
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props => <Object?>[
         code,
         sortOrder,
         dataList,
@@ -21,17 +32,6 @@ class CommonListState<T> extends Equatable {
         isSelecting,
         isAscending
       ];
-
-  // Constructor initializes the state with default values.
-  const CommonListState({
-    this.code = LoadingStateCode.initial,
-    this.sortOrder = SortOrderCode.name,
-    this.dataList = const [],
-    this.selectedSet = const {},
-    this.isDragging = false,
-    this.isSelecting = false,
-    this.isAscending = false,
-  });
 
   // Creates a copy of the current state with updated properties.
   CommonListState<T> copyWith({

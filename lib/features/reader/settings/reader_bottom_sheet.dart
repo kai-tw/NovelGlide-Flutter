@@ -28,16 +28,16 @@ class ReaderBottomSheet extends StatelessWidget {
       maxChildSize: 0.8,
       expand: false,
       snap: true,
-      snapSizes: const [0.25, 0.5, 0.8],
-      builder: (context, scrollController) {
+      snapSizes: const <double>[0.25, 0.5, 0.8],
+      builder: (BuildContext context, ScrollController scrollController) {
         return SingleChildScrollView(
           controller: scrollController,
           child: const Column(
-            children: [
+            children: <Widget>[
               SettingsCard(
                 margin: EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 24.0),
                 child: Column(
-                  children: [
+                  children: <Widget>[
                     _FontSizeSlider(),
                     _LineHeightSlider(),
                   ],
@@ -46,7 +46,7 @@ class ReaderBottomSheet extends StatelessWidget {
               SettingsCard(
                 margin: EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 24.0),
                 child: Column(
-                  children: [
+                  children: <Widget>[
                     _AutoSaveSwitch(),
                     _SmoothScrollSwitch(),
                   ],
@@ -55,7 +55,7 @@ class ReaderBottomSheet extends StatelessWidget {
               SettingsCard(
                 margin: EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 24.0),
                 child: Column(
-                  children: [
+                  children: <Widget>[
                     _PageNumSelector(),
                   ],
                 ),
@@ -63,7 +63,7 @@ class ReaderBottomSheet extends StatelessWidget {
               SettingsCard(
                 margin: EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 24.0),
                 child: Column(
-                  children: [
+                  children: <Widget>[
                     _SettingsResetButton(),
                   ],
                 ),

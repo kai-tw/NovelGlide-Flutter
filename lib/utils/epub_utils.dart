@@ -15,17 +15,17 @@ class EpubUtils {
   static Future<epub.EpubBook> loadEpubBook(String filePath) async {
     final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
     return await compute<Map<String, dynamic>, epub.EpubBook>(
-        _loadEpubBookIsolate, {
-      "rootIsolateToken": rootIsolateToken,
-      "path": filePath,
+        _loadEpubBookIsolate, <String, dynamic>{
+      'rootIsolateToken': rootIsolateToken,
+      'path': filePath,
     });
   }
 
   /// Isolate function to load an EpubBook.
   static Future<epub.EpubBook> _loadEpubBookIsolate(
       Map<String, dynamic> message) async {
-    final RootIsolateToken rootIsolateToken = message["rootIsolateToken"];
-    final String path = message["path"];
+    final RootIsolateToken rootIsolateToken = message['rootIsolateToken'];
+    final String path = message['path'];
     BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
     return await epub.EpubReader.readBook(File(path).readAsBytesSync());
   }
@@ -33,9 +33,9 @@ class EpubUtils {
   /// Retrieve the list of chapters from a epub book.
   static Future<List<ChapterData>> getChapterList(String filePath) async {
     final epub.EpubBook epubBook = await EpubUtils.loadEpubBook(filePath);
-    return epubBook.Chapters?.map((e) => ChapterData.fromEpubChapter(e))
-            .toList() ??
-        [];
+    return epubBook.Chapters?.map(
+            (epub.EpubChapter e) => ChapterData.fromEpubChapter(e)).toList() ??
+        <ChapterData>[];
   }
 
   /// Find the possible cover image of the book.
@@ -47,18 +47,18 @@ class EpubUtils {
 
     // Search the cover image in the manifest.
     if (epubBook.Schema?.Package?.Manifest != null) {
-      final manifest = epubBook.Schema!.Package!.Manifest!;
-      final coverItem = manifest.Items!.firstWhereOrNull((item) {
-        return item.Href != null &&
-            (item.Id?.toLowerCase() == 'cover' ||
-                item.Id?.toLowerCase() == 'cover-image' ||
-                item.Properties?.toLowerCase() == 'cover' ||
-                item.Properties?.toLowerCase() == 'cover-image') &&
-            (item.MediaType?.toLowerCase() == 'image/jpeg' ||
-                item.MediaType?.toLowerCase() == 'image/png' ||
-                item.MediaType?.toLowerCase() == 'image/gif' ||
-                item.MediaType?.toLowerCase() == 'image/bmp');
-      });
+      final epub.EpubManifest manifest = epubBook.Schema!.Package!.Manifest!;
+      final epub.EpubManifestItem? coverItem = manifest.Items!.firstWhereOrNull(
+          (epub.EpubManifestItem item) =>
+              item.Href != null &&
+              (item.Id?.toLowerCase() == 'cover' ||
+                  item.Id?.toLowerCase() == 'cover-image' ||
+                  item.Properties?.toLowerCase() == 'cover' ||
+                  item.Properties?.toLowerCase() == 'cover-image') &&
+              (item.MediaType?.toLowerCase() == 'image/jpeg' ||
+                  item.MediaType?.toLowerCase() == 'image/png' ||
+                  item.MediaType?.toLowerCase() == 'image/gif' ||
+                  item.MediaType?.toLowerCase() == 'image/bmp'));
       if (coverItem != null) {
         return readImage(epubBook, coverItem.Href!);
       }
@@ -71,8 +71,8 @@ class EpubUtils {
   /// Read an image from the book.
   static epub.Image? readImage(epub.EpubBook epubBook, String href) {
     if (epubBook.Content?.Images?.containsKey(href) == true) {
-      final ref = epubBook.Content!.Images![href]!;
-      final content = ref.Content;
+      final epub.EpubByteContentFile ref = epubBook.Content!.Images![href]!;
+      final List<int>? content = ref.Content;
       return content == null ? null : decodeImage(content);
     }
     return null;

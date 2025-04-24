@@ -3,7 +3,7 @@ part of 'tts_settings_cubit.dart';
 class TtsSettingsState extends Equatable {
   const TtsSettingsState({
     this.ttsState = TtsServiceState.initial,
-    this.voiceList = const [],
+    this.voiceList = const <TtsVoiceData>[],
     this.pitch = TtsService.defaultPitch,
     this.volume = TtsService.defaultVolume,
     this.speechRate = TtsService.defaultSpeedRate,
@@ -20,7 +20,7 @@ class TtsSettingsState extends Equatable {
   final bool isTextEmpty;
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props => <Object?>[
         ttsState,
         voiceList,
         pitch,

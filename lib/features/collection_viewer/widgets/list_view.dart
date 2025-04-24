@@ -5,13 +5,15 @@ class _ListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<CollectionViewerCubit>(context);
+    final CollectionViewerCubit cubit =
+        BlocProvider.of<CollectionViewerCubit>(context);
     return BlocBuilder<CollectionViewerCubit, CommonListState<BookData>>(
-      buildWhen: (previous, current) =>
+      buildWhen: (CommonListState<BookData> previous,
+              CommonListState<BookData> current) =>
           previous.code != current.code ||
           previous.dataList != current.dataList ||
           previous.isSelecting != current.isSelecting,
-      builder: (context, state) {
+      builder: (BuildContext context, CommonListState<BookData> state) {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
@@ -19,12 +21,12 @@ class _ListView extends StatelessWidget {
 
           case LoadingStateCode.backgroundLoading:
             return Column(
-              children: [
+              children: <Widget>[
                 const LinearProgressIndicator(),
                 Expanded(
                   child: ListView.builder(
                     itemCount: state.dataList.length,
-                    itemBuilder: (context, index) {
+                    itemBuilder: (BuildContext context, int index) {
                       return _ListItem(
                         bookData: state.dataList[index],
                         isDraggable: false,
@@ -44,11 +46,11 @@ class _ListView extends StatelessWidget {
                 buildDefaultDragHandles:
                     !state.isSelecting && state.dataList.length > 1,
                 itemCount: state.dataList.length,
-                itemBuilder: (context, index) {
-                  final data = state.dataList[index];
+                itemBuilder: (BuildContext context, int index) {
+                  final BookData data = state.dataList[index];
                   return _ListItem(
                     bookData: data,
-                    key: ValueKey(data.absoluteFilePath),
+                    key: ValueKey<String>(data.absoluteFilePath),
                     isSelecting: state.isSelecting,
                   );
                 },

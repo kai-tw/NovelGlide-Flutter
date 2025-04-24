@@ -1,17 +1,19 @@
 part of '../collection_list.dart';
 
 class _DraggableCollection extends StatelessWidget {
-  final CollectionData _data;
-
   const _DraggableCollection(this._data);
+
+  final CollectionData _data;
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<CollectionListCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final CollectionListCubit cubit =
+        BlocProvider.of<CollectionListCubit>(context);
 
-    return LayoutBuilder(builder: (context, constraints) {
-      return LongPressDraggable(
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      return LongPressDraggable<CollectionData>(
         onDragStarted: () => cubit.setDragging(true),
         onDragEnd: (_) => cubit.setDragging(false),
         onDragCompleted: () async {

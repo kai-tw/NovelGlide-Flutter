@@ -5,8 +5,8 @@ class _Navigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<_Cubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -16,13 +16,13 @@ class _Navigation extends StatelessWidget {
       child: SafeArea(
         child: OverflowBar(
           alignment: MainAxisAlignment.spaceEvenly,
-          children: [
+          children: <Widget>[
             TextButton.icon(
               onPressed: () {
                 showDialog(
                   context: context,
                   barrierDismissible: false,
-                  builder: (context) => const CollectionAddDialog(),
+                  builder: (_) => const CollectionAddDialog(),
                 ).then((_) {
                   cubit.refresh();
                 });

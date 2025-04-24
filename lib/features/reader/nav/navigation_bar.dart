@@ -17,12 +17,12 @@ class ReaderNavigationBar extends StatelessWidget {
     return SizedBox(
       height: 64.0,
       child: BlocBuilder<ReaderCubit, ReaderState>(
-        builder: (context, state) {
+        builder: (BuildContext context, ReaderState state) {
           switch (state.navigationStateCode) {
             case ReaderNavigationStateCode.ttsState:
               return const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: <Widget>[
                   ReaderTtsPlayPauseButton(),
                   ReaderTtsStopButton(),
                   ReaderTtsCloseButton(),
@@ -33,7 +33,7 @@ class ReaderNavigationBar extends StatelessWidget {
             default:
               return const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: <Widget>[
                   ReaderNavPreviousButton(),
                   ReaderNavNextButton(),
                   ReaderNavBookmarkButton(),

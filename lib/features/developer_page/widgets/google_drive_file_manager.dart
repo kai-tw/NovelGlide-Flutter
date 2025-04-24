@@ -5,8 +5,8 @@ class _GoogleDriveFileManager extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _GoogleDriveCubit()..init(),
+    return BlocProvider<_GoogleDriveCubit>(
+      create: (_) => _GoogleDriveCubit()..init(),
       child: const _GoogleDriveFileManagerContent(),
     );
   }
@@ -17,22 +17,23 @@ class _GoogleDriveFileManagerContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<_GoogleDriveCubit>(context);
+    final _GoogleDriveCubit cubit = BlocProvider.of<_GoogleDriveCubit>(context);
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        title: const Text("Google Drive File Manager"),
+        title: const Text('Google Drive File Manager'),
       ),
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async => cubit.refresh(),
           child: Scrollbar(
             child: CustomScrollView(
-              slivers: [
+              slivers: <Widget>[
                 BlocBuilder<_GoogleDriveCubit, _GoogleDriveState>(
-                  buildWhen: (previous, current) =>
-                      previous.errorCode != current.errorCode,
-                  builder: (context, state) {
+                  buildWhen:
+                      (_GoogleDriveState previous, _GoogleDriveState current) =>
+                          previous.errorCode != current.errorCode,
+                  builder: (BuildContext context, _GoogleDriveState state) {
                     switch (state.errorCode) {
                       case _GoogleDriveErrorCode.unInitialized:
                         return const SliverFillRemaining(
@@ -44,21 +45,21 @@ class _GoogleDriveFileManagerContent extends StatelessWidget {
                       case _GoogleDriveErrorCode.signInError:
                         return const SliverFillRemaining(
                           child: Center(
-                            child: Text("Failed to sign in to Google Drive"),
+                            child: Text('Failed to sign in to Google Drive'),
                           ),
                         );
 
                       case _GoogleDriveErrorCode.permissionDenied:
                         return const SliverFillRemaining(
                           child: Center(
-                            child: Text("Permission denied"),
+                            child: Text('Permission denied'),
                           ),
                         );
 
                       case _GoogleDriveErrorCode.unknownError:
                         return const SliverFillRemaining(
                           child: Center(
-                            child: Text("Unknown error"),
+                            child: Text('Unknown error'),
                           ),
                         );
 
@@ -68,7 +69,7 @@ class _GoogleDriveFileManagerContent extends StatelessWidget {
                       case _GoogleDriveErrorCode.normal:
                         return SliverList(
                           delegate: SliverChildBuilderDelegate(
-                            (context, index) {
+                            (BuildContext context, int index) {
                               final drive.File file = state.files![index];
                               final String formatDate =
                                   DateTimeUtils.format(file.modifiedTime);
@@ -99,7 +100,7 @@ class _GoogleDriveFileManagerContent extends StatelessWidget {
                                   child: Icon(iconData),
                                 ),
                                 title: Text(
-                                  file.name ?? "Untitled File",
+                                  file.name ?? 'Untitled File',
                                   style: Theme.of(context).textTheme.bodyLarge,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -116,7 +117,8 @@ class _GoogleDriveFileManagerContent extends StatelessWidget {
                                         scrollControlDisabledMaxHeightRatio:
                                             1.0,
                                         showDragHandle: true,
-                                        builder: (_) => BlocProvider.value(
+                                        builder: (_) => BlocProvider<
+                                            _GoogleDriveCubit>.value(
                                           value: cubit,
                                           child: _GoogleDriveBottomSheet(
                                             file: file,
@@ -126,7 +128,7 @@ class _GoogleDriveFileManagerContent extends StatelessWidget {
                                     },
                                     icon: const Icon(
                                       Icons.more_vert,
-                                      semanticLabel: "More",
+                                      semanticLabel: 'More',
                                     ),
                                   ),
                                 ),

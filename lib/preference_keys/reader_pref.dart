@@ -1,10 +1,10 @@
 part of 'preference_keys.dart';
 
 class ReaderPref {
-  final fontSize = 'reader.fontSize';
-  final lineHeight = 'reader.lineHeight';
-  final isAutoSaving = 'reader.autoSave';
-  final isSmoothScroll = 'reader.isSmoothScroll';
-  final isUsingThemeStyle = 'reader.isUsingThemeStyle';
-  final pageNumType = 'reader.pageNumType';
+  final String fontSize = 'reader.fontSize';
+  final String lineHeight = 'reader.lineHeight';
+  final String isAutoSaving = 'reader.autoSave';
+  final String isSmoothScroll = 'reader.isSmoothScroll';
+  final String isUsingThemeStyle = 'reader.isUsingThemeStyle';
+  final String pageNumType = 'reader.pageNumType';
 }

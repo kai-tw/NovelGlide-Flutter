@@ -6,7 +6,7 @@ class _DialogCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _CardTemplate(
-      children: [
+      children: <Widget>[
         ListTile(
           title: const Text('Dialog'),
           titleTextStyle: Theme.of(context).textTheme.titleLarge,
@@ -14,14 +14,14 @@ class _DialogCard extends StatelessWidget {
         ListTile(
           onTap: () => showDialog(
             context: context,
-            builder: (context) => const CommonSuccessDialog(),
+            builder: (BuildContext context) => const CommonSuccessDialog(),
           ),
           title: const Text('Success Dialog'),
         ),
         ListTile(
           onTap: () => showDialog(
             context: context,
-            builder: (context) => const CommonLoadingDialog(
+            builder: (BuildContext context) => const CommonLoadingDialog(
               title: 'Loading Dialog',
             ),
           ),
@@ -30,7 +30,7 @@ class _DialogCard extends StatelessWidget {
         ListTile(
           onTap: () => showDialog(
             context: context,
-            builder: (context) => const CommonLoadingDialog(
+            builder: (BuildContext context) => const CommonLoadingDialog(
               title: 'Progress Dialog',
               progress: 0.6,
             ),
@@ -40,7 +40,7 @@ class _DialogCard extends StatelessWidget {
         ListTile(
           onTap: () => showDialog(
             context: context,
-            builder: (context) => const CommonErrorDialog(
+            builder: (BuildContext context) => const CommonErrorDialog(
               content: 'Error Dialog',
             ),
           ),

@@ -14,7 +14,7 @@ class FileUtils {
   /// Returns a string representation of the file size with appropriate units.
   static String getFileSizeString(int size, {int decimals = 2}) {
     // List of units for file sizes.
-    const List<String> units = [
+    const List<String> units = <String>[
       'B', // Bytes
       'KB', // Kilobytes
       'MB', // Megabytes
@@ -36,7 +36,7 @@ class FileUtils {
     index = min(index, units.length - 1);
 
     // Format the size with the specified number of decimal places.
-    double fileSize = size / pow(1024, index);
+    final double fileSize = size / pow(1024, index);
     return '${fileSize.toStringAsFixed(decimals)} ${units[index]}';
   }
 

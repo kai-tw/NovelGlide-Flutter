@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 
 class DraggablePlaceholderWidget extends StatelessWidget {
-  final Widget child;
-  final double? width;
-  final double? height;
-  final EdgeInsets? padding;
-
   const DraggablePlaceholderWidget({
     super.key,
     required this.child,
@@ -13,6 +8,11 @@ class DraggablePlaceholderWidget extends StatelessWidget {
     this.height,
     this.padding,
   });
+
+  final Widget child;
+  final double? width;
+  final double? height;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {

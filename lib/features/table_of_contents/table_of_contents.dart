@@ -34,8 +34,8 @@ class TableOfContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final windowWidth = MediaQuery.of(context).size.width;
-    final windowClass = WindowClass.fromWidth(windowWidth);
+    final double windowWidth = MediaQuery.of(context).size.width;
+    final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
     Widget body;
 
     switch (windowClass) {
@@ -47,7 +47,7 @@ class TableOfContents extends StatelessWidget {
         body = _MediumView(bookData: bookData);
     }
 
-    return BlocProvider(
+    return BlocProvider<_Cubit>(
       create: (_) => _Cubit(bookData)..init(),
       child: Scaffold(
         appBar: _AppBar(bookData: bookData),

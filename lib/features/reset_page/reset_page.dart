@@ -23,7 +23,7 @@ class ResetPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
@@ -32,7 +32,7 @@ class ResetPage extends StatelessWidget {
       body: const SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            children: [
+            children: <Widget>[
               _PreferenceCard(),
               _CacheCard(),
               _DataCard(),

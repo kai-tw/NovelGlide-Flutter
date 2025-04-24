@@ -1,26 +1,27 @@
 part of '../homepage.dart';
 
-class _DeleteDragTarget<M extends Cubit<CommonListState<T>>, T>
+class _DeleteDragTarget<M extends Cubit<CommonListState<T>>, T extends Object>
     extends StatelessWidget {
   const _DeleteDragTarget();
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<M, CommonListState<T>>(
-      buildWhen: (previous, current) =>
+      buildWhen: (CommonListState<T> previous, CommonListState<T> current) =>
           previous.isDragging != current.isDragging,
-      builder: (context, state) {
+      builder: (BuildContext context, CommonListState<T> state) {
         Widget? child;
 
         if (state.isDragging) {
-          child = CommonDeleteDragTarget(
-            onWillAcceptWithDetails: (details) => details.data is T,
+          child = CommonDeleteDragTarget<T>(
+            onWillAcceptWithDetails: (DragTargetDetails<Object> details) =>
+                details.data is T,
           );
         }
 
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 200),
-          transitionBuilder: (child, animation) {
+          transitionBuilder: (Widget child, Animation<double> animation) {
             return SlideTransition(
               position: Tween<Offset>(
                 begin: const Offset(0.0, 3.0),

@@ -8,11 +8,12 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final windowWidth = MediaQuery.of(context).size.width;
-    final windowClass = WindowClass.fromWidth(windowWidth);
+    final double windowWidth = MediaQuery.of(context).size.width;
+    final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
     return BlocBuilder<HomepageCubit, _HomepageState>(
-      buildWhen: (previous, current) => previous.navItem != current.navItem,
-      builder: (context, state) {
+      buildWhen: (_HomepageState previous, _HomepageState current) =>
+          previous.navItem != current.navItem,
+      builder: (BuildContext context, _HomepageState state) {
         switch (state.navItem) {
           case HomepageNavigationItem.bookshelf:
             return const BookshelfAppBar();

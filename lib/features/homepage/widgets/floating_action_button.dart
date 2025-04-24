@@ -5,24 +5,27 @@ class _FloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
-    final collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final BookshelfCubit bookshelfCubit =
+        BlocProvider.of<BookshelfCubit>(context);
+    final CollectionListCubit collectionListCubit =
+        BlocProvider.of<CollectionListCubit>(context);
 
     return BlocBuilder<HomepageCubit, _HomepageState>(
-      buildWhen: (previous, current) => previous.navItem != current.navItem,
-      builder: (context, state) {
+      buildWhen: (_HomepageState previous, _HomepageState current) =>
+          previous.navItem != current.navItem,
+      builder: (BuildContext context, _HomepageState state) {
         Widget? child;
 
         switch (state.navItem) {
           case HomepageNavigationItem.bookshelf:
             child = FloatingActionButton(
               onPressed: () {
-                showDialog(
+                showDialog<bool?>(
                   context: context,
                   barrierDismissible: false,
-                  builder: (context) => const BookAddDialog(),
-                ).then((isSuccess) {
+                  builder: (BuildContext context) => const BookAddDialog(),
+                ).then((bool? isSuccess) {
                   if (isSuccess == true) {
                     bookshelfCubit.refresh();
                   }
@@ -36,11 +39,12 @@ class _FloatingActionButton extends StatelessWidget {
           case HomepageNavigationItem.collection:
             child = FloatingActionButton(
               onPressed: () {
-                showDialog(
+                showDialog<bool?>(
                   context: context,
                   barrierDismissible: false,
-                  builder: (context) => const CollectionAddDialog(),
-                ).then((isSuccess) {
+                  builder: (BuildContext context) =>
+                      const CollectionAddDialog(),
+                ).then((bool? isSuccess) {
                   if (isSuccess == true) {
                     collectionListCubit.refresh();
                   }

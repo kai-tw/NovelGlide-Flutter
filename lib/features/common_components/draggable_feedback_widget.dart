@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 
 class DraggableFeedbackWidget extends StatelessWidget {
-  final Widget child;
-  final double? width;
-  final double? height;
-  final EdgeInsets? padding;
-
   const DraggableFeedbackWidget({
     super.key,
     required this.child,
@@ -13,6 +8,11 @@ class DraggableFeedbackWidget extends StatelessWidget {
     this.height,
     this.padding,
   });
+
+  final Widget child;
+  final double? width;
+  final double? height;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class DraggableFeedbackWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(16.0),
-        boxShadow: [
+        boxShadow: <BoxShadow>[
           BoxShadow(
             color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.2),
             blurRadius: 8.0,

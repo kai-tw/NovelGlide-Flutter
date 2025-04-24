@@ -11,13 +11,13 @@ class _MediumView extends StatelessWidget {
       body: SafeArea(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Container(
               margin: const EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 8.0),
               decoration: BoxDecoration(
                 // color: Colors.black87,
                 borderRadius: BorderRadius.circular(36.0),
-                boxShadow: [
+                boxShadow: <BoxShadow>[
                   BoxShadow(
                     color: Theme.of(context).colorScheme.shadow,
                     blurRadius: 16.0,

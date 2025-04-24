@@ -1,6 +1,20 @@
 part of 'reader_cubit.dart';
 
 class ReaderState extends Equatable {
+  const ReaderState({
+    this.code = ReaderLoadingStateCode.initial,
+    this.bookName = '',
+    this.breadcrumb = '',
+    this.chapterFileName = '',
+    this.startCfi = '',
+    this.chapterCurrentPage = 0,
+    this.chapterTotalPage = 0,
+    this.navigationStateCode = ReaderNavigationStateCode.defaultState,
+    this.ttsState = TtsServiceState.initial,
+    this.bookmarkData,
+    this.readerSettings = const ReaderSettingsData(),
+  });
+
   final ReaderLoadingStateCode code;
 
   /// Book state.
@@ -24,7 +38,7 @@ class ReaderState extends Equatable {
   final ReaderSettingsData readerSettings;
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props => <Object?>[
         code,
         bookName,
         breadcrumb,
@@ -36,20 +50,6 @@ class ReaderState extends Equatable {
         bookmarkData,
         readerSettings,
       ];
-
-  const ReaderState({
-    this.code = ReaderLoadingStateCode.initial,
-    this.bookName = '',
-    this.breadcrumb = '',
-    this.chapterFileName = '',
-    this.startCfi = '',
-    this.chapterCurrentPage = 0,
-    this.chapterTotalPage = 0,
-    this.navigationStateCode = ReaderNavigationStateCode.defaultState,
-    this.ttsState = TtsServiceState.initial,
-    this.bookmarkData,
-    this.readerSettings = const ReaderSettingsData(),
-  });
 
   ReaderState copyWith({
     ReaderLoadingStateCode? code,

@@ -15,7 +15,7 @@ class _CompactView extends StatelessWidget {
           margin: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(36.0),
-            boxShadow: [
+            boxShadow: <BoxShadow>[
               BoxShadow(
                 color: Theme.of(context).colorScheme.shadow,
                 blurRadius: 16.0,

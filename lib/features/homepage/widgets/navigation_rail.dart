@@ -5,30 +5,33 @@ class _NavigationRail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<HomepageCubit>(context);
-    final bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
-    final bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
-    final collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
-    final colorScheme = Theme.of(context).colorScheme;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final HomepageCubit cubit = BlocProvider.of<HomepageCubit>(context);
+    final BookshelfCubit bookshelfCubit =
+        BlocProvider.of<BookshelfCubit>(context);
+    final BookmarkListCubit bookmarkListCubit =
+        BlocProvider.of<BookmarkListCubit>(context);
+    final CollectionListCubit collectionListCubit =
+        BlocProvider.of<CollectionListCubit>(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return LayoutBuilder(
-      builder: (context, constraints) {
+      builder: (BuildContext context, BoxConstraints constraints) {
         return SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: constraints.maxHeight),
             child: IntrinsicHeight(
               child: BlocBuilder<HomepageCubit, _HomepageState>(
-                buildWhen: (previous, current) =>
+                buildWhen: (_HomepageState previous, _HomepageState current) =>
                     previous.navItem != current.navItem,
-                builder: (context, state) {
+                builder: (BuildContext context, _HomepageState state) {
                   return NavigationRail(
                     selectedIndex:
                         HomepageNavigationItem.values.indexOf(state.navItem),
                     indicatorColor: Colors.transparent,
                     backgroundColor: colorScheme.surfaceContainer,
                     labelType: NavigationRailLabelType.none,
-                    destinations: [
+                    destinations: <NavigationRailDestination>[
                       _buildDestination(
                         context,
                         iconData: Icons.shelves,
@@ -58,7 +61,7 @@ class _NavigationRail extends StatelessWidget {
                             state.navItem == HomepageNavigationItem.settings,
                       ),
                     ],
-                    onDestinationSelected: (index) {
+                    onDestinationSelected: (int index) {
                       switch (state.navItem) {
                         case HomepageNavigationItem.bookshelf:
                           bookshelfCubit.unfocused();
@@ -90,10 +93,11 @@ class _NavigationRail extends StatelessWidget {
     required String label,
     required bool disabled,
   }) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return NavigationRailDestination(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
-      icon: Icon(iconData, color: colorScheme.onSurface.withValues(alpha: 0.64)),
+      icon:
+          Icon(iconData, color: colorScheme.onSurface.withValues(alpha: 0.64)),
       selectedIcon: Icon(iconData, color: colorScheme.onSurface),
       label: Text(label),
       disabled: disabled,

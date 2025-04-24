@@ -5,7 +5,7 @@ class CommonListDeleteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return ListTile(
       contentPadding: EdgeInsets.zero,
       dense: true,

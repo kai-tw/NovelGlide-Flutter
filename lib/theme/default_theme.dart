@@ -1,12 +1,15 @@
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 
-import "theme_template.dart";
+import 'theme_template.dart';
 
 class DefaultTheme extends ThemeTemplate {
-  static final lightTheme = ThemeTemplate.getThemeByScheme(_lightColorScheme);
-  static final darkTheme = ThemeTemplate.getThemeByScheme(_darkColorScheme);
+  DefaultTheme();
 
-  static const ColorScheme _lightColorScheme = ColorScheme(
+  ThemeData get lightTheme => getThemeByScheme(_lightColorScheme);
+
+  ThemeData get darkTheme => getThemeByScheme(_darkColorScheme);
+
+  final ColorScheme _lightColorScheme = const ColorScheme(
     brightness: Brightness.light,
     primary: Color(0xff55615d),
     surfaceTint: Color(0xff55615d),
@@ -55,7 +58,7 @@ class DefaultTheme extends ThemeTemplate {
     surfaceContainerHighest: Color(0xffe4e2e1),
   );
 
-  static const ColorScheme _darkColorScheme = ColorScheme(
+  final ColorScheme _darkColorScheme = const ColorScheme(
     brightness: Brightness.dark,
     primary: Color(0xffffffff),
     surfaceTint: Color(0xffbcc9c5),

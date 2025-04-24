@@ -32,11 +32,11 @@ class BookmarkRepository {
 
   /// Retrieve a list of all bookmarks.
   static List<BookmarkData> getList() {
-    List<BookmarkData> retList = [];
+    final List<BookmarkData> retList = <BookmarkData>[];
 
     for (String key in jsonData.keys) {
-      final data = BookmarkData.fromJson(jsonData[key]!);
-      final path = BookRepository.getAbsolutePath(data.bookPath);
+      final BookmarkData data = BookmarkData.fromJson(jsonData[key]!);
+      final String path = BookRepository.getAbsolutePath(data.bookPath);
 
       if (File(path).existsSync()) {
         retList.add(data);
@@ -49,9 +49,9 @@ class BookmarkRepository {
   }
 
   /// Save the current bookmark to the JSON file.
-  static void save(BookmarkData data) async {
-    final json = jsonData;
-    final savedData = data.copyWith(
+  static Future<void> save(BookmarkData data) async {
+    final Map<String, dynamic> json = jsonData;
+    final BookmarkData savedData = data.copyWith(
       bookPath: BookRepository.getRelativePath(data.bookPath),
       savedTime: DateTime.now(),
     );
@@ -61,22 +61,21 @@ class BookmarkRepository {
 
   /// Delete the current bookmark from the JSON file.
   static void delete(BookmarkData data) {
-    final json = jsonData;
-    final path = BookRepository.getRelativePath(data.bookPath);
+    final Map<String, dynamic> json = jsonData;
+    final String path = BookRepository.getRelativePath(data.bookPath);
     json.remove(path);
     jsonData = json;
   }
 
   /// Delete the bookmark by path.
   static void deleteByPath(String path) {
-    final bookmarkList = getList().where((e) =>
-        BookRepository.getRelativePath(e.bookPath) ==
-        BookRepository.getRelativePath(path));
-    for (final data in bookmarkList) {
-      delete(data);
-    }
+    getList()
+        .where((BookmarkData e) =>
+            BookRepository.getRelativePath(e.bookPath) ==
+            BookRepository.getRelativePath(path))
+        .forEach(delete);
   }
 
   /// Reset the bookmark repository.
-  static void reset() => jsonData = {};
+  static void reset() => jsonData = <String, dynamic>{};
 }

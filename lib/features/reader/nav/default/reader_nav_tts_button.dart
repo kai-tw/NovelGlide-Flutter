@@ -5,11 +5,12 @@ class ReaderNavTtsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<ReaderCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) => previous.code != current.code,
-      builder: (context, state) {
+      buildWhen: (ReaderState previous, ReaderState current) =>
+          previous.code != current.code,
+      builder: (BuildContext context, ReaderState state) {
         return IconButton(
           icon: const Icon(Icons.record_voice_over_rounded),
           tooltip: appLocalizations.readerTtsButton,

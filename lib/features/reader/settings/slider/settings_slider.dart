@@ -1,15 +1,6 @@
 part of '../reader_bottom_sheet.dart';
 
 class _SettingsSlider extends StatelessWidget {
-  final Widget leading;
-  final Widget trailing;
-  final double min;
-  final double max;
-  final double value;
-  final void Function(double) onChanged;
-  final void Function(double) onChangeEnd;
-  final String Function(double)? semanticFormatterCallback;
-
   const _SettingsSlider({
     required this.leading,
     required this.trailing,
@@ -21,11 +12,20 @@ class _SettingsSlider extends StatelessWidget {
     this.semanticFormatterCallback,
   });
 
+  final Widget leading;
+  final Widget trailing;
+  final double min;
+  final double max;
+  final double value;
+  final void Function(double) onChanged;
+  final void Function(double) onChangeEnd;
+  final String Function(double)? semanticFormatterCallback;
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+      children: <Widget>[
         Container(
           margin: const EdgeInsets.only(right: 8.0),
           width: 32,

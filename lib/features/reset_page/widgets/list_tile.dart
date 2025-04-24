@@ -1,12 +1,6 @@
 part of '../reset_page.dart';
 
 class _ListTile extends StatelessWidget {
-  final String title;
-  final IconData iconData;
-  final String? deleteLabel;
-  final bool isDangerous;
-  final Future<void> Function()? onDelete;
-
   const _ListTile({
     required this.title,
     required this.iconData,
@@ -14,6 +8,12 @@ class _ListTile extends StatelessWidget {
     this.isDangerous = true,
     this.onDelete,
   });
+
+  final String title;
+  final IconData iconData;
+  final String? deleteLabel;
+  final bool isDangerous;
+  final Future<void> Function()? onDelete;
 
   @override
   Widget build(BuildContext context) {

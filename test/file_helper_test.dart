@@ -5,10 +5,10 @@ void main() {
   group('FileHelper', () {
     test('getFileSizeString should return correct size for bytes', () {
       // Arrange
-      const size = 500; // 500 bytes
+      const int size = 500; // 500 bytes
 
       // Act
-      final result = FileUtils.getFileSizeString(size);
+      final String result = FileUtils.getFileSizeString(size);
 
       // Assert
       expect(result, '500.00 B');
@@ -16,10 +16,10 @@ void main() {
 
     test('getFileSizeString should return correct size for kilobytes', () {
       // Arrange
-      const size = 1024; // 1 KB
+      const int size = 1024; // 1 KB
 
       // Act
-      final result = FileUtils.getFileSizeString(size);
+      final String result = FileUtils.getFileSizeString(size);
 
       // Assert
       expect(result, '1.00 KB');
@@ -27,10 +27,10 @@ void main() {
 
     test('getFileSizeString should return correct size for megabytes', () {
       // Arrange
-      const size = 1048576; // 1 MB
+      const int size = 1048576; // 1 MB
 
       // Act
-      final result = FileUtils.getFileSizeString(size);
+      final String result = FileUtils.getFileSizeString(size);
 
       // Assert
       expect(result, '1.00 MB');
@@ -38,10 +38,10 @@ void main() {
 
     test('getFileSizeString should handle zero size correctly', () {
       // Arrange
-      const size = 0;
+      const int size = 0;
 
       // Act
-      final result = FileUtils.getFileSizeString(size);
+      final String result = FileUtils.getFileSizeString(size);
 
       // Assert
       expect(result, '0.00 B');
@@ -49,10 +49,10 @@ void main() {
 
     test('getFileSizeString should handle large sizes correctly', () {
       // Arrange
-      const size = 1099511627776; // 1 TB
+      const int size = 1099511627776; // 1 TB
 
       // Act
-      final result = FileUtils.getFileSizeString(size);
+      final String result = FileUtils.getFileSizeString(size);
 
       // Assert
       expect(result, '1.00 TB');

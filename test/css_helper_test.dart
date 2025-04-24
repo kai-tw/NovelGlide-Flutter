@@ -6,10 +6,10 @@ void main() {
   group('CssHelper', () {
     test('convertColorToRgba should convert Color to CSS rgba string', () {
       // Arrange
-      const color = Color.fromARGB(255, 255, 0, 0); // Red color
+      const Color color = Color.fromARGB(255, 255, 0, 0); // Red color
 
       // Act
-      final result = CssUtils.convertColorToRgba(color);
+      final String result = CssUtils.convertColorToRgba(color);
 
       // Assert
       expect(result, 'rgba(255, 0, 0, 1.0)');
@@ -17,10 +17,11 @@ void main() {
 
     test('convertColorToRgba should handle transparency correctly', () {
       // Arrange
-      const color = Color.fromARGB(128, 0, 255, 0); // Semi-transparent green
+      const Color color =
+          Color.fromARGB(128, 0, 255, 0); // Semi-transparent green
 
       // Act
-      final result = CssUtils.convertColorToRgba(color);
+      final String result = CssUtils.convertColorToRgba(color);
 
       // Assert
       expect(result, 'rgba(0, 255, 0, 0.5)');

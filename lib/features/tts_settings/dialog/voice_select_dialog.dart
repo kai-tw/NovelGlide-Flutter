@@ -1,13 +1,13 @@
 part of '../tts_settings.dart';
 
 class _VoiceSelectDialog extends StatelessWidget {
-  final List<TtsVoiceData> voiceList;
-
   const _VoiceSelectDialog({required this.voiceList});
+
+  final List<TtsVoiceData> voiceList;
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Dialog(
       clipBehavior: Clip.hardEdge,
       child: Scaffold(
@@ -18,7 +18,7 @@ class _VoiceSelectDialog extends StatelessWidget {
         body: Scrollbar(
           child: ListView.builder(
             itemCount: voiceList.length,
-            itemBuilder: (context, index) {
+            itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 title: Text(voiceList[index].name),
                 subtitle: Text(voiceList[index].getLocaleName(context)),

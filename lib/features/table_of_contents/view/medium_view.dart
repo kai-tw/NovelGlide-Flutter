@@ -1,29 +1,29 @@
 part of '../table_of_contents.dart';
 
 class _MediumView extends StatelessWidget {
-  final BookData bookData;
-
   const _MediumView({required this.bookData});
+
+  final BookData bookData;
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<_Cubit>(context);
+    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
 
     return SafeArea(
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          double leftWidth = constraints.maxWidth * 0.382;
+          final double leftWidth = constraints.maxWidth * 0.382;
           return Row(
-            children: [
+            children: <Widget>[
               Container(
                 width: leftWidth,
                 height: constraints.maxHeight,
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  children: [
+                  children: <Widget>[
                     Expanded(
                       child: Stack(
-                        children: [
+                        children: <Widget>[
                           _CoverBanner(bookData: bookData),
                           Positioned.fill(
                             child: Align(
@@ -48,7 +48,7 @@ class _MediumView extends StatelessWidget {
                       child: CustomScrollView(
                         key: const PageStorageKey<String>('toc-scroll-view'),
                         controller: cubit.scrollController,
-                        slivers: [
+                        slivers: <Widget>[
                           SliverPadding(
                             padding: const EdgeInsets.fromLTRB(
                                 24.0, 0.0, 24.0, 80.0),

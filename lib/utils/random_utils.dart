@@ -6,12 +6,15 @@ import 'package:path/path.dart';
 import 'file_path.dart';
 
 class RandomUtils {
+  // Private constructor to prevent instantiation
+  RandomUtils._();
+
   // Generates a random string of the specified length
   static String getRandomString(int length) {
     const String alphabet =
         'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     return String.fromCharCodes(
-      Iterable.generate(
+      Iterable<int>.generate(
         length,
         (_) => alphabet.codeUnitAt(Random().nextInt(alphabet.length)),
       ),
@@ -30,7 +33,4 @@ class RandomUtils {
     tempFolder.createSync(recursive: true);
     return tempFolder;
   }
-
-  // Private constructor to prevent instantiation
-  RandomUtils._();
 }

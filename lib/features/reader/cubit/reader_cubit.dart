@@ -35,26 +35,27 @@ part 'reader_tts_handler.dart';
 part 'reader_web_view_handler.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
-  final String bookPath;
-  BookData? bookData;
-  ThemeData currentTheme;
-
-  late final _serverHandler = ReaderServerHandler(bookPath);
-  late final webViewHandler = ReaderWebViewHandler(url: _serverHandler.url);
-  late final searchCubit = ReaderSearchCubit(webViewHandler: webViewHandler);
-  late final gestureHandler = ReaderGestureHandler(
-    onSwipeLeft: previousPage,
-    onSwipeRight: nextPage,
-  );
-  late final ReaderTTSHandler ttsHandler;
-  late final _lifecycle =
-      AppLifecycleListener(onStateChange: _onLifecycleChanged);
-
   ReaderCubit({
     required this.currentTheme,
     required this.bookPath,
     this.bookData,
   }) : super(const ReaderState());
+  final String bookPath;
+  BookData? bookData;
+  ThemeData currentTheme;
+
+  late final ReaderServerHandler _serverHandler = ReaderServerHandler(bookPath);
+  late final ReaderWebViewHandler webViewHandler =
+      ReaderWebViewHandler(url: _serverHandler.url);
+  late final ReaderSearchCubit searchCubit =
+      ReaderSearchCubit(webViewHandler: webViewHandler);
+  late final ReaderGestureHandler gestureHandler = ReaderGestureHandler(
+    onSwipeLeft: previousPage,
+    onSwipeRight: nextPage,
+  );
+  late final ReaderTTSHandler ttsHandler;
+  late final AppLifecycleListener _lifecycle =
+      AppLifecycleListener(onStateChange: _onLifecycleChanged);
 
   /// Client initialization.
   Future<void> initAsync({
@@ -66,8 +67,8 @@ class ReaderCubit extends Cubit<ReaderState> {
       code: ReaderLoadingStateCode.bookLoading,
     ));
 
-    final absolutePath = BookRepository.getAbsolutePath(bookPath);
-    final bookmarkData = BookmarkRepository.get(bookPath);
+    final String absolutePath = BookRepository.getAbsolutePath(bookPath);
+    final BookmarkData? bookmarkData = BookmarkRepository.get(bookPath);
 
     webViewHandler.initialize(
       destination: destinationType == ReaderDestinationType.bookmark
@@ -86,13 +87,17 @@ class ReaderCubit extends Cubit<ReaderState> {
     );
 
     late ReaderSettingsData readerSettingsData;
-    await Future.wait<dynamic>([
-      BookRepository.get(absolutePath).then((value) => bookData = value),
-      ReaderSettingsData.load().then((value) => readerSettingsData = value),
+    await Future.wait<void>(<Future<void>>[
+      BookRepository.get(absolutePath)
+          .then((BookData value) => bookData = value),
+      ReaderSettingsData.load()
+          .then((ReaderSettingsData value) => readerSettingsData = value),
       _serverHandler.start(),
     ]);
 
-    if (isClosed) return;
+    if (isClosed) {
+      return;
+    }
 
     emit(state.copyWith(
       code: ReaderLoadingStateCode.rendering,
@@ -165,7 +170,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// *************************************************************************
 
   void saveBookmark() {
-    final data = BookmarkData(
+    final BookmarkData data = BookmarkData(
       bookPath: bookPath,
       bookName: state.bookName,
       chapterTitle: state.breadcrumb,
@@ -202,7 +207,9 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// *************************************************************************
 
   void _onTtsStateChanged(TtsServiceState ttsState) {
-    if (!isClosed) emit(state.copyWith(ttsState: ttsState));
+    if (!isClosed) {
+      emit(state.copyWith(ttsState: ttsState));
+    }
   }
 
   /// *************************************************************************
@@ -222,7 +229,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Communication
   /// *************************************************************************
 
-  void _receiveSaveLocation(data) {
+  void _receiveSaveLocation(dynamic data) {
     assert(data is String);
     if (bookData != null) {
       CacheRepository.locationCache.store(bookPath, data);
@@ -240,7 +247,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     webViewHandler.setSmoothScroll(state.readerSettings.isSmoothScroll);
   }
 
-  void _receiveSetState(jsonValue) {
+  void _receiveSetState(dynamic jsonValue) {
     assert(jsonValue is Map<String, dynamic>);
     emit(state.copyWith(
       breadcrumb: jsonValue['breadcrumb'],

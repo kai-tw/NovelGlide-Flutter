@@ -1,16 +1,16 @@
 part of 'reader_cubit.dart';
 
 class ReaderSearchCubit extends Cubit<ReaderSearchState> {
-  final ReaderWebViewHandler webViewHandler;
-
   factory ReaderSearchCubit({required ReaderWebViewHandler webViewHandler}) {
-    final cubit = ReaderSearchCubit._(webViewHandler: webViewHandler);
+    final ReaderSearchCubit cubit =
+        ReaderSearchCubit._(webViewHandler: webViewHandler);
     cubit.webViewHandler.register('setSearchResultList', cubit.setResultList);
     return cubit;
   }
 
   ReaderSearchCubit._({required this.webViewHandler})
       : super(const ReaderSearchState());
+  final ReaderWebViewHandler webViewHandler;
 
   void startSearch() {
     emit(state.copyWith(code: LoadingStateCode.loading));
@@ -32,7 +32,7 @@ class ReaderSearchCubit extends Cubit<ReaderSearchState> {
       state.copyWith(
         code: LoadingStateCode.loaded,
         resultList: rawList
-            .map((e) =>
+            .map((dynamic e) =>
                 ReaderSearchResultData(cfi: e['cfi'], excerpt: e['excerpt']))
             .toList(),
       ),

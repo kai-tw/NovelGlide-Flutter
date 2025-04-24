@@ -4,19 +4,19 @@ import '../../generated/i18n/app_localizations.dart';
 import '../../utils/emoticon_collection.dart';
 
 class CommonListEmpty extends StatelessWidget {
-  final String? title;
-
   const CommonListEmpty({super.key, this.title});
+
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return SafeArea(
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(bottom: 16.0),
               child: Text(
@@ -33,9 +33,9 @@ class CommonListEmpty extends StatelessWidget {
 }
 
 class CommonSliverListEmpty extends StatelessWidget {
-  final String? title;
-
   const CommonSliverListEmpty({super.key, this.title});
+
+  final String? title;
 
   @override
   Widget build(BuildContext context) {

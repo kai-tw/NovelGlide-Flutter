@@ -7,15 +7,16 @@ class _SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     final ReaderSearchCubit cubit = context.read<ReaderSearchCubit>();
     return BlocBuilder<ReaderSearchCubit, ReaderSearchState>(
-      buildWhen: (previous, current) => previous.code != current.code,
-      builder: (context, state) {
+      buildWhen: (ReaderSearchState previous, ReaderSearchState current) =>
+          previous.code != current.code,
+      builder: (BuildContext context, ReaderSearchState state) {
         return TextFormField(
           decoration: InputDecoration(
             contentPadding: EdgeInsets.zero,
             border: InputBorder.none,
             labelText: AppLocalizations.of(context)!.readerSearch,
           ),
-          onChanged: (value) => cubit.setQuery(value),
+          onChanged: (String value) => cubit.setQuery(value),
           initialValue: state.query,
           readOnly: state.code == LoadingStateCode.loading,
         );

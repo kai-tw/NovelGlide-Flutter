@@ -6,9 +6,9 @@ class _Breadcrumb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) =>
+      buildWhen: (ReaderState previous, ReaderState current) =>
           previous.breadcrumb != current.breadcrumb,
-      builder: (context, state) {
+      builder: (BuildContext context, ReaderState state) {
         return Text(
           state.breadcrumb,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(

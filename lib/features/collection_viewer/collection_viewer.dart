@@ -18,19 +18,19 @@ part 'widgets/list_view.dart';
 part 'widgets/popup_menu_button.dart';
 
 class CollectionViewer extends StatelessWidget {
-  final CollectionData collectionData;
-
   const CollectionViewer({super.key, required this.collectionData});
+
+  final CollectionData collectionData;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<CollectionViewerCubit>(
       create: (_) => CollectionViewerCubit(collectionData),
       child: Scaffold(
         appBar: AppBar(
           leading: const CommonBackButton(),
           title: Text(collectionData.name),
-          actions: const [
+          actions: const <Widget>[
             CommonListSelectAllButton<CollectionViewerCubit, BookData>(),
             CommonListDoneButton<CollectionViewerCubit, BookData>(),
             _PopupMenuButton(),

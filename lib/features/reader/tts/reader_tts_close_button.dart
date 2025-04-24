@@ -10,12 +10,13 @@ class ReaderTtsCloseButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<ReaderCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) => previous.ttsState != current.ttsState,
-      builder: (context, state) {
-        final isEnabled = state.ttsState.isStopped;
+      buildWhen: (ReaderState previous, ReaderState current) =>
+          previous.ttsState != current.ttsState,
+      builder: (BuildContext context, ReaderState state) {
+        final bool isEnabled = state.ttsState.isStopped;
         return IconButton(
           icon: const Icon(Icons.close),
           tooltip: appLocalizations.readerTtsCloseButton,

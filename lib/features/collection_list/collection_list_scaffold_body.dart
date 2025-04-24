@@ -15,7 +15,7 @@ class CollectionListScaffoldBody extends StatelessWidget {
         child: const Scrollbar(
           child: CustomScrollView(
             key: PageStorageKey<String>('homepage-collection'),
-            slivers: [
+            slivers: <Widget>[
               CollectionList(),
             ],
           ),

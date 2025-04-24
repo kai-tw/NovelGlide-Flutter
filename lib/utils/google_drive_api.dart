@@ -16,12 +16,12 @@ import 'mime_resolver.dart';
 class GoogleDriveApi {
   GoogleDriveApi._();
 
-  static final _scopes = [
+  static final List<String> _scopes = <String>[
     drive.DriveApi.driveAppdataScope,
     drive.DriveApi.driveFileScope,
   ];
 
-  static final _googleSignIn = GoogleSignIn(scopes: _scopes);
+  static final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: _scopes);
   static drive.DriveApi? _driveApi;
 
   /// Signs in the user and initializes the Drive API client.
@@ -87,7 +87,7 @@ class GoogleDriveApi {
 
   /// Copies a file to specified parent folders.
   static Future<void> copyFile(String fileId, List<String> parents) async {
-    drive.File request = drive.File();
+    final drive.File request = drive.File();
     request.parents = parents;
     await files.copy(request, fileId);
   }
@@ -99,18 +99,18 @@ class GoogleDriveApi {
 
   /// Uploads a file to Google Drive, updating if it already exists.
   static Future<void> uploadFile(String spaces, File file) async {
-    final fileId = await getFileId(basename(file.path));
+    final String? fileId = await getFileId(basename(file.path));
 
-    final driveFile = drive.File();
+    final drive.File driveFile = drive.File();
     driveFile.name = basename(file.path);
     driveFile.mimeType = MimeResolver.lookupAll(file);
 
-    final media = drive.Media(file.openRead(), file.lengthSync());
+    final drive.Media media = drive.Media(file.openRead(), file.lengthSync());
 
     if (fileId != null) {
       await files.update(driveFile, fileId, uploadMedia: media);
     } else {
-      driveFile.parents = [spaces];
+      driveFile.parents = <String>[spaces];
       await files.create(driveFile, uploadMedia: media);
     }
   }
@@ -123,14 +123,14 @@ class GoogleDriveApi {
     void Function()? onDone,
     void Function(Object)? onError,
   }) async {
-    final logger = Logger();
-    final completer = Completer();
-    List<int> buffer = [];
+    final Logger logger = Logger();
+    final Completer<void> completer = Completer<void>();
+    final List<int> buffer = <int>[];
 
-    final fileStat = await getMetadataById(fileId, field: 'size');
-    final fileSize = IntUtils.parse(fileStat.size);
+    final drive.File fileStat = await getMetadataById(fileId, field: 'size');
+    final int fileSize = IntUtils.parse(fileStat.size);
 
-    drive.Media media = await files.get(
+    final drive.Media media = await files.get(
       fileId,
       downloadOptions: drive.DownloadOptions.fullMedia,
     ) as drive.Media;
@@ -144,7 +144,7 @@ class GoogleDriveApi {
       saveFile.writeAsBytesSync(buffer);
       buffer.clear();
       completer.complete();
-    }, onError: (e) {
+    }, onError: (Object e) {
       logger.e('Google Drive Api: $e');
       completer.completeError(e);
     });

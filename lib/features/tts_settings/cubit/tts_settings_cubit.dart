@@ -7,17 +7,17 @@ import '../../../services/tts/tts_service.dart';
 part 'tts_settings_state.dart';
 
 class TtsSettingsCubit extends Cubit<TtsSettingsState> {
-  late final TtsService _ttsService;
-  final controller = TextEditingController();
-
   factory TtsSettingsCubit() => TtsSettingsCubit._().._init();
+
   TtsSettingsCubit._() : super(const TtsSettingsState());
+  late final TtsService _ttsService;
+  final TextEditingController controller = TextEditingController();
 
   void _init() {
     _ttsService = TtsService(onReady: _onReady);
   }
 
-  void _onReady() async {
+  Future<void> _onReady() async {
     _ttsService.setStartHandler(_onSpeakStart);
     _ttsService.setCompletionHandler(_onSpeakEnd);
     _ttsService.setPauseHandler(_onSpeakPause);
@@ -25,7 +25,7 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
     _ttsService.setContinueHandler(_onSpeakContinue);
     _ttsService.setErrorHandler(_onSpeakEnd);
 
-    final dataList = await _ttsService.voiceList;
+    final List<TtsVoiceData> dataList = await _ttsService.voiceList;
     if (!isClosed) {
       emit(state.copyWith(
         ttsState: TtsServiceState.stopped,
@@ -38,14 +38,14 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
     }
   }
 
-  void play() async {
+  Future<void> play() async {
     switch (state.ttsState) {
       case TtsServiceState.paused:
         await _ttsService.resume();
         break;
 
       case TtsServiceState.stopped:
-        final text = controller.text;
+        final String text = controller.text;
 
         emit(state.copyWith(isTextEmpty: text.isEmpty));
 
@@ -58,11 +58,11 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
     }
   }
 
-  void pause() async {
+  Future<void> pause() async {
     await _ttsService.pause();
   }
 
-  void stop() async {
+  Future<void> stop() async {
     await _ttsService.stop();
   }
 
@@ -85,7 +85,9 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
   }
 
   void setPitch(double pitch, bool isEnd) {
-    if (isClosed) return;
+    if (isClosed) {
+      return;
+    }
     emit(state.copyWith(pitch: pitch));
     if (isEnd) {
       _ttsService.pitch = pitch;
@@ -93,7 +95,9 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
   }
 
   void setVolume(double volume, bool isEnd) {
-    if (isClosed) return;
+    if (isClosed) {
+      return;
+    }
     emit(state.copyWith(volume: volume));
     if (isEnd) {
       _ttsService.volume = volume;
@@ -101,7 +105,9 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
   }
 
   void setSpeechRate(double speechRate, bool isEnd) {
-    if (isClosed) return;
+    if (isClosed) {
+      return;
+    }
     emit(state.copyWith(speechRate: speechRate));
     if (isEnd) {
       _ttsService.speechRate = speechRate;
@@ -109,24 +115,34 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
   }
 
   void setVoiceData(TtsVoiceData voiceData) {
-    if (isClosed) return;
+    if (isClosed) {
+      return;
+    }
     emit(state.copyWith(voiceData: voiceData));
     _ttsService.voiceData = voiceData;
   }
 
   void _onSpeakStart() {
-    if (!isClosed) emit(state.copyWith(ttsState: TtsServiceState.playing));
+    if (!isClosed) {
+      emit(state.copyWith(ttsState: TtsServiceState.playing));
+    }
   }
 
   void _onSpeakPause() {
-    if (!isClosed) emit(state.copyWith(ttsState: TtsServiceState.paused));
+    if (!isClosed) {
+      emit(state.copyWith(ttsState: TtsServiceState.paused));
+    }
   }
 
   void _onSpeakContinue() {
-    if (!isClosed) emit(state.copyWith(ttsState: TtsServiceState.continued));
+    if (!isClosed) {
+      emit(state.copyWith(ttsState: TtsServiceState.continued));
+    }
   }
 
   void _onSpeakEnd([_]) {
-    if (!isClosed) emit(state.copyWith(ttsState: TtsServiceState.stopped));
+    if (!isClosed) {
+      emit(state.copyWith(ttsState: TtsServiceState.stopped));
+    }
   }
 }

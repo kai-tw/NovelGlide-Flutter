@@ -1,25 +1,25 @@
 part of 'reader_cubit.dart';
 
 class ReaderSearchState extends Equatable {
+  const ReaderSearchState({
+    this.code = LoadingStateCode.initial,
+    this.query = '',
+    this.range = ReaderSearchRangeCode.currentChapter,
+    this.resultList = const <ReaderSearchResultData>[],
+  });
+
   final LoadingStateCode code;
   final ReaderSearchRangeCode range;
   final String query;
   final List<ReaderSearchResultData> resultList;
 
   @override
-  List<Object?> get props => [
+  List<Object?> get props => <Object?>[
         code,
         range,
         query,
         resultList,
       ];
-
-  const ReaderSearchState({
-    this.code = LoadingStateCode.initial,
-    this.query = '',
-    this.range = ReaderSearchRangeCode.currentChapter,
-    this.resultList = const [],
-  });
 
   ReaderSearchState copyWith({
     LoadingStateCode? code,

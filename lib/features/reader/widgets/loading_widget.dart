@@ -6,9 +6,10 @@ class _LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) => previous.code != current.code,
-      builder: (context, state) {
-        final appLocalizations = AppLocalizations.of(context)!;
+      buildWhen: (ReaderState previous, ReaderState current) =>
+          previous.code != current.code,
+      builder: (BuildContext context, ReaderState state) {
+        final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
         String? title;
         switch (state.code) {
           case ReaderLoadingStateCode.initial:

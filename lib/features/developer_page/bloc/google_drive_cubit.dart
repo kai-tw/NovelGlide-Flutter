@@ -28,12 +28,12 @@ class _GoogleDriveCubit extends Cubit<_GoogleDriveState> {
     emit(const _GoogleDriveState(
       errorCode: _GoogleDriveErrorCode.unInitialized,
     ));
-    drive.FileList? fileList = await GoogleDriveApi.files.list(
+    final drive.FileList fileList = await GoogleDriveApi.files.list(
       spaces: 'appDataFolder',
       orderBy: 'modifiedTime desc',
       $fields: 'files(name,createdTime,id,mimeType,modifiedTime)',
     );
-    List<drive.File> files = fileList.files ?? [];
+    final List<drive.File> files = fileList.files ?? <drive.File>[];
 
     emit(_GoogleDriveState(
       errorCode: files.isEmpty
@@ -49,25 +49,25 @@ class _GoogleDriveCubit extends Cubit<_GoogleDriveState> {
   }
 
   Future<bool> copyToDrive(String fileId) async {
-    await GoogleDriveApi.copyFile(fileId, ['root']);
+    await GoogleDriveApi.copyFile(fileId, <String>['root']);
     return true;
   }
 }
 
 class _GoogleDriveState extends Equatable {
-  final _GoogleDriveErrorCode errorCode;
-  final List<drive.File>? files;
-
-  @override
-  List<Object?> get props => [
-        errorCode,
-        files,
-      ];
-
   const _GoogleDriveState({
     this.errorCode = _GoogleDriveErrorCode.unInitialized,
     this.files,
   });
+
+  final _GoogleDriveErrorCode errorCode;
+  final List<drive.File>? files;
+
+  @override
+  List<Object?> get props => <Object?>[
+        errorCode,
+        files,
+      ];
 
   _GoogleDriveState copyWith({
     _GoogleDriveErrorCode? errorCode,

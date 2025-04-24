@@ -1,17 +1,17 @@
 part of 'reader_cubit.dart';
 
 class ReaderServerHandler {
-  final _host = 'localhost';
-  final _port = 8080;
+  ReaderServerHandler(this._bookPath);
+
+  final String _host = 'localhost';
+  final int _port = 8080;
   final String _bookPath;
   HttpServer? _server;
 
   String get url => 'http://$_host:$_port';
 
-  ReaderServerHandler(this._bookPath);
-
   Future<void> start() async {
-    final handler =
+    final Handler handler =
         const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
     _server = await shelf_io.serve(handler, _host, _port);
     _server?.autoCompress = true;
@@ -23,13 +23,15 @@ class ReaderServerHandler {
       case 'index.html':
         return Response.ok(
           await rootBundle.loadString('assets/renderer/index.html'),
-          headers: {HttpHeaders.contentTypeHeader: 'text/html; charset=utf-8'},
+          headers: <String, Object>{
+            HttpHeaders.contentTypeHeader: 'text/html; charset=utf-8'
+          },
         );
 
       case 'index.js':
         return Response.ok(
           await rootBundle.loadString('assets/renderer/index.js'),
-          headers: {
+          headers: <String, Object>{
             HttpHeaders.contentTypeHeader: 'text/javascript; charset=utf-8'
           },
         );
@@ -37,13 +39,17 @@ class ReaderServerHandler {
       case 'main.css':
         return Response.ok(
           await rootBundle.loadString('assets/renderer/main.css'),
-          headers: {HttpHeaders.contentTypeHeader: 'text/css; charset=utf-8'},
+          headers: <String, Object>{
+            HttpHeaders.contentTypeHeader: 'text/css; charset=utf-8'
+          },
         );
 
       case 'book.epub':
         return Response.ok(
           File(BookRepository.getAbsolutePath(_bookPath)).readAsBytesSync(),
-          headers: {HttpHeaders.contentTypeHeader: 'application/epub+zip'},
+          headers: <String, Object>{
+            HttpHeaders.contentTypeHeader: 'application/epub+zip'
+          },
         );
 
       default:

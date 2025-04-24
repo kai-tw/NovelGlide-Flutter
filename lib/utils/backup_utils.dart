@@ -6,21 +6,23 @@ import 'package:path/path.dart';
 import 'file_path.dart';
 
 class BackupUtils {
+  BackupUtils._();
+
   static String libraryArchiveName = 'Library.zip';
 
   static Future<File> archiveLibrary(
     String tempFolderPath, {
     void Function(double)? onZipping,
   }) async {
-    final libraryFolder = Directory(FilePath.libraryRoot);
+    final Directory libraryFolder = Directory(FilePath.libraryRoot);
 
     // Create a zip file
-    final zipFile = File(join(tempFolderPath, libraryArchiveName));
+    final File zipFile = File(join(tempFolderPath, libraryArchiveName));
 
     await ZipFile.createFromDirectory(
       sourceDir: libraryFolder,
       zipFile: zipFile,
-      onZipping: (fileName, isDirectory, progress) {
+      onZipping: (String fileName, bool isDirectory, double progress) {
         // Only include epub files.
         onZipping?.call(progress);
         return extension(fileName) == '.epub'
@@ -37,7 +39,7 @@ class BackupUtils {
     File zipFile, {
     void Function(double)? onExtracting,
   }) async {
-    final libraryFolder = Directory(FilePath.libraryRoot);
+    final Directory libraryFolder = Directory(FilePath.libraryRoot);
 
     // Clear the Library folder.
     libraryFolder.deleteSync(recursive: true);
@@ -46,7 +48,7 @@ class BackupUtils {
     await ZipFile.extractToDirectory(
       zipFile: zipFile,
       destinationDir: libraryFolder,
-      onExtracting: (entry, progress) {
+      onExtracting: (ZipEntry entry, double progress) {
         // Only extract epub files.
         onExtracting?.call(progress);
         return extension(entry.name) == '.epub'
@@ -55,6 +57,4 @@ class BackupUtils {
       },
     );
   }
-
-  BackupUtils._();
 }

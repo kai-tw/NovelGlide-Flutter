@@ -30,19 +30,20 @@ class CollectionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final windowWidth = MediaQuery.of(context).size.width;
-    final windowClass = WindowClass.fromWidth(windowWidth);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final double windowWidth = MediaQuery.of(context).size.width;
+    final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
 
     BlocProvider.of<CollectionListCubit>(context).refresh();
 
     return BlocBuilder<CollectionListCubit, CommonListState<CollectionData>>(
-      buildWhen: (previous, current) =>
+      buildWhen: (CommonListState<CollectionData> previous,
+              CommonListState<CollectionData> current) =>
           previous.code != current.code ||
           previous.dataList != current.dataList ||
           previous.isSelecting != current.isSelecting ||
           previous.selectedSet != current.selectedSet,
-      builder: (context, state) {
+      builder: (BuildContext context, CommonListState<CollectionData> state) {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
@@ -62,7 +63,7 @@ class CollectionList extends StatelessWidget {
                 ),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    (context, index) {
+                    (BuildContext context, int index) {
                       return _ListItem(state.dataList[index]);
                     },
                     childCount: state.dataList.length,

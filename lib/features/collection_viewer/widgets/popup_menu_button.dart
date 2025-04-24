@@ -5,22 +5,23 @@ class _PopupMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton(
+    return PopupMenuButton<void>(
       icon: const Icon(Icons.more_vert_rounded),
       clipBehavior: Clip.hardEdge,
       itemBuilder: _itemBuilder,
     );
   }
 
-  List<PopupMenuEntry<dynamic>> _itemBuilder(BuildContext context) {
-    final cubit = BlocProvider.of<CollectionViewerCubit>(context);
-    final isLoaded = cubit.state.code.isLoaded;
-    List<PopupMenuEntry<dynamic>> entries = [];
+  List<PopupMenuEntry<void>> _itemBuilder(BuildContext context) {
+    final CollectionViewerCubit cubit =
+        BlocProvider.of<CollectionViewerCubit>(context);
+    final bool isLoaded = cubit.state.code.isLoaded;
+    final List<PopupMenuEntry<void>> entries = <PopupMenuEntry<void>>[];
 
     /// Selecting mode
     if (isLoaded && !cubit.state.isSelecting) {
       entries.add(
-        PopupMenuItem(
+        PopupMenuItem<void>(
           onTap: () => cubit.setSelecting(true),
           child: const CommonListSelectModeButton(),
         ),
@@ -30,11 +31,11 @@ class _PopupMenuButton extends StatelessWidget {
     /// Operation Section
     if (isLoaded && cubit.state.isSelecting) {
       entries.add(
-        PopupMenuItem(
+        PopupMenuItem<void>(
           onTap: () {
             showDialog(
               context: context,
-              builder: (context) {
+              builder: (_) {
                 return CommonDeleteDialog(
                   onDelete: () => cubit.remove(),
                 );

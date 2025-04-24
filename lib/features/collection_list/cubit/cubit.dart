@@ -9,18 +9,18 @@ import '../../../repository/collection_repository.dart';
 import '../../common_components/common_list/list_template.dart';
 
 class CollectionListCubit extends CommonListCubit<CollectionData> {
-  final _sortOrderKey = PreferenceKeys.collection.sortOrder;
-  final _isAscendingKey = PreferenceKeys.collection.isAscending;
-  late final SharedPreferences _prefs;
-
   factory CollectionListCubit() {
-    final cubit =
+    final CollectionListCubit cubit =
         CollectionListCubit._(const CommonListState<CollectionData>());
     cubit._init();
     return cubit;
   }
 
   CollectionListCubit._(super.initialState);
+
+  final String _sortOrderKey = PreferenceKeys.collection.sortOrder;
+  final String _isAscendingKey = PreferenceKeys.collection.isAscending;
+  late final SharedPreferences _prefs;
 
   Future<void> _init() async {
     _prefs = await SharedPreferences.getInstance();
@@ -31,7 +31,7 @@ class CollectionListCubit extends CommonListCubit<CollectionData> {
   Future<void> refresh() async {
     emit(state.copyWith(code: LoadingStateCode.loading));
 
-    final collectionList = CollectionRepository.getList();
+    final List<CollectionData> collectionList = CollectionRepository.getList();
 
     int sortOrder;
     try {
@@ -39,8 +39,8 @@ class CollectionListCubit extends CommonListCubit<CollectionData> {
     } catch (_) {
       sortOrder = SortOrderCode.name.index;
     }
-    final sortOrderCode = SortOrderCode.values[sortOrder];
-    final isAscending = _prefs.getBool(_isAscendingKey) ?? true;
+    final SortOrderCode sortOrderCode = SortOrderCode.values[sortOrder];
+    final bool isAscending = _prefs.getBool(_isAscendingKey) ?? true;
 
     _sortList(collectionList, sortOrderCode, isAscending);
 
@@ -53,16 +53,14 @@ class CollectionListCubit extends CommonListCubit<CollectionData> {
   }
 
   void deleteSelectedCollections() {
-    for (var e in state.selectedSet) {
-      CollectionRepository.delete(e);
-    }
+    state.selectedSet.forEach(CollectionRepository.delete);
     refresh();
   }
 
   void setListOrder({SortOrderCode? sortOrder, bool? isAscending}) {
-    final order = sortOrder ?? state.sortOrder;
-    final ascending = isAscending ?? state.isAscending;
-    final list = List<CollectionData>.from(state.dataList);
+    final SortOrderCode order = sortOrder ?? state.sortOrder;
+    final bool ascending = isAscending ?? state.isAscending;
+    final List<CollectionData> list = List<CollectionData>.from(state.dataList);
 
     _prefs.setInt(_sortOrderKey, order.index);
     _prefs.setBool(_isAscendingKey, ascending);
@@ -81,7 +79,7 @@ class CollectionListCubit extends CommonListCubit<CollectionData> {
     SortOrderCode sortOrder,
     bool isAscending,
   ) {
-    list.sort((a, b) => isAscending
+    list.sort((CollectionData a, CollectionData b) => isAscending
         ? compareNatural(a.name, b.name)
         : compareNatural(b.name, a.name));
   }

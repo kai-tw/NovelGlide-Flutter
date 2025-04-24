@@ -5,20 +5,24 @@ class _NavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<HomepageCubit>(context);
-    final bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
-    final bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
-    final collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final HomepageCubit cubit = BlocProvider.of<HomepageCubit>(context);
+    final BookshelfCubit bookshelfCubit =
+        BlocProvider.of<BookshelfCubit>(context);
+    final BookmarkListCubit bookmarkListCubit =
+        BlocProvider.of<BookmarkListCubit>(context);
+    final CollectionListCubit collectionListCubit =
+        BlocProvider.of<CollectionListCubit>(context);
 
     return BlocBuilder<HomepageCubit, _HomepageState>(
-      buildWhen: (previous, current) => previous.navItem != current.navItem,
-      builder: (context, state) {
+      buildWhen: (_HomepageState previous, _HomepageState current) =>
+          previous.navItem != current.navItem,
+      builder: (BuildContext context, _HomepageState state) {
         return NavigationBar(
           selectedIndex: HomepageNavigationItem.values.indexOf(state.navItem),
           indicatorColor: Colors.transparent,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-          destinations: [
+          destinations: <Widget>[
             _Destination(
               iconData: Icons.shelves,
               label: appLocalizations.bookshelfTitle,
@@ -40,7 +44,7 @@ class _NavigationBar extends StatelessWidget {
               enabled: state.navItem != HomepageNavigationItem.settings,
             ),
           ],
-          onDestinationSelected: (index) {
+          onDestinationSelected: (int index) {
             switch (state.navItem) {
               case HomepageNavigationItem.bookshelf:
                 bookshelfCubit.unfocused();
@@ -63,21 +67,22 @@ class _NavigationBar extends StatelessWidget {
 }
 
 class _Destination extends StatelessWidget {
-  final IconData iconData;
-  final String label;
-  final bool enabled;
-
   const _Destination({
     required this.iconData,
     required this.label,
     required this.enabled,
   });
 
+  final IconData iconData;
+  final String label;
+  final bool enabled;
+
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return NavigationDestination(
-      icon: Icon(iconData, color: colorScheme.onSurface.withValues(alpha: 0.64)),
+      icon:
+          Icon(iconData, color: colorScheme.onSurface.withValues(alpha: 0.64)),
       selectedIcon: Icon(iconData, color: colorScheme.onSurface),
       label: label,
       enabled: enabled,

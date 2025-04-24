@@ -3,10 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 class LogSystem {
+  LogSystem._();
+
   static void ensureInitialized() {
     Logger.level = kDebugMode ? Level.all : Level.off;
     Logger.addLogListener(
-      (event) {
+      (LogEvent event) {
         switch (event.level) {
           case Level.error:
           case Level.fatal:
@@ -14,7 +16,7 @@ class LogSystem {
               Exception(event.message),
               event.stackTrace,
               reason: event.message,
-              information: [
+              information: <Object>[
                 'Time: ${event.time}',
               ],
               fatal: event.level == Level.fatal,

@@ -6,11 +6,13 @@ class _OverlapWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) => previous.code != current.code,
-      builder: (context, state) {
+      buildWhen: (ReaderState previous, ReaderState current) =>
+          previous.code != current.code,
+      builder: (BuildContext context, ReaderState state) {
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),
-          transitionBuilder: (child, animation) => FadeTransition(
+          transitionBuilder: (Widget child, Animation<double> animation) =>
+              FadeTransition(
             opacity: animation,
             child: SlideTransition(
               position: Tween<Offset>(

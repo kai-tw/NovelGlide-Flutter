@@ -6,12 +6,12 @@ class _LineHeightSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) =>
+      buildWhen: (ReaderState previous, ReaderState current) =>
           previous.readerSettings.lineHeight !=
           current.readerSettings.lineHeight,
-      builder: (context, state) {
-        final appLocalizations = AppLocalizations.of(context)!;
-        final cubit = BlocProvider.of<ReaderCubit>(context);
+      builder: (BuildContext context, ReaderState state) {
+        final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+        final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
         return _SettingsSlider(
           leading: Icon(
             Icons.density_small_rounded,
@@ -26,13 +26,13 @@ class _LineHeightSlider extends StatelessWidget {
           min: ReaderSettingsData.minLineHeight,
           max: ReaderSettingsData.maxLineHeight,
           value: state.readerSettings.lineHeight,
-          semanticFormatterCallback: (value) {
+          semanticFormatterCallback: (double value) {
             return '${appLocalizations.readerLineHeightSlider} ${value.toStringAsFixed(1)}';
           },
-          onChanged: (value) {
+          onChanged: (double value) {
             cubit.lineHeight = value;
           },
-          onChangeEnd: (value) {
+          onChangeEnd: (double value) {
             cubit.lineHeight = value;
             cubit.saveSettings();
           },

@@ -6,10 +6,10 @@ part 'tts_pref.dart';
 class PreferenceKeys {
   PreferenceKeys._();
 
-  static final backupManager = BackupManagerPref();
-  static final reader = ReaderPref();
-  static final bookshelf = SortOrderPref('bookshelf');
-  static final collection = SortOrderPref('collection');
-  static final bookmark = SortOrderPref('bookmark');
-  static final tts = TtsPref();
+  static final BackupManagerPref backupManager = BackupManagerPref();
+  static final ReaderPref reader = ReaderPref();
+  static final SortOrderPref bookshelf = SortOrderPref('bookshelf');
+  static final SortOrderPref collection = SortOrderPref('collection');
+  static final SortOrderPref bookmark = SortOrderPref('bookmark');
+  static final TtsPref tts = TtsPref();
 }

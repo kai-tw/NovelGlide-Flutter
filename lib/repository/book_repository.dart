@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:epubx/epubx.dart';
 import 'package:path/path.dart';
 
 import '../data_model/book_data.dart';
@@ -16,8 +17,8 @@ class BookRepository {
 
   /// Add a book to the library.
   static void add(String filePath) {
-    final destination = join(FilePath.libraryRoot, basename(filePath));
-    final file = File(filePath);
+    final String destination = join(FilePath.libraryRoot, basename(filePath));
+    final File file = File(filePath);
     if (File(destination).existsSync()) {
       throw FileDuplicatedException();
     }
@@ -26,14 +27,14 @@ class BookRepository {
 
   /// Get is the book is in the library.
   static bool exists(String filePath) {
-    final destination = join(FilePath.libraryRoot, basename(filePath));
+    final String destination = join(FilePath.libraryRoot, basename(filePath));
     return File(destination).existsSync();
   }
 
   /// Get the book data from the file path.
   static Future<BookData> get(String filePath) async {
-    final absolutePath = getAbsolutePath(filePath);
-    final epubBook = await EpubUtils.loadEpubBook(absolutePath);
+    final String absolutePath = getAbsolutePath(filePath);
+    final EpubBook epubBook = await EpubUtils.loadEpubBook(absolutePath);
     return BookData(
       absoluteFilePath: absolutePath,
       name: epubBook.Title ?? '',
@@ -43,8 +44,8 @@ class BookRepository {
 
   /// Delete the book and associated bookmarks and collections.
   static bool delete(String filePath) {
-    final absolutePath = getAbsolutePath(filePath);
-    final file = File(absolutePath);
+    final String absolutePath = getAbsolutePath(filePath);
+    final File file = File(absolutePath);
     if (file.existsSync()) {
       file.deleteSync();
     }
@@ -73,7 +74,7 @@ class BookRepository {
 
   /// Reset the book repository.
   static void reset() {
-    final directory = Directory(FilePath.libraryRoot);
+    final Directory directory = Directory(FilePath.libraryRoot);
     directory.deleteSync(recursive: true);
     directory.createSync(recursive: true);
 

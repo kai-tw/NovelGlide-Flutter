@@ -11,11 +11,12 @@ class ReaderTtsSettingsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) => previous.ttsState != current.ttsState,
-      builder: (context, state) {
-        final isEnabled = state.ttsState.isStopped;
+      buildWhen: (ReaderState previous, ReaderState current) =>
+          previous.ttsState != current.ttsState,
+      builder: (BuildContext context, ReaderState state) {
+        final bool isEnabled = state.ttsState.isStopped;
         return IconButton(
           icon: const Icon(Icons.settings_rounded),
           tooltip: appLocalizations.ttsSettingsTitle,
@@ -26,7 +27,7 @@ class ReaderTtsSettingsButton extends StatelessWidget {
   }
 
   void _navigateToTtsSettings(BuildContext context) {
-    final cubit = BlocProvider.of<ReaderCubit>(context);
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     Navigator.of(context)
         .push(RouteUtils.pushRoute(const TtsSettings()))
         .then((_) => cubit.ttsHandler.reload());

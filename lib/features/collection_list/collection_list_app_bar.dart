@@ -9,14 +9,14 @@ class CollectionListAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    final windowWidth = MediaQuery.of(context).size.width;
-    final windowClass = WindowClass.fromWidth(windowWidth);
+    final double windowWidth = MediaQuery.of(context).size.width;
+    final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
 
     return AppBar(
       leading: const Icon(Icons.collections_bookmark_outlined),
       leadingWidth: windowClass == WindowClass.compact ? null : 100.0,
       title: Text(AppLocalizations.of(context)!.collectionTitle),
-      actions: const [
+      actions: const <Widget>[
         CommonListSelectAllButton<CollectionListCubit, CollectionData>(),
         CommonListDoneButton<CollectionListCubit, CollectionData>(),
         _PopupMenuButton(),

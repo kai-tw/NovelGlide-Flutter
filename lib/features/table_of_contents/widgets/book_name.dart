@@ -1,9 +1,9 @@
 part of '../table_of_contents.dart';
 
 class _BookName extends StatelessWidget {
-  final BookData bookData;
-
   const _BookName({required this.bookData});
+
+  final BookData bookData;
 
   @override
   Widget build(BuildContext context) {

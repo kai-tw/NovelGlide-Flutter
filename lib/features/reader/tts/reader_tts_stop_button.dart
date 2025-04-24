@@ -9,12 +9,13 @@ class ReaderTtsStopButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<ReaderCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) => previous.ttsState != current.ttsState,
-      builder: (context, state) {
-        final isEnabled = state.ttsState.isPlaying ||
+      buildWhen: (ReaderState previous, ReaderState current) =>
+          previous.ttsState != current.ttsState,
+      builder: (BuildContext context, ReaderState state) {
+        final bool isEnabled = state.ttsState.isPlaying ||
             state.ttsState.isPaused ||
             state.ttsState.isContinued;
         return IconButton(

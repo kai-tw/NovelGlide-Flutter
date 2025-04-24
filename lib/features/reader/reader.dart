@@ -24,11 +24,6 @@ part 'widgets/scaffold.dart';
 part 'widgets/scaffold_body.dart';
 
 class ReaderWidget extends StatelessWidget {
-  final String bookPath;
-  final BookData? bookData;
-  final ReaderDestinationType destinationType;
-  final String? destination;
-
   const ReaderWidget({
     super.key,
     required this.bookPath,
@@ -37,9 +32,14 @@ class ReaderWidget extends StatelessWidget {
     this.destination,
   });
 
+  final String bookPath;
+  final BookData? bookData;
+  final ReaderDestinationType destinationType;
+  final String? destination;
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<ReaderCubit>(
       create: (_) => ReaderCubit(
         bookData: bookData,
         bookPath: bookPath,

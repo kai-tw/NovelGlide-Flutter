@@ -2,13 +2,16 @@ import 'package:intl/intl.dart';
 
 /// A utility class for common DateTime operations.
 class DateTimeUtils {
+  // Private constructor to prevent instantiation.
+  DateTimeUtils._();
+
   /// Calculates the number of days between two [DateTime] objects.
   ///
   /// The [from] and [to] parameters are the start and end dates, respectively.
   /// Returns the number of full days between the two dates.
   static int daysBetween(DateTime from, DateTime to) {
-    final startDate = DateTime(from.year, from.month, from.day);
-    final endDate = DateTime(to.year, to.month, to.day);
+    final DateTime startDate = DateTime(from.year, from.month, from.day);
+    final DateTime endDate = DateTime(to.year, to.month, to.day);
     return (endDate.difference(startDate).inHours / 24).round();
   }
 
@@ -34,10 +37,7 @@ class DateTimeUtils {
     if (dateTime == null) {
       return defaultValue;
     }
-    final formatter = DateFormat(pattern);
+    final DateFormat formatter = DateFormat(pattern);
     return formatter.format(dateTime.toLocal());
   }
-
-  // Private constructor to prevent instantiation.
-  DateTimeUtils._();
 }

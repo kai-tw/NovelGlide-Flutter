@@ -35,22 +35,24 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DefaultTheme theme = DefaultTheme();
     return MaterialApp(
       title: 'NovelGlide',
-      theme: DefaultTheme.lightTheme,
-      darkTheme: DefaultTheme.darkTheme,
-      localizationsDelegates: const [
+      theme: theme.lightTheme,
+      darkTheme: theme.darkTheme,
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      initialRoute: "/",
-      routes: {
-        "/": (_) => const Homepage(),
+      initialRoute: '/',
+      routes: <String, WidgetBuilder>{
+        '/': (_) => const Homepage(),
       },
-      builder: (context, child) => AccessibilityTools(child: child),
+      builder: (BuildContext context, Widget? child) =>
+          AccessibilityTools(child: child),
       // debugShowCheckedModeBanner: false,
     );
   }

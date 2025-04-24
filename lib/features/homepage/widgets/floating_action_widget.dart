@@ -19,16 +19,16 @@ class _FloatingActionWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
+        children: <Widget>[
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: kFloatingActionButtonMargin,
               ),
               child: BlocBuilder<HomepageCubit, _HomepageState>(
-                buildWhen: (previous, current) =>
+                buildWhen: (_HomepageState previous, _HomepageState current) =>
                     previous.navItem != current.navItem,
-                builder: (context, state) {
+                builder: (BuildContext context, _HomepageState state) {
                   switch (state.navItem) {
                     case HomepageNavigationItem.bookshelf:
                       return const _DeleteDragTarget<BookshelfCubit,

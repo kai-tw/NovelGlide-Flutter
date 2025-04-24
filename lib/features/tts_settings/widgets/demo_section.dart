@@ -5,16 +5,16 @@ class _DemoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<TtsSettingsCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final TtsSettingsCubit cubit = BlocProvider.of<TtsSettingsCubit>(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
       child: Column(
-        children: [
+        children: <Widget>[
           BlocBuilder<TtsSettingsCubit, TtsSettingsState>(
-            buildWhen: (previous, current) =>
+            buildWhen: (TtsSettingsState previous, TtsSettingsState current) =>
                 previous.isTextEmpty != current.isTextEmpty,
-            builder: (context, state) {
+            builder: (BuildContext context, TtsSettingsState state) {
               return TextField(
                 controller: cubit.controller,
                 decoration: InputDecoration(
@@ -28,13 +28,14 @@ class _DemoSection extends StatelessWidget {
           ),
           Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               BlocBuilder<TtsSettingsCubit, TtsSettingsState>(
-                buildWhen: (previous, current) =>
-                    previous.ttsState != current.ttsState ||
-                    previous.isTextEmpty != current.isTextEmpty,
-                builder: (context, state) {
-                  final isPlaying =
+                buildWhen:
+                    (TtsSettingsState previous, TtsSettingsState current) =>
+                        previous.ttsState != current.ttsState ||
+                        previous.isTextEmpty != current.isTextEmpty,
+                builder: (BuildContext context, TtsSettingsState state) {
+                  final bool isPlaying =
                       state.ttsState.isPlaying || state.ttsState.isContinued;
                   return TextButton.icon(
                     onPressed: isPlaying ? cubit.pause : cubit.play,
@@ -47,9 +48,10 @@ class _DemoSection extends StatelessWidget {
                 },
               ),
               BlocBuilder<TtsSettingsCubit, TtsSettingsState>(
-                buildWhen: (previous, current) =>
-                    previous.ttsState != current.ttsState,
-                builder: (context, state) {
+                buildWhen:
+                    (TtsSettingsState previous, TtsSettingsState current) =>
+                        previous.ttsState != current.ttsState,
+                builder: (BuildContext context, TtsSettingsState state) {
                   return TextButton.icon(
                     onPressed: state.ttsState.isPlaying ||
                             state.ttsState.isContinued ||
@@ -62,9 +64,10 @@ class _DemoSection extends StatelessWidget {
                 },
               ),
               BlocBuilder<TtsSettingsCubit, TtsSettingsState>(
-                buildWhen: (previous, current) =>
-                    previous.ttsState != current.ttsState,
-                builder: (context, state) {
+                buildWhen:
+                    (TtsSettingsState previous, TtsSettingsState current) =>
+                        previous.ttsState != current.ttsState,
+                builder: (BuildContext context, TtsSettingsState state) {
                   return TextButton.icon(
                     onPressed: state.ttsState.isStopped ? cubit.reset : null,
                     icon: const Icon(Icons.replay),

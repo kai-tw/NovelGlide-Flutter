@@ -5,13 +5,13 @@ class _SearchRangeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<ReaderSearchCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final ReaderSearchCubit cubit = BlocProvider.of<ReaderSearchCubit>(context);
     return IntrinsicWidth(
       child: BlocBuilder<ReaderSearchCubit, ReaderSearchState>(
-        builder: (context, state) {
+        builder: (BuildContext context, ReaderSearchState state) {
           return Row(
-            children: [
+            children: <Widget>[
               _SearchRangeButton(
                 isSelected: state.range == ReaderSearchRangeCode.currentChapter,
                 onPressed: () =>
@@ -34,17 +34,17 @@ class _SearchRangeSelector extends StatelessWidget {
 }
 
 class _SearchRangeButton extends StatelessWidget {
-  final bool isSelected;
-  final String label;
-  final IconData icon;
-  final Function() onPressed;
-
   const _SearchRangeButton({
     required this.isSelected,
     required this.onPressed,
     required this.label,
     required this.icon,
   });
+
+  final bool isSelected;
+  final String label;
+  final IconData icon;
+  final Function() onPressed;
 
   @override
   Widget build(BuildContext context) {

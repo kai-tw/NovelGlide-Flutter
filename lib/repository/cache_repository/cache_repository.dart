@@ -12,7 +12,7 @@ class CacheRepository {
 
   static String get cachePath => FilePath.tempFolder;
 
-  static final locationCache = LocationCache();
+  static final LocationCache locationCache = LocationCache();
 
   static void clear() {
     locationCache.clear();

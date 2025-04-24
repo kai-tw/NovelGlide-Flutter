@@ -5,7 +5,7 @@ class _PreferenceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return SettingsCard(
       margin: const EdgeInsets.symmetric(
         vertical: 12.0,
@@ -13,7 +13,7 @@ class _PreferenceCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 12.0),
             child: Text(
@@ -23,7 +23,8 @@ class _PreferenceCard extends StatelessWidget {
           ),
           _ListTile(
             onDelete: () async {
-              final prefs = await SharedPreferences.getInstance();
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
               prefs.remove(PreferenceKeys.bookshelf.sortOrder);
               prefs.remove(PreferenceKeys.bookshelf.isAscending);
             },
@@ -33,7 +34,8 @@ class _PreferenceCard extends StatelessWidget {
           ),
           _ListTile(
             onDelete: () async {
-              final prefs = await SharedPreferences.getInstance();
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
               prefs.remove(PreferenceKeys.collection.sortOrder);
               prefs.remove(PreferenceKeys.collection.isAscending);
             },
@@ -43,7 +45,8 @@ class _PreferenceCard extends StatelessWidget {
           ),
           _ListTile(
             onDelete: () async {
-              final prefs = await SharedPreferences.getInstance();
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
               prefs.remove(PreferenceKeys.bookmark.sortOrder);
               prefs.remove(PreferenceKeys.bookmark.isAscending);
             },

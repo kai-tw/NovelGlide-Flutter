@@ -6,7 +6,7 @@ class _FilePathCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _CardTemplate(
-      children: [
+      children: <Widget>[
         ListTile(
           title: const Text('File Paths'),
           titleTextStyle: Theme.of(context).textTheme.titleLarge,

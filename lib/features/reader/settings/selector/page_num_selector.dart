@@ -5,14 +5,15 @@ class _PageNumSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<ReaderCubit>(context);
-    return LayoutBuilder(builder: (context, constraints) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
       return BlocBuilder<ReaderCubit, ReaderState>(
-        buildWhen: (previous, current) =>
+        buildWhen: (ReaderState previous, ReaderState current) =>
             previous.readerSettings.pageNumType !=
             current.readerSettings.pageNumType,
-        builder: (context, state) {
+        builder: (BuildContext context, ReaderState state) {
           return DropdownMenu<ReaderSettingsPageNumType>(
             width: constraints.maxWidth,
             label: Text(appLocalizations.readerPageNumTypeLabel),
@@ -26,7 +27,7 @@ class _PageNumSelector extends StatelessWidget {
               semanticLabel: appLocalizations.readerPageNumTypeHelperText,
             ),
             initialSelection: state.readerSettings.pageNumType,
-            onSelected: (value) {
+            onSelected: (ReaderSettingsPageNumType? value) {
               if (value != null) {
                 cubit.pageNumType = value;
                 cubit.saveSettings();
@@ -34,7 +35,8 @@ class _PageNumSelector extends StatelessWidget {
             },
             dropdownMenuEntries: ReaderSettingsPageNumType.values
                 .map<DropdownMenuEntry<ReaderSettingsPageNumType>>(
-                    (type) => _createEntry(appLocalizations, type))
+                    (ReaderSettingsPageNumType type) =>
+                        _createEntry(appLocalizations, type))
                 .toList(),
           );
         },

@@ -5,12 +5,12 @@ class _AutoSaveSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<ReaderCubit>(context);
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) =>
+      buildWhen: (ReaderState previous, ReaderState current) =>
           previous.readerSettings.isAutoSaving !=
           current.readerSettings.isAutoSaving,
-      builder: (context, state) {
+      builder: (BuildContext context, ReaderState state) {
         return SwitchListTile(
           contentPadding: EdgeInsets.zero,
           title: Text(AppLocalizations.of(context)!.readerAutoSave),

@@ -1,19 +1,19 @@
 part of '../table_of_contents.dart';
 
 class _SliverList extends StatelessWidget {
-  final BookData bookData;
-
   const _SliverList({required this.bookData});
+
+  final BookData bookData;
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<_Cubit, _State>(
-      buildWhen: (previous, current) =>
+      buildWhen: (_State previous, _State current) =>
           previous.code != current.code ||
           previous.chapterList != current.chapterList ||
           previous.bookmarkData != current.bookmarkData,
-      builder: (context, state) {
+      builder: (BuildContext context, _State state) {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
@@ -34,18 +34,19 @@ class _SliverList extends StatelessWidget {
   }
 
   Widget _buildList(BuildContext context, _State state) {
-    final cubit = BlocProvider.of<_Cubit>(context);
-    final allChapterList = _constructChapterTree(state.chapterList, 0);
+    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
+    final List<_ListItem> allChapterList =
+        _constructChapterTree(state.chapterList, 0);
 
     return SliverList(
       delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          final chapterData = allChapterList[index].chapterData;
-          final nestingLevel = allChapterList[index].nestingLevel;
-          final bookmarkData = state.bookmarkData;
-          final isBookmarked =
+        (BuildContext context, int index) {
+          final ChapterData chapterData = allChapterList[index].chapterData;
+          final int nestingLevel = allChapterList[index].nestingLevel;
+          final BookmarkData? bookmarkData = state.bookmarkData;
+          final bool isBookmarked =
               bookmarkData?.chapterFileName == chapterData.fileName;
-          final themeData = Theme.of(context);
+          final ThemeData themeData = Theme.of(context);
 
           return ListTile(
             onTap: () {
@@ -94,10 +95,10 @@ class _SliverList extends StatelessWidget {
     int nestingLevel,
   ) {
     // Tree root
-    List<_ListItem> list = [];
+    final List<_ListItem> list = <_ListItem>[];
 
     // Traverse the sub chapters
-    for (final data in chapterDataList) {
+    for (final ChapterData data in chapterDataList) {
       list.add(_ListItem(
         chapterData: data,
         nestingLevel: nestingLevel,
@@ -118,11 +119,11 @@ class _SliverList extends StatelessWidget {
 }
 
 class _ListItem {
-  final ChapterData chapterData;
-  final int nestingLevel;
-
   const _ListItem({
     required this.chapterData,
     required this.nestingLevel,
   });
+
+  final ChapterData chapterData;
+  final int nestingLevel;
 }

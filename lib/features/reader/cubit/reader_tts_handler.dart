@@ -1,12 +1,6 @@
 part of 'reader_cubit.dart';
 
 class ReaderTTSHandler {
-  late TtsService _ttsService;
-  final ReaderWebViewHandler webViewHandler;
-  final void Function(TtsServiceState state) onTtsStateChanged;
-  bool isPaused = false;
-  bool isCanceled = false;
-
   factory ReaderTTSHandler({
     required ReaderWebViewHandler webViewHandler,
     required void Function(TtsServiceState state) onTtsStateChanged,
@@ -21,6 +15,12 @@ class ReaderTTSHandler {
     required this.webViewHandler,
     required this.onTtsStateChanged,
   });
+
+  late TtsService _ttsService;
+  final ReaderWebViewHandler webViewHandler;
+  final void Function(TtsServiceState state) onTtsStateChanged;
+  bool isPaused = false;
+  bool isCanceled = false;
 
   void _init() {
     _ttsService = TtsService(onReady: _onReady);

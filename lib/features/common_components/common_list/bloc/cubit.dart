@@ -11,7 +11,8 @@ abstract class CommonListCubit<T> extends Cubit<CommonListState<T>> {
   }
 
   void setSelecting(bool isSelecting) {
-    emit(state.copyWith(isSelecting: isSelecting, selectedSet: const {}));
+    emit(
+        state.copyWith(isSelecting: isSelecting, selectedSet: const <Never>{}));
   }
 
   void setDragging(bool isDragging) {
@@ -19,7 +20,7 @@ abstract class CommonListCubit<T> extends Cubit<CommonListState<T>> {
   }
 
   void selectSingle(T data) {
-    emit(state.copyWith(selectedSet: {...state.selectedSet, data}));
+    emit(state.copyWith(selectedSet: <T>{...state.selectedSet, data}));
   }
 
   void selectAll() {
@@ -27,12 +28,12 @@ abstract class CommonListCubit<T> extends Cubit<CommonListState<T>> {
   }
 
   void deselectSingle(T data) {
-    Set<T> newSet = Set<T>.from(state.selectedSet);
+    final Set<T> newSet = Set<T>.from(state.selectedSet);
     newSet.remove(data);
     emit(state.copyWith(selectedSet: newSet));
   }
 
   void deselectAll() {
-    emit(state.copyWith(selectedSet: const {}));
+    emit(state.copyWith(selectedSet: const <Never>{}));
   }
 }

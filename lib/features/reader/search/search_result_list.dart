@@ -5,13 +5,13 @@ class _SearchResultList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<ReaderSearchCubit, ReaderSearchState>(
-      buildWhen: (previous, current) =>
+      buildWhen: (ReaderSearchState previous, ReaderSearchState current) =>
           previous.code != current.code ||
           previous.resultList != current.resultList,
-      builder: (context, state) {
-        final resultList = state.resultList;
+      builder: (BuildContext context, ReaderSearchState state) {
+        final List<ReaderSearchResultData> resultList = state.resultList;
 
         switch (state.code) {
           case LoadingStateCode.initial:
@@ -30,7 +30,7 @@ class _SearchResultList extends StatelessWidget {
               );
             } else {
               return Column(
-                children: [
+                children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: Text(appLocalizations
@@ -53,18 +53,18 @@ class _SearchResultList extends StatelessWidget {
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
-    final cubit = BlocProvider.of<ReaderSearchCubit>(context);
-    final state = cubit.state;
+    final ReaderSearchCubit cubit = BlocProvider.of<ReaderSearchCubit>(context);
+    final ReaderSearchState state = cubit.state;
 
-    final query = state.query;
-    final result = state.resultList[index];
-    final excerpt = result.excerpt.replaceAll(RegExp(r'\s+'), ' ');
+    final String query = state.query;
+    final ReaderSearchResultData result = state.resultList[index];
+    final String excerpt = result.excerpt.replaceAll(RegExp(r'\s+'), ' ');
 
     // Highlight the keyword
-    final children = <InlineSpan>[];
+    final List<InlineSpan> children = <InlineSpan>[];
     String excerptPart = excerpt;
     while (excerptPart.contains(RegExp(query, caseSensitive: false))) {
-      final keywordIndex =
+      final int keywordIndex =
           excerptPart.indexOf(RegExp(query, caseSensitive: false));
 
       // prefix part

@@ -5,7 +5,7 @@ class _CacheCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return SettingsCard(
       margin: const EdgeInsets.symmetric(
         vertical: 12.0,
@@ -13,7 +13,7 @@ class _CacheCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 12.0),
             child: Text(

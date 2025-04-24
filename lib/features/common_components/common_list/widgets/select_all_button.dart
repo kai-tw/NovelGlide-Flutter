@@ -6,17 +6,18 @@ class CommonListSelectAllButton<M extends CommonListCubit<T>, T>
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<M>(context);
+    final M cubit = BlocProvider.of<M>(context);
     return BlocBuilder<M, CommonListState<T>>(
-      buildWhen: (previous, current) =>
+      buildWhen: (CommonListState<T> previous, CommonListState<T> current) =>
           previous.isSelecting != current.isSelecting ||
           previous.dataList.isNotEmpty != current.dataList.isNotEmpty ||
           previous.isSelectAll != current.isSelectAll,
-      builder: (context, state) {
+      builder: (BuildContext context, CommonListState<T> state) {
         Widget? child;
 
         if (state.isSelecting) {
-          final appLocalizations = AppLocalizations.of(context)!;
+          final AppLocalizations appLocalizations =
+              AppLocalizations.of(context)!;
           if (state.dataList.isNotEmpty) {
             return TextButton(
               onPressed:
@@ -35,7 +36,7 @@ class CommonListSelectAllButton<M extends CommonListCubit<T>, T>
 
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
-          transitionBuilder: (child, animation) =>
+          transitionBuilder: (Widget child, Animation<double> animation) =>
               FadeTransition(opacity: animation, child: child),
           child: child ?? const SizedBox.shrink(),
         );

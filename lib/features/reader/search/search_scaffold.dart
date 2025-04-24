@@ -30,7 +30,7 @@ class SearchScaffold extends StatelessWidget {
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: WindowClass.compact.maxWidth),
           child: Column(
-            children: [
+            children: <Widget>[
               const Expanded(
                 child: _SearchResultList(),
               ),
@@ -47,7 +47,7 @@ class SearchScaffold extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(16.0, 8.0, 0.0, 8.0),
                     child: Row(
-                      children: [
+                      children: <Widget>[
                         Expanded(
                           child: _SearchField(),
                         ),

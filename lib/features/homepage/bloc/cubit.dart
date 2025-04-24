@@ -1,11 +1,10 @@
 part of '../homepage.dart';
 
 class HomepageCubit extends Cubit<_HomepageState> {
+  HomepageCubit() : super(const _HomepageState());
   final PageStorageBucket bookshelfBucket = PageStorageBucket();
   final PageStorageBucket collectionBucket = PageStorageBucket();
   final PageStorageBucket bookmarkBucket = PageStorageBucket();
-
-  HomepageCubit() : super(const _HomepageState());
 
   void setItem(HomepageNavigationItem item) {
     emit(state.copyWith(navItem: item));
@@ -13,12 +12,12 @@ class HomepageCubit extends Cubit<_HomepageState> {
 }
 
 class _HomepageState extends Equatable {
+  const _HomepageState({this.navItem = HomepageNavigationItem.bookshelf});
+
   final HomepageNavigationItem navItem;
 
   @override
-  List<Object> get props => [navItem];
-
-  const _HomepageState({this.navItem = HomepageNavigationItem.bookshelf});
+  List<Object> get props => <Object>[navItem];
 
   _HomepageState copyWith({
     HomepageNavigationItem? navItem,

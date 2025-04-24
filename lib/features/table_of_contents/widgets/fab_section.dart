@@ -5,9 +5,9 @@ class _FabSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<_Cubit>(context);
-    final windowWidth = MediaQuery.of(context).size.width;
-    final windowClass = WindowClass.fromWidth(windowWidth);
+    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
+    final double windowWidth = MediaQuery.of(context).size.width;
+    final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
     double maxWidth = windowWidth - kFloatingActionButtonMargin;
 
     if (windowClass != WindowClass.compact) {
@@ -19,7 +19,7 @@ class _FabSection extends StatelessWidget {
       constraints: BoxConstraints(maxWidth: maxWidth),
       child: BlocBuilder<_Cubit, _State>(
         builder: (BuildContext context, _State state) {
-          List<Widget> children = [
+          final List<Widget> children = <Widget>[
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.of(context)

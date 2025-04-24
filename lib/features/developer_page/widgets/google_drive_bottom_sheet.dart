@@ -1,27 +1,27 @@
 part of '../developer_page.dart';
 
 class _GoogleDriveBottomSheet extends StatelessWidget {
-  final drive.File file;
-
   const _GoogleDriveBottomSheet({required this.file});
+
+  final drive.File file;
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<_GoogleDriveCubit>(context);
+    final _GoogleDriveCubit cubit = BlocProvider.of<_GoogleDriveCubit>(context);
     return DraggableScrollableSheet(
       initialChildSize: 0.3,
       minChildSize: 0.25,
       maxChildSize: 1.0,
       expand: false,
       snap: true,
-      builder: (sheetContext, scrollController) {
+      builder: (BuildContext sheetContext, ScrollController scrollController) {
         return ListView(
           controller: scrollController,
-          children: [
+          children: <Widget>[
             ListTile(
               contentPadding: const EdgeInsets.symmetric(horizontal: 32.0),
               leading: const Icon(Icons.folder_zip_rounded),
-              title: Text(file.name ?? "Untitled File"),
+              title: Text(file.name ?? 'Untitled File'),
             ),
             const Divider(),
             ListTile(
@@ -32,22 +32,23 @@ class _GoogleDriveBottomSheet extends StatelessWidget {
                     context: context,
                     barrierDismissible: false,
                     builder: (_) {
-                      return FutureBuilder(
+                      return FutureBuilder<bool>(
                         future: cubit.deleteFile(file.id!),
-                        builder: (context, snapshot) {
+                        builder: (BuildContext context,
+                            AsyncSnapshot<bool> snapshot) {
                           if (snapshot.hasData) {
                             return AlertDialog(
                               icon: const Icon(Icons.check_rounded,
                                   color: Colors.green, size: 60.0),
-                              content: const Text("Delete Successfully"),
-                              actions: [
+                              content: const Text('Delete Successfully'),
+                              actions: <Widget>[
                                 TextButton.icon(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                     cubit.refresh();
                                   },
                                   icon: const Icon(Icons.close_rounded),
-                                  label: const Text("Close"),
+                                  label: const Text('Close'),
                                 ),
                               ],
                             );
@@ -65,7 +66,7 @@ class _GoogleDriveBottomSheet extends StatelessWidget {
               },
               contentPadding: const EdgeInsets.symmetric(horizontal: 32.0),
               leading: const Icon(Icons.delete_rounded),
-              title: const Text("Delete this file"),
+              title: const Text('Delete this file'),
             ),
             ListTile(
               onTap: () {
@@ -75,19 +76,20 @@ class _GoogleDriveBottomSheet extends StatelessWidget {
                     context: context,
                     barrierDismissible: false,
                     builder: (_) {
-                      return FutureBuilder(
+                      return FutureBuilder<bool>(
                         future: cubit.copyToDrive(file.id!),
-                        builder: (context, snapshot) {
+                        builder: (BuildContext context,
+                            AsyncSnapshot<bool> snapshot) {
                           if (snapshot.hasData) {
                             return AlertDialog(
                               icon: const Icon(Icons.check_rounded,
                                   color: Colors.green, size: 60.0),
-                              content: const Text("Copy Successfully"),
-                              actions: [
+                              content: const Text('Copy Successfully'),
+                              actions: <Widget>[
                                 TextButton.icon(
                                   onPressed: () => Navigator.of(context).pop(),
                                   icon: const Icon(Icons.close_rounded),
-                                  label: const Text("Close"),
+                                  label: const Text('Close'),
                                 ),
                               ],
                             );
@@ -105,7 +107,7 @@ class _GoogleDriveBottomSheet extends StatelessWidget {
               },
               contentPadding: const EdgeInsets.symmetric(horizontal: 32.0),
               leading: const Icon(Icons.copy_rounded),
-              title: const Text("Copy to my drive"),
+              title: const Text('Copy to my drive'),
             ),
           ],
         );

@@ -6,9 +6,11 @@ class _PopupMenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CollectionListCubit, CommonListState<CollectionData>>(
-      buildWhen: (previous, current) => previous.code != current.code,
-      builder: (context, state) {
-        return PopupMenuButton(
+      buildWhen: (CommonListState<CollectionData> previous,
+              CommonListState<CollectionData> current) =>
+          previous.code != current.code,
+      builder: (BuildContext context, CommonListState<CollectionData> state) {
+        return PopupMenuButton<void>(
           enabled: state.code == LoadingStateCode.loaded,
           icon: const Icon(Icons.more_vert_rounded),
           clipBehavior: Clip.hardEdge,
@@ -18,17 +20,18 @@ class _PopupMenuButton extends StatelessWidget {
     );
   }
 
-  List<PopupMenuEntry> _itemBuilder(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<CollectionListCubit>(context);
-    final state = cubit.state;
+  List<PopupMenuEntry<void>> _itemBuilder(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final CollectionListCubit cubit =
+        BlocProvider.of<CollectionListCubit>(context);
+    final CommonListState<CollectionData> state = cubit.state;
 
-    List<PopupMenuEntry> entries = [];
+    final List<PopupMenuEntry<void>> entries = <PopupMenuEntry<void>>[];
 
     /// Selecting mode
     if (state.code.isLoaded && !state.isSelecting) {
-      entries.addAll([
-        PopupMenuItem(
+      entries.addAll(<PopupMenuEntry<void>>[
+        PopupMenuItem<void>(
           onTap: () => cubit.setSelecting(true),
           child: const CommonListSelectModeButton(),
         ),
@@ -37,14 +40,14 @@ class _PopupMenuButton extends StatelessWidget {
     }
 
     /// Sorting Section
-    final sortMap = {
+    final Map<SortOrderCode, String> sortMap = <SortOrderCode, String>{
       SortOrderCode.name: appLocalizations.generalName,
     };
 
-    for (final entry in sortMap.entries) {
-      final isSelected = state.sortOrder == entry.key;
+    for (final MapEntry<SortOrderCode, String> entry in sortMap.entries) {
+      final bool isSelected = state.sortOrder == entry.key;
       entries.add(
-        PopupMenuItem(
+        PopupMenuItem<void>(
           onTap: () {
             isSelected
                 ? cubit.setListOrder(isAscending: !state.isAscending)
@@ -61,13 +64,13 @@ class _PopupMenuButton extends StatelessWidget {
 
     /// Operation Section
     if (state.code.isLoaded && state.isSelecting) {
-      entries.addAll([
+      entries.addAll(<PopupMenuEntry<void>>[
         const PopupMenuDivider(),
-        PopupMenuItem(
+        PopupMenuItem<void>(
           onTap: () {
             showDialog(
               context: context,
-              builder: (context) {
+              builder: (_) {
                 return CommonDeleteDialog(
                   onDelete: () => cubit.deleteSelectedCollections(),
                 );

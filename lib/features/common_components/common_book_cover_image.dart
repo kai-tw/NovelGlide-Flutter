@@ -9,13 +9,13 @@ import '../../data_model/book_data.dart';
 import '../../generated/i18n/app_localizations.dart';
 
 class CommonBookCoverImage extends StatelessWidget {
-  final BookData bookData;
-
   const CommonBookCoverImage({super.key, required this.bookData});
+
+  final BookData bookData;
 
   @override
   Widget build(BuildContext context) {
-    img.Image? image = bookData.coverImage;
+    final img.Image? image = bookData.coverImage;
     if (image == null) {
       final Brightness brightness = Theme.of(context).brightness;
 
@@ -27,10 +27,11 @@ class CommonBookCoverImage extends StatelessWidget {
       );
     } else {
       return LayoutBuilder(
-        builder: (context, constraints) {
-          return FutureBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          return FutureBuilder<Uint8List?>(
             future: _bitmapOptimize(image, constraints),
-            builder: (context, snapshot) {
+            builder:
+                (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
               if (snapshot.hasData) {
                 return Image.memory(
                   snapshot.data!,
@@ -53,7 +54,7 @@ class CommonBookCoverImage extends StatelessWidget {
     img.Image image,
     BoxConstraints constraints,
   ) async {
-    const ratio = 4;
+    const int ratio = 4;
     final double widthRatio = constraints.maxWidth / image.width;
     final double heightRatio = constraints.maxHeight / image.height;
 

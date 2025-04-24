@@ -5,9 +5,9 @@ class _Scaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final windowWidth = MediaQuery.of(context).size.width;
-    final windowClass = WindowClass.fromWidth(windowWidth);
-    final cubit = BlocProvider.of<ReaderCubit>(context);
+    final double windowWidth = MediaQuery.of(context).size.width;
+    final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
 
     cubit.sendThemeData(Theme.of(context));
 
@@ -45,7 +45,7 @@ class _MediumView extends StatelessWidget {
       appBar: _AppBar(),
       body: SafeArea(
         child: Row(
-          children: [
+          children: <Widget>[
             ReaderNavigationRail(),
             Expanded(child: _ScaffoldBody()),
           ],

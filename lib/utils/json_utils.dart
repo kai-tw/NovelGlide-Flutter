@@ -4,6 +4,8 @@ import 'dart:io';
 import '../exceptions/exceptions.dart';
 
 class JsonUtils {
+  JsonUtils._();
+
   static Map<String, dynamic> fromFile(File file) {
     if (!file.existsSync()) {
       throw FileNotFoundException();
@@ -15,7 +17,7 @@ class JsonUtils {
       return jsonDecode(jsonString);
     } catch (e) {
       file.writeAsStringSync('{}');
-      return {};
+      return <String, dynamic>{};
     }
   }
 }

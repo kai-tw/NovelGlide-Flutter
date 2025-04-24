@@ -16,7 +16,7 @@ class TtsSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<TtsSettingsCubit>(
       create: (_) => TtsSettingsCubit(),
       child: const _PageScaffold(),
     );
@@ -28,8 +28,8 @@ class _PageScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<TtsSettingsCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final TtsSettingsCubit cubit = BlocProvider.of<TtsSettingsCubit>(context);
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
@@ -37,41 +37,44 @@ class _PageScaffold extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [
+          children: <Widget>[
             const _DemoSection(),
             const _VoiceSelectTile(),
             _Slider(
               title: appLocalizations.ttsSettingsPitch,
-              buildWhen: (previous, current) =>
-                  previous.ttsState != current.ttsState ||
-                  previous.pitch != current.pitch,
+              buildWhen:
+                  (TtsSettingsState previous, TtsSettingsState current) =>
+                      previous.ttsState != current.ttsState ||
+                      previous.pitch != current.pitch,
               onChanged: cubit.setPitch,
               min: 0.5,
               max: 2.0,
               divisions: 15,
-              valueSelector: (state) => state.pitch,
+              valueSelector: (TtsSettingsState state) => state.pitch,
             ),
             _Slider(
               title: appLocalizations.ttsSettingsVolume,
-              buildWhen: (previous, current) =>
-                  previous.ttsState != current.ttsState ||
-                  previous.volume != current.volume,
+              buildWhen:
+                  (TtsSettingsState previous, TtsSettingsState current) =>
+                      previous.ttsState != current.ttsState ||
+                      previous.volume != current.volume,
               onChanged: cubit.setVolume,
               min: 0.0,
               max: 1.0,
               divisions: 10,
-              valueSelector: (state) => state.volume,
+              valueSelector: (TtsSettingsState state) => state.volume,
             ),
             _Slider(
               title: appLocalizations.ttsSettingsSpeechRate,
-              buildWhen: (previous, current) =>
-                  previous.ttsState != current.ttsState ||
-                  previous.speechRate != current.speechRate,
+              buildWhen:
+                  (TtsSettingsState previous, TtsSettingsState current) =>
+                      previous.ttsState != current.ttsState ||
+                      previous.speechRate != current.speechRate,
               onChanged: cubit.setSpeechRate,
               min: 0.5,
               max: 2.0,
               divisions: 15,
-              valueSelector: (state) => state.speechRate,
+              valueSelector: (TtsSettingsState state) => state.speechRate,
             ),
           ],
         ),

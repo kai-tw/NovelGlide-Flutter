@@ -39,7 +39,7 @@ class DeveloperPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView(
-          children: const [
+          children: const <Widget>[
             _DeviceInfoCard(),
             _FilePathCard(),
             _DialogCard(),

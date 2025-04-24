@@ -1,28 +1,28 @@
 part of 'tts_service.dart';
 
 class TtsVoiceData {
-  String name;
-  String locale;
-
   TtsVoiceData({
     required this.name,
     required this.locale,
   });
 
   factory TtsVoiceData.fromJson(String json) {
-    final map = jsonDecode(json) as Map<String, dynamic>;
+    final Map<String, dynamic> map = jsonDecode(json) as Map<String, dynamic>;
     return TtsVoiceData(
       name: map['name'] as String,
       locale: map['locale'] as String,
     );
   }
 
+  String name;
+  String locale;
+
   String toJson() {
     return jsonEncode(toMap());
   }
 
   Map<String, String> toMap() {
-    return {
+    return <String, String>{
       'name': name,
       'locale': locale,
     };
@@ -34,7 +34,7 @@ class TtsVoiceData {
   }
 
   String getLocaleName(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     switch (locale) {
       case 'ar':
         return appLocalizations.languageCodeAr;

@@ -1,12 +1,6 @@
 part of '../collection_list.dart';
 
 class _CollectionWidget extends StatelessWidget {
-  final CollectionData collectionData;
-  final bool isSelecting;
-  final bool isSelected;
-  final void Function(bool?)? onChanged;
-  final void Function()? onTap;
-
   const _CollectionWidget(
     this.collectionData, {
     this.isSelecting = false,
@@ -14,6 +8,12 @@ class _CollectionWidget extends StatelessWidget {
     this.onChanged,
     this.onTap,
   });
+
+  final CollectionData collectionData;
+  final bool isSelecting;
+  final bool isSelected;
+  final void Function(bool?)? onChanged;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {

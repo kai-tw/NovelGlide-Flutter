@@ -1,16 +1,16 @@
 part of '../table_of_contents.dart';
 
 class _CompactView extends StatelessWidget {
-  final BookData bookData;
-
   const _CompactView({required this.bookData});
+
+  final BookData bookData;
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<_Cubit>(context);
+    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
     return SafeArea(
       child: Column(
-        children: [
+        children: <Widget>[
           Expanded(
             child: RefreshIndicator(
               onRefresh: () async => cubit.refresh(),
@@ -21,12 +21,12 @@ class _CompactView extends StatelessWidget {
                   child: CustomScrollView(
                     key: const PageStorageKey<String>('toc-scroll-view'),
                     controller: cubit.scrollController,
-                    slivers: [
+                    slivers: <Widget>[
                       SliverToBoxAdapter(
                         child: Padding(
                           padding: const EdgeInsets.all(24.0),
                           child: Stack(
-                            children: [
+                            children: <Widget>[
                               AspectRatio(
                                 aspectRatio: 1,
                                 child: _CoverBanner(bookData: bookData),

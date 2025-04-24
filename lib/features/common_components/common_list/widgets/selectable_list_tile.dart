@@ -1,15 +1,6 @@
 part of '../list_template.dart';
 
 class CommonListSelectableListTile extends StatelessWidget {
-  final bool isSelecting;
-  final bool isSelected;
-  final Widget? leading;
-  final Widget? title;
-  final Widget? subtitle;
-  final Widget? trailing;
-  final void Function(bool?)? onChanged;
-  final void Function()? onTap;
-
   const CommonListSelectableListTile({
     super.key,
     this.isSelecting = false,
@@ -21,6 +12,15 @@ class CommonListSelectableListTile extends StatelessWidget {
     this.onChanged,
     this.onTap,
   });
+
+  final bool isSelecting;
+  final bool isSelected;
+  final Widget? leading;
+  final Widget? title;
+  final Widget? subtitle;
+  final Widget? trailing;
+  final void Function(bool?)? onChanged;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {

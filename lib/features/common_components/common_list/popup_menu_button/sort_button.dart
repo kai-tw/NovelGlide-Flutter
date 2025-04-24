@@ -1,16 +1,16 @@
 part of '../list_template.dart';
 
 class CommonListSortButton extends StatelessWidget {
-  final bool isSelected;
-  final bool isAscending;
-  final String title;
-
   const CommonListSortButton({
     super.key,
     required this.isSelected,
     required this.isAscending,
     required this.title,
   });
+
+  final bool isSelected;
+  final bool isAscending;
+  final String title;
 
   @override
   Widget build(BuildContext context) {

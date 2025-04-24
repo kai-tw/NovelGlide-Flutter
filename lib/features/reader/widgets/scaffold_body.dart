@@ -5,12 +5,12 @@ class _ScaffoldBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<ReaderCubit>(context);
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return Stack(
-      children: [
+      children: <Widget>[
         /// Reader WebView
         Column(
-          children: [
+          children: <Widget>[
             const _Breadcrumb(),
             Expanded(
               child: GestureDetector(
@@ -22,7 +22,7 @@ class _ScaffoldBody extends StatelessWidget {
                 onHorizontalDragCancel: cubit.gestureHandler.onCancel,
                 child: WebViewWidget(
                   controller: cubit.webViewHandler.controller,
-                  gestureRecognizers: {
+                  gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
                     Factory<LongPressGestureRecognizer>(
                       () => LongPressGestureRecognizer(
                         duration: const Duration(milliseconds: 100),

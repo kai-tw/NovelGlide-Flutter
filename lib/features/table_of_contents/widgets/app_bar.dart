@@ -1,16 +1,16 @@
 part of '../table_of_contents.dart';
 
 class _AppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _AppBar({required this.bookData});
+
   final BookData bookData;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
-  const _AppBar({required this.bookData});
-
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return AppBar(
       leading: const CommonBackButton(),
       title: Text(
@@ -18,12 +18,12 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      actions: [
+      actions: <Widget>[
         IconButton(
           onPressed: () {
             Navigator.of(context).push(
               RouteUtils.pushRoute(
-                CollectionAddBookScaffold(dataSet: {bookData}),
+                CollectionAddBookScaffold(dataSet: <BookData>{bookData}),
               ),
             );
           },

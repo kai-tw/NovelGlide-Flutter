@@ -6,30 +6,30 @@ class _DeviceInfoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _CardTemplate(
-      children: [
+      children: <Widget>[
         ListTile(
           title: const Text('Device'),
           titleTextStyle: Theme.of(context).textTheme.titleLarge,
         ),
         ListTile(
           title: const Text('devicePixelRatio'),
-          subtitle: Text("${MediaQuery.of(context).devicePixelRatio}"),
+          subtitle: Text('${MediaQuery.of(context).devicePixelRatio}'),
         ),
         ListTile(
           title: const Text('size.width'),
-          subtitle: Text("${MediaQuery.of(context).size.width}"),
+          subtitle: Text('${MediaQuery.of(context).size.width}'),
         ),
         ListTile(
           title: const Text('size.height'),
-          subtitle: Text("${MediaQuery.of(context).size.height}"),
+          subtitle: Text('${MediaQuery.of(context).size.height}'),
         ),
         ListTile(
           title: const Text('Orientation'),
-          subtitle: Text("${MediaQuery.of(context).orientation}"),
+          subtitle: Text('${MediaQuery.of(context).orientation}'),
         ),
         ListTile(
           title: const Text('Platform brightness'),
-          subtitle: Text("${MediaQuery.of(context).platformBrightness}"),
+          subtitle: Text('${MediaQuery.of(context).platformBrightness}'),
         ),
       ],
     );

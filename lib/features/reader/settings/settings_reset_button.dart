@@ -12,7 +12,7 @@ class _SettingsResetButtonState extends State<_SettingsResetButton> {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     IconData iconData = Icons.refresh_rounded;
     Color backgroundColor = Theme.of(context).colorScheme.error;
     Color foregroundColor = Theme.of(context).colorScheme.onError;
@@ -44,14 +44,14 @@ class _SettingsResetButtonState extends State<_SettingsResetButton> {
   }
 
   void _onPressed() {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<ReaderCubit>(context);
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (BuildContext context) => AlertDialog(
         title: Text(appLocalizations.alertDialogResetSettingsTitle),
         content: Text(appLocalizations.alertDialogResetSettingsDescription),
-        actions: [
+        actions: <Widget>[
           TextButton(
             onPressed: () async {
               Navigator.of(context).pop();
@@ -59,7 +59,7 @@ class _SettingsResetButtonState extends State<_SettingsResetButton> {
               cubit.saveSettings();
 
               setState(() => _stateCode = CommonButtonStateCode.success);
-              await Future.delayed(const Duration(seconds: 2));
+              await Future<void>.delayed(const Duration(seconds: 2));
               if (mounted) {
                 setState(() => _stateCode = CommonButtonStateCode.idle);
               }

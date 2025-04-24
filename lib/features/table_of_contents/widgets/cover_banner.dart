@@ -1,14 +1,14 @@
 part of '../table_of_contents.dart';
 
 class _CoverBanner extends StatelessWidget {
-  final BookData bookData;
-
   const _CoverBanner({required this.bookData});
+
+  final BookData bookData;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-      builder: (context, constraints) {
+      builder: (BuildContext context, BoxConstraints constraints) {
         return Container(
           width: constraints.maxWidth,
           height: constraints.maxHeight,

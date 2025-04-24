@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import '../../generated/i18n/app_localizations.dart';
 
 class CommonSuccessDialog extends StatelessWidget {
-  final String? title;
-  final String? content;
-
   // Constructor for the dialog, requiring a content string
   const CommonSuccessDialog({
     super.key,
@@ -13,9 +10,12 @@ class CommonSuccessDialog extends StatelessWidget {
     this.content,
   });
 
+  final String? title;
+  final String? content;
+
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return AlertDialog(
       icon: Icon(
@@ -25,7 +25,7 @@ class CommonSuccessDialog extends StatelessWidget {
       ),
       title: title != null ? Text(title!) : null,
       content: content != null ? Text(content!) : null,
-      actions: [
+      actions: <Widget>[
         ElevatedButton.icon(
           onPressed: () => Navigator.of(context).pop(),
           icon: const Icon(Icons.close_rounded),

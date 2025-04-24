@@ -1,9 +1,9 @@
 part of '../developer_page.dart';
 
 class _CardTemplate extends StatelessWidget {
-  final List<Widget> children;
-
   const _CardTemplate({required this.children});
+
+  final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {

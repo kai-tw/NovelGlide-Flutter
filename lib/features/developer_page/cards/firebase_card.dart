@@ -6,7 +6,7 @@ class _FirebaseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _CardTemplate(
-      children: [
+      children: <Widget>[
         ListTile(
           title: const Text('Firebase'),
           titleTextStyle: Theme.of(context).textTheme.titleLarge,

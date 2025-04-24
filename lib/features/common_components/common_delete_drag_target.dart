@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../../generated/i18n/app_localizations.dart';
 
-class CommonDeleteDragTarget extends StatelessWidget {
-  final bool Function(DragTargetDetails<Object>)? onWillAcceptWithDetails;
-
+class CommonDeleteDragTarget<T extends Object> extends StatelessWidget {
   const CommonDeleteDragTarget({super.key, this.onWillAcceptWithDetails});
+
+  final bool Function(DragTargetDetails<Object>)? onWillAcceptWithDetails;
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    return DragTarget(
-      builder: (context, candidateData, rejectedData) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    return DragTarget<T>(
+      builder: (BuildContext context, List<T?> candidateData,
+          List<dynamic> rejectedData) {
         return Container(
           padding: const EdgeInsets.symmetric(
             vertical: 16.0,
@@ -20,7 +21,7 @@ class CommonDeleteDragTarget extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.error,
             borderRadius: BorderRadius.circular(36.0),
-            boxShadow: [
+            boxShadow: <BoxShadow>[
               BoxShadow(
                 color:
                     Theme.of(context).colorScheme.shadow.withValues(alpha: 0.5),
@@ -33,7 +34,7 @@ class CommonDeleteDragTarget extends StatelessWidget {
           child: Row(
             // mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
                 child: Icon(

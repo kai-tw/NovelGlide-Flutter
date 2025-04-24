@@ -13,14 +13,14 @@ class BookUtils {
     String fileName,
   ) {
     // Search for the first matching chapter.
-    ChapterData? target =
-        chapterList?.firstWhereOrNull((e) => e.fileName == fileName);
+    ChapterData? target = chapterList
+        ?.firstWhereOrNull((ChapterData e) => e.fileName == fileName);
 
     if (target != null) {
       // Found the chapter, return it.
       return target;
     }
-    for (ChapterData chapter in chapterList ?? []) {
+    for (ChapterData chapter in chapterList ?? <ChapterData>[]) {
       // Not found, search the sub chapters.
       target ??= getChapterByFileName(chapter.subChapterList, fileName);
     }
@@ -33,7 +33,7 @@ class BookUtils {
     String fileName, {
     String defaultValue = '',
   }) {
-    final target = getChapterByFileName(chapterList, fileName);
+    final ChapterData? target = getChapterByFileName(chapterList, fileName);
     return target?.title ?? defaultValue;
   }
 
@@ -45,12 +45,12 @@ class BookUtils {
   ) {
     switch (sortOrder) {
       case SortOrderCode.modifiedDate:
-        return (a, b) => isAscending
+        return (BookData a, BookData b) => isAscending
             ? a.modifiedDate.compareTo(b.modifiedDate)
             : b.modifiedDate.compareTo(a.modifiedDate);
 
       default:
-        return (a, b) => isAscending
+        return (BookData a, BookData b) => isAscending
             ? compareNatural(a.name, b.name)
             : compareNatural(b.name, a.name);
     }

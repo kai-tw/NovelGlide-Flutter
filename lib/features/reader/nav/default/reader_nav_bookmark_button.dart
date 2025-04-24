@@ -5,25 +5,25 @@ class ReaderNavBookmarkButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appLocalizations = AppLocalizations.of(context)!;
-    final cubit = BlocProvider.of<ReaderCubit>(context);
-    final colorScheme = Theme.of(context).colorScheme;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (previous, current) =>
+      buildWhen: (ReaderState previous, ReaderState current) =>
           previous.code != current.code ||
           previous.bookmarkData != current.bookmarkData ||
           previous.startCfi != current.startCfi ||
           previous.ttsState != current.ttsState ||
           previous.readerSettings.isAutoSaving !=
               current.readerSettings.isAutoSaving,
-      builder: (context, state) {
+      builder: (BuildContext context, ReaderState state) {
         // Was the current page bookmarked?
-        final isBookmarked = !state.readerSettings.isAutoSaving &&
+        final bool isBookmarked = !state.readerSettings.isAutoSaving &&
             state.bookmarkData?.startCfi == state.startCfi;
 
         // Can the current page be bookmarked?
-        final isEnabled = state.code.isLoaded &&
+        final bool isEnabled = state.code.isLoaded &&
             state.ttsState.isStopped &&
             !state.readerSettings.isAutoSaving &&
             state.bookmarkData?.startCfi != state.startCfi;

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class SettingsCard extends StatelessWidget {
-  final EdgeInsetsGeometry? margin;
-  final EdgeInsetsGeometry? padding;
-  final Widget child;
-
   const SettingsCard({
     super.key,
     required this.child,
     this.margin,
     this.padding,
   });
+
+  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,6 @@
 part of '../collection_viewer.dart';
 
 class _ListItem extends StatelessWidget {
-  final BookData bookData;
-  final bool isSelecting;
-  final bool isDraggable;
-
   const _ListItem({
     super.key,
     required this.bookData,
@@ -12,20 +8,26 @@ class _ListItem extends StatelessWidget {
     this.isDraggable = true,
   });
 
+  final BookData bookData;
+  final bool isSelecting;
+  final bool isDraggable;
+
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<CollectionViewerCubit>(context);
+    final CollectionViewerCubit cubit =
+        BlocProvider.of<CollectionViewerCubit>(context);
     if (isSelecting) {
       return BlocBuilder<CollectionViewerCubit, CommonListState<BookData>>(
         key: key,
-        buildWhen: (previous, current) =>
+        buildWhen: (CommonListState<BookData> previous,
+                CommonListState<BookData> current) =>
             previous.selectedSet.contains(bookData) !=
             current.selectedSet.contains(bookData),
-        builder: (context, state) {
+        builder: (BuildContext context, CommonListState<BookData> state) {
           return CommonListSelectableListTile(
             isSelecting: isSelecting,
             isSelected: state.selectedSet.contains(bookData),
-            onChanged: (value) {
+            onChanged: (bool? value) {
               if (value == true) {
                 cubit.selectSingle(bookData);
               } else {

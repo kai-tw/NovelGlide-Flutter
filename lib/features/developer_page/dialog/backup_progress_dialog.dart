@@ -30,7 +30,7 @@ class _BackupProgressDialogState extends State<_BackupProgressDialog> {
 
   Future<void> _process() async {
     for (int i = 0; i <= 100; i++) {
-      await Future.delayed(const Duration(milliseconds: 10));
+      await Future<void>.delayed(const Duration(milliseconds: 10));
       setState(() => progress = i / 100);
     }
   }

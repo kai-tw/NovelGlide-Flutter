@@ -8,6 +8,8 @@ import 'book_repository.dart';
 import 'repository_interface.dart';
 
 class CollectionRepository {
+  CollectionRepository._();
+
   static String jsonFileName = 'collection.json';
 
   static String get jsonPath => RepositoryInterface.getJsonPath(jsonFileName);
@@ -23,7 +25,7 @@ class CollectionRepository {
 
   /// Create a new empty collection with a unique ID.
   static void create(String name) {
-    final data = jsonData;
+    final Map<String, dynamic> data = jsonData;
     String id = RandomUtils.getRandomString(10);
 
     while (data.containsKey(id)) {
@@ -44,9 +46,9 @@ class CollectionRepository {
 
   /// Retrieve a list of all [CollectionData] instances.
   static List<CollectionData> getList() {
-    List<CollectionData> list = [];
+    final List<CollectionData> list = <CollectionData>[];
 
-    for (var key in jsonData.keys) {
+    for (String key in jsonData.keys) {
       list.add(CollectionData.fromJson(jsonData[key]!));
     }
 
@@ -55,10 +57,10 @@ class CollectionRepository {
 
   /// Save the current [CollectionData] instance to the JSON file.
   static void save(CollectionData data) {
-    final json = jsonData;
+    final Map<String, dynamic> json = jsonData;
     data.pathList = data.pathList
         .toSet()
-        .map<String>((e) => BookRepository.getRelativePath(e))
+        .map<String>((String e) => BookRepository.getRelativePath(e))
         .toList();
     json[data.id] = data.toJson();
     jsonData = json;
@@ -66,17 +68,17 @@ class CollectionRepository {
 
   /// Delete the current [CollectionData] instance from the JSON file.
   static void delete(CollectionData data) {
-    final json = jsonData;
+    final Map<String, dynamic> json = jsonData;
     json.remove(data.id);
     jsonData = json;
   }
 
   /// Delete the book from the collection.
   static void deleteBook(String path, String id) {
-    final relativePath = BookRepository.getRelativePath(path);
-    final json = jsonData;
+    final String relativePath = BookRepository.getRelativePath(path);
+    final Map<String, dynamic> json = jsonData;
     if (json[id] != null) {
-      final data = CollectionData.fromJson(json[id]!);
+      final CollectionData data = CollectionData.fromJson(json[id]!);
       data.pathList.remove(relativePath);
       json[id] = data.toJson();
       jsonData = json;
@@ -85,13 +87,14 @@ class CollectionRepository {
 
   /// Delete the book from all collections.
   static void deleteByPath(String path) {
-    final collectionList = getList().where(
-        (e) => e.pathList.contains(BookRepository.getRelativePath(path)));
+    final Iterable<CollectionData> collectionList = getList().where(
+        (CollectionData e) =>
+            e.pathList.contains(BookRepository.getRelativePath(path)));
     for (CollectionData data in collectionList) {
       deleteBook(path, data.id);
     }
   }
 
   /// Reset the collection repository.
-  static void reset() => jsonData = {};
+  static void reset() => jsonData = <String, dynamic>{};
 }
