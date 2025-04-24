@@ -32,7 +32,7 @@ class EpubUtils {
 
   /// Retrieve the list of chapters from a epub book.
   static Future<List<ChapterData>> getChapterList(String filePath) async {
-    final epub.EpubBook epubBook = await EpubUtils.loadEpubBook(filePath);
+    final epub.EpubBook epubBook = await loadEpubBook(filePath);
     return epubBook.Chapters?.map(
             (epub.EpubChapter e) => ChapterData.fromEpubChapter(e)).toList() ??
         <ChapterData>[];

@@ -4,9 +4,7 @@ import 'package:equatable/equatable.dart';
 
 import '../utils/datetime_utils.dart';
 
-/// Represents a bookmark with its metadata and operations.
 class BookmarkData extends Equatable {
-  /// Constructor for creating a BookmarkData instance.
   const BookmarkData({
     required this.bookPath,
     required this.bookName,
@@ -29,15 +27,13 @@ class BookmarkData extends Equatable {
           : DateTime.now(),
     );
   }
+
   final String bookPath;
   final String bookName;
   final String chapterTitle;
   final String chapterFileName;
   final String? startCfi;
   final DateTime savedTime;
-
-  /// Calculates the number of days passed since the bookmark was saved.
-  int get daysPassed => DateTimeUtils.daysPassed(savedTime);
 
   @override
   List<Object?> get props => <Object?>[
@@ -46,8 +42,11 @@ class BookmarkData extends Equatable {
         chapterTitle,
         chapterFileName,
         startCfi,
-        savedTime
+        savedTime,
       ];
+
+  /// Calculates the number of days passed since the bookmark was saved.
+  int get daysPassed => DateTimeUtils.daysPassed(savedTime);
 
   /// Converts the bookmark data to a JSON map.
   Map<String, dynamic> toJson() {

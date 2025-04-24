@@ -1,10 +1,12 @@
 import 'dart:convert';
 
-/// Represents a collection of data with an ID, name, and a list of paths.
 class CollectionData {
-  CollectionData(this.id, this.name, this.pathList);
+  CollectionData(
+    this.id,
+    this.name,
+    this.pathList,
+  );
 
-  /// Creates a [CollectionData] instance from a JSON map.
   factory CollectionData.fromJson(Map<String, dynamic> json) {
     return CollectionData(
       json['id'] as String,

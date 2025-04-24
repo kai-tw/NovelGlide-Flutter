@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data_model/reader_settings_data.dart';
+import '../../../data_model/reader_settings/reader_settings_data.dart';
 import '../../../enum/common_button_state_code.dart';
 import '../../../generated/i18n/app_localizations.dart';
 import '../../settings_page/settings_card.dart';
@@ -64,7 +64,10 @@ class ReaderBottomSheet extends StatelessWidget {
                 margin: EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 24.0),
                 child: Column(
                   children: <Widget>[
-                    _SettingsResetButton(),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: _SettingsResetButton(),
+                    ),
                   ],
                 ),
               ),

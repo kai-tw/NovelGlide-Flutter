@@ -8,7 +8,7 @@ import 'file_path.dart';
 class BackupUtils {
   BackupUtils._();
 
-  static String libraryArchiveName = 'Library.zip';
+  static const String libraryArchiveName = 'Library.zip';
 
   static Future<File> archiveLibrary(
     String tempFolderPath, {

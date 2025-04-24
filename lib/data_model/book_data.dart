@@ -7,32 +7,35 @@ import '../repository/book_repository.dart';
 import '../utils/epub_utils.dart';
 import 'chapter_data.dart';
 
-/// Represents a book with its metadata and operations.
 class BookData extends Equatable {
-  /// Constructor for creating a BookData instance.
   const BookData({
     required this.absoluteFilePath,
     required this.name,
     this.coverImage,
   });
+
   final String absoluteFilePath;
   final String name;
   final Image? coverImage;
 
-  File get _file => File(absoluteFilePath);
-
-  bool get isExist => _file.existsSync();
-
-  DateTime get modifiedDate => _file.statSync().modified;
-
-  String get relativeFilePath =>
-      BookRepository.getRelativePath(absoluteFilePath);
-
   @override
   List<Object?> get props => <Object?>[absoluteFilePath, name, coverImage];
 
-  /// Retrieve a list of chapters from the book.
-  Future<List<ChapterData>> getChapterList() async {
+  /// Get the file of this book.
+  File get _file => File(absoluteFilePath);
+
+  /// Determine whether this book exists.
+  bool get isExist => _file.existsSync();
+
+  /// Get the last modified date of this book.
+  DateTime get modifiedDate => _file.statSync().modified;
+
+  /// Get the relative path of this book.
+  String get relativeFilePath =>
+      BookRepository.getRelativePath(absoluteFilePath);
+
+  /// Get the list of chapters from this book.
+  Future<List<ChapterData>> get chapterList async {
     return EpubUtils.getChapterList(absoluteFilePath);
   }
 }

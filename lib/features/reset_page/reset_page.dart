@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../data_model/reader_settings_data.dart';
+import '../../data_model/reader_settings/reader_settings_data.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../../preference_keys/preference_keys.dart';
 import '../../repository/book_repository.dart';

@@ -1,7 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../preference_keys/preference_keys.dart';
+import '../../preference_keys/preference_keys.dart';
+
+part 'reader_settings_page_num_type.dart';
 
 /// Represents the settings for a reader, including font size, line height, and other preferences.
 class ReaderSettingsData extends Equatable {
@@ -126,5 +128,3 @@ class ReaderSettingsData extends Equatable {
     prefs.setInt(PreferenceKeys.reader.pageNumType, pageNumType.index);
   }
 }
-
-enum ReaderSettingsPageNumType { hidden, number, percentage, progressBar }

@@ -12,7 +12,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data_model/book_data.dart';
 import '../../../data_model/bookmark_data.dart';
-import '../../../data_model/reader_settings_data.dart';
+import '../../../data_model/reader_settings/reader_settings_data.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/reader_navigation_state_code.dart';
 import '../../../repository/book_repository.dart';

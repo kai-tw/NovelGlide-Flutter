@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../data_model/reader_settings_data.dart';
 import '../../data_model/book_data.dart';
+import '../../data_model/reader_settings/reader_settings_data.dart';
 import '../../enum/window_class.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../common_components/common_back_button.dart';

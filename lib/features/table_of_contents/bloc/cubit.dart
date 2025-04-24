@@ -13,7 +13,7 @@ class _Cubit extends Cubit<_State> {
       emit(_State(
         code: LoadingStateCode.loaded,
         bookmarkData: BookmarkRepository.get(bookData.absoluteFilePath),
-        chapterList: await bookData.getChapterList(),
+        chapterList: await bookData.chapterList,
       ));
     });
   }
