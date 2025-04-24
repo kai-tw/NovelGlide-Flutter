@@ -11,7 +11,7 @@ import '../book_add/book_add_dialog.dart';
 import '../bookmark_list/bookmark_list.dart';
 import '../bookmark_list/cubit/cubit.dart';
 import '../bookshelf/bookshelf.dart';
-import '../bookshelf/cubit/cubit.dart';
+import '../bookshelf/cubit/bookshelf_cubit.dart';
 import '../collection_add/collection_add_dialog.dart';
 import '../collection_list/collection_list.dart';
 import '../collection_list/cubit/cubit.dart';

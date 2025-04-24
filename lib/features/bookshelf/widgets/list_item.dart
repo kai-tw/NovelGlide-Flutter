@@ -13,9 +13,8 @@ class _SliverListItem extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           // Book widget
-          BlocBuilder<BookshelfCubit, CommonListState<BookData>>(
-            buildWhen: (CommonListState<BookData> previous,
-                    CommonListState<BookData> current) =>
+          BlocBuilder<BookshelfCubit, BookShelfState>(
+            buildWhen: (BookShelfState previous, BookShelfState current) =>
                 previous.code != current.code ||
                 previous.isSelecting != current.isSelecting,
             builder: _bookWidgetBuilder,
@@ -25,9 +24,8 @@ class _SliverListItem extends StatelessWidget {
           Positioned(
             top: 16.0,
             left: 16.0,
-            child: BlocBuilder<BookshelfCubit, CommonListState<BookData>>(
-              buildWhen: (CommonListState<BookData> previous,
-                      CommonListState<BookData> current) =>
+            child: BlocBuilder<BookshelfCubit, BookShelfState>(
+              buildWhen: (BookShelfState previous, BookShelfState current) =>
                   previous.isSelecting != current.isSelecting ||
                   previous.selectedSet != current.selectedSet,
               builder: _checkboxWidgetBuilder,
@@ -43,8 +41,7 @@ class _SliverListItem extends StatelessWidget {
   /// *************************************************************************
 
   /// Book widget builder
-  Widget _bookWidgetBuilder(
-      BuildContext context, CommonListState<BookData> state) {
+  Widget _bookWidgetBuilder(BuildContext context, BookShelfState state) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     if (state.isSelecting || state.code.isBackgroundLoading) {
       return Padding(
@@ -65,7 +62,7 @@ class _SliverListItem extends StatelessWidget {
   /// Checkbox widget builder
   Widget _checkboxWidgetBuilder(
     BuildContext context,
-    CommonListState<BookData> state,
+    BookShelfState state,
   ) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);

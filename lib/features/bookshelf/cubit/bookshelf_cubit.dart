@@ -14,10 +14,11 @@ import '../../../utils/file_path.dart';
 import '../../../utils/mime_resolver.dart';
 import '../../common_components/common_list/list_template.dart';
 
+typedef BookShelfState = CommonListState<BookData>;
+
 class BookshelfCubit extends CommonListCubit<BookData> {
   factory BookshelfCubit() {
-    final BookshelfCubit cubit =
-        BookshelfCubit._(const CommonListState<BookData>());
+    final BookshelfCubit cubit = BookshelfCubit._(const BookShelfState());
     cubit._init();
     return cubit;
   }
@@ -62,7 +63,7 @@ class BookshelfCubit extends CommonListCubit<BookData> {
         .where((File e) => MimeResolver.lookupAll(e) == 'application/epub+zip');
 
     if (fileList.isEmpty) {
-      emit(CommonListState<BookData>(
+      emit(BookShelfState(
         code: LoadingStateCode.loaded,
         sortOrder: sortOrderCode,
         isAscending: isAscending,
@@ -81,7 +82,7 @@ class BookshelfCubit extends CommonListCubit<BookData> {
         list.sort(BookUtils.sortCompare(sortOrderCode, isAscending));
 
         if (!isClosed) {
-          emit(CommonListState<BookData>(
+          emit(BookShelfState(
             code: LoadingStateCode.backgroundLoading,
             sortOrder: sortOrderCode,
             dataList: List<BookData>.from(list), // Make a copy.

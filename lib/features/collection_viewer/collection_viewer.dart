@@ -13,9 +13,9 @@ import '../common_components/common_loading.dart';
 import '../table_of_contents/table_of_contents.dart';
 import 'cubit/collection_viewer_cubit.dart';
 
-part 'widgets/list_item.dart';
-part 'widgets/list_view.dart';
-part 'widgets/popup_menu_button.dart';
+part 'widgets/collection_viewer_list_item.dart';
+part 'widgets/collection_viewer_list_view.dart';
+part 'widgets/collection_viewer_menu_button.dart';
 
 class CollectionViewer extends StatelessWidget {
   const CollectionViewer({super.key, required this.collectionData});
@@ -33,11 +33,11 @@ class CollectionViewer extends StatelessWidget {
           actions: const <Widget>[
             CommonListSelectAllButton<CollectionViewerCubit, BookData>(),
             CommonListDoneButton<CollectionViewerCubit, BookData>(),
-            _PopupMenuButton(),
+            CollectionViewerMenuButton(),
           ],
         ),
         body: const SafeArea(
-          child: _ListView(),
+          child: CollectionViewerListView(),
         ),
       ),
     );

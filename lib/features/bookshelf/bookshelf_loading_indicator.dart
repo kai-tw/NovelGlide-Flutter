@@ -5,11 +5,10 @@ class BookshelfLoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BookshelfCubit, CommonListState<BookData>>(
-      buildWhen: (CommonListState<BookData> previous,
-              CommonListState<BookData> current) =>
+    return BlocBuilder<BookshelfCubit, BookShelfState>(
+      buildWhen: (BookShelfState previous, BookShelfState current) =>
           previous.code != current.code,
-      builder: (BuildContext context, CommonListState<BookData> state) {
+      builder: (BuildContext context, BookShelfState state) {
         if (state.code.isBackgroundLoading) {
           return const LinearProgressIndicator();
         } else {

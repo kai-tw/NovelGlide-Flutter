@@ -32,8 +32,10 @@ class CommonBookCoverImage extends StatelessWidget {
             future: _bitmapOptimize(image, constraints),
             builder:
                 (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
+              Widget child;
+
               if (snapshot.hasData) {
-                return Image.memory(
+                child = Image.memory(
                   snapshot.data!,
                   fit: BoxFit.cover,
                   gaplessPlayback: true,
@@ -41,8 +43,19 @@ class CommonBookCoverImage extends StatelessWidget {
                       AppLocalizations.of(context)!.accessibilityBookCover,
                 );
               } else {
-                return const SizedBox.shrink();
+                child = const SizedBox.shrink();
               }
+
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                },
+                child: child,
+              );
             },
           );
         },

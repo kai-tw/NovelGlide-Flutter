@@ -18,7 +18,7 @@ import '../common_components/draggable_feedback_widget.dart';
 import '../common_components/draggable_placeholder_widget.dart';
 import '../homepage/homepage.dart';
 import '../table_of_contents/table_of_contents.dart';
-import 'cubit/cubit.dart';
+import 'cubit/bookshelf_cubit.dart';
 
 part 'bookshelf_app_bar.dart';
 part 'bookshelf_loading_indicator.dart';
@@ -37,14 +37,13 @@ class Bookshelf extends StatelessWidget {
 
     BlocProvider.of<BookshelfCubit>(context).refresh();
 
-    return BlocBuilder<BookshelfCubit, CommonListState<BookData>>(
-      buildWhen: (CommonListState<BookData> previous,
-              CommonListState<BookData> current) =>
+    return BlocBuilder<BookshelfCubit, BookShelfState>(
+      buildWhen: (BookShelfState previous, BookShelfState current) =>
           previous.code != current.code ||
           previous.dataList != current.dataList ||
           previous.isAscending != current.isAscending ||
           previous.sortOrder != current.sortOrder,
-      builder: (BuildContext context, CommonListState<BookData> state) {
+      builder: (BuildContext context, BookShelfState state) {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
@@ -57,26 +56,29 @@ class Bookshelf extends StatelessWidget {
                 title: appLocalizations.bookshelfNoBook,
               );
             } else {
-              // Avoid books from being covered by the navigation bar.
-              final double bottomPadding =
-                  MediaQuery.of(context).padding.bottom + 48.0;
-              return SliverPadding(
-                padding: EdgeInsets.only(bottom: bottomPadding),
-                sliver: SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 150.0,
-                    childAspectRatio: 150 / 300,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) =>
-                        _SliverListItem(state.dataList[index]),
-                    childCount: state.dataList.length,
-                  ),
-                ),
-              );
+              return _buildList(context, state);
             }
         }
       },
+    );
+  }
+
+  Widget _buildList(BuildContext context, BookShelfState state) {
+    // Avoid books from being covered by the navigation bar.
+    final double bottomPadding = MediaQuery.of(context).padding.bottom + 48.0;
+    return SliverPadding(
+      padding: EdgeInsets.only(bottom: bottomPadding),
+      sliver: SliverGrid(
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 150.0,
+          childAspectRatio: 150 / 300,
+        ),
+        delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int index) =>
+              _SliverListItem(state.dataList[index]),
+          childCount: state.dataList.length,
+        ),
+      ),
     );
   }
 }

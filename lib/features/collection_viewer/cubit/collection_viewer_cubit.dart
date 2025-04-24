@@ -7,10 +7,12 @@ import '../../../repository/book_repository.dart';
 import '../../../repository/collection_repository.dart';
 import '../../common_components/common_list/list_template.dart';
 
+typedef CollectionViewerState = CommonListState<BookData>;
+
 class CollectionViewerCubit extends CommonListCubit<BookData> {
   factory CollectionViewerCubit(CollectionData collectionData) {
     final CollectionViewerCubit cubit = CollectionViewerCubit._internal(
-        collectionData, const CommonListState<BookData>());
+        collectionData, const CollectionViewerState());
     cubit.refresh();
     return cubit;
   }
@@ -25,7 +27,7 @@ class CollectionViewerCubit extends CommonListCubit<BookData> {
     final Set<String> pathSet = collectionData.pathList.toSet();
 
     if (pathSet.isEmpty) {
-      emit(const CommonListState<BookData>(
+      emit(const CollectionViewerState(
         code: LoadingStateCode.loaded,
         dataList: <BookData>[],
       ));
@@ -39,7 +41,7 @@ class CollectionViewerCubit extends CommonListCubit<BookData> {
             await BookRepository.get(absolutePath);
         bookList.add(target);
         if (!isClosed) {
-          emit(CommonListState<BookData>(
+          emit(CollectionViewerState(
             code: LoadingStateCode.backgroundLoading,
             dataList: List<BookData>.from(bookList),
           ));
