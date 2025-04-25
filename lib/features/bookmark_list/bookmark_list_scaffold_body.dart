@@ -11,16 +11,18 @@ class BookmarkListScaffoldBody extends StatelessWidget {
     return Column(
       children: <Widget>[
         /// Ad goes here
-        PageStorage(
-          bucket: homepageCubit.bookmarkBucket,
-          child: RefreshIndicator(
-            onRefresh: cubit.refresh,
-            child: const Scrollbar(
-              child: CustomScrollView(
-                key: PageStorageKey<String>('homepage-bookmark'),
-                slivers: <Widget>[
-                  BookmarkList(),
-                ],
+        Expanded(
+          child: PageStorage(
+            bucket: homepageCubit.bookmarkBucket,
+            child: RefreshIndicator(
+              onRefresh: cubit.refresh,
+              child: const Scrollbar(
+                child: CustomScrollView(
+                  key: PageStorageKey<String>('homepage-bookmark'),
+                  slivers: <Widget>[
+                    BookmarkList(),
+                  ],
+                ),
               ),
             ),
           ),

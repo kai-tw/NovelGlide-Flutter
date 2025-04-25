@@ -12,16 +12,18 @@ class CollectionListScaffoldBody extends StatelessWidget {
     return Column(
       children: <Widget>[
         /// Ad goes here
-        PageStorage(
-          bucket: homepageCubit.collectionBucket,
-          child: RefreshIndicator(
-            onRefresh: cubit.refresh,
-            child: const Scrollbar(
-              child: CustomScrollView(
-                key: PageStorageKey<String>('homepage-collection'),
-                slivers: <Widget>[
-                  CollectionList(),
-                ],
+        Expanded(
+          child: PageStorage(
+            bucket: homepageCubit.collectionBucket,
+            child: RefreshIndicator(
+              onRefresh: cubit.refresh,
+              child: const Scrollbar(
+                child: CustomScrollView(
+                  key: PageStorageKey<String>('homepage-collection'),
+                  slivers: <Widget>[
+                    CollectionList(),
+                  ],
+                ),
               ),
             ),
           ),
