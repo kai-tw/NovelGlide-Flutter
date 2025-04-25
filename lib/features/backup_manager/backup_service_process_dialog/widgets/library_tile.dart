@@ -48,7 +48,9 @@ class _LibraryTile extends StatelessWidget {
             return ListTile(
               leading: const Icon(Icons.download_outlined),
               title: Text(appLocalizations.backupManagerLabelLibrary),
-              trailing: const CircularProgressIndicator(),
+              trailing: CircularProgressIndicator(
+                value: state.library.progress,
+              ),
             );
 
           case BackupServiceProcessStepCode.delete:

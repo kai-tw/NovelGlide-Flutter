@@ -30,7 +30,9 @@ class _BookmarkTile extends StatelessWidget {
             return ListTile(
               leading: const Icon(Icons.download_outlined),
               title: Text(appLocalizations.backupManagerLabelBookmark),
-              trailing: const CircularProgressIndicator(),
+              trailing: CircularProgressIndicator(
+                value: state.bookmark.progress,
+              ),
             );
 
           case BackupServiceProcessStepCode.delete:

@@ -30,7 +30,9 @@ class _CollectionTile extends StatelessWidget {
             return ListTile(
               leading: const Icon(Icons.download_outlined),
               title: Text(appLocalizations.backupManagerLabelCollection),
-              trailing: const CircularProgressIndicator(),
+              trailing: CircularProgressIndicator(
+                value: state.collection.progress,
+              ),
             );
 
           case BackupServiceProcessStepCode.delete:
