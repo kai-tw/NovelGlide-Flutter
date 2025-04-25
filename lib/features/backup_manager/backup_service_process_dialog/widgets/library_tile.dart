@@ -1,4 +1,4 @@
-part of '../backup_manager_process_all_dialog.dart';
+part of '../backup_service_process_dialog.dart';
 
 class _LibraryTile extends StatelessWidget {
   const _LibraryTile();
@@ -6,64 +6,59 @@ class _LibraryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<ProcessAllDialogCubit,
-        BackupManagerProcessAllDialogState>(
-      buildWhen: (BackupManagerProcessAllDialogState previous,
-              BackupManagerProcessAllDialogState current) =>
-          previous.libraryStep != current.libraryStep ||
-          previous.libraryProgress != current.libraryProgress,
-      builder:
-          (BuildContext context, BackupManagerProcessAllDialogState state) {
-        // Disable state.
-        if (!state.isLibraryRunning) {
-          return ListTile(
-            leading: const Icon(Icons.shelves),
-            title: Text(appLocalizations.backupManagerLabelLibrary),
-            enabled: false,
-          );
-        }
+    return BlocBuilder<BackupServiceProcessCubit, BackupServiceProcessState>(
+      buildWhen: (BackupServiceProcessState previous,
+              BackupServiceProcessState current) =>
+          previous.library != current.library,
+      builder: (BuildContext context, BackupServiceProcessState state) {
+        switch (state.library.step) {
+          case BackupServiceProcessStepCode.disabled:
+            return ListTile(
+              leading: const Icon(Icons.shelves),
+              title: Text(appLocalizations.backupManagerLabelLibrary),
+              enabled: false,
+            );
 
-        switch (state.libraryStep) {
-          case BackupManagerProcessStepCode.zip:
+          case BackupServiceProcessStepCode.zip:
             return ListTile(
               leading: const Icon(Icons.folder_zip_outlined),
               title: Text(appLocalizations.backupManagerLabelLibrary),
               trailing: CircularProgressIndicator(
-                value: state.libraryProgress,
+                value: state.library.progress,
               ),
             );
 
-          case BackupManagerProcessStepCode.upload:
+          case BackupServiceProcessStepCode.upload:
             return ListTile(
               leading: const Icon(Icons.upload_outlined),
               title: Text(appLocalizations.backupManagerLabelLibrary),
               trailing: const CircularProgressIndicator(),
             );
 
-          case BackupManagerProcessStepCode.unzip:
+          case BackupServiceProcessStepCode.unzip:
             return ListTile(
               leading: const Icon(Icons.folder_zip_outlined),
               title: Text(appLocalizations.backupManagerLabelLibrary),
               trailing: CircularProgressIndicator(
-                value: state.libraryProgress,
+                value: state.library.progress,
               ),
             );
 
-          case BackupManagerProcessStepCode.download:
+          case BackupServiceProcessStepCode.download:
             return ListTile(
               leading: const Icon(Icons.download_outlined),
               title: Text(appLocalizations.backupManagerLabelLibrary),
               trailing: const CircularProgressIndicator(),
             );
 
-          case BackupManagerProcessStepCode.delete:
+          case BackupServiceProcessStepCode.delete:
             return ListTile(
               leading: const Icon(Icons.delete_outlined),
               title: Text(appLocalizations.backupManagerLabelLibrary),
               trailing: const CircularProgressIndicator(),
             );
 
-          case BackupManagerProcessStepCode.done:
+          case BackupServiceProcessStepCode.done:
             return ListTile(
               iconColor: Colors.green,
               textColor: Colors.green,
@@ -71,7 +66,7 @@ class _LibraryTile extends StatelessWidget {
               title: Text(appLocalizations.backupManagerLabelLibrary),
             );
 
-          case BackupManagerProcessStepCode.error:
+          case BackupServiceProcessStepCode.error:
             return ListTile(
               iconColor: Theme.of(context).colorScheme.error,
               textColor: Theme.of(context).colorScheme.error,

@@ -7,62 +7,68 @@ class _MediumView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
-
     return SafeArea(
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          final double leftWidth = constraints.maxWidth * 0.382;
           return Row(
             children: <Widget>[
               Container(
-                width: leftWidth,
+                width: constraints.maxWidth * 0.382,
                 height: constraints.maxHeight,
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: Stack(
-                        children: <Widget>[
-                          _CoverBanner(bookData: bookData),
-                          Positioned.fill(
-                            child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: _BookName(bookData: bookData),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                child: _buildLeftColumn(),
               ),
               Expanded(
-                child: RefreshIndicator(
-                  onRefresh: () async =>
-                      BlocProvider.of<_Cubit>(context).refresh(),
-                  child: PageStorage(
-                    bucket: cubit.bucket,
-                    child: Scrollbar(
-                      controller: cubit.scrollController,
-                      child: CustomScrollView(
-                        key: const PageStorageKey<String>('toc-scroll-view'),
-                        controller: cubit.scrollController,
-                        slivers: <Widget>[
-                          SliverPadding(
-                            padding: const EdgeInsets.fromLTRB(
-                                24.0, 0.0, 24.0, 80.0),
-                            sliver: _SliverList(bookData: bookData),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                child: _buildRightColumn(context),
               ),
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildLeftColumn() {
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: Stack(
+            children: <Widget>[
+              _CoverBanner(bookData: bookData),
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: _BookName(bookData: bookData),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        /// Ad goes here
+      ],
+    );
+  }
+
+  Widget _buildRightColumn(BuildContext context) {
+    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
+    return RefreshIndicator(
+      onRefresh: () async => BlocProvider.of<_Cubit>(context).refresh(),
+      child: PageStorage(
+        bucket: cubit.bucket,
+        child: Scrollbar(
+          controller: cubit.scrollController,
+          child: CustomScrollView(
+            key: const PageStorageKey<String>('toc-scroll-view'),
+            controller: cubit.scrollController,
+            slivers: <Widget>[
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 80.0),
+                sliver: _SliverList(bookData: bookData),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

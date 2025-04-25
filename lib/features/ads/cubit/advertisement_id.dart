@@ -1,7 +1,7 @@
 part of 'advertisement_cubit.dart';
 
 enum AdvertisementType {
-  adaptiveBanner(
+  bookshelf(
     android: 'ca-app-pub-1579558558142906/6034508731',
     ios: 'ca-app-pub-1579558558142906/3980025184',
   );

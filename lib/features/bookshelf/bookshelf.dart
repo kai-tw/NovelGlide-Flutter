@@ -7,6 +7,7 @@ import '../../enum/sort_order_code.dart';
 import '../../enum/window_class.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../../utils/route_utils.dart';
+import '../ads/advertisement.dart';
 import '../collection_add_book/collection_add_book_scaffold.dart';
 import '../common_components/common_book_cover_image.dart';
 import '../common_components/common_delete_dialog.dart';

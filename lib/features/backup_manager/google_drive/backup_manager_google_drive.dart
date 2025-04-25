@@ -7,8 +7,8 @@ import '../../../generated/i18n/app_localizations.dart';
 import '../../../utils/datetime_utils.dart';
 import '../../common_components/common_error_dialog.dart';
 import '../../settings_page/settings_card.dart';
-import '../backup_manager_process_all_dialog/backup_manager_process_all_dialog.dart';
-import '../backup_manager_process_all_dialog/cubit/process_cubit.dart';
+import '../backup_service_process_dialog/backup_service_process_dialog.dart';
+import '../cubit/backup_service_process_cubit.dart';
 import 'cubit/backup_manager_google_drive_cubit.dart';
 
 part 'widgets/action_button.dart';
@@ -38,10 +38,10 @@ class BackupManagerGoogleDrive extends StatelessWidget {
       childrenList.add(
         _TargetTypeTile(
           title: titleList[i],
-          children: BackupManagerTaskType.values
+          children: BackupServiceTaskType.values
               .map(
-                (BackupManagerTaskType taskType) => _ActionButton(
-                  targetType: BackupManagerTargetType.values[i],
+                (BackupServiceTaskType taskType) => _ActionButton(
+                  targetType: BackupServiceTargetType.values[i],
                   taskType: taskType,
                 ),
               )

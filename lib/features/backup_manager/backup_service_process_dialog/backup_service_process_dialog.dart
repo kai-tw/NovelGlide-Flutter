@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../generated/i18n/app_localizations.dart';
-import 'cubit/process_cubit.dart';
+import '../cubit/backup_service_process_cubit.dart';
 
 part 'widgets/bookmark_tile.dart';
 part 'widgets/close_button.dart';
 part 'widgets/collection_tile.dart';
 part 'widgets/library_tile.dart';
 
-class BackupManagerProcessAllDialog extends StatelessWidget {
-  const BackupManagerProcessAllDialog({
+class BackupServiceProcessDialog extends StatelessWidget {
+  const BackupServiceProcessDialog({
     super.key,
     required this.taskType,
     required this.targetType,
@@ -19,16 +19,16 @@ class BackupManagerProcessAllDialog extends StatelessWidget {
     required this.bookmarkId,
   });
 
-  final BackupManagerTargetType targetType;
-  final BackupManagerTaskType taskType;
+  final BackupServiceTargetType targetType;
+  final BackupServiceTaskType taskType;
   final String libraryId;
   final String collectionId;
   final String bookmarkId;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ProcessAllDialogCubit>(
-      create: (_) => ProcessAllDialogCubit(
+    return BlocProvider<BackupServiceProcessCubit>(
+      create: (_) => BackupServiceProcessCubit(
         libraryId: libraryId,
         collectionId: collectionId,
         bookmarkId: bookmarkId,

@@ -5,7 +5,6 @@ import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sig
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:googleapis_auth/googleapis_auth.dart';
-import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 
 import '../exceptions/exceptions.dart';
@@ -120,10 +119,7 @@ class GoogleDriveApi {
     String fileId,
     File saveFile, {
     void Function(int, int)? onDownload,
-    void Function()? onDone,
-    void Function(Object)? onError,
   }) async {
-    final Logger logger = Logger();
     final Completer<void> completer = Completer<void>();
     final List<int> buffer = <int>[];
 
@@ -135,23 +131,24 @@ class GoogleDriveApi {
       downloadOptions: drive.DownloadOptions.fullMedia,
     ) as drive.Media;
 
-    logger.i('Google Drive Api: Starting file download.');
-
     media.stream.listen((List<int> data) {
+      // A chunk of data has been received.
+      // Add it to the buffer and call the onDownload callback.
       buffer.addAll(data);
       onDownload?.call(buffer.length, fileSize);
     }, onDone: () {
+      // Download completed. Write the downloaded data to the file.
       saveFile.writeAsBytesSync(buffer);
       buffer.clear();
+
+      // Complete the completer and call the onDone callback.
       completer.complete();
     }, onError: (Object e) {
-      logger.e('Google Drive Api: $e');
+      // An error occurred.
+      // Complete the completer and call the onError callback.
       completer.completeError(e);
     });
 
     await completer.future;
-
-    logger.i('Google Drive Api: Download File Complete.');
-    logger.close();
   }
 }

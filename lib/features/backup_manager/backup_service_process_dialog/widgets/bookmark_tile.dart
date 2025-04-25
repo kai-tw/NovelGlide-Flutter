@@ -1,4 +1,4 @@
-part of '../backup_manager_process_all_dialog.dart';
+part of '../backup_service_process_dialog.dart';
 
 class _BookmarkTile extends StatelessWidget {
   const _BookmarkTile();
@@ -6,47 +6,41 @@ class _BookmarkTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<ProcessAllDialogCubit,
-        BackupManagerProcessAllDialogState>(
-      buildWhen: (BackupManagerProcessAllDialogState previous,
-              BackupManagerProcessAllDialogState current) =>
-          previous.isBookmarkRunning != current.isBookmarkRunning ||
-          previous.bookmarkStep != current.bookmarkStep ||
-          previous.bookmarkProgress != current.bookmarkProgress,
-      builder:
-          (BuildContext context, BackupManagerProcessAllDialogState state) {
-        // Disable state.
-        if (!state.isBookmarkRunning) {
-          return ListTile(
-            leading: const Icon(Icons.bookmark_outline),
-            title: Text(appLocalizations.backupManagerLabelBookmark),
-            enabled: false,
-          );
-        }
+    return BlocBuilder<BackupServiceProcessCubit, BackupServiceProcessState>(
+      buildWhen: (BackupServiceProcessState previous,
+              BackupServiceProcessState current) =>
+          previous.bookmark != current.bookmark,
+      builder: (BuildContext context, BackupServiceProcessState state) {
+        switch (state.bookmark.step) {
+          case BackupServiceProcessStepCode.disabled:
+            return ListTile(
+              leading: const Icon(Icons.bookmark_outline),
+              title: Text(appLocalizations.backupManagerLabelBookmark),
+              enabled: false,
+            );
 
-        switch (state.bookmarkStep) {
-          case BackupManagerProcessStepCode.upload:
+          case BackupServiceProcessStepCode.upload:
             return ListTile(
               leading: const Icon(Icons.upload_outlined),
               title: Text(appLocalizations.backupManagerLabelBookmark),
               trailing: const CircularProgressIndicator(),
             );
 
-          case BackupManagerProcessStepCode.download:
+          case BackupServiceProcessStepCode.download:
             return ListTile(
               leading: const Icon(Icons.download_outlined),
               title: Text(appLocalizations.backupManagerLabelBookmark),
               trailing: const CircularProgressIndicator(),
             );
 
-          case BackupManagerProcessStepCode.delete:
+          case BackupServiceProcessStepCode.delete:
             return ListTile(
               leading: const Icon(Icons.delete_outlined),
               title: Text(appLocalizations.backupManagerLabelBookmark),
               trailing: const CircularProgressIndicator(),
             );
 
-          case BackupManagerProcessStepCode.done:
+          case BackupServiceProcessStepCode.done:
             return ListTile(
               iconColor: Colors.green,
               textColor: Colors.green,
@@ -54,7 +48,7 @@ class _BookmarkTile extends StatelessWidget {
               title: Text(appLocalizations.backupManagerLabelBookmark),
             );
 
-          case BackupManagerProcessStepCode.error:
+          case BackupServiceProcessStepCode.error:
             return ListTile(
               iconColor: Theme.of(context).colorScheme.error,
               textColor: Theme.of(context).colorScheme.error,

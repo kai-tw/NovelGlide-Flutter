@@ -6,8 +6,8 @@ class _ActionButton extends StatelessWidget {
     required this.taskType,
   });
 
-  final BackupManagerTargetType targetType;
-  final BackupManagerTaskType taskType;
+  final BackupServiceTargetType targetType;
+  final BackupServiceTaskType taskType;
 
   @override
   Widget build(BuildContext context) {
@@ -18,61 +18,61 @@ class _ActionButton extends StatelessWidget {
     String label;
 
     switch (taskType) {
-      case BackupManagerTaskType.backup:
+      case BackupServiceTaskType.backup:
         switch (targetType) {
-          case BackupManagerTargetType.all:
+          case BackupServiceTargetType.all:
             iconData = Icons.backup_outlined;
             label = appLocalizations.backupManagerBackupAll;
             break;
-          case BackupManagerTargetType.library:
+          case BackupServiceTargetType.library:
             iconData = Icons.backup_outlined;
             label = appLocalizations.backupManagerBackupLibrary;
             break;
-          case BackupManagerTargetType.collection:
+          case BackupServiceTargetType.collection:
             iconData = Icons.backup_outlined;
             label = appLocalizations.backupManagerBackupCollection;
             break;
-          case BackupManagerTargetType.bookmark:
+          case BackupServiceTargetType.bookmark:
             iconData = Icons.backup_outlined;
             label = appLocalizations.backupManagerBackupBookmark;
             break;
         }
         break;
-      case BackupManagerTaskType.restore:
+      case BackupServiceTaskType.restore:
         switch (targetType) {
-          case BackupManagerTargetType.all:
+          case BackupServiceTargetType.all:
             iconData = Icons.restore_outlined;
             label = appLocalizations.backupManagerRestoreAll;
             break;
-          case BackupManagerTargetType.library:
+          case BackupServiceTargetType.library:
             iconData = Icons.restore_outlined;
             label = appLocalizations.backupManagerRestoreLibrary;
             break;
-          case BackupManagerTargetType.collection:
+          case BackupServiceTargetType.collection:
             iconData = Icons.restore_outlined;
             label = appLocalizations.backupManagerRestoreCollection;
             break;
-          case BackupManagerTargetType.bookmark:
+          case BackupServiceTargetType.bookmark:
             iconData = Icons.restore_outlined;
             label = appLocalizations.backupManagerRestoreBookmark;
             break;
         }
         break;
-      case BackupManagerTaskType.delete:
+      case BackupServiceTaskType.delete:
         switch (targetType) {
-          case BackupManagerTargetType.all:
+          case BackupServiceTargetType.all:
             iconData = Icons.delete_outlined;
             label = appLocalizations.backupManagerDeleteAllBackup;
             break;
-          case BackupManagerTargetType.library:
+          case BackupServiceTargetType.library:
             iconData = Icons.delete_outlined;
             label = appLocalizations.backupManagerDeleteLibraryBackup;
             break;
-          case BackupManagerTargetType.collection:
+          case BackupServiceTargetType.collection:
             iconData = Icons.delete_outlined;
             label = appLocalizations.backupManagerDeleteCollectionBackup;
             break;
-          case BackupManagerTargetType.bookmark:
+          case BackupServiceTargetType.bookmark:
             iconData = Icons.delete_outlined;
             label = appLocalizations.backupManagerDeleteBookmarkBackup;
             break;
@@ -97,7 +97,7 @@ class _ActionButton extends StatelessWidget {
                   showDialog(
                     context: context,
                     barrierDismissible: false,
-                    builder: (_) => BackupManagerProcessAllDialog(
+                    builder: (_) => BackupServiceProcessDialog(
                       taskType: taskType,
                       targetType: targetType,
                       libraryId: cubit.state.libraryId!,

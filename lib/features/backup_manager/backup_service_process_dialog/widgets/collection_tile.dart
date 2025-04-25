@@ -1,4 +1,4 @@
-part of '../backup_manager_process_all_dialog.dart';
+part of '../backup_service_process_dialog.dart';
 
 class _CollectionTile extends StatelessWidget {
   const _CollectionTile();
@@ -6,46 +6,41 @@ class _CollectionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<ProcessAllDialogCubit,
-        BackupManagerProcessAllDialogState>(
-      buildWhen: (BackupManagerProcessAllDialogState previous,
-              BackupManagerProcessAllDialogState current) =>
-          previous.collectionStep != current.collectionStep ||
-          previous.collectionProgress != current.collectionProgress,
-      builder:
-          (BuildContext context, BackupManagerProcessAllDialogState state) {
-        // Disable state.
-        if (!state.isCollectionRunning) {
-          return ListTile(
-            leading: const Icon(Icons.collections_bookmark_outlined),
-            title: Text(appLocalizations.backupManagerLabelCollection),
-            enabled: false,
-          );
-        }
+    return BlocBuilder<BackupServiceProcessCubit, BackupServiceProcessState>(
+      buildWhen: (BackupServiceProcessState previous,
+              BackupServiceProcessState current) =>
+          previous.collection != current.collection,
+      builder: (BuildContext context, BackupServiceProcessState state) {
+        switch (state.collection.step) {
+          case BackupServiceProcessStepCode.disabled:
+            return ListTile(
+              leading: const Icon(Icons.collections_bookmark_outlined),
+              title: Text(appLocalizations.backupManagerLabelCollection),
+              enabled: false,
+            );
 
-        switch (state.collectionStep) {
-          case BackupManagerProcessStepCode.upload:
+          case BackupServiceProcessStepCode.upload:
             return ListTile(
               leading: const Icon(Icons.upload_outlined),
               title: Text(appLocalizations.backupManagerLabelCollection),
               trailing: const CircularProgressIndicator(),
             );
 
-          case BackupManagerProcessStepCode.download:
+          case BackupServiceProcessStepCode.download:
             return ListTile(
               leading: const Icon(Icons.download_outlined),
               title: Text(appLocalizations.backupManagerLabelCollection),
               trailing: const CircularProgressIndicator(),
             );
 
-          case BackupManagerProcessStepCode.delete:
+          case BackupServiceProcessStepCode.delete:
             return ListTile(
               leading: const Icon(Icons.delete_outlined),
               title: Text(appLocalizations.backupManagerLabelCollection),
               trailing: const CircularProgressIndicator(),
             );
 
-          case BackupManagerProcessStepCode.done:
+          case BackupServiceProcessStepCode.done:
             return ListTile(
               iconColor: Colors.green,
               textColor: Colors.green,
@@ -53,7 +48,7 @@ class _CollectionTile extends StatelessWidget {
               title: Text(appLocalizations.backupManagerLabelCollection),
             );
 
-          case BackupManagerProcessStepCode.error:
+          case BackupServiceProcessStepCode.error:
             return ListTile(
               iconColor: Theme.of(context).colorScheme.error,
               textColor: Theme.of(context).colorScheme.error,
