@@ -1,4 +1,4 @@
-part of 'reader_default_navigation.dart';
+part of '../../reader.dart';
 
 class ReaderNavSettingsButton extends StatelessWidget {
   const ReaderNavSettingsButton({super.key});

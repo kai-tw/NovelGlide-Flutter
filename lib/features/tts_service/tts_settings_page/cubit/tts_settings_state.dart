@@ -1,4 +1,4 @@
-part of 'tts_settings_cubit.dart';
+part of '../../tts_service.dart';
 
 class TtsSettingsState extends Equatable {
   const TtsSettingsState({

@@ -1,10 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../services/tts/tts_service.dart';
-
-part 'tts_settings_state.dart';
+part of '../../tts_service.dart';
 
 class TtsSettingsCubit extends Cubit<TtsSettingsState> {
   factory TtsSettingsCubit() => TtsSettingsCubit._().._init();

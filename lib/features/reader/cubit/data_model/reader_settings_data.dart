@@ -1,9 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../preference_keys/preference_keys.dart';
-
-part 'reader_settings_page_num_type.dart';
+part of '../reader_cubit.dart';
 
 /// Represents the settings for a reader, including font size, line height, and other preferences.
 class ReaderSettingsData extends Equatable {
@@ -31,9 +26,8 @@ class ReaderSettingsData extends Equatable {
   final bool isSmoothScroll;
   static const bool defaultIsSmoothScroll = false;
 
-  final ReaderSettingsPageNumType pageNumType;
-  static const ReaderSettingsPageNumType defaultPageNumType =
-      ReaderSettingsPageNumType.number;
+  final ReaderPageNumType pageNumType;
+  static const ReaderPageNumType defaultPageNumType = ReaderPageNumType.number;
 
   @override
   List<Object?> get props => <Object?>[
@@ -96,7 +90,7 @@ class ReaderSettingsData extends Equatable {
       lineHeight: lineHeight.clamp(minLineHeight, maxLineHeight),
       isAutoSaving: isAutoSaving,
       isSmoothScroll: isSmoothScroll,
-      pageNumType: ReaderSettingsPageNumType.values[pageNumType],
+      pageNumType: ReaderPageNumType.values[pageNumType],
     );
   }
 
@@ -106,7 +100,7 @@ class ReaderSettingsData extends Equatable {
     double? lineHeight,
     bool? isAutoSaving,
     bool? isSmoothScroll,
-    ReaderSettingsPageNumType? pageNumType,
+    ReaderPageNumType? pageNumType,
   }) {
     return ReaderSettingsData(
       fontSize: (fontSize ?? this.fontSize).clamp(minFontSize, maxFontSize),

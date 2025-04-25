@@ -19,7 +19,10 @@ class _BookWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16.0),
               ),
               clipBehavior: Clip.hardEdge,
-              child: CommonBookCoverImage(bookData: bookData),
+              child: CommonBookCoverImage(
+                bookData: bookData,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),

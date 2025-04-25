@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../generated/i18n/app_localizations.dart';
-import '../cubit/reader_cubit.dart';
+part of '../../reader.dart';
 
 class ReaderTtsStopButton extends StatelessWidget {
   const ReaderTtsStopButton({super.key});

@@ -14,7 +14,7 @@ class _PageNumSelector extends StatelessWidget {
             previous.readerSettings.pageNumType !=
             current.readerSettings.pageNumType,
         builder: (BuildContext context, ReaderState state) {
-          return DropdownMenu<ReaderSettingsPageNumType>(
+          return DropdownMenu<ReaderPageNumType>(
             width: constraints.maxWidth,
             label: Text(appLocalizations.readerPageNumTypeLabel),
             helperText: appLocalizations.readerPageNumTypeHelperText,
@@ -27,15 +27,15 @@ class _PageNumSelector extends StatelessWidget {
               semanticLabel: appLocalizations.readerPageNumTypeHelperText,
             ),
             initialSelection: state.readerSettings.pageNumType,
-            onSelected: (ReaderSettingsPageNumType? value) {
+            onSelected: (ReaderPageNumType? value) {
               if (value != null) {
                 cubit.pageNumType = value;
                 cubit.saveSettings();
               }
             },
-            dropdownMenuEntries: ReaderSettingsPageNumType.values
-                .map<DropdownMenuEntry<ReaderSettingsPageNumType>>(
-                    (ReaderSettingsPageNumType type) =>
+            dropdownMenuEntries: ReaderPageNumType.values
+                .map<DropdownMenuEntry<ReaderPageNumType>>(
+                    (ReaderPageNumType type) =>
                         _createEntry(appLocalizations, type))
                 .toList(),
           );
@@ -44,26 +44,26 @@ class _PageNumSelector extends StatelessWidget {
     });
   }
 
-  DropdownMenuEntry<ReaderSettingsPageNumType> _createEntry(
+  DropdownMenuEntry<ReaderPageNumType> _createEntry(
     AppLocalizations appLocalizations,
-    ReaderSettingsPageNumType type,
+    ReaderPageNumType type,
   ) {
     String label;
     switch (type) {
-      case ReaderSettingsPageNumType.hidden:
+      case ReaderPageNumType.hidden:
         label = appLocalizations.readerPageNumTypeHidden;
         break;
-      case ReaderSettingsPageNumType.number:
+      case ReaderPageNumType.number:
         label = appLocalizations.readerPageNumTypeNumber;
         break;
-      case ReaderSettingsPageNumType.percentage:
+      case ReaderPageNumType.percentage:
         label = appLocalizations.readerPageNumTypePercentage;
         break;
-      case ReaderSettingsPageNumType.progressBar:
+      case ReaderPageNumType.progressBar:
         label = appLocalizations.readerPageNumTypeProgressBar;
         break;
     }
-    return DropdownMenuEntry<ReaderSettingsPageNumType>(
+    return DropdownMenuEntry<ReaderPageNumType>(
       value: type,
       label: label,
     );

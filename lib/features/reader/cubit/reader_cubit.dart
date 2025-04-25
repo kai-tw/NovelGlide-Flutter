@@ -6,22 +6,25 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../data_model/book_data.dart';
 import '../../../data_model/bookmark_data.dart';
-import '../../../data_model/reader_settings/reader_settings_data.dart';
 import '../../../enum/loading_state_code.dart';
-import '../../../enum/reader_navigation_state_code.dart';
+import '../../../preference_keys/preference_keys.dart';
 import '../../../repository/book_repository.dart';
 import '../../../repository/bookmark_repository.dart';
 import '../../../repository/cache_repository/cache_repository.dart';
-import '../../../services/tts/tts_service.dart';
 import '../../../utils/css_utils.dart';
 import '../../../utils/int_utils.dart';
+import '../../tts_service/tts_service.dart';
 
+part 'data_model/reader_navigation_state_code.dart';
+part 'data_model/reader_page_num_type.dart';
+part 'data_model/reader_settings_data.dart';
 part 'reader_destination_type.dart';
 part 'reader_gesture_handler.dart';
 part 'reader_loading_state_code.dart';
@@ -153,7 +156,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     webViewHandler.setSmoothScroll(value);
   }
 
-  set pageNumType(ReaderSettingsPageNumType value) {
+  set pageNumType(ReaderPageNumType value) {
     emit(state.copyWith(
         readerSettings: state.readerSettings.copyWith(pageNumType: value)));
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../data_model/reader_settings/reader_settings_data.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../../preference_keys/preference_keys.dart';
 import '../../repository/book_repository.dart';
@@ -11,12 +10,13 @@ import '../../repository/collection_repository.dart';
 import '../common_components/common_back_button.dart';
 import '../common_components/common_delete_dialog.dart';
 import '../common_components/common_success_dialog.dart';
+import '../reader/cubit/reader_cubit.dart';
 import '../settings_page/settings_card.dart';
 
-part 'cards/cache_card.dart';
-part 'cards/data_card.dart';
-part 'cards/preference_card.dart';
+part 'widgets/cache_card.dart';
+part 'widgets/data_card.dart';
 part 'widgets/list_tile.dart';
+part 'widgets/preference_card.dart';
 
 class ResetPage extends StatelessWidget {
   const ResetPage({super.key});

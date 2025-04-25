@@ -1,4 +1,4 @@
-part of 'reader_default_navigation.dart';
+part of '../../reader.dart';
 
 class ReaderNavPreviousButton extends StatelessWidget {
   const ReaderNavPreviousButton({super.key});

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'features/homepage/homepage.dart';
+import 'features/log_system/log_system.dart';
 import 'firebase_options.dart';
 import 'generated/i18n/app_localizations.dart';
-import 'services/log_system/log_system.dart';
 import 'theme/default_theme.dart';
 import 'utils/file_path.dart';
 

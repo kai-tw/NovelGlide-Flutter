@@ -9,12 +9,18 @@ import '../../data_model/book_data.dart';
 import '../../generated/i18n/app_localizations.dart';
 
 class CommonBookCoverImage extends StatelessWidget {
-  const CommonBookCoverImage({super.key, required this.bookData});
+  const CommonBookCoverImage({
+    super.key,
+    required this.bookData,
+    required this.fit,
+  });
 
   final BookData bookData;
+  final BoxFit fit;
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final img.Image? image = bookData.coverImage;
     if (image == null) {
       final Brightness brightness = Theme.of(context).brightness;
@@ -23,58 +29,44 @@ class CommonBookCoverImage extends StatelessWidget {
         'assets/images/book_cover_${brightness == Brightness.dark ? 'dark' : 'light'}.jpg',
         fit: BoxFit.cover,
         gaplessPlayback: true,
-        semanticLabel: AppLocalizations.of(context)!.accessibilityBookCover,
+        semanticLabel: appLocalizations.accessibilityBookCover,
       );
     } else {
       return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          return FutureBuilder<Uint8List?>(
-            future: _bitmapOptimize(image, constraints),
-            builder:
-                (BuildContext context, AsyncSnapshot<Uint8List?> snapshot) {
-              Widget child;
+          final Widget child = Image.memory(
+            _bitmapOptimize(image, constraints),
+            width: constraints.maxWidth,
+            height: constraints.maxHeight,
+            fit: fit,
+            gaplessPlayback: true,
+            semanticLabel: appLocalizations.accessibilityBookCover,
+          );
 
-              if (snapshot.hasData) {
-                child = Image.memory(
-                  snapshot.data!,
-                  fit: BoxFit.cover,
-                  gaplessPlayback: true,
-                  semanticLabel:
-                      AppLocalizations.of(context)!.accessibilityBookCover,
-                );
-              } else {
-                child = const SizedBox.shrink();
-              }
-
-              return AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                transitionBuilder: (Widget child, Animation<double> animation) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
-                },
+          return AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return FadeTransition(
+                opacity: animation,
                 child: child,
               );
             },
+            child: child,
           );
         },
       );
     }
   }
 
-  Future<Uint8List?> _bitmapOptimize(
-    img.Image image,
-    BoxConstraints constraints,
-  ) async {
+  Uint8List _bitmapOptimize(img.Image image, BoxConstraints constraints) {
     const int ratio = 4;
-    final double widthRatio = constraints.maxWidth / image.width;
-    final double heightRatio = constraints.maxHeight / image.height;
+    final double widthRatio = constraints.maxWidth / image.width * ratio;
+    final double heightRatio = constraints.maxHeight / image.height * ratio;
 
     final double maxRatio = max(widthRatio, heightRatio);
 
-    final int displayWidth = (image.width * maxRatio * ratio).truncate();
-    final int displayHeight = (image.height * maxRatio * ratio).truncate();
+    final int displayWidth = (image.width * maxRatio).truncate();
+    final int displayHeight = (image.height * maxRatio).truncate();
 
     return Bitmap.fromHeadless(image.width, image.height, image.getBytes())
         .apply(BitmapResize.to(width: displayWidth, height: displayHeight))

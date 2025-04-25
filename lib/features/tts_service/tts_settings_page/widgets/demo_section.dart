@@ -1,4 +1,4 @@
-part of '../tts_settings.dart';
+part of '../../tts_service.dart';
 
 class _DemoSection extends StatelessWidget {
   const _DemoSection();

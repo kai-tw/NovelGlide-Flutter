@@ -1,18 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+part of '../tts_service.dart';
 
-import '../../generated/i18n/app_localizations.dart';
-import '../../services/tts/tts_service.dart';
-import '../common_components/common_back_button.dart';
-import 'cubit/tts_settings_cubit.dart';
-
-part 'dialog/voice_select_dialog.dart';
-part 'widgets/demo_section.dart';
-part 'widgets/slider.dart';
-part 'widgets/voice_select_tile.dart';
-
-class TtsSettings extends StatelessWidget {
-  const TtsSettings({super.key});
+class TtsSettingsPage extends StatelessWidget {
+  const TtsSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

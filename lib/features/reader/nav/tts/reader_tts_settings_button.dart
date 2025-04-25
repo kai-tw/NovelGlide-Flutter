@@ -1,10 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../generated/i18n/app_localizations.dart';
-import '../../../utils/route_utils.dart';
-import '../../tts_settings/tts_settings.dart';
-import '../cubit/reader_cubit.dart';
+part of '../../reader.dart';
 
 class ReaderTtsSettingsButton extends StatelessWidget {
   const ReaderTtsSettingsButton({super.key});
@@ -29,7 +23,7 @@ class ReaderTtsSettingsButton extends StatelessWidget {
   void _navigateToTtsSettings(BuildContext context) {
     final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     Navigator.of(context)
-        .push(RouteUtils.pushRoute(const TtsSettings()))
+        .push(RouteUtils.pushRoute(const TtsSettingsPage()))
         .then((_) => cubit.ttsHandler.reload());
   }
 }

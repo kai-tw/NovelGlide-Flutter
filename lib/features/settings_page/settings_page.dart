@@ -9,7 +9,7 @@ import '../about_page/about_page.dart';
 import '../backup_manager/backup_manager.dart';
 import '../developer_page/developer_page.dart';
 import '../reset_page/reset_page.dart';
-import '../tts_settings/tts_settings.dart';
+import '../tts_service/tts_service.dart';
 import 'widgets/settings_list_tile.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -24,7 +24,7 @@ class SettingsPage extends StatelessWidget {
     final List<SettingsListTile> buttonList = <SettingsListTile>[
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          RouteUtils.pushRoute(const TtsSettings()),
+          RouteUtils.pushRoute(const TtsSettingsPage()),
         ),
         iconData: Icons.volume_up_rounded,
         title: appLocalizations.ttsSettingsTitle,
