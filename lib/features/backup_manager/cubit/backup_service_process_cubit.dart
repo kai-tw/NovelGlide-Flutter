@@ -120,14 +120,15 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
         step: BackupServiceProcessStepCode.upload,
       ),
     ));
-    await GoogleDriveApi.uploadFile('appDataFolder', zipFile);
+
+    // Upload the zip file to Google Drive
+    await GoogleDriveApi.uploadFile(GoogleDriveApi.appDataFolder, zipFile);
     tempFolder.deleteSync(recursive: true);
 
-    final bool result =
-        await GoogleDriveApi.fileExists(BackupUtils.libraryArchiveName);
+    // Emit the result
     emit(state.copyWith(
       library: BackupServiceProcessItemState(
-        step: result
+        step: await GoogleDriveApi.fileExists(BackupUtils.libraryArchiveName)
             ? BackupServiceProcessStepCode.done
             : BackupServiceProcessStepCode.error,
       ),
@@ -135,21 +136,21 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
   }
 
   Future<void> backupBookmarks() async {
-    // Upload the bookmark file
+    // Start the upload process
     emit(state.copyWith(
       bookmark: const BackupServiceProcessItemState(
         step: BackupServiceProcessStepCode.upload,
       ),
     ));
-    final File bookmarkFile = BookmarkRepository.jsonFile;
-    await GoogleDriveApi.uploadFile('appDataFolder', bookmarkFile);
+
+    // Upload the bookmark json file.
+    await GoogleDriveApi.uploadFile(
+        GoogleDriveApi.appDataFolder, BookmarkRepository.jsonFile);
 
     // Emit the result
-    final bool result =
-        await GoogleDriveApi.fileExists(BookmarkRepository.jsonFileName);
     emit(state.copyWith(
       bookmark: BackupServiceProcessItemState(
-        step: result
+        step: await GoogleDriveApi.fileExists(BookmarkRepository.jsonFileName)
             ? BackupServiceProcessStepCode.done
             : BackupServiceProcessStepCode.error,
       ),
@@ -157,19 +158,21 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
   }
 
   Future<void> backupCollections() async {
+    // Start the upload process
     emit(state.copyWith(
       collection: const BackupServiceProcessItemState(
         step: BackupServiceProcessStepCode.upload,
       ),
     ));
-    final File collectionFile = CollectionRepository.jsonFile;
-    await GoogleDriveApi.uploadFile('appDataFolder', collectionFile);
 
-    final bool result =
-        await GoogleDriveApi.fileExists(CollectionRepository.jsonFileName);
+    // Upload the collection json file
+    await GoogleDriveApi.uploadFile(
+        GoogleDriveApi.appDataFolder, CollectionRepository.jsonFile);
+
+    // Emit the result
     emit(state.copyWith(
       collection: BackupServiceProcessItemState(
-        step: result
+        step: await GoogleDriveApi.fileExists(CollectionRepository.jsonFileName)
             ? BackupServiceProcessStepCode.done
             : BackupServiceProcessStepCode.error,
       ),

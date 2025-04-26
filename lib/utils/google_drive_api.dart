@@ -23,6 +23,7 @@ class GoogleDriveApi {
 
   static final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: _scopes);
   static drive.DriveApi? _driveApi;
+  static const String appDataFolder = 'appDataFolder';
 
   /// Signs in the user and initializes the Drive API client.
   static Future<void> signIn() async {
@@ -60,7 +61,7 @@ class GoogleDriveApi {
   /// Checks if the file exists in Google Drive.
   static Future<bool> fileExists(
     String fileName, {
-    String spaces = 'appDataFolder',
+    String spaces = appDataFolder,
   }) async {
     return await getFileId(fileName, spaces: spaces) != null;
   }
@@ -68,7 +69,7 @@ class GoogleDriveApi {
   /// Retrieves the file ID for a given file name in the app data folder.
   static Future<String?> getFileId(
     String fileName, {
-    String spaces = 'appDataFolder',
+    String spaces = appDataFolder,
   }) async {
     final drive.FileList fileList = await files.list(
       spaces: spaces,
