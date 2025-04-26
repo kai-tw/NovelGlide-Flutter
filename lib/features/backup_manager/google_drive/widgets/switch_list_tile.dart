@@ -24,7 +24,7 @@ class _SwitchListTile extends StatelessWidget {
                   try {
                     await cubit.setEnabled(value);
                     cubit.refresh();
-                  } catch (e) {
+                  } on PlatformException catch (e) {
                     if (context.mounted) {
                       _errorHandler(context, e);
                     }
@@ -36,24 +36,27 @@ class _SwitchListTile extends StatelessWidget {
     );
   }
 
-  void _errorHandler(BuildContext context, Object e) {
+  void _errorHandler(BuildContext context, PlatformException e) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        if (e is GoogleDriveSignInException) {
-          return CommonErrorDialog(
-            content: appLocalizations.exceptionGoogleDriveSignIn,
-          );
+        switch (e.code) {
+          case GoogleSignIn.kSignInFailedError:
+            return CommonErrorDialog(
+              content: appLocalizations.exceptionGoogleDriveSignIn,
+            );
+
+          case ExceptionCode.googleDrivePermissionDenied:
+            return CommonErrorDialog(
+              content: appLocalizations.exceptionGoogleDrivePermissionDenied,
+            );
+
+          default:
+            return CommonErrorDialog(
+              content: appLocalizations.exceptionUnknownError,
+            );
         }
-        if (e is GoogleDrivePermissionDeniedException) {
-          return CommonErrorDialog(
-            content: appLocalizations.exceptionGoogleDrivePermissionDenied,
-          );
-        }
-        return CommonErrorDialog(
-          content: appLocalizations.exceptionUnknownError,
-        );
       },
     );
   }

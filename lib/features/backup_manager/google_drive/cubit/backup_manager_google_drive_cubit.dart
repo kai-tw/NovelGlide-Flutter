@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
-import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../enum/loading_state_code.dart';
@@ -26,8 +25,6 @@ class BackupManagerGoogleDriveCubit
   }
 
   BackupManagerGoogleDriveCubit._internal(super.initialState);
-
-  final Logger _logger = Logger();
 
   /// Refreshes the backup state by checking preferences and updating metadata.
   Future<void> refresh() async {
@@ -102,11 +99,5 @@ class BackupManagerGoogleDriveCubit
   /// Restores a backup from Google Drive.
   Future<bool> restoreAll() async {
     return false;
-  }
-
-  @override
-  Future<void> close() {
-    _logger.close();
-    return super.close();
   }
 }

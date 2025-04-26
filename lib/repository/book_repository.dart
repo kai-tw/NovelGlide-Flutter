@@ -4,7 +4,6 @@ import 'package:epubx/epubx.dart';
 import 'package:path/path.dart';
 
 import '../data_model/book_data.dart';
-import '../exceptions/exceptions.dart';
 import '../utils/epub_utils.dart';
 import '../utils/file_path.dart';
 import '../utils/file_utils.dart';
@@ -18,11 +17,7 @@ class BookRepository {
   /// Add a book to the library.
   static void add(String filePath) {
     final String destination = join(FilePath.libraryRoot, basename(filePath));
-    final File file = File(filePath);
-    if (File(destination).existsSync()) {
-      throw FileDuplicatedException();
-    }
-    file.copySync(destination);
+    File(filePath).copySync(destination);
   }
 
   /// Get is the book is in the library.

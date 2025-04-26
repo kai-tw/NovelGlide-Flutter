@@ -4,23 +4,7 @@ class _GoogleDriveCubit extends Cubit<_GoogleDriveState> {
   _GoogleDriveCubit() : super(const _GoogleDriveState());
 
   Future<void> init() async {
-    try {
-      await GoogleDriveApi.signIn();
-    } catch (e) {
-      if (e is GoogleDriveSignInException) {
-        emit(const _GoogleDriveState(
-          errorCode: _GoogleDriveErrorCode.signInError,
-        ));
-      } else if (e is GoogleDrivePermissionDeniedException) {
-        emit(const _GoogleDriveState(
-          errorCode: _GoogleDriveErrorCode.permissionDenied,
-        ));
-      } else {
-        emit(const _GoogleDriveState(
-          errorCode: _GoogleDriveErrorCode.unknownError,
-        ));
-      }
-    }
+    await GoogleDriveApi.signIn();
     await refresh();
   }
 

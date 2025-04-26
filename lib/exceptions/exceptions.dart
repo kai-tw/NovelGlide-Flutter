@@ -1,7 +1,6 @@
-class FileDuplicatedException implements Exception {}
+class ExceptionCode {
+  const ExceptionCode._();
 
-class FileNotFoundException implements Exception {}
-
-class GoogleDriveSignInException implements Exception {}
-
-class GoogleDrivePermissionDeniedException implements Exception {}
+  static const String googleDrivePermissionDenied =
+      'google_drive_permission_denied';
+}

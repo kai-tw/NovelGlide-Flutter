@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:googleapis_auth/googleapis_auth.dart';
@@ -25,19 +26,20 @@ class GoogleDriveApi {
 
   /// Signs in the user and initializes the Drive API client.
   static Future<void> signIn() async {
-    if (await _googleSignIn.signInSilently() == null &&
+    if (_googleSignIn.currentUser == null &&
+        await _googleSignIn.signInSilently() == null &&
         await _googleSignIn.signIn() == null) {
-      throw GoogleDriveSignInException();
+      throw PlatformException(code: GoogleSignIn.kSignInFailedError);
     }
 
     if (!await _googleSignIn.requestScopes(_scopes)) {
-      throw GoogleDrivePermissionDeniedException();
+      throw PlatformException(code: ExceptionCode.googleDrivePermissionDenied);
     }
 
     final AuthClient? httpClient = await _googleSignIn.authenticatedClient();
 
     if (httpClient == null) {
-      throw GoogleDriveSignInException();
+      throw PlatformException(code: GoogleSignIn.kSignInFailedError);
     } else {
       _driveApi = drive.DriveApi(httpClient);
     }
