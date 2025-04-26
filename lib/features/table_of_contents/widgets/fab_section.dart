@@ -6,7 +6,7 @@ class _FabSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _Cubit cubit = BlocProvider.of<_Cubit>(context);
-    final double windowWidth = MediaQuery.of(context).size.width;
+    final double windowWidth = MediaQuery.sizeOf(context).width;
     final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
     double maxWidth = windowWidth - kFloatingActionButtonMargin;
 

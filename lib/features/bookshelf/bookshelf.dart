@@ -66,7 +66,7 @@ class Bookshelf extends StatelessWidget {
 
   Widget _buildList(BuildContext context, BookShelfState state) {
     // Avoid books from being covered by the navigation bar.
-    final double bottomPadding = MediaQuery.of(context).padding.bottom + 48.0;
+    final double bottomPadding = MediaQuery.paddingOf(context).bottom + 48.0;
     return SliverPadding(
       padding: EdgeInsets.only(bottom: bottomPadding),
       sliver: SliverGrid(

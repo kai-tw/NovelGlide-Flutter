@@ -6,9 +6,9 @@ class _FloatingActionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final WindowClass windowClass =
-        WindowClass.fromWidth(MediaQuery.of(context).size.width);
+        WindowClass.fromWidth(MediaQuery.sizeOf(context).width);
     double maxWidth =
-        MediaQuery.of(context).size.width - kFloatingActionButtonMargin;
+        MediaQuery.sizeOf(context).width - kFloatingActionButtonMargin;
 
     if (windowClass != WindowClass.compact) {
       maxWidth *= 0.618;

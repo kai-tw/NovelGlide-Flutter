@@ -13,19 +13,19 @@ class _DeviceInfoCard extends StatelessWidget {
         ),
         ListTile(
           title: const Text('devicePixelRatio'),
-          subtitle: Text('${MediaQuery.of(context).devicePixelRatio}'),
+          subtitle: Text('${MediaQuery.devicePixelRatioOf(context)}'),
         ),
         ListTile(
           title: const Text('size.width'),
-          subtitle: Text('${MediaQuery.of(context).size.width}'),
+          subtitle: Text('${MediaQuery.sizeOf(context).width}'),
         ),
         ListTile(
           title: const Text('size.height'),
-          subtitle: Text('${MediaQuery.of(context).size.height}'),
+          subtitle: Text('${MediaQuery.sizeOf(context).height}'),
         ),
         ListTile(
           title: const Text('Orientation'),
-          subtitle: Text('${MediaQuery.of(context).orientation}'),
+          subtitle: Text('${MediaQuery.orientationOf(context)}'),
         ),
         ListTile(
           title: const Text('Platform brightness'),

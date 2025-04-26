@@ -62,7 +62,7 @@ class _SearchRangeButton extends StatelessWidget {
     } else {
       return IconButton(
         onPressed: onPressed,
-        icon: const Icon(Icons.book_outlined),
+        icon: Icon(icon),
         tooltip: label,
       );
     }

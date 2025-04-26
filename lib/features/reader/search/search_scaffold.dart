@@ -25,6 +25,7 @@ class SearchScaffold extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
+        title: Text(AppLocalizations.of(context)!.readerSearch),
       ),
       body: Center(
         child: ConstrainedBox(

@@ -31,7 +31,7 @@ class CollectionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final double windowWidth = MediaQuery.of(context).size.width;
+    final double windowWidth = MediaQuery.sizeOf(context).width;
     final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
 
     BlocProvider.of<CollectionListCubit>(context).refresh();
@@ -59,7 +59,7 @@ class CollectionList extends StatelessWidget {
               return SliverPadding(
                 padding: EdgeInsets.only(
                   top: windowClass == WindowClass.compact ? 0.0 : 16.0,
-                  bottom: MediaQuery.of(context).padding.bottom + 72.0,
+                  bottom: MediaQuery.paddingOf(context).bottom + 72.0,
                 ),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(

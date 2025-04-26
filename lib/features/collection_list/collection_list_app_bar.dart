@@ -9,7 +9,7 @@ class CollectionListAppBar extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    final double windowWidth = MediaQuery.of(context).size.width;
+    final double windowWidth = MediaQuery.sizeOf(context).width;
     final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
 
     return AppBar(

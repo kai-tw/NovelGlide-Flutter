@@ -53,7 +53,7 @@ class _Scaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenWidth = MediaQuery.sizeOf(context).width;
     final WindowClass windowClass = WindowClass.fromWidth(screenWidth);
 
     /// Display the homepage based on the window size

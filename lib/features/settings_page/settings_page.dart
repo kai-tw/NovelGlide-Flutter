@@ -18,7 +18,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final double windowWidth = MediaQuery.of(context).size.width;
+    final double windowWidth = MediaQuery.sizeOf(context).width;
     final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
 
     final List<SettingsListTile> buttonList = <SettingsListTile>[
@@ -83,7 +83,7 @@ class SettingsPage extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.only(
             top: windowClass == WindowClass.compact ? 0.0 : 16.0,
-            bottom: MediaQuery.of(context).padding.bottom,
+            bottom: MediaQuery.paddingOf(context).bottom,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
