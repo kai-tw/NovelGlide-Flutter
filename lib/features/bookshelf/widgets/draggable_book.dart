@@ -1,9 +1,13 @@
 part of '../bookshelf.dart';
 
 class _DraggableBook extends StatelessWidget {
-  const _DraggableBook(this.bookData);
+  const _DraggableBook({
+    required this.bookData,
+    required this.isDraggable,
+  });
 
   final BookData bookData;
+  final bool isDraggable;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +29,7 @@ class _DraggableBook extends StatelessWidget {
             );
           },
           data: bookData,
+          maxSimultaneousDrags: isDraggable ? 1 : 0,
           feedback: DraggableFeedbackWidget(
             width: constraints.maxWidth,
             height: constraints.maxHeight,

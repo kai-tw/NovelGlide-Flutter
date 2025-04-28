@@ -1,9 +1,13 @@
 part of '../collection_list.dart';
 
 class _DraggableCollection extends StatelessWidget {
-  const _DraggableCollection(this._data);
+  const _DraggableCollection({
+    required this.collectionData,
+    required this.isDraggable,
+  });
 
-  final CollectionData _data;
+  final CollectionData collectionData;
+  final bool isDraggable;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +21,7 @@ class _DraggableCollection extends StatelessWidget {
         onDragStarted: () => cubit.setDragging(true),
         onDragEnd: (_) => cubit.setDragging(false),
         onDragCompleted: () async {
-          CollectionRepository.delete(_data);
+          CollectionRepository.delete(collectionData);
           cubit.refresh();
 
           ScaffoldMessenger.of(context).showSnackBar(
@@ -26,22 +30,23 @@ class _DraggableCollection extends StatelessWidget {
             ),
           );
         },
-        data: _data,
+        data: collectionData,
+        maxSimultaneousDrags: isDraggable ? 1 : 0,
         feedback: DraggableFeedbackWidget(
           width: constraints.maxWidth,
-          child: _CollectionWidget(_data),
+          child: _CollectionWidget(collectionData),
         ),
         childWhenDragging: DraggablePlaceholderWidget(
           width: constraints.maxWidth,
-          child: _CollectionWidget(_data),
+          child: _CollectionWidget(collectionData),
         ),
         child: _CollectionWidget(
-          _data,
+          collectionData,
           onTap: () {
             Navigator.of(context)
                 .push(
                   RouteUtils.pushRoute(
-                    CollectionViewer(collectionData: _data),
+                    CollectionViewer(collectionData: collectionData),
                   ),
                 )
                 .then((_) => cubit.refresh());

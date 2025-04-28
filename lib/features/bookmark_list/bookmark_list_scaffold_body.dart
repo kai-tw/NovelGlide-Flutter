@@ -16,6 +16,7 @@ class BookmarkListScaffoldBody extends StatelessWidget {
             bucket: homepageCubit.bookmarkBucket,
             child: RefreshIndicator(
               onRefresh: cubit.refresh,
+              notificationPredicate: (_) => cubit.state.canRefresh,
               child: const Scrollbar(
                 child: CustomScrollView(
                   key: PageStorageKey<String>('homepage-bookmark'),

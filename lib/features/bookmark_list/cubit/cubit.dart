@@ -8,6 +8,8 @@ import '../../../preference_keys/preference_keys.dart';
 import '../../../repository/bookmark_repository.dart';
 import '../../common_components/common_list/list_template.dart';
 
+typedef BookmarkListState = CommonListState<BookmarkData>;
+
 class BookmarkListCubit extends CommonListCubit<BookmarkData> {
   factory BookmarkListCubit() {
     final BookmarkListCubit instance = BookmarkListCubit._();
@@ -26,10 +28,7 @@ class BookmarkListCubit extends CommonListCubit<BookmarkData> {
 
   @override
   Future<void> refresh() async {
-    emit(state.copyWith(code: LoadingStateCode.loading));
-
-    final List<BookmarkData> bookmarkList = BookmarkRepository.getList();
-
+    // Load preferences.
     int sortOrder;
     try {
       sortOrder = _prefs.getInt(_sortOrderPrefKey) ?? SortOrderCode.name.index;
@@ -38,13 +37,16 @@ class BookmarkListCubit extends CommonListCubit<BookmarkData> {
     }
     final SortOrderCode sortOrderCode = SortOrderCode.values[sortOrder];
     final bool isAscending = _prefs.getBool(_ascendingPrefKey) ?? false;
+
+    // Load bookmark list.
+    final List<BookmarkData> bookmarkList = BookmarkRepository.getList();
     _sortList(bookmarkList, sortOrderCode, isAscending);
 
-    emit(CommonListState<BookmarkData>(
+    emit(BookmarkListState(
       code: LoadingStateCode.loaded,
-      sortOrder: sortOrderCode,
       dataList: bookmarkList,
       isAscending: isAscending,
+      sortOrder: sortOrderCode,
     ));
   }
 

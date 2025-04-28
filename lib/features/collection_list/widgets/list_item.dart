@@ -13,9 +13,10 @@ class _ListItem extends StatelessWidget {
       buildWhen: (CommonListState<CollectionData> previous,
               CommonListState<CollectionData> current) =>
           previous.isSelecting != current.isSelecting ||
+          previous.isDragging != current.isDragging ||
           previous.selectedSet.contains(_collectionData) !=
               current.selectedSet.contains(_collectionData),
-      builder: (BuildContext context, CommonListState<CollectionData> state) {
+      builder: (BuildContext context, CollectionListState state) {
         if (state.isSelecting) {
           final bool isSelected = state.selectedSet.contains(_collectionData);
           return _CollectionWidget(
@@ -31,7 +32,10 @@ class _ListItem extends StatelessWidget {
             },
           );
         } else {
-          return _DraggableCollection(_collectionData);
+          return _DraggableCollection(
+            collectionData: _collectionData,
+            isDraggable: !state.isDragging,
+          );
         }
       },
     );

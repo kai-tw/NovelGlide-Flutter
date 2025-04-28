@@ -12,7 +12,7 @@ class _PopupMenuButton extends StatelessWidget {
       icon: const Icon(Icons.more_vert_rounded),
       clipBehavior: Clip.hardEdge,
       itemBuilder: (BuildContext context) {
-        final CommonListState<BookmarkData> state = cubit.state;
+        final BookmarkListState state = cubit.state;
         final bool isLoaded = state.code == LoadingStateCode.loaded;
         final List<PopupMenuEntry<void>> entries = <PopupMenuEntry<void>>[];
 

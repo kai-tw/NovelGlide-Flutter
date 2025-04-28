@@ -21,6 +21,8 @@ class CommonListState<T> extends Equatable {
   final bool isAscending;
 
   bool get isSelectAll => selectedSet.length == dataList.length;
+  bool get canRefresh =>
+      !isDragging && !code.isLoading && !code.isBackgroundLoading;
 
   @override
   List<Object?> get props => <Object?>[

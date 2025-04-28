@@ -16,7 +16,8 @@ class _SliverListItem extends StatelessWidget {
           BlocBuilder<BookshelfCubit, BookShelfState>(
             buildWhen: (BookShelfState previous, BookShelfState current) =>
                 previous.code != current.code ||
-                previous.isSelecting != current.isSelecting,
+                previous.isSelecting != current.isSelecting ||
+                previous.isDragging != current.isDragging,
             builder: _bookWidgetBuilder,
           ),
 
@@ -54,7 +55,10 @@ class _SliverListItem extends StatelessWidget {
         onTapHint: appLocalizations.accessibilityBookshelfListItemOnTap,
         onLongPressHint:
             appLocalizations.accessibilityBookshelfListItemOnLongPress,
-        child: _DraggableBook(bookData),
+        child: _DraggableBook(
+          bookData: bookData,
+          isDraggable: !state.isDragging,
+        ),
       );
     }
   }

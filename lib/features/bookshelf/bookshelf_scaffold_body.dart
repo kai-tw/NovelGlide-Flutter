@@ -17,6 +17,7 @@ class BookshelfScaffoldBody extends StatelessWidget {
             bucket: homepageCubit.bookshelfBucket,
             child: RefreshIndicator(
               onRefresh: cubit.refresh,
+              notificationPredicate: (_) => cubit.state.canRefresh,
               child: const Scrollbar(
                 child: CustomScrollView(
                   key: PageStorageKey<String>('homepage-bookshelf'),

@@ -44,8 +44,7 @@ class BookshelfCubit extends CommonListCubit<BookData> {
       return;
     }
 
-    emit(state.copyWith(code: LoadingStateCode.loading));
-
+    // Load preferences.
     int sortOrder;
     try {
       sortOrder = _prefs.getInt(_sortOrderKey) ?? SortOrderCode.name.index;
@@ -56,19 +55,20 @@ class BookshelfCubit extends CommonListCubit<BookData> {
     final SortOrderCode sortOrderCode = SortOrderCode.values[sortOrder];
     final bool isAscending = _prefs.getBool(_isAscendingKey) ?? true;
 
+    emit(BookShelfState(
+      code: LoadingStateCode.loading,
+      sortOrder: sortOrderCode,
+      isAscending: isAscending,
+    ));
+
+    // Load books.
     final Directory folder = Directory(FilePath.libraryRoot);
     final Iterable<File> fileList = folder
         .listSync()
         .whereType<File>()
         .where((File e) => MimeResolver.lookupAll(e) == 'application/epub+zip');
 
-    if (fileList.isEmpty) {
-      emit(BookShelfState(
-        code: LoadingStateCode.loaded,
-        sortOrder: sortOrderCode,
-        isAscending: isAscending,
-      ));
-    } else {
+    if (fileList.isNotEmpty) {
       final List<BookData> list = <BookData>[];
       final List<BookData> oldList = List<BookData>.from(state.dataList);
 
@@ -82,18 +82,16 @@ class BookshelfCubit extends CommonListCubit<BookData> {
         list.sort(BookUtils.sortCompare(sortOrderCode, isAscending));
 
         if (!isClosed) {
-          emit(BookShelfState(
+          emit(state.copyWith(
             code: LoadingStateCode.backgroundLoading,
-            sortOrder: sortOrderCode,
             dataList: List<BookData>.from(list), // Make a copy.
-            isAscending: isAscending,
           ));
         }
       }
+    }
 
-      if (!isClosed) {
-        emit(state.copyWith(code: LoadingStateCode.loaded));
-      }
+    if (!isClosed) {
+      emit(state.copyWith(code: LoadingStateCode.loaded));
     }
   }
 

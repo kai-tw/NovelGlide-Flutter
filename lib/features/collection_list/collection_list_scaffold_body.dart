@@ -17,6 +17,7 @@ class CollectionListScaffoldBody extends StatelessWidget {
             bucket: homepageCubit.collectionBucket,
             child: RefreshIndicator(
               onRefresh: cubit.refresh,
+              notificationPredicate: (_) => cubit.state.canRefresh,
               child: const Scrollbar(
                 child: CustomScrollView(
                   key: PageStorageKey<String>('homepage-collection'),

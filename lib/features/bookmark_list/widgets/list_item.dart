@@ -8,13 +8,13 @@ class _ListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
-    return BlocBuilder<BookmarkListCubit, CommonListState<BookmarkData>>(
-      buildWhen: (CommonListState<BookmarkData> previous,
-              CommonListState<BookmarkData> current) =>
+    return BlocBuilder<BookmarkListCubit, BookmarkListState>(
+      buildWhen: (BookmarkListState previous, BookmarkListState current) =>
           previous.isSelecting != current.isSelecting ||
+          previous.isDragging != current.isDragging ||
           previous.selectedSet.contains(_bookmarkData) !=
               current.selectedSet.contains(_bookmarkData),
-      builder: (BuildContext context, CommonListState<BookmarkData> state) {
+      builder: (BuildContext context, BookmarkListState state) {
         if (state.isSelecting) {
           final bool isSelected = state.selectedSet.contains(_bookmarkData);
           return _BookmarkWidget(
@@ -30,7 +30,10 @@ class _ListItem extends StatelessWidget {
             },
           );
         } else {
-          return _DraggableBookmark(_bookmarkData);
+          return _DraggableBookmark(
+            bookmarkData: _bookmarkData,
+            isDraggable: !state.isDragging,
+          );
         }
       },
     );

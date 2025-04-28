@@ -8,10 +8,12 @@ import '../../../preference_keys/preference_keys.dart';
 import '../../../repository/collection_repository.dart';
 import '../../common_components/common_list/list_template.dart';
 
+typedef CollectionListState = CommonListState<CollectionData>;
+
 class CollectionListCubit extends CommonListCubit<CollectionData> {
   factory CollectionListCubit() {
     final CollectionListCubit cubit =
-        CollectionListCubit._(const CommonListState<CollectionData>());
+        CollectionListCubit._(const CollectionListState());
     cubit._init();
     return cubit;
   }
@@ -29,10 +31,7 @@ class CollectionListCubit extends CommonListCubit<CollectionData> {
 
   @override
   Future<void> refresh() async {
-    emit(state.copyWith(code: LoadingStateCode.loading));
-
-    final List<CollectionData> collectionList = CollectionRepository.getList();
-
+    // Load preferences.
     int sortOrder;
     try {
       sortOrder = _prefs.getInt(_sortOrderKey) ?? SortOrderCode.name.index;
@@ -42,9 +41,11 @@ class CollectionListCubit extends CommonListCubit<CollectionData> {
     final SortOrderCode sortOrderCode = SortOrderCode.values[sortOrder];
     final bool isAscending = _prefs.getBool(_isAscendingKey) ?? true;
 
+    // Load collection list.
+    final List<CollectionData> collectionList = CollectionRepository.getList();
     _sortList(collectionList, sortOrderCode, isAscending);
 
-    emit(state.copyWith(
+    emit(CollectionListState(
       code: LoadingStateCode.loaded,
       dataList: collectionList,
       isAscending: isAscending,

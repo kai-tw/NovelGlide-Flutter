@@ -1,9 +1,13 @@
 part of '../bookmark_list.dart';
 
 class _DraggableBookmark extends StatelessWidget {
-  const _DraggableBookmark(this._data);
+  const _DraggableBookmark({
+    required this.bookmarkData,
+    required this.isDraggable,
+  });
 
-  final BookmarkData _data;
+  final BookmarkData bookmarkData;
+  final bool isDraggable;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +20,7 @@ class _DraggableBookmark extends StatelessWidget {
         onDragStarted: () => cubit.setDragging(true),
         onDragEnd: (_) => cubit.setDragging(false),
         onDragCompleted: () async {
-          BookmarkRepository.delete(_data);
+          BookmarkRepository.delete(bookmarkData);
           cubit.refresh();
 
           ScaffoldMessenger.of(context).showSnackBar(
@@ -25,25 +29,26 @@ class _DraggableBookmark extends StatelessWidget {
             ),
           );
         },
-        data: _data,
+        data: bookmarkData,
+        maxSimultaneousDrags: isDraggable ? 1 : 0,
         feedback: DraggableFeedbackWidget(
           width: constraints.maxWidth,
-          child: _BookmarkWidget(_data),
+          child: _BookmarkWidget(bookmarkData),
         ),
         childWhenDragging: DraggablePlaceholderWidget(
           width: constraints.maxWidth,
-          child: _BookmarkWidget(_data),
+          child: _BookmarkWidget(bookmarkData),
         ),
         child: _BookmarkWidget(
-          _data,
+          bookmarkData,
           onTap: () {
             Navigator.of(context)
                 .push(
                   RouteUtils.pushRoute(
                     ReaderWidget(
-                      bookPath: _data.bookPath,
+                      bookPath: bookmarkData.bookPath,
                       destinationType: ReaderDestinationType.bookmark,
-                      destination: _data.startCfi,
+                      destination: bookmarkData.startCfi,
                     ),
                   ),
                 )
