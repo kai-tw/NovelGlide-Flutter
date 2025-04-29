@@ -102,9 +102,9 @@ class BackupServiceGoogleDriveActionButton extends StatelessWidget {
         switch (targetType) {
           case BackupServiceTargetType.all:
             return state.code.isLoaded &&
-                state.libraryId != null &&
-                state.collectionId != null &&
-                state.bookmarkId != null;
+                (state.libraryId != null ||
+                    state.collectionId != null ||
+                    state.bookmarkId != null);
           case BackupServiceTargetType.library:
             return state.code.isLoaded && state.libraryId != null;
           case BackupServiceTargetType.collection:

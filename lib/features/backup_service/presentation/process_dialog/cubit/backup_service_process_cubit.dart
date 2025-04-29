@@ -192,6 +192,10 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
   }
 
   Future<void> deleteLibrary() async {
+    if (libraryId == null) {
+      return;
+    }
+
     emit(state.copyWith(
       library: const BackupServiceProcessItemState(
         step: BackupServiceProcessStepCode.delete,
@@ -210,6 +214,10 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
   }
 
   Future<void> deleteBookmarks() async {
+    if (bookmarkId == null) {
+      return;
+    }
+
     emit(state.copyWith(
       bookmark: const BackupServiceProcessItemState(
         step: BackupServiceProcessStepCode.delete,
@@ -228,6 +236,10 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
   }
 
   Future<void> deleteCollections() async {
+    if (collectionId == null) {
+      return;
+    }
+
     emit(state.copyWith(
       collection: const BackupServiceProcessItemState(
         step: BackupServiceProcessStepCode.delete,
@@ -254,11 +266,16 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
   }
 
   Future<void> restoreLibrary() async {
+    if (libraryId == null) {
+      return;
+    }
+
     emit(state.copyWith(
       library: const BackupServiceProcessItemState(
         step: BackupServiceProcessStepCode.backup,
       ),
     ));
+
     // Get a temporary folder.
     final Directory tempFolder = RandomUtils.getAvailableTempFolder();
     tempFolder.createSync(recursive: true);
@@ -324,6 +341,16 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
   }
 
   Future<void> restoreBookmarks() async {
+    if (bookmarkId == null) {
+      return;
+    }
+
+    emit(state.copyWith(
+      bookmark: const BackupServiceProcessItemState(
+        step: BackupServiceProcessStepCode.download,
+      ),
+    ));
+
     // Download the json file.
     try {
       await GoogleDriveService.downloadFile(
@@ -357,6 +384,16 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
   }
 
   Future<void> restoreCollections() async {
+    if (collectionId == null) {
+      return;
+    }
+
+    emit(state.copyWith(
+      collection: const BackupServiceProcessItemState(
+        step: BackupServiceProcessStepCode.download,
+      ),
+    ));
+
     // Download the json file.
     try {
       await GoogleDriveService.downloadFile(
@@ -364,8 +401,9 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
         CollectionRepository.jsonFile,
         onDownload: (int downloaded, int total) {
           emit(state.copyWith(
-            collection: const BackupServiceProcessItemState(
+            collection: BackupServiceProcessItemState(
               step: BackupServiceProcessStepCode.download,
+              progress: (downloaded / total).clamp(0, 1),
             ),
           ));
         },
