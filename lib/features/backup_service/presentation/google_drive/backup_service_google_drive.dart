@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../core/exceptions.dart';
+import '../../../../core/utils/datetime_utils.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../../../utils/datetime_utils.dart';
 import '../../../common_components/common_error_dialog.dart';
 import '../../../settings_page/settings_card.dart';
 import '../process_dialog/backup_service_process_dialog.dart';

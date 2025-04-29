@@ -14,7 +14,7 @@ class BackupServicePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const CommonBackButton(),
-        title: Text(appLocalizations.backupManagerTitle),
+        title: Text(appLocalizations.backupServiceTitle),
       ),
       body: const SafeArea(
         child: SingleChildScrollView(

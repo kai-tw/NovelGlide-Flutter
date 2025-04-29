@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../enum/sort_order_code.dart';
 import '../../../../enum/window_class.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../../../utils/route_utils.dart';
 import '../../../common_components/common_delete_dialog.dart';
 import '../../../common_components/common_list/list_template.dart';
 import '../../../common_components/common_list_empty.dart';

@@ -4,7 +4,7 @@ class _GoogleDriveCubit extends Cubit<_GoogleDriveState> {
   _GoogleDriveCubit() : super(const _GoogleDriveState());
 
   Future<void> init() async {
-    await GoogleDriveApi.signIn();
+    await GoogleDriveService.signIn();
     await refresh();
   }
 
@@ -12,7 +12,7 @@ class _GoogleDriveCubit extends Cubit<_GoogleDriveState> {
     emit(const _GoogleDriveState(
       errorCode: _GoogleDriveErrorCode.unInitialized,
     ));
-    final drive.FileList fileList = await GoogleDriveApi.files.list(
+    final drive.FileList fileList = await GoogleDriveService.files.list(
       spaces: 'appDataFolder',
       orderBy: 'modifiedTime desc',
       $fields: 'files(name,createdTime,id,mimeType,modifiedTime)',
@@ -28,12 +28,12 @@ class _GoogleDriveCubit extends Cubit<_GoogleDriveState> {
   }
 
   Future<bool> deleteFile(String fileId) async {
-    await GoogleDriveApi.deleteFile(fileId);
+    await GoogleDriveService.deleteFile(fileId);
     return true;
   }
 
   Future<bool> copyToDrive(String fileId) async {
-    await GoogleDriveApi.copyFile(fileId, <String>['root']);
+    await GoogleDriveService.copyFile(fileId, <String>['root']);
     return true;
   }
 }

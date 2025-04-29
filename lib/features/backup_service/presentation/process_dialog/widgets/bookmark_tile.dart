@@ -15,21 +15,21 @@ class _BookmarkTile extends StatelessWidget {
           case BackupServiceProcessStepCode.disabled:
             return ListTile(
               leading: const Icon(Icons.bookmark_outline),
-              title: Text(appLocalizations.backupManagerLabelBookmark),
+              title: Text(appLocalizations.backupServiceLabelBookmark),
               enabled: false,
             );
 
           case BackupServiceProcessStepCode.upload:
             return ListTile(
               leading: const Icon(Icons.upload_outlined),
-              title: Text(appLocalizations.backupManagerLabelBookmark),
+              title: Text(appLocalizations.backupServiceLabelBookmark),
               trailing: const CircularProgressIndicator(),
             );
 
           case BackupServiceProcessStepCode.download:
             return ListTile(
               leading: const Icon(Icons.download_outlined),
-              title: Text(appLocalizations.backupManagerLabelBookmark),
+              title: Text(appLocalizations.backupServiceLabelBookmark),
               trailing: CircularProgressIndicator(
                 value: state.bookmark.progress,
               ),
@@ -38,7 +38,7 @@ class _BookmarkTile extends StatelessWidget {
           case BackupServiceProcessStepCode.delete:
             return ListTile(
               leading: const Icon(Icons.delete_outlined),
-              title: Text(appLocalizations.backupManagerLabelBookmark),
+              title: Text(appLocalizations.backupServiceLabelBookmark),
               trailing: const CircularProgressIndicator(),
             );
 
@@ -47,7 +47,7 @@ class _BookmarkTile extends StatelessWidget {
               iconColor: Colors.green,
               textColor: Colors.green,
               leading: const Icon(Icons.check_outlined),
-              title: Text(appLocalizations.backupManagerLabelBookmark),
+              title: Text(appLocalizations.backupServiceLabelBookmark),
             );
 
           case BackupServiceProcessStepCode.error:
@@ -55,13 +55,13 @@ class _BookmarkTile extends StatelessWidget {
               iconColor: Theme.of(context).colorScheme.error,
               textColor: Theme.of(context).colorScheme.error,
               leading: const Icon(Icons.error_outline_rounded),
-              title: Text(appLocalizations.backupManagerLabelBookmark),
+              title: Text(appLocalizations.backupServiceLabelBookmark),
             );
 
           default:
             return ListTile(
               leading: const Icon(Icons.bookmark_outline),
-              title: Text(appLocalizations.backupManagerLabelBookmark),
+              title: Text(appLocalizations.backupServiceLabelBookmark),
               trailing: const CircularProgressIndicator(),
             );
         }

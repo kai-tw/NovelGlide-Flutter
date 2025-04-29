@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
-import '../../../../utils/route_utils.dart';
 import '../../../book/data/model/book_data.dart';
 import '../../../book/presentation/table_of_contents_page/table_of_contents.dart';
 import '../../../common_components/common_back_button.dart';

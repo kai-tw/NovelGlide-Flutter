@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/utils/route_utils.dart';
 import '../../enum/window_class.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../../utils/route_utils.dart';
 import '../about_page/about_page.dart';
 import '../backup_service/presentation/backup_service_page.dart';
 import '../developer_page/developer_page.dart';
@@ -34,7 +34,7 @@ class SettingsPage extends StatelessWidget {
           RouteUtils.pushRoute(const BackupServicePage()),
         ),
         iconData: Icons.cloud_rounded,
-        title: appLocalizations.backupManagerTitle,
+        title: appLocalizations.backupServiceTitle,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(

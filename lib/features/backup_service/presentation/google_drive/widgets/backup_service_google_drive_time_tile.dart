@@ -16,7 +16,7 @@ class BackupServiceGoogleDriveTimeTile extends StatelessWidget {
         return ListTile(
           contentPadding: const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
           leading: const Icon(Icons.calendar_month_rounded),
-          title: Text(appLocalizations.backupManagerLastTime),
+          title: Text(appLocalizations.backupServiceLastTime),
           subtitle: Text(
             DateTimeUtils.format(
               state.lastBackupTime,

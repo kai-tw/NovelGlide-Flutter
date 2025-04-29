@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 
-import '../../utils/datetime_utils.dart';
-import '../../utils/file_path.dart';
-import '../../utils/google_drive_api.dart';
-import '../../utils/route_utils.dart';
+import '../../core/services/google_drive_service.dart';
+import '../../core/utils/datetime_utils.dart';
+import '../../core/utils/file_path.dart';
+import '../../core/utils/route_utils.dart';
 import '../common_components/common_back_button.dart';
 import '../common_components/common_error_dialog.dart';
 import '../common_components/common_list_empty.dart';

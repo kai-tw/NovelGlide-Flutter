@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:novelglide/utils/file_utils.dart';
+import 'package:novelglide/core/utils/file_utils.dart';
 
 void main() {
-  group('FileHelper', () {
+  group('FileUtils', () {
     test('getFileSizeString should return correct size for bytes', () {
       // Arrange
       const int size = 500; // 500 bytes

@@ -10,8 +10,8 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../../../utils/css_utils.dart';
-import '../../../../../utils/int_utils.dart';
+import '../../../../../core/utils/css_utils.dart';
+import '../../../../../core/utils/int_utils.dart';
 import '../../../../book/data/model/book_data.dart';
 import '../../../../book/data/repository/book_repository.dart';
 import '../../../../bookmark/data/bookmark_data.dart';

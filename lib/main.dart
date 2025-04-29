@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/services/log_service.dart';
+import 'core/theme/default_theme.dart';
+import 'core/utils/file_path.dart';
 import 'features/homepage/homepage.dart';
 import 'firebase_options.dart';
 import 'generated/i18n/app_localizations.dart';
-import 'theme/default_theme.dart';
-import 'utils/file_path.dart';
 
 void main() async {
   // Flutter Initialization

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/utils/emoticon_collection.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../../utils/emoticon_collection.dart';
 
 class CommonListEmpty extends StatelessWidget {
   const CommonListEmpty({super.key, this.title});

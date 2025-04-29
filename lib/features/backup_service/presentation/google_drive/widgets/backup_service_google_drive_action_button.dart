@@ -57,37 +57,37 @@ class BackupServiceGoogleDriveActionButton extends StatelessWidget {
       case BackupServiceTaskType.backup:
         switch (targetType) {
           case BackupServiceTargetType.all:
-            return appLocalizations.backupManagerBackupAll;
+            return appLocalizations.backupServiceBackupAll;
           case BackupServiceTargetType.library:
-            return appLocalizations.backupManagerBackupLibrary;
+            return appLocalizations.backupServiceBackupLibrary;
           case BackupServiceTargetType.collection:
-            return appLocalizations.backupManagerBackupCollection;
+            return appLocalizations.backupServiceBackupCollection;
           case BackupServiceTargetType.bookmark:
-            return appLocalizations.backupManagerBackupBookmark;
+            return appLocalizations.backupServiceBackupBookmark;
         }
 
       case BackupServiceTaskType.restore:
         switch (targetType) {
           case BackupServiceTargetType.all:
-            return appLocalizations.backupManagerRestoreAll;
+            return appLocalizations.backupServiceRestoreAll;
           case BackupServiceTargetType.library:
-            return appLocalizations.backupManagerRestoreLibrary;
+            return appLocalizations.backupServiceRestoreLibrary;
           case BackupServiceTargetType.collection:
-            return appLocalizations.backupManagerRestoreCollection;
+            return appLocalizations.backupServiceRestoreCollection;
           case BackupServiceTargetType.bookmark:
-            return appLocalizations.backupManagerRestoreBookmark;
+            return appLocalizations.backupServiceRestoreBookmark;
         }
 
       case BackupServiceTaskType.delete:
         switch (targetType) {
           case BackupServiceTargetType.all:
-            return appLocalizations.backupManagerDeleteAllBackup;
+            return appLocalizations.backupServiceDeleteAllBackup;
           case BackupServiceTargetType.library:
-            return appLocalizations.backupManagerDeleteLibraryBackup;
+            return appLocalizations.backupServiceDeleteLibraryBackup;
           case BackupServiceTargetType.collection:
-            return appLocalizations.backupManagerDeleteCollectionBackup;
+            return appLocalizations.backupServiceDeleteCollectionBackup;
           case BackupServiceTargetType.bookmark:
-            return appLocalizations.backupManagerDeleteBookmarkBackup;
+            return appLocalizations.backupServiceDeleteBookmarkBackup;
         }
     }
   }

@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 
-import '../../../utils/file_path.dart';
-import '../../../utils/json_utils.dart';
-import '../../../utils/random_utils.dart';
+import '../../../core/utils/file_path.dart';
+import '../../../core/utils/json_utils.dart';
+import '../../../core/utils/random_utils.dart';
 import '../../book/data/repository/book_repository.dart';
 import 'collection_data.dart';
 

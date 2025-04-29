@@ -4,8 +4,8 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image/image.dart';
 
+import '../../../../core/utils/epub_utils.dart';
 import '../../../../enum/sort_order_code.dart';
-import '../../../../utils/epub_utils.dart';
 import '../repository/book_repository.dart';
 import 'chapter_data.dart';
 

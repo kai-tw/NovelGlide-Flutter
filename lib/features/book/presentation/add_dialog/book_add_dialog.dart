@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 
+import '../../../../core/utils/file_utils.dart';
 import '../../../../enum/window_class.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../../../utils/file_utils.dart';
 import '../../../common_components/common_back_button.dart';
 import '../../data/repository/book_repository.dart';
 import 'cubit/cubit.dart';

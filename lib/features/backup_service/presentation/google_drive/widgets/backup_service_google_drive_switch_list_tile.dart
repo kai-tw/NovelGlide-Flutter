@@ -18,7 +18,7 @@ class BackupServiceGoogleDriveSwitchListTile extends StatelessWidget {
       builder: (BuildContext context, BackupServiceGoogleDriveState state) {
         return SwitchListTile(
           contentPadding: const EdgeInsets.fromLTRB(16.0, 4.0, 8.0, 4.0),
-          title: Text(appLocalizations.backupManagerGoogleDrive),
+          title: Text(appLocalizations.backupServiceGoogleDrive),
           secondary: const Icon(Icons.cloud_rounded),
           value: state.code == LoadingStateCode.loaded,
           onChanged: state.code != LoadingStateCode.loading

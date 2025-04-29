@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart';
 
-import '../features/book/data/model/chapter_data.dart';
+import '../../features/book/data/model/chapter_data.dart';
 
 class EpubUtils {
   EpubUtils._();

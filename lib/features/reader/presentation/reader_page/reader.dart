@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../../../generated/i18n/app_localizations.dart';
+import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/window_class.dart';
-import '../../../../utils/route_utils.dart';
 import '../../../book/data/model/book_data.dart';
 import '../../../common_components/common_back_button.dart';
 import '../../../common_components/common_loading.dart';

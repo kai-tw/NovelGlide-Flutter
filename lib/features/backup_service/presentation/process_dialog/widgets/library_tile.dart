@@ -15,14 +15,14 @@ class _LibraryTile extends StatelessWidget {
           case BackupServiceProcessStepCode.disabled:
             return ListTile(
               leading: const Icon(Icons.shelves),
-              title: Text(appLocalizations.backupManagerLabelLibrary),
+              title: Text(appLocalizations.backupServiceLabelLibrary),
               enabled: false,
             );
 
           case BackupServiceProcessStepCode.zip:
             return ListTile(
               leading: const Icon(Icons.folder_zip_outlined),
-              title: Text(appLocalizations.backupManagerLabelLibrary),
+              title: Text(appLocalizations.backupServiceLabelLibrary),
               trailing: CircularProgressIndicator(
                 value: state.library.progress,
               ),
@@ -31,14 +31,14 @@ class _LibraryTile extends StatelessWidget {
           case BackupServiceProcessStepCode.upload:
             return ListTile(
               leading: const Icon(Icons.upload_outlined),
-              title: Text(appLocalizations.backupManagerLabelLibrary),
+              title: Text(appLocalizations.backupServiceLabelLibrary),
               trailing: const CircularProgressIndicator(),
             );
 
           case BackupServiceProcessStepCode.unzip:
             return ListTile(
               leading: const Icon(Icons.folder_zip_outlined),
-              title: Text(appLocalizations.backupManagerLabelLibrary),
+              title: Text(appLocalizations.backupServiceLabelLibrary),
               trailing: CircularProgressIndicator(
                 value: state.library.progress,
               ),
@@ -47,7 +47,7 @@ class _LibraryTile extends StatelessWidget {
           case BackupServiceProcessStepCode.download:
             return ListTile(
               leading: const Icon(Icons.download_outlined),
-              title: Text(appLocalizations.backupManagerLabelLibrary),
+              title: Text(appLocalizations.backupServiceLabelLibrary),
               trailing: CircularProgressIndicator(
                 value: state.library.progress,
               ),
@@ -56,7 +56,7 @@ class _LibraryTile extends StatelessWidget {
           case BackupServiceProcessStepCode.delete:
             return ListTile(
               leading: const Icon(Icons.delete_outlined),
-              title: Text(appLocalizations.backupManagerLabelLibrary),
+              title: Text(appLocalizations.backupServiceLabelLibrary),
               trailing: const CircularProgressIndicator(),
             );
 
@@ -65,7 +65,7 @@ class _LibraryTile extends StatelessWidget {
               iconColor: Colors.green,
               textColor: Colors.green,
               leading: const Icon(Icons.check_outlined),
-              title: Text(appLocalizations.backupManagerLabelLibrary),
+              title: Text(appLocalizations.backupServiceLabelLibrary),
             );
 
           case BackupServiceProcessStepCode.error:
@@ -73,13 +73,13 @@ class _LibraryTile extends StatelessWidget {
               iconColor: Theme.of(context).colorScheme.error,
               textColor: Theme.of(context).colorScheme.error,
               leading: const Icon(Icons.error_outline_rounded),
-              title: Text(appLocalizations.backupManagerLabelLibrary),
+              title: Text(appLocalizations.backupServiceLabelLibrary),
             );
 
           default:
             return ListTile(
               leading: const Icon(Icons.shelves),
-              title: Text(appLocalizations.backupManagerLabelLibrary),
+              title: Text(appLocalizations.backupServiceLabelLibrary),
               trailing: const CircularProgressIndicator(),
             );
         }

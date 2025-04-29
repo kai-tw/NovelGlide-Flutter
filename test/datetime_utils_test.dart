@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:novelglide/utils/datetime_utils.dart';
+import 'package:novelglide/core/utils/datetime_utils.dart';
 
 void main() {
-  group('DateTimeUtility', () {
+  group('DateTimeUtils', () {
     test('daysBetween returns correct number of days', () {
       final DateTime from = DateTime(2023, 10, 1);
       final DateTime to = DateTime(2023, 10, 10);

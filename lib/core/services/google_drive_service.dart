@@ -8,13 +8,13 @@ import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:path/path.dart';
 
-import '../core/exceptions.dart';
-import 'int_utils.dart';
-import 'mime_resolver.dart';
+import '../exceptions.dart';
+import '../utils/int_utils.dart';
+import '../utils/mime_resolver.dart';
 
 /// Google Drive API.
-class GoogleDriveApi {
-  GoogleDriveApi._();
+class GoogleDriveService {
+  GoogleDriveService._();
 
   static final List<String> _scopes = <String>[
     drive.DriveApi.driveAppdataScope,

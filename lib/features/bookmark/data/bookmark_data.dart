@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
-import '../../../utils/datetime_utils.dart';
+import '../../../core/utils/datetime_utils.dart';
 
 class BookmarkData extends Equatable {
   const BookmarkData({
