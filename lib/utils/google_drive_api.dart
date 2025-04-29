@@ -8,7 +8,7 @@ import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:googleapis_auth/googleapis_auth.dart';
 import 'package:path/path.dart';
 
-import '../exceptions/exceptions.dart';
+import '../core/exceptions.dart';
 import 'int_utils.dart';
 import 'mime_resolver.dart';
 

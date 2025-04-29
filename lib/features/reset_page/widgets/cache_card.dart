@@ -22,7 +22,7 @@ class _CacheCard extends StatelessWidget {
             ),
           ),
           _ListTile(
-            onDelete: () async => CacheRepository.clear(),
+            onDelete: () async => LocationCacheRepository.clear(),
             iconData: Icons.delete_forever_rounded,
             title: appLocalizations.resetPageCacheClear,
             isDangerous: false,

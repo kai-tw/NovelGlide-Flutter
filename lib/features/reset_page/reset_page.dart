@@ -3,14 +3,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../generated/i18n/app_localizations.dart';
 import '../../preference_keys/preference_keys.dart';
-import '../../repository/book_repository.dart';
-import '../../repository/bookmark_repository.dart';
-import '../../repository/cache_repository/cache_repository.dart';
-import '../../repository/collection_repository.dart';
+import '../book/data/repository/book_repository.dart';
+import '../bookmark/data/bookmark_repository.dart';
+import '../collection/data/collection_repository.dart';
 import '../common_components/common_back_button.dart';
 import '../common_components/common_delete_dialog.dart';
 import '../common_components/common_success_dialog.dart';
-import '../reader/cubit/reader_cubit.dart';
+import '../reader/data/model/reader_settings_data.dart';
+import '../reader/data/repository/cache_repository.dart';
 import '../settings_page/settings_card.dart';
 
 part 'widgets/cache_card.dart';

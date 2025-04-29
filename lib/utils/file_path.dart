@@ -27,6 +27,8 @@ class FilePath {
 
   static String get dataRoot => join(_baseFolder, 'Data');
 
+  static String get cacheRoot => tempFolder;
+
   static Future<void> ensureInitialized() async {
     // supportFolder = (await getApplicationSupportDirectory()).path;
     documentFolder = (await getApplicationDocumentsDirectory()).path;

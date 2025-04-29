@@ -5,8 +5,8 @@ import 'package:bitmap/bitmap.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 
-import '../../data_model/book_data.dart';
 import '../../generated/i18n/app_localizations.dart';
+import '../book/data/model/book_data.dart';
 
 class CommonBookCoverImage extends StatelessWidget {
   const CommonBookCoverImage({

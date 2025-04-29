@@ -3,8 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'core/services/log_service.dart';
 import 'features/homepage/homepage.dart';
-import 'features/log_system/log_system.dart';
 import 'firebase_options.dart';
 import 'generated/i18n/app_localizations.dart';
 import 'theme/default_theme.dart';
@@ -22,7 +22,7 @@ void main() async {
   await FilePath.ensureInitialized();
 
   // Log Initialization
-  LogSystem.ensureInitialized();
+  LogService.ensureInitialized();
 
   // Start App
   FirebaseAnalytics.instance.logAppOpen();

@@ -10,7 +10,8 @@ import '../../generated/i18n/app_localizations.dart';
 import '../../preference_keys/preference_keys.dart';
 import '../common_components/common_back_button.dart';
 
-part 'tts_service_state.dart';
+part 'data/tts_service_state.dart';
+part 'data/tts_voice_data.dart';
 part 'tts_settings_page/cubit/tts_settings_cubit.dart';
 part 'tts_settings_page/cubit/tts_settings_state.dart';
 part 'tts_settings_page/dialog/voice_select_dialog.dart';
@@ -18,7 +19,6 @@ part 'tts_settings_page/tts_settings_page.dart';
 part 'tts_settings_page/widgets/demo_section.dart';
 part 'tts_settings_page/widgets/slider.dart';
 part 'tts_settings_page/widgets/voice_select_tile.dart';
-part 'tts_voice_data.dart';
 
 class TtsService extends FlutterTts {
   factory TtsService({void Function()? onReady}) {
