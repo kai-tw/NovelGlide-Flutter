@@ -1,5 +1,5 @@
 part of 'preference_keys.dart';
 
-class BackupManagerPref {
+class BackupServicePref {
   final String isBackupToGoogleDrive = 'backupManager.isBackupToGoogleDrive';
 }
