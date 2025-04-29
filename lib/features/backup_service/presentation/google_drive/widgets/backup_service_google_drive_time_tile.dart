@@ -20,6 +20,7 @@ class BackupServiceGoogleDriveTimeTile extends StatelessWidget {
           subtitle: Text(
             DateTimeUtils.format(
               state.lastBackupTime,
+              pattern: appLocalizations.generalDatetimeFormat,
               defaultValue: '-',
             ),
           ),
