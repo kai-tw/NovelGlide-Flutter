@@ -1,7 +1,7 @@
-part of 'backup_manager_google_drive_cubit.dart';
+part of 'backup_service_google_drive_cubit.dart';
 
-class BackupManagerGoogleDriveState extends Equatable {
-  const BackupManagerGoogleDriveState({
+class BackupServiceGoogleDriveState extends Equatable {
+  const BackupServiceGoogleDriveState({
     this.code = LoadingStateCode.initial,
     this.libraryId,
     this.collectionId,
@@ -25,14 +25,14 @@ class BackupManagerGoogleDriveState extends Equatable {
       ];
 
   /// Creates a copy of the current state with optional new values.
-  BackupManagerGoogleDriveState copyWith({
+  BackupServiceGoogleDriveState copyWith({
     LoadingStateCode? code,
     String? libraryId,
     String? collectionId,
     String? bookmarkId,
     DateTime? lastBackupTime,
   }) {
-    return BackupManagerGoogleDriveState(
+    return BackupServiceGoogleDriveState(
       code: code ?? this.code,
       libraryId: libraryId ?? this.libraryId,
       collectionId: collectionId ?? this.collectionId,

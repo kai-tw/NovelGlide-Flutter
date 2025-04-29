@@ -10,33 +10,37 @@ import '../../../../repository/collection_repository.dart';
 import '../../../../utils/backup_utils.dart';
 import '../../../../utils/google_drive_api.dart';
 
-part 'backup_manager_google_drive_state.dart';
+part 'backup_service_google_drive_state.dart';
 
 /// Manages Google Drive backup operations.
-class BackupManagerGoogleDriveCubit
-    extends Cubit<BackupManagerGoogleDriveState> {
-  factory BackupManagerGoogleDriveCubit() {
-    const BackupManagerGoogleDriveState initialState =
-        BackupManagerGoogleDriveState();
-    final BackupManagerGoogleDriveCubit cubit =
-        BackupManagerGoogleDriveCubit._internal(initialState);
+class BackupServiceGoogleDriveCubit
+    extends Cubit<BackupServiceGoogleDriveState> {
+  factory BackupServiceGoogleDriveCubit() {
+    const BackupServiceGoogleDriveState initialState =
+        BackupServiceGoogleDriveState();
+    final BackupServiceGoogleDriveCubit cubit =
+        BackupServiceGoogleDriveCubit._internal(initialState);
     cubit.refresh();
     return cubit;
   }
 
-  BackupManagerGoogleDriveCubit._internal(super.initialState);
+  BackupServiceGoogleDriveCubit._internal(super.initialState);
 
   /// Refreshes the backup state by checking preferences and updating metadata.
   Future<void> refresh() async {
-    emit(const BackupManagerGoogleDriveState(code: LoadingStateCode.loading));
+    emit(const BackupServiceGoogleDriveState(code: LoadingStateCode.loading));
+
+    // Load preferences.
     final String key = PreferenceKeys.backupManager.isBackupToGoogleDrive;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool isEnabled = prefs.getBool(key) ?? false;
 
-    setEnabled(prefs.getBool(key) ?? false);
+    if (isEnabled && !(await GoogleDriveApi.isSignedIn())) {
+      await GoogleDriveApi.signIn();
+    }
 
-    final bool isSignedIn = await GoogleDriveApi.isSignedIn();
-
-    if (isSignedIn) {
+    if (await GoogleDriveApi.isSignedIn()) {
+      // Load the file IDs.
       final List<String> fileNameList = <String>[
         BackupUtils.libraryArchiveName,
         CollectionRepository.jsonFileName,
@@ -46,6 +50,8 @@ class BackupManagerGoogleDriveCubit
         fileNameList
             .map((String fileName) => GoogleDriveApi.getFileId(fileName)),
       );
+
+      // Get the last backup time.
       final List<DateTime> timeList = (await Future.wait<drive.File>(
         fileIdList.whereType<String>().map((String fileId) =>
             GoogleDriveApi.getMetadataById(fileId, field: 'modifiedTime')),
@@ -58,7 +64,7 @@ class BackupManagerGoogleDriveCubit
           : null;
 
       if (!isClosed) {
-        emit(BackupManagerGoogleDriveState(
+        emit(BackupServiceGoogleDriveState(
           code: LoadingStateCode.loaded,
           libraryId: fileIdList[0],
           collectionId: fileIdList[1],
@@ -67,7 +73,7 @@ class BackupManagerGoogleDriveCubit
         ));
       }
     } else if (!isClosed) {
-      emit(const BackupManagerGoogleDriveState());
+      emit(const BackupServiceGoogleDriveState());
     }
   }
 
@@ -84,20 +90,5 @@ class BackupManagerGoogleDriveCubit
     }
 
     await prefs.setBool(key, await GoogleDriveApi.isSignedIn());
-  }
-
-  /// Creates a backup and uploads it to Google Drive.
-  Future<bool> backupAll() async {
-    return false;
-  }
-
-  /// Deletes the existing backup from Google Drive.
-  Future<bool> deleteAll() async {
-    return false;
-  }
-
-  /// Restores a backup from Google Drive.
-  Future<bool> restoreAll() async {
-    return false;
   }
 }

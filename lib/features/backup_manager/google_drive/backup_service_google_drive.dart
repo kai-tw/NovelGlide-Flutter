@@ -11,15 +11,15 @@ import '../../common_components/common_error_dialog.dart';
 import '../../settings_page/settings_card.dart';
 import '../backup_service_process_dialog/backup_service_process_dialog.dart';
 import '../cubit/backup_service_process_cubit.dart';
-import 'cubit/backup_manager_google_drive_cubit.dart';
+import 'cubit/backup_service_google_drive_cubit.dart';
 
 part 'widgets/action_button.dart';
 part 'widgets/switch_list_tile.dart';
 part 'widgets/target_type_tile.dart';
 part 'widgets/time_list_tile.dart';
 
-class BackupManagerGoogleDrive extends StatelessWidget {
-  const BackupManagerGoogleDrive({super.key});
+class BackupServiceGoogleDrive extends StatelessWidget {
+  const BackupServiceGoogleDrive({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +52,8 @@ class BackupManagerGoogleDrive extends StatelessWidget {
       );
     }
 
-    return BlocProvider<BackupManagerGoogleDriveCubit>(
-      create: (_) => BackupManagerGoogleDriveCubit(),
+    return BlocProvider<BackupServiceGoogleDriveCubit>(
+      create: (_) => BackupServiceGoogleDriveCubit(),
       child: SettingsCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

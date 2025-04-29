@@ -1,4 +1,4 @@
-part of '../backup_manager_google_drive.dart';
+part of '../backup_service_google_drive.dart';
 
 class _TimeListTile extends StatelessWidget {
   const _TimeListTile();
@@ -6,12 +6,12 @@ class _TimeListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<BackupManagerGoogleDriveCubit,
-        BackupManagerGoogleDriveState>(
-      buildWhen: (BackupManagerGoogleDriveState previous,
-              BackupManagerGoogleDriveState current) =>
+    return BlocBuilder<BackupServiceGoogleDriveCubit,
+        BackupServiceGoogleDriveState>(
+      buildWhen: (BackupServiceGoogleDriveState previous,
+              BackupServiceGoogleDriveState current) =>
           previous.code != current.code,
-      builder: (BuildContext context, BackupManagerGoogleDriveState state) {
+      builder: (BuildContext context, BackupServiceGoogleDriveState state) {
         final bool isLoading = state.code == LoadingStateCode.loading;
         return ListTile(
           contentPadding: const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),

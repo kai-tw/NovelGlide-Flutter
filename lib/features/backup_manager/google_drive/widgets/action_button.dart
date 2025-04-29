@@ -1,4 +1,4 @@
-part of '../backup_manager_google_drive.dart';
+part of '../backup_service_google_drive.dart';
 
 class _ActionButton extends StatelessWidget {
   const _ActionButton({
@@ -12,8 +12,8 @@ class _ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BackupManagerGoogleDriveCubit cubit =
-        BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
+    final BackupServiceGoogleDriveCubit cubit =
+        BlocProvider.of<BackupServiceGoogleDriveCubit>(context);
     IconData iconData;
     String label;
 
@@ -80,12 +80,12 @@ class _ActionButton extends StatelessWidget {
         break;
     }
 
-    return BlocBuilder<BackupManagerGoogleDriveCubit,
-        BackupManagerGoogleDriveState>(
-      buildWhen: (BackupManagerGoogleDriveState previous,
-              BackupManagerGoogleDriveState current) =>
+    return BlocBuilder<BackupServiceGoogleDriveCubit,
+        BackupServiceGoogleDriveState>(
+      buildWhen: (BackupServiceGoogleDriveState previous,
+              BackupServiceGoogleDriveState current) =>
           previous.code != current.code,
-      builder: (BuildContext context, BackupManagerGoogleDriveState state) {
+      builder: (BuildContext context, BackupServiceGoogleDriveState state) {
         final bool isEnabled = state.code.isLoaded;
         return IconButton(
           icon: Icon(

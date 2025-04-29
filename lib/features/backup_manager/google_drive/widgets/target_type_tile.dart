@@ -1,4 +1,4 @@
-part of '../backup_manager_google_drive.dart';
+part of '../backup_service_google_drive.dart';
 
 class _TargetTypeTile extends StatelessWidget {
   const _TargetTypeTile({

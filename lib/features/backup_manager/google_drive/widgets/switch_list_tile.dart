@@ -1,4 +1,4 @@
-part of '../backup_manager_google_drive.dart';
+part of '../backup_service_google_drive.dart';
 
 class _SwitchListTile extends StatelessWidget {
   const _SwitchListTile();
@@ -6,14 +6,14 @@ class _SwitchListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BackupManagerGoogleDriveCubit cubit =
-        BlocProvider.of<BackupManagerGoogleDriveCubit>(context);
-    return BlocBuilder<BackupManagerGoogleDriveCubit,
-        BackupManagerGoogleDriveState>(
-      buildWhen: (BackupManagerGoogleDriveState previous,
-              BackupManagerGoogleDriveState current) =>
+    final BackupServiceGoogleDriveCubit cubit =
+        BlocProvider.of<BackupServiceGoogleDriveCubit>(context);
+    return BlocBuilder<BackupServiceGoogleDriveCubit,
+        BackupServiceGoogleDriveState>(
+      buildWhen: (BackupServiceGoogleDriveState previous,
+              BackupServiceGoogleDriveState current) =>
           previous.code != current.code,
-      builder: (BuildContext context, BackupManagerGoogleDriveState state) {
+      builder: (BuildContext context, BackupServiceGoogleDriveState state) {
         return SwitchListTile(
           contentPadding: const EdgeInsets.fromLTRB(16.0, 4.0, 8.0, 4.0),
           title: Text(appLocalizations.backupManagerGoogleDrive),
