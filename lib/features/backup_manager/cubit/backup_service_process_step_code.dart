@@ -2,7 +2,7 @@ part of 'backup_service_process_cubit.dart';
 
 enum BackupServiceProcessStepCode {
   disabled,
-  idle,
+  backup,
   zip,
   upload,
   unzip,

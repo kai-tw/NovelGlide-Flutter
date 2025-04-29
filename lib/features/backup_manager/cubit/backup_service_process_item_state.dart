@@ -2,7 +2,7 @@ part of 'backup_service_process_cubit.dart';
 
 class BackupServiceProcessItemState extends Equatable {
   const BackupServiceProcessItemState({
-    this.step = BackupServiceProcessStepCode.idle,
+    this.step = BackupServiceProcessStepCode.disabled,
     this.progress = 0,
   });
 

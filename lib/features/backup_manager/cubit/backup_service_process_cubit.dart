@@ -94,7 +94,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
   Future<void> backupLibrary() async {
     emit(state.copyWith(
       library: const BackupServiceProcessItemState(
-        step: BackupServiceProcessStepCode.idle,
+        step: BackupServiceProcessStepCode.backup,
       ),
     ));
 
@@ -252,7 +252,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
   Future<void> restoreLibrary() async {
     emit(state.copyWith(
       library: const BackupServiceProcessItemState(
-        step: BackupServiceProcessStepCode.idle,
+        step: BackupServiceProcessStepCode.backup,
       ),
     ));
     // Get a temporary folder.
