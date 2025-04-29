@@ -73,9 +73,7 @@ class BackupServiceGoogleDriveCubit
         ));
       }
     } else if (!isClosed) {
-      emit(const BackupServiceGoogleDriveState(
-        code: LoadingStateCode.loaded,
-      ));
+      emit(const BackupServiceGoogleDriveState());
     }
   }
 
