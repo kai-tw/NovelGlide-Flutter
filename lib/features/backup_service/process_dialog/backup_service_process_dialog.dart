@@ -14,16 +14,16 @@ class BackupServiceProcessDialog extends StatelessWidget {
     super.key,
     required this.taskType,
     required this.targetType,
-    required this.libraryId,
-    required this.collectionId,
-    required this.bookmarkId,
+    this.libraryId,
+    this.collectionId,
+    this.bookmarkId,
   });
 
   final BackupServiceTargetType targetType;
   final BackupServiceTaskType taskType;
-  final String libraryId;
-  final String collectionId;
-  final String bookmarkId;
+  final String? libraryId;
+  final String? collectionId;
+  final String? bookmarkId;
 
   @override
   Widget build(BuildContext context) {

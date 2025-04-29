@@ -9,9 +9,9 @@ import '../../../generated/i18n/app_localizations.dart';
 import '../../../utils/datetime_utils.dart';
 import '../../common_components/common_error_dialog.dart';
 import '../../settings_page/settings_card.dart';
-import '../backup_service_process_dialog/backup_service_process_dialog.dart';
+import '../cubit/backup_service_google_drive_cubit.dart';
 import '../cubit/backup_service_process_cubit.dart';
-import 'cubit/backup_service_google_drive_cubit.dart';
+import '../process_dialog/backup_service_process_dialog.dart';
 
 part 'widgets/action_button.dart';
 part 'widgets/switch_list_tile.dart';

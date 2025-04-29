@@ -18,14 +18,14 @@ part 'backup_service_task_type.dart';
 
 class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
   BackupServiceProcessCubit({
-    required this.libraryId,
-    required this.collectionId,
-    required this.bookmarkId,
+    this.libraryId,
+    this.collectionId,
+    this.bookmarkId,
   }) : super(const BackupServiceProcessState());
 
-  final String libraryId;
-  final String collectionId;
-  final String bookmarkId;
+  final String? libraryId;
+  final String? collectionId;
+  final String? bookmarkId;
 
   Future<void> start(
     BackupServiceTaskType taskType,
@@ -193,7 +193,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
         step: BackupServiceProcessStepCode.delete,
       ),
     ));
-    await GoogleDriveApi.deleteFile(libraryId);
+    await GoogleDriveApi.deleteFile(libraryId!);
     final bool result =
         !(await GoogleDriveApi.fileExists(BackupUtils.libraryArchiveName));
     emit(state.copyWith(
@@ -211,7 +211,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
         step: BackupServiceProcessStepCode.delete,
       ),
     ));
-    await GoogleDriveApi.deleteFile(bookmarkId);
+    await GoogleDriveApi.deleteFile(bookmarkId!);
     final bool result =
         !(await GoogleDriveApi.fileExists(BookmarkRepository.jsonFileName));
     emit(state.copyWith(
@@ -229,7 +229,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
         step: BackupServiceProcessStepCode.delete,
       ),
     ));
-    await GoogleDriveApi.deleteFile(collectionId);
+    await GoogleDriveApi.deleteFile(collectionId!);
     final bool result =
         !(await GoogleDriveApi.fileExists(CollectionRepository.jsonFileName));
     emit(state.copyWith(
@@ -267,7 +267,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
     // Download the zip file
     try {
       await GoogleDriveApi.downloadFile(
-        libraryId,
+        libraryId!,
         zipFile,
         onDownload: (int downloaded, int total) {
           emit(state.copyWith(
@@ -323,7 +323,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
     // Download the json file.
     try {
       await GoogleDriveApi.downloadFile(
-        bookmarkId,
+        bookmarkId!,
         BookmarkRepository.jsonFile,
         onDownload: (int downloaded, int total) {
           emit(state.copyWith(
@@ -356,7 +356,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
     // Download the json file.
     try {
       await GoogleDriveApi.downloadFile(
-        collectionId,
+        collectionId!,
         CollectionRepository.jsonFile,
         onDownload: (int downloaded, int total) {
           emit(state.copyWith(

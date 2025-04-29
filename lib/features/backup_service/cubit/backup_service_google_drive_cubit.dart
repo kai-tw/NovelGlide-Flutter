@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../enum/loading_state_code.dart';
-import '../../../../preference_keys/preference_keys.dart';
-import '../../../../repository/bookmark_repository.dart';
-import '../../../../repository/collection_repository.dart';
-import '../../../../utils/backup_utils.dart';
-import '../../../../utils/google_drive_api.dart';
+import '../../../enum/loading_state_code.dart';
+import '../../../preference_keys/preference_keys.dart';
+import '../../../repository/bookmark_repository.dart';
+import '../../../repository/collection_repository.dart';
+import '../../../utils/backup_utils.dart';
+import '../../../utils/google_drive_api.dart';
 
 part 'backup_service_google_drive_state.dart';
 
@@ -73,7 +73,9 @@ class BackupServiceGoogleDriveCubit
         ));
       }
     } else if (!isClosed) {
-      emit(const BackupServiceGoogleDriveState());
+      emit(const BackupServiceGoogleDriveState(
+        code: LoadingStateCode.loaded,
+      ));
     }
   }
 
