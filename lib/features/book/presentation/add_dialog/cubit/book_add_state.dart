@@ -1,23 +1,33 @@
 part of 'book_add_cubit.dart';
 
 class BookAddState extends Equatable {
-  const BookAddState({this.file});
+  const BookAddState({this.fileList = const <File>[]});
 
-  final File? file;
+  final List<File> fileList;
 
-  bool get isEmpty => file == null;
+  bool get isEmpty => fileList.isEmpty;
 
-  int get fileLength => file?.lengthSync() ?? 0;
+  int get totalFileSize {
+    return fileList.fold<int>(0, (int previous, File file) {
+      return previous + file.lengthSync();
+    });
+  }
 
-  String? get filePath => file?.path;
+  List<File> get duplicatedFiles {
+    return fileList.where((File file) {
+      return BookRepository.exists(file.path);
+    }).toList();
+  }
 
-  bool get fileExists => isEmpty || BookRepository.exists(filePath!);
+  List<File> get invalidFiles {
+    return fileList.where((File file) {
+      return MimeResolver.lookupAll(file) != 'application/epub+zip';
+    }).toList();
+  }
 
-  bool get isFileTypeValid =>
-      isEmpty ? false : MimeResolver.lookupAll(file!) == 'application/epub+zip';
-
-  bool get isValid => !isEmpty && !fileExists && isFileTypeValid;
+  bool get isValid =>
+      fileList.isNotEmpty && duplicatedFiles.isEmpty && invalidFiles.isEmpty;
 
   @override
-  List<Object?> get props => <Object?>[file];
+  List<Object?> get props => <Object?>[fileList];
 }

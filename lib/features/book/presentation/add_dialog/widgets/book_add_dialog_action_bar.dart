@@ -21,14 +21,14 @@ class BookAddDialogActionBar extends StatelessWidget {
         // Pick File Button
         BlocBuilder<BookAddCubit, BookAddState>(
           buildWhen: (BookAddState previous, BookAddState current) =>
-              previous.file != current.file,
+              previous.fileList != current.fileList,
           builder: _buildPickFileButton,
         ),
 
         // Submit Button
         BlocBuilder<BookAddCubit, BookAddState>(
           buildWhen: (BookAddState previous, BookAddState current) =>
-              previous.file != current.file,
+              previous.fileList != current.fileList,
           builder: _buildSubmitButton,
         ),
       ],
@@ -40,16 +40,24 @@ class BookAddDialogActionBar extends StatelessWidget {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     final BookAddCubit cubit = BlocProvider.of<BookAddCubit>(context);
 
-    return ElevatedButton.icon(
-      onPressed: cubit.pickFile,
-      icon: const Icon(Icons.file_open_rounded),
-      label: Text(appLocalizations.generalSelect),
-      style: ElevatedButton.styleFrom(
-        iconColor: state.isValid ? null : colorScheme.onPrimary,
-        foregroundColor: state.isValid ? null : colorScheme.onPrimary,
-        backgroundColor: state.isValid ? null : colorScheme.primary,
-      ),
-    );
+    if (state.isValid) {
+      return IconButton(
+        onPressed: cubit.pickFile,
+        icon: const Icon(Icons.file_open_rounded),
+        tooltip: appLocalizations.generalSelect,
+      );
+    } else {
+      return ElevatedButton.icon(
+        onPressed: cubit.pickFile,
+        icon: const Icon(Icons.file_open_rounded),
+        label: Text(appLocalizations.generalSelect),
+        style: ElevatedButton.styleFrom(
+          iconColor: colorScheme.onPrimary,
+          foregroundColor: colorScheme.onPrimary,
+          backgroundColor: colorScheme.primary,
+        ),
+      );
+    }
   }
 
   Widget _buildSubmitButton(BuildContext context, BookAddState state) {

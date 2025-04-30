@@ -11,7 +11,7 @@ class BookAddDialogHelperText extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 24.0),
       child: BlocBuilder<BookAddCubit, BookAddState>(
         buildWhen: (BookAddState previous, BookAddState current) =>
-            previous.file != current.file,
+            previous.fileList != current.fileList,
         builder: (BuildContext context, BookAddState state) {
           final List<Widget> children = <Widget>[
             Text(
@@ -20,26 +20,42 @@ class BookAddDialogHelperText extends StatelessWidget {
             ),
           ];
 
-          if (!state.isEmpty) {
-            if (state.fileExists) {
-              children.add(
-                Text(
-                  appLocalizations.addBookDuplicated,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Theme.of(context).colorScheme.error),
-                ),
-              );
-            }
+          if (state.duplicatedFiles.isNotEmpty) {
+            // children.add(
+            //   Text(
+            //     appLocalizations.addBookDuplicated,
+            //     textAlign: TextAlign.center,
+            //     style: TextStyle(color: Theme.of(context).colorScheme.error),
+            //   ),
+            // );
 
-            if (!state.isFileTypeValid) {
-              children.add(
-                Text(
-                  appLocalizations.fileTypeForbidden,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Theme.of(context).colorScheme.error),
-                ),
-              );
-            }
+            // TODO(author): translate.
+            children.add(
+              Text(
+                'There are ${state.duplicatedFiles.length} duplicated files.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            );
+          }
+
+          if (state.invalidFiles.isNotEmpty) {
+            // children.add(
+            //   Text(
+            //     appLocalizations.fileTypeForbidden,
+            //     textAlign: TextAlign.center,
+            //     style: TextStyle(color: Theme.of(context).colorScheme.error),
+            //   ),
+            // );
+
+            // TODO(author): translate
+            children.add(
+              Text(
+                '${state.invalidFiles.length} files are not accepted.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            );
           }
 
           return Column(

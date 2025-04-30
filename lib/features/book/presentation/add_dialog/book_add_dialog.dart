@@ -5,7 +5,6 @@ import 'package:path/path.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../enum/window_class.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../data/repository/book_repository.dart';
 import 'cubit/book_add_cubit.dart';
 
 part 'widgets/book_add_dialog_action_bar.dart';

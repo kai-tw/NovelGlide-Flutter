@@ -18,15 +18,18 @@ class BookAddCubit extends Cubit<BookAddState> {
   /// Allows the user to pick a file.
   Future<void> pickFile() async {
     final FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: allowedExtensions,
+      type: FileType.any,
+      allowMultiple: true,
+      // allowedExtensions: allowedExtensions,
     );
-    final String? path = result?.files.single.path;
 
     if (!isClosed) {
       emit(
         BookAddState(
-          file: path != null ? File(path) : null,
+          fileList: (result?.files ?? <PlatformFile>[])
+              .where((PlatformFile file) => file.path != null)
+              .map((PlatformFile file) => File(file.path!))
+              .toList(),
         ),
       );
     }
@@ -35,7 +38,9 @@ class BookAddCubit extends Cubit<BookAddState> {
   void removeFile() => emit(const BookAddState());
 
   void submit() {
-    BookRepository.add(state.filePath!);
+    for (final File file in state.fileList) {
+      BookRepository.add(file.path);
+    }
     emit(const BookAddState());
   }
 }

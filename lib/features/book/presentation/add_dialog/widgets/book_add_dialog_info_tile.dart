@@ -8,19 +8,26 @@ class BookAddDialogInfoTile extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<BookAddCubit, BookAddState>(
       buildWhen: (BookAddState previous, BookAddState current) =>
-          previous.file != current.file,
+          previous.fileList != current.fileList,
       builder: (BuildContext context, BookAddState state) {
+        String titleText = appLocalizations.fileEmpty;
+
+        if (state.fileList.length == 1) {
+          titleText = basename(state.fileList[0].path);
+        } else if (state.fileList.isNotEmpty) {
+          // TODO(author): translate.
+          titleText = '${state.fileList.length} files';
+        }
+
         return ListTile(
           contentPadding: const EdgeInsets.only(bottom: 16.0),
           leading: const Icon(Icons.book_outlined, size: 48),
           title: Text(
-            state.isEmpty
-                ? appLocalizations.fileEmpty
-                : basename(state.file!.path),
+            titleText,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          subtitle: Text(FileUtils.getFileSizeString(state.fileLength)),
+          subtitle: Text(FileUtils.getFileSizeString(state.totalFileSize)),
           textColor: Theme.of(context)
               .colorScheme
               .onSurface
