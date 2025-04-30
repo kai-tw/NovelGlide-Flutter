@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../generated/i18n/app_localizations.dart';
-import '../../common_components/common_back_button.dart';
 import 'google_drive/backup_service_google_drive.dart';
 
 class BackupServicePage extends StatelessWidget {
@@ -13,7 +12,6 @@ class BackupServicePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: const CommonBackButton(),
         title: Text(appLocalizations.backupServiceTitle),
       ),
       body: const SafeArea(

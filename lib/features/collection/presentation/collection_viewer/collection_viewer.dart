@@ -5,7 +5,6 @@ import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../book/data/model/book_data.dart';
 import '../../../book/presentation/table_of_contents_page/table_of_contents.dart';
-import '../../../common_components/common_back_button.dart';
 import '../../../common_components/common_delete_dialog.dart';
 import '../../../common_components/common_list/list_template.dart';
 import '../../../common_components/common_list_empty.dart';
@@ -28,7 +27,6 @@ class CollectionViewer extends StatelessWidget {
       create: (_) => CollectionViewerCubit(collectionData),
       child: Scaffold(
         appBar: AppBar(
-          leading: const CommonBackButton(),
           title: Text(collectionData.name),
           actions: const <Widget>[
             CommonListSelectAllButton<CollectionViewerCubit, BookData>(),

@@ -5,15 +5,12 @@ import 'package:path/path.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../enum/window_class.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../../common_components/common_back_button.dart';
 import '../../data/repository/book_repository.dart';
-import 'cubit/cubit.dart';
+import 'cubit/book_add_cubit.dart';
 
-part 'widgets/form.dart';
-part 'widgets/helper_text.dart';
-part 'widgets/info_tile.dart';
-part 'widgets/pick_file_button.dart';
-part 'widgets/submit_button.dart';
+part 'widgets/book_add_dialog_action_bar.dart';
+part 'widgets/book_add_dialog_helper_text.dart';
+part 'widgets/book_add_dialog_info_tile.dart';
 
 class BookAddDialog extends StatelessWidget {
   const BookAddDialog({super.key});
@@ -21,17 +18,19 @@ class BookAddDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: ConstrainedBox(
+      child: Container(
+        padding: const EdgeInsets.all(24.0),
         constraints: BoxConstraints(maxWidth: WindowClass.compact.maxWidth),
-        child: const Stack(
-          children: <Widget>[
-            _Form(),
-            Positioned(
-              top: 4.0,
-              right: 4.0,
-              child: CommonBackButton(iconData: Icons.close_rounded),
-            ),
-          ],
+        child: BlocProvider<BookAddCubit>(
+          create: (_) => BookAddCubit(),
+          child: const Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              BookAddDialogInfoTile(),
+              BookAddDialogHelperText(),
+              BookAddDialogActionBar(),
+            ],
+          ),
         ),
       ),
     );

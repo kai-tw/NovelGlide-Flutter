@@ -1,7 +1,7 @@
 part of '../book_add_dialog.dart';
 
-class _HelperText extends StatelessWidget {
-  const _HelperText();
+class BookAddDialogHelperText extends StatelessWidget {
+  const BookAddDialogHelperText({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class _HelperText extends StatelessWidget {
               );
             }
 
-            if (!state.isExtensionValid) {
+            if (!state.isFileTypeValid) {
               children.add(
                 Text(
                   appLocalizations.fileTypeForbidden,

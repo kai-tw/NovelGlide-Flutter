@@ -8,7 +8,6 @@ import '../../../../../../generated/i18n/app_localizations.dart';
 import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/window_class.dart';
 import '../../../book/data/model/book_data.dart';
-import '../../../common_components/common_back_button.dart';
 import '../../../common_components/common_loading.dart';
 import '../../../tts_service/tts_service.dart';
 import '../../data/model/reader_navigation_state_code.dart';

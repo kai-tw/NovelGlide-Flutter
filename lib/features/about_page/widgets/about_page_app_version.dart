@@ -24,13 +24,13 @@ class AboutPageAppVersion extends StatelessWidget {
         if (snapshot.hasData) {
           final String version = snapshot.data!.version;
           final String buildVersion = snapshot.data!.buildNumber;
-          return IntrinsicWidth(
-            child: ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: Icon(osLogo),
-              title: Text('v$version${kDebugMode ? ' ($buildVersion)' : ''}'),
-              visualDensity: VisualDensity.compact,
-            ),
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Icon(osLogo),
+              const SizedBox(width: 8.0),
+              Text('v$version${kDebugMode ? ' ($buildVersion)' : ''}'),
+            ],
           );
         } else {
           return const SizedBox.shrink();

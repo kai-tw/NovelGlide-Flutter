@@ -40,6 +40,13 @@ class _DialogCard extends StatelessWidget {
         ListTile(
           onTap: () => showDialog(
             context: context,
+            builder: (BuildContext context) => const CommonDeleteDialog(),
+          ),
+          title: const Text('Delete Dialog'),
+        ),
+        ListTile(
+          onTap: () => showDialog(
+            context: context,
             builder: (BuildContext context) => const CommonErrorDialog(
               content: 'Error Dialog',
             ),

@@ -42,7 +42,7 @@ class ReaderSettingsData extends Equatable {
         pageNumType,
       ];
 
-  /// Loads the reader settings from shared preferences.
+  /// Loads the reader settings from shared_components preferences.
   static Future<ReaderSettingsData> load() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     double fontSize, lineHeight;
@@ -116,7 +116,7 @@ class ReaderSettingsData extends Equatable {
     );
   }
 
-  /// Saves the current settings to shared preferences.
+  /// Saves the current settings to shared_components preferences.
   Future<void> save() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setDouble(PreferenceKeys.reader.fontSize, fontSize);

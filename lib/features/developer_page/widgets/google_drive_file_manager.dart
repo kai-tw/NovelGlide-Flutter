@@ -20,7 +20,6 @@ class _GoogleDriveFileManagerContent extends StatelessWidget {
     final _GoogleDriveCubit cubit = BlocProvider.of<_GoogleDriveCubit>(context);
     return Scaffold(
       appBar: AppBar(
-        leading: const CommonBackButton(),
         title: const Text('Google Drive File Manager'),
       ),
       body: SafeArea(

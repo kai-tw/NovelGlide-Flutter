@@ -1,4 +1,4 @@
-part of 'cubit.dart';
+part of 'book_add_cubit.dart';
 
 class BookAddState extends Equatable {
   const BookAddState({this.file});
@@ -13,12 +13,10 @@ class BookAddState extends Equatable {
 
   bool get fileExists => isEmpty || BookRepository.exists(filePath!);
 
-  bool get isExtensionValid => filePath == null
-      ? false
-      : BookAddCubit.allowedExtensions
-          .any((String extension) => filePath!.endsWith(extension));
+  bool get isFileTypeValid =>
+      isEmpty ? false : MimeResolver.lookupAll(file!) == 'application/epub+zip';
 
-  bool get isValid => !isEmpty && !fileExists && isExtensionValid;
+  bool get isValid => !isEmpty && !fileExists && isFileTypeValid;
 
   @override
   List<Object?> get props => <Object?>[file];

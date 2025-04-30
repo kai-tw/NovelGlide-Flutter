@@ -6,7 +6,6 @@ import '../../preference_keys/preference_keys.dart';
 import '../book/data/repository/book_repository.dart';
 import '../bookmark/data/bookmark_repository.dart';
 import '../collection/data/collection_repository.dart';
-import '../common_components/common_back_button.dart';
 import '../common_components/common_delete_dialog.dart';
 import '../common_components/common_success_dialog.dart';
 import '../reader/data/model/reader_settings_data.dart';
@@ -26,7 +25,6 @@ class ResetPage extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        leading: const CommonBackButton(),
         title: Text(appLocalizations.resetPageTitle),
       ),
       body: const SafeArea(

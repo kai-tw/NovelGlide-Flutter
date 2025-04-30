@@ -12,7 +12,6 @@ class _VoiceSelectDialog extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       child: Scaffold(
         appBar: AppBar(
-          leading: const CommonBackButton(),
           title: Text(appLocalizations.ttsSettingsSelectVoice),
         ),
         body: Scrollbar(

@@ -5,11 +5,11 @@ import 'package:bitmap/bitmap.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 
-import '../../generated/i18n/app_localizations.dart';
-import '../book/data/model/book_data.dart';
+import '../../../../generated/i18n/app_localizations.dart';
+import '../../data/model/book_data.dart';
 
-class CommonBookCoverImage extends StatelessWidget {
-  const CommonBookCoverImage({
+class BookCoverImage extends StatelessWidget {
+  const BookCoverImage({
     super.key,
     required this.bookData,
     required this.fit,

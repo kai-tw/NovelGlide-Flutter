@@ -8,7 +8,7 @@ import '../../core/services/google_drive_service.dart';
 import '../../core/utils/datetime_utils.dart';
 import '../../core/utils/file_path.dart';
 import '../../core/utils/route_utils.dart';
-import '../common_components/common_back_button.dart';
+import '../common_components/common_delete_dialog.dart';
 import '../common_components/common_error_dialog.dart';
 import '../common_components/common_list_empty.dart';
 import '../common_components/common_loading.dart';
@@ -33,7 +33,6 @@ class DeveloperPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const CommonBackButton(),
         title: const Text('Developer Page'),
       ),
       body: SafeArea(

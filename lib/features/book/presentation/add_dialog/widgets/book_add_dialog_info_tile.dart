@@ -1,7 +1,7 @@
 part of '../book_add_dialog.dart';
 
-class _InfoTile extends StatelessWidget {
-  const _InfoTile();
+class BookAddDialogInfoTile extends StatelessWidget {
+  const BookAddDialogInfoTile({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class _InfoTile extends StatelessWidget {
           title: Text(
             state.isEmpty
                 ? appLocalizations.fileEmpty
-                : basename(state.filePath!),
+                : basename(state.file!.path),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/shared_components/app_icon.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../common_components/app_icon.dart';
-import '../common_components/common_back_button.dart';
 import 'widgets/about_page_app_name.dart';
 import 'widgets/about_page_app_version.dart';
 
@@ -15,7 +14,6 @@ class AboutPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: const CommonBackButton(),
         title: Text(appLocalizations.settingsPageAbout),
       ),
       body: const SafeArea(

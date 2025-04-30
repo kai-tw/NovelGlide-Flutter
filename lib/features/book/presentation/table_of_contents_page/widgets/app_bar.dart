@@ -12,7 +12,6 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return AppBar(
-      leading: const CommonBackButton(),
       title: Text(
         bookData.name,
         maxLines: 1,

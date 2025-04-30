@@ -6,7 +6,6 @@ import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../enum/window_class.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../../common_components/common_back_button.dart';
 import '../../../common_components/common_loading.dart';
 import '../reader_page/cubit/reader_cubit.dart';
 import 'cubit/reader_search_cubit.dart';
@@ -25,7 +24,6 @@ class SearchScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const CommonBackButton(),
         title: Text(AppLocalizations.of(context)!.readerSearch),
       ),
       body: Center(

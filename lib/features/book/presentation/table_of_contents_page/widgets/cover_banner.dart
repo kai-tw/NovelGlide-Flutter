@@ -15,7 +15,7 @@ class _CoverBanner extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(24.0)),
       ),
       clipBehavior: Clip.hardEdge,
-      child: CommonBookCoverImage(
+      child: BookCoverImage(
         bookData: bookData,
         fit: BoxFit.contain,
       ),

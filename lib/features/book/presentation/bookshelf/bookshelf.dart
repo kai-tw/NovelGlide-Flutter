@@ -9,7 +9,6 @@ import '../../../../generated/i18n/app_localizations.dart';
 import '../../../ads_service/data/advertisement_type.dart';
 import '../../../ads_service/presentation/advertisement.dart';
 import '../../../collection/presentation/add_book_page/collection_add_book_scaffold.dart';
-import '../../../common_components/common_book_cover_image.dart';
 import '../../../common_components/common_delete_dialog.dart';
 import '../../../common_components/common_error_dialog.dart';
 import '../../../common_components/common_list/list_template.dart';
@@ -19,6 +18,7 @@ import '../../../common_components/draggable_feedback_widget.dart';
 import '../../../common_components/draggable_placeholder_widget.dart';
 import '../../../homepage/homepage.dart';
 import '../../data/model/book_data.dart';
+import '../shared/book_cover_image.dart';
 import '../table_of_contents_page/table_of_contents.dart';
 import 'cubit/bookshelf_cubit.dart';
 

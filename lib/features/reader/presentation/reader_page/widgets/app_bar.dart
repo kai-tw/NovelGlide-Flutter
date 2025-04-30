@@ -9,7 +9,6 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: const CommonBackButton(),
       title: BlocBuilder<ReaderCubit, ReaderState>(
         buildWhen: (ReaderState previous, ReaderState current) =>
             previous.bookName != current.bookName,

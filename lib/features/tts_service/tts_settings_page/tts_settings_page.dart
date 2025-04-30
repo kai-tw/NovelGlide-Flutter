@@ -21,7 +21,6 @@ class _PageScaffold extends StatelessWidget {
     final TtsSettingsCubit cubit = BlocProvider.of<TtsSettingsCubit>(context);
     return Scaffold(
       appBar: AppBar(
-        leading: const CommonBackButton(),
         title: Text(appLocalizations.ttsSettingsTitle),
       ),
       body: SingleChildScrollView(

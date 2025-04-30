@@ -7,7 +7,6 @@ import 'package:path/path.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../book/data/model/book_data.dart';
-import '../../../common_components/common_back_button.dart';
 import '../../../common_components/common_list_empty.dart';
 import '../../../common_components/common_loading.dart';
 import '../../data/collection_data.dart';
@@ -31,7 +30,6 @@ class CollectionAddBookScaffold extends StatelessWidget {
       create: (_) => _Cubit(dataSet),
       child: Scaffold(
         appBar: AppBar(
-          leading: const CommonBackButton(),
           title: Text(appLocalizations.collectionAddToCollections),
         ),
         body: const SafeArea(
