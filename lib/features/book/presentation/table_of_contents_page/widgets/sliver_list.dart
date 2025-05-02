@@ -22,7 +22,7 @@ class _SliverList extends StatelessWidget {
 
           case LoadingStateCode.loaded:
             if (state.chapterList.isEmpty) {
-              return CommonSliverListEmpty(
+              return SharedListSliverEmpty(
                 title: appLocalizations.tocNoChapter,
               );
             } else {

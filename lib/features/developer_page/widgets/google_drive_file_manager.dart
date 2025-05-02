@@ -63,7 +63,7 @@ class _GoogleDriveFileManagerContent extends StatelessWidget {
                         );
 
                       case _GoogleDriveErrorCode.emptyFolder:
-                        return const CommonSliverListEmpty();
+                        return const SharedListSliverEmpty();
 
                       case _GoogleDriveErrorCode.normal:
                         return SliverList(
