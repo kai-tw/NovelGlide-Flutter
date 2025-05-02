@@ -16,7 +16,7 @@ class CommonListDoneButton<M extends CommonListCubit<T>, T>
 
         if (state.isSelecting) {
           child = TextButton(
-            onPressed: () => cubit.setSelecting(false),
+            onPressed: () => cubit.isSelecting = false,
             child: Text(appLocalizations.generalDone),
           );
         }

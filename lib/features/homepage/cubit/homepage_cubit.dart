@@ -11,7 +11,11 @@ class HomepageCubit extends Cubit<HomepageState> {
   final PageStorageBucket collectionBucket = PageStorageBucket();
   final PageStorageBucket bookmarkBucket = PageStorageBucket();
 
-  void setItem(HomepageNavigationItem item) {
+  set item(HomepageNavigationItem item) {
     emit(state.copyWith(navItem: item));
+  }
+
+  set isEnabled(bool value) {
+    emit(state.copyWith(isEnabled: value));
   }
 }

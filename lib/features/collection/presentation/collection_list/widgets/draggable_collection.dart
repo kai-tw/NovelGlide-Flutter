@@ -14,12 +14,19 @@ class _DraggableCollection extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final CollectionListCubit cubit =
         BlocProvider.of<CollectionListCubit>(context);
+    final HomepageCubit homepageCubit = BlocProvider.of<HomepageCubit>(context);
 
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
       return LongPressDraggable<CollectionData>(
-        onDragStarted: () => cubit.setDragging(true),
-        onDragEnd: (_) => cubit.setDragging(false),
+        onDragStarted: () {
+          cubit.isDragging = true;
+          homepageCubit.isEnabled = false;
+        },
+        onDragEnd: (_) {
+          cubit.isDragging = false;
+          homepageCubit.isEnabled = true;
+        },
         onDragCompleted: () async {
           CollectionRepository.delete(collectionData);
           cubit.refresh();

@@ -16,7 +16,8 @@ class _NavigationBar extends StatelessWidget {
 
     return BlocBuilder<HomepageCubit, HomepageState>(
       buildWhen: (HomepageState previous, HomepageState current) =>
-          previous.navItem != current.navItem,
+          previous.navItem != current.navItem ||
+          previous.isEnabled != current.isEnabled,
       builder: (BuildContext context, HomepageState state) {
         return NavigationBar(
           selectedIndex: HomepageNavigationItem.values.indexOf(state.navItem),
@@ -26,22 +27,22 @@ class _NavigationBar extends StatelessWidget {
             _Destination(
               iconData: Icons.shelves,
               label: appLocalizations.bookshelfTitle,
-              enabled: state.navItem.isBookshelf,
+              enabled: !state.navItem.isBookshelf && state.isEnabled,
             ),
             _Destination(
               iconData: Icons.collections_bookmark_rounded,
               label: appLocalizations.collectionTitle,
-              enabled: state.navItem.isCollection,
+              enabled: !state.navItem.isCollection && state.isEnabled,
             ),
             _Destination(
               iconData: Icons.bookmarks_rounded,
               label: appLocalizations.bookmarkListTitle,
-              enabled: state.navItem.isBookmark,
+              enabled: !state.navItem.isBookmark && state.isEnabled,
             ),
             _Destination(
               iconData: Icons.settings_rounded,
               label: appLocalizations.settingsTitle,
-              enabled: state.navItem.isSettings,
+              enabled: !state.navItem.isSettings && state.isEnabled,
             ),
           ],
           onDestinationSelected: (int index) {
@@ -57,8 +58,7 @@ class _NavigationBar extends StatelessWidget {
                 break;
               default:
             }
-            cubit.setItem(HomepageNavigationItem.values[
-                index.clamp(0, HomepageNavigationItem.values.length - 1)]);
+            cubit.item = HomepageNavigationItem.fromIndex(index);
           },
         );
       },

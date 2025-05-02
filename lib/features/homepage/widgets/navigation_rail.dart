@@ -23,7 +23,8 @@ class _NavigationRail extends StatelessWidget {
             child: IntrinsicHeight(
               child: BlocBuilder<HomepageCubit, HomepageState>(
                 buildWhen: (HomepageState previous, HomepageState current) =>
-                    previous.navItem != current.navItem,
+                    previous.navItem != current.navItem ||
+                    previous.isEnabled != current.isEnabled,
                 builder: (BuildContext context, HomepageState state) {
                   return NavigationRail(
                     selectedIndex:
@@ -36,29 +37,25 @@ class _NavigationRail extends StatelessWidget {
                         context,
                         iconData: Icons.shelves,
                         label: appLocalizations.bookshelfTitle,
-                        disabled:
-                            state.navItem == HomepageNavigationItem.bookshelf,
+                        disabled: state.navItem.isBookshelf && state.isEnabled,
                       ),
                       _buildDestination(
                         context,
                         iconData: Icons.collections_bookmark_rounded,
                         label: appLocalizations.collectionTitle,
-                        disabled:
-                            state.navItem == HomepageNavigationItem.collection,
+                        disabled: state.navItem.isCollection && state.isEnabled,
                       ),
                       _buildDestination(
                         context,
                         iconData: Icons.bookmarks_rounded,
                         label: appLocalizations.bookmarkListTitle,
-                        disabled:
-                            state.navItem == HomepageNavigationItem.bookmark,
+                        disabled: state.navItem.isBookmark && state.isEnabled,
                       ),
                       _buildDestination(
                         context,
                         iconData: Icons.settings,
                         label: appLocalizations.settingsTitle,
-                        disabled:
-                            state.navItem == HomepageNavigationItem.settings,
+                        disabled: state.navItem.isSettings && state.isEnabled,
                       ),
                     ],
                     onDestinationSelected: (int index) {
@@ -74,8 +71,7 @@ class _NavigationRail extends StatelessWidget {
                           break;
                         default:
                       }
-                      cubit.setItem(HomepageNavigationItem.values[index.clamp(
-                          0, HomepageNavigationItem.values.length - 1)]);
+                      cubit.item = HomepageNavigationItem.fromIndex(index);
                     },
                   );
                 },

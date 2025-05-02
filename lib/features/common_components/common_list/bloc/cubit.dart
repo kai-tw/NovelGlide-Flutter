@@ -6,16 +6,16 @@ abstract class CommonListCubit<T> extends Cubit<CommonListState<T>> {
   Future<void> refresh();
 
   void unfocused() {
-    setSelecting(false);
-    setDragging(false);
+    isSelecting = false;
+    isDragging = false;
   }
 
-  void setSelecting(bool isSelecting) {
+  set isSelecting(bool isSelecting) {
     emit(
         state.copyWith(isSelecting: isSelecting, selectedSet: const <Never>{}));
   }
 
-  void setDragging(bool isDragging) {
+  set isDragging(bool isDragging) {
     emit(state.copyWith(isDragging: isDragging));
   }
 

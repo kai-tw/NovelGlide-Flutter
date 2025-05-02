@@ -37,7 +37,7 @@ class CollectionViewerMenuButton extends StatelessWidget {
     final CollectionViewerCubit cubit =
         BlocProvider.of<CollectionViewerCubit>(context);
     return PopupMenuItem<void>(
-      onTap: () => cubit.setSelecting(true),
+      onTap: () => cubit.isSelecting = false,
       child: const CommonListSelectModeButton(),
     );
   }

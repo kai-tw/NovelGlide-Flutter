@@ -32,7 +32,7 @@ class _PopupMenuButton extends StatelessWidget {
     if (state.code.isLoaded && !state.isSelecting) {
       entries.addAll(<PopupMenuEntry<void>>[
         PopupMenuItem<void>(
-          onTap: () => cubit.setSelecting(true),
+          onTap: () => cubit.isSelecting = false,
           child: const CommonListSelectModeButton(),
         ),
         const PopupMenuDivider(),

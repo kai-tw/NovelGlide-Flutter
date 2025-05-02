@@ -13,12 +13,19 @@ class _DraggableBook extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
+    final HomepageCubit homepageCubit = BlocProvider.of<HomepageCubit>(context);
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         return LongPressDraggable<BookData>(
-          onDragStarted: () => cubit.setDragging(true),
-          onDragEnd: (_) => cubit.setDragging(false),
+          onDragStarted: () {
+            cubit.isDragging = true;
+            homepageCubit.isEnabled = false;
+          },
+          onDragEnd: (_) {
+            cubit.isDragging = false;
+            homepageCubit.isEnabled = true;
+          },
           onDragCompleted: () {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
