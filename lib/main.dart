@@ -1,3 +1,4 @@
+import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -44,8 +45,8 @@ class App extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         '/': (_) => const Homepage(),
       },
-      // builder: (BuildContext context, Widget? child) =>
-      //     AccessibilityTools(child: child),
+      builder: (BuildContext context, Widget? child) =>
+          AccessibilityTools(child: child),
       // debugShowCheckedModeBanner: false,
     );
   }

@@ -21,11 +21,9 @@ class _FloatingActionButton extends StatelessWidget {
           case HomepageNavigationItem.bookshelf:
             child = FloatingActionButton(
               onPressed: () {
-                showDialog<bool?>(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (BuildContext context) => const BookAddDialog(),
-                ).then((bool? isSuccess) {
+                Navigator.of(context)
+                    .push<bool?>(RouteUtils.pushRoute(const BookAddPage()))
+                    .then((bool? isSuccess) {
                   if (isSuccess == true) {
                     bookshelfCubit.refresh();
                   }

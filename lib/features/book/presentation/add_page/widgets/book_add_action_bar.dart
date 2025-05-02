@@ -1,37 +1,41 @@
-part of '../book_add_dialog.dart';
+part of '../book_add_page.dart';
 
-class BookAddDialogActionBar extends StatelessWidget {
-  const BookAddDialogActionBar({super.key});
+class BookAddActionBar extends StatelessWidget {
+  const BookAddActionBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return OverflowBar(
-      alignment: MainAxisAlignment.spaceBetween,
-      overflowAlignment: OverflowBarAlignment.center,
-      overflowSpacing: 10.0,
-      children: <Widget>[
-        // Close Button
-        IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: const Icon(Icons.close_rounded),
-          tooltip: appLocalizations.generalClose,
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(24.0),
+          topRight: Radius.circular(24.0),
         ),
+        color: Theme.of(context).colorScheme.surfaceContainer,
+      ),
+      child: SafeArea(
+        child: OverflowBar(
+          alignment: MainAxisAlignment.spaceEvenly,
+          overflowAlignment: OverflowBarAlignment.center,
+          overflowSpacing: 10.0,
+          children: <Widget>[
+            // Pick File Button
+            BlocBuilder<BookAddCubit, BookAddState>(
+              buildWhen: (BookAddState previous, BookAddState current) =>
+                  previous.pathSet != current.pathSet,
+              builder: _buildPickFileButton,
+            ),
 
-        // Pick File Button
-        BlocBuilder<BookAddCubit, BookAddState>(
-          buildWhen: (BookAddState previous, BookAddState current) =>
-              previous.fileList != current.fileList,
-          builder: _buildPickFileButton,
+            // Submit Button
+            BlocBuilder<BookAddCubit, BookAddState>(
+              buildWhen: (BookAddState previous, BookAddState current) =>
+                  previous.pathSet != current.pathSet,
+              builder: _buildSubmitButton,
+            ),
+          ],
         ),
-
-        // Submit Button
-        BlocBuilder<BookAddCubit, BookAddState>(
-          buildWhen: (BookAddState previous, BookAddState current) =>
-              previous.fileList != current.fileList,
-          builder: _buildSubmitButton,
-        ),
-      ],
+      ),
     );
   }
 

@@ -2,10 +2,11 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/utils/route_utils.dart';
 import '../../enum/window_class.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../book/data/model/book_data.dart';
-import '../book/presentation/add_dialog/book_add_dialog.dart';
+import '../book/presentation/add_page/book_add_page.dart';
 import '../book/presentation/bookshelf/bookshelf.dart';
 import '../book/presentation/bookshelf/cubit/bookshelf_cubit.dart';
 import '../bookmark/data/bookmark_data.dart';
