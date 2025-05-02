@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,10 +18,10 @@ import '../collection/presentation/collection_list/cubit/cubit.dart';
 import '../common_components/common_delete_drag_target.dart';
 import '../common_components/common_list/list_template.dart';
 import '../settings_page/settings_page.dart';
+import 'cubit/homepage_cubit.dart';
 
-part 'bloc/cubit.dart';
-part 'view/compact_view.dart';
-part 'view/medium_view.dart';
+part 'view/homepage_compact_view.dart';
+part 'view/homepage_medium_view.dart';
 part 'widgets/app_bar.dart';
 part 'widgets/delete_drag_target.dart';
 part 'widgets/floating_action_button.dart';
@@ -60,10 +59,10 @@ class _Scaffold extends StatelessWidget {
     /// Display the homepage based on the window size
     switch (windowClass) {
       case WindowClass.compact:
-        return const _CompactView();
+        return const HomepageCompactView();
 
       default:
-        return const _MediumView();
+        return const HomepageMediumView();
     }
   }
 }

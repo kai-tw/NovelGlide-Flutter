@@ -6,10 +6,10 @@ class _ScaffoldBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: BlocBuilder<HomepageCubit, _HomepageState>(
-        buildWhen: (_HomepageState previous, _HomepageState current) =>
+      child: BlocBuilder<HomepageCubit, HomepageState>(
+        buildWhen: (HomepageState previous, HomepageState current) =>
             previous.navItem != current.navItem,
-        builder: (BuildContext context, _HomepageState state) {
+        builder: (BuildContext context, HomepageState state) {
           switch (state.navItem) {
             case HomepageNavigationItem.bookshelf:
               return const BookshelfScaffoldBody();

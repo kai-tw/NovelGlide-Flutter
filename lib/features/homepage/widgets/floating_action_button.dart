@@ -11,10 +11,10 @@ class _FloatingActionButton extends StatelessWidget {
     final CollectionListCubit collectionListCubit =
         BlocProvider.of<CollectionListCubit>(context);
 
-    return BlocBuilder<HomepageCubit, _HomepageState>(
-      buildWhen: (_HomepageState previous, _HomepageState current) =>
+    return BlocBuilder<HomepageCubit, HomepageState>(
+      buildWhen: (HomepageState previous, HomepageState current) =>
           previous.navItem != current.navItem,
-      builder: (BuildContext context, _HomepageState state) {
+      builder: (BuildContext context, HomepageState state) {
         Widget? child;
 
         switch (state.navItem) {

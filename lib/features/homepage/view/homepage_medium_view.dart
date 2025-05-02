@@ -1,7 +1,7 @@
 part of '../homepage.dart';
 
-class _MediumView extends StatelessWidget {
-  const _MediumView();
+class HomepageMediumView extends StatelessWidget {
+  const HomepageMediumView({super.key});
 
   @override
   Widget build(BuildContext context) {

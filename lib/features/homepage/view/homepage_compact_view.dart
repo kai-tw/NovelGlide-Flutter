@@ -1,7 +1,7 @@
 part of '../homepage.dart';
 
-class _CompactView extends StatelessWidget {
-  const _CompactView();
+class HomepageCompactView extends StatelessWidget {
+  const HomepageCompactView({super.key});
 
   @override
   Widget build(BuildContext context) {

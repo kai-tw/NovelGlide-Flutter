@@ -21,10 +21,10 @@ class _NavigationRail extends StatelessWidget {
           child: ConstrainedBox(
             constraints: BoxConstraints(minHeight: constraints.maxHeight),
             child: IntrinsicHeight(
-              child: BlocBuilder<HomepageCubit, _HomepageState>(
-                buildWhen: (_HomepageState previous, _HomepageState current) =>
+              child: BlocBuilder<HomepageCubit, HomepageState>(
+                buildWhen: (HomepageState previous, HomepageState current) =>
                     previous.navItem != current.navItem,
-                builder: (BuildContext context, _HomepageState state) {
+                builder: (BuildContext context, HomepageState state) {
                   return NavigationRail(
                     selectedIndex:
                         HomepageNavigationItem.values.indexOf(state.navItem),

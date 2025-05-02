@@ -12,7 +12,7 @@ import '../../../common_components/common_list_empty.dart';
 import '../../../common_components/common_loading.dart';
 import '../../../common_components/draggable_feedback_widget.dart';
 import '../../../common_components/draggable_placeholder_widget.dart';
-import '../../../homepage/homepage.dart';
+import '../../../homepage/cubit/homepage_cubit.dart';
 import '../../../reader/presentation/reader_page/cubit/reader_cubit.dart';
 import '../../../reader/presentation/reader_page/reader.dart';
 import '../../data/bookmark_data.dart';

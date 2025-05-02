@@ -14,10 +14,10 @@ class _NavigationBar extends StatelessWidget {
     final CollectionListCubit collectionListCubit =
         BlocProvider.of<CollectionListCubit>(context);
 
-    return BlocBuilder<HomepageCubit, _HomepageState>(
-      buildWhen: (_HomepageState previous, _HomepageState current) =>
+    return BlocBuilder<HomepageCubit, HomepageState>(
+      buildWhen: (HomepageState previous, HomepageState current) =>
           previous.navItem != current.navItem,
-      builder: (BuildContext context, _HomepageState state) {
+      builder: (BuildContext context, HomepageState state) {
         return NavigationBar(
           selectedIndex: HomepageNavigationItem.values.indexOf(state.navItem),
           indicatorColor: Colors.transparent,
@@ -26,22 +26,22 @@ class _NavigationBar extends StatelessWidget {
             _Destination(
               iconData: Icons.shelves,
               label: appLocalizations.bookshelfTitle,
-              enabled: state.navItem != HomepageNavigationItem.bookshelf,
+              enabled: state.navItem.isBookshelf,
             ),
             _Destination(
               iconData: Icons.collections_bookmark_rounded,
               label: appLocalizations.collectionTitle,
-              enabled: state.navItem != HomepageNavigationItem.collection,
+              enabled: state.navItem.isCollection,
             ),
             _Destination(
               iconData: Icons.bookmarks_rounded,
               label: appLocalizations.bookmarkListTitle,
-              enabled: state.navItem != HomepageNavigationItem.bookmark,
+              enabled: state.navItem.isBookmark,
             ),
             _Destination(
               iconData: Icons.settings_rounded,
               label: appLocalizations.settingsTitle,
-              enabled: state.navItem != HomepageNavigationItem.settings,
+              enabled: state.navItem.isSettings,
             ),
           ],
           onDestinationSelected: (int index) {
