@@ -5,37 +5,25 @@ class BookAddActionBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(24.0),
-          topRight: Radius.circular(24.0),
+    return OverflowBar(
+      alignment: MainAxisAlignment.spaceEvenly,
+      overflowAlignment: OverflowBarAlignment.center,
+      overflowSpacing: 10.0,
+      children: <Widget>[
+        // Pick File Button
+        BlocBuilder<BookAddCubit, BookAddState>(
+          buildWhen: (BookAddState previous, BookAddState current) =>
+              previous.pathSet != current.pathSet,
+          builder: _buildPickFileButton,
         ),
-        color: Theme.of(context).colorScheme.surfaceContainer,
-      ),
-      child: SafeArea(
-        child: OverflowBar(
-          alignment: MainAxisAlignment.spaceEvenly,
-          overflowAlignment: OverflowBarAlignment.center,
-          overflowSpacing: 10.0,
-          children: <Widget>[
-            // Pick File Button
-            BlocBuilder<BookAddCubit, BookAddState>(
-              buildWhen: (BookAddState previous, BookAddState current) =>
-                  previous.pathSet != current.pathSet,
-              builder: _buildPickFileButton,
-            ),
 
-            // Submit Button
-            BlocBuilder<BookAddCubit, BookAddState>(
-              buildWhen: (BookAddState previous, BookAddState current) =>
-                  previous.pathSet != current.pathSet,
-              builder: _buildSubmitButton,
-            ),
-          ],
+        // Submit Button
+        BlocBuilder<BookAddCubit, BookAddState>(
+          buildWhen: (BookAddState previous, BookAddState current) =>
+              previous.pathSet != current.pathSet,
+          builder: _buildSubmitButton,
         ),
-      ),
+      ],
     );
   }
 

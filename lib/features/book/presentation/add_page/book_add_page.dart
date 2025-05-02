@@ -13,6 +13,7 @@ import 'cubit/book_add_cubit.dart';
 part 'widgets/book_add_action_bar.dart';
 part 'widgets/book_add_file_list.dart';
 part 'widgets/book_add_file_tile.dart';
+part 'widgets/book_add_helper_text.dart';
 
 class BookAddPage extends StatelessWidget {
   const BookAddPage({super.key});
@@ -27,7 +28,25 @@ class BookAddPage extends StatelessWidget {
           title: Text(appLocalizations.addBookTitle),
         ),
         body: const BookAddFileList(),
-        bottomNavigationBar: const BookAddActionBar(),
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(24.0),
+              topRight: Radius.circular(24.0),
+            ),
+            color: Theme.of(context).colorScheme.surfaceContainer,
+          ),
+          child: const SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                BookAddHelperText(),
+                BookAddActionBar(),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
