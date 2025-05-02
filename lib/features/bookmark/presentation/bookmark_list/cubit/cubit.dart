@@ -4,20 +4,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../../../preference_keys/preference_keys.dart';
-import '../../../../common_components/common_list/list_template.dart';
+import '../../../../common_components/shared_list/shared_list.dart';
 import '../../../data/bookmark_data.dart';
 import '../../../data/bookmark_repository.dart';
 
-typedef BookmarkListState = CommonListState<BookmarkData>;
+typedef BookmarkListState = SharedListState<BookmarkData>;
 
-class BookmarkListCubit extends CommonListCubit<BookmarkData> {
+class BookmarkListCubit extends SharedListCubit<BookmarkData> {
   factory BookmarkListCubit() {
     final BookmarkListCubit instance = BookmarkListCubit._();
     instance._init();
     return instance;
   }
 
-  BookmarkListCubit._() : super(const CommonListState<BookmarkData>());
+  BookmarkListCubit._() : super(const SharedListState<BookmarkData>());
   final String _sortOrderPrefKey = PreferenceKeys.bookmark.sortOrder;
   final String _ascendingPrefKey = PreferenceKeys.bookmark.isAscending;
   late final SharedPreferences _prefs;

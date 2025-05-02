@@ -1,10 +1,7 @@
-import 'package:flutter/material.dart';
+part of '../shared_list.dart';
 
-import '../../core/services/emoticon_collection.dart';
-import '../../generated/i18n/app_localizations.dart';
-
-class CommonListEmpty extends StatelessWidget {
-  const CommonListEmpty({super.key, this.title});
+class SharedListEmpty extends StatelessWidget {
+  const SharedListEmpty({super.key, this.title});
 
   final String? title;
 
@@ -28,19 +25,6 @@ class CommonListEmpty extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class CommonSliverListEmpty extends StatelessWidget {
-  const CommonSliverListEmpty({super.key, this.title});
-
-  final String? title;
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverFillRemaining(
-      child: CommonListEmpty(title: title),
     );
   }
 }

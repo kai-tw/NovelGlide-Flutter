@@ -22,7 +22,7 @@ class CollectionViewerListView extends StatelessWidget {
           case LoadingStateCode.backgroundLoading:
           case LoadingStateCode.loaded:
             if (state.dataList.isEmpty) {
-              return const CommonListEmpty();
+              return const SharedListEmpty();
             } else {
               return ReorderableListView.builder(
                 header: state.code.isBackgroundLoading

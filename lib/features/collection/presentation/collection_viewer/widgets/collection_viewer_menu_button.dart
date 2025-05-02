@@ -38,7 +38,7 @@ class CollectionViewerMenuButton extends StatelessWidget {
         BlocProvider.of<CollectionViewerCubit>(context);
     return PopupMenuItem<void>(
       onTap: () => cubit.isSelecting = true,
-      child: const CommonListSelectModeButton(),
+      child: const SharedListSelectModeButton(),
     );
   }
 
@@ -57,7 +57,7 @@ class CollectionViewerMenuButton extends StatelessWidget {
         );
       },
       enabled: cubit.state.selectedSet.isNotEmpty,
-      child: const CommonListDeleteButton(),
+      child: const SharedListDeleteButton(),
     );
   }
 }

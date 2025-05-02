@@ -21,7 +21,7 @@ class _CollectionWidget extends StatelessWidget {
       margin: EdgeInsets.zero,
       color: Colors.transparent,
       shadowColor: Colors.transparent,
-      child: CommonListSelectableListTile(
+      child: SharedListTile(
         isSelecting: isSelecting,
         isSelected: isSelected,
         leading: const Padding(

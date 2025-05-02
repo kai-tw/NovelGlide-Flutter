@@ -19,7 +19,7 @@ class _PopupMenuButton extends StatelessWidget {
           entries.addAll(<PopupMenuEntry<void>>[
             PopupMenuItem<void>(
               onTap: () => cubit.isSelecting = true,
-              child: const CommonListSelectModeButton(),
+              child: const SharedListSelectModeButton(),
             ),
             const PopupMenuDivider(),
           ]);
@@ -39,7 +39,7 @@ class _PopupMenuButton extends StatelessWidget {
               onTap: () => isSelected
                   ? cubit.setListOrder(isAscending: !cubit.state.isAscending)
                   : cubit.setListOrder(sortOrder: entry.key),
-              child: CommonListSortButton(
+              child: SharedListSortButton(
                 isSelected: isSelected,
                 isAscending: cubit.state.isAscending,
                 title: entry.value,
@@ -79,7 +79,7 @@ class _PopupMenuButton extends StatelessWidget {
                 );
               },
               enabled: cubit.state.selectedSet.isNotEmpty,
-              child: const CommonListDeleteButton(),
+              child: const SharedListDeleteButton(),
             ),
           ]);
         }

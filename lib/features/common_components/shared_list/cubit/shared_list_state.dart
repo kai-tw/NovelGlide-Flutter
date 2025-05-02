@@ -1,8 +1,8 @@
-part of '../list_template.dart';
+part of '../shared_list.dart';
 
-class CommonListState<T> extends Equatable {
+class SharedListState<T> extends Equatable {
   // Constructor initializes the state with default values.
-  const CommonListState({
+  const SharedListState({
     this.code = LoadingStateCode.initial,
     this.sortOrder = SortOrderCode.name,
     this.dataList = const <Never>[],
@@ -36,7 +36,7 @@ class CommonListState<T> extends Equatable {
       ];
 
   // Creates a copy of the current state with updated properties.
-  CommonListState<T> copyWith({
+  SharedListState<T> copyWith({
     LoadingStateCode? code,
     SortOrderCode? sortOrder,
     List<T>? dataList,
@@ -45,7 +45,7 @@ class CommonListState<T> extends Equatable {
     bool? isSelecting,
     bool? isAscending,
   }) {
-    return CommonListState<T>(
+    return SharedListState<T>(
       code: code ?? this.code,
       sortOrder: sortOrder ?? this.sortOrder,
       dataList: dataList ?? this.dataList,

@@ -3,13 +3,13 @@ import 'package:collection/collection.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../book/data/model/book_data.dart';
 import '../../../../book/data/repository/book_repository.dart';
-import '../../../../common_components/common_list/list_template.dart';
+import '../../../../common_components/shared_list/shared_list.dart';
 import '../../../data/collection_data.dart';
 import '../../../data/collection_repository.dart';
 
-typedef CollectionViewerState = CommonListState<BookData>;
+typedef CollectionViewerState = SharedListState<BookData>;
 
-class CollectionViewerCubit extends CommonListCubit<BookData> {
+class CollectionViewerCubit extends SharedListCubit<BookData> {
   factory CollectionViewerCubit(CollectionData collectionData) {
     final CollectionViewerCubit cubit = CollectionViewerCubit._internal(
         collectionData, const CollectionViewerState());

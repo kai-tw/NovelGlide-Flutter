@@ -1,15 +1,15 @@
 part of '../homepage.dart';
 
-class _DeleteDragTarget<M extends Cubit<CommonListState<T>>, T extends Object>
+class _DeleteDragTarget<M extends Cubit<SharedListState<T>>, T extends Object>
     extends StatelessWidget {
   const _DeleteDragTarget();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<M, CommonListState<T>>(
-      buildWhen: (CommonListState<T> previous, CommonListState<T> current) =>
+    return BlocBuilder<M, SharedListState<T>>(
+      buildWhen: (SharedListState<T> previous, SharedListState<T> current) =>
           previous.isDragging != current.isDragging,
-      builder: (BuildContext context, CommonListState<T> state) {
+      builder: (BuildContext context, SharedListState<T> state) {
         Widget? child;
 
         if (state.isDragging) {

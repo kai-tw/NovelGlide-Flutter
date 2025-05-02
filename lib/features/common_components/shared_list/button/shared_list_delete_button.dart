@@ -1,7 +1,7 @@
-part of '../list_template.dart';
+part of '../shared_list.dart';
 
-class CommonListDeleteButton extends StatelessWidget {
-  const CommonListDeleteButton({super.key});
+class SharedListDeleteButton extends StatelessWidget {
+  const SharedListDeleteButton({super.key});
 
   @override
   Widget build(BuildContext context) {

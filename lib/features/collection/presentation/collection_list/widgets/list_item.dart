@@ -9,9 +9,9 @@ class _ListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final CollectionListCubit cubit =
         BlocProvider.of<CollectionListCubit>(context);
-    return BlocBuilder<CollectionListCubit, CommonListState<CollectionData>>(
-      buildWhen: (CommonListState<CollectionData> previous,
-              CommonListState<CollectionData> current) =>
+    return BlocBuilder<CollectionListCubit, SharedListState<CollectionData>>(
+      buildWhen: (SharedListState<CollectionData> previous,
+              SharedListState<CollectionData> current) =>
           previous.isSelecting != current.isSelecting ||
           previous.isDragging != current.isDragging ||
           previous.selectedSet.contains(_collectionData) !=

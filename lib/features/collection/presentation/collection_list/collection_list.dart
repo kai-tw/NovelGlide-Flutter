@@ -7,11 +7,10 @@ import '../../../../enum/sort_order_code.dart';
 import '../../../../enum/window_class.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../common_components/common_delete_dialog.dart';
-import '../../../common_components/common_list/list_template.dart';
-import '../../../common_components/common_list_empty.dart';
 import '../../../common_components/common_loading.dart';
 import '../../../common_components/draggable_feedback_widget.dart';
 import '../../../common_components/draggable_placeholder_widget.dart';
+import '../../../common_components/shared_list/shared_list.dart';
 import '../../../homepage/cubit/homepage_cubit.dart';
 import '../../data/collection_data.dart';
 import '../../data/collection_repository.dart';
@@ -36,14 +35,14 @@ class CollectionList extends StatelessWidget {
 
     BlocProvider.of<CollectionListCubit>(context).refresh();
 
-    return BlocBuilder<CollectionListCubit, CommonListState<CollectionData>>(
-      buildWhen: (CommonListState<CollectionData> previous,
-              CommonListState<CollectionData> current) =>
+    return BlocBuilder<CollectionListCubit, SharedListState<CollectionData>>(
+      buildWhen: (SharedListState<CollectionData> previous,
+              SharedListState<CollectionData> current) =>
           previous.code != current.code ||
           previous.dataList != current.dataList ||
           previous.isSelecting != current.isSelecting ||
           previous.selectedSet != current.selectedSet,
-      builder: (BuildContext context, CommonListState<CollectionData> state) {
+      builder: (BuildContext context, SharedListState<CollectionData> state) {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
@@ -52,7 +51,7 @@ class CollectionList extends StatelessWidget {
 
           case LoadingStateCode.loaded:
             if (state.dataList.isEmpty) {
-              return CommonSliverListEmpty(
+              return SharedListSliverEmpty(
                 title: appLocalizations.collectionNoCollection,
               );
             } else {

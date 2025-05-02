@@ -1,18 +1,18 @@
-part of '../list_template.dart';
+part of '../shared_list.dart';
 
-class CommonListSelectAllButton<M extends CommonListCubit<T>, T>
+class SharedListSelectAllButton<M extends SharedListCubit<T>, T>
     extends StatelessWidget {
-  const CommonListSelectAllButton({super.key});
+  const SharedListSelectAllButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     final M cubit = BlocProvider.of<M>(context);
-    return BlocBuilder<M, CommonListState<T>>(
-      buildWhen: (CommonListState<T> previous, CommonListState<T> current) =>
+    return BlocBuilder<M, SharedListState<T>>(
+      buildWhen: (SharedListState<T> previous, SharedListState<T> current) =>
           previous.isSelecting != current.isSelecting ||
           previous.dataList.isNotEmpty != current.dataList.isNotEmpty ||
           previous.isSelectAll != current.isSelectAll,
-      builder: (BuildContext context, CommonListState<T> state) {
+      builder: (BuildContext context, SharedListState<T> state) {
         Widget? child;
 
         if (state.isSelecting) {

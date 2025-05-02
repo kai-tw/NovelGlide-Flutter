@@ -17,8 +17,8 @@ class BookshelfAppBar extends StatelessWidget implements PreferredSizeWidget {
       leadingWidth: windowClass == WindowClass.compact ? null : 100.0,
       title: Text(appLocalizations.bookshelfTitle),
       actions: const <Widget>[
-        CommonListSelectAllButton<BookshelfCubit, BookData>(),
-        CommonListDoneButton<BookshelfCubit, BookData>(),
+        SharedListSelectAllButton<BookshelfCubit, BookData>(),
+        SharedListDoneButton<BookshelfCubit, BookData>(),
         _PopupMenuButton(),
       ],
     );

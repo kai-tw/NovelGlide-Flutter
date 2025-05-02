@@ -1,7 +1,7 @@
-part of '../list_template.dart';
+part of '../shared_list.dart';
 
-class CommonListSelectModeButton extends StatelessWidget {
-  const CommonListSelectModeButton({super.key});
+class SharedListSelectModeButton extends StatelessWidget {
+  const SharedListSelectModeButton({super.key});
 
   @override
   Widget build(BuildContext context) {

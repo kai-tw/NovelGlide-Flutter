@@ -1,7 +1,7 @@
-part of '../list_template.dart';
+part of '../shared_list.dart';
 
-class CommonListSortButton extends StatelessWidget {
-  const CommonListSortButton({
+class SharedListSortButton extends StatelessWidget {
+  const SharedListSortButton({
     super.key,
     required this.isSelected,
     required this.isAscending,

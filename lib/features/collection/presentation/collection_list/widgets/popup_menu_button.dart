@@ -5,11 +5,11 @@ class _PopupMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CollectionListCubit, CommonListState<CollectionData>>(
-      buildWhen: (CommonListState<CollectionData> previous,
-              CommonListState<CollectionData> current) =>
+    return BlocBuilder<CollectionListCubit, SharedListState<CollectionData>>(
+      buildWhen: (SharedListState<CollectionData> previous,
+              SharedListState<CollectionData> current) =>
           previous.code != current.code,
-      builder: (BuildContext context, CommonListState<CollectionData> state) {
+      builder: (BuildContext context, SharedListState<CollectionData> state) {
         return PopupMenuButton<void>(
           enabled: state.code == LoadingStateCode.loaded,
           icon: const Icon(Icons.more_vert_rounded),
@@ -24,7 +24,7 @@ class _PopupMenuButton extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final CollectionListCubit cubit =
         BlocProvider.of<CollectionListCubit>(context);
-    final CommonListState<CollectionData> state = cubit.state;
+    final SharedListState<CollectionData> state = cubit.state;
 
     final List<PopupMenuEntry<void>> entries = <PopupMenuEntry<void>>[];
 
@@ -33,7 +33,7 @@ class _PopupMenuButton extends StatelessWidget {
       entries.addAll(<PopupMenuEntry<void>>[
         PopupMenuItem<void>(
           onTap: () => cubit.isSelecting = true,
-          child: const CommonListSelectModeButton(),
+          child: const SharedListSelectModeButton(),
         ),
         const PopupMenuDivider(),
       ]);
@@ -53,7 +53,7 @@ class _PopupMenuButton extends StatelessWidget {
                 ? cubit.setListOrder(isAscending: !state.isAscending)
                 : cubit.setListOrder(sortOrder: entry.key);
           },
-          child: CommonListSortButton(
+          child: SharedListSortButton(
             isSelected: isSelected,
             isAscending: state.isAscending,
             title: entry.value,
@@ -78,7 +78,7 @@ class _PopupMenuButton extends StatelessWidget {
             );
           },
           enabled: cubit.state.selectedSet.isNotEmpty,
-          child: const CommonListDeleteButton(),
+          child: const SharedListDeleteButton(),
         ),
       ]);
     }

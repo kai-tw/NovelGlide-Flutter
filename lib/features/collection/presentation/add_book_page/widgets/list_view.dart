@@ -21,7 +21,7 @@ class _ListView extends StatelessWidget {
 
           case LoadingStateCode.loaded:
             if (state.collectionList.isEmpty) {
-              return const CommonListEmpty();
+              return const SharedListEmpty();
             } else {
               return ListView.builder(
                 itemCount: state.collectionList.length,

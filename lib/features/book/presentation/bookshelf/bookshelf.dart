@@ -11,11 +11,10 @@ import '../../../ads_service/presentation/advertisement.dart';
 import '../../../collection/presentation/add_book_page/collection_add_book_scaffold.dart';
 import '../../../common_components/common_delete_dialog.dart';
 import '../../../common_components/common_error_dialog.dart';
-import '../../../common_components/common_list/list_template.dart';
-import '../../../common_components/common_list_empty.dart';
 import '../../../common_components/common_loading.dart';
 import '../../../common_components/draggable_feedback_widget.dart';
 import '../../../common_components/draggable_placeholder_widget.dart';
+import '../../../common_components/shared_list/shared_list.dart';
 import '../../../homepage/cubit/homepage_cubit.dart';
 import '../../data/model/book_data.dart';
 import '../shared/book_cover_image.dart';
@@ -54,7 +53,7 @@ class Bookshelf extends StatelessWidget {
           case LoadingStateCode.backgroundLoading:
           case LoadingStateCode.loaded:
             if (state.dataList.isEmpty) {
-              return CommonSliverListEmpty(
+              return SharedListSliverEmpty(
                 title: appLocalizations.bookshelfNoBook,
               );
             } else {

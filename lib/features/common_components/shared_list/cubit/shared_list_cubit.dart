@@ -1,7 +1,7 @@
-part of '../list_template.dart';
+part of '../shared_list.dart';
 
-abstract class CommonListCubit<T> extends Cubit<CommonListState<T>> {
-  CommonListCubit(super.initialState);
+abstract class SharedListCubit<T> extends Cubit<SharedListState<T>> {
+  SharedListCubit(super.initialState);
 
   Future<void> refresh();
 

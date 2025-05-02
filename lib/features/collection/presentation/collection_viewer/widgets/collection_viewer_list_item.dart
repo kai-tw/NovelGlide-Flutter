@@ -20,7 +20,7 @@ class CollectionViewerListItem extends StatelessWidget {
               previous.selectedSet.contains(bookData) !=
               current.selectedSet.contains(bookData),
       builder: (BuildContext context, CollectionViewerState state) {
-        return CommonListSelectableListTile(
+        return SharedListTile(
           isSelecting: isSelecting,
           isSelected: state.selectedSet.contains(bookData),
           onTap: () => _onTap(context),

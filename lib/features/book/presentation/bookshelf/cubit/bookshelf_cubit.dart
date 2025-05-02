@@ -9,13 +9,13 @@ import '../../../../../core/services/mime_resolver.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../../../preference_keys/preference_keys.dart';
-import '../../../../common_components/common_list/list_template.dart';
+import '../../../../common_components/shared_list/shared_list.dart';
 import '../../../data/model/book_data.dart';
 import '../../../data/repository/book_repository.dart';
 
-typedef BookShelfState = CommonListState<BookData>;
+typedef BookShelfState = SharedListState<BookData>;
 
-class BookshelfCubit extends CommonListCubit<BookData> {
+class BookshelfCubit extends SharedListCubit<BookData> {
   factory BookshelfCubit() {
     final BookshelfCubit cubit = BookshelfCubit._(const BookShelfState());
     cubit._init();

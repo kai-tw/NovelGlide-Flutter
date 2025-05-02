@@ -16,7 +16,7 @@ import '../collection/presentation/add_dialog/collection_add_dialog.dart';
 import '../collection/presentation/collection_list/collection_list.dart';
 import '../collection/presentation/collection_list/cubit/cubit.dart';
 import '../common_components/common_delete_drag_target.dart';
-import '../common_components/common_list/list_template.dart';
+import '../common_components/shared_list/shared_list.dart';
 import '../settings_page/settings_page.dart';
 import 'cubit/homepage_cubit.dart';
 

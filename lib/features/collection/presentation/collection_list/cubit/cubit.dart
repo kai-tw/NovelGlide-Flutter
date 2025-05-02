@@ -4,13 +4,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../../../preference_keys/preference_keys.dart';
-import '../../../../common_components/common_list/list_template.dart';
+import '../../../../common_components/shared_list/shared_list.dart';
 import '../../../data/collection_data.dart';
 import '../../../data/collection_repository.dart';
 
-typedef CollectionListState = CommonListState<CollectionData>;
+typedef CollectionListState = SharedListState<CollectionData>;
 
-class CollectionListCubit extends CommonListCubit<CollectionData> {
+class CollectionListCubit extends SharedListCubit<CollectionData> {
   factory CollectionListCubit() {
     final CollectionListCubit cubit =
         CollectionListCubit._(const CollectionListState());
