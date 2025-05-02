@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 
+import '../../../../core/services/mime_resolver.dart';
 import '../../../../core/utils/file_utils.dart';
-import '../../../../core/utils/mime_resolver.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../data/repository/book_repository.dart';
 import 'cubit/book_add_cubit.dart';

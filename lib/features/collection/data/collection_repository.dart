@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 
-import '../../../core/utils/file_path.dart';
+import '../../../core/services/file_path.dart';
 import '../../../core/utils/json_utils.dart';
 import '../../../core/utils/random_utils.dart';
 import '../../book/data/repository/book_repository.dart';

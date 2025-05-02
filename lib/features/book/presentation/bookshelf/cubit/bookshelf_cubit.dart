@@ -4,8 +4,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../../core/utils/file_path.dart';
-import '../../../../../core/utils/mime_resolver.dart';
+import '../../../../../core/services/file_path.dart';
+import '../../../../../core/services/mime_resolver.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../../../preference_keys/preference_keys.dart';

@@ -3,9 +3,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'core/services/file_path.dart';
 import 'core/services/log_service.dart';
 import 'core/theme/default_theme.dart';
-import 'core/utils/file_path.dart';
 import 'features/homepage/homepage.dart';
 import 'firebase_options.dart';
 import 'generated/i18n/app_localizations.dart';

@@ -5,6 +5,7 @@ import 'package:bitmap/bitmap.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 
+import '../../../../core/services/cache_memory_image_provider.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../data/model/book_data.dart';
 
@@ -34,24 +35,15 @@ class BookCoverImage extends StatelessWidget {
     } else {
       return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          final Widget child = Image.memory(
-            _bitmapOptimize(image, constraints),
+          return Image(
+            image: CacheMemoryImageProvider(
+              bookData.relativeFilePath,
+              _bitmapOptimize(image, constraints),
+            ),
             width: constraints.maxWidth,
             height: constraints.maxHeight,
             fit: fit,
-            gaplessPlayback: true,
             semanticLabel: appLocalizations.accessibilityBookCover,
-          );
-
-          return AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
-            },
-            child: child,
           );
         },
       );

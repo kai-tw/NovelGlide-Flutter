@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:epubx/epubx.dart';
 import 'package:path/path.dart';
 
+import '../../../../core/services/file_path.dart';
 import '../../../../core/utils/epub_utils.dart';
-import '../../../../core/utils/file_path.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../bookmark/data/bookmark_repository.dart';
 import '../../../collection/data/collection_repository.dart';

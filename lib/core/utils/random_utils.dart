@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:path/path.dart';
 
-import 'file_path.dart';
+import '../services/file_path.dart';
 
 class RandomUtils {
   // Private constructor to prevent instantiation

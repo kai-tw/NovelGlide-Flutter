@@ -10,7 +10,7 @@ import 'package:path/path.dart';
 
 import '../exceptions.dart';
 import '../utils/int_utils.dart';
-import '../utils/mime_resolver.dart';
+import 'mime_resolver.dart';
 
 /// Google Drive API.
 class GoogleDriveService {
