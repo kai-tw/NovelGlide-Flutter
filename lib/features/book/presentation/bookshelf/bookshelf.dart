@@ -21,13 +21,15 @@ import '../shared/book_cover_image.dart';
 import '../table_of_contents_page/table_of_contents.dart';
 import 'cubit/bookshelf_cubit.dart';
 
+part 'app_bar/bookshelf_compact_app_bar.dart';
+part 'app_bar/bookshelf_medium_app_bar.dart';
+part 'app_bar/buttons/bookshelf_compact_app_bar_more_button.dart';
 part 'bookshelf_app_bar.dart';
 part 'bookshelf_loading_indicator.dart';
 part 'bookshelf_scaffold_body.dart';
 part 'widgets/book_widget.dart';
 part 'widgets/draggable_book.dart';
 part 'widgets/list_item.dart';
-part 'widgets/popup_menu_button.dart';
 
 class Bookshelf extends StatelessWidget {
   const Bookshelf({super.key});
@@ -38,13 +40,13 @@ class Bookshelf extends StatelessWidget {
 
     BlocProvider.of<BookshelfCubit>(context).refresh();
 
-    return BlocBuilder<BookshelfCubit, BookShelfState>(
-      buildWhen: (BookShelfState previous, BookShelfState current) =>
+    return BlocBuilder<BookshelfCubit, BookshelfState>(
+      buildWhen: (BookshelfState previous, BookshelfState current) =>
           previous.code != current.code ||
           previous.dataList != current.dataList ||
           previous.isAscending != current.isAscending ||
           previous.sortOrder != current.sortOrder,
-      builder: (BuildContext context, BookShelfState state) {
+      builder: (BuildContext context, BookshelfState state) {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
@@ -64,7 +66,7 @@ class Bookshelf extends StatelessWidget {
     );
   }
 
-  Widget _buildList(BuildContext context, BookShelfState state) {
+  Widget _buildList(BuildContext context, BookshelfState state) {
     // Avoid books from being covered by the navigation bar.
     final double bottomPadding = MediaQuery.paddingOf(context).bottom + 48.0;
     return SliverPadding(

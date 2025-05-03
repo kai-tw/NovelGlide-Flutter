@@ -18,8 +18,8 @@ class BookmarkListAppBar extends StatelessWidget
       leadingWidth: windowClass == WindowClass.compact ? null : 100.0,
       title: Text(appLocalizations.bookmarkListTitle),
       actions: const <Widget>[
-        SharedListSelectAllButton<BookmarkListCubit, BookmarkData>(),
-        SharedListDoneButton<BookmarkListCubit, BookmarkData>(),
+        SharedListSelectAllButton<BookmarkListCubit>(),
+        SharedListDoneButton<BookmarkListCubit>(),
         _PopupMenuButton(),
       ],
     );

@@ -31,6 +31,10 @@ class _DeviceInfoCard extends StatelessWidget {
           title: const Text('Platform brightness'),
           subtitle: Text('${MediaQuery.of(context).platformBrightness}'),
         ),
+        ListTile(
+          title: const Text('WindowClass'),
+          subtitle: Text('${WindowClass.of(context)}'),
+        ),
       ],
     );
   }

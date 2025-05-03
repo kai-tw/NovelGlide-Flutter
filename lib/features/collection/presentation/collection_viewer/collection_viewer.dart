@@ -28,8 +28,8 @@ class CollectionViewer extends StatelessWidget {
         appBar: AppBar(
           title: Text(collectionData.name),
           actions: const <Widget>[
-            SharedListSelectAllButton<CollectionViewerCubit, BookData>(),
-            SharedListDoneButton<CollectionViewerCubit, BookData>(),
+            SharedListSelectAllButton<CollectionViewerCubit>(),
+            SharedListDoneButton<CollectionViewerCubit>(),
             CollectionViewerMenuButton(),
           ],
         ),

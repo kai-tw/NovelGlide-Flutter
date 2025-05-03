@@ -28,18 +28,20 @@ class _PopupMenuButton extends StatelessWidget {
 
     final List<PopupMenuEntry<void>> entries = <PopupMenuEntry<void>>[];
 
-    /// Selecting mode
-    if (state.code.isLoaded && !state.isSelecting) {
+    // Selecting mode button
+    if (cubit.state.code.isLoaded &&
+        !cubit.state.isSelecting &&
+        cubit.state.dataList.isNotEmpty) {
       entries.addAll(<PopupMenuEntry<void>>[
         PopupMenuItem<void>(
           onTap: () => cubit.isSelecting = true,
-          child: const SharedListSelectModeButton(),
+          child: const SharedListSelectModeTile(),
         ),
         const PopupMenuDivider(),
       ]);
     }
 
-    /// Sorting Section
+    // Sorting Section
     final Map<SortOrderCode, String> sortMap = <SortOrderCode, String>{
       SortOrderCode.name: appLocalizations.generalName,
     };
@@ -62,7 +64,7 @@ class _PopupMenuButton extends StatelessWidget {
       );
     }
 
-    /// Operation Section
+    // Operation Section
     if (state.code.isLoaded && state.isSelecting) {
       entries.addAll(<PopupMenuEntry<void>>[
         const PopupMenuDivider(),

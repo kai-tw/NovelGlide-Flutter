@@ -18,28 +18,26 @@ class CollectionViewerMenuButton extends StatelessWidget {
     final bool isLoaded = cubit.state.code.isLoaded;
     final List<PopupMenuEntry<void>> entries = <PopupMenuEntry<void>>[];
 
-    /// Selecting mode
-    if (isLoaded && !cubit.state.isSelecting) {
-      // The button that toggles selecting mode.
-      entries.add(_buildSelectModeButton(context));
+    // Selecting mode button
+    if (isLoaded &&
+        !cubit.state.isSelecting &&
+        cubit.state.dataList.isNotEmpty) {
+      entries.addAll(<PopupMenuEntry<void>>[
+        PopupMenuItem<void>(
+          onTap: () => cubit.isSelecting = true,
+          child: const SharedListSelectModeTile(),
+        ),
+        const PopupMenuDivider(),
+      ]);
     }
 
-    /// Operation Section
+    // Operation Section
     if (isLoaded && cubit.state.isSelecting) {
       // The button that removes selected books from collection.
       entries.add(_buildDeleteButton(context));
     }
 
     return entries;
-  }
-
-  PopupMenuEntry<void> _buildSelectModeButton(BuildContext context) {
-    final CollectionViewerCubit cubit =
-        BlocProvider.of<CollectionViewerCubit>(context);
-    return PopupMenuItem<void>(
-      onTap: () => cubit.isSelecting = true,
-      child: const SharedListSelectModeButton(),
-    );
   }
 
   PopupMenuEntry<void> _buildDeleteButton(BuildContext context) {

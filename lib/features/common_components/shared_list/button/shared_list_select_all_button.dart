@@ -1,20 +1,19 @@
 part of '../shared_list.dart';
 
-class SharedListSelectAllButton<M extends SharedListCubit<T>, T>
+class SharedListSelectAllButton<T extends SharedListCubit<dynamic>>
     extends StatelessWidget {
   const SharedListSelectAllButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final M cubit = BlocProvider.of<M>(context);
-    return BlocBuilder<M, SharedListState<T>>(
-      buildWhen: (SharedListState<T> previous, SharedListState<T> current) =>
+    final T cubit = BlocProvider.of<T>(context);
+    return BlocBuilder<T, SharedListState<dynamic>>(
+      buildWhen: (SharedListState<dynamic> previous,
+              SharedListState<dynamic> current) =>
           previous.isSelecting != current.isSelecting ||
           previous.dataList.isNotEmpty != current.dataList.isNotEmpty ||
           previous.isSelectAll != current.isSelectAll,
-      builder: (BuildContext context, SharedListState<T> state) {
-        Widget? child;
-
+      builder: (BuildContext context, SharedListState<dynamic> state) {
         if (state.isSelecting) {
           final AppLocalizations appLocalizations =
               AppLocalizations.of(context)!;
@@ -32,14 +31,9 @@ class SharedListSelectAllButton<M extends SharedListCubit<T>, T>
               child: Text(appLocalizations.generalSelectAll),
             );
           }
+        } else {
+          return const SizedBox.shrink();
         }
-
-        return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          transitionBuilder: (Widget child, Animation<double> animation) =>
-              FadeTransition(opacity: animation, child: child),
-          child: child ?? const SizedBox.shrink(),
-        );
       },
     );
   }

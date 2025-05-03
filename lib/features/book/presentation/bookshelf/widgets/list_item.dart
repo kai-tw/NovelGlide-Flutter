@@ -13,8 +13,8 @@ class _SliverListItem extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           // Book widget
-          BlocBuilder<BookshelfCubit, BookShelfState>(
-            buildWhen: (BookShelfState previous, BookShelfState current) =>
+          BlocBuilder<BookshelfCubit, BookshelfState>(
+            buildWhen: (BookshelfState previous, BookshelfState current) =>
                 previous.code != current.code ||
                 previous.isSelecting != current.isSelecting ||
                 previous.isDragging != current.isDragging,
@@ -25,8 +25,8 @@ class _SliverListItem extends StatelessWidget {
           Positioned(
             top: 16.0,
             left: 16.0,
-            child: BlocBuilder<BookshelfCubit, BookShelfState>(
-              buildWhen: (BookShelfState previous, BookShelfState current) =>
+            child: BlocBuilder<BookshelfCubit, BookshelfState>(
+              buildWhen: (BookshelfState previous, BookshelfState current) =>
                   previous.isSelecting != current.isSelecting ||
                   previous.selectedSet != current.selectedSet,
               builder: _checkboxWidgetBuilder,
@@ -42,7 +42,7 @@ class _SliverListItem extends StatelessWidget {
   /// *************************************************************************
 
   /// Book widgets builder
-  Widget _bookWidgetBuilder(BuildContext context, BookShelfState state) {
+  Widget _bookWidgetBuilder(BuildContext context, BookshelfState state) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     if (state.isSelecting || state.code.isBackgroundLoading) {
       return Padding(
@@ -66,7 +66,7 @@ class _SliverListItem extends StatelessWidget {
   /// Checkbox widgets builder
   Widget _checkboxWidgetBuilder(
     BuildContext context,
-    BookShelfState state,
+    BookshelfState state,
   ) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);

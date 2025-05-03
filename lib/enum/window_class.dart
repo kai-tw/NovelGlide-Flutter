@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 enum WindowClass {
   /// The window size is less than 600 pixels
   compact(0, 600),
@@ -23,6 +25,11 @@ enum WindowClass {
       }
     }
     return WindowClass.extraLarge;
+  }
+
+  factory WindowClass.of(BuildContext context) {
+    final double width = MediaQuery.sizeOf(context).width;
+    return WindowClass.fromWidth(width);
   }
 
   final double minWidth;

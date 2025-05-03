@@ -1,7 +1,7 @@
-part of '../bookshelf.dart';
+part of '../../bookshelf.dart';
 
-class _PopupMenuButton extends StatelessWidget {
-  const _PopupMenuButton();
+class BookshelfCompactAppBarMoreButton extends StatelessWidget {
+  const BookshelfCompactAppBarMoreButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,18 +14,20 @@ class _PopupMenuButton extends StatelessWidget {
         final bool isLoaded = cubit.state.code == LoadingStateCode.loaded;
         final List<PopupMenuEntry<void>> entries = <PopupMenuEntry<void>>[];
 
-        /// Selecting mode
-        if (isLoaded && !cubit.state.isSelecting) {
+        // Selecting mode button
+        if (isLoaded &&
+            !cubit.state.isSelecting &&
+            cubit.state.dataList.isNotEmpty) {
           entries.addAll(<PopupMenuEntry<void>>[
             PopupMenuItem<void>(
               onTap: () => cubit.isSelecting = true,
-              child: const SharedListSelectModeButton(),
+              child: const SharedListSelectModeTile(),
             ),
             const PopupMenuDivider(),
           ]);
         }
 
-        /// Sorting Section
+        // Sorting Section
         final Map<SortOrderCode, String> sortMap = <SortOrderCode, String>{
           SortOrderCode.name: appLocalizations.bookshelfSortName,
           SortOrderCode.modifiedDate:
@@ -48,7 +50,7 @@ class _PopupMenuButton extends StatelessWidget {
           );
         }
 
-        /// Operation Section
+        // Operation Section
         if (isLoaded && cubit.state.isSelecting) {
           entries.addAll(<PopupMenuEntry<void>>[
             const PopupMenuDivider(),

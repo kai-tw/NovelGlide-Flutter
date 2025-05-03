@@ -13,11 +13,11 @@ import '../../../../common_components/shared_list/shared_list.dart';
 import '../../../data/model/book_data.dart';
 import '../../../data/repository/book_repository.dart';
 
-typedef BookShelfState = SharedListState<BookData>;
+typedef BookshelfState = SharedListState<BookData>;
 
 class BookshelfCubit extends SharedListCubit<BookData> {
   factory BookshelfCubit() {
-    final BookshelfCubit cubit = BookshelfCubit._(const BookShelfState());
+    final BookshelfCubit cubit = BookshelfCubit._(const BookshelfState());
     cubit._init();
     return cubit;
   }
@@ -54,7 +54,7 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     final SortOrderCode sortOrderCode = SortOrderCode.values[sortOrder];
     final bool isAscending = _prefs.getBool(_isAscendingKey) ?? true;
 
-    emit(BookShelfState(
+    emit(BookshelfState(
       code: LoadingStateCode.loading,
       dataList: List<BookData>.from(state.dataList),
       sortOrder: sortOrderCode,
