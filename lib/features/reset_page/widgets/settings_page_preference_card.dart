@@ -1,27 +1,23 @@
 part of '../reset_page.dart';
 
-class _PreferenceCard extends StatelessWidget {
-  const _PreferenceCard();
+class SettingsPagePreferenceCard extends StatelessWidget {
+  const SettingsPagePreferenceCard({super.key});
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return SettingsCard(
-      margin: const EdgeInsets.symmetric(
-        vertical: 12.0,
-        horizontal: 24.0,
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left: 20.0, bottom: 12.0),
+            padding: const EdgeInsets.only(bottom: 12.0),
             child: Text(
               appLocalizations.resetPagePreferenceTitle,
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
-          _ListTile(
+          SettingsPageListTile(
             onDelete: () async {
               final SharedPreferences prefs =
                   await SharedPreferences.getInstance();
@@ -32,7 +28,7 @@ class _PreferenceCard extends StatelessWidget {
             title: appLocalizations.resetPageResetBookshelf,
             deleteLabel: appLocalizations.generalReset,
           ),
-          _ListTile(
+          SettingsPageListTile(
             onDelete: () async {
               final SharedPreferences prefs =
                   await SharedPreferences.getInstance();
@@ -43,7 +39,7 @@ class _PreferenceCard extends StatelessWidget {
             title: appLocalizations.resetPageResetCollectionList,
             deleteLabel: appLocalizations.generalReset,
           ),
-          _ListTile(
+          SettingsPageListTile(
             onDelete: () async {
               final SharedPreferences prefs =
                   await SharedPreferences.getInstance();
@@ -54,7 +50,7 @@ class _PreferenceCard extends StatelessWidget {
             title: appLocalizations.resetPageResetBookmarkList,
             deleteLabel: appLocalizations.generalReset,
           ),
-          _ListTile(
+          SettingsPageListTile(
             onDelete: () async {
               await const ReaderSettingsData().save();
             },

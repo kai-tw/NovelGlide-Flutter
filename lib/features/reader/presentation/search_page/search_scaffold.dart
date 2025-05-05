@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
-import '../../../../enum/window_class.dart';
+import '../../../../enum/window_size.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../common_components/common_loading.dart';
 import '../reader_page/cubit/reader_cubit.dart';
@@ -28,7 +28,7 @@ class SearchScaffold extends StatelessWidget {
       ),
       body: Center(
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: WindowClass.compact.maxWidth),
+          constraints: BoxConstraints(maxWidth: WindowSize.compact.maxWidth),
           child: Column(
             children: <Widget>[
               const Expanded(

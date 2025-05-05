@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/utils/route_utils.dart';
-import '../../enum/window_class.dart';
+import '../../enum/window_size.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../about_page/about_page.dart';
 import '../backup_service/presentation/backup_service_page.dart';
@@ -19,7 +19,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final double windowWidth = MediaQuery.sizeOf(context).width;
-    final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
+    final WindowSize windowClass = WindowSize.fromWidth(windowWidth);
 
     final List<SettingsListTile> buttonList = <SettingsListTile>[
       SettingsListTile(
@@ -82,7 +82,7 @@ class SettingsPage extends StatelessWidget {
       child: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(
-            top: windowClass == WindowClass.compact ? 0.0 : 16.0,
+            top: windowClass == WindowSize.compact ? 0.0 : 16.0,
             bottom: MediaQuery.paddingOf(context).bottom,
           ),
           child: Column(

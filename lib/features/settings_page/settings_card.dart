@@ -15,8 +15,16 @@ class SettingsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: margin ?? const EdgeInsets.all(16.0),
-      padding: padding ?? const EdgeInsets.all(24.0),
+      margin: margin ??
+          const EdgeInsets.symmetric(
+            vertical: 8.0,
+            horizontal: 16.0,
+          ),
+      padding: padding ??
+          const EdgeInsets.symmetric(
+            vertical: 24.0,
+            horizontal: 24.0,
+          ),
       width: double.infinity,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainer,

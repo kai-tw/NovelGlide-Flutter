@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
-import '../../../../enum/window_class.dart';
+import '../../../../enum/window_size.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../bookmark/data/bookmark_data.dart';
 import '../../../bookmark/data/bookmark_repository.dart';
@@ -34,11 +34,11 @@ class TableOfContents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double windowWidth = MediaQuery.sizeOf(context).width;
-    final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
+    final WindowSize windowClass = WindowSize.fromWidth(windowWidth);
     Widget body;
 
     switch (windowClass) {
-      case WindowClass.compact:
+      case WindowSize.compact:
         body = _CompactView(bookData: bookData);
         break;
 

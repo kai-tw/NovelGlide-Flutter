@@ -1,7 +1,8 @@
 part of '../reset_page.dart';
 
-class _ListTile extends StatelessWidget {
-  const _ListTile({
+class SettingsPageListTile extends StatelessWidget {
+  const SettingsPageListTile({
+    super.key,
     required this.title,
     required this.iconData,
     this.deleteLabel,
@@ -18,6 +19,7 @@ class _ListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: EdgeInsets.zero,
       onTap: () {
         if (isDangerous) {
           showDialog(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/utils/route_utils.dart';
-import '../../enum/window_class.dart';
+import '../../enum/window_size.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../book/data/model/book_data.dart';
 import '../book/presentation/add_page/book_add_page.dart';
@@ -54,11 +54,11 @@ class _Scaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.sizeOf(context).width;
-    final WindowClass windowClass = WindowClass.fromWidth(screenWidth);
+    final WindowSize windowClass = WindowSize.fromWidth(screenWidth);
 
     /// Display the homepage based on the window size
     switch (windowClass) {
-      case WindowClass.compact:
+      case WindowSize.compact:
         return const HomepageCompactView();
 
       default:

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum WindowClass {
+enum WindowSize {
   /// The window size is less than 600 pixels
   compact(0, 600),
 
@@ -16,20 +16,20 @@ enum WindowClass {
   /// The window size is greater than 1600 pixels
   extraLarge(1600, double.infinity);
 
-  const WindowClass(this.minWidth, this.maxWidth);
+  const WindowSize(this.minWidth, this.maxWidth);
 
-  factory WindowClass.fromWidth(double width) {
-    for (final WindowClass windowClass in WindowClass.values) {
+  factory WindowSize.fromWidth(double width) {
+    for (final WindowSize windowClass in WindowSize.values) {
       if (windowClass.minWidth <= width && width < windowClass.maxWidth) {
         return windowClass;
       }
     }
-    return WindowClass.extraLarge;
+    return WindowSize.extraLarge;
   }
 
-  factory WindowClass.of(BuildContext context) {
+  factory WindowSize.of(BuildContext context) {
     final double width = MediaQuery.sizeOf(context).width;
-    return WindowClass.fromWidth(width);
+    return WindowSize.fromWidth(width);
   }
 
   final double minWidth;

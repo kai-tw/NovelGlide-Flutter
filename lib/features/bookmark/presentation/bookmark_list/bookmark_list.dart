@@ -5,7 +5,7 @@ import '../../../../core/utils/PopupMenuUtils.dart';
 import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../enum/sort_order_code.dart';
-import '../../../../enum/window_class.dart';
+import '../../../../enum/window_size.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../common_components/common_delete_dialog.dart';
 import '../../../common_components/common_loading.dart';

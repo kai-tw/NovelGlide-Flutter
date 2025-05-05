@@ -5,7 +5,7 @@ import '../../../../core/utils/PopupMenuUtils.dart';
 import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../enum/sort_order_code.dart';
-import '../../../../enum/window_class.dart';
+import '../../../../enum/window_size.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../common_components/common_delete_dialog.dart';
 import '../../../common_components/common_loading.dart';
@@ -32,7 +32,7 @@ class CollectionList extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final double windowWidth = MediaQuery.sizeOf(context).width;
-    final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
+    final WindowSize windowClass = WindowSize.fromWidth(windowWidth);
 
     BlocProvider.of<CollectionListCubit>(context).refresh();
 
@@ -58,7 +58,7 @@ class CollectionList extends StatelessWidget {
             } else {
               return SliverPadding(
                 padding: EdgeInsets.only(
-                  top: windowClass == WindowClass.compact ? 0.0 : 16.0,
+                  top: windowClass == WindowSize.compact ? 0.0 : 16.0,
                   bottom: MediaQuery.paddingOf(context).bottom + 72.0,
                 ),
                 sliver: SliverList(

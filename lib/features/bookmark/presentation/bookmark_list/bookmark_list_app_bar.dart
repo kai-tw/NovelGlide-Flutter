@@ -11,11 +11,11 @@ class BookmarkListAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final double windowWidth = MediaQuery.sizeOf(context).width;
-    final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
+    final WindowSize windowClass = WindowSize.fromWidth(windowWidth);
 
     return AppBar(
       leading: const Icon(Icons.bookmarks_outlined),
-      leadingWidth: windowClass == WindowClass.compact ? null : 100.0,
+      leadingWidth: windowClass == WindowSize.compact ? null : 100.0,
       title: Text(appLocalizations.bookmarkListTitle),
       actions: const <Widget>[
         SharedListSelectAllButton<BookmarkListCubit>(),

@@ -33,7 +33,7 @@ class _DeviceInfoCard extends StatelessWidget {
         ),
         ListTile(
           title: const Text('WindowClass'),
-          subtitle: Text('${WindowClass.of(context)}'),
+          subtitle: Text('${WindowSize.of(context)}'),
         ),
       ],
     );

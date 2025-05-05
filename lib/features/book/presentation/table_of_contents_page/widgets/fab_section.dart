@@ -7,10 +7,10 @@ class _FabSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final _Cubit cubit = BlocProvider.of<_Cubit>(context);
     final double windowWidth = MediaQuery.sizeOf(context).width;
-    final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
+    final WindowSize windowClass = WindowSize.fromWidth(windowWidth);
     double maxWidth = windowWidth - kFloatingActionButtonMargin;
 
-    if (windowClass != WindowClass.compact) {
+    if (windowClass != WindowSize.compact) {
       maxWidth *= 0.618;
     }
 

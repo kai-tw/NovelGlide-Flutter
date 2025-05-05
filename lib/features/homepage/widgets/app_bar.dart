@@ -9,7 +9,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final double windowWidth = MediaQuery.sizeOf(context).width;
-    final WindowClass windowClass = WindowClass.fromWidth(windowWidth);
+    final WindowSize windowClass = WindowSize.fromWidth(windowWidth);
     return BlocBuilder<HomepageCubit, HomepageState>(
       buildWhen: (HomepageState previous, HomepageState current) =>
           previous.navItem != current.navItem,
@@ -27,7 +27,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           case HomepageNavigationItem.settings:
             return AppBar(
               leading: const Icon(Icons.settings_outlined),
-              leadingWidth: windowClass == WindowClass.compact ? null : 100.0,
+              leadingWidth: windowClass == WindowSize.compact ? null : 100.0,
               title: Text(AppLocalizations.of(context)!.settingsTitle),
             );
         }
