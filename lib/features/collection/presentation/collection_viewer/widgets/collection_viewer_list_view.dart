@@ -24,14 +24,15 @@ class CollectionViewerListView extends StatelessWidget {
             if (state.dataList.isEmpty) {
               return const SharedListEmpty();
             } else {
+              final bool isDraggable = state.code.isLoaded &&
+                  !state.isSelecting &&
+                  state.dataList.length > 1;
               return ReorderableListView.builder(
                 header: state.code.isBackgroundLoading
                     ? const LinearProgressIndicator()
                     : null,
                 onReorder: cubit.reorder,
-                buildDefaultDragHandles: state.code.isLoaded &&
-                    !state.isSelecting &&
-                    state.dataList.length > 1,
+                buildDefaultDragHandles: isDraggable,
                 itemCount: state.dataList.length,
                 itemBuilder: (BuildContext context, int index) {
                   final BookData data = state.dataList[index];
@@ -39,7 +40,7 @@ class CollectionViewerListView extends StatelessWidget {
                     bookData: data,
                     key: ValueKey<String>(data.absoluteFilePath),
                     isSelecting: state.isSelecting,
-                    isDraggable: state.code.isLoaded,
+                    isDraggable: isDraggable,
                   );
                 },
               );
