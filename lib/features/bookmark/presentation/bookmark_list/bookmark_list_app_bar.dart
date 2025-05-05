@@ -20,7 +20,7 @@ class BookmarkListAppBar extends StatelessWidget
       actions: const <Widget>[
         SharedListSelectAllButton<BookmarkListCubit>(),
         SharedListDoneButton<BookmarkListCubit>(),
-        _PopupMenuButton(),
+        BookmarkListAppBarMoreButton(),
       ],
     );
   }

@@ -5,57 +5,57 @@ class CollectionViewerMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<void>(
-      icon: const Icon(Icons.more_vert_rounded),
-      clipBehavior: Clip.hardEdge,
-      itemBuilder: _itemBuilder,
+    return BlocBuilder<CollectionViewerCubit, CollectionViewerState>(
+      buildWhen:
+          (CollectionViewerState previous, CollectionViewerState current) =>
+              previous.isSelecting != current.isSelecting,
+      builder: (BuildContext context, CollectionViewerState state) {
+        if (state.isSelecting) {
+          return PopupMenuButton<void>(
+            clipBehavior: Clip.hardEdge,
+            itemBuilder: _itemBuilder,
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
     );
   }
 
   List<PopupMenuEntry<void>> _itemBuilder(BuildContext context) {
     final CollectionViewerCubit cubit =
         BlocProvider.of<CollectionViewerCubit>(context);
-    final bool isLoaded = cubit.state.code.isLoaded;
     final List<PopupMenuEntry<void>> entries = <PopupMenuEntry<void>>[];
 
     // Selecting mode button
-    if (isLoaded &&
+    if (cubit.state.code.isLoaded &&
         !cubit.state.isSelecting &&
         cubit.state.dataList.isNotEmpty) {
-      entries.addAll(<PopupMenuEntry<void>>[
-        PopupMenuItem<void>(
-          onTap: () => cubit.isSelecting = true,
-          child: const SharedListSelectModeTile(),
-        ),
-        const PopupMenuDivider(),
-      ]);
+      PopupMenuUtils.addSection(entries,
+          SharedListSelectModeTile.itemBuilder<CollectionViewerCubit>(context));
     }
 
     // Operation Section
-    if (isLoaded && cubit.state.isSelecting) {
-      // The button that removes selected books from collection.
-      entries.add(_buildDeleteButton(context));
+    if (cubit.state.code.isLoaded &&
+        cubit.state.isSelecting &&
+        cubit.state.selectedSet.isNotEmpty) {
+      PopupMenuUtils.addSection(entries, <PopupMenuItem<void>>[
+        PopupMenuItem<void>(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (_) {
+                return CommonDeleteDialog(
+                  onDelete: cubit.remove,
+                );
+              },
+            );
+          },
+          child: const SharedListDeleteButton(),
+        ),
+      ]);
     }
 
     return entries;
-  }
-
-  PopupMenuEntry<void> _buildDeleteButton(BuildContext context) {
-    final CollectionViewerCubit cubit =
-        BlocProvider.of<CollectionViewerCubit>(context);
-    return PopupMenuItem<void>(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (_) {
-            return CommonDeleteDialog(
-              onDelete: cubit.remove,
-            );
-          },
-        );
-      },
-      enabled: cubit.state.selectedSet.isNotEmpty,
-      child: const SharedListDeleteButton(),
-    );
   }
 }

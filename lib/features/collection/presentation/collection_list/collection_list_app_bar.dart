@@ -19,7 +19,7 @@ class CollectionListAppBar extends StatelessWidget
       actions: const <Widget>[
         SharedListSelectAllButton<CollectionListCubit>(),
         SharedListDoneButton<CollectionListCubit>(),
-        _PopupMenuButton(),
+        CollectionListAppBarMoreButton(),
       ],
     );
   }

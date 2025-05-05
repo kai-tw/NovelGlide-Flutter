@@ -13,4 +13,15 @@ class SharedListSelectModeTile extends StatelessWidget {
       trailing: const Icon(Icons.check_circle_outline_rounded),
     );
   }
+
+  static List<PopupMenuItem<void>>
+      itemBuilder<T extends SharedListCubit<dynamic>>(BuildContext context) {
+    final T cubit = BlocProvider.of<T>(context);
+    return <PopupMenuItem<void>>[
+      PopupMenuItem<void>(
+        onTap: () => cubit.isSelecting = true,
+        child: const SharedListSelectModeTile(),
+      ),
+    ];
+  }
 }

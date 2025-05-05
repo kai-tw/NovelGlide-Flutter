@@ -13,14 +13,25 @@ class SharedListDoneButton<T extends SharedListCubit<dynamic>>
               SharedListState<dynamic> current) =>
           previous.isSelecting != current.isSelecting,
       builder: (BuildContext context, SharedListState<dynamic> state) {
+        Widget? child;
+
         if (state.isSelecting) {
-          return TextButton(
+          child = TextButton(
             onPressed: () => cubit.isSelecting = false,
             child: Text(appLocalizations.generalDone),
           );
-        } else {
-          return const SizedBox.shrink();
         }
+
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          child: child,
+        );
       },
     );
   }

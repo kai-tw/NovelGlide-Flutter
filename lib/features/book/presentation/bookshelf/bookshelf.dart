@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/utils/PopupMenuUtils.dart';
 import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../enum/sort_order_code.dart';
-import '../../../../enum/window_class.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../ads_service/data/advertisement_type.dart';
 import '../../../ads_service/presentation/advertisement.dart';
@@ -21,13 +21,11 @@ import '../shared/book_cover_image.dart';
 import '../table_of_contents_page/table_of_contents.dart';
 import 'cubit/bookshelf_cubit.dart';
 
-part 'app_bar/bookshelf_compact_app_bar.dart';
-part 'app_bar/bookshelf_medium_app_bar.dart';
-part 'app_bar/buttons/bookshelf_compact_app_bar_more_button.dart';
 part 'bookshelf_app_bar.dart';
 part 'bookshelf_loading_indicator.dart';
 part 'bookshelf_scaffold_body.dart';
 part 'widgets/book_widget.dart';
+part 'widgets/bookshelf_app_bar_more_button.dart';
 part 'widgets/draggable_book.dart';
 part 'widgets/list_item.dart';
 

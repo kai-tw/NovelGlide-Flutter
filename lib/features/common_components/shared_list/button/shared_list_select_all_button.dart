@@ -14,11 +14,13 @@ class SharedListSelectAllButton<T extends SharedListCubit<dynamic>>
           previous.dataList.isNotEmpty != current.dataList.isNotEmpty ||
           previous.isSelectAll != current.isSelectAll,
       builder: (BuildContext context, SharedListState<dynamic> state) {
+        Widget? child;
+
         if (state.isSelecting) {
           final AppLocalizations appLocalizations =
               AppLocalizations.of(context)!;
           if (state.dataList.isNotEmpty) {
-            return TextButton(
+            child = TextButton(
               onPressed:
                   state.isSelectAll ? cubit.deselectAll : cubit.selectAll,
               child: Text(state.isSelectAll
@@ -26,14 +28,23 @@ class SharedListSelectAllButton<T extends SharedListCubit<dynamic>>
                   : appLocalizations.generalSelectAll),
             );
           } else {
-            return TextButton(
+            child = TextButton(
               onPressed: null,
               child: Text(appLocalizations.generalSelectAll),
             );
           }
-        } else {
-          return const SizedBox.shrink();
         }
+
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          child: child,
+        );
       },
     );
   }
