@@ -12,10 +12,10 @@ import '../reader/data/model/reader_settings_data.dart';
 import '../reader/data/repository/cache_repository.dart';
 import '../settings_page/settings_card.dart';
 
-part 'widgets/cache_card.dart';
-part 'widgets/data_card.dart';
-part 'widgets/list_tile.dart';
-part 'widgets/preference_card.dart';
+part 'widgets/settings_page_cache_card.dart';
+part 'widgets/settings_page_data_card.dart';
+part 'widgets/settings_page_list_tile.dart';
+part 'widgets/settings_page_preference_card.dart';
 
 class ResetPage extends StatelessWidget {
   const ResetPage({super.key});
@@ -31,9 +31,9 @@ class ResetPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              _PreferenceCard(),
-              _CacheCard(),
-              _DataCard(),
+              SettingsPagePreferenceCard(),
+              SettingsPageCacheCard(),
+              SettingsPageDataCard(),
             ],
           ),
         ),
