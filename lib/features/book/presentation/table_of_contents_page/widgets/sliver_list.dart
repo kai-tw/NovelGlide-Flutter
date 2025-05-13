@@ -52,7 +52,7 @@ class _SliverList extends StatelessWidget {
             onTap: () {
               Navigator.of(context)
                   .push(
-                    RouteUtils.pushRoute(
+                    RouteUtils.defaultRoute(
                       ReaderWidget(
                         bookData: bookData,
                         bookPath: bookData.absoluteFilePath,

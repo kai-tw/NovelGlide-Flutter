@@ -51,7 +51,7 @@ class _DraggableBookmark extends StatelessWidget {
           onTap: () {
             Navigator.of(context)
                 .push(
-                  RouteUtils.pushRoute(
+                  RouteUtils.defaultRoute(
                     ReaderWidget(
                       bookPath: bookmarkData.bookPath,
                       destinationType: ReaderDestinationType.bookmark,

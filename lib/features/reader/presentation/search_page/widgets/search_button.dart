@@ -24,7 +24,7 @@ class SearchButton extends StatelessWidget {
   void _onPressed(BuildContext context) {
     final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     Navigator.of(context).push(
-      RouteUtils.pushRoute(
+      RouteUtils.defaultRoute(
         BlocProvider<ReaderSearchCubit>.value(
           value: cubit.searchCubit,
           child: const SearchScaffold(),

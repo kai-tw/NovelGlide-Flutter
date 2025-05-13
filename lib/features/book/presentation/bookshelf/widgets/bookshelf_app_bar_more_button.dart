@@ -51,7 +51,7 @@ class BookshelfAppBarMoreButton extends StatelessWidget {
       PopupMenuUtils.addSection(entries, <PopupMenuEntry<void>>[
         PopupMenuItem<void>(
           onTap: () {
-            Navigator.of(context).push(RouteUtils.pushRoute(
+            Navigator.of(context).push(RouteUtils.defaultRoute(
               CollectionAddBookScaffold(
                 dataSet: cubit.state.selectedSet,
               ),

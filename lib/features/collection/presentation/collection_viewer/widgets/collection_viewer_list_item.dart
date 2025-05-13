@@ -37,7 +37,7 @@ class CollectionViewerListItem extends StatelessWidget {
     final CollectionViewerCubit cubit =
         BlocProvider.of<CollectionViewerCubit>(context);
     Navigator.of(context)
-        .push(RouteUtils.pushRoute(TableOfContents(bookData)))
+        .push(RouteUtils.defaultRoute(TableOfContents(bookData)))
         .then((_) => cubit.refresh());
   }
 

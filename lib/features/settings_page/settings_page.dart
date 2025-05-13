@@ -24,21 +24,21 @@ class SettingsPage extends StatelessWidget {
     final List<SettingsListTile> buttonList = <SettingsListTile>[
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          RouteUtils.pushRoute(const TtsSettingsPage()),
+          RouteUtils.defaultRoute(const TtsSettingsPage()),
         ),
         iconData: Icons.volume_up_rounded,
         title: appLocalizations.ttsSettingsTitle,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          RouteUtils.pushRoute(const BackupServicePage()),
+          RouteUtils.defaultRoute(const BackupServicePage()),
         ),
         iconData: Icons.cloud_rounded,
         title: appLocalizations.backupServiceTitle,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          RouteUtils.pushRoute(const ResetPage()),
+          RouteUtils.defaultRoute(const ResetPage()),
         ),
         iconData: Icons.refresh_rounded,
         title: appLocalizations.resetPageTitle,
@@ -60,7 +60,7 @@ class SettingsPage extends StatelessWidget {
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          RouteUtils.pushRoute(const AboutPage()),
+          RouteUtils.defaultRoute(const AboutPage()),
         ),
         iconData: Icons.info_outline,
         title: appLocalizations.settingsPageAbout,
@@ -71,7 +71,7 @@ class SettingsPage extends StatelessWidget {
       buttonList.add(
         SettingsListTile(
           onTap: () => Navigator.of(context)
-              .push(RouteUtils.pushRoute(const DeveloperPage())),
+              .push(RouteUtils.defaultRoute(const DeveloperPage())),
           iconData: Icons.code_rounded,
           title: 'Developer Page',
         ),

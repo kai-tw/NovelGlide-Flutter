@@ -22,7 +22,7 @@ class _FloatingActionButton extends StatelessWidget {
             child = FloatingActionButton(
               onPressed: () {
                 Navigator.of(context)
-                    .push<bool?>(RouteUtils.pushRoute(const BookAddPage()))
+                    .push<bool?>(RouteUtils.defaultRoute(const BookAddPage()))
                     .then((bool? isSuccess) {
                   if (isSuccess == true) {
                     bookshelfCubit.refresh();

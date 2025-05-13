@@ -108,7 +108,7 @@ class _SliverListItem extends StatelessWidget {
     } else if (bookData.isExist) {
       // Navigate to the table of contents page.
       Navigator.of(context)
-          .push(RouteUtils.pushRoute(TableOfContents(bookData)));
+          .push(RouteUtils.defaultRoute(TableOfContents(bookData)));
     } else {
       // Show the book is not exist dialog.
       showDialog(

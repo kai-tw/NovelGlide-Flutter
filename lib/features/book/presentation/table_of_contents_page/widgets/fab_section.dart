@@ -23,7 +23,7 @@ class _FabSection extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.of(context)
-                    .push(RouteUtils.pushRoute(
+                    .push(RouteUtils.defaultRoute(
                       ReaderWidget(
                         bookPath: cubit.bookData.absoluteFilePath,
                         bookData: cubit.bookData,
@@ -51,7 +51,7 @@ class _FabSection extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: () {
                   Navigator.of(context)
-                      .push(RouteUtils.pushRoute(
+                      .push(RouteUtils.defaultRoute(
                         ReaderWidget(
                           bookPath: cubit.bookData.absoluteFilePath,
                           bookData: cubit.bookData,

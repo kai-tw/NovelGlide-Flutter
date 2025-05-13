@@ -52,7 +52,7 @@ class _DraggableCollection extends StatelessWidget {
           onTap: () {
             Navigator.of(context)
                 .push(
-                  RouteUtils.pushRoute(
+                  RouteUtils.defaultRoute(
                     CollectionViewer(collectionData: collectionData),
                   ),
                 )
