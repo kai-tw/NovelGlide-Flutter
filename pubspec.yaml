@@ -11,7 +11,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   epubx: ^4.0.0
   equatable: ^2.0.5
-  extension_google_sign_in_as_googleapis_auth: ^2.0.12
+  extension_google_sign_in_as_googleapis_auth: ^3.0.0
   file_picker: ^10.1.2
   firebase_analytics: ^11.4.5
   firebase_auth: ^5.5.2
@@ -26,7 +26,7 @@ dependencies:
     sdk: flutter
   flutter_tts: ^4.2.2
   google_mobile_ads: ^6.0.0
-  google_sign_in: ^6.2.1
+  google_sign_in: ^7.0.0
   googleapis: ^14.0.0
   googleapis_auth: ^2.0.0
   html: ^0.15.4
@@ -45,7 +45,7 @@ dependencies:
   webview_flutter: ^4.8.0
   xml: ^6.5.0
 dev_dependencies:
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
   pubspec_dependency_sorter: ^1.0.4

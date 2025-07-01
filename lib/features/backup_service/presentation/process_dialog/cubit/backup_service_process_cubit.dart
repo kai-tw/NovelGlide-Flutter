@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 
-import '../../../../../core/services/google_drive_service.dart';
+import '../../../../../core/services/google_services/google_services.dart';
 import '../../../../../core/utils/random_utils.dart';
 import '../../../../bookmark/data/bookmark_repository.dart';
 import '../../../../collection/data/collection_repository.dart';

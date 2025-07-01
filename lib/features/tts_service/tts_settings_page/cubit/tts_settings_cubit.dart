@@ -134,7 +134,7 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
     }
   }
 
-  void _onSpeakEnd([_]) {
+  void _onSpeakEnd([dynamic _]) {
     if (!isClosed) {
       emit(state.copyWith(ttsState: TtsServiceState.stopped));
     }

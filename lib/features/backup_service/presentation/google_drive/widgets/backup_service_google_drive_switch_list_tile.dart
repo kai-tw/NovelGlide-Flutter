@@ -44,7 +44,7 @@ class BackupServiceGoogleDriveSwitchListTile extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         switch (e.code) {
-          case GoogleSignIn.kSignInFailedError:
+          case ExceptionCode.googleSignInFailed:
             return CommonErrorDialog(
               content: appLocalizations.exceptionGoogleDriveSignIn,
             );

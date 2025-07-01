@@ -233,7 +233,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     }
   }
 
-  void _receiveLoadDone(_) {
+  void _receiveLoadDone(dynamic _) {
     _serverHandler.stop();
     emit(state.copyWith(code: ReaderLoadingStateCode.loaded));
 

@@ -112,12 +112,12 @@ class ReaderTTSHandler {
   }
 
   /// Stop TTS
-  void _ttsStop(_) {
+  void _ttsStop(dynamic _) {
     _ttsService.stop();
   }
 
   /// Terminate TTS
-  void _ttsEnd(_) {
+  void _ttsEnd(dynamic _) {
     _ttsService.stop();
     _onCancel();
   }

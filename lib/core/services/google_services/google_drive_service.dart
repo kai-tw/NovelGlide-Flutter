@@ -1,16 +1,4 @@
-import 'dart:async';
-import 'dart:io';
-
-import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
-import 'package:flutter/services.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:googleapis/drive/v3.dart' as drive;
-import 'package:googleapis_auth/googleapis_auth.dart';
-import 'package:path/path.dart';
-
-import '../exceptions.dart';
-import '../utils/int_utils.dart';
-import 'mime_resolver.dart';
+part of 'google_services.dart';
 
 /// Google Drive API.
 class GoogleDriveService {
@@ -21,40 +9,26 @@ class GoogleDriveService {
     drive.DriveApi.driveFileScope,
   ];
 
-  static final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: _scopes);
   static drive.DriveApi? _driveApi;
   static const String appDataFolder = 'appDataFolder';
 
   /// Signs in the user and initializes the Drive API client.
   static Future<void> signIn() async {
-    if (_googleSignIn.currentUser == null &&
-        await _googleSignIn.signInSilently() == null &&
-        await _googleSignIn.signIn() == null) {
-      throw PlatformException(code: GoogleSignIn.kSignInFailedError);
-    }
-
-    if (!await _googleSignIn.requestScopes(_scopes)) {
-      throw PlatformException(code: ExceptionCode.googleDrivePermissionDenied);
-    }
-
-    final AuthClient? httpClient = await _googleSignIn.authenticatedClient();
-
-    if (httpClient == null) {
-      throw PlatformException(code: GoogleSignIn.kSignInFailedError);
-    } else {
-      _driveApi = drive.DriveApi(httpClient);
-    }
+    await GoogleServices.authService.signIn();
+    final GoogleAuthClient client =
+        await GoogleServices.authService.getClient(_scopes);
+    _driveApi = drive.DriveApi(client);
   }
 
   /// Signs out the user and clears the Drive API client.
   static Future<void> signOut() async {
-    await _googleSignIn.signOut();
+    await GoogleServices.authService.signOut();
     _driveApi = null;
   }
 
   /// Checks if the user is signed in and the Drive API client is initialized.
-  static Future<bool> isSignedIn() async =>
-      await _googleSignIn.isSignedIn() && _driveApi != null;
+  static bool get isSignedIn =>
+      GoogleServices.authService.isSignedIn && _driveApi != null;
 
   static drive.FilesResource get files => _driveApi!.files;
 

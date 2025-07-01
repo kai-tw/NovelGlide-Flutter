@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../../enum/loading_state_code.dart';
 import '../../../../../../preference_keys/preference_keys.dart';
-import '../../../../../core/services/google_drive_service.dart';
+import '../../../../../core/services/google_services/google_services.dart';
 import '../../../../bookmark/data/bookmark_repository.dart';
 import '../../../../collection/data/collection_repository.dart';
 import '../../../data/repository/backup_repository.dart';
@@ -35,11 +35,11 @@ class BackupServiceGoogleDriveCubit
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final bool isEnabled = prefs.getBool(key) ?? false;
 
-    if (isEnabled && !(await GoogleDriveService.isSignedIn())) {
+    if (isEnabled && !GoogleDriveService.isSignedIn) {
       await GoogleDriveService.signIn();
     }
 
-    if (await GoogleDriveService.isSignedIn()) {
+    if (GoogleDriveService.isSignedIn) {
       // Load the file IDs.
       final List<String> fileNameList = <String>[
         BackupRepository.libraryArchiveName,
@@ -81,7 +81,7 @@ class BackupServiceGoogleDriveCubit
   Future<void> setEnabled(bool isEnabled) async {
     final String key = PreferenceKeys.backupService.isBackupToGoogleDrive;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool isSignedIn = await GoogleDriveService.isSignedIn();
+    final bool isSignedIn = GoogleDriveService.isSignedIn;
 
     if (isEnabled != isSignedIn) {
       isEnabled
@@ -89,6 +89,6 @@ class BackupServiceGoogleDriveCubit
           : await GoogleDriveService.signOut();
     }
 
-    await prefs.setBool(key, await GoogleDriveService.isSignedIn());
+    await prefs.setBool(key, GoogleDriveService.isSignedIn);
   }
 }
