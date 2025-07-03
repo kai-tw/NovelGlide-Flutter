@@ -5,8 +5,14 @@ import 'package:logger/logger.dart';
 class LogService {
   LogService._();
 
+  static final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      methodCount: 0,
+    ),
+  );
+
   static void ensureInitialized() {
-    Logger.level = kDebugMode ? Level.all : Level.off;
+    Logger.level = kDebugMode ? Level.all : Level.error;
     Logger.addLogListener(
       (LogEvent event) {
         switch (event.level) {
@@ -30,4 +36,12 @@ class LogService {
       },
     );
   }
+
+  static void info(dynamic message) => _logger.i(message);
+
+  static void error(dynamic message, {Object? error, StackTrace? stackTrace}) =>
+      _logger.e(message, error: error, stackTrace: stackTrace);
+
+  static void fatal(dynamic message, {Object? error, StackTrace? stackTrace}) =>
+      _logger.f(message, error: error, stackTrace: stackTrace);
 }

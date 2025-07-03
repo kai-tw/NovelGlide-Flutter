@@ -4,16 +4,22 @@ part of 'google_services.dart';
 class GoogleDriveService {
   GoogleDriveService._();
 
+  static const String _appDataFolder = 'appDataFolder';
   static final List<String> _scopes = <String>[
     drive.DriveApi.driveAppdataScope,
     drive.DriveApi.driveFileScope,
   ];
 
-  static drive.DriveApi? _driveApi;
-  static const String appDataFolder = 'appDataFolder';
+  drive.DriveApi? _driveApi;
+
+  /// Checks if the user is signed in and the Drive API client is initialized.
+  bool get isSignedIn =>
+      GoogleServices.authService.isSignedIn && _driveApi != null;
+
+  drive.FilesResource get files => _driveApi!.files;
 
   /// Signs in the user and initializes the Drive API client.
-  static Future<void> signIn() async {
+  Future<void> signIn() async {
     await GoogleServices.authService.signIn();
     final GoogleAuthClient client =
         await GoogleServices.authService.getClient(_scopes);
@@ -21,29 +27,23 @@ class GoogleDriveService {
   }
 
   /// Signs out the user and clears the Drive API client.
-  static Future<void> signOut() async {
+  Future<void> signOut() async {
     await GoogleServices.authService.signOut();
     _driveApi = null;
   }
 
-  /// Checks if the user is signed in and the Drive API client is initialized.
-  static bool get isSignedIn =>
-      GoogleServices.authService.isSignedIn && _driveApi != null;
-
-  static drive.FilesResource get files => _driveApi!.files;
-
   /// Checks if the file exists in Google Drive.
-  static Future<bool> fileExists(
+  Future<bool> fileExists(
     String fileName, {
-    String spaces = appDataFolder,
+    String spaces = _appDataFolder,
   }) async {
     return await getFileId(fileName, spaces: spaces) != null;
   }
 
   /// Retrieves the file ID for a given file name in the app data folder.
-  static Future<String?> getFileId(
+  Future<String?> getFileId(
     String fileName, {
-    String spaces = appDataFolder,
+    String spaces = _appDataFolder,
   }) async {
     final drive.FileList fileList = await files.list(
       spaces: spaces,
@@ -56,25 +56,24 @@ class GoogleDriveService {
   }
 
   /// Retrieves metadata for a file by its ID.
-  static Future<drive.File> getMetadataById(String fileId,
-      {String? field}) async {
+  Future<drive.File> getMetadataById(String fileId, {String? field}) async {
     return await files.get(fileId, $fields: field) as drive.File;
   }
 
   /// Copies a file to specified parent folders.
-  static Future<void> copyFile(String fileId, List<String> parents) async {
+  Future<void> copyFile(String fileId, List<String> parents) async {
     final drive.File request = drive.File();
     request.parents = parents;
     await files.copy(request, fileId);
   }
 
   /// Deletes a file by its ID.
-  static Future<void> deleteFile(String fileId) async {
+  Future<void> deleteFile(String fileId) async {
     await files.delete(fileId);
   }
 
   /// Uploads a file to Google Drive, updating if it already exists.
-  static Future<void> uploadFile(String spaces, File file) async {
+  Future<void> uploadFile(File file, {String spaces = _appDataFolder}) async {
     final String? fileId = await getFileId(basename(file.path));
 
     final drive.File driveFile = drive.File();
@@ -92,7 +91,7 @@ class GoogleDriveService {
   }
 
   /// Downloads a file from Google Drive and saves it locally.
-  static Future<void> downloadFile(
+  Future<void> downloadFile(
     String fileId,
     File saveFile, {
     void Function(int, int)? onDownload,

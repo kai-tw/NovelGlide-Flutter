@@ -9,6 +9,7 @@ import 'package:path/path.dart';
 
 import '../../exceptions.dart';
 import '../../utils/int_utils.dart';
+import '../log_service.dart';
 import '../mime_resolver.dart';
 
 part 'google_auth_client.dart';
@@ -19,4 +20,5 @@ class GoogleServices {
   GoogleServices._();
 
   static final GoogleAuthService authService = GoogleAuthService();
+  static final GoogleDriveService driveService = GoogleDriveService._();
 }
