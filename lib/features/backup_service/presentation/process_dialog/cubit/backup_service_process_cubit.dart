@@ -122,7 +122,17 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
     ));
 
     // Upload the zip file to Google Drive
-    await GoogleServices.driveService.uploadFile(zipFile);
+    await GoogleServices.driveService.uploadFile(
+      zipFile,
+      onUpload: (int uploaded, int total) {
+        emit(state.copyWith(
+          library: BackupServiceProcessItemState(
+            step: BackupServiceProcessStepCode.upload,
+            progress: (uploaded / total).clamp(0, 1),
+          ),
+        ));
+      },
+    );
     tempFolder.deleteSync(recursive: true);
 
     // Emit the result
@@ -145,7 +155,17 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
     ));
 
     // Upload the bookmark json file.
-    await GoogleServices.driveService.uploadFile(BookmarkRepository.jsonFile);
+    await GoogleServices.driveService.uploadFile(
+      BookmarkRepository.jsonFile,
+      onUpload: (int uploaded, int total) {
+        emit(state.copyWith(
+          bookmark: BackupServiceProcessItemState(
+            step: BackupServiceProcessStepCode.upload,
+            progress: (uploaded / total).clamp(0, 1),
+          ),
+        ));
+      },
+    );
 
     // Emit the result
     emit(state.copyWith(
@@ -167,7 +187,17 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
     ));
 
     // Upload the collection json file
-    await GoogleServices.driveService.uploadFile(CollectionRepository.jsonFile);
+    await GoogleServices.driveService.uploadFile(
+      CollectionRepository.jsonFile,
+      onUpload: (int uploaded, int total) {
+        emit(state.copyWith(
+          collection: BackupServiceProcessItemState(
+            step: BackupServiceProcessStepCode.upload,
+            progress: (uploaded / total).clamp(0, 1),
+          ),
+        ));
+      },
+    );
 
     // Emit the result
     emit(state.copyWith(

@@ -73,14 +73,40 @@ class GoogleDriveService {
   }
 
   /// Uploads a file to Google Drive, updating if it already exists.
-  Future<void> uploadFile(File file, {String spaces = _appDataFolder}) async {
+  Future<void> uploadFile(
+    File file, {
+    String spaces = _appDataFolder,
+    void Function(int, int)? onUpload,
+  }) async {
     final String? fileId = await getFileId(basename(file.path));
 
     final drive.File driveFile = drive.File();
     driveFile.name = basename(file.path);
     driveFile.mimeType = MimeResolver.lookupAll(file);
 
-    final drive.Media media = drive.Media(file.openRead(), file.lengthSync());
+    int byteCount = 0;
+    final drive.Media media = drive.Media(
+        file.openRead().transform(
+              StreamTransformer<List<int>, List<int>>.fromHandlers(
+                handleData: (List<int> data, EventSink<List<int>> sink) {
+                  byteCount += data.length;
+                  onUpload?.call(byteCount, file.lengthSync());
+                  sink.add(data);
+                },
+                handleError:
+                    (Object e, StackTrace s, EventSink<List<int>> sink) {
+                  LogService.error(
+                    'GoogleDriveService.uploadFile: An error occurred',
+                    error: e,
+                    stackTrace: s,
+                  );
+                },
+                handleDone: (EventSink<List<int>> sink) {
+                  sink.close();
+                },
+              ),
+            ),
+        file.lengthSync());
 
     if (fileId != null) {
       await files.update(driveFile, fileId, uploadMedia: media);
