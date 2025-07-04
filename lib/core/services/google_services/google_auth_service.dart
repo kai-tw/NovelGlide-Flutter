@@ -1,22 +1,14 @@
 part of 'google_services.dart';
 
 class GoogleAuthService {
-  factory GoogleAuthService() {
-    final GoogleAuthService instance = GoogleAuthService._();
-    GoogleSignIn.instance.initialize().then(instance.onInitialized);
-    return instance;
-  }
-
   GoogleAuthService._();
 
-  bool get isSignedIn => _isInitialized && _currentUser != null;
+  bool get isSignedIn => _currentUser != null;
 
-  bool _isInitialized = false;
   GoogleSignInAccount? _currentUser;
 
-  FutureOr<void> onInitialized(void _) {
-    _isInitialized = true;
-
+  Future<void> ensureInitialized() async {
+    await GoogleSignIn.instance.initialize();
     GoogleSignIn.instance.authenticationEvents
         .listen(_handleAuthenticationEvent)
         .onError(_handleAuthenticationError);
@@ -24,11 +16,6 @@ class GoogleAuthService {
   }
 
   Future<void> signIn() async {
-    if (!_isInitialized) {
-      LogService.error('GoogleAuthService.signIn: Run before initialization');
-      throw PlatformException(code: ExceptionCode.googleSignInNotInitialized);
-    }
-
     LogService.info('GoogleAuthService.signIn: Start');
 
     // Login silently first
@@ -52,12 +39,6 @@ class GoogleAuthService {
   }
 
   Future<GoogleAuthClient> getClient(List<String> scopes) async {
-    if (!_isInitialized) {
-      LogService.error(
-          'GoogleAuthService.getClient: Run before initialization');
-      throw PlatformException(code: ExceptionCode.googleSignInNotInitialized);
-    }
-
     LogService.info('GoogleAuthService.getClient: Start.');
 
     // Attempt to get authorization for the requested scopes
@@ -93,11 +74,6 @@ class GoogleAuthService {
   }
 
   Future<void> signOut() async {
-    if (!_isInitialized) {
-      LogService.error('GoogleAuthService.signOut: Run before initialization');
-      throw PlatformException(code: ExceptionCode.googleSignInNotInitialized);
-    }
-
     await GoogleSignIn.instance.signOut();
     _currentUser = null;
   }

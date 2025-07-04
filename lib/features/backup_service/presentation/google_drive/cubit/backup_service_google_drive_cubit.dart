@@ -36,7 +36,9 @@ class BackupServiceGoogleDriveCubit
     final bool isEnabled = prefs.getBool(key) ?? false;
 
     if (isEnabled && !GoogleServices.driveService.isSignedIn) {
-      await GoogleServices.driveService.signIn();
+      try {
+        await GoogleServices.driveService.signIn();
+      } catch (_) {}
     }
 
     if (GoogleServices.driveService.isSignedIn) {

@@ -19,6 +19,12 @@ part 'google_drive_service.dart';
 class GoogleServices {
   GoogleServices._();
 
-  static final GoogleAuthService authService = GoogleAuthService();
+  static final GoogleAuthService authService = GoogleAuthService._();
   static final GoogleDriveService driveService = GoogleDriveService._();
+
+  static Future<void> ensureInitialized() async {
+    await Future.wait([
+      authService.ensureInitialized(),
+    ]);
+  }
 }

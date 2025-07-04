@@ -10,25 +10,24 @@ class GoogleDriveService {
     drive.DriveApi.driveFileScope,
   ];
 
+  final GoogleAuthService _authService = GoogleServices.authService;
   drive.DriveApi? _driveApi;
 
   /// Checks if the user is signed in and the Drive API client is initialized.
-  bool get isSignedIn =>
-      GoogleServices.authService.isSignedIn && _driveApi != null;
+  bool get isSignedIn => _authService.isSignedIn && _driveApi != null;
 
   drive.FilesResource get files => _driveApi!.files;
 
   /// Signs in the user and initializes the Drive API client.
   Future<void> signIn() async {
-    await GoogleServices.authService.signIn();
-    final GoogleAuthClient client =
-        await GoogleServices.authService.getClient(_scopes);
+    await _authService.signIn();
+    final GoogleAuthClient client = await _authService.getClient(_scopes);
     _driveApi = drive.DriveApi(client);
   }
 
   /// Signs out the user and clears the Drive API client.
   Future<void> signOut() async {
-    await GoogleServices.authService.signOut();
+    await _authService.signOut();
     _driveApi = null;
   }
 
