@@ -18,15 +18,15 @@ void main() async {
   // Ad Initialization
   MobileAds.instance.initialize();
 
+  // Log Initialization
+  LogService.ensureInitialized();
+
   // Future initializations
   await Future.wait([
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
     FilePath.ensureInitialized(),
     GoogleServices.ensureInitialized(),
   ]);
-
-  // Log Initialization
-  LogService.ensureInitialized();
 
   // Start App
   FirebaseAnalytics.instance.logAppOpen();
