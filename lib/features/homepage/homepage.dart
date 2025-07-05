@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/shared_components/common_delete_drag_target.dart';
+import '../../core/shared_components/shared_list/shared_list.dart';
 import '../../core/utils/route_utils.dart';
 import '../../enum/window_size.dart';
 import '../../generated/i18n/app_localizations.dart';
@@ -15,8 +17,6 @@ import '../collection/data/collection_data.dart';
 import '../collection/presentation/add_dialog/collection_add_dialog.dart';
 import '../collection/presentation/collection_list/collection_list.dart';
 import '../collection/presentation/collection_list/cubit/cubit.dart';
-import '../common_components/common_delete_drag_target.dart';
-import '../common_components/shared_list/shared_list.dart';
 import '../settings_page/settings_page.dart';
 import 'cubit/homepage_cubit.dart';
 

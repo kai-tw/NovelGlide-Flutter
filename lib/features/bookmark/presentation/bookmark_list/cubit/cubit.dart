@@ -1,10 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../../../preference_keys/preference_keys.dart';
-import '../../../../common_components/shared_list/shared_list.dart';
 import '../../../data/bookmark_data.dart';
 import '../../../data/bookmark_repository.dart';
 
@@ -74,15 +74,13 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
   ) {
     switch (sortOrder) {
       case SortOrderCode.name:
-        list.sort((BookmarkData a, BookmarkData b) => isAscending
-            ? compareNatural(a.bookPath, b.bookPath)
-            : compareNatural(b.bookPath, a.bookPath));
+        list.sort((BookmarkData a, BookmarkData b) =>
+            isAscending ? compareNatural(a.bookPath, b.bookPath) : compareNatural(b.bookPath, a.bookPath));
         break;
 
       default:
-        list.sort((BookmarkData a, BookmarkData b) => isAscending
-            ? a.savedTime.compareTo(b.savedTime)
-            : b.savedTime.compareTo(a.savedTime));
+        list.sort((BookmarkData a, BookmarkData b) =>
+            isAscending ? a.savedTime.compareTo(b.savedTime) : b.savedTime.compareTo(a.savedTime));
         break;
     }
   }

@@ -6,14 +6,14 @@ import 'package:googleapis/drive/v3.dart' as drive;
 
 import '../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
 import '../../core/services/file_path.dart';
+import '../../core/shared_components/common_delete_dialog.dart';
+import '../../core/shared_components/common_error_dialog.dart';
+import '../../core/shared_components/common_loading.dart';
+import '../../core/shared_components/common_success_dialog.dart';
+import '../../core/shared_components/shared_list/shared_list.dart';
 import '../../core/utils/datetime_utils.dart';
 import '../../core/utils/route_utils.dart';
 import '../../enum/window_size.dart';
-import '../common_components/common_delete_dialog.dart';
-import '../common_components/common_error_dialog.dart';
-import '../common_components/common_loading.dart';
-import '../common_components/common_success_dialog.dart';
-import '../common_components/shared_list/shared_list.dart';
 
 part 'bloc/google_drive_cubit.dart';
 part 'cards/backup_card.dart';
