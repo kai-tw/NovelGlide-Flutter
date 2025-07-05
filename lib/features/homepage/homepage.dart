@@ -20,7 +20,6 @@ import '../common_components/shared_list/shared_list.dart';
 import '../settings_page/settings_page.dart';
 import 'cubit/homepage_cubit.dart';
 
-part 'homepage_app_bar.dart';
 part 'view/homepage_compact_view.dart';
 part 'view/homepage_medium_view.dart';
 part 'widgets/app_bar.dart';

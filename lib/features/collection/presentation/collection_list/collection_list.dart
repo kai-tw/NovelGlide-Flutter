@@ -13,7 +13,6 @@ import '../../../common_components/draggable_feedback_widget.dart';
 import '../../../common_components/draggable_placeholder_widget.dart';
 import '../../../common_components/shared_list/shared_list.dart';
 import '../../../homepage/cubit/homepage_cubit.dart';
-import '../../../homepage/homepage.dart';
 import '../../data/collection_data.dart';
 import '../../data/collection_repository.dart';
 import '../collection_viewer/collection_viewer.dart';
@@ -38,7 +37,8 @@ class CollectionList extends StatelessWidget {
     BlocProvider.of<CollectionListCubit>(context).refresh();
 
     return BlocBuilder<CollectionListCubit, SharedListState<CollectionData>>(
-      buildWhen: (SharedListState<CollectionData> previous, SharedListState<CollectionData> current) =>
+      buildWhen: (SharedListState<CollectionData> previous,
+              SharedListState<CollectionData> current) =>
           previous.code != current.code ||
           previous.dataList != current.dataList ||
           previous.isSelecting != current.isSelecting ||

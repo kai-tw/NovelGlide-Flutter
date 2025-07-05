@@ -8,6 +8,8 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double windowWidth = MediaQuery.sizeOf(context).width;
+    final WindowSize windowClass = WindowSize.fromWidth(windowWidth);
     return BlocBuilder<HomepageCubit, HomepageState>(
       buildWhen: (HomepageState previous, HomepageState current) =>
           previous.navItem != current.navItem,
@@ -23,7 +25,11 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
             return const BookmarkListAppBar();
 
           case HomepageNavigationItem.settings:
-            return const SettingsAppBar();
+            return AppBar(
+              leading: const Icon(Icons.settings_outlined),
+              leadingWidth: windowClass == WindowSize.compact ? null : 100.0,
+              title: Text(AppLocalizations.of(context)!.settingsTitle),
+            );
         }
       },
     );
