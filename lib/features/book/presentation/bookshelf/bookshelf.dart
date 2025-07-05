@@ -16,6 +16,7 @@ import '../../../common_components/draggable_feedback_widget.dart';
 import '../../../common_components/draggable_placeholder_widget.dart';
 import '../../../common_components/shared_list/shared_list.dart';
 import '../../../homepage/cubit/homepage_cubit.dart';
+import '../../../homepage/homepage.dart';
 import '../../data/model/book_data.dart';
 import '../shared/book_cover_image.dart';
 import '../table_of_contents_page/table_of_contents.dart';
@@ -75,8 +76,7 @@ class Bookshelf extends StatelessWidget {
           childAspectRatio: 150 / 300,
         ),
         delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) =>
-              _SliverListItem(state.dataList[index]),
+          (BuildContext context, int index) => _SliverListItem(state.dataList[index]),
           childCount: state.dataList.length,
         ),
       ),

@@ -1,7 +1,6 @@
 part of 'bookmark_list.dart';
 
-class BookmarkListAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
+class BookmarkListAppBar extends StatelessWidget implements PreferredSizeWidget {
   const BookmarkListAppBar({super.key});
 
   @override
@@ -10,13 +9,10 @@ class BookmarkListAppBar extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final double windowWidth = MediaQuery.sizeOf(context).width;
-    final WindowSize windowClass = WindowSize.fromWidth(windowWidth);
 
-    return AppBar(
-      leading: const Icon(Icons.bookmarks_outlined),
-      leadingWidth: windowClass == WindowSize.compact ? null : 100.0,
-      title: Text(appLocalizations.bookmarkListTitle),
+    return HomepageAppBar(
+      iconData: Icons.bookmarks_outlined,
+      title: appLocalizations.bookmarkListTitle,
       actions: const <Widget>[
         SharedListSelectAllButton<BookmarkListCubit>(),
         SharedListDoneButton<BookmarkListCubit>(),
