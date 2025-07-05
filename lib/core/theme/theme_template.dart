@@ -24,7 +24,8 @@ abstract class ThemeTemplate {
         centerTitle: false,
         titleTextStyle: TextStyle(
           color: colorScheme.onSurface,
-          fontSize: 18,
+          fontSize: 20.0,
+          fontWeight: FontWeight.w900,
         ),
       ),
       brightness: colorScheme.brightness,

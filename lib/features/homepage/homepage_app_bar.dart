@@ -22,12 +22,7 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leading: Icon(iconData),
       leadingWidth: windowClass == WindowSize.compact ? null : 100.0,
-      title: Text(
-        title,
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w900,
-            ),
-      ),
+      title: Text(title),
       actions: actions,
     );
   }
