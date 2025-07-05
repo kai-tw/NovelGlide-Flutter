@@ -23,7 +23,7 @@ class GoogleServices {
   static final GoogleDriveService driveService = GoogleDriveService._();
 
   static Future<void> ensureInitialized() async {
-    await Future.wait([
+    await Future.wait(<Future<void>>[
       authService.ensureInitialized(),
     ]);
   }
