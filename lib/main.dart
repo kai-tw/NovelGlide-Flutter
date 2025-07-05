@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'core/services/file_path.dart';
-import 'core/services/google_services/google_services.dart';
+import 'core/services/google_api_interfaces/google_api_interfaces.dart';
 import 'core/services/log_service.dart';
 import 'core/theme/default_theme.dart';
 import 'features/homepage/homepage.dart';
@@ -22,7 +22,7 @@ void main() async {
   await Future.wait(<Future<void>>[
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
     FilePath.ensureInitialized(),
-    GoogleServices.ensureInitialized(),
+    GoogleApiInterfaces.ensureInitialized(),
   ]);
 
   // Log Initialization
@@ -46,8 +46,7 @@ class App extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       home: const Homepage(),
-      builder: (BuildContext context, Widget? child) =>
-          AccessibilityTools(child: child),
+      builder: (BuildContext context, Widget? child) => AccessibilityTools(child: child),
       // debugShowCheckedModeBanner: false,
     );
   }

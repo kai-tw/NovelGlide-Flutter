@@ -1,7 +1,7 @@
-part of 'google_services.dart';
+part of 'google_api_interfaces.dart';
 
-class GoogleAuthService {
-  GoogleAuthService._();
+class GoogleAuthInterface {
+  GoogleAuthInterface._();
 
   bool get isSignedIn => _currentUser != null;
 
@@ -9,9 +9,7 @@ class GoogleAuthService {
 
   Future<void> ensureInitialized() async {
     await GoogleSignIn.instance.initialize();
-    GoogleSignIn.instance.authenticationEvents
-        .listen(_handleAuthenticationEvent)
-        .onError(_handleAuthenticationError);
+    GoogleSignIn.instance.authenticationEvents.listen(_handleAuthenticationEvent).onError(_handleAuthenticationError);
     LogService.info('GoogleAuthService: Initialized.');
   }
 
@@ -19,8 +17,7 @@ class GoogleAuthService {
     LogService.info('GoogleAuthService.signIn: Start');
 
     // Login silently first
-    _currentUser =
-        await GoogleSignIn.instance.attemptLightweightAuthentication();
+    _currentUser = await GoogleSignIn.instance.attemptLightweightAuthentication();
 
     // If silent login fails, prompt the user to sign in
     try {
@@ -47,8 +44,7 @@ class GoogleAuthService {
 
     // If authorization is null, prompt the user to authorize
     try {
-      authorization ??=
-          await _currentUser?.authorizationClient.authorizeScopes(scopes);
+      authorization ??= await _currentUser?.authorizationClient.authorizeScopes(scopes);
     } on GoogleSignInException catch (e) {
       LogService.error('GoogleAuthService.getClient: $e');
       throw PlatformException(code: ExceptionCode.googleDrivePermissionDenied);
@@ -60,8 +56,7 @@ class GoogleAuthService {
       throw PlatformException(code: ExceptionCode.googleDrivePermissionDenied);
     }
 
-    final Map<String, String>? header =
-        await _currentUser!.authorizationClient.authorizationHeaders(scopes);
+    final Map<String, String>? header = await _currentUser!.authorizationClient.authorizationHeaders(scopes);
 
     // Cannot get the header
     if (header == null) {
@@ -78,8 +73,7 @@ class GoogleAuthService {
     _currentUser = null;
   }
 
-  Future<void> _handleAuthenticationEvent(
-      GoogleSignInAuthenticationEvent event) async {}
+  Future<void> _handleAuthenticationEvent(GoogleSignInAuthenticationEvent event) async {}
 
   Future<void> _handleAuthenticationError(Object e) async {}
 }

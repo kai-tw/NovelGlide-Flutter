@@ -13,18 +13,18 @@ import '../log_service.dart';
 import '../mime_resolver.dart';
 
 part 'google_auth_client.dart';
-part 'google_auth_service.dart';
-part 'google_drive_service.dart';
+part 'google_auth_interface.dart';
+part 'google_drive_interface.dart';
 
-class GoogleServices {
-  GoogleServices._();
+class GoogleApiInterfaces {
+  GoogleApiInterfaces._();
 
-  static final GoogleAuthService authService = GoogleAuthService._();
-  static final GoogleDriveService driveService = GoogleDriveService._();
+  static final GoogleAuthInterface auth = GoogleAuthInterface._();
+  static final GoogleDriveInterface drive = GoogleDriveInterface._();
 
   static Future<void> ensureInitialized() async {
     await Future.wait(<Future<void>>[
-      authService.ensureInitialized(),
+      auth.ensureInitialized(),
     ]);
   }
 }

@@ -1,4 +1,4 @@
-part of 'google_services.dart';
+part of 'google_api_interfaces.dart';
 
 class GoogleAuthClient extends http.BaseClient {
   GoogleAuthClient(this._headers);
