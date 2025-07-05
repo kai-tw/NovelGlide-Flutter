@@ -4,8 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import 'core/interfaces/google_api_interfaces/google_api_interfaces.dart';
 import 'core/services/file_path.dart';
-import 'core/services/google_api_interfaces/google_api_interfaces.dart';
 import 'core/services/log_service.dart';
 import 'core/theme/default_theme.dart';
 import 'features/homepage/homepage.dart';

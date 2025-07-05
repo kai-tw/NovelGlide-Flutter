@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../../enum/loading_state_code.dart';
 import '../../../../../../preference_keys/preference_keys.dart';
-import '../../../../../core/services/google_api_interfaces/google_api_interfaces.dart';
+import '../../../../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
 import '../../../../bookmark/data/bookmark_repository.dart';
 import '../../../../collection/data/collection_repository.dart';
 import '../../../data/repository/backup_repository.dart';
