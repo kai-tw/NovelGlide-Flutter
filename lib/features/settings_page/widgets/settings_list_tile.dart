@@ -6,11 +6,13 @@ class SettingsListTile extends StatelessWidget {
     this.onTap,
     required this.iconData,
     required this.title,
+    this.trailing,
   });
 
   final void Function()? onTap;
   final IconData iconData;
   final String title;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,7 @@ class SettingsListTile extends StatelessWidget {
         child: Icon(iconData),
       ),
       title: Text(title),
+      trailing: trailing,
     );
   }
 }

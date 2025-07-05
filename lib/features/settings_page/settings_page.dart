@@ -29,14 +29,14 @@ class SettingsPage extends StatelessWidget {
         onTap: () => Navigator.of(context).push(
           RouteUtils.defaultRoute(const TtsSettingsPage()),
         ),
-        iconData: Icons.volume_up_rounded,
+        iconData: Icons.volume_up_outlined,
         title: appLocalizations.ttsSettingsTitle,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
           RouteUtils.defaultRoute(const BackupServicePage()),
         ),
-        iconData: Icons.cloud_rounded,
+        iconData: Icons.cloud_outlined,
         title: appLocalizations.backupServiceTitle,
       ),
       SettingsListTile(
@@ -50,15 +50,18 @@ class SettingsPage extends StatelessWidget {
         onTap: () => launchUrl(
           Uri.parse('https://www.kai-wu.net/%E6%84%8F%E8%A6%8B%E5%9B%9E%E9%A5%8B/'),
         ),
-        iconData: Icons.feedback_rounded,
+        iconData: Icons.feedback_outlined,
         title: appLocalizations.settingsFeedback,
+        trailing: const Icon(Icons.north_east_rounded),
+        // trailingIconData: ,
       ),
       SettingsListTile(
         onTap: () => launchUrl(
           Uri.parse('https://www.kai-wu.net/novelglide-privacy-policy'),
         ),
-        iconData: Icons.shield_rounded,
+        iconData: Icons.shield_outlined,
         title: appLocalizations.privacyPolicy,
+        trailing: const Icon(Icons.north_east_rounded),
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
