@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:novelglide/core/services/log_service.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:webview_flutter/webview_flutter.dart';
@@ -233,7 +234,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     }
   }
 
-  void _receiveLoadDone(_) {
+  void _receiveLoadDone(dynamic _) {
     _serverHandler.stop();
     emit(state.copyWith(code: ReaderLoadingStateCode.loaded));
 

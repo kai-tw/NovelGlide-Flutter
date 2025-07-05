@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../../enum/loading_state_code.dart';
 import '../../../../../../preference_keys/preference_keys.dart';
-import '../../../../../core/services/google_drive_service.dart';
+import '../../../../../core/services/google_services/google_services.dart';
 import '../../../../bookmark/data/bookmark_repository.dart';
 import '../../../../collection/data/collection_repository.dart';
 import '../../../data/repository/backup_repository.dart';
@@ -35,11 +35,13 @@ class BackupServiceGoogleDriveCubit
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final bool isEnabled = prefs.getBool(key) ?? false;
 
-    if (isEnabled && !(await GoogleDriveService.isSignedIn())) {
-      await GoogleDriveService.signIn();
+    if (isEnabled && !GoogleServices.driveService.isSignedIn) {
+      try {
+        await GoogleServices.driveService.signIn();
+      } catch (_) {}
     }
 
-    if (await GoogleDriveService.isSignedIn()) {
+    if (GoogleServices.driveService.isSignedIn) {
       // Load the file IDs.
       final List<String> fileNameList = <String>[
         BackupRepository.libraryArchiveName,
@@ -47,14 +49,15 @@ class BackupServiceGoogleDriveCubit
         BookmarkRepository.jsonFileName,
       ];
       final List<String?> fileIdList = await Future.wait<String?>(
-        fileNameList
-            .map((String fileName) => GoogleDriveService.getFileId(fileName)),
+        fileNameList.map((String fileName) =>
+            GoogleServices.driveService.getFileId(fileName)),
       );
 
       // Get the last backup time.
       final List<DateTime> timeList = (await Future.wait<drive.File>(
-        fileIdList.whereType<String>().map((String fileId) =>
-            GoogleDriveService.getMetadataById(fileId, field: 'modifiedTime')),
+        fileIdList.whereType<String>().map((String fileId) => GoogleServices
+            .driveService
+            .getMetadataById(fileId, field: 'modifiedTime')),
       ))
           .map((drive.File e) => e.modifiedTime)
           .whereType<DateTime>()
@@ -81,14 +84,14 @@ class BackupServiceGoogleDriveCubit
   Future<void> setEnabled(bool isEnabled) async {
     final String key = PreferenceKeys.backupService.isBackupToGoogleDrive;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool isSignedIn = await GoogleDriveService.isSignedIn();
+    final bool isSignedIn = GoogleServices.driveService.isSignedIn;
 
     if (isEnabled != isSignedIn) {
       isEnabled
-          ? await GoogleDriveService.signIn()
-          : await GoogleDriveService.signOut();
+          ? await GoogleServices.driveService.signIn()
+          : await GoogleServices.driveService.signOut();
     }
 
-    await prefs.setBool(key, await GoogleDriveService.isSignedIn());
+    await prefs.setBool(key, GoogleServices.driveService.isSignedIn);
   }
 }

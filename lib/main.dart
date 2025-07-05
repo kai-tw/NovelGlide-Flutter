@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'core/services/file_path.dart';
+import 'core/services/google_services/google_services.dart';
 import 'core/services/log_service.dart';
 import 'core/theme/default_theme.dart';
 import 'features/homepage/homepage.dart';
@@ -14,16 +15,18 @@ import 'generated/i18n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Package Initialization
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // Ad Initialization
+  MobileAds.instance.initialize();
 
-  // File Path Initialization
-  await FilePath.ensureInitialized();
+  // Future initializations
+  await Future.wait(<Future<void>>[
+    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
+    FilePath.ensureInitialized(),
+    GoogleServices.ensureInitialized(),
+  ]);
 
   // Log Initialization
   LogService.ensureInitialized();
-
-  MobileAds.instance.initialize();
 
   // Start App
   FirebaseAnalytics.instance.logAppOpen();

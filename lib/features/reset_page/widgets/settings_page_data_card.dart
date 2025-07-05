@@ -1,7 +1,7 @@
 part of '../reset_page.dart';
 
 class SettingsPageDataCard extends StatelessWidget {
-  const SettingsPageDataCard();
+  const SettingsPageDataCard({super.key});
 
   @override
   Widget build(BuildContext context) {
