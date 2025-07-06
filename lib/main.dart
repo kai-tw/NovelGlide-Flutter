@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-import 'core/app_cubit/app_locale_cubit/app_locale_cubit.dart';
+import 'core/app_global_cubit/app_global_cubit.dart';
 import 'core/interfaces/google_api_interfaces/google_api_interfaces.dart';
 import 'core/services/file_path.dart';
 import 'core/services/log_service.dart';
 import 'core/theme/default_theme.dart';
+import 'features/appearance_services/appearance_services.dart';
 import 'features/homepage/homepage.dart';
 import 'features/locale_service/locale_services.dart';
 import 'firebase_options.dart';
@@ -26,6 +27,7 @@ void main() async {
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
     FilePath.ensureInitialized(),
     GoogleApiInterfaces.ensureInitialized(),
+    AppearanceServices.ensureInitialized(),
     LocaleServices.ensureInitialized(),
   ]);
 
@@ -42,10 +44,8 @@ class AppWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: <BlocProvider<dynamic>>[
-        BlocProvider<AppLocaleCubit>(create: (_) => AppLocaleCubit()),
-      ],
+    return BlocProvider<AppGlobalCubit>(
+      create: (_) => AppGlobalCubit(),
       child: const App(),
     );
   }
@@ -57,12 +57,12 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DefaultTheme theme = DefaultTheme();
-    return BlocBuilder<AppLocaleCubit, AppLocaleState>(
-      builder: (BuildContext context, AppLocaleState state) {
+    return BlocBuilder<AppGlobalCubit, AppGlobalState>(
+      builder: (BuildContext context, AppGlobalState state) {
         return MaterialApp(
           title: 'NovelGlide',
-          theme: theme.lightTheme,
-          darkTheme: theme.darkTheme,
+          theme: state.isDarkMode == true ? theme.darkTheme : theme.lightTheme,
+          darkTheme: state.isDarkMode == null ? theme.darkTheme : null,
           locale: state.locale,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,

@@ -6,6 +6,7 @@ import '../../core/utils/route_utils.dart';
 import '../../enum/window_size.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../about_page/about_page.dart';
+import '../appearance_services/appearance_services.dart';
 import '../backup_service/presentation/backup_service_page.dart';
 import '../developer_page/developer_page.dart';
 import '../homepage/homepage.dart';
@@ -28,10 +29,10 @@ class SettingsPage extends StatelessWidget {
     final List<SettingsListTile> buttonList = <SettingsListTile>[
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          RouteUtils.defaultRoute(const TtsSettingsPage()),
+          RouteUtils.defaultRoute(const AppearanceSettingsPage()),
         ),
-        iconData: Icons.volume_up_outlined,
-        title: appLocalizations.ttsSettingsTitle,
+        iconData: Icons.format_paint_outlined,
+        title: appLocalizations.appearance,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
@@ -39,6 +40,13 @@ class SettingsPage extends StatelessWidget {
         ),
         iconData: Icons.cloud_outlined,
         title: appLocalizations.backupServiceTitle,
+      ),
+      SettingsListTile(
+        onTap: () => Navigator.of(context).push(
+          RouteUtils.defaultRoute(const TtsSettingsPage()),
+        ),
+        iconData: Icons.volume_up_outlined,
+        title: appLocalizations.ttsSettingsTitle,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
