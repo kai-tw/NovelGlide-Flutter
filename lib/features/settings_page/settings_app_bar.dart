@@ -11,7 +11,7 @@ class SettingsAppBar extends StatelessWidget implements PreferredSizeWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return HomepageAppBar(
-      iconData: Icons.settings_outlined,
+      iconData: Icons.settings_rounded,
       title: appLocalizations.settingsTitle,
     );
   }

@@ -11,7 +11,7 @@ class BookmarkListAppBar extends StatelessWidget implements PreferredSizeWidget 
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return HomepageAppBar(
-      iconData: Icons.bookmarks_outlined,
+      iconData: Icons.bookmarks_rounded,
       title: appLocalizations.bookmarkListTitle,
       actions: const <Widget>[
         SharedListSelectAllButton<BookmarkListCubit>(),
