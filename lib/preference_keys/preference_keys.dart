@@ -12,4 +12,6 @@ class PreferenceKeys {
   static final SortOrderPref collection = SortOrderPref('collection');
   static final SortOrderPref bookmark = SortOrderPref('bookmark');
   static final TtsPref tts = TtsPref();
+
+  static const String userLocale = 'userLocale';
 }

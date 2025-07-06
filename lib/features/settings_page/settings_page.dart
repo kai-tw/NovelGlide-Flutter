@@ -9,6 +9,7 @@ import '../about_page/about_page.dart';
 import '../backup_service/presentation/backup_service_page.dart';
 import '../developer_page/developer_page.dart';
 import '../homepage/homepage.dart';
+import '../locale_service/locale_services.dart';
 import '../reset_page/reset_page.dart';
 import '../tts_service/tts_service.dart';
 import 'widgets/settings_list_tile.dart';
@@ -38,6 +39,13 @@ class SettingsPage extends StatelessWidget {
         ),
         iconData: Icons.cloud_outlined,
         title: appLocalizations.backupServiceTitle,
+      ),
+      SettingsListTile(
+        onTap: () => Navigator.of(context).push(
+          RouteUtils.defaultRoute(const LocaleSettingsPage()),
+        ),
+        iconData: Icons.language_rounded,
+        title: appLocalizations.languageSettings,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
