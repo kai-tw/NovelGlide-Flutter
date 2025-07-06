@@ -45,7 +45,7 @@ class SettingsPage extends StatelessWidget {
           RouteUtils.defaultRoute(const LocaleSettingsPage()),
         ),
         iconData: Icons.language_rounded,
-        title: appLocalizations.languageSettings,
+        title: appLocalizations.languages,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
