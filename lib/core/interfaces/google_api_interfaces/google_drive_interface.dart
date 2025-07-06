@@ -1,8 +1,8 @@
-part of 'google_services.dart';
+part of 'google_api_interfaces.dart';
 
 /// Google Drive API.
-class GoogleDriveService {
-  GoogleDriveService._();
+class GoogleDriveInterface {
+  GoogleDriveInterface._();
 
   static const String _appDataFolder = 'appDataFolder';
   static final List<String> _scopes = <String>[
@@ -10,7 +10,7 @@ class GoogleDriveService {
     drive.DriveApi.driveFileScope,
   ];
 
-  final GoogleAuthService _authService = GoogleServices.authService;
+  final GoogleAuthInterface _authService = GoogleApiInterfaces.auth;
   drive.DriveApi? _driveApi;
 
   /// Checks if the user is signed in and the Drive API client is initialized.
@@ -49,9 +49,7 @@ class GoogleDriveService {
       q: "name = '$fileName'",
       pageSize: 1,
     );
-    return fileList.files?.isNotEmpty ?? false
-        ? fileList.files?.first.id
-        : null;
+    return fileList.files?.isNotEmpty ?? false ? fileList.files?.first.id : null;
   }
 
   /// Retrieves metadata for a file by its ID.
@@ -92,8 +90,7 @@ class GoogleDriveService {
                   onUpload?.call(byteCount, file.lengthSync());
                   sink.add(data);
                 },
-                handleError:
-                    (Object e, StackTrace s, EventSink<List<int>> sink) {
+                handleError: (Object e, StackTrace s, EventSink<List<int>> sink) {
                   LogService.error(
                     'GoogleDriveService.uploadFile: An error occurred',
                     error: e,

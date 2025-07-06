@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart';
 
+import '../../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../book/data/model/book_data.dart';
 import '../../../../book/data/repository/book_repository.dart';
-import '../../../../common_components/shared_list/shared_list.dart';
 import '../../../data/collection_data.dart';
 import '../../../data/collection_repository.dart';
 
@@ -11,8 +11,7 @@ typedef CollectionViewerState = SharedListState<BookData>;
 
 class CollectionViewerCubit extends SharedListCubit<BookData> {
   factory CollectionViewerCubit(CollectionData collectionData) {
-    final CollectionViewerCubit cubit = CollectionViewerCubit._internal(
-        collectionData, const CollectionViewerState());
+    final CollectionViewerCubit cubit = CollectionViewerCubit._internal(collectionData, const CollectionViewerState());
     cubit.refresh();
     return cubit;
   }
@@ -36,8 +35,7 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
 
       for (final String path in collectionData.pathList.toSet()) {
         final String absolutePath = BookRepository.getAbsolutePath(path);
-        final BookData target = state.dataList.firstWhereOrNull(
-                (BookData e) => e.absoluteFilePath == absolutePath) ??
+        final BookData target = state.dataList.firstWhereOrNull((BookData e) => e.absoluteFilePath == absolutePath) ??
             await BookRepository.get(absolutePath);
         bookList.add(target);
         if (!isClosed) {
@@ -60,21 +58,18 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
     }
 
     final BookData target = state.dataList.removeAt(oldIndex);
-    state.dataList
-        .insert(oldIndex < newIndex ? newIndex - 1 : newIndex, target);
+    state.dataList.insert(oldIndex < newIndex ? newIndex - 1 : newIndex, target);
     emit(state.copyWith(
       code: LoadingStateCode.loaded,
       dataList: List<BookData>.from(state.dataList),
     ));
 
-    collectionData.pathList =
-        state.dataList.map<String>((BookData e) => e.absoluteFilePath).toList();
+    collectionData.pathList = state.dataList.map<String>((BookData e) => e.absoluteFilePath).toList();
     CollectionRepository.save(collectionData);
   }
 
   void remove() {
-    collectionData.pathList.removeWhere((String p) =>
-        state.selectedSet.any((BookData e) => e.relativeFilePath == p));
+    collectionData.pathList.removeWhere((String p) => state.selectedSet.any((BookData e) => e.relativeFilePath == p));
     CollectionRepository.save(collectionData);
     refresh();
   }

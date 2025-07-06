@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 
-import '../../../../../core/services/google_services/google_services.dart';
+import '../../../../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
 import '../../../../../core/utils/random_utils.dart';
 import '../../../../bookmark/data/bookmark_repository.dart';
 import '../../../../collection/data/collection_repository.dart';
@@ -98,8 +98,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
       ),
     ));
 
-    final Directory tempFolder = RandomUtils.getAvailableTempFolder()
-      ..createSync(recursive: true);
+    final Directory tempFolder = RandomUtils.getAvailableTempFolder()..createSync(recursive: true);
 
     // Zip the library
     final File zipFile = await BackupRepository.archiveLibrary(
@@ -122,7 +121,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
     ));
 
     // Upload the zip file to Google Drive
-    await GoogleServices.driveService.uploadFile(
+    await GoogleApiInterfaces.drive.uploadFile(
       zipFile,
       onUpload: (int uploaded, int total) {
         emit(state.copyWith(
@@ -138,8 +137,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
     // Emit the result
     emit(state.copyWith(
       library: BackupServiceProcessItemState(
-        step: await GoogleServices.driveService
-                .fileExists(BackupRepository.libraryArchiveName)
+        step: await GoogleApiInterfaces.drive.fileExists(BackupRepository.libraryArchiveName)
             ? BackupServiceProcessStepCode.done
             : BackupServiceProcessStepCode.error,
       ),
@@ -155,7 +153,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
     ));
 
     // Upload the bookmark json file.
-    await GoogleServices.driveService.uploadFile(
+    await GoogleApiInterfaces.drive.uploadFile(
       BookmarkRepository.jsonFile,
       onUpload: (int uploaded, int total) {
         emit(state.copyWith(
@@ -170,8 +168,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
     // Emit the result
     emit(state.copyWith(
       bookmark: BackupServiceProcessItemState(
-        step: await GoogleServices.driveService
-                .fileExists(BookmarkRepository.jsonFileName)
+        step: await GoogleApiInterfaces.drive.fileExists(BookmarkRepository.jsonFileName)
             ? BackupServiceProcessStepCode.done
             : BackupServiceProcessStepCode.error,
       ),
@@ -187,7 +184,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
     ));
 
     // Upload the collection json file
-    await GoogleServices.driveService.uploadFile(
+    await GoogleApiInterfaces.drive.uploadFile(
       CollectionRepository.jsonFile,
       onUpload: (int uploaded, int total) {
         emit(state.copyWith(
@@ -202,8 +199,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
     // Emit the result
     emit(state.copyWith(
       collection: BackupServiceProcessItemState(
-        step: await GoogleServices.driveService
-                .fileExists(CollectionRepository.jsonFileName)
+        step: await GoogleApiInterfaces.drive.fileExists(CollectionRepository.jsonFileName)
             ? BackupServiceProcessStepCode.done
             : BackupServiceProcessStepCode.error,
       ),
@@ -228,14 +224,11 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
         step: BackupServiceProcessStepCode.delete,
       ),
     ));
-    await GoogleServices.driveService.deleteFile(libraryId!);
-    final bool result = !(await GoogleServices.driveService
-        .fileExists(BackupRepository.libraryArchiveName));
+    await GoogleApiInterfaces.drive.deleteFile(libraryId!);
+    final bool result = !(await GoogleApiInterfaces.drive.fileExists(BackupRepository.libraryArchiveName));
     emit(state.copyWith(
       library: BackupServiceProcessItemState(
-        step: result
-            ? BackupServiceProcessStepCode.done
-            : BackupServiceProcessStepCode.error,
+        step: result ? BackupServiceProcessStepCode.done : BackupServiceProcessStepCode.error,
       ),
     ));
   }
@@ -250,14 +243,11 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
         step: BackupServiceProcessStepCode.delete,
       ),
     ));
-    await GoogleServices.driveService.deleteFile(bookmarkId!);
-    final bool result = !(await GoogleServices.driveService
-        .fileExists(BookmarkRepository.jsonFileName));
+    await GoogleApiInterfaces.drive.deleteFile(bookmarkId!);
+    final bool result = !(await GoogleApiInterfaces.drive.fileExists(BookmarkRepository.jsonFileName));
     emit(state.copyWith(
       bookmark: BackupServiceProcessItemState(
-        step: result
-            ? BackupServiceProcessStepCode.done
-            : BackupServiceProcessStepCode.error,
+        step: result ? BackupServiceProcessStepCode.done : BackupServiceProcessStepCode.error,
       ),
     ));
   }
@@ -272,14 +262,11 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
         step: BackupServiceProcessStepCode.delete,
       ),
     ));
-    await GoogleServices.driveService.deleteFile(collectionId!);
-    final bool result = !(await GoogleServices.driveService
-        .fileExists(CollectionRepository.jsonFileName));
+    await GoogleApiInterfaces.drive.deleteFile(collectionId!);
+    final bool result = !(await GoogleApiInterfaces.drive.fileExists(CollectionRepository.jsonFileName));
     emit(state.copyWith(
       collection: BackupServiceProcessItemState(
-        step: result
-            ? BackupServiceProcessStepCode.done
-            : BackupServiceProcessStepCode.error,
+        step: result ? BackupServiceProcessStepCode.done : BackupServiceProcessStepCode.error,
       ),
     ));
   }
@@ -314,7 +301,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
 
     // Download the zip file
     try {
-      await GoogleServices.driveService.downloadFile(
+      await GoogleApiInterfaces.drive.downloadFile(
         libraryId!,
         zipFile,
         onDownload: (int downloaded, int total) {
@@ -380,7 +367,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
 
     // Download the json file.
     try {
-      await GoogleServices.driveService.downloadFile(
+      await GoogleApiInterfaces.drive.downloadFile(
         bookmarkId!,
         BookmarkRepository.jsonFile,
         onDownload: (int downloaded, int total) {
@@ -423,7 +410,7 @@ class BackupServiceProcessCubit extends Cubit<BackupServiceProcessState> {
 
     // Download the json file.
     try {
-      await GoogleServices.driveService.downloadFile(
+      await GoogleApiInterfaces.drive.downloadFile(
         collectionId!,
         CollectionRepository.jsonFile,
         onDownload: (int downloaded, int total) {

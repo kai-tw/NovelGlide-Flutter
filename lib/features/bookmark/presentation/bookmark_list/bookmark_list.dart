@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/shared_components/common_delete_dialog.dart';
+import '../../../../core/shared_components/common_loading.dart';
+import '../../../../core/shared_components/draggable_feedback_widget.dart';
+import '../../../../core/shared_components/draggable_placeholder_widget.dart';
+import '../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../core/utils/popup_menu_utils.dart';
 import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../enum/sort_order_code.dart';
-import '../../../../enum/window_size.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../../common_components/common_delete_dialog.dart';
-import '../../../common_components/common_loading.dart';
-import '../../../common_components/draggable_feedback_widget.dart';
-import '../../../common_components/draggable_placeholder_widget.dart';
-import '../../../common_components/shared_list/shared_list.dart';
 import '../../../homepage/cubit/homepage_cubit.dart';
+import '../../../homepage/homepage.dart';
 import '../../../reader/presentation/reader_page/cubit/reader_cubit.dart';
 import '../../../reader/presentation/reader_page/reader.dart';
 import '../../data/bookmark_data.dart';
@@ -37,8 +37,7 @@ class BookmarkList extends StatelessWidget {
 
     return BlocBuilder<BookmarkListCubit, BookmarkListState>(
       buildWhen: (BookmarkListState previous, BookmarkListState current) =>
-          previous.code != current.code ||
-          previous.dataList != current.dataList,
+          previous.code != current.code || previous.dataList != current.dataList,
       builder: (BuildContext context, BookmarkListState state) {
         switch (state.code) {
           case LoadingStateCode.initial:

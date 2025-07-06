@@ -6,10 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../core/services/file_path.dart';
 import '../../../../../core/services/mime_resolver.dart';
+import '../../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../../../preference_keys/preference_keys.dart';
-import '../../../../common_components/shared_list/shared_list.dart';
 import '../../../data/model/book_data.dart';
 import '../../../data/repository/book_repository.dart';
 
@@ -37,9 +37,7 @@ class BookshelfCubit extends SharedListCubit<BookData> {
 
   @override
   Future<void> refresh() async {
-    if (!_isInitialized ||
-        state.code.isLoading ||
-        state.code.isBackgroundLoading) {
+    if (!_isInitialized || state.code.isLoading || state.code.isBackgroundLoading) {
       return;
     }
 
@@ -63,10 +61,8 @@ class BookshelfCubit extends SharedListCubit<BookData> {
 
     // Load books.
     final Directory folder = Directory(FilePath.libraryRoot);
-    final Iterable<File> fileList = folder
-        .listSync()
-        .whereType<File>()
-        .where((File e) => MimeResolver.lookupAll(e) == 'application/epub+zip');
+    final Iterable<File> fileList =
+        folder.listSync().whereType<File>().where((File e) => MimeResolver.lookupAll(e) == 'application/epub+zip');
 
     if (fileList.isNotEmpty) {
       final List<BookData> list = <BookData>[];
@@ -74,8 +70,7 @@ class BookshelfCubit extends SharedListCubit<BookData> {
 
       // Only read the books that are not read yet.
       for (File epubFile in fileList) {
-        final BookData target = oldList.firstWhereOrNull(
-                (BookData e) => e.absoluteFilePath == epubFile.path) ??
+        final BookData target = oldList.firstWhereOrNull((BookData e) => e.absoluteFilePath == epubFile.path) ??
             await BookRepository.get(epubFile.path);
 
         list.add(target);

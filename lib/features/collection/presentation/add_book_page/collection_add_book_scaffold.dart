@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 
+import '../../../../core/shared_components/common_loading.dart';
+import '../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../book/data/model/book_data.dart';
-import '../../../common_components/common_loading.dart';
-import '../../../common_components/shared_list/shared_list.dart';
 import '../../data/collection_data.dart';
 import '../../data/collection_repository.dart';
 import '../add_dialog/collection_add_dialog.dart';

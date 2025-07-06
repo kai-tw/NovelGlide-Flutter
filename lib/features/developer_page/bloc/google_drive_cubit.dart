@@ -4,7 +4,7 @@ class _GoogleDriveCubit extends Cubit<_GoogleDriveState> {
   _GoogleDriveCubit() : super(const _GoogleDriveState());
 
   Future<void> init() async {
-    await GoogleServices.driveService.signIn();
+    await GoogleApiInterfaces.drive.signIn();
     await refresh();
   }
 
@@ -12,8 +12,7 @@ class _GoogleDriveCubit extends Cubit<_GoogleDriveState> {
     emit(const _GoogleDriveState(
       errorCode: _GoogleDriveErrorCode.unInitialized,
     ));
-    final drive.FileList fileList =
-        await GoogleServices.driveService.files.list(
+    final drive.FileList fileList = await GoogleApiInterfaces.drive.files.list(
       spaces: 'appDataFolder',
       orderBy: 'modifiedTime desc',
       $fields: 'files(name,createdTime,id,mimeType,modifiedTime)',
@@ -21,20 +20,18 @@ class _GoogleDriveCubit extends Cubit<_GoogleDriveState> {
     final List<drive.File> files = fileList.files ?? <drive.File>[];
 
     emit(_GoogleDriveState(
-      errorCode: files.isEmpty
-          ? _GoogleDriveErrorCode.emptyFolder
-          : _GoogleDriveErrorCode.normal,
+      errorCode: files.isEmpty ? _GoogleDriveErrorCode.emptyFolder : _GoogleDriveErrorCode.normal,
       files: files,
     ));
   }
 
   Future<bool> deleteFile(String fileId) async {
-    await GoogleServices.driveService.deleteFile(fileId);
+    await GoogleApiInterfaces.drive.deleteFile(fileId);
     return true;
   }
 
   Future<bool> copyToDrive(String fileId) async {
-    await GoogleServices.driveService.copyFile(fileId, <String>['root']);
+    await GoogleApiInterfaces.drive.copyFile(fileId, <String>['root']);
     return true;
   }
 }
