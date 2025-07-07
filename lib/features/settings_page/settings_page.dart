@@ -69,7 +69,6 @@ class SettingsPage extends StatelessWidget {
         iconData: Icons.feedback_outlined,
         title: appLocalizations.settingsFeedback,
         trailing: const Icon(Icons.north_east_rounded),
-        // trailingIconData: ,
       ),
       SettingsListTile(
         onTap: () => launchUrl(
