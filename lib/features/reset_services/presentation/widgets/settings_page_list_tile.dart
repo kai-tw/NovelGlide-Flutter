@@ -1,4 +1,4 @@
-part of '../reset_page.dart';
+part of '../../reset_page.dart';
 
 class SettingsPageListTile extends StatelessWidget {
   const SettingsPageListTile({

@@ -1,4 +1,4 @@
-part of '../reset_page.dart';
+part of '../../reset_page.dart';
 
 class SettingsPageDataCard extends StatelessWidget {
   const SettingsPageDataCard({super.key});
@@ -14,7 +14,9 @@ class SettingsPageDataCard extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 12.0),
             child: Text(
               appLocalizations.resetPageDataTitle,
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                  ),
             ),
           ),
           SettingsPageListTile(

@@ -1,4 +1,4 @@
-part of '../reset_page.dart';
+part of '../../reset_page.dart';
 
 class SettingsPagePreferenceCard extends StatelessWidget {
   const SettingsPagePreferenceCard({super.key});
@@ -14,13 +14,14 @@ class SettingsPagePreferenceCard extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 12.0),
             child: Text(
               appLocalizations.resetPagePreferenceTitle,
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w900,
+                  ),
             ),
           ),
           SettingsPageListTile(
             onDelete: () async {
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
+              final SharedPreferences prefs = await SharedPreferences.getInstance();
               prefs.remove(PreferenceKeys.bookshelf.sortOrder);
               prefs.remove(PreferenceKeys.bookshelf.isAscending);
             },
@@ -30,8 +31,7 @@ class SettingsPagePreferenceCard extends StatelessWidget {
           ),
           SettingsPageListTile(
             onDelete: () async {
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
+              final SharedPreferences prefs = await SharedPreferences.getInstance();
               prefs.remove(PreferenceKeys.collection.sortOrder);
               prefs.remove(PreferenceKeys.collection.isAscending);
             },
@@ -41,8 +41,7 @@ class SettingsPagePreferenceCard extends StatelessWidget {
           ),
           SettingsPageListTile(
             onDelete: () async {
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
+              final SharedPreferences prefs = await SharedPreferences.getInstance();
               prefs.remove(PreferenceKeys.bookmark.sortOrder);
               prefs.remove(PreferenceKeys.bookmark.isAscending);
             },

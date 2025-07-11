@@ -12,10 +12,10 @@ import '../reader/data/model/reader_settings_data.dart';
 import '../reader/data/repository/cache_repository.dart';
 import '../settings_page/settings_card.dart';
 
-part 'widgets/settings_page_cache_card.dart';
-part 'widgets/settings_page_data_card.dart';
-part 'widgets/settings_page_list_tile.dart';
-part 'widgets/settings_page_preference_card.dart';
+part 'presentation/widgets/settings_page_cache_card.dart';
+part 'presentation/widgets/settings_page_data_card.dart';
+part 'presentation/widgets/settings_page_list_tile.dart';
+part 'presentation/widgets/settings_page_preference_card.dart';
 
 class ResetPage extends StatelessWidget {
   const ResetPage({super.key});

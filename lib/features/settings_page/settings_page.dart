@@ -12,7 +12,7 @@ import '../developer_page/developer_page.dart';
 import '../feedback_service/feedback_service.dart';
 import '../homepage/homepage.dart';
 import '../locale_service/locale_services.dart';
-import '../reset_page/reset_page.dart';
+import '../reset_services/reset_page.dart';
 import '../tts_service/tts_service.dart';
 import 'widgets/settings_list_tile.dart';
 
