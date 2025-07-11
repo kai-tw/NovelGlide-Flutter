@@ -16,7 +16,7 @@ class Advertisement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Ads are disabled currently.
-    if (kReleaseMode) {
+    if (kDebugMode) {
       return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
         return BlocProvider<AdvertisementCubit>(
