@@ -2,14 +2,12 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../core/services/file_path.dart';
 import '../../../../../core/services/mime_resolver.dart';
 import '../../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
-import '../../../../../preference_keys/preference_keys.dart';
 import '../../../book_service.dart';
 import '../../../data/model/book_data.dart';
 
@@ -18,26 +16,15 @@ typedef BookshelfState = SharedListState<BookData>;
 class BookshelfCubit extends SharedListCubit<BookData> {
   factory BookshelfCubit() {
     final BookshelfCubit cubit = BookshelfCubit._(const BookshelfState());
-    cubit._init();
+    WidgetsBinding.instance.addPostFrameCallback((_) => cubit.refresh());
     return cubit;
   }
 
   BookshelfCubit._(super.initialState);
 
-  final String _sortOrderKey = PreferenceKeys.bookshelf.sortOrder;
-  final String _isAscendingKey = PreferenceKeys.bookshelf.isAscending;
-  late final SharedPreferences _prefs;
-  bool _isInitialized = false;
-
-  Future<void> _init() async {
-    _prefs = await SharedPreferences.getInstance();
-    _isInitialized = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) => refresh());
-  }
-
   @override
   Future<void> refresh() async {
-    if (!_isInitialized || state.code.isLoading || state.code.isBackgroundLoading) {
+    if (state.code.isLoading || state.code.isBackgroundLoading) {
       return;
     }
 
