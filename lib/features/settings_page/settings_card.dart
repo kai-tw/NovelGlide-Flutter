@@ -14,23 +14,24 @@ class SettingsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Card(
       margin: margin ??
           const EdgeInsets.symmetric(
             vertical: 8.0,
             horizontal: 16.0,
           ),
-      padding: padding ??
-          const EdgeInsets.symmetric(
-            vertical: 24.0,
-            horizontal: 24.0,
-          ),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainer,
+      color: Theme.of(context).colorScheme.surfaceContainer,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(24.0),
       ),
-      child: child,
+      child: Padding(
+        padding: padding ??
+            const EdgeInsets.symmetric(
+              vertical: 24.0,
+              horizontal: 24.0,
+            ),
+        child: child,
+      ),
     );
   }
 }

@@ -18,7 +18,7 @@ class LocaleSettingsList extends StatelessWidget {
               final bool isSelected = state.selectedLocale == null;
               return ListTile(
                 onTap: isSelected ? null : () => cubit.selectLocale(context, null),
-                title: Text(AppLocalizations.of(context)!.languageDefault),
+                title: Text(AppLocalizations.of(context)!.useSystemSettings),
                 trailing: isSelected ? const Icon(Icons.check_rounded) : null,
               );
             } else {

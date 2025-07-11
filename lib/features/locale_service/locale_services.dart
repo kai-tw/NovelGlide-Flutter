@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../core/app_cubit/app_locale_cubit/app_locale_cubit.dart';
+import '../../core/app_global_cubit/app_global_cubit.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../../preference_keys/preference_keys.dart';
 
@@ -20,17 +20,13 @@ class LocaleServices {
   static Locale? get userLocale => _userLocale;
 
   static Future<void> ensureInitialized() async {
-    _userLocale = await LocaleServices.getUserLocale();
+    _userLocale = await LocaleServices._getUserLocale();
   }
 
-  static Future<Locale?> getUserLocale() async {
+  static Future<Locale?> _getUserLocale() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? languageCode = prefs.getString(PreferenceKeys.userLocale);
-    if (languageCode == null) {
-      return null;
-    } else {
-      return Locale(languageCode);
-    }
+    return languageCode == null ? null : Locale(languageCode);
   }
 
   static Future<void> setUserLocale(Locale? locale) async {
@@ -42,5 +38,7 @@ class LocaleServices {
     } else {
       prefs.setString(PreferenceKeys.userLocale, locale.toLanguageTag());
     }
+
+    AppGlobalCubit.refreshState();
   }
 }
