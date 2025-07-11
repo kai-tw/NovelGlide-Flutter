@@ -1,6 +1,7 @@
 import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -19,8 +20,11 @@ import 'generated/i18n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Ad Initialization
-  MobileAds.instance.initialize();
+  // Don't initialize ad in release mode
+  if (kDebugMode) {
+    // Ad Initialization
+    MobileAds.instance.initialize();
+  }
 
   // Future initializations
   await Future.wait(<Future<void>>[
@@ -67,7 +71,8 @@ class App extends StatelessWidget {
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           home: const Homepage(),
-          builder: (BuildContext context, Widget? child) => AccessibilityTools(child: child),
+          builder: (BuildContext context, Widget? child) =>
+              AccessibilityTools(child: child),
           // debugShowCheckedModeBanner: false,
         );
       },
