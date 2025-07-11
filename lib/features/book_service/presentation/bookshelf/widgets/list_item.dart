@@ -27,8 +27,7 @@ class _SliverListItem extends StatelessWidget {
             left: 16.0,
             child: BlocBuilder<BookshelfCubit, BookshelfState>(
               buildWhen: (BookshelfState previous, BookshelfState current) =>
-                  previous.isSelecting != current.isSelecting ||
-                  previous.selectedSet != current.selectedSet,
+                  previous.isSelecting != current.isSelecting || previous.selectedSet != current.selectedSet,
               builder: _checkboxWidgetBuilder,
             ),
           ),
@@ -53,8 +52,7 @@ class _SliverListItem extends StatelessWidget {
       return Semantics(
         label: appLocalizations.accessibilityBookshelfListItem,
         onTapHint: appLocalizations.accessibilityBookshelfListItemOnTap,
-        onLongPressHint:
-            appLocalizations.accessibilityBookshelfListItemOnLongPress,
+        onLongPressHint: appLocalizations.accessibilityBookshelfListItemOnLongPress,
         child: _DraggableBook(
           bookData: bookData,
           isDraggable: !state.isDragging,
@@ -85,8 +83,7 @@ class _SliverListItem extends StatelessWidget {
 
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 300),
-      transitionBuilder: (Widget child, Animation<double> animation) =>
-          FadeTransition(
+      transitionBuilder: (Widget child, Animation<double> animation) => FadeTransition(
         opacity: animation,
         child: child,
       ),
@@ -107,10 +104,9 @@ class _SliverListItem extends StatelessWidget {
       _selectionTap(cubit, bookData);
     } else if (bookData.isExist) {
       // Navigate to the table of contents page.
-      Navigator.of(context)
-          .push(RouteUtils.defaultRoute(TableOfContents(bookData)));
+      Navigator.of(context).push(RouteUtils.defaultRoute(TableOfContents(bookData)));
     } else {
-      // Show the book is not exist dialog.
+      // Show the book_service is not exist dialog.
       showDialog(
         context: context,
         builder: (BuildContext context) => CommonErrorDialog(
@@ -120,7 +116,7 @@ class _SliverListItem extends StatelessWidget {
     }
   }
 
-  /// Address the book selection.
+  /// Address the book_service selection.
   void _selectionTap(BookshelfCubit cubit, BookData bookData) {
     if (cubit.state.selectedSet.contains(bookData)) {
       cubit.deselectSingle(bookData);

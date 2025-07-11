@@ -10,6 +10,7 @@ import '../../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../../../preference_keys/preference_keys.dart';
+import '../../../book_service.dart';
 import '../../../data/model/book_data.dart';
 import '../../../data/repository/book_repository.dart';
 
@@ -42,21 +43,13 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     }
 
     // Load preferences.
-    int sortOrder;
-    try {
-      sortOrder = _prefs.getInt(_sortOrderKey) ?? SortOrderCode.name.index;
-    } catch (_) {
-      sortOrder = SortOrderCode.name.index;
-    }
-
-    final SortOrderCode sortOrderCode = SortOrderCode.values[sortOrder];
-    final bool isAscending = _prefs.getBool(_isAscendingKey) ?? true;
+    await BookService.preference.load();
 
     emit(BookshelfState(
       code: LoadingStateCode.loading,
       dataList: List<BookData>.from(state.dataList),
-      sortOrder: sortOrderCode,
-      isAscending: isAscending,
+      sortOrder: BookService.preference.sortOrder,
+      isAscending: BookService.preference.isAscending,
     ));
 
     // Load books.
@@ -74,7 +67,7 @@ class BookshelfCubit extends SharedListCubit<BookData> {
             await BookRepository.get(epubFile.path);
 
         list.add(target);
-        list.sort(BookData.sortCompare(sortOrderCode, isAscending));
+        list.sort(BookData.sortCompare(BookService.preference.sortOrder, BookService.preference.isAscending));
 
         if (!isClosed) {
           emit(state.copyWith(
@@ -94,8 +87,8 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     final SortOrderCode order = sortOrder ?? state.sortOrder;
     final bool ascending = isAscending ?? state.isAscending;
 
-    _prefs.setInt(_sortOrderKey, order.index);
-    _prefs.setBool(_isAscendingKey, ascending);
+    BookService.preference.sortOrder = order;
+    BookService.preference.isAscending = ascending;
 
     state.dataList.sort(BookData.sortCompare(order, ascending));
     emit(state.copyWith(

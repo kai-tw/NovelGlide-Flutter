@@ -20,11 +20,7 @@ class SettingsPagePreferenceCard extends StatelessWidget {
             ),
           ),
           SettingsPageListTile(
-            onDelete: () async {
-              final SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.remove(PreferenceKeys.bookshelf.sortOrder);
-              prefs.remove(PreferenceKeys.bookshelf.isAscending);
-            },
+            onDelete: BookService.preference.reset,
             iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetBookshelf,
             deleteLabel: appLocalizations.generalReset,

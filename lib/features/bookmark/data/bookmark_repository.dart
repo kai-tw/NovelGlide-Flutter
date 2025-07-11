@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 
 import '../../../core/services/file_path.dart';
 import '../../../core/utils/json_utils.dart';
-import '../../book/data/repository/book_repository.dart';
+import '../../book_service/data/repository/book_repository.dart';
 import 'bookmark_data.dart';
 
 class BookmarkRepository {
@@ -27,15 +27,12 @@ class BookmarkRepository {
   static Map<String, dynamic> get jsonData => JsonUtils.fromFile(jsonFile);
 
   /// JSON data setter
-  static set jsonData(Map<String, dynamic> json) =>
-      jsonFile.writeAsStringSync(jsonEncode(json));
+  static set jsonData(Map<String, dynamic> json) => jsonFile.writeAsStringSync(jsonEncode(json));
 
-  /// Retrieve a bookmark by its book path.
+  /// Retrieve a bookmark by its book_service path.
   static BookmarkData? get(String bookPath) {
     bookPath = BookRepository.getRelativePath(bookPath);
-    return jsonData.containsKey(bookPath)
-        ? BookmarkData.fromJson(jsonData[bookPath]!)
-        : null;
+    return jsonData.containsKey(bookPath) ? BookmarkData.fromJson(jsonData[bookPath]!) : null;
   }
 
   /// Retrieve a list of all bookmarks.
@@ -78,9 +75,7 @@ class BookmarkRepository {
   /// Delete the bookmark by path.
   static void deleteByPath(String path) {
     getList()
-        .where((BookmarkData e) =>
-            BookRepository.getRelativePath(e.bookPath) ==
-            BookRepository.getRelativePath(path))
+        .where((BookmarkData e) => BookRepository.getRelativePath(e.bookPath) == BookRepository.getRelativePath(path))
         .forEach(delete);
   }
 

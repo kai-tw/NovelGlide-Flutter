@@ -23,20 +23,19 @@ class BookData extends Equatable {
   @override
   List<Object?> get props => <Object?>[absoluteFilePath, name, coverImage];
 
-  /// Get the file of this book.
+  /// Get the file of this book_service.
   File get _file => File(absoluteFilePath);
 
-  /// Determine whether this book exists.
+  /// Determine whether this book_service exists.
   bool get isExist => _file.existsSync();
 
-  /// Get the last modified date of this book.
+  /// Get the last modified date of this book_service.
   DateTime get modifiedDate => _file.statSync().modified;
 
-  /// Get the relative path of this book.
-  String get relativeFilePath =>
-      BookRepository.getRelativePath(absoluteFilePath);
+  /// Get the relative path of this book_service.
+  String get relativeFilePath => BookRepository.getRelativePath(absoluteFilePath);
 
-  /// Get the list of chapters from this book.
+  /// Get the list of chapters from this book_service.
   Future<List<ChapterData>> get chapterList async {
     return EpubUtils.getChapterList(absoluteFilePath);
   }
@@ -47,14 +46,12 @@ class BookData extends Equatable {
   ) {
     switch (sortOrder) {
       case SortOrderCode.modifiedDate:
-        return (BookData a, BookData b) => isAscending
-            ? a.modifiedDate.compareTo(b.modifiedDate)
-            : b.modifiedDate.compareTo(a.modifiedDate);
+        return (BookData a, BookData b) =>
+            isAscending ? a.modifiedDate.compareTo(b.modifiedDate) : b.modifiedDate.compareTo(a.modifiedDate);
 
       default:
-        return (BookData a, BookData b) => isAscending
-            ? compareNatural(a.name, b.name)
-            : compareNatural(b.name, a.name);
+        return (BookData a, BookData b) =>
+            isAscending ? compareNatural(a.name, b.name) : compareNatural(b.name, a.name);
     }
   }
 }

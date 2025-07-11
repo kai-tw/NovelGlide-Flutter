@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 
 import '../../../../core/services/file_path.dart';
-import '../../../book/data/repository/book_repository.dart';
+import '../../../book_service/data/repository/book_repository.dart';
 
 class LocationCacheRepository {
   LocationCacheRepository._();
@@ -12,8 +12,7 @@ class LocationCacheRepository {
 
   static File _getTmpFileByPath(String bookPath) {
     final String relativePath = BookRepository.getRelativePath(bookPath);
-    return File(
-        join(_rootPath, '${basenameWithoutExtension(relativePath)}.tmp'));
+    return File(join(_rootPath, '${basenameWithoutExtension(relativePath)}.tmp'));
   }
 
   /// Store the location to the cache file.

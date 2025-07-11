@@ -10,7 +10,7 @@ import '../../../data/repository/book_repository.dart';
 
 part 'book_add_state.dart';
 
-/// Cubit to manage the state of adding a book.
+/// Cubit to manage the state of adding a book_service.
 class BookAddCubit extends Cubit<BookAddState> {
   BookAddCubit() : super(const BookAddState());
 
@@ -28,9 +28,7 @@ class BookAddCubit extends Cubit<BookAddState> {
     final Set<String> newFileSet = (result?.files ?? <PlatformFile>[])
         .where((PlatformFile file) {
           // Filter out files that are already in the set.
-          return file.path != null &&
-              !state.pathSet
-                  .any((String path) => basename(path) == basename(file.path!));
+          return file.path != null && !state.pathSet.any((String path) => basename(path) == basename(file.path!));
         })
         .map((PlatformFile file) => file.path!)
         .toSet();
