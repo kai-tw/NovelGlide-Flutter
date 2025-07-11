@@ -69,7 +69,7 @@ class App extends StatelessWidget {
           darkTheme: state.isDarkMode == null ? theme.darkTheme : null,
           locale: state.locale,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
+          supportedLocales: LocaleServices.supportedLocales,
           home: const Homepage(),
           builder: (BuildContext context, Widget? child) =>
               AccessibilityTools(child: child),

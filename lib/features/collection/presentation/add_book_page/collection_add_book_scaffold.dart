@@ -8,7 +8,7 @@ import '../../../../core/shared_components/common_loading.dart';
 import '../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../../book/data/model/book_data.dart';
+import '../../../book_service/data/model/book_data.dart';
 import '../../data/collection_data.dart';
 import '../../data/collection_repository.dart';
 import '../add_dialog/collection_add_dialog.dart';

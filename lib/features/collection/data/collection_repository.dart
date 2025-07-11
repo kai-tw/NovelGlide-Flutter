@@ -6,7 +6,7 @@ import 'package:path/path.dart';
 import '../../../core/services/file_path.dart';
 import '../../../core/utils/json_utils.dart';
 import '../../../core/utils/random_utils.dart';
-import '../../book/data/repository/book_repository.dart';
+import '../../book_service/book_service.dart';
 import 'collection_data.dart';
 
 class CollectionRepository {
@@ -28,8 +28,7 @@ class CollectionRepository {
   static Map<String, dynamic> get jsonData => JsonUtils.fromFile(jsonFile);
 
   /// JSON data setter
-  static set jsonData(Map<String, dynamic> json) =>
-      jsonFile.writeAsStringSync(jsonEncode(json));
+  static set jsonData(Map<String, dynamic> json) => jsonFile.writeAsStringSync(jsonEncode(json));
 
   /// Create a new empty collection with a unique ID.
   static void create(String name) {
@@ -66,10 +65,7 @@ class CollectionRepository {
   /// Save the current [CollectionData] instance to the JSON file.
   static void save(CollectionData data) {
     final Map<String, dynamic> json = jsonData;
-    data.pathList = data.pathList
-        .toSet()
-        .map<String>((String e) => BookRepository.getRelativePath(e))
-        .toList();
+    data.pathList = data.pathList.toSet().map<String>((String e) => BookService.repository.getRelativePath(e)).toList();
     json[data.id] = data.toJson();
     jsonData = json;
   }
@@ -81,9 +77,9 @@ class CollectionRepository {
     jsonData = json;
   }
 
-  /// Delete the book from the collection.
+  /// Delete the book_service from the collection.
   static void deleteBook(String path, String id) {
-    final String relativePath = BookRepository.getRelativePath(path);
+    final String relativePath = BookService.repository.getRelativePath(path);
     final Map<String, dynamic> json = jsonData;
     if (json[id] != null) {
       final CollectionData data = CollectionData.fromJson(json[id]!);
@@ -93,11 +89,10 @@ class CollectionRepository {
     }
   }
 
-  /// Delete the book from all collections.
+  /// Delete the book_service from all collections.
   static void deleteByPath(String path) {
-    final Iterable<CollectionData> collectionList = getList().where(
-        (CollectionData e) =>
-            e.pathList.contains(BookRepository.getRelativePath(path)));
+    final Iterable<CollectionData> collectionList =
+        getList().where((CollectionData e) => e.pathList.contains(BookService.repository.getRelativePath(path)));
     for (CollectionData data in collectionList) {
       deleteBook(path, data.id);
     }

@@ -15,12 +15,28 @@ part 'presentation/locale_settings_page/locale_settings_page.dart';
 class LocaleServices {
   LocaleServices._();
 
+  static List<Locale> get supportedLocales => AppLocalizations.supportedLocales;
+
+  static Future<void> ensureInitialized() async {
+    _userLocale = await LocaleServices._getUserLocale();
+  }
+
   static Locale? _userLocale;
 
   static Locale? get userLocale => _userLocale;
 
-  static Future<void> ensureInitialized() async {
-    _userLocale = await LocaleServices._getUserLocale();
+  static set userLocale(Locale? locale) {
+    _userLocale = locale;
+    AppGlobalCubit.refreshState();
+
+    // Save preferences
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      if (locale == null) {
+        prefs.remove(PreferenceKeys.userLocale);
+      } else {
+        prefs.setString(PreferenceKeys.userLocale, locale.toLanguageTag());
+      }
+    });
   }
 
   static Future<Locale?> _getUserLocale() async {
@@ -29,16 +45,23 @@ class LocaleServices {
     return languageCode == null ? null : Locale(languageCode);
   }
 
-  static Future<void> setUserLocale(Locale? locale) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    _userLocale = locale;
+  static String getLanguageName(BuildContext context, Locale locale) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    switch (locale.languageCode) {
+      case 'en':
+        return appLocalizations.languageCodeEnUS;
 
-    if (locale == null) {
-      prefs.remove(PreferenceKeys.userLocale);
-    } else {
-      prefs.setString(PreferenceKeys.userLocale, locale.toLanguageTag());
+      case 'zh':
+        switch (locale.countryCode) {
+          case 'CN':
+            return appLocalizations.languageCodeZhCN;
+
+          default:
+            return appLocalizations.languageCodeZhTW;
+        }
+
+      default:
+        return locale.languageCode;
     }
-
-    AppGlobalCubit.refreshState();
   }
 }

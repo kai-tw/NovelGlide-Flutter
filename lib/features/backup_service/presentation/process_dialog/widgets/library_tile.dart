@@ -7,22 +7,21 @@ class _LibraryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<BackupServiceProcessCubit, BackupServiceProcessState>(
-      buildWhen: (BackupServiceProcessState previous,
-              BackupServiceProcessState current) =>
+      buildWhen: (BackupServiceProcessState previous, BackupServiceProcessState current) =>
           previous.library != current.library,
       builder: (BuildContext context, BackupServiceProcessState state) {
         switch (state.library.step) {
           case BackupServiceProcessStepCode.disabled:
             return ListTile(
               leading: const Icon(Icons.shelves),
-              title: Text(appLocalizations.backupServiceLabelLibrary),
+              title: Text(appLocalizations.generalBookshelf),
               enabled: false,
             );
 
           case BackupServiceProcessStepCode.zip:
             return ListTile(
               leading: const Icon(Icons.folder_zip_outlined),
-              title: Text(appLocalizations.backupServiceLabelLibrary),
+              title: Text(appLocalizations.generalBookshelf),
               trailing: CircularProgressIndicator(
                 value: state.library.progress,
               ),
@@ -31,14 +30,14 @@ class _LibraryTile extends StatelessWidget {
           case BackupServiceProcessStepCode.upload:
             return ListTile(
               leading: const Icon(Icons.upload_outlined),
-              title: Text(appLocalizations.backupServiceLabelLibrary),
+              title: Text(appLocalizations.generalBookshelf),
               trailing: const CircularProgressIndicator(),
             );
 
           case BackupServiceProcessStepCode.unzip:
             return ListTile(
               leading: const Icon(Icons.folder_zip_outlined),
-              title: Text(appLocalizations.backupServiceLabelLibrary),
+              title: Text(appLocalizations.generalBookshelf),
               trailing: CircularProgressIndicator(
                 value: state.library.progress,
               ),
@@ -47,7 +46,7 @@ class _LibraryTile extends StatelessWidget {
           case BackupServiceProcessStepCode.download:
             return ListTile(
               leading: const Icon(Icons.download_outlined),
-              title: Text(appLocalizations.backupServiceLabelLibrary),
+              title: Text(appLocalizations.generalBookshelf),
               trailing: CircularProgressIndicator(
                 value: state.library.progress,
               ),
@@ -56,7 +55,7 @@ class _LibraryTile extends StatelessWidget {
           case BackupServiceProcessStepCode.delete:
             return ListTile(
               leading: const Icon(Icons.delete_outlined),
-              title: Text(appLocalizations.backupServiceLabelLibrary),
+              title: Text(appLocalizations.generalBookshelf),
               trailing: const CircularProgressIndicator(),
             );
 
@@ -65,7 +64,7 @@ class _LibraryTile extends StatelessWidget {
               iconColor: Colors.green,
               textColor: Colors.green,
               leading: const Icon(Icons.check_outlined),
-              title: Text(appLocalizations.backupServiceLabelLibrary),
+              title: Text(appLocalizations.generalBookshelf),
             );
 
           case BackupServiceProcessStepCode.error:
@@ -73,13 +72,13 @@ class _LibraryTile extends StatelessWidget {
               iconColor: Theme.of(context).colorScheme.error,
               textColor: Theme.of(context).colorScheme.error,
               leading: const Icon(Icons.error_outline_rounded),
-              title: Text(appLocalizations.backupServiceLabelLibrary),
+              title: Text(appLocalizations.generalBookshelf),
             );
 
           default:
             return ListTile(
               leading: const Icon(Icons.shelves),
-              title: Text(appLocalizations.backupServiceLabelLibrary),
+              title: Text(appLocalizations.generalBookshelf),
               trailing: const CircularProgressIndicator(),
             );
         }

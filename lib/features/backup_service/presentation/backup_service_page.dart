@@ -12,7 +12,7 @@ class BackupServicePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(appLocalizations.backupServiceTitle),
+        title: Text(appLocalizations.generalBackup),
       ),
       body: const SafeArea(
         child: SingleChildScrollView(

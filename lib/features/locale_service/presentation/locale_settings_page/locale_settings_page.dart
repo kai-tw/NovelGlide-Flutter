@@ -9,7 +9,7 @@ class LocaleSettingsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(appLocalizations.languages),
+        title: Text(appLocalizations.generalLanguages),
       ),
       body: SafeArea(
         child: Scrollbar(

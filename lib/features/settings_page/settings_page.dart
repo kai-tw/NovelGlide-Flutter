@@ -9,9 +9,10 @@ import '../about_page/about_page.dart';
 import '../appearance_services/appearance_services.dart';
 import '../backup_service/presentation/backup_service_page.dart';
 import '../developer_page/developer_page.dart';
+import '../feedback_service/feedback_service.dart';
 import '../homepage/homepage.dart';
 import '../locale_service/locale_services.dart';
-import '../reset_page/reset_page.dart';
+import '../reset_services/reset_page.dart';
 import '../tts_service/tts_service.dart';
 import 'widgets/settings_list_tile.dart';
 
@@ -39,7 +40,7 @@ class SettingsPage extends StatelessWidget {
           RouteUtils.defaultRoute(const BackupServicePage()),
         ),
         iconData: Icons.cloud_outlined,
-        title: appLocalizations.backupServiceTitle,
+        title: appLocalizations.generalBackup,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
@@ -53,7 +54,7 @@ class SettingsPage extends StatelessWidget {
           RouteUtils.defaultRoute(const LocaleSettingsPage()),
         ),
         iconData: Icons.language_rounded,
-        title: appLocalizations.languages,
+        title: appLocalizations.generalLanguages,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
@@ -63,12 +64,9 @@ class SettingsPage extends StatelessWidget {
         title: appLocalizations.resetPageTitle,
       ),
       SettingsListTile(
-        onTap: () => launchUrl(
-          Uri.parse('https://www.kai-wu.net/%E6%84%8F%E8%A6%8B%E5%9B%9E%E9%A5%8B/'),
-        ),
+        onTap: () => Navigator.of(context).push(RouteUtils.defaultRoute(const FeedbackPage())),
         iconData: Icons.feedback_outlined,
-        title: appLocalizations.settingsFeedback,
-        trailing: const Icon(Icons.north_east_rounded),
+        title: appLocalizations.generalFeedback,
       ),
       SettingsListTile(
         onTap: () => launchUrl(
@@ -83,7 +81,7 @@ class SettingsPage extends StatelessWidget {
           RouteUtils.defaultRoute(const AboutPage()),
         ),
         iconData: Icons.info_outline,
-        title: appLocalizations.settingsPageAbout,
+        title: appLocalizations.generalAbout,
       ),
     ];
 

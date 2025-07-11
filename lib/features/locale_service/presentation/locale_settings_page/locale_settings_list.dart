@@ -12,7 +12,7 @@ class LocaleSettingsList extends StatelessWidget {
           previous.selectedLocale != current.selectedLocale,
       builder: (BuildContext context, LocaleSettingsState state) {
         return ListView.builder(
-          itemCount: AppLocalizations.supportedLocales.length + 1,
+          itemCount: LocaleServices.supportedLocales.length + 1,
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
               final bool isSelected = state.selectedLocale == null;
@@ -22,7 +22,7 @@ class LocaleSettingsList extends StatelessWidget {
                 trailing: isSelected ? const Icon(Icons.check_rounded) : null,
               );
             } else {
-              final Locale currentLocale = AppLocalizations.supportedLocales[index - 1];
+              final Locale currentLocale = LocaleServices.supportedLocales[index - 1];
               final bool isSelected = state.selectedLocale == currentLocale;
               return ListTile(
                 onTap: isSelected ? null : () => cubit.selectLocale(context, currentLocale),
@@ -31,7 +31,7 @@ class LocaleSettingsList extends StatelessWidget {
                   locale: currentLocale,
                   child: Builder(
                     builder: (BuildContext context) => Text(
-                      _getLanguageName(
+                      LocaleServices.getLanguageName(
                         context,
                         currentLocale,
                       ),
@@ -39,7 +39,7 @@ class LocaleSettingsList extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  _getLanguageName(
+                  LocaleServices.getLanguageName(
                     context,
                     currentLocale,
                   ),
@@ -51,25 +51,5 @@ class LocaleSettingsList extends StatelessWidget {
         );
       },
     );
-  }
-
-  String _getLanguageName(BuildContext context, Locale locale) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    switch (locale.languageCode) {
-      case 'en':
-        return appLocalizations.languageCodeEnUS;
-
-      case 'zh':
-        switch (locale.countryCode) {
-          case 'CN':
-            return appLocalizations.languageCodeZhCN;
-
-          default:
-            return appLocalizations.languageCodeZhTW;
-        }
-
-      default:
-        return locale.languageCode;
-    }
   }
 }

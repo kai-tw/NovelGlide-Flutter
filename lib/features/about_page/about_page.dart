@@ -14,7 +14,7 @@ class AboutPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(appLocalizations.settingsPageAbout),
+        title: Text(appLocalizations.generalAbout),
       ),
       body: const SafeArea(
         child: Center(

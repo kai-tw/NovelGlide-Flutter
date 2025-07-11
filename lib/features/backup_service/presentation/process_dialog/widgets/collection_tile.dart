@@ -7,29 +7,28 @@ class _CollectionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<BackupServiceProcessCubit, BackupServiceProcessState>(
-      buildWhen: (BackupServiceProcessState previous,
-              BackupServiceProcessState current) =>
+      buildWhen: (BackupServiceProcessState previous, BackupServiceProcessState current) =>
           previous.collection != current.collection,
       builder: (BuildContext context, BackupServiceProcessState state) {
         switch (state.collection.step) {
           case BackupServiceProcessStepCode.disabled:
             return ListTile(
               leading: const Icon(Icons.collections_bookmark_outlined),
-              title: Text(appLocalizations.backupServiceLabelCollection),
+              title: Text(appLocalizations.generalCollections),
               enabled: false,
             );
 
           case BackupServiceProcessStepCode.upload:
             return ListTile(
               leading: const Icon(Icons.upload_outlined),
-              title: Text(appLocalizations.backupServiceLabelCollection),
+              title: Text(appLocalizations.generalCollections),
               trailing: const CircularProgressIndicator(),
             );
 
           case BackupServiceProcessStepCode.download:
             return ListTile(
               leading: const Icon(Icons.download_outlined),
-              title: Text(appLocalizations.backupServiceLabelCollection),
+              title: Text(appLocalizations.generalCollections),
               trailing: CircularProgressIndicator(
                 value: state.collection.progress,
               ),
@@ -38,7 +37,7 @@ class _CollectionTile extends StatelessWidget {
           case BackupServiceProcessStepCode.delete:
             return ListTile(
               leading: const Icon(Icons.delete_outlined),
-              title: Text(appLocalizations.backupServiceLabelCollection),
+              title: Text(appLocalizations.generalCollections),
               trailing: const CircularProgressIndicator(),
             );
 
@@ -47,7 +46,7 @@ class _CollectionTile extends StatelessWidget {
               iconColor: Colors.green,
               textColor: Colors.green,
               leading: const Icon(Icons.check_outlined),
-              title: Text(appLocalizations.backupServiceLabelCollection),
+              title: Text(appLocalizations.generalCollections),
             );
 
           case BackupServiceProcessStepCode.error:
@@ -55,13 +54,13 @@ class _CollectionTile extends StatelessWidget {
               iconColor: Theme.of(context).colorScheme.error,
               textColor: Theme.of(context).colorScheme.error,
               leading: const Icon(Icons.error_outline_rounded),
-              title: Text(appLocalizations.backupServiceLabelCollection),
+              title: Text(appLocalizations.generalCollections),
             );
 
           default:
             return ListTile(
               leading: const Icon(Icons.collections_bookmark_outlined),
-              title: Text(appLocalizations.backupServiceLabelCollection),
+              title: Text(appLocalizations.generalCollections),
               trailing: const CircularProgressIndicator(),
             );
         }
