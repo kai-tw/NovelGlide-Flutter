@@ -12,7 +12,7 @@ class SettingsAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return HomepageAppBar(
       iconData: Icons.settings_rounded,
-      title: appLocalizations.settingsTitle,
+      title: appLocalizations.generalSettings,
     );
   }
 }

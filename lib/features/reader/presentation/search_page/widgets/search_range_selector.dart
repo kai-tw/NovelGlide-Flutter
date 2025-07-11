@@ -14,15 +14,14 @@ class _SearchRangeSelector extends StatelessWidget {
             children: <Widget>[
               _SearchRangeButton(
                 isSelected: state.range == ReaderSearchRangeCode.currentChapter,
-                onPressed: () =>
-                    cubit.setRange(ReaderSearchRangeCode.currentChapter),
+                onPressed: () => cubit.setRange(ReaderSearchRangeCode.currentChapter),
                 label: appLocalizations.readerSearchCurrentChapter,
                 icon: Icons.insert_drive_file_outlined,
               ),
               _SearchRangeButton(
                 isSelected: state.range == ReaderSearchRangeCode.all,
                 onPressed: () => cubit.setRange(ReaderSearchRangeCode.all),
-                label: appLocalizations.readerSearchAllRange,
+                label: appLocalizations.generalAll,
                 icon: Icons.book_outlined,
               ),
             ],

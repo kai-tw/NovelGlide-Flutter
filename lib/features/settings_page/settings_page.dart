@@ -40,7 +40,7 @@ class SettingsPage extends StatelessWidget {
           RouteUtils.defaultRoute(const BackupServicePage()),
         ),
         iconData: Icons.cloud_outlined,
-        title: appLocalizations.backupServiceTitle,
+        title: appLocalizations.generalBackup,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
@@ -54,7 +54,7 @@ class SettingsPage extends StatelessWidget {
           RouteUtils.defaultRoute(const LocaleSettingsPage()),
         ),
         iconData: Icons.language_rounded,
-        title: appLocalizations.languages,
+        title: appLocalizations.generalLanguages,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
@@ -64,10 +64,9 @@ class SettingsPage extends StatelessWidget {
         title: appLocalizations.resetPageTitle,
       ),
       SettingsListTile(
-        onTap: () => Navigator.of(context)
-            .push(RouteUtils.defaultRoute(const FeedbackPage())),
+        onTap: () => Navigator.of(context).push(RouteUtils.defaultRoute(const FeedbackPage())),
         iconData: Icons.feedback_outlined,
-        title: appLocalizations.settingsFeedback,
+        title: appLocalizations.generalFeedback,
       ),
       SettingsListTile(
         onTap: () => launchUrl(
@@ -82,15 +81,14 @@ class SettingsPage extends StatelessWidget {
           RouteUtils.defaultRoute(const AboutPage()),
         ),
         iconData: Icons.info_outline,
-        title: appLocalizations.settingsPageAbout,
+        title: appLocalizations.generalAbout,
       ),
     ];
 
     if (kDebugMode) {
       buttonList.add(
         SettingsListTile(
-          onTap: () => Navigator.of(context)
-              .push(RouteUtils.defaultRoute(const DeveloperPage())),
+          onTap: () => Navigator.of(context).push(RouteUtils.defaultRoute(const DeveloperPage())),
           iconData: Icons.code_rounded,
           title: 'Developer Page',
         ),

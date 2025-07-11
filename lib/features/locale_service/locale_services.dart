@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,21 +15,7 @@ part 'presentation/locale_settings_page/locale_settings_page.dart';
 class LocaleServices {
   LocaleServices._();
 
-  static Locale get currentLocale => userLocale ?? Locale(Platform.localeName);
-
   static List<Locale> get supportedLocales => AppLocalizations.supportedLocales;
-
-  static List<Locale> get supportedLocalesRelativeOrder {
-    const List<Locale> supportedLocales = AppLocalizations.supportedLocales;
-
-    // supportedLocales.sort((Locale a, Locale b) {
-    //   if (a.languageCode == currentLocale.languageCode) {
-    //     return 1;
-    //   }
-    // });
-
-    return supportedLocales;
-  }
 
   static Future<void> ensureInitialized() async {
     _userLocale = await LocaleServices._getUserLocale();
@@ -59,5 +43,25 @@ class LocaleServices {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? languageCode = prefs.getString(PreferenceKeys.userLocale);
     return languageCode == null ? null : Locale(languageCode);
+  }
+
+  static String getLanguageName(BuildContext context, Locale locale) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    switch (locale.languageCode) {
+      case 'en':
+        return appLocalizations.languageCodeEnUS;
+
+      case 'zh':
+        switch (locale.countryCode) {
+          case 'CN':
+            return appLocalizations.languageCodeZhCN;
+
+          default:
+            return appLocalizations.languageCodeZhTW;
+        }
+
+      default:
+        return locale.languageCode;
+    }
   }
 }

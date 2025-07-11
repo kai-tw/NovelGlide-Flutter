@@ -12,7 +12,7 @@ class BookshelfAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return HomepageAppBar(
       iconData: Icons.shelves,
-      title: appLocalizations.bookshelfTitle,
+      title: appLocalizations.generalBookshelf,
       actions: const <Widget>[
         SharedListSelectAllButton<BookshelfCubit>(),
         SharedListDoneButton<BookshelfCubit>(),

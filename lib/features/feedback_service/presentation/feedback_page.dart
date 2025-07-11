@@ -5,47 +5,49 @@ class FeedbackPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Locale> supportedLocales = LocaleServices.supportedLocales;
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final Locale currentLocale = Localizations.localeOf(context);
+    final List<Locale> supportedLocales = List<Locale>.from(LocaleServices.supportedLocales);
+    final List<Widget> children = <Widget>[];
 
-    print(LocaleServices.currentLocale);
+    int insertIndex = 0;
+    for (int i = 0; i < supportedLocales.length; i++) {
+      final Locale cur = supportedLocales[i];
+      if (cur == currentLocale) {
+        children.insert(0, _createListTileByLocale(context, cur));
+        insertIndex++;
+      } else if (cur.languageCode == currentLocale.languageCode) {
+        children.insert(insertIndex, _createListTileByLocale(context, cur));
+      } else {
+        children.add(_createListTileByLocale(context, cur));
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Feedback"),
+        title: Text(appLocalizations.generalFeedback),
       ),
-      body: Scrollbar(
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              onTap: () {
-                launchUrl(Uri.parse(
-                    'https://docs.google.com/forms/d/e/1FAIpQLSdo77Am6qvaoIz9K9FWmySt21p9VnLiikUv0KfxWKV1jf01jQ/viewform'));
-              },
-              leading: Icon(Icons.feedback_rounded),
-              title: Text("Traditional Chinese Form"),
-              trailing: Icon(Icons.north_east_rounded),
-            ),
-            ListTile(
-              onTap: () {
-                launchUrl(Uri.parse(
-                    'https://docs.google.com/forms/d/e/1FAIpQLSdlDoVsZdyt9GBEivAUxNcv7ohDOKaEv5OornD-DMTxiQWm7g/viewform'));
-              },
-              leading: Icon(Icons.feedback_rounded),
-              title: Text("Simplified Chinese Form"),
-              trailing: Icon(Icons.north_east_rounded),
-            ),
-            ListTile(
-              onTap: () {
-                launchUrl(Uri.parse(
-                    FeedbackFormUrlData.getUrlByLocale(const Locale('en'))));
-              },
-              leading: Icon(Icons.feedback_rounded),
-              title: Text("English Form"),
-              trailing: Icon(Icons.north_east_rounded),
-            ),
-          ],
+      body: SafeArea(
+        child: Scrollbar(
+          child: ListView(
+            children: children,
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _createListTileByLocale(BuildContext context, Locale locale) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final String languageName = LocaleServices.getLanguageName(context, locale);
+    return ListTile(
+      onTap: () {
+        launchUrl(Uri.parse(FeedbackFormUrlData.getUrlByLocale(locale)));
+      },
+      leading: const Icon(Icons.assignment_rounded),
+      title: Text('${appLocalizations.generalFeedback} ${appLocalizations.generalForm}'),
+      subtitle: Text(languageName),
+      trailing: const Icon(Icons.north_east_rounded),
     );
   }
 }

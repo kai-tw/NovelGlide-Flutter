@@ -12,7 +12,7 @@ class CollectionListAppBar extends StatelessWidget implements PreferredSizeWidge
 
     return HomepageAppBar(
       iconData: Icons.collections_bookmark_rounded,
-      title: appLocalizations.collectionTitle,
+      title: appLocalizations.generalCollections,
       actions: const <Widget>[
         SharedListSelectAllButton<CollectionListCubit>(),
         SharedListDoneButton<CollectionListCubit>(),
