@@ -6,7 +6,7 @@ import 'package:image/image.dart';
 
 import '../../../../core/utils/epub_utils.dart';
 import '../../../../enum/sort_order_code.dart';
-import '../repository/book_repository.dart';
+import '../../book_service.dart';
 import 'chapter_data.dart';
 
 class BookData extends Equatable {
@@ -33,7 +33,7 @@ class BookData extends Equatable {
   DateTime get modifiedDate => _file.statSync().modified;
 
   /// Get the relative path of this book_service.
-  String get relativeFilePath => BookRepository.getRelativePath(absoluteFilePath);
+  String get relativeFilePath => BookService.repository.getRelativePath(absoluteFilePath);
 
   /// Get the list of chapters from this book_service.
   Future<List<ChapterData>> get chapterList async {

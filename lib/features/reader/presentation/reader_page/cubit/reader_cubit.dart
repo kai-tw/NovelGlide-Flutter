@@ -13,8 +13,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../../core/utils/css_utils.dart';
 import '../../../../../core/utils/int_utils.dart';
+import '../../../../book_service/book_service.dart';
 import '../../../../book_service/data/model/book_data.dart';
-import '../../../../book_service/data/repository/book_repository.dart';
 import '../../../../bookmark/data/bookmark_data.dart';
 import '../../../../bookmark/data/bookmark_repository.dart';
 import '../../../../tts_service/tts_service.dart';
@@ -62,7 +62,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       code: ReaderLoadingStateCode.bookLoading,
     ));
 
-    final String absolutePath = BookRepository.getAbsolutePath(bookPath);
+    final String absolutePath = BookService.repository.getAbsolutePath(bookPath);
     final BookmarkData? bookmarkData = BookmarkRepository.get(bookPath);
 
     webViewHandler.initialize(
@@ -82,7 +82,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
     late ReaderSettingsData readerSettingsData;
     await Future.wait<void>(<Future<void>>[
-      BookRepository.get(absolutePath).then((BookData value) => bookData = value),
+      BookService.repository.getBookData(absolutePath).then((BookData value) => bookData = value),
       ReaderSettingsData.load().then((ReaderSettingsData value) => readerSettingsData = value),
       _serverHandler.start(),
     ]);

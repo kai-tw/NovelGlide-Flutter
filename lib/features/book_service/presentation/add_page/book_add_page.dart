@@ -7,7 +7,7 @@ import 'package:path/path.dart';
 import '../../../../core/services/mime_resolver.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../data/repository/book_repository.dart';
+import '../../book_service.dart';
 import 'cubit/book_add_cubit.dart';
 
 part 'widgets/book_add_action_bar.dart';

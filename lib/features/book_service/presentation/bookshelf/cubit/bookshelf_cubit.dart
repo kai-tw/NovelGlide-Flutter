@@ -12,7 +12,6 @@ import '../../../../../enum/sort_order_code.dart';
 import '../../../../../preference_keys/preference_keys.dart';
 import '../../../book_service.dart';
 import '../../../data/model/book_data.dart';
-import '../../../data/repository/book_repository.dart';
 
 typedef BookshelfState = SharedListState<BookData>;
 
@@ -64,7 +63,7 @@ class BookshelfCubit extends SharedListCubit<BookData> {
       // Only read the books that are not read yet.
       for (File epubFile in fileList) {
         final BookData target = oldList.firstWhereOrNull((BookData e) => e.absoluteFilePath == epubFile.path) ??
-            await BookRepository.get(epubFile.path);
+            await BookService.repository.getBookData(epubFile.path);
 
         list.add(target);
         list.sort(BookData.sortCompare(BookService.preference.sortOrder, BookService.preference.isAscending));
@@ -100,7 +99,7 @@ class BookshelfCubit extends SharedListCubit<BookData> {
   bool deleteSelectedBooks() {
     final List<BookData> newList = List<BookData>.from(state.dataList);
     for (BookData bookData in state.selectedSet) {
-      BookRepository.delete(bookData.absoluteFilePath);
+      BookService.repository.delete(bookData.absoluteFilePath);
       newList.remove(bookData);
     }
     emit(state.copyWith(dataList: newList));
@@ -108,7 +107,7 @@ class BookshelfCubit extends SharedListCubit<BookData> {
   }
 
   bool deleteBook(BookData bookData) {
-    final bool isSuccess = BookRepository.delete(bookData.absoluteFilePath);
+    final bool isSuccess = BookService.repository.delete(bookData.absoluteFilePath);
 
     final List<BookData> newList = List<BookData>.from(state.dataList);
     newList.remove(bookData);

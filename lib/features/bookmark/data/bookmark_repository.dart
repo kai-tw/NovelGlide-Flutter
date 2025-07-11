@@ -5,7 +5,7 @@ import 'package:path/path.dart';
 
 import '../../../core/services/file_path.dart';
 import '../../../core/utils/json_utils.dart';
-import '../../book_service/data/repository/book_repository.dart';
+import '../../book_service/book_service.dart';
 import 'bookmark_data.dart';
 
 class BookmarkRepository {
@@ -31,7 +31,7 @@ class BookmarkRepository {
 
   /// Retrieve a bookmark by its book_service path.
   static BookmarkData? get(String bookPath) {
-    bookPath = BookRepository.getRelativePath(bookPath);
+    bookPath = BookService.repository.getRelativePath(bookPath);
     return jsonData.containsKey(bookPath) ? BookmarkData.fromJson(jsonData[bookPath]!) : null;
   }
 
@@ -41,7 +41,7 @@ class BookmarkRepository {
 
     for (String key in jsonData.keys) {
       final BookmarkData data = BookmarkData.fromJson(jsonData[key]!);
-      final String path = BookRepository.getAbsolutePath(data.bookPath);
+      final String path = BookService.repository.getAbsolutePath(data.bookPath);
 
       if (File(path).existsSync()) {
         retList.add(data);
@@ -57,7 +57,7 @@ class BookmarkRepository {
   static Future<void> save(BookmarkData data) async {
     final Map<String, dynamic> json = jsonData;
     final BookmarkData savedData = data.copyWith(
-      bookPath: BookRepository.getRelativePath(data.bookPath),
+      bookPath: BookService.repository.getRelativePath(data.bookPath),
       savedTime: DateTime.now(),
     );
     json[savedData.bookPath] = savedData.toJson();
@@ -67,7 +67,7 @@ class BookmarkRepository {
   /// Delete the current bookmark from the JSON file.
   static void delete(BookmarkData data) {
     final Map<String, dynamic> json = jsonData;
-    final String path = BookRepository.getRelativePath(data.bookPath);
+    final String path = BookService.repository.getRelativePath(data.bookPath);
     json.remove(path);
     jsonData = json;
   }
@@ -75,7 +75,8 @@ class BookmarkRepository {
   /// Delete the bookmark by path.
   static void deleteByPath(String path) {
     getList()
-        .where((BookmarkData e) => BookRepository.getRelativePath(e.bookPath) == BookRepository.getRelativePath(path))
+        .where((BookmarkData e) =>
+            BookService.repository.getRelativePath(e.bookPath) == BookService.repository.getRelativePath(path))
         .forEach(delete);
   }
 

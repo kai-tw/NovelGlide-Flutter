@@ -2,8 +2,8 @@ import 'package:collection/collection.dart';
 
 import '../../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
+import '../../../../book_service/book_service.dart';
 import '../../../../book_service/data/model/book_data.dart';
-import '../../../../book_service/data/repository/book_repository.dart';
 import '../../../data/collection_data.dart';
 import '../../../data/collection_repository.dart';
 
@@ -34,9 +34,9 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
       final List<BookData> bookList = <BookData>[];
 
       for (final String path in collectionData.pathList.toSet()) {
-        final String absolutePath = BookRepository.getAbsolutePath(path);
+        final String absolutePath = BookService.repository.getAbsolutePath(path);
         final BookData target = state.dataList.firstWhereOrNull((BookData e) => e.absoluteFilePath == absolutePath) ??
-            await BookRepository.get(absolutePath);
+            await BookService.repository.getBookData(absolutePath);
         bookList.add(target);
         if (!isClosed) {
           emit(CollectionViewerState(

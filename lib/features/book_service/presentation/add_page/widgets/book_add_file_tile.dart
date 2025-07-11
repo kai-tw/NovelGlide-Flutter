@@ -1,8 +1,7 @@
 part of '../book_add_page.dart';
 
 class BookAddFileTile extends StatelessWidget {
-  const BookAddFileTile(
-      {super.key, required this.filePath, required this.index});
+  const BookAddFileTile({super.key, required this.filePath, required this.index});
 
   final String filePath;
   final int index;
@@ -16,7 +15,7 @@ class BookAddFileTile extends StatelessWidget {
     String subtitle = FileUtils.getFileSizeString(file.lengthSync());
 
     // Check if the file is duplicated
-    if (BookRepository.exists(filePath)) {
+    if (BookService.repository.exists(filePath)) {
       isError = true;
       subtitle = appLocalizations.addBookDuplicated;
     }

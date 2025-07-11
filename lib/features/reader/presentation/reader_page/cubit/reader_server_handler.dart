@@ -11,8 +11,7 @@ class ReaderServerHandler {
   String get url => 'http://$_host:$_port';
 
   Future<void> start() async {
-    final Handler handler =
-        const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
+    final Handler handler = const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
     _server = await shelf_io.serve(handler, _host, _port);
     _server?.autoCompress = true;
     LogService.info('Reader: Server started on $_host:$_port.');
@@ -24,33 +23,25 @@ class ReaderServerHandler {
       case 'index.html':
         return Response.ok(
           await rootBundle.loadString('assets/renderer/index.html'),
-          headers: <String, Object>{
-            HttpHeaders.contentTypeHeader: 'text/html; charset=utf-8'
-          },
+          headers: <String, Object>{HttpHeaders.contentTypeHeader: 'text/html; charset=utf-8'},
         );
 
       case 'index.js':
         return Response.ok(
           await rootBundle.loadString('assets/renderer/index.js'),
-          headers: <String, Object>{
-            HttpHeaders.contentTypeHeader: 'text/javascript; charset=utf-8'
-          },
+          headers: <String, Object>{HttpHeaders.contentTypeHeader: 'text/javascript; charset=utf-8'},
         );
 
       case 'main.css':
         return Response.ok(
           await rootBundle.loadString('assets/renderer/main.css'),
-          headers: <String, Object>{
-            HttpHeaders.contentTypeHeader: 'text/css; charset=utf-8'
-          },
+          headers: <String, Object>{HttpHeaders.contentTypeHeader: 'text/css; charset=utf-8'},
         );
 
       case 'book.epub':
         return Response.ok(
-          File(BookRepository.getAbsolutePath(_bookPath)).readAsBytesSync(),
-          headers: <String, Object>{
-            HttpHeaders.contentTypeHeader: 'application/epub+zip'
-          },
+          File(BookService.repository.getAbsolutePath(_bookPath)).readAsBytesSync(),
+          headers: <String, Object>{HttpHeaders.contentTypeHeader: 'application/epub+zip'},
         );
 
       default:

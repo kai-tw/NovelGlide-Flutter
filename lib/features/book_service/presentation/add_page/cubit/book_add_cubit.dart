@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 
 import '../../../../../core/services/mime_resolver.dart';
-import '../../../data/repository/book_repository.dart';
+import '../../../book_service.dart';
 
 part 'book_add_state.dart';
 
@@ -47,6 +47,6 @@ class BookAddCubit extends Cubit<BookAddState> {
   }
 
   void submit() {
-    state.pathSet.forEach(BookRepository.add);
+    state.pathSet.forEach(BookService.repository.add);
   }
 }

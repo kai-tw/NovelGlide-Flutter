@@ -8,8 +8,7 @@ class BookAddState extends Equatable {
   bool get isValid =>
       pathSet.isNotEmpty &&
       !pathSet.any((String path) =>
-          BookRepository.exists(path) ||
-          MimeResolver.lookupAll(File(path)) != 'application/epub+zip');
+          BookService.repository.exists(path) || MimeResolver.lookupAll(File(path)) != 'application/epub+zip');
 
   @override
   List<Object?> get props => <Object?>[pathSet];

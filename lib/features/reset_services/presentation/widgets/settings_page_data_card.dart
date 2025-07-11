@@ -30,7 +30,7 @@ class SettingsPageDataCard extends StatelessWidget {
             title: appLocalizations.resetPageDeleteAllBookmarks,
           ),
           SettingsPageListTile(
-            onDelete: () async => BookRepository.reset(),
+            onDelete: () async => BookService.repository.reset(),
             iconData: Icons.delete_forever_rounded,
             title: appLocalizations.resetPageDeleteAllBooks,
           ),
