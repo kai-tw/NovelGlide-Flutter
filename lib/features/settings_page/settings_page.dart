@@ -9,6 +9,7 @@ import '../about_page/about_page.dart';
 import '../appearance_services/appearance_services.dart';
 import '../backup_service/presentation/backup_service_page.dart';
 import '../developer_page/developer_page.dart';
+import '../feedback_service/feedback_service.dart';
 import '../homepage/homepage.dart';
 import '../locale_service/locale_services.dart';
 import '../reset_page/reset_page.dart';
@@ -63,12 +64,10 @@ class SettingsPage extends StatelessWidget {
         title: appLocalizations.resetPageTitle,
       ),
       SettingsListTile(
-        onTap: () => launchUrl(
-          Uri.parse('https://www.kai-wu.net/%E6%84%8F%E8%A6%8B%E5%9B%9E%E9%A5%8B/'),
-        ),
+        onTap: () => Navigator.of(context)
+            .push(RouteUtils.defaultRoute(const FeedbackPage())),
         iconData: Icons.feedback_outlined,
         title: appLocalizations.settingsFeedback,
-        trailing: const Icon(Icons.north_east_rounded),
       ),
       SettingsListTile(
         onTap: () => launchUrl(
@@ -90,7 +89,8 @@ class SettingsPage extends StatelessWidget {
     if (kDebugMode) {
       buttonList.add(
         SettingsListTile(
-          onTap: () => Navigator.of(context).push(RouteUtils.defaultRoute(const DeveloperPage())),
+          onTap: () => Navigator.of(context)
+              .push(RouteUtils.defaultRoute(const DeveloperPage())),
           iconData: Icons.code_rounded,
           title: 'Developer Page',
         ),

@@ -5,27 +5,32 @@ class LocaleSettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocaleSettingsCubit cubit = BlocProvider.of<LocaleSettingsCubit>(context);
+    final LocaleSettingsCubit cubit =
+        BlocProvider.of<LocaleSettingsCubit>(context);
 
     return BlocBuilder<LocaleSettingsCubit, LocaleSettingsState>(
       buildWhen: (LocaleSettingsState previous, LocaleSettingsState current) =>
           previous.selectedLocale != current.selectedLocale,
       builder: (BuildContext context, LocaleSettingsState state) {
         return ListView.builder(
-          itemCount: AppLocalizations.supportedLocales.length + 1,
+          itemCount: LocaleServices.supportedLocales.length + 1,
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
               final bool isSelected = state.selectedLocale == null;
               return ListTile(
-                onTap: isSelected ? null : () => cubit.selectLocale(context, null),
+                onTap:
+                    isSelected ? null : () => cubit.selectLocale(context, null),
                 title: Text(AppLocalizations.of(context)!.useSystemSettings),
                 trailing: isSelected ? const Icon(Icons.check_rounded) : null,
               );
             } else {
-              final Locale currentLocale = AppLocalizations.supportedLocales[index - 1];
+              final Locale currentLocale =
+                  LocaleServices.supportedLocales[index - 1];
               final bool isSelected = state.selectedLocale == currentLocale;
               return ListTile(
-                onTap: isSelected ? null : () => cubit.selectLocale(context, currentLocale),
+                onTap: isSelected
+                    ? null
+                    : () => cubit.selectLocale(context, currentLocale),
                 title: Localizations.override(
                   context: context,
                   locale: currentLocale,

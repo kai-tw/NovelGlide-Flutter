@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,30 +17,47 @@ part 'presentation/locale_settings_page/locale_settings_page.dart';
 class LocaleServices {
   LocaleServices._();
 
+  static Locale get currentLocale => userLocale ?? Locale(Platform.localeName);
+
+  static List<Locale> get supportedLocales => AppLocalizations.supportedLocales;
+
+  static List<Locale> get supportedLocalesRelativeOrder {
+    const List<Locale> supportedLocales = AppLocalizations.supportedLocales;
+
+    // supportedLocales.sort((Locale a, Locale b) {
+    //   if (a.languageCode == currentLocale.languageCode) {
+    //     return 1;
+    //   }
+    // });
+
+    return supportedLocales;
+  }
+
+  static Future<void> ensureInitialized() async {
+    _userLocale = await LocaleServices._getUserLocale();
+  }
+
   static Locale? _userLocale;
 
   static Locale? get userLocale => _userLocale;
 
-  static Future<void> ensureInitialized() async {
-    _userLocale = await LocaleServices._getUserLocale();
+  static set userLocale(Locale? locale) {
+    _userLocale = locale;
+    AppGlobalCubit.refreshState();
+
+    // Save preferences
+    SharedPreferences.getInstance().then((SharedPreferences prefs) {
+      if (locale == null) {
+        prefs.remove(PreferenceKeys.userLocale);
+      } else {
+        prefs.setString(PreferenceKeys.userLocale, locale.toLanguageTag());
+      }
+    });
   }
 
   static Future<Locale?> _getUserLocale() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? languageCode = prefs.getString(PreferenceKeys.userLocale);
     return languageCode == null ? null : Locale(languageCode);
-  }
-
-  static Future<void> setUserLocale(Locale? locale) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    _userLocale = locale;
-
-    if (locale == null) {
-      prefs.remove(PreferenceKeys.userLocale);
-    } else {
-      prefs.setString(PreferenceKeys.userLocale, locale.toLanguageTag());
-    }
-
-    AppGlobalCubit.refreshState();
   }
 }

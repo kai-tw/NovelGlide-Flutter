@@ -6,8 +6,8 @@ class LocaleSettingsCubit extends Cubit<LocaleSettingsState> {
           selectedLocale: LocaleServices.userLocale,
         ));
 
-  Future<void> selectLocale(BuildContext context, Locale? locale) async {
+  void selectLocale(BuildContext context, Locale? locale) {
     emit(LocaleSettingsState(selectedLocale: locale));
-    await LocaleServices.setUserLocale(locale);
+    LocaleServices.userLocale = locale;
   }
 }
