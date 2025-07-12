@@ -6,11 +6,10 @@ class _CollectionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<BackupServiceProcessCubit, BackupServiceProcessState>(
-      buildWhen: (BackupServiceProcessState previous, BackupServiceProcessState current) =>
-          previous.collection != current.collection,
-      builder: (BuildContext context, BackupServiceProcessState state) {
-        switch (state.collection.step) {
+    return BlocBuilder<BackupServiceProcessCollectionCubit,
+        BackupServiceProcessItemState>(
+      builder: (BuildContext context, BackupServiceProcessItemState state) {
+        switch (state.step) {
           case BackupServiceProcessStepCode.disabled:
             return ListTile(
               leading: const Icon(Icons.collections_bookmark_outlined),
@@ -22,7 +21,9 @@ class _CollectionTile extends StatelessWidget {
             return ListTile(
               leading: const Icon(Icons.upload_outlined),
               title: Text(appLocalizations.generalCollections),
-              trailing: const CircularProgressIndicator(),
+              trailing: CircularProgressIndicator(
+                value: state.progress,
+              ),
             );
 
           case BackupServiceProcessStepCode.download:
@@ -30,7 +31,7 @@ class _CollectionTile extends StatelessWidget {
               leading: const Icon(Icons.download_outlined),
               title: Text(appLocalizations.generalCollections),
               trailing: CircularProgressIndicator(
-                value: state.collection.progress,
+                value: state.progress,
               ),
             );
 

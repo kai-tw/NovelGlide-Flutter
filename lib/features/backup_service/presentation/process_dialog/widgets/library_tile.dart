@@ -6,11 +6,10 @@ class _LibraryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<BackupServiceProcessCubit, BackupServiceProcessState>(
-      buildWhen: (BackupServiceProcessState previous, BackupServiceProcessState current) =>
-          previous.library != current.library,
-      builder: (BuildContext context, BackupServiceProcessState state) {
-        switch (state.library.step) {
+    return BlocBuilder<BackupServiceProcessLibraryCubit,
+        BackupServiceProcessItemState>(
+      builder: (BuildContext context, BackupServiceProcessItemState state) {
+        switch (state.step) {
           case BackupServiceProcessStepCode.disabled:
             return ListTile(
               leading: const Icon(Icons.shelves),
@@ -23,7 +22,7 @@ class _LibraryTile extends StatelessWidget {
               leading: const Icon(Icons.folder_zip_outlined),
               title: Text(appLocalizations.generalBookshelf),
               trailing: CircularProgressIndicator(
-                value: state.library.progress,
+                value: state.progress,
               ),
             );
 
@@ -31,7 +30,9 @@ class _LibraryTile extends StatelessWidget {
             return ListTile(
               leading: const Icon(Icons.upload_outlined),
               title: Text(appLocalizations.generalBookshelf),
-              trailing: const CircularProgressIndicator(),
+              trailing: CircularProgressIndicator(
+                value: state.progress,
+              ),
             );
 
           case BackupServiceProcessStepCode.unzip:
@@ -39,7 +40,7 @@ class _LibraryTile extends StatelessWidget {
               leading: const Icon(Icons.folder_zip_outlined),
               title: Text(appLocalizations.generalBookshelf),
               trailing: CircularProgressIndicator(
-                value: state.library.progress,
+                value: state.progress,
               ),
             );
 
@@ -48,7 +49,7 @@ class _LibraryTile extends StatelessWidget {
               leading: const Icon(Icons.download_outlined),
               title: Text(appLocalizations.generalBookshelf),
               trailing: CircularProgressIndicator(
-                value: state.library.progress,
+                value: state.progress,
               ),
             );
 

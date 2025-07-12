@@ -8,18 +8,35 @@ class _CloseButton extends StatelessWidget {
     return OverflowBar(
       alignment: MainAxisAlignment.end,
       children: <Widget>[
-        BlocBuilder<BackupServiceProcessCubit, BackupServiceProcessState>(
-            buildWhen: (BackupServiceProcessState previous,
-                    BackupServiceProcessState current) =>
-                previous.isRunning != current.isRunning,
-            builder: (BuildContext context, BackupServiceProcessState state) {
-              return TextButton.icon(
-                onPressed:
-                    state.isRunning ? null : () => Navigator.of(context).pop(),
+        // Library
+        BlocBuilder<BackupServiceProcessLibraryCubit,
+            BackupServiceProcessItemState>(
+          builder: (BuildContext context,
+                  BackupServiceProcessItemState libraryState) =>
+
+              // Bookmark
+              BlocBuilder<BackupServiceProcessBookmarkCubit,
+                  BackupServiceProcessItemState>(
+            builder: (BuildContext context,
+                    BackupServiceProcessItemState bookmarkState) =>
+
+                // Collection
+                BlocBuilder<BackupServiceProcessCollectionCubit,
+                    BackupServiceProcessItemState>(
+              builder: (BuildContext context,
+                      BackupServiceProcessItemState collectionState) =>
+                  TextButton.icon(
+                onPressed: libraryState.isRunning ||
+                        bookmarkState.isRunning ||
+                        collectionState.isRunning
+                    ? null
+                    : () => Navigator.of(context).pop(),
                 icon: const Icon(Icons.close_rounded),
                 label: Text(AppLocalizations.of(context)!.generalClose),
-              );
-            }),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

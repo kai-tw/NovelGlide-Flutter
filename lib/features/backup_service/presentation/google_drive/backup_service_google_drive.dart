@@ -8,8 +8,8 @@ import '../../../../core/utils/datetime_utils.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../settings_page/settings_card.dart';
+import '../../backup_service.dart';
 import '../process_dialog/backup_service_process_dialog.dart';
-import '../process_dialog/cubit/backup_service_process_cubit.dart';
 import 'cubit/backup_service_google_drive_cubit.dart';
 
 part 'widgets/backup_service_google_drive_action_button.dart';
@@ -32,7 +32,8 @@ class BackupServiceGoogleDrive extends StatelessWidget {
             const BackupServiceGoogleDriveTimeTile(),
             const Divider(),
             ...BackupServiceTargetType.values.map<Widget>(
-              (BackupServiceTargetType targetType) => BackupServiceGoogleDriveTargetTile(targetType: targetType),
+              (BackupServiceTargetType targetType) =>
+                  BackupServiceGoogleDriveTargetTile(targetType: targetType),
             ),
           ],
         ),

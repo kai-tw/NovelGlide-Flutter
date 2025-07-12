@@ -1,4 +1,4 @@
-part of 'backup_service_process_cubit.dart';
+part of '../../../../backup_service.dart';
 
 enum BackupServiceTaskType {
   backup,

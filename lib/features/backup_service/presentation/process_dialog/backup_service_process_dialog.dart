@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nested/nested.dart';
 
 import '../../../../../generated/i18n/app_localizations.dart';
-import 'cubit/backup_service_process_cubit.dart';
+import '../../backup_service.dart';
 
 part 'widgets/bookmark_tile.dart';
 part 'widgets/close_button.dart';
@@ -27,12 +28,24 @@ class BackupServiceProcessDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<BackupServiceProcessCubit>(
-      create: (_) => BackupServiceProcessCubit(
-        libraryId: libraryId,
-        collectionId: collectionId,
-        bookmarkId: bookmarkId,
-      )..start(taskType, targetType),
+    return MultiBlocProvider(
+      providers: <SingleChildWidget>[
+        BlocProvider<BackupServiceProcessLibraryCubit>(
+          create: (_) => BackupServiceProcessLibraryCubit(
+            googleDriveFileId: libraryId,
+          )..startUp(taskType: taskType, targetType: targetType),
+        ),
+        BlocProvider<BackupServiceProcessBookmarkCubit>(
+          create: (_) => BackupServiceProcessBookmarkCubit(
+            googleDriveFileId: bookmarkId,
+          )..startUp(taskType: taskType, targetType: targetType),
+        ),
+        BlocProvider<BackupServiceProcessCollectionCubit>(
+          create: (_) => BackupServiceProcessCollectionCubit(
+            googleDriveFileId: collectionId,
+          )..startUp(taskType: taskType, targetType: targetType),
+        ),
+      ],
       child: const PopScope(
         canPop: false,
         child: Dialog(
