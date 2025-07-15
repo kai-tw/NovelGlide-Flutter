@@ -1,7 +1,6 @@
 part of '../shared_list.dart';
 
 class SharedListState<T> extends Equatable {
-  // Constructor initializes the state with default values.
   const SharedListState({
     this.code = LoadingStateCode.initial,
     this.sortOrder = SortOrderCode.name,
@@ -10,6 +9,7 @@ class SharedListState<T> extends Equatable {
     this.isDragging = false,
     this.isSelecting = false,
     this.isAscending = false,
+    this.listType = SharedListType.list,
   });
 
   final LoadingStateCode code;
@@ -19,6 +19,7 @@ class SharedListState<T> extends Equatable {
   final bool isDragging;
   final bool isSelecting;
   final bool isAscending;
+  final SharedListType listType;
 
   bool get isSelectAll => selectedSet.length == dataList.length;
   bool get canRefresh =>
@@ -32,7 +33,8 @@ class SharedListState<T> extends Equatable {
         selectedSet,
         isDragging,
         isSelecting,
-        isAscending
+        isAscending,
+        listType,
       ];
 
   // Creates a copy of the current state with updated properties.
