@@ -36,4 +36,6 @@ abstract class SharedListCubit<T> extends Cubit<SharedListState<T>> {
   void deselectAll() {
     emit(state.copyWith(selectedSet: const <Never>{}));
   }
+
+  void setListOrder({SortOrderCode? sortOrder, bool? isAscending}) {}
 }

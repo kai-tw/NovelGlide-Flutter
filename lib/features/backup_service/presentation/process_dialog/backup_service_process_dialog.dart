@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nested/nested.dart';
 
 import '../../../../../generated/i18n/app_localizations.dart';
 import '../../backup_service.dart';
@@ -29,7 +28,7 @@ class BackupServiceProcessDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: <SingleChildWidget>[
+      providers: <BlocProvider<dynamic>>[
         BlocProvider<BackupServiceProcessLibraryCubit>(
           create: (_) => BackupServiceProcessLibraryCubit(
             googleDriveFileId: libraryId,

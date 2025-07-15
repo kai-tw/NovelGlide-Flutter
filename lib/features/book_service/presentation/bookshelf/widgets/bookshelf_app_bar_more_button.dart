@@ -25,24 +25,19 @@ class BookshelfAppBarMoreButton extends StatelessWidget {
     }
 
     // Sorting Section
-    PopupMenuUtils.addSection(entries, <PopupMenuEntry<void>>[
-      PopupMenuItem<void>(
-        onTap: () => _onTapSorting(context, SortOrderCode.name),
-        child: SharedListSortButton(
-          isSelected: cubit.state.sortOrder == SortOrderCode.name,
-          isAscending: cubit.state.isAscending,
-          title: appLocalizations.bookshelfSortName,
-        ),
-      ),
-      PopupMenuItem<void>(
-        onTap: () => _onTapSorting(context, SortOrderCode.modifiedDate),
-        child: SharedListSortButton(
-          isSelected: cubit.state.sortOrder == SortOrderCode.modifiedDate,
-          isAscending: cubit.state.isAscending,
-          title: appLocalizations.bookshelfSortLastModified,
-        ),
-      ),
-    ]);
+    PopupMenuUtils.addSection(
+        entries,
+        SharedList.buildSortMenu(
+          titleList: <String>[
+            appLocalizations.bookshelfSortName,
+            appLocalizations.bookshelfSortLastModified,
+          ],
+          sortOrderList: <SortOrderCode>[
+            SortOrderCode.name,
+            SortOrderCode.modifiedDate,
+          ],
+          cubit: cubit,
+        ));
 
     // Operation Section
     if (cubit.state.code.isLoaded &&
@@ -81,18 +76,5 @@ class BookshelfAppBarMoreButton extends StatelessWidget {
     }
 
     return entries;
-  }
-
-  /// ==========================================================
-  /// Click Handler
-
-  /// Tap on sorting button
-  void _onTapSorting(BuildContext context, SortOrderCode sortOrder) {
-    final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
-    if (cubit.state.sortOrder == sortOrder) {
-      cubit.setListOrder(isAscending: !cubit.state.isAscending);
-    } else {
-      cubit.setListOrder(sortOrder: sortOrder);
-    }
   }
 }

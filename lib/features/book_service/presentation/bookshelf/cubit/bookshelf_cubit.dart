@@ -40,8 +40,10 @@ class BookshelfCubit extends SharedListCubit<BookData> {
 
     // Load books.
     final Directory folder = Directory(FilePath.libraryRoot);
-    final Iterable<File> fileList =
-        folder.listSync().whereType<File>().where((File e) => MimeResolver.lookupAll(e) == 'application/epub+zip');
+    final Iterable<File> fileList = folder
+        .listSync()
+        .whereType<File>()
+        .where((File e) => MimeResolver.lookupAll(e) == 'application/epub+zip');
 
     if (fileList.isNotEmpty) {
       final List<BookData> list = <BookData>[];
@@ -49,11 +51,13 @@ class BookshelfCubit extends SharedListCubit<BookData> {
 
       // Only read the books that are not read yet.
       for (File epubFile in fileList) {
-        final BookData target = oldList.firstWhereOrNull((BookData e) => e.absoluteFilePath == epubFile.path) ??
+        final BookData target = oldList.firstWhereOrNull(
+                (BookData e) => e.absoluteFilePath == epubFile.path) ??
             await BookService.repository.getBookData(epubFile.path);
 
         list.add(target);
-        list.sort(BookData.sortCompare(BookService.preference.sortOrder, BookService.preference.isAscending));
+        list.sort(BookData.sortCompare(BookService.preference.sortOrder,
+            BookService.preference.isAscending));
 
         if (!isClosed) {
           emit(state.copyWith(
@@ -69,6 +73,7 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     }
   }
 
+  @override
   void setListOrder({SortOrderCode? sortOrder, bool? isAscending}) {
     final SortOrderCode order = sortOrder ?? state.sortOrder;
     final bool ascending = isAscending ?? state.isAscending;
@@ -94,7 +99,8 @@ class BookshelfCubit extends SharedListCubit<BookData> {
   }
 
   bool deleteBook(BookData bookData) {
-    final bool isSuccess = BookService.repository.delete(bookData.absoluteFilePath);
+    final bool isSuccess =
+        BookService.repository.delete(bookData.absoluteFilePath);
 
     final List<BookData> newList = List<BookData>.from(state.dataList);
     newList.remove(bookData);

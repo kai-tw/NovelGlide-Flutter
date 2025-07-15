@@ -7,13 +7,15 @@ class PopupMenuUtils {
     List<PopupMenuEntry<T>> entries,
     List<PopupMenuEntry<T>> section,
   ) {
-    if (entries.isNotEmpty) {
-      entries.addAll(<PopupMenuEntry<T>>[
-        const PopupMenuDivider(),
-        ...section,
-      ]);
-    } else {
-      entries.addAll(section);
+    if (section.isNotEmpty) {
+      if (entries.isNotEmpty) {
+        entries.addAll(<PopupMenuEntry<T>>[
+          const PopupMenuDivider(),
+          ...section,
+        ]);
+      } else {
+        entries.addAll(section);
+      }
     }
   }
 }

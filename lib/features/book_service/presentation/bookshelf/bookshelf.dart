@@ -12,8 +12,6 @@ import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../enum/sort_order_code.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../../ads_service/data/advertisement_type.dart';
-import '../../../ads_service/presentation/advertisement.dart';
 import '../../../collection/presentation/add_book_page/collection_add_book_scaffold.dart';
 import '../../../homepage/cubit/homepage_cubit.dart';
 import '../../../homepage/homepage.dart';
@@ -70,13 +68,15 @@ class Bookshelf extends StatelessWidget {
     final double bottomPadding = MediaQuery.paddingOf(context).bottom + 48.0;
     return SliverPadding(
       padding: EdgeInsets.only(bottom: bottomPadding),
-      sliver: SliverGrid(
+      sliver: SharedList(
+        listType: SharedListType.grid,
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 150.0,
           childAspectRatio: 150 / 300,
         ),
         delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) => _SliverListItem(state.dataList[index]),
+          (BuildContext context, int index) =>
+              _SliverListItem(state.dataList[index]),
           childCount: state.dataList.length,
         ),
       ),

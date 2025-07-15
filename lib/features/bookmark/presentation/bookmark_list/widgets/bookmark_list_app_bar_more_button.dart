@@ -25,24 +25,20 @@ class BookmarkListAppBarMoreButton extends StatelessWidget {
     }
 
     // Sorting Section
-    PopupMenuUtils.addSection(entries, <PopupMenuEntry<void>>[
-      PopupMenuItem<void>(
-        onTap: () => _onTapSorting(context, SortOrderCode.name),
-        child: SharedListSortButton(
-          isSelected: cubit.state.sortOrder == SortOrderCode.name,
-          isAscending: cubit.state.isAscending,
-          title: appLocalizations.bookmarkListSortName,
-        ),
+    PopupMenuUtils.addSection(
+      entries,
+      SharedList.buildSortMenu(
+        titleList: <String>[
+          appLocalizations.bookmarkListSortName,
+          appLocalizations.bookmarkListSortSavedTime,
+        ],
+        sortOrderList: <SortOrderCode>[
+          SortOrderCode.name,
+          SortOrderCode.savedTime,
+        ],
+        cubit: cubit,
       ),
-      PopupMenuItem<void>(
-        onTap: () => _onTapSorting(context, SortOrderCode.savedTime),
-        child: SharedListSortButton(
-          isSelected: cubit.state.sortOrder == SortOrderCode.savedTime,
-          isAscending: cubit.state.isAscending,
-          title: appLocalizations.bookmarkListSortSavedTime,
-        ),
-      ),
-    ]);
+    );
 
     // Operation Section
     if (cubit.state.code.isLoaded &&

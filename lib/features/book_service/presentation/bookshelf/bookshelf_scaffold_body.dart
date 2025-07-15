@@ -10,7 +10,6 @@ class BookshelfScaffoldBody extends StatelessWidget {
 
     return Column(
       children: <Widget>[
-        const Advertisement(adType: AdvertisementType.bookshelf),
         const BookshelfLoadingIndicator(),
         Expanded(
           child: PageStorage(

@@ -27,16 +27,18 @@ class CollectionListAppBarMoreButton extends StatelessWidget {
     }
 
     // Sorting Section
-    PopupMenuUtils.addSection(entries, <PopupMenuEntry<void>>[
-      PopupMenuItem<void>(
-        onTap: () => _onTapSorting(context, SortOrderCode.name),
-        child: SharedListSortButton(
-          isSelected: cubit.state.sortOrder == SortOrderCode.name,
-          isAscending: cubit.state.isAscending,
-          title: appLocalizations.generalName,
-        ),
+    PopupMenuUtils.addSection(
+      entries,
+      SharedList.buildSortMenu(
+        titleList: <String>[
+          appLocalizations.generalName,
+        ],
+        sortOrderList: <SortOrderCode>[
+          SortOrderCode.name,
+        ],
+        cubit: cubit,
       ),
-    ]);
+    );
 
     // Operation Section
     if (cubit.state.code.isLoaded &&

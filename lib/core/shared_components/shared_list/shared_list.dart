@@ -16,49 +16,64 @@ part 'button/shared_list_select_mode_tile.dart';
 part 'button/shared_list_sort_tile.dart';
 part 'cubit/shared_list_cubit.dart';
 part 'cubit/shared_list_state.dart';
+part 'cubit/shared_list_type.dart';
 part 'widgets/shared_list_empty.dart';
 part 'widgets/shared_list_sliver_empty.dart';
+part 'widgets/shared_list_tile.dart';
 
-class SharedListTile extends StatelessWidget {
-  const SharedListTile({
+class SharedList extends StatelessWidget {
+  const SharedList({
     super.key,
-    this.isSelecting = false,
-    this.isSelected = false,
-    this.leading,
-    this.title,
-    this.subtitle,
-    this.trailing,
-    this.onChanged,
-    this.onTap,
+    required this.listType,
+    required this.gridDelegate,
+    required this.delegate,
   });
 
-  final bool isSelecting;
-  final bool isSelected;
-  final Widget? leading;
-  final Widget? title;
-  final Widget? subtitle;
-  final Widget? trailing;
-  final void Function(bool?)? onChanged;
-  final void Function()? onTap;
+  final SharedListType listType;
+  final SliverGridDelegate gridDelegate;
+  final SliverChildDelegate delegate;
 
   @override
   Widget build(BuildContext context) {
-    if (isSelecting) {
-      return CheckboxListTile(
-        value: isSelected,
-        onChanged: onChanged,
-        secondary: leading,
-        title: title,
-        subtitle: subtitle,
-      );
-    } else {
-      return ListTile(
-        onTap: onTap,
-        leading: leading,
-        title: title,
-        subtitle: subtitle,
-        trailing: trailing,
-      );
+    switch (listType) {
+      case SharedListType.list:
+        return SliverList(
+          delegate: delegate,
+        );
+
+      case SharedListType.grid:
+        return SliverGrid(
+          gridDelegate: gridDelegate,
+          delegate: delegate,
+        );
     }
+  }
+
+  /// **************************************************************************
+  /// Static methods
+
+  /// Build the sort menu
+  static List<PopupMenuItem<void>> buildSortMenu({
+    required List<String> titleList,
+    required List<SortOrderCode> sortOrderList,
+    required SharedListCubit<dynamic> cubit,
+  }) {
+    return List<PopupMenuItem<void>>.generate(sortOrderList.length, (int i) {
+      final SortOrderCode sortOrderCode = sortOrderList[i];
+      return PopupMenuItem<void>(
+        onTap: () {
+          if (cubit.state.sortOrder == sortOrderCode) {
+            cubit.setListOrder(isAscending: !cubit.state.isAscending);
+          } else {
+            cubit.setListOrder(sortOrder: sortOrderCode);
+          }
+        },
+        child: SharedListSortButton(
+          isSelected: cubit.state.sortOrder == sortOrderCode,
+          isAscending: cubit.state.isAscending,
+          title: titleList[i],
+        ),
+      );
+    });
   }
 }

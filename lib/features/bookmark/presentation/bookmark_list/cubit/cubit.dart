@@ -50,6 +50,7 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
     ));
   }
 
+  @override
   void setListOrder({SortOrderCode? sortOrder, bool? isAscending}) {
     final List<BookmarkData> list = List<BookmarkData>.from(state.dataList);
     sortOrder ??= state.sortOrder;
@@ -74,13 +75,15 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
   ) {
     switch (sortOrder) {
       case SortOrderCode.name:
-        list.sort((BookmarkData a, BookmarkData b) =>
-            isAscending ? compareNatural(a.bookPath, b.bookPath) : compareNatural(b.bookPath, a.bookPath));
+        list.sort((BookmarkData a, BookmarkData b) => isAscending
+            ? compareNatural(a.bookPath, b.bookPath)
+            : compareNatural(b.bookPath, a.bookPath));
         break;
 
       default:
-        list.sort((BookmarkData a, BookmarkData b) =>
-            isAscending ? a.savedTime.compareTo(b.savedTime) : b.savedTime.compareTo(a.savedTime));
+        list.sort((BookmarkData a, BookmarkData b) => isAscending
+            ? a.savedTime.compareTo(b.savedTime)
+            : b.savedTime.compareTo(a.savedTime));
         break;
     }
   }

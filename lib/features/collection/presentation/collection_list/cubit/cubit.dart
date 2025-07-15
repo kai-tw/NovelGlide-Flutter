@@ -12,7 +12,8 @@ typedef CollectionListState = SharedListState<CollectionData>;
 
 class CollectionListCubit extends SharedListCubit<CollectionData> {
   factory CollectionListCubit() {
-    final CollectionListCubit cubit = CollectionListCubit._(const CollectionListState());
+    final CollectionListCubit cubit =
+        CollectionListCubit._(const CollectionListState());
     cubit._init();
     return cubit;
   }
@@ -57,6 +58,7 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
     refresh();
   }
 
+  @override
   void setListOrder({SortOrderCode? sortOrder, bool? isAscending}) {
     final SortOrderCode order = sortOrder ?? state.sortOrder;
     final bool ascending = isAscending ?? state.isAscending;
@@ -79,7 +81,8 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
     SortOrderCode sortOrder,
     bool isAscending,
   ) {
-    list.sort((CollectionData a, CollectionData b) =>
-        isAscending ? compareNatural(a.name, b.name) : compareNatural(b.name, a.name));
+    list.sort((CollectionData a, CollectionData b) => isAscending
+        ? compareNatural(a.name, b.name)
+        : compareNatural(b.name, a.name));
   }
 }
