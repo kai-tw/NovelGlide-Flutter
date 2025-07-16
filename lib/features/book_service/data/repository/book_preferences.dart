@@ -53,23 +53,19 @@ class BookPreference {
   Future<void> load() async {
     _prefs ??= await SharedPreferences.getInstance();
 
-    int sortOrder;
-    try {
-      sortOrder = _prefs?.getInt(_sortOrderKey) ?? SortOrderCode.name.index;
-    } catch (_) {
-      sortOrder = SortOrderCode.name.index;
-    }
+    _sortOrder = SortOrderCode.values[PreferenceEnumUtils.getEnumIndex(
+      _prefs,
+      _sortOrderKey,
+      defaultValue: SortOrderCode.name.index,
+    )];
 
-    int listViewType;
-    try {
-      listViewType = _prefs?.getInt(_listViewKey) ?? SharedListType.grid.index;
-    } catch (_) {
-      listViewType = SharedListType.grid.index;
-    }
-
-    _sortOrder = SortOrderCode.values[sortOrder];
     _isAscending = _prefs?.getBool(_isAscendingKey) ?? true;
-    _listType = SharedListType.values[listViewType];
+
+    _listType = SharedListType.values[PreferenceEnumUtils.getEnumIndex(
+      _prefs,
+      _listViewKey,
+      defaultValue: SharedListType.grid.index,
+    )];
   }
 
   /// Reset preferences.
