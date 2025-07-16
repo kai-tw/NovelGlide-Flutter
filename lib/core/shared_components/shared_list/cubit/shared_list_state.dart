@@ -46,6 +46,7 @@ class SharedListState<T> extends Equatable {
     bool? isDragging,
     bool? isSelecting,
     bool? isAscending,
+    SharedListType? listType,
   }) {
     return SharedListState<T>(
       code: code ?? this.code,
@@ -55,6 +56,7 @@ class SharedListState<T> extends Equatable {
       isDragging: isDragging ?? this.isDragging,
       isSelecting: isSelecting ?? this.isSelecting,
       isAscending: isAscending ?? this.isAscending,
+      listType: listType ?? this.listType,
     );
   }
 }

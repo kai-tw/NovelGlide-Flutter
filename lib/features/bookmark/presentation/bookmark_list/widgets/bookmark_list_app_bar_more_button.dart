@@ -20,8 +20,9 @@ class BookmarkListAppBarMoreButton extends StatelessWidget {
     if (cubit.state.code.isLoaded &&
         !cubit.state.isSelecting &&
         cubit.state.dataList.isNotEmpty) {
-      PopupMenuUtils.addSection(entries,
-          SharedListSelectModeTile.itemBuilder<BookmarkListCubit>(context));
+      PopupMenuUtils.addSection(entries, <PopupMenuItem<void>>[
+        SharedList.buildSelectionModeButton(context: context, cubit: cubit),
+      ]);
     }
 
     // Sorting Section

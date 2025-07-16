@@ -14,7 +14,8 @@ class Bookshelf extends StatelessWidget {
           previous.code != current.code ||
           previous.dataList != current.dataList ||
           previous.isAscending != current.isAscending ||
-          previous.sortOrder != current.sortOrder,
+          previous.sortOrder != current.sortOrder ||
+          previous.listType != current.listType,
       builder: (BuildContext context, BookshelfState state) {
         switch (state.code) {
           case LoadingStateCode.initial:

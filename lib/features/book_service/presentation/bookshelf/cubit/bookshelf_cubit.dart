@@ -35,6 +35,7 @@ class BookshelfCubit extends SharedListCubit<BookData> {
       dataList: List<BookData>.from(state.dataList),
       sortOrder: BookService.preference.sortOrder,
       isAscending: BookService.preference.isAscending,
+      listType: BookService.preference.listType,
     ));
 
     // Load books.
@@ -70,6 +71,12 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     if (!isClosed) {
       emit(state.copyWith(code: LoadingStateCode.loaded));
     }
+  }
+
+  @override
+  set listType(SharedListType value) {
+    BookService.preference.listType = value;
+    super.listType = value;
   }
 
   @override

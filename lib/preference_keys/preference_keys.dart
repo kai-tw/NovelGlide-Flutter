@@ -1,6 +1,6 @@
 part 'backup_service_pref.dart';
 part 'reader_pref.dart';
-part 'sort_order_pref.dart';
+part 'shared_list_prefs.dart';
 part 'tts_pref.dart';
 
 class PreferenceKeys {
@@ -8,9 +8,9 @@ class PreferenceKeys {
 
   static final BackupServicePref backupService = BackupServicePref();
   static final ReaderPref reader = ReaderPref();
-  static final SortOrderPref bookshelf = SortOrderPref('bookshelf');
-  static final SortOrderPref collection = SortOrderPref('collection');
-  static final SortOrderPref bookmark = SortOrderPref('bookmark');
+  static final SharedListPrefs bookshelf = SharedListPrefs('bookshelf');
+  static final SharedListPrefs collection = SharedListPrefs('collection');
+  static final SharedListPrefs bookmark = SharedListPrefs('bookmark');
   static final TtsPref tts = TtsPref();
 
   static const String userLocale = 'userLocale';

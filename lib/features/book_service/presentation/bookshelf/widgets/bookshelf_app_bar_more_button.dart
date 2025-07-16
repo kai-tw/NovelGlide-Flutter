@@ -20,8 +20,9 @@ class BookshelfAppBarMoreButton extends StatelessWidget {
     if (cubit.state.code.isLoaded &&
         !cubit.state.isSelecting &&
         cubit.state.dataList.isNotEmpty) {
-      PopupMenuUtils.addSection(entries,
-          SharedListSelectModeTile.itemBuilder<BookshelfCubit>(context));
+      PopupMenuUtils.addSection(entries, <PopupMenuItem<void>>[
+        SharedList.buildSelectionModeButton(context: context, cubit: cubit),
+      ]);
     }
 
     // Sorting Section
@@ -35,6 +36,25 @@ class BookshelfAppBarMoreButton extends StatelessWidget {
           sortOrderList: <SortOrderCode>[
             SortOrderCode.name,
             SortOrderCode.modifiedDate,
+          ],
+          cubit: cubit,
+        ));
+
+    // List View Changing Section
+    PopupMenuUtils.addSection(
+        entries,
+        SharedList.buildViewMenu(
+          titleList: <String>[
+            'Grid',
+            'List',
+          ],
+          typeList: <SharedListType>[
+            SharedListType.grid,
+            SharedListType.list,
+          ],
+          iconList: <IconData>[
+            Icons.grid_view_rounded,
+            Icons.list_rounded,
           ],
           cubit: cubit,
         ));
