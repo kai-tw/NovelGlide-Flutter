@@ -64,18 +64,4 @@ class CollectionListAppBarMoreButton extends StatelessWidget {
 
     return entries;
   }
-
-  /// ==========================================================
-  /// Click Handler
-
-  /// Tap on sorting button
-  void _onTapSorting(BuildContext context, SortOrderCode sortOrder) {
-    final CollectionListCubit cubit =
-        BlocProvider.of<CollectionListCubit>(context);
-    if (cubit.state.sortOrder == sortOrder) {
-      cubit.setListOrder(isAscending: !cubit.state.isAscending);
-    } else {
-      cubit.setListOrder(sortOrder: sortOrder);
-    }
-  }
 }
