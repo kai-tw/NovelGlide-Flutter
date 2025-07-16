@@ -18,9 +18,9 @@ class BackupServiceGoogleDriveTimeTile extends StatelessWidget {
           leading: const Icon(Icons.calendar_month_rounded),
           title: Text(appLocalizations.backupServiceLastTime),
           subtitle: Text(
-            DateTimeUtils.format(
+            LocaleServices.dateTimeOf(
+              context,
               state.lastBackupTime,
-              pattern: appLocalizations.generalDatetimeFormat,
               defaultValue: '-',
             ),
           ),

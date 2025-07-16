@@ -19,6 +19,14 @@ abstract class SharedListCubit<T> extends Cubit<SharedListState<T>> {
     emit(state.copyWith(isDragging: isDragging));
   }
 
+  void toggleSelectSingle(T data) {
+    if (state.selectedSet.contains(data)) {
+      deselectSingle(data);
+    } else {
+      selectSingle(data);
+    }
+  }
+
   void selectSingle(T data) {
     emit(state.copyWith(selectedSet: <T>{...state.selectedSet, data}));
   }

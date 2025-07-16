@@ -6,7 +6,7 @@ class BookRepository {
   /// Get the book data from the file path.
   Future<BookData> getBookData(String filePath) async {
     final String absolutePath = getAbsolutePath(filePath);
-    final EpubBook epubBook = await EpubUtils.loadEpubBook(absolutePath);
+    final epub.EpubBook epubBook = await EpubUtils.loadEpubBook(absolutePath);
     return BookData(
       absoluteFilePath: absolutePath,
       name: epubBook.Title ?? '',

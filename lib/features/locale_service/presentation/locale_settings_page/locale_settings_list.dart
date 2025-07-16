@@ -5,7 +5,8 @@ class LocaleSettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocaleSettingsCubit cubit = BlocProvider.of<LocaleSettingsCubit>(context);
+    final LocaleSettingsCubit cubit =
+        BlocProvider.of<LocaleSettingsCubit>(context);
 
     return BlocBuilder<LocaleSettingsCubit, LocaleSettingsState>(
       buildWhen: (LocaleSettingsState previous, LocaleSettingsState current) =>
@@ -17,21 +18,25 @@ class LocaleSettingsList extends StatelessWidget {
             if (index == 0) {
               final bool isSelected = state.selectedLocale == null;
               return ListTile(
-                onTap: isSelected ? null : () => cubit.selectLocale(context, null),
+                onTap:
+                    isSelected ? null : () => cubit.selectLocale(context, null),
                 title: Text(AppLocalizations.of(context)!.useSystemSettings),
                 trailing: isSelected ? const Icon(Icons.check_rounded) : null,
               );
             } else {
-              final Locale currentLocale = LocaleServices.supportedLocales[index - 1];
+              final Locale currentLocale =
+                  LocaleServices.supportedLocales[index - 1];
               final bool isSelected = state.selectedLocale == currentLocale;
               return ListTile(
-                onTap: isSelected ? null : () => cubit.selectLocale(context, currentLocale),
+                onTap: isSelected
+                    ? null
+                    : () => cubit.selectLocale(context, currentLocale),
                 title: Localizations.override(
                   context: context,
                   locale: currentLocale,
                   child: Builder(
                     builder: (BuildContext context) => Text(
-                      LocaleServices.getLanguageName(
+                      LocaleServices.languageNameOf(
                         context,
                         currentLocale,
                       ),
@@ -39,7 +44,7 @@ class LocaleSettingsList extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  LocaleServices.getLanguageName(
+                  LocaleServices.languageNameOf(
                     context,
                     currentLocale,
                   ),

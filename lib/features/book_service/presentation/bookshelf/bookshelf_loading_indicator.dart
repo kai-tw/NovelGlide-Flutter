@@ -1,4 +1,4 @@
-part of 'bookshelf.dart';
+part of '../../book_service.dart';
 
 class BookshelfLoadingIndicator extends StatelessWidget {
   const BookshelfLoadingIndicator({super.key});

@@ -7,7 +7,7 @@ import '../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../core/utils/popup_menu_utils.dart';
 import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
-import '../../../book_service/data/model/book_data.dart';
+import '../../../book_service/book_service.dart';
 import '../../../book_service/presentation/table_of_contents_page/table_of_contents.dart';
 import '../../data/collection_data.dart';
 import 'cubit/collection_viewer_cubit.dart';

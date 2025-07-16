@@ -13,9 +13,7 @@ import '../../../bookmark/data/bookmark_repository.dart';
 import '../../../collection/presentation/add_book_page/collection_add_book_scaffold.dart';
 import '../../../reader/presentation/reader_page/cubit/reader_cubit.dart';
 import '../../../reader/presentation/reader_page/reader.dart';
-import '../../data/model/book_data.dart';
-import '../../data/model/chapter_data.dart';
-import '../shared/book_cover_image.dart';
+import '../../book_service.dart';
 
 part 'cubit/cubit.dart';
 part 'views/compact_view.dart';

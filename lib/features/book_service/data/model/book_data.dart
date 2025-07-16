@@ -1,13 +1,4 @@
-import 'dart:io';
-
-import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
-import 'package:image/image.dart';
-
-import '../../../../core/utils/epub_utils.dart';
-import '../../../../enum/sort_order_code.dart';
-import '../../book_service.dart';
-import 'chapter_data.dart';
+part of '../../book_service.dart';
 
 class BookData extends Equatable {
   const BookData({
@@ -18,7 +9,7 @@ class BookData extends Equatable {
 
   final String absoluteFilePath;
   final String name;
-  final Image? coverImage;
+  final epub.Image? coverImage;
 
   @override
   List<Object?> get props => <Object?>[absoluteFilePath, name, coverImage];
@@ -33,7 +24,8 @@ class BookData extends Equatable {
   DateTime get modifiedDate => _file.statSync().modified;
 
   /// Get the relative path of this book_service.
-  String get relativeFilePath => BookService.repository.getRelativePath(absoluteFilePath);
+  String get relativeFilePath =>
+      BookService.repository.getRelativePath(absoluteFilePath);
 
   /// Get the list of chapters from this book_service.
   Future<List<ChapterData>> get chapterList async {
@@ -46,12 +38,14 @@ class BookData extends Equatable {
   ) {
     switch (sortOrder) {
       case SortOrderCode.modifiedDate:
-        return (BookData a, BookData b) =>
-            isAscending ? a.modifiedDate.compareTo(b.modifiedDate) : b.modifiedDate.compareTo(a.modifiedDate);
+        return (BookData a, BookData b) => isAscending
+            ? a.modifiedDate.compareTo(b.modifiedDate)
+            : b.modifiedDate.compareTo(a.modifiedDate);
 
       default:
-        return (BookData a, BookData b) =>
-            isAscending ? compareNatural(a.name, b.name) : compareNatural(b.name, a.name);
+        return (BookData a, BookData b) => isAscending
+            ? compareNatural(a.name, b.name)
+            : compareNatural(b.name, a.name);
     }
   }
 }
