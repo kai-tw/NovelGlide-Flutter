@@ -5,17 +5,17 @@ class SharedListPrefs {
     return SharedListPrefs._internal(
       sortOrder: '$prefix.sortOrder',
       isAscending: '$prefix.isAscending',
-      listView: '$prefix.listView',
+      listType: '$prefix.listType',
     );
   }
 
   SharedListPrefs._internal({
     required this.sortOrder,
     required this.isAscending,
-    required this.listView,
+    required this.listType,
   });
 
   final String sortOrder;
   final String isAscending;
-  final String listView;
+  final String listType;
 }

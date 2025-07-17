@@ -6,7 +6,7 @@ class BookPreference {
   /// ==== Preference keys ====
   final String _sortOrderKey = PreferenceKeys.bookshelf.sortOrder;
   final String _isAscendingKey = PreferenceKeys.bookshelf.isAscending;
-  final String _listViewKey = PreferenceKeys.bookshelf.listView;
+  final String _listTypeKey = PreferenceKeys.bookshelf.listType;
 
   /// ==== Preference values ====
   SharedPreferences? _prefs;
@@ -44,7 +44,7 @@ class BookPreference {
   /// ListView Type setter
   set listType(SharedListType value) {
     _listType = value;
-    _prefs?.setInt(_listViewKey, value.index);
+    _prefs?.setInt(_listTypeKey, value.index);
   }
 
   /// ==== Operations ====
@@ -63,7 +63,7 @@ class BookPreference {
 
     _listType = SharedListType.values[PreferenceEnumUtils.getEnumIndex(
       _prefs,
-      _listViewKey,
+      _listTypeKey,
       defaultValue: SharedListType.grid.index,
     )];
   }
@@ -73,6 +73,6 @@ class BookPreference {
     _prefs ??= await SharedPreferences.getInstance();
     _prefs?.remove(_sortOrderKey);
     _prefs?.remove(_isAscendingKey);
-    _prefs?.remove(_listViewKey);
+    _prefs?.remove(_listTypeKey);
   }
 }
