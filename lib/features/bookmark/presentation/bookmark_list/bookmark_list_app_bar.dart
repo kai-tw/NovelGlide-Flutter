@@ -1,6 +1,7 @@
-part of 'bookmark_list.dart';
+part of '../../bookmark_service.dart';
 
-class BookmarkListAppBar extends StatelessWidget implements PreferredSizeWidget {
+class BookmarkListAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   const BookmarkListAppBar({super.key});
 
   @override

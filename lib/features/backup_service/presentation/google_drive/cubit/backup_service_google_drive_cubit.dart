@@ -6,17 +6,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../enum/loading_state_code.dart';
 import '../../../../../../preference_keys/preference_keys.dart';
 import '../../../../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
-import '../../../../bookmark/data/bookmark_repository.dart';
+import '../../../../bookmark/bookmark_service.dart';
 import '../../../../collection/data/collection_repository.dart';
 import '../../../data/repository/backup_repository.dart';
 
 part 'backup_service_google_drive_state.dart';
 
 /// Manages Google Drive backup operations.
-class BackupServiceGoogleDriveCubit extends Cubit<BackupServiceGoogleDriveState> {
+class BackupServiceGoogleDriveCubit
+    extends Cubit<BackupServiceGoogleDriveState> {
   factory BackupServiceGoogleDriveCubit() {
-    const BackupServiceGoogleDriveState initialState = BackupServiceGoogleDriveState();
-    final BackupServiceGoogleDriveCubit cubit = BackupServiceGoogleDriveCubit._internal(initialState);
+    const BackupServiceGoogleDriveState initialState =
+        BackupServiceGoogleDriveState();
+    final BackupServiceGoogleDriveCubit cubit =
+        BackupServiceGoogleDriveCubit._internal(initialState);
     cubit.refresh();
     return cubit;
   }
@@ -43,23 +46,25 @@ class BackupServiceGoogleDriveCubit extends Cubit<BackupServiceGoogleDriveState>
       final List<String> fileNameList = <String>[
         BackupRepository.libraryArchiveName,
         CollectionRepository.jsonFileName,
-        BookmarkRepository.jsonFileName,
+        BookmarkService.repository.jsonFileName,
       ];
       final List<String?> fileIdList = await Future.wait<String?>(
-        fileNameList.map((String fileName) => GoogleApiInterfaces.drive.getFileId(fileName)),
+        fileNameList.map(
+            (String fileName) => GoogleApiInterfaces.drive.getFileId(fileName)),
       );
 
       // Get the last backup time.
       final List<DateTime> timeList = (await Future.wait<drive.File>(
-        fileIdList
-            .whereType<String>()
-            .map((String fileId) => GoogleApiInterfaces.drive.getMetadataById(fileId, field: 'modifiedTime')),
+        fileIdList.whereType<String>().map((String fileId) =>
+            GoogleApiInterfaces.drive
+                .getMetadataById(fileId, field: 'modifiedTime')),
       ))
           .map((drive.File e) => e.modifiedTime)
           .whereType<DateTime>()
           .toList();
-      final DateTime? lastBackupTime =
-          timeList.isNotEmpty ? timeList.reduce((DateTime a, DateTime b) => a.isAfter(b) ? a : b) : null;
+      final DateTime? lastBackupTime = timeList.isNotEmpty
+          ? timeList.reduce((DateTime a, DateTime b) => a.isAfter(b) ? a : b)
+          : null;
 
       if (!isClosed) {
         emit(BackupServiceGoogleDriveState(
@@ -82,7 +87,9 @@ class BackupServiceGoogleDriveCubit extends Cubit<BackupServiceGoogleDriveState>
     final bool isSignedIn = GoogleApiInterfaces.drive.isSignedIn;
 
     if (isEnabled != isSignedIn) {
-      isEnabled ? await GoogleApiInterfaces.drive.signIn() : await GoogleApiInterfaces.drive.signOut();
+      isEnabled
+          ? await GoogleApiInterfaces.drive.signIn()
+          : await GoogleApiInterfaces.drive.signOut();
     }
 
     await prefs.setBool(key, GoogleApiInterfaces.drive.isSignedIn);

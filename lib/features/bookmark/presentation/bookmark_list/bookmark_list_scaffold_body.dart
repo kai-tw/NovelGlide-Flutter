@@ -1,4 +1,4 @@
-part of 'bookmark_list.dart';
+part of '../../bookmark_service.dart';
 
 class BookmarkListScaffoldBody extends StatelessWidget {
   const BookmarkListScaffoldBody({super.key});

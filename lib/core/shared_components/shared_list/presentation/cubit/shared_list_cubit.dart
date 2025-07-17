@@ -1,4 +1,4 @@
-part of '../shared_list.dart';
+part of '../../shared_list.dart';
 
 abstract class SharedListCubit<T> extends Cubit<SharedListState<T>> {
   SharedListCubit(super.initialState);

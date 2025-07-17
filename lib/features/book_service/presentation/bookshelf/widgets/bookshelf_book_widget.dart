@@ -22,25 +22,45 @@ class BookshelfBookWidget extends StatelessWidget {
       margin: EdgeInsets.zero,
       color: Colors.transparent,
       shadowColor: Colors.transparent,
-      child: _buildItem(),
+      child: _buildItem(context),
     );
   }
 
-  Widget _buildItem() {
+  Widget _buildItem(BuildContext context) {
     switch (listType) {
       case SharedListType.grid:
-        return BookshelfBookGridItem(
-          bookData: bookData,
+        return SharedListGridItem(
           isSelecting: isSelecting,
           isSelected: isSelected,
-          onChanged: onChanged,
+          cover: BookshelfCoverWidget(
+            bookData: bookData,
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          title: Text(
+            bookData.name,
+            maxLines: 3,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
         );
+
       case SharedListType.list:
-        return BookshelfBookListItem(
-          bookData: bookData,
+        return SharedListTile(
           isSelecting: isSelecting,
           isSelected: isSelected,
           onChanged: onChanged,
+          leading: Padding(
+            padding: const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
+            child: BookshelfCoverWidget(
+              bookData: bookData,
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+          ),
+          title: Text(
+            bookData.name,
+            overflow: TextOverflow.ellipsis,
+          ),
         );
     }
   }

@@ -6,16 +6,15 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:novelglide/core/services/log_service.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../../../core/services/log_service.dart';
 import '../../../../../core/utils/css_utils.dart';
 import '../../../../../core/utils/int_utils.dart';
 import '../../../../book_service/book_service.dart';
-import '../../../../bookmark/data/bookmark_data.dart';
-import '../../../../bookmark/data/bookmark_repository.dart';
+import '../../../../bookmark/bookmark_service.dart';
 import '../../../../tts_service/tts_service.dart';
 import '../../../data/model/reader_navigation_state_code.dart';
 import '../../../data/model/reader_page_num_type.dart';
@@ -66,7 +65,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
     final String absolutePath =
         BookService.repository.getAbsolutePath(bookPath);
-    final BookmarkData? bookmarkData = BookmarkRepository.get(bookPath);
+    final BookmarkData? bookmarkData = BookmarkService.repository.get(bookPath);
 
     webViewHandler.initialize(
       destination: destinationType == ReaderDestinationType.bookmark
@@ -178,7 +177,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       savedTime: DateTime.now(),
     );
 
-    BookmarkRepository.save(data);
+    BookmarkService.repository.save(data);
 
     emit(state.copyWith(bookmarkData: data));
   }

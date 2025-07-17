@@ -13,46 +13,45 @@ class Bookshelf extends StatelessWidget {
       buildWhen: (BookshelfState previous, BookshelfState current) =>
           previous.code != current.code ||
           previous.dataList != current.dataList ||
-          previous.isAscending != current.isAscending ||
-          previous.sortOrder != current.sortOrder ||
           previous.listType != current.listType,
       builder: (BuildContext context, BookshelfState state) {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
+            // Loading...
             return const CommonSliverLoading();
 
           case LoadingStateCode.backgroundLoading:
           case LoadingStateCode.loaded:
             if (state.dataList.isEmpty) {
+              // No books.
               return SharedListSliverEmpty(
                 title: appLocalizations.bookshelfNoBook,
               );
             } else {
-              return _buildList(context, state);
+              // Show books.
+              return SliverPadding(
+                padding: EdgeInsets.only(
+                  // Avoid books from being covered by the navigation bar.
+                  bottom: MediaQuery.paddingOf(context).bottom + 48.0,
+                ),
+                sliver: SharedList(
+                  listType: state.listType,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 150.0,
+                    childAspectRatio: 150 / 300,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) =>
+                        BookshelfSliverListItem(
+                            bookData: state.dataList[index]),
+                    childCount: state.dataList.length,
+                  ),
+                ),
+              );
             }
         }
       },
-    );
-  }
-
-  Widget _buildList(BuildContext context, BookshelfState state) {
-    // Avoid books from being covered by the navigation bar.
-    final double bottomPadding = MediaQuery.paddingOf(context).bottom + 48.0;
-    return SliverPadding(
-      padding: EdgeInsets.only(bottom: bottomPadding),
-      sliver: SharedList(
-        listType: state.listType,
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 150.0,
-          childAspectRatio: 150 / 300,
-        ),
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int index) =>
-              BookshelfSliverListItem(bookData: state.dataList[index]),
-          childCount: state.dataList.length,
-        ),
-      ),
     );
   }
 }

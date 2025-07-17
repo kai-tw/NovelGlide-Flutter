@@ -1,30 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../core/shared_components/common_delete_dialog.dart';
-import '../../../../core/shared_components/common_loading.dart';
-import '../../../../core/shared_components/draggable_feedback_widget.dart';
-import '../../../../core/shared_components/draggable_placeholder_widget.dart';
-import '../../../../core/shared_components/shared_list/shared_list.dart';
-import '../../../../core/utils/popup_menu_utils.dart';
-import '../../../../core/utils/route_utils.dart';
-import '../../../../enum/loading_state_code.dart';
-import '../../../../enum/sort_order_code.dart';
-import '../../../../generated/i18n/app_localizations.dart';
-import '../../../homepage/cubit/homepage_cubit.dart';
-import '../../../homepage/homepage.dart';
-import '../../../reader/presentation/reader_page/cubit/reader_cubit.dart';
-import '../../../reader/presentation/reader_page/reader.dart';
-import '../../data/bookmark_data.dart';
-import '../../data/bookmark_repository.dart';
-import 'cubit/cubit.dart';
-
-part 'bookmark_list_app_bar.dart';
-part 'bookmark_list_scaffold_body.dart';
-part 'widgets/bookmark_list_app_bar_more_button.dart';
-part 'widgets/bookmark_widget.dart';
-part 'widgets/draggable_bookmark.dart';
-part 'widgets/list_item.dart';
+part of '../../bookmark_service.dart';
 
 class BookmarkList extends StatelessWidget {
   const BookmarkList({super.key});
@@ -37,29 +11,38 @@ class BookmarkList extends StatelessWidget {
 
     return BlocBuilder<BookmarkListCubit, BookmarkListState>(
       buildWhen: (BookmarkListState previous, BookmarkListState current) =>
-          previous.code != current.code || previous.dataList != current.dataList,
+          previous.code != current.code ||
+          previous.dataList != current.dataList ||
+          previous.listType != current.listType,
       builder: (BuildContext context, BookmarkListState state) {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
           case LoadingStateCode.backgroundLoading:
+            // Loading
             return const CommonSliverLoading();
 
           case LoadingStateCode.loaded:
             if (state.dataList.isEmpty) {
+              // No bookmarks
               return SharedListSliverEmpty(
                 title: appLocalizations.bookmarkListNoBookmark,
               );
             } else {
+              // Show bookmarks
               return SliverPadding(
                 padding: EdgeInsets.only(
                   bottom: MediaQuery.paddingOf(context).bottom,
                 ),
-                sliver: SliverList(
+                sliver: SharedList(
+                  listType: state.listType,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 150.0,
+                    childAspectRatio: 150 / 150,
+                  ),
                   delegate: SliverChildBuilderDelegate(
-                    (_, int index) {
-                      return _ListItem(state.dataList[index]);
-                    },
+                    (BuildContext context, int index) =>
+                        BookmarkListItem(bookmarkData: state.dataList[index]),
                     childCount: state.dataList.length,
                   ),
                 ),

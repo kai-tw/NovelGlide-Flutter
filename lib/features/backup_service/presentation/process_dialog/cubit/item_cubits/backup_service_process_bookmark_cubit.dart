@@ -17,7 +17,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
     // Upload the bookmark json file.
     try {
       await GoogleApiInterfaces.drive.uploadFile(
-        BookmarkRepository.jsonFile,
+        BookmarkService.repository.jsonFile,
         onUpload: (int uploaded, int total) {
           emit(BackupServiceProcessItemState(
             step: BackupServiceProcessStepCode.upload,
@@ -39,7 +39,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
     // Emit the result
     emit(BackupServiceProcessItemState(
       step: await GoogleApiInterfaces.drive
-              .fileExists(BookmarkRepository.jsonFileName)
+              .fileExists(BookmarkService.repository.jsonFileName)
           ? BackupServiceProcessStepCode.done
           : BackupServiceProcessStepCode.error,
     ));
@@ -65,7 +65,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
     try {
       await GoogleApiInterfaces.drive.downloadFile(
         googleDriveFileId!,
-        BookmarkRepository.jsonFile,
+        BookmarkService.repository.jsonFile,
         onDownload: (int downloaded, int total) {
           // Update the progress
           emit(BackupServiceProcessItemState(
@@ -124,7 +124,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
     // Emit the result
     emit(BackupServiceProcessItemState(
       step: !(await GoogleApiInterfaces.drive
-              .fileExists(BookmarkRepository.jsonFileName))
+              .fileExists(BookmarkService.repository.jsonFileName))
           ? BackupServiceProcessStepCode.done
           : BackupServiceProcessStepCode.error,
     ));

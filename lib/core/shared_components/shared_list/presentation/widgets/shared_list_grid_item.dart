@@ -1,52 +1,36 @@
-part of '../../../../book_service.dart';
+part of '../../shared_list.dart';
 
-class BookshelfBookGridItem extends StatelessWidget {
-  const BookshelfBookGridItem({
+class SharedListGridItem extends StatelessWidget {
+  const SharedListGridItem({
     super.key,
-    required this.bookData,
     required this.isSelecting,
     required this.isSelected,
     this.onChanged,
+    required this.cover,
+    required this.title,
   });
 
-  final BookData bookData;
   final bool isSelecting;
   final bool isSelected;
   final ValueChanged<bool?>? onChanged;
+  final Widget cover;
+  final Widget title;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        // Book widget
-        Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: AspectRatio(
-                aspectRatio: 1 / 1.5,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color:
-                        Theme.of(context).colorScheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(16.0),
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  child: BookCoverImage(
-                    bookData: bookData,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+        Positioned.fill(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: cover,
               ),
-            ),
-            Text(
-              bookData.name,
-              maxLines: 3,
-              textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ],
+              title,
+            ],
+          ),
         ),
 
         // Checkbox
@@ -79,6 +63,7 @@ class BookshelfBookGridItem extends StatelessWidget {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(6.0)),
         ),
+        // TODO(kai): renew translation.
         semanticLabel: appLocalizations.bookshelfAccessibilityCheckbox,
       );
     }

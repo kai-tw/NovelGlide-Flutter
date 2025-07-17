@@ -27,7 +27,8 @@ class SettingsPagePreferenceCard extends StatelessWidget {
           ),
           SettingsPageListTile(
             onDelete: () async {
-              final SharedPreferences prefs = await SharedPreferences.getInstance();
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
               prefs.remove(PreferenceKeys.collection.sortOrder);
               prefs.remove(PreferenceKeys.collection.isAscending);
             },
@@ -37,7 +38,8 @@ class SettingsPagePreferenceCard extends StatelessWidget {
           ),
           SettingsPageListTile(
             onDelete: () async {
-              final SharedPreferences prefs = await SharedPreferences.getInstance();
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
               prefs.remove(PreferenceKeys.bookmark.sortOrder);
               prefs.remove(PreferenceKeys.bookmark.isAscending);
             },

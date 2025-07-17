@@ -1,4 +1,4 @@
-part of '../bookmark_list.dart';
+part of '../../../bookmark_service.dart';
 
 class BookmarkListAppBarMoreButton extends StatelessWidget {
   const BookmarkListAppBarMoreButton({super.key});
@@ -40,6 +40,26 @@ class BookmarkListAppBarMoreButton extends StatelessWidget {
         cubit: cubit,
       ),
     );
+
+    // List View Changing Section
+    PopupMenuUtils.addSection(
+        entries,
+        SharedList.buildViewMenu(
+          // TODO(kai): Translations.
+          titleList: <String>[
+            'Grid',
+            'List',
+          ],
+          typeList: <SharedListType>[
+            SharedListType.grid,
+            SharedListType.list,
+          ],
+          iconList: <IconData>[
+            Icons.grid_view_rounded,
+            Icons.list_rounded,
+          ],
+          cubit: cubit,
+        ));
 
     // Operation Section
     if (cubit.state.code.isLoaded &&

@@ -1,4 +1,4 @@
-part of '../shared_list.dart';
+part of '../../shared_list.dart';
 
 class SharedListMoreMenuTile extends StatelessWidget {
   const SharedListMoreMenuTile({

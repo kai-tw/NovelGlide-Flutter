@@ -2,22 +2,26 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/services/emoticon_collection.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/sort_order_code.dart';
 import '../../../generated/i18n/app_localizations.dart';
+import '../../utils/preference_enum_utils.dart';
 
-part 'button/shared_list_delete_button.dart';
-part 'button/shared_list_done_button.dart';
-part 'button/shared_list_select_all_button.dart';
-part 'cubit/shared_list_cubit.dart';
-part 'cubit/shared_list_state.dart';
-part 'cubit/shared_list_type.dart';
-part 'widgets/shared_list_empty.dart';
-part 'widgets/shared_list_more_menu_tile.dart';
-part 'widgets/shared_list_sliver_empty.dart';
-part 'widgets/shared_list_tile.dart';
+part 'data/shared_list_preference.dart';
+part 'presentation/button/shared_list_delete_button.dart';
+part 'presentation/button/shared_list_done_button.dart';
+part 'presentation/button/shared_list_select_all_button.dart';
+part 'presentation/cubit/shared_list_cubit.dart';
+part 'presentation/cubit/shared_list_state.dart';
+part 'presentation/cubit/shared_list_type.dart';
+part 'presentation/widgets/shared_list_empty.dart';
+part 'presentation/widgets/shared_list_grid_item.dart';
+part 'presentation/widgets/shared_list_more_menu_tile.dart';
+part 'presentation/widgets/shared_list_sliver_empty.dart';
+part 'presentation/widgets/shared_list_tile.dart';
 
 class SharedList extends StatelessWidget {
   const SharedList({
