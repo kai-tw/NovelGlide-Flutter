@@ -13,10 +13,9 @@ class BookshelfSliverListItem extends StatelessWidget {
       onTap: () => _onTap(context),
       borderRadius: BorderRadius.circular(24.0),
       child: Semantics(
-        label: appLocalizations.accessibilityBookshelfListItem,
-        onTapHint: appLocalizations.accessibilityBookshelfListItemOnTap,
-        onLongPressHint:
-            appLocalizations.accessibilityBookshelfListItemOnLongPress,
+        label: appLocalizations.generalBook,
+        onTapHint: appLocalizations.bookshelfOpenBook,
+        onLongPressHint: appLocalizations.bookshelfDragToDelete,
         child: BlocBuilder<BookshelfCubit, BookshelfState>(
           buildWhen: (BookshelfState previous, BookshelfState current) =>
               previous.code != current.code ||

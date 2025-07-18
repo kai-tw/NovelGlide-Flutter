@@ -24,7 +24,7 @@ class BackupServiceGoogleDriveTargetTile extends StatelessWidget {
         title = appLocalizations.generalCollections;
         break;
       case BackupServiceTargetType.bookmark:
-        title = appLocalizations.generalBookmarks;
+        title = appLocalizations.generalBookmark(2);
         break;
     }
 
@@ -35,7 +35,8 @@ class BackupServiceGoogleDriveTargetTile extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: BackupServiceTaskType.values
             .map<Widget>(
-              (BackupServiceTaskType taskType) => BackupServiceGoogleDriveActionButton(
+              (BackupServiceTaskType taskType) =>
+                  BackupServiceGoogleDriveActionButton(
                 targetType: targetType,
                 taskType: taskType,
               ),

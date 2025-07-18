@@ -7,12 +7,15 @@ class BookmarkListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookmarkListCubit cubit = BlocProvider.of<BookmarkListCubit>(context);
     return InkWell(
       onTap: () => _onTap(context),
       borderRadius: BorderRadius.circular(24.0),
       child: Semantics(
-        // TODO(kai): Semantics.
+        label: appLocalizations.generalBookmark(1),
+        onTapHint: appLocalizations.bookmarkListStartReading,
+        onLongPressHint: appLocalizations.bookmarkListDragToDelete,
         child: BlocBuilder<BookmarkListCubit, BookmarkListState>(
           buildWhen: (BookmarkListState previous, BookmarkListState current) =>
               previous.isSelecting != current.isSelecting ||

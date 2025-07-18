@@ -38,7 +38,7 @@ class BookmarkList extends StatelessWidget {
                   listType: state.listType,
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 150.0,
-                    childAspectRatio: 150 / 150,
+                    childAspectRatio: 150 / 180,
                   ),
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) =>

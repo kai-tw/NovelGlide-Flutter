@@ -7,7 +7,6 @@ import '../../core/utils/route_utils.dart';
 import '../../enum/window_size.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../book_service/book_service.dart';
-import '../book_service/presentation/add_page/book_add_page.dart';
 import '../book_service/presentation/bookshelf/cubit/bookshelf_cubit.dart';
 import '../bookmark/bookmark_service.dart';
 import '../collection/data/collection_data.dart';

@@ -1,14 +1,4 @@
-import 'dart:io';
-
-import 'package:equatable/equatable.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
-
-import '../../../../../core/services/mime_resolver.dart';
-import '../../../book_service.dart';
-
-part 'book_add_state.dart';
+part of '../../../book_service.dart';
 
 /// Cubit to manage the state of adding a book_service.
 class BookAddCubit extends Cubit<BookAddState> {

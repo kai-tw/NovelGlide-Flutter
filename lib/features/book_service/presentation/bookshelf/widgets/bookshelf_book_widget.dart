@@ -27,6 +27,7 @@ class BookshelfBookWidget extends StatelessWidget {
   }
 
   Widget _buildItem(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     switch (listType) {
       case SharedListType.grid:
         return SharedListGridItem(
@@ -43,6 +44,7 @@ class BookshelfBookWidget extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
+          semanticLabel: appLocalizations.bookshelfSelectBook,
         );
 
       case SharedListType.list:

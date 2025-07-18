@@ -45,10 +45,9 @@ class BookmarkListAppBarMoreButton extends StatelessWidget {
     PopupMenuUtils.addSection(
         entries,
         SharedList.buildViewMenu(
-          // TODO(kai): Translations.
           titleList: <String>[
-            'Grid',
-            'List',
+            appLocalizations.generalIcon,
+            appLocalizations.generalList,
           ],
           typeList: <SharedListType>[
             SharedListType.grid,

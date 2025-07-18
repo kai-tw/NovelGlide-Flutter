@@ -1,7 +1,8 @@
-part of '../book_add_page.dart';
+part of '../../../book_service.dart';
 
 class BookAddFileTile extends StatelessWidget {
-  const BookAddFileTile({super.key, required this.filePath, required this.index});
+  const BookAddFileTile(
+      {super.key, required this.filePath, required this.index});
 
   final String filePath;
   final int index;

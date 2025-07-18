@@ -21,7 +21,7 @@ class BookCoverImage extends StatelessWidget {
         'assets/images/book_cover_${brightness == Brightness.dark ? 'dark' : 'light'}.jpg',
         fit: BoxFit.cover,
         gaplessPlayback: true,
-        semanticLabel: appLocalizations.accessibilityBookCover,
+        semanticLabel: appLocalizations.generalBookCover,
       );
     } else {
       return LayoutBuilder(
@@ -34,7 +34,7 @@ class BookCoverImage extends StatelessWidget {
             width: constraints.maxWidth,
             height: constraints.maxHeight,
             fit: fit,
-            semanticLabel: appLocalizations.accessibilityBookCover,
+            semanticLabel: appLocalizations.generalBookCover,
           );
         },
       );

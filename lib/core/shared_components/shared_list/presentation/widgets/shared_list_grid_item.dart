@@ -8,6 +8,7 @@ class SharedListGridItem extends StatelessWidget {
     this.onChanged,
     required this.cover,
     required this.title,
+    required this.semanticLabel,
   });
 
   final bool isSelecting;
@@ -15,6 +16,7 @@ class SharedListGridItem extends StatelessWidget {
   final ValueChanged<bool?>? onChanged;
   final Widget cover;
   final Widget title;
+  final String semanticLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +56,6 @@ class SharedListGridItem extends StatelessWidget {
 
   /// Checkbox widgets builder
   Widget? _buildCheckbox(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-
     if (isSelecting) {
       return Checkbox(
         value: isSelected,
@@ -63,8 +63,7 @@ class SharedListGridItem extends StatelessWidget {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(6.0)),
         ),
-        // TODO(kai): renew translation.
-        semanticLabel: appLocalizations.bookshelfAccessibilityCheckbox,
+        semanticLabel: semanticLabel,
       );
     }
 

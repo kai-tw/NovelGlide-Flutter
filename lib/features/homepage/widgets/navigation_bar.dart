@@ -7,13 +7,17 @@ class _NavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final HomepageCubit cubit = BlocProvider.of<HomepageCubit>(context);
-    final BookshelfCubit bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
-    final BookmarkListCubit bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
-    final CollectionListCubit collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
+    final BookshelfCubit bookshelfCubit =
+        BlocProvider.of<BookshelfCubit>(context);
+    final BookmarkListCubit bookmarkListCubit =
+        BlocProvider.of<BookmarkListCubit>(context);
+    final CollectionListCubit collectionListCubit =
+        BlocProvider.of<CollectionListCubit>(context);
 
     return BlocBuilder<HomepageCubit, HomepageState>(
       buildWhen: (HomepageState previous, HomepageState current) =>
-          previous.navItem != current.navItem || previous.isEnabled != current.isEnabled,
+          previous.navItem != current.navItem ||
+          previous.isEnabled != current.isEnabled,
       builder: (BuildContext context, HomepageState state) {
         return NavigationBar(
           selectedIndex: HomepageNavigationItem.values.indexOf(state.navItem),
@@ -32,7 +36,7 @@ class _NavigationBar extends StatelessWidget {
             ),
             _Destination(
               iconData: Icons.bookmarks_rounded,
-              label: appLocalizations.generalBookmarks,
+              label: appLocalizations.generalBookmark(2),
               enabled: !state.navItem.isBookmark && state.isEnabled,
             ),
             _Destination(
@@ -77,7 +81,8 @@ class _Destination extends StatelessWidget {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return NavigationDestination(
-      icon: Icon(iconData, color: colorScheme.onSurface.withValues(alpha: 0.64)),
+      icon:
+          Icon(iconData, color: colorScheme.onSurface.withValues(alpha: 0.64)),
       selectedIcon: Icon(iconData, color: colorScheme.onSurface),
       label: label,
       enabled: enabled,

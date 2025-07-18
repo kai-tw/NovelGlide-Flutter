@@ -31,7 +31,10 @@ class BookmarkListBookmarkWidget extends StatelessWidget {
     final int daysPassed = bookmarkData.daysPassed;
     final List<Widget> subtitleChildren = <Widget>[
       // Days passed text
-      Text(_getSavedTimeString(daysPassed, appLocalizations)),
+      Text(
+        _getSavedTimeString(daysPassed, appLocalizations),
+        style: Theme.of(context).textTheme.bodySmall,
+      ),
     ];
 
     switch (listType) {
@@ -42,6 +45,7 @@ class BookmarkListBookmarkWidget extends StatelessWidget {
             0,
             Text(
               bookmarkData.chapterTitle,
+              style: Theme.of(context).textTheme.bodySmall,
               overflow: TextOverflow.ellipsis,
             ),
           );
@@ -50,7 +54,10 @@ class BookmarkListBookmarkWidget extends StatelessWidget {
         return SharedListGridItem(
           isSelecting: isSelecting,
           isSelected: isSelected,
-          cover: const Icon(Icons.bookmark_rounded),
+          cover: const Padding(
+            padding: EdgeInsets.only(top: 12.0),
+            child: Icon(Icons.bookmark_rounded),
+          ),
           title: Column(
             children: <Widget>[
               Text(
@@ -61,6 +68,7 @@ class BookmarkListBookmarkWidget extends StatelessWidget {
             ],
           ),
           onChanged: onChanged,
+          semanticLabel: appLocalizations.bookmarkListSelectBookmark,
         );
 
       case SharedListType.list:

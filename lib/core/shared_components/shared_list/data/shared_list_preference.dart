@@ -1,12 +1,24 @@
 part of '../shared_list.dart';
 
-abstract class SharedListPreference {
-  SharedListPreference();
+class SharedListPreference {
+  SharedListPreference({
+    required this.sortOrderKey,
+    required this.isAscendingKey,
+    required this.listTypeKey,
+    required this.defaultSortOrder,
+    required this.defaultIsAscending,
+    required this.defaultListType,
+  });
 
   /// ==== Preference keys ====
-  abstract final String sortOrderKey;
-  abstract final String isAscendingKey;
-  abstract final String listTypeKey;
+  final String sortOrderKey;
+  final String isAscendingKey;
+  final String listTypeKey;
+
+  /// ==== Preference Default Values ====
+  final SortOrderCode defaultSortOrder;
+  final bool defaultIsAscending;
+  final SharedListType defaultListType;
 
   /// ==== Preference values ====
   SharedPreferences? _prefs;
@@ -56,15 +68,15 @@ abstract class SharedListPreference {
     _sortOrder = SortOrderCode.values[PreferenceEnumUtils.getEnumIndex(
       _prefs,
       sortOrderKey,
-      defaultValue: SortOrderCode.name.index,
+      defaultValue: defaultSortOrder.index,
     )];
 
-    _isAscending = _prefs?.getBool(isAscendingKey) ?? true;
+    _isAscending = _prefs?.getBool(isAscendingKey) ?? defaultIsAscending;
 
     _listType = SharedListType.values[PreferenceEnumUtils.getEnumIndex(
       _prefs,
       listTypeKey,
-      defaultValue: SharedListType.grid.index,
+      defaultValue: defaultListType.index,
     )];
   }
 

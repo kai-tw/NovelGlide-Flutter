@@ -1,4 +1,4 @@
-part of '../book_add_page.dart';
+part of '../../../book_service.dart';
 
 class BookAddActionBar extends StatelessWidget {
   const BookAddActionBar({super.key});
