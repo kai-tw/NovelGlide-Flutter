@@ -18,6 +18,7 @@ import '../../../../core/utils/epub_utils.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../core/services/mime_resolver.dart';
+import '../../core/shared_components/adaptive_lines_text.dart';
 import '../../core/shared_components/common_delete_dialog.dart';
 import '../../core/shared_components/common_error_dialog.dart';
 import '../../core/shared_components/common_loading.dart';

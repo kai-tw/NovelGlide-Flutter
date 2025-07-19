@@ -8,6 +8,7 @@ import 'package:path/path.dart';
 import '../../../core/services/file_path.dart';
 import '../../../core/utils/json_utils.dart';
 import '../../../core/utils/random_utils.dart';
+import '../../core/shared_components/adaptive_lines_text.dart';
 import '../../core/shared_components/common_delete_dialog.dart';
 import '../../core/shared_components/common_loading.dart';
 import '../../core/shared_components/draggable_feedback_widget.dart';

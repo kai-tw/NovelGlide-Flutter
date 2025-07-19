@@ -22,6 +22,7 @@ class CollectionListCollectionWidget extends StatelessWidget {
       margin: EdgeInsets.zero,
       color: Colors.transparent,
       shadowColor: Colors.transparent,
+      clipBehavior: Clip.hardEdge,
       child: _buildCollection(context),
     );
   }
@@ -37,15 +38,7 @@ class CollectionListCollectionWidget extends StatelessWidget {
             padding: EdgeInsets.only(top: 12.0),
             child: Icon(Icons.folder_rounded),
           ),
-          title: Column(
-            children: <Widget>[
-              Text(
-                collectionData.name,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
+          title: AdaptiveLinesText(collectionData.name),
           onChanged: onChanged,
           semanticLabel: appLocalizations.collectionSelectCollection,
         );

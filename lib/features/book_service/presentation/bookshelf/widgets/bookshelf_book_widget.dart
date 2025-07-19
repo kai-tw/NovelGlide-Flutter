@@ -37,13 +37,7 @@ class BookshelfBookWidget extends StatelessWidget {
             bookData: bookData,
             borderRadius: BorderRadius.circular(16.0),
           ),
-          title: Text(
-            bookData.name,
-            maxLines: 3,
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+          title: AdaptiveLinesText(bookData.name),
           semanticLabel: appLocalizations.bookshelfSelectBook,
         );
 
