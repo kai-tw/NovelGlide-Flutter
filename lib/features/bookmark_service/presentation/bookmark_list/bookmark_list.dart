@@ -41,8 +41,11 @@ class BookmarkList extends StatelessWidget {
                     childAspectRatio: 150 / 180,
                   ),
                   delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) =>
-                        BookmarkListItem(bookmarkData: state.dataList[index]),
+                    (BuildContext context, int index) {
+                      return BookmarkListItem(
+                        bookmarkData: state.dataList[index],
+                      );
+                    },
                     childCount: state.dataList.length,
                   ),
                 ),

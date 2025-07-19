@@ -3,8 +3,7 @@ import 'package:collection/collection.dart';
 import '../../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../book_service/book_service.dart';
-import '../../../data/collection_data.dart';
-import '../../../data/collection_repository.dart';
+import '../../../collection_service.dart';
 
 typedef CollectionViewerState = SharedListState<BookData>;
 
@@ -22,7 +21,7 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
 
   @override
   Future<void> refresh() async {
-    collectionData = CollectionRepository.get(collectionData.id);
+    collectionData = CollectionService.repository.get(collectionData.id);
     final Set<String> pathSet = collectionData.pathList.toSet();
 
     if (pathSet.isEmpty) {
@@ -69,13 +68,13 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
 
     collectionData.pathList =
         state.dataList.map<String>((BookData e) => e.absoluteFilePath).toList();
-    CollectionRepository.save(collectionData);
+    CollectionService.repository.save(collectionData);
   }
 
   void remove() {
     collectionData.pathList.removeWhere((String p) =>
         state.selectedSet.any((BookData e) => e.relativeFilePath == p));
-    CollectionRepository.save(collectionData);
+    CollectionService.repository.save(collectionData);
     refresh();
   }
 }

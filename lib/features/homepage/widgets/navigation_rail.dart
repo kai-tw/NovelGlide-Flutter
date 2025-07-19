@@ -42,7 +42,7 @@ class _NavigationRail extends StatelessWidget {
                       _buildDestination(
                         context,
                         iconData: Icons.collections_bookmark_rounded,
-                        label: appLocalizations.generalCollections,
+                        label: appLocalizations.generalCollection(2),
                         disabled: state.navItem.isCollection && state.isEnabled,
                       ),
                       _buildDestination(

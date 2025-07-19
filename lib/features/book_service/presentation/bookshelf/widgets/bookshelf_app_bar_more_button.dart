@@ -41,23 +41,8 @@ class BookshelfAppBarMoreButton extends StatelessWidget {
         ));
 
     // List View Changing Section
-    PopupMenuUtils.addSection(
-        entries,
-        SharedList.buildViewMenu(
-          titleList: <String>[
-            appLocalizations.generalIcon,
-            appLocalizations.generalList,
-          ],
-          typeList: <SharedListType>[
-            SharedListType.grid,
-            SharedListType.list,
-          ],
-          iconList: <IconData>[
-            Icons.grid_view_rounded,
-            Icons.list_rounded,
-          ],
-          cubit: cubit,
-        ));
+    PopupMenuUtils.addSection(entries,
+        SharedList.buildGeneralViewMenu(context: context, cubit: cubit));
 
     // Operation Section
     if (cubit.state.code.isLoaded &&

@@ -27,7 +27,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
             );
           },
           icon: const Icon(Icons.collections_bookmark_outlined),
-          tooltip: appLocalizations.generalCollections,
+          tooltip: appLocalizations.generalCollection(2),
         ),
       ],
     );

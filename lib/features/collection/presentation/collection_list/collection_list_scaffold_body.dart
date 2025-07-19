@@ -1,4 +1,4 @@
-part of 'collection_list.dart';
+part of '../../collection_service.dart';
 
 class CollectionListScaffoldBody extends StatelessWidget {
   const CollectionListScaffoldBody({super.key});

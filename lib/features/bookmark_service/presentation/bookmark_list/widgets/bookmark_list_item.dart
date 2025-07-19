@@ -18,13 +18,13 @@ class BookmarkListItem extends StatelessWidget {
         onLongPressHint: appLocalizations.bookmarkListDragToDelete,
         child: BlocBuilder<BookmarkListCubit, BookmarkListState>(
           buildWhen: (BookmarkListState previous, BookmarkListState current) =>
+              previous.code != current.code ||
               previous.isSelecting != current.isSelecting ||
               previous.isDragging != current.isDragging ||
               previous.selectedSet.contains(bookmarkData) !=
                   current.selectedSet.contains(bookmarkData) ||
               previous.listType != current.listType,
           builder: (BuildContext context, BookmarkListState state) {
-            final bool isSelected = state.selectedSet.contains(bookmarkData);
             return BookmarkListDraggableBookmark(
               bookmarkData: bookmarkData,
               listType: state.listType,
@@ -32,7 +32,7 @@ class BookmarkListItem extends StatelessWidget {
                   !state.isDragging &&
                   !state.isSelecting,
               isSelecting: state.isSelecting,
-              isSelected: isSelected,
+              isSelected: state.selectedSet.contains(bookmarkData),
               onChanged: (_) => cubit.toggleSelectSingle(bookmarkData),
             );
           },

@@ -1,4 +1,4 @@
-import 'dart:convert';
+part of '../collection_service.dart';
 
 class CollectionData {
   CollectionData(

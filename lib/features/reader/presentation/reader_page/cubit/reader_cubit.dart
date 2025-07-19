@@ -14,7 +14,7 @@ import '../../../../../core/services/log_service.dart';
 import '../../../../../core/utils/css_utils.dart';
 import '../../../../../core/utils/int_utils.dart';
 import '../../../../book_service/book_service.dart';
-import '../../../../bookmark/bookmark_service.dart';
+import '../../../../bookmark_service/bookmark_service.dart';
 import '../../../../tts_service/tts_service.dart';
 import '../../../data/model/reader_navigation_state_code.dart';
 import '../../../data/model/reader_page_num_type.dart';

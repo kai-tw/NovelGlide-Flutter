@@ -8,7 +8,7 @@ import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../enum/window_size.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../../bookmark/bookmark_service.dart';
+import '../../../bookmark_service/bookmark_service.dart';
 import '../../../collection/presentation/add_book_page/collection_add_book_scaffold.dart';
 import '../../../reader/presentation/reader_page/cubit/reader_cubit.dart';
 import '../../../reader/presentation/reader_page/reader.dart';

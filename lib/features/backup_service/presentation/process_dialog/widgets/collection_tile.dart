@@ -13,14 +13,14 @@ class _CollectionTile extends StatelessWidget {
           case BackupServiceProcessStepCode.disabled:
             return ListTile(
               leading: const Icon(Icons.collections_bookmark_outlined),
-              title: Text(appLocalizations.generalCollections),
+              title: Text(appLocalizations.generalCollection(2)),
               enabled: false,
             );
 
           case BackupServiceProcessStepCode.upload:
             return ListTile(
               leading: const Icon(Icons.upload_outlined),
-              title: Text(appLocalizations.generalCollections),
+              title: Text(appLocalizations.generalCollection(2)),
               trailing: CircularProgressIndicator(
                 value: state.progress,
               ),
@@ -29,7 +29,7 @@ class _CollectionTile extends StatelessWidget {
           case BackupServiceProcessStepCode.download:
             return ListTile(
               leading: const Icon(Icons.download_outlined),
-              title: Text(appLocalizations.generalCollections),
+              title: Text(appLocalizations.generalCollection(2)),
               trailing: CircularProgressIndicator(
                 value: state.progress,
               ),
@@ -38,7 +38,7 @@ class _CollectionTile extends StatelessWidget {
           case BackupServiceProcessStepCode.delete:
             return ListTile(
               leading: const Icon(Icons.delete_outlined),
-              title: Text(appLocalizations.generalCollections),
+              title: Text(appLocalizations.generalCollection(2)),
               trailing: const CircularProgressIndicator(),
             );
 
@@ -47,7 +47,7 @@ class _CollectionTile extends StatelessWidget {
               iconColor: Colors.green,
               textColor: Colors.green,
               leading: const Icon(Icons.check_outlined),
-              title: Text(appLocalizations.generalCollections),
+              title: Text(appLocalizations.generalCollection(2)),
             );
 
           case BackupServiceProcessStepCode.error:
@@ -55,13 +55,13 @@ class _CollectionTile extends StatelessWidget {
               iconColor: Theme.of(context).colorScheme.error,
               textColor: Theme.of(context).colorScheme.error,
               leading: const Icon(Icons.error_outline_rounded),
-              title: Text(appLocalizations.generalCollections),
+              title: Text(appLocalizations.generalCollection(2)),
             );
 
           default:
             return ListTile(
               leading: const Icon(Icons.collections_bookmark_outlined),
-              title: Text(appLocalizations.generalCollections),
+              title: Text(appLocalizations.generalCollection(2)),
               trailing: const CircularProgressIndicator(),
             );
         }

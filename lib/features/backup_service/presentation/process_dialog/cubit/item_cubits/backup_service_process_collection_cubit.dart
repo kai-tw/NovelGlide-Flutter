@@ -18,7 +18,7 @@ class BackupServiceProcessCollectionCubit
 
     // Upload the collection json file
     await GoogleApiInterfaces.drive.uploadFile(
-      CollectionRepository.jsonFile,
+      CollectionService.repository.jsonFile,
       onUpload: (int uploaded, int total) {
         // Update the progress
         emit(BackupServiceProcessItemState(
@@ -31,7 +31,7 @@ class BackupServiceProcessCollectionCubit
     // Emit the result
     emit(BackupServiceProcessItemState(
       step: await GoogleApiInterfaces.drive
-              .fileExists(CollectionRepository.jsonFileName)
+              .fileExists(CollectionService.repository.jsonFileName)
           ? BackupServiceProcessStepCode.done
           : BackupServiceProcessStepCode.error,
     ));
@@ -57,7 +57,7 @@ class BackupServiceProcessCollectionCubit
     try {
       await GoogleApiInterfaces.drive.downloadFile(
         googleDriveFileId!,
-        CollectionRepository.jsonFile,
+        CollectionService.repository.jsonFile,
         onDownload: (int downloaded, int total) {
           // Update the progress
           emit(BackupServiceProcessItemState(
@@ -116,7 +116,7 @@ class BackupServiceProcessCollectionCubit
 
     emit(BackupServiceProcessItemState(
       step: !(await GoogleApiInterfaces.drive
-              .fileExists(CollectionRepository.jsonFileName))
+              .fileExists(CollectionService.repository.jsonFileName))
           ? BackupServiceProcessStepCode.done
           : BackupServiceProcessStepCode.error,
     ));

@@ -1,60 +1,53 @@
 import 'package:collection/collection.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
-import '../../../../../preference_keys/preference_keys.dart';
-import '../../../data/collection_data.dart';
-import '../../../data/collection_repository.dart';
+import '../../../collection_service.dart';
 
 typedef CollectionListState = SharedListState<CollectionData>;
 
 class CollectionListCubit extends SharedListCubit<CollectionData> {
   factory CollectionListCubit() {
-    final CollectionListCubit cubit =
-        CollectionListCubit._(const CollectionListState());
-    cubit._init();
+    final CollectionListCubit cubit = CollectionListCubit._();
+    WidgetsBinding.instance.addPostFrameCallback((_) => cubit.refresh());
     return cubit;
   }
 
-  CollectionListCubit._(super.initialState);
-
-  final String _sortOrderKey = PreferenceKeys.collection.sortOrder;
-  final String _isAscendingKey = PreferenceKeys.collection.isAscending;
-  late final SharedPreferences _prefs;
-
-  Future<void> _init() async {
-    _prefs = await SharedPreferences.getInstance();
-    refresh();
-  }
+  CollectionListCubit._() : super(const CollectionListState());
 
   @override
   Future<void> refresh() async {
-    // Load preferences.
-    int sortOrder;
-    try {
-      sortOrder = _prefs.getInt(_sortOrderKey) ?? SortOrderCode.name.index;
-    } catch (_) {
-      sortOrder = SortOrderCode.name.index;
+    if (state.code.isLoading || state.code.isBackgroundLoading) {
+      return;
     }
-    final SortOrderCode sortOrderCode = SortOrderCode.values[sortOrder];
-    final bool isAscending = _prefs.getBool(_isAscendingKey) ?? true;
 
-    // Load collection list.
-    final List<CollectionData> collectionList = CollectionRepository.getList();
-    _sortList(collectionList, sortOrderCode, isAscending);
+    // Load preferences.
+    await CollectionService.preference.load();
 
     emit(CollectionListState(
+      code: LoadingStateCode.loading,
+      dataList: List<CollectionData>.from(state.dataList),
+      sortOrder: CollectionService.preference.sortOrder,
+      isAscending: CollectionService.preference.isAscending,
+      listType: CollectionService.preference.listType,
+    ));
+
+    // Load collection list.
+    final List<CollectionData> collectionList =
+        CollectionService.repository.getList();
+    _sortList(collectionList, CollectionService.preference.sortOrder,
+        CollectionService.preference.isAscending);
+
+    emit(state.copyWith(
       code: LoadingStateCode.loaded,
       dataList: collectionList,
-      isAscending: isAscending,
-      sortOrder: sortOrderCode,
     ));
   }
 
   void deleteSelectedCollections() {
-    state.selectedSet.forEach(CollectionRepository.delete);
+    state.selectedSet.forEach(CollectionService.repository.delete);
     refresh();
   }
 
@@ -64,8 +57,8 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
     final bool ascending = isAscending ?? state.isAscending;
     final List<CollectionData> list = List<CollectionData>.from(state.dataList);
 
-    _prefs.setInt(_sortOrderKey, order.index);
-    _prefs.setBool(_isAscendingKey, ascending);
+    CollectionService.preference.sortOrder = order;
+    CollectionService.preference.isAscending = ascending;
 
     _sortList(list, order, ascending);
     emit(state.copyWith(
@@ -73,6 +66,12 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
       isAscending: ascending,
       sortOrder: order,
     ));
+  }
+
+  @override
+  set listType(SharedListType value) {
+    CollectionService.preference.listType = value;
+    super.listType = value;
   }
 
   // Helper method to sort the collection list

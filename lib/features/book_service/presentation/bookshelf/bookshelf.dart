@@ -33,7 +33,7 @@ class Bookshelf extends StatelessWidget {
               return SliverPadding(
                 padding: EdgeInsets.only(
                   // Avoid books from being covered by the navigation bar.
-                  bottom: MediaQuery.paddingOf(context).bottom + 48.0,
+                  bottom: MediaQuery.paddingOf(context).bottom + 72.0,
                 ),
                 sliver: SharedList(
                   listType: state.listType,
@@ -42,9 +42,11 @@ class Bookshelf extends StatelessWidget {
                     childAspectRatio: 150 / 300,
                   ),
                   delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) =>
-                        BookshelfSliverListItem(
-                            bookData: state.dataList[index]),
+                    (BuildContext context, int index) {
+                      return BookshelfSliverListItem(
+                        bookData: state.dataList[index],
+                      );
+                    },
                     childCount: state.dataList.length,
                   ),
                 ),

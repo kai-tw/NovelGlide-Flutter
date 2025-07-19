@@ -1,4 +1,4 @@
-part of '../collection_list.dart';
+part of '../../../collection_service.dart';
 
 class CollectionListAppBarMoreButton extends StatelessWidget {
   const CollectionListAppBarMoreButton({super.key});
@@ -40,6 +40,10 @@ class CollectionListAppBarMoreButton extends StatelessWidget {
         cubit: cubit,
       ),
     );
+
+    // List View Changing Section
+    PopupMenuUtils.addSection(entries,
+        SharedList.buildGeneralViewMenu(context: context, cubit: cubit));
 
     // Operation Section
     if (cubit.state.code.isLoaded &&

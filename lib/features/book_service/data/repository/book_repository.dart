@@ -38,7 +38,7 @@ class BookRepository {
     BookmarkService.repository.deleteByPath(absolutePath);
 
     // Delete associated collections.
-    CollectionRepository.deleteByPath(absolutePath);
+    CollectionService.repository.deleteByPath(absolutePath);
 
     // Delete locations cache.
     LocationCacheRepository.delete(absolutePath);
@@ -63,7 +63,7 @@ class BookRepository {
     directory.createSync(recursive: true);
 
     BookmarkService.repository.reset();
-    CollectionRepository.reset();
+    CollectionService.repository.reset();
     LocationCacheRepository.clear();
   }
 }

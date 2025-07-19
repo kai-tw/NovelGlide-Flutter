@@ -24,7 +24,8 @@ class _Cubit extends Cubit<_State> {
   }
 
   void refresh() {
-    final List<CollectionData> collectionList = CollectionRepository.getList();
+    final List<CollectionData> collectionList =
+        CollectionService.repository.getList();
     final Set<String> selectedCollections = collectionList
         .where((CollectionData e) => e.pathList
             .map((String e) => basename(e))
@@ -73,7 +74,7 @@ class _Cubit extends Cubit<_State> {
       } else {
         data.pathList.removeWhere((String e) => pathList.contains(e));
       }
-      CollectionRepository.save(data);
+      CollectionService.repository.save(data);
     }
   }
 }

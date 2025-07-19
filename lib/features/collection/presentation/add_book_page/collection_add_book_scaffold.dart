@@ -9,8 +9,7 @@ import '../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../book_service/book_service.dart';
-import '../../data/collection_data.dart';
-import '../../data/collection_repository.dart';
+import '../../collection_service.dart';
 import '../add_dialog/collection_add_dialog.dart';
 
 part 'cubit/cubit.dart';

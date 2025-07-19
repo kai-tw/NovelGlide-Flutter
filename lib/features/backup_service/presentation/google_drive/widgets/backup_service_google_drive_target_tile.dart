@@ -21,7 +21,7 @@ class BackupServiceGoogleDriveTargetTile extends StatelessWidget {
         title = appLocalizations.generalBookshelf;
         break;
       case BackupServiceTargetType.collection:
-        title = appLocalizations.generalCollections;
+        title = appLocalizations.generalCollection(2);
         break;
       case BackupServiceTargetType.bookmark:
         title = appLocalizations.generalBookmark(2);

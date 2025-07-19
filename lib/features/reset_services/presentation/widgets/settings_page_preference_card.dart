@@ -26,23 +26,13 @@ class SettingsPagePreferenceCard extends StatelessWidget {
             deleteLabel: appLocalizations.generalReset,
           ),
           SettingsPageListTile(
-            onDelete: () async {
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
-              prefs.remove(PreferenceKeys.collection.sortOrder);
-              prefs.remove(PreferenceKeys.collection.isAscending);
-            },
+            onDelete: CollectionService.preference.reset,
             iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetCollectionList,
             deleteLabel: appLocalizations.generalReset,
           ),
           SettingsPageListTile(
-            onDelete: () async {
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
-              prefs.remove(PreferenceKeys.bookmark.sortOrder);
-              prefs.remove(PreferenceKeys.bookmark.isAscending);
-            },
+            onDelete: BookmarkService.preference.reset,
             iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetBookmarkList,
             deleteLabel: appLocalizations.generalReset,

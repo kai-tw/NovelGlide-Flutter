@@ -117,4 +117,26 @@ class SharedList extends StatelessWidget {
       );
     });
   }
+
+  static List<PopupMenuItem<void>> buildGeneralViewMenu({
+    required BuildContext context,
+    required SharedListCubit<dynamic> cubit,
+  }) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    return buildViewMenu(
+      titleList: <String>[
+        appLocalizations.generalIcon,
+        appLocalizations.generalList,
+      ],
+      typeList: <SharedListType>[
+        SharedListType.grid,
+        SharedListType.list,
+      ],
+      iconList: <IconData>[
+        Icons.grid_view_rounded,
+        Icons.list_rounded,
+      ],
+      cubit: cubit,
+    );
+  }
 }

@@ -9,7 +9,7 @@ import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../book_service/book_service.dart';
 import '../../../book_service/presentation/table_of_contents_page/table_of_contents.dart';
-import '../../data/collection_data.dart';
+import '../../collection_service.dart';
 import 'cubit/collection_viewer_cubit.dart';
 
 part 'widgets/collection_viewer_list_item.dart';

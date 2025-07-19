@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../../enum/loading_state_code.dart';
 import '../../../../../../preference_keys/preference_keys.dart';
 import '../../../../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
-import '../../../../bookmark/bookmark_service.dart';
-import '../../../../collection/data/collection_repository.dart';
+import '../../../../bookmark_service/bookmark_service.dart';
+import '../../../../collection/collection_service.dart';
 import '../../../data/repository/backup_repository.dart';
 
 part 'backup_service_google_drive_state.dart';
@@ -45,7 +45,7 @@ class BackupServiceGoogleDriveCubit
       // Load the file IDs.
       final List<String> fileNameList = <String>[
         BackupRepository.libraryArchiveName,
-        CollectionRepository.jsonFileName,
+        CollectionService.repository.jsonFileName,
         BookmarkService.repository.jsonFileName,
       ];
       final List<String?> fileIdList = await Future.wait<String?>(

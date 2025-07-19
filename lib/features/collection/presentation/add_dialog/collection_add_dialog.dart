@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../enum/window_size.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../data/collection_repository.dart';
+import '../../collection_service.dart';
 
 part 'cubit/cubit.dart';
 part 'widgets/cancel_button.dart';

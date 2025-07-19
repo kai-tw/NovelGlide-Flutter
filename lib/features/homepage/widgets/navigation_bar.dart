@@ -31,7 +31,7 @@ class _NavigationBar extends StatelessWidget {
             ),
             _Destination(
               iconData: Icons.collections_bookmark_rounded,
-              label: appLocalizations.generalCollections,
+              label: appLocalizations.generalCollection(2),
               enabled: !state.navItem.isCollection && state.isEnabled,
             ),
             _Destination(

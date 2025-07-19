@@ -14,12 +14,12 @@ typedef BookshelfState = SharedListState<BookData>;
 
 class BookshelfCubit extends SharedListCubit<BookData> {
   factory BookshelfCubit() {
-    final BookshelfCubit cubit = BookshelfCubit._(const BookshelfState());
+    final BookshelfCubit cubit = BookshelfCubit._();
     WidgetsBinding.instance.addPostFrameCallback((_) => cubit.refresh());
     return cubit;
   }
 
-  BookshelfCubit._(super.initialState);
+  BookshelfCubit._() : super(const BookshelfState());
 
   @override
   Future<void> refresh() async {
