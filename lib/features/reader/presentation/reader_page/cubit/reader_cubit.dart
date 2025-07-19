@@ -41,17 +41,14 @@ class ReaderCubit extends Cubit<ReaderState> {
   ThemeData currentTheme;
 
   late final ReaderServerHandler _serverHandler = ReaderServerHandler(bookPath);
-  late final ReaderWebViewHandler webViewHandler =
-      ReaderWebViewHandler(url: _serverHandler.url);
-  late final ReaderSearchCubit searchCubit =
-      ReaderSearchCubit(webViewHandler: webViewHandler);
+  late final ReaderWebViewHandler webViewHandler = ReaderWebViewHandler(url: _serverHandler.url);
+  late final ReaderSearchCubit searchCubit = ReaderSearchCubit(webViewHandler: webViewHandler);
   late final ReaderGestureHandler gestureHandler = ReaderGestureHandler(
     onSwipeLeft: previousPage,
     onSwipeRight: nextPage,
   );
   late final ReaderTTSHandler ttsHandler;
-  late final AppLifecycleListener _lifecycle =
-      AppLifecycleListener(onStateChange: _onLifecycleChanged);
+  late final AppLifecycleListener _lifecycle = AppLifecycleListener(onStateChange: _onLifecycleChanged);
 
   /// Client initialization.
   Future<void> initAsync({
@@ -63,15 +60,13 @@ class ReaderCubit extends Cubit<ReaderState> {
       code: ReaderLoadingStateCode.bookLoading,
     ));
 
-    final String absolutePath =
-        BookService.repository.getAbsolutePath(bookPath);
+    final String absolutePath = BookService.repository.getAbsolutePath(bookPath);
     final BookmarkData? bookmarkData = BookmarkService.repository.get(bookPath);
 
     webViewHandler.initialize(
-      destination: destinationType == ReaderDestinationType.bookmark
-          ? bookmarkData?.startCfi ?? destination
-          : destination,
-      savedLocation: LocationCacheRepository.get(bookPath),
+      destination:
+          destinationType == ReaderDestinationType.bookmark ? bookmarkData?.startCfi ?? destination : destination,
+      savedLocation: await LocationCacheRepository.get(bookPath),
     );
 
     webViewHandler.register('saveLocation', _receiveSaveLocation);
@@ -85,11 +80,8 @@ class ReaderCubit extends Cubit<ReaderState> {
 
     late ReaderSettingsData readerSettingsData;
     await Future.wait<void>(<Future<void>>[
-      BookService.repository
-          .getBookData(absolutePath)
-          .then((BookData value) => bookData = value),
-      ReaderSettingsData.load()
-          .then((ReaderSettingsData value) => readerSettingsData = value),
+      BookService.repository.getBookData(absolutePath).then((BookData value) => bookData = value),
+      ReaderSettingsData.load().then((ReaderSettingsData value) => readerSettingsData = value),
       _serverHandler.start(),
     ]);
 
@@ -114,8 +106,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   void sendThemeData([ThemeData? newTheme]) {
     currentTheme = newTheme ?? currentTheme;
     if (state.code.isLoaded) {
-      webViewHandler.setFontColor(
-          CssUtils.convertColorToRgba(currentTheme.colorScheme.onSurface));
+      webViewHandler.setFontColor(CssUtils.convertColorToRgba(currentTheme.colorScheme.onSurface));
       webViewHandler.setFontSize(state.readerSettings.fontSize);
       webViewHandler.setLineHeight(state.readerSettings.lineHeight);
     }
@@ -126,34 +117,29 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// *************************************************************************
 
   set fontSize(double value) {
-    emit(state.copyWith(
-        readerSettings: state.readerSettings.copyWith(fontSize: value)));
+    emit(state.copyWith(readerSettings: state.readerSettings.copyWith(fontSize: value)));
     sendThemeData();
   }
 
   set lineHeight(double value) {
-    emit(state.copyWith(
-        readerSettings: state.readerSettings.copyWith(lineHeight: value)));
+    emit(state.copyWith(readerSettings: state.readerSettings.copyWith(lineHeight: value)));
     sendThemeData();
   }
 
   set isAutoSaving(bool value) {
-    emit(state.copyWith(
-        readerSettings: state.readerSettings.copyWith(isAutoSaving: value)));
+    emit(state.copyWith(readerSettings: state.readerSettings.copyWith(isAutoSaving: value)));
     if (value) {
       saveBookmark();
     }
   }
 
   set isSmoothScroll(bool value) {
-    emit(state.copyWith(
-        readerSettings: state.readerSettings.copyWith(isSmoothScroll: value)));
+    emit(state.copyWith(readerSettings: state.readerSettings.copyWith(isSmoothScroll: value)));
     webViewHandler.setSmoothScroll(value);
   }
 
   set pageNumType(ReaderPageNumType value) {
-    emit(state.copyWith(
-        readerSettings: state.readerSettings.copyWith(pageNumType: value)));
+    emit(state.copyWith(readerSettings: state.readerSettings.copyWith(pageNumType: value)));
   }
 
   void saveSettings() => state.readerSettings.save();

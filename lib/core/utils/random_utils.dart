@@ -11,8 +11,7 @@ class RandomUtils {
 
   // Generates a random string of the specified length
   static String getRandomString(int length) {
-    const String alphabet =
-        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const String alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     return String.fromCharCodes(
       Iterable<int>.generate(
         length,
@@ -22,8 +21,8 @@ class RandomUtils {
   }
 
   // Finds an available temporary folder and creates it
-  static Directory getAvailableTempFolder() {
-    final String tempFolderPath = FilePath.tempFolder;
+  static Future<Directory> getAvailableTempFolder() async {
+    final String tempFolderPath = (await FilePath.tempDirectory).path;
     Directory tempFolder;
 
     do {
