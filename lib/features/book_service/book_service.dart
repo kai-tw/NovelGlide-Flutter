@@ -15,7 +15,7 @@ import 'package:path/path.dart';
 import '../../../../core/services/cache_memory_image_provider.dart';
 import '../../../../core/services/file_path.dart';
 import '../../../../core/utils/epub_utils.dart';
-import '../../../../core/utils/file_utils.dart';
+import '../../../../core/utils/file_extension.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../core/services/mime_resolver.dart';
 import '../../core/shared_components/adaptive_lines_text.dart';

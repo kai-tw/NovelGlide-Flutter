@@ -6,10 +6,8 @@ class BackupServiceGoogleDriveTimeTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<BackupServiceGoogleDriveCubit,
-        BackupServiceGoogleDriveState>(
-      buildWhen: (BackupServiceGoogleDriveState previous,
-              BackupServiceGoogleDriveState current) =>
+    return BlocBuilder<BackupServiceGoogleDriveCubit, BackupServiceGoogleDriveState>(
+      buildWhen: (BackupServiceGoogleDriveState previous, BackupServiceGoogleDriveState current) =>
           previous.code != current.code,
       builder: (BuildContext context, BackupServiceGoogleDriveState state) {
         final bool isLoading = state.code == LoadingStateCode.loading;
@@ -18,11 +16,7 @@ class BackupServiceGoogleDriveTimeTile extends StatelessWidget {
           leading: const Icon(Icons.calendar_month_rounded),
           title: Text(appLocalizations.backupServiceLastTime),
           subtitle: Text(
-            LocaleServices.dateTimeOf(
-              context,
-              state.lastBackupTime,
-              defaultValue: '-',
-            ),
+            LocaleServices.dateTimeOf(context, state.lastBackupTime) ?? '-',
           ),
           trailing: isLoading ? const CircularProgressIndicator() : null,
         );

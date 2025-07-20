@@ -48,7 +48,7 @@ class BookRepository {
 
   /// Get the relative path of the book.
   String getRelativePath(String filePath) {
-    return FileUtils.getRelativePath(filePath, from: FilePath.libraryRoot);
+    return isRelative(filePath) ? filePath : relative(filePath, from: FilePath.libraryRoot);
   }
 
   /// Get the absolute path of the book.

@@ -11,8 +11,8 @@ import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../../core/services/log_service.dart';
-import '../../../../../core/utils/css_utils.dart';
-import '../../../../../core/utils/int_utils.dart';
+import '../../../../../core/utils/color_extension.dart';
+import '../../../../../core/utils/parsers.dart';
 import '../../../../book_service/book_service.dart';
 import '../../../../bookmark_service/bookmark_service.dart';
 import '../../../../tts_service/tts_service.dart';
@@ -106,7 +106,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   void sendThemeData([ThemeData? newTheme]) {
     currentTheme = newTheme ?? currentTheme;
     if (state.code.isLoaded) {
-      webViewHandler.setFontColor(CssUtils.convertColorToRgba(currentTheme.colorScheme.onSurface));
+      webViewHandler.setFontColor(currentTheme.colorScheme.onSurface);
       webViewHandler.setFontSize(state.readerSettings.fontSize);
       webViewHandler.setLineHeight(state.readerSettings.lineHeight);
     }
@@ -237,8 +237,8 @@ class ReaderCubit extends Cubit<ReaderState> {
       breadcrumb: jsonValue['breadcrumb'],
       chapterFileName: jsonValue['chapterFileName'],
       startCfi: jsonValue['startCfi'],
-      chapterCurrentPage: IntUtils.parse(jsonValue['chapterCurrentPage']),
-      chapterTotalPage: IntUtils.parse(jsonValue['chapterTotalPage']),
+      chapterCurrentPage: parseInt(jsonValue['chapterCurrentPage']),
+      chapterTotalPage: parseInt(jsonValue['chapterTotalPage']),
     ));
 
     if (state.readerSettings.isAutoSaving) {

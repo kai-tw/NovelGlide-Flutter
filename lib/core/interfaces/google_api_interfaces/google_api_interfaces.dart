@@ -10,7 +10,7 @@ import 'package:path/path.dart';
 import '../../exceptions.dart';
 import '../../services/log_service.dart';
 import '../../services/mime_resolver.dart';
-import '../../utils/int_utils.dart';
+import '../../utils/parsers.dart';
 
 part 'google_auth_client.dart';
 part 'google_auth_interface.dart';

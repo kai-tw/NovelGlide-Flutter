@@ -16,18 +16,25 @@ class BookmarkRepository {
   }
 
   /// JSON data getter
-  Map<String, dynamic> get jsonData => JsonUtils.fromFile(jsonFile);
+  Map<String, dynamic> get jsonData {
+    String jsonString = jsonFile.readAsStringSync();
+    jsonString = jsonString.isEmpty ? '{}' : jsonString;
+    try {
+      jsonFile.writeAsStringSync(jsonString);
+      return jsonDecode(jsonString);
+    } catch (e) {
+      jsonFile.writeAsStringSync('{}');
+      return <String, dynamic>{};
+    }
+  }
 
   /// JSON data setter
-  set jsonData(Map<String, dynamic> json) =>
-      jsonFile.writeAsStringSync(jsonEncode(json));
+  set jsonData(Map<String, dynamic> json) => jsonFile.writeAsStringSync(jsonEncode(json));
 
   /// Retrieve a bookmark by its book_service path.
   BookmarkData? get(String bookPath) {
     bookPath = BookService.repository.getRelativePath(bookPath);
-    return jsonData.containsKey(bookPath)
-        ? BookmarkData.fromJson(jsonData[bookPath]!)
-        : null;
+    return jsonData.containsKey(bookPath) ? BookmarkData.fromJson(jsonData[bookPath]!) : null;
   }
 
   /// Retrieve a list of all bookmarks.
@@ -71,8 +78,7 @@ class BookmarkRepository {
   void deleteByPath(String path) {
     getList()
         .where((BookmarkData e) =>
-            BookService.repository.getRelativePath(e.bookPath) ==
-            BookService.repository.getRelativePath(path))
+            BookService.repository.getRelativePath(e.bookPath) == BookService.repository.getRelativePath(path))
         .forEach(delete);
   }
 

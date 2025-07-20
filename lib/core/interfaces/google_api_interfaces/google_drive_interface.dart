@@ -122,7 +122,7 @@ class GoogleDriveInterface {
     final List<int> buffer = <int>[];
 
     final drive.File fileStat = await getMetadataById(fileId, field: 'size');
-    final int fileSize = IntUtils.parse(fileStat.size);
+    final int fileSize = parseInt(fileStat.size);
 
     final drive.Media media = await files.get(
       fileId,

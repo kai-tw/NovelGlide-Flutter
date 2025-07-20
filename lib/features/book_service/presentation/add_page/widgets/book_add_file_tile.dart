@@ -1,8 +1,7 @@
 part of '../../../book_service.dart';
 
 class BookAddFileTile extends StatelessWidget {
-  const BookAddFileTile(
-      {super.key, required this.filePath, required this.index});
+  const BookAddFileTile({super.key, required this.filePath, required this.index});
 
   final String filePath;
   final int index;
@@ -13,7 +12,7 @@ class BookAddFileTile extends StatelessWidget {
     final BookAddCubit cubit = BlocProvider.of<BookAddCubit>(context);
     final File file = File(filePath);
     bool isError = false;
-    String subtitle = FileUtils.getFileSizeString(file.lengthSync());
+    String subtitle = file.lengthString();
 
     // Check if the file is duplicated
     if (BookService.repository.exists(filePath)) {

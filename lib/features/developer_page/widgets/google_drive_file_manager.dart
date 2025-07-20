@@ -29,9 +29,8 @@ class _GoogleDriveFileManagerContent extends StatelessWidget {
             child: CustomScrollView(
               slivers: <Widget>[
                 BlocBuilder<_GoogleDriveCubit, _GoogleDriveState>(
-                  buildWhen:
-                      (_GoogleDriveState previous, _GoogleDriveState current) =>
-                          previous.errorCode != current.errorCode,
+                  buildWhen: (_GoogleDriveState previous, _GoogleDriveState current) =>
+                      previous.errorCode != current.errorCode,
                   builder: (BuildContext context, _GoogleDriveState state) {
                     switch (state.errorCode) {
                       case _GoogleDriveErrorCode.unInitialized:
@@ -70,8 +69,7 @@ class _GoogleDriveFileManagerContent extends StatelessWidget {
                           delegate: SliverChildBuilderDelegate(
                             (BuildContext context, int index) {
                               final drive.File file = state.files![index];
-                              final String formatDate =
-                                  DateTimeUtils.format(file.modifiedTime);
+                              final String formatDate = LocaleServices.dateTimeOf(context, file.modifiedTime) ?? '';
                               IconData iconData;
 
                               switch (file.mimeType) {
@@ -94,8 +92,7 @@ class _GoogleDriveFileManagerContent extends StatelessWidget {
                               return ListTile(
                                 contentPadding: EdgeInsets.zero,
                                 leading: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 18.0, right: 14.0),
+                                  padding: const EdgeInsets.only(left: 18.0, right: 14.0),
                                   child: Icon(iconData),
                                 ),
                                 title: Text(
@@ -113,11 +110,9 @@ class _GoogleDriveFileManagerContent extends StatelessWidget {
                                     onPressed: () {
                                       showModalBottomSheet(
                                         context: context,
-                                        scrollControlDisabledMaxHeightRatio:
-                                            1.0,
+                                        scrollControlDisabledMaxHeightRatio: 1.0,
                                         showDragHandle: true,
-                                        builder: (_) => BlocProvider<
-                                            _GoogleDriveCubit>.value(
+                                        builder: (_) => BlocProvider<_GoogleDriveCubit>.value(
                                           value: cubit,
                                           child: _GoogleDriveBottomSheet(
                                             file: file,

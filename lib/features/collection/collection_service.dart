@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 
 import '../../../core/services/file_path.dart';
-import '../../../core/utils/json_utils.dart';
 import '../../../core/utils/random_extension.dart';
 import '../../core/shared_components/adaptive_lines_text.dart';
 import '../../core/shared_components/common_delete_dialog.dart';

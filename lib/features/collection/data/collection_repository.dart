@@ -16,7 +16,17 @@ class CollectionRepository {
   }
 
   /// JSON data getter
-  Map<String, dynamic> get jsonData => JsonUtils.fromFile(jsonFile);
+  Map<String, dynamic> get jsonData {
+    String jsonString = jsonFile.readAsStringSync();
+    jsonString = jsonString.isEmpty ? '{}' : jsonString;
+    try {
+      jsonFile.writeAsStringSync(jsonString);
+      return jsonDecode(jsonString);
+    } catch (e) {
+      jsonFile.writeAsStringSync('{}');
+      return <String, dynamic>{};
+    }
+  }
 
   /// JSON data setter
   set jsonData(Map<String, dynamic> json) => jsonFile.writeAsStringSync(jsonEncode(json));
