@@ -6,17 +6,15 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:novelglide/core/services/log_service.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../../../core/utils/css_utils.dart';
-import '../../../../../core/utils/int_utils.dart';
+import '../../../../../core/services/log_service.dart';
+import '../../../../../core/utils/color_extension.dart';
+import '../../../../../core/utils/parsers.dart';
 import '../../../../book_service/book_service.dart';
-import '../../../../book_service/data/model/book_data.dart';
-import '../../../../bookmark/data/bookmark_data.dart';
-import '../../../../bookmark/data/bookmark_repository.dart';
+import '../../../../bookmark_service/bookmark_service.dart';
 import '../../../../tts_service/tts_service.dart';
 import '../../../data/model/reader_navigation_state_code.dart';
 import '../../../data/model/reader_page_num_type.dart';
@@ -63,12 +61,12 @@ class ReaderCubit extends Cubit<ReaderState> {
     ));
 
     final String absolutePath = BookService.repository.getAbsolutePath(bookPath);
-    final BookmarkData? bookmarkData = BookmarkRepository.get(bookPath);
+    final BookmarkData? bookmarkData = BookmarkService.repository.get(bookPath);
 
     webViewHandler.initialize(
       destination:
           destinationType == ReaderDestinationType.bookmark ? bookmarkData?.startCfi ?? destination : destination,
-      savedLocation: LocationCacheRepository.get(bookPath),
+      savedLocation: await LocationCacheRepository.get(bookPath),
     );
 
     webViewHandler.register('saveLocation', _receiveSaveLocation);
@@ -108,7 +106,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   void sendThemeData([ThemeData? newTheme]) {
     currentTheme = newTheme ?? currentTheme;
     if (state.code.isLoaded) {
-      webViewHandler.setFontColor(CssUtils.convertColorToRgba(currentTheme.colorScheme.onSurface));
+      webViewHandler.setFontColor(currentTheme.colorScheme.onSurface);
       webViewHandler.setFontSize(state.readerSettings.fontSize);
       webViewHandler.setLineHeight(state.readerSettings.lineHeight);
     }
@@ -165,7 +163,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       savedTime: DateTime.now(),
     );
 
-    BookmarkRepository.save(data);
+    BookmarkService.repository.save(data);
 
     emit(state.copyWith(bookmarkData: data));
   }
@@ -239,8 +237,8 @@ class ReaderCubit extends Cubit<ReaderState> {
       breadcrumb: jsonValue['breadcrumb'],
       chapterFileName: jsonValue['chapterFileName'],
       startCfi: jsonValue['startCfi'],
-      chapterCurrentPage: IntUtils.parse(jsonValue['chapterCurrentPage']),
-      chapterTotalPage: IntUtils.parse(jsonValue['chapterTotalPage']),
+      chapterCurrentPage: parseInt(jsonValue['chapterCurrentPage']),
+      chapterTotalPage: parseInt(jsonValue['chapterTotalPage']),
     ));
 
     if (state.readerSettings.isAutoSaving) {

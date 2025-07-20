@@ -1,4 +1,4 @@
-part of '../book_add_page.dart';
+part of '../../../book_service.dart';
 
 class BookAddFileList extends StatelessWidget {
   const BookAddFileList({super.key});

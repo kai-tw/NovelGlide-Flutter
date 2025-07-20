@@ -7,7 +7,7 @@ class _Cubit extends Cubit<_State> {
 
   void submit() {
     if (state.name?.isNotEmpty ?? false) {
-      CollectionRepository.create(state.name!);
+      CollectionService.repository.create(state.name!);
     }
   }
 }

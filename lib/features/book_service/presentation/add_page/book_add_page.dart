@@ -1,19 +1,4 @@
-import 'dart:io';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
-
-import '../../../../core/services/mime_resolver.dart';
-import '../../../../core/utils/file_utils.dart';
-import '../../../../generated/i18n/app_localizations.dart';
-import '../../book_service.dart';
-import 'cubit/book_add_cubit.dart';
-
-part 'widgets/book_add_action_bar.dart';
-part 'widgets/book_add_file_list.dart';
-part 'widgets/book_add_file_tile.dart';
-part 'widgets/book_add_helper_text.dart';
+part of '../../book_service.dart';
 
 class BookAddPage extends StatelessWidget {
   const BookAddPage({super.key});

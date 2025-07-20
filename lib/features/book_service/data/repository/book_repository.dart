@@ -6,7 +6,7 @@ class BookRepository {
   /// Get the book data from the file path.
   Future<BookData> getBookData(String filePath) async {
     final String absolutePath = getAbsolutePath(filePath);
-    final EpubBook epubBook = await EpubUtils.loadEpubBook(absolutePath);
+    final epub.EpubBook epubBook = await EpubUtils.loadEpubBook(absolutePath);
     return BookData(
       absoluteFilePath: absolutePath,
       name: epubBook.Title ?? '',
@@ -35,10 +35,10 @@ class BookRepository {
     }
 
     // Delete associated bookmarks.
-    BookmarkRepository.deleteByPath(absolutePath);
+    BookmarkService.repository.deleteByPath(absolutePath);
 
     // Delete associated collections.
-    CollectionRepository.deleteByPath(absolutePath);
+    CollectionService.repository.deleteByPath(absolutePath);
 
     // Delete locations cache.
     LocationCacheRepository.delete(absolutePath);
@@ -48,7 +48,7 @@ class BookRepository {
 
   /// Get the relative path of the book.
   String getRelativePath(String filePath) {
-    return FileUtils.getRelativePath(filePath, from: FilePath.libraryRoot);
+    return isRelative(filePath) ? filePath : relative(filePath, from: FilePath.libraryRoot);
   }
 
   /// Get the absolute path of the book.
@@ -62,8 +62,8 @@ class BookRepository {
     directory.deleteSync(recursive: true);
     directory.createSync(recursive: true);
 
-    BookmarkRepository.reset();
-    CollectionRepository.reset();
+    BookmarkService.repository.reset();
+    CollectionService.repository.reset();
     LocationCacheRepository.clear();
   }
 }

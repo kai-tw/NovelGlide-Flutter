@@ -7,7 +7,8 @@ class FeedbackPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final Locale currentLocale = Localizations.localeOf(context);
-    final List<Locale> supportedLocales = List<Locale>.from(LocaleServices.supportedLocales);
+    final List<Locale> supportedLocales =
+        List<Locale>.from(LocaleServices.supportedLocales);
     final List<Widget> children = <Widget>[];
 
     int insertIndex = 0;
@@ -39,13 +40,14 @@ class FeedbackPage extends StatelessWidget {
 
   Widget _createListTileByLocale(BuildContext context, Locale locale) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final String languageName = LocaleServices.getLanguageName(context, locale);
+    final String languageName = LocaleServices.languageNameOf(context, locale);
     return ListTile(
       onTap: () {
         launchUrl(Uri.parse(FeedbackFormUrlData.getUrlByLocale(locale)));
       },
       leading: const Icon(Icons.assignment_rounded),
-      title: Text('${appLocalizations.generalFeedback} ${appLocalizations.generalForm}'),
+      title: Text(
+          '${appLocalizations.generalFeedback} ${appLocalizations.generalForm}'),
       subtitle: Text(languageName),
       trailing: const Icon(Icons.north_east_rounded),
     );

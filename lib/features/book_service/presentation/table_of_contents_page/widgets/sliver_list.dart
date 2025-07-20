@@ -35,8 +35,7 @@ class _SliverList extends StatelessWidget {
 
   Widget _buildList(BuildContext context, _State state) {
     final _Cubit cubit = BlocProvider.of<_Cubit>(context);
-    final List<_ListItem> allChapterList =
-        _constructChapterTree(state.chapterList, 0);
+    final List<_ListItem> allChapterList = _constructChapterTree(state.chapterList, 0);
 
     return SliverList(
       delegate: SliverChildBuilderDelegate(
@@ -44,16 +43,15 @@ class _SliverList extends StatelessWidget {
           final ChapterData chapterData = allChapterList[index].chapterData;
           final int nestingLevel = allChapterList[index].nestingLevel;
           final BookmarkData? bookmarkData = state.bookmarkData;
-          final bool isBookmarked =
-              bookmarkData?.chapterFileName == chapterData.fileName;
+          final bool isBookmarked = bookmarkData?.chapterFileName == chapterData.fileName;
           final ThemeData themeData = Theme.of(context);
 
           return ListTile(
             onTap: () {
               Navigator.of(context)
                   .push(
-                    RouteUtils.defaultRoute(
-                      ReaderWidget(
+                    MaterialPageRoute<void>(
+                      builder: (_) => ReaderWidget(
                         bookData: bookData,
                         bookPath: bookData.absoluteFilePath,
                         destination: chapterData.fileName,

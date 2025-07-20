@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:novelglide/core/utils/datetime_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/app_global_cubit/app_global_cubit.dart';
@@ -45,7 +46,7 @@ class LocaleServices {
     return languageCode == null ? null : Locale(languageCode);
   }
 
-  static String getLanguageName(BuildContext context, Locale locale) {
+  static String languageNameOf(BuildContext context, Locale locale) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     switch (locale.languageCode) {
       case 'en':
@@ -63,5 +64,9 @@ class LocaleServices {
       default:
         return locale.languageCode;
     }
+  }
+
+  static String? dateTimeOf(BuildContext context, DateTime? dateTime) {
+    return dateTime?.format(AppLocalizations.of(context)!.generalDatetimeFormat);
   }
 }

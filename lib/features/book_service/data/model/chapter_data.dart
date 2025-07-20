@@ -1,5 +1,4 @@
-import 'package:epubx/epubx.dart' as epub;
-import 'package:equatable/equatable.dart';
+part of '../../book_service.dart';
 
 class ChapterData extends Equatable {
   const ChapterData({

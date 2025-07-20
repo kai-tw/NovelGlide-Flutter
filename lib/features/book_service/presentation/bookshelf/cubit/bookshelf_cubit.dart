@@ -9,18 +9,17 @@ import '../../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../book_service.dart';
-import '../../../data/model/book_data.dart';
 
 typedef BookshelfState = SharedListState<BookData>;
 
 class BookshelfCubit extends SharedListCubit<BookData> {
   factory BookshelfCubit() {
-    final BookshelfCubit cubit = BookshelfCubit._(const BookshelfState());
+    final BookshelfCubit cubit = BookshelfCubit._();
     WidgetsBinding.instance.addPostFrameCallback((_) => cubit.refresh());
     return cubit;
   }
 
-  BookshelfCubit._(super.initialState);
+  BookshelfCubit._() : super(const BookshelfState());
 
   @override
   Future<void> refresh() async {
@@ -36,6 +35,7 @@ class BookshelfCubit extends SharedListCubit<BookData> {
       dataList: List<BookData>.from(state.dataList),
       sortOrder: BookService.preference.sortOrder,
       isAscending: BookService.preference.isAscending,
+      listType: BookService.preference.listType,
     ));
 
     // Load books.
@@ -71,6 +71,12 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     if (!isClosed) {
       emit(state.copyWith(code: LoadingStateCode.loaded));
     }
+  }
+
+  @override
+  set listType(SharedListType value) {
+    BookService.preference.listType = value;
+    super.listType = value;
   }
 
   @override

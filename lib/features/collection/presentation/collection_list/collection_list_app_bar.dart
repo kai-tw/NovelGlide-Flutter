@@ -1,6 +1,7 @@
-part of 'collection_list.dart';
+part of '../../collection_service.dart';
 
-class CollectionListAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CollectionListAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   const CollectionListAppBar({super.key});
 
   @override
@@ -12,7 +13,7 @@ class CollectionListAppBar extends StatelessWidget implements PreferredSizeWidge
 
     return HomepageAppBar(
       iconData: Icons.collections_bookmark_rounded,
-      title: appLocalizations.generalCollections,
+      title: appLocalizations.generalCollection(2),
       actions: const <Widget>[
         SharedListSelectAllButton<CollectionListCubit>(),
         SharedListDoneButton<CollectionListCubit>(),

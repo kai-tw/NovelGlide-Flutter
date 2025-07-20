@@ -15,8 +15,7 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
     ));
 
     // Get a temporary work directory.
-    final Directory tempFolder = RandomUtils.getAvailableTempFolder()
-      ..createSync(recursive: true);
+    final Directory tempFolder = TempService.getDirectory();
 
     // Zip the library
     final File zipFile = await BackupRepository.archiveLibrary(
@@ -61,8 +60,7 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
 
     // Emit the result
     emit(BackupServiceProcessItemState(
-      step: await GoogleApiInterfaces.drive
-              .fileExists(BackupRepository.libraryArchiveName)
+      step: await GoogleApiInterfaces.drive.fileExists(BackupRepository.libraryArchiveName)
           ? BackupServiceProcessStepCode.done
           : BackupServiceProcessStepCode.error,
     ));
@@ -84,8 +82,7 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
     ));
 
     // Get a temporary folder.
-    final Directory tempFolder = RandomUtils.getAvailableTempFolder();
-    tempFolder.createSync(recursive: true);
+    final Directory tempFolder = TempService.getDirectory();
 
     // Create an empty file to store the downloaded zip file.
     final File zipFile = File(
@@ -157,12 +154,9 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
       step: BackupServiceProcessStepCode.delete,
     ));
     await GoogleApiInterfaces.drive.deleteFile(googleDriveFileId!);
-    final bool result = !(await GoogleApiInterfaces.drive
-        .fileExists(BackupRepository.libraryArchiveName));
+    final bool result = !(await GoogleApiInterfaces.drive.fileExists(BackupRepository.libraryArchiveName));
     emit(BackupServiceProcessItemState(
-      step: result
-          ? BackupServiceProcessStepCode.done
-          : BackupServiceProcessStepCode.error,
+      step: result ? BackupServiceProcessStepCode.done : BackupServiceProcessStepCode.error,
     ));
   }
 }

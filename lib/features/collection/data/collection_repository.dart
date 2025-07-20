@@ -1,22 +1,13 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:path/path.dart';
-
-import '../../../core/services/file_path.dart';
-import '../../../core/utils/json_utils.dart';
-import '../../../core/utils/random_utils.dart';
-import '../../book_service/book_service.dart';
-import 'collection_data.dart';
+part of '../collection_service.dart';
 
 class CollectionRepository {
-  CollectionRepository._();
+  CollectionRepository();
 
-  static String jsonFileName = 'collection.json';
+  String jsonFileName = 'collection.json';
 
-  static String get jsonPath => join(FilePath.dataRoot, jsonFileName);
+  String get jsonPath => join(FilePath.dataRoot, jsonFileName);
 
-  static File get jsonFile {
+  File get jsonFile {
     final File file = File(jsonPath);
     if (!file.existsSync()) {
       file.createSync(recursive: true);
@@ -25,25 +16,35 @@ class CollectionRepository {
   }
 
   /// JSON data getter
-  static Map<String, dynamic> get jsonData => JsonUtils.fromFile(jsonFile);
+  Map<String, dynamic> get jsonData {
+    String jsonString = jsonFile.readAsStringSync();
+    jsonString = jsonString.isEmpty ? '{}' : jsonString;
+    try {
+      jsonFile.writeAsStringSync(jsonString);
+      return jsonDecode(jsonString);
+    } catch (e) {
+      jsonFile.writeAsStringSync('{}');
+      return <String, dynamic>{};
+    }
+  }
 
   /// JSON data setter
-  static set jsonData(Map<String, dynamic> json) => jsonFile.writeAsStringSync(jsonEncode(json));
+  set jsonData(Map<String, dynamic> json) => jsonFile.writeAsStringSync(jsonEncode(json));
 
   /// Create a new empty collection with a unique ID.
-  static void create(String name) {
+  void create(String name) {
     final Map<String, dynamic> data = jsonData;
-    String id = RandomUtils.getRandomString(10);
+    String id;
 
-    while (data.containsKey(id)) {
-      id = RandomUtils.getRandomString(10);
-    }
+    do {
+      id = Random().nextString(10);
+    } while (data.containsKey(id));
 
     data[id] = CollectionData(id, name, const <String>[]).toJson();
     jsonData = data;
   }
 
-  static CollectionData get(String id) {
+  CollectionData get(String id) {
     if (jsonData.containsKey(id)) {
       return CollectionData.fromJson(jsonData[id]!);
     } else {
@@ -52,7 +53,7 @@ class CollectionRepository {
   }
 
   /// Retrieve a list of all [CollectionData] instances.
-  static List<CollectionData> getList() {
+  List<CollectionData> getList() {
     final List<CollectionData> list = <CollectionData>[];
 
     for (String key in jsonData.keys) {
@@ -63,7 +64,7 @@ class CollectionRepository {
   }
 
   /// Save the current [CollectionData] instance to the JSON file.
-  static void save(CollectionData data) {
+  void save(CollectionData data) {
     final Map<String, dynamic> json = jsonData;
     data.pathList = data.pathList.toSet().map<String>((String e) => BookService.repository.getRelativePath(e)).toList();
     json[data.id] = data.toJson();
@@ -71,14 +72,14 @@ class CollectionRepository {
   }
 
   /// Delete the current [CollectionData] instance from the JSON file.
-  static void delete(CollectionData data) {
+  void delete(CollectionData data) {
     final Map<String, dynamic> json = jsonData;
     json.remove(data.id);
     jsonData = json;
   }
 
   /// Delete the book_service from the collection.
-  static void deleteBook(String path, String id) {
+  void deleteBook(String path, String id) {
     final String relativePath = BookService.repository.getRelativePath(path);
     final Map<String, dynamic> json = jsonData;
     if (json[id] != null) {
@@ -90,7 +91,7 @@ class CollectionRepository {
   }
 
   /// Delete the book_service from all collections.
-  static void deleteByPath(String path) {
+  void deleteByPath(String path) {
     final Iterable<CollectionData> collectionList =
         getList().where((CollectionData e) => e.pathList.contains(BookService.repository.getRelativePath(path)));
     for (CollectionData data in collectionList) {
@@ -99,5 +100,5 @@ class CollectionRepository {
   }
 
   /// Reset the collection repository.
-  static void reset() => jsonData = <String, dynamic>{};
+  void reset() => jsonData = <String, dynamic>{};
 }

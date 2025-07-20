@@ -5,15 +5,22 @@ class GoogleAuthInterface {
 
   bool get isSignedIn => _currentUser != null;
 
+  bool isInit = false;
   GoogleSignInAccount? _currentUser;
 
   Future<void> ensureInitialized() async {
+    if (isInit) {
+      return;
+    }
+
     await GoogleSignIn.instance.initialize();
     GoogleSignIn.instance.authenticationEvents.listen(_handleAuthenticationEvent).onError(_handleAuthenticationError);
     LogService.info('GoogleAuthService: Initialized.');
+    isInit = true;
   }
 
   Future<void> signIn() async {
+    await ensureInitialized();
     LogService.info('GoogleAuthService.signIn: Start');
 
     // Login silently first
@@ -36,6 +43,7 @@ class GoogleAuthInterface {
   }
 
   Future<GoogleAuthClient> getClient(List<String> scopes) async {
+    await ensureInitialized();
     LogService.info('GoogleAuthService.getClient: Start.');
 
     // Attempt to get authorization for the requested scopes
@@ -69,6 +77,7 @@ class GoogleAuthInterface {
   }
 
   Future<void> signOut() async {
+    await ensureInitialized();
     await GoogleSignIn.instance.signOut();
     _currentUser = null;
   }

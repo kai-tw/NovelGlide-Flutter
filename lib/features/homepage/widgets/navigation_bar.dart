@@ -10,6 +10,7 @@ class _NavigationBar extends StatelessWidget {
     final BookshelfCubit bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
     final BookmarkListCubit bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
     final CollectionListCubit collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return BlocBuilder<HomepageCubit, HomepageState>(
       buildWhen: (HomepageState previous, HomepageState current) =>
@@ -20,23 +21,39 @@ class _NavigationBar extends StatelessWidget {
           indicatorColor: Colors.transparent,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
           destinations: <Widget>[
-            _Destination(
-              iconData: Icons.shelves,
+            NavigationDestination(
+              icon: Icon(
+                Icons.shelves,
+                color: colorScheme.onSurface.withValues(alpha: 0.64),
+              ),
+              selectedIcon: Icon(Icons.shelves, color: colorScheme.onSurface),
               label: appLocalizations.generalBookshelf,
               enabled: !state.navItem.isBookshelf && state.isEnabled,
             ),
-            _Destination(
-              iconData: Icons.collections_bookmark_rounded,
-              label: appLocalizations.generalCollections,
+            NavigationDestination(
+              icon: Icon(
+                Icons.collections_bookmark_outlined,
+                color: colorScheme.onSurface.withValues(alpha: 0.64),
+              ),
+              selectedIcon: Icon(Icons.collections_bookmark_rounded, color: colorScheme.onSurface),
+              label: appLocalizations.generalCollection(2),
               enabled: !state.navItem.isCollection && state.isEnabled,
             ),
-            _Destination(
-              iconData: Icons.bookmarks_rounded,
-              label: appLocalizations.generalBookmarks,
+            NavigationDestination(
+              icon: Icon(
+                Icons.bookmarks_outlined,
+                color: colorScheme.onSurface.withValues(alpha: 0.64),
+              ),
+              selectedIcon: Icon(Icons.bookmarks_rounded, color: colorScheme.onSurface),
+              label: appLocalizations.generalBookmark(2),
               enabled: !state.navItem.isBookmark && state.isEnabled,
             ),
-            _Destination(
-              iconData: Icons.settings_rounded,
+            NavigationDestination(
+              icon: Icon(
+                Icons.settings_outlined,
+                color: colorScheme.onSurface.withValues(alpha: 0.64),
+              ),
+              selectedIcon: Icon(Icons.settings_rounded, color: colorScheme.onSurface),
               label: appLocalizations.generalSettings,
               enabled: !state.navItem.isSettings && state.isEnabled,
             ),
@@ -58,29 +75,6 @@ class _NavigationBar extends StatelessWidget {
           },
         );
       },
-    );
-  }
-}
-
-class _Destination extends StatelessWidget {
-  const _Destination({
-    required this.iconData,
-    required this.label,
-    required this.enabled,
-  });
-
-  final IconData iconData;
-  final String label;
-  final bool enabled;
-
-  @override
-  Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    return NavigationDestination(
-      icon: Icon(iconData, color: colorScheme.onSurface.withValues(alpha: 0.64)),
-      selectedIcon: Icon(iconData, color: colorScheme.onSurface),
-      label: label,
-      enabled: enabled,
     );
   }
 }

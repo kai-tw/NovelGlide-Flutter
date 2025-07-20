@@ -7,8 +7,7 @@ class ReaderTtsSettingsButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<ReaderCubit, ReaderState>(
-      buildWhen: (ReaderState previous, ReaderState current) =>
-          previous.ttsState != current.ttsState,
+      buildWhen: (ReaderState previous, ReaderState current) => previous.ttsState != current.ttsState,
       builder: (BuildContext context, ReaderState state) {
         final bool isEnabled = state.ttsState.isStopped;
         return IconButton(
@@ -23,7 +22,7 @@ class ReaderTtsSettingsButton extends StatelessWidget {
   void _navigateToTtsSettings(BuildContext context) {
     final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     Navigator.of(context)
-        .push(RouteUtils.defaultRoute(const TtsSettingsPage()))
+        .push(MaterialPageRoute<void>(builder: (_) => const TtsSettingsPage()))
         .then((_) => cubit.ttsHandler.reload());
   }
 }

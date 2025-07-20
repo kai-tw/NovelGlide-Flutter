@@ -1,12 +1,10 @@
+import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'core/app_global_cubit/app_global_cubit.dart';
-import 'core/interfaces/google_api_interfaces/google_api_interfaces.dart';
 import 'core/services/file_path.dart';
 import 'core/services/log_service.dart';
 import 'core/theme/default_theme.dart';
@@ -20,16 +18,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Don't initialize ad in release mode
-  if (kDebugMode) {
-    // Ad Initialization
-    MobileAds.instance.initialize();
-  }
+  // if (kDebugMode) {
+  //   // Ad Initialization
+  //   MobileAds.instance.initialize();
+  // }
 
   // Future initializations
   await Future.wait(<Future<void>>[
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
     FilePath.ensureInitialized(),
-    GoogleApiInterfaces.ensureInitialized(),
     AppearanceServices.ensureInitialized(),
     LocaleServices.ensureInitialized(),
   ]);
@@ -70,9 +67,8 @@ class App extends StatelessWidget {
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: LocaleServices.supportedLocales,
           home: const Homepage(),
-          // builder: (BuildContext context, Widget? child) =>
-          //     AccessibilityTools(child: child),
-          debugShowCheckedModeBanner: false,
+          builder: (BuildContext context, Widget? child) => AccessibilityTools(child: child),
+          // debugShowCheckedModeBanner: false,
         );
       },
     );

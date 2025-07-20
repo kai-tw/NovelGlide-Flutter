@@ -1,13 +1,4 @@
-import 'dart:math';
-import 'dart:typed_data';
-
-import 'package:bitmap/bitmap.dart';
-import 'package:flutter/material.dart';
-import 'package:image/image.dart' as img;
-
-import '../../../../core/services/cache_memory_image_provider.dart';
-import '../../../../generated/i18n/app_localizations.dart';
-import '../../data/model/book_data.dart';
+part of '../../book_service.dart';
 
 class BookCoverImage extends StatelessWidget {
   const BookCoverImage({
@@ -30,7 +21,7 @@ class BookCoverImage extends StatelessWidget {
         'assets/images/book_cover_${brightness == Brightness.dark ? 'dark' : 'light'}.jpg',
         fit: BoxFit.cover,
         gaplessPlayback: true,
-        semanticLabel: appLocalizations.accessibilityBookCover,
+        semanticLabel: appLocalizations.generalBookCover,
       );
     } else {
       return LayoutBuilder(
@@ -43,7 +34,7 @@ class BookCoverImage extends StatelessWidget {
             width: constraints.maxWidth,
             height: constraints.maxHeight,
             fit: fit,
-            semanticLabel: appLocalizations.accessibilityBookCover,
+            semanticLabel: appLocalizations.generalBookCover,
           );
         },
       );

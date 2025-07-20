@@ -1,4 +1,4 @@
-part of '../collection_list.dart';
+part of '../../../collection_service.dart';
 
 class CollectionListAppBarMoreButton extends StatelessWidget {
   const CollectionListAppBarMoreButton({super.key});
@@ -13,17 +13,15 @@ class CollectionListAppBarMoreButton extends StatelessWidget {
 
   List<PopupMenuEntry<void>> _itemBuilder(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final CollectionListCubit cubit =
-        BlocProvider.of<CollectionListCubit>(context);
+    final CollectionListCubit cubit = BlocProvider.of<CollectionListCubit>(context);
 
     final List<PopupMenuEntry<void>> entries = <PopupMenuEntry<void>>[];
 
     // Selecting mode button
-    if (cubit.state.code.isLoaded &&
-        !cubit.state.isSelecting &&
-        cubit.state.dataList.isNotEmpty) {
-      PopupMenuUtils.addSection(entries,
-          SharedListSelectModeTile.itemBuilder<CollectionListCubit>(context));
+    if (cubit.state.code.isLoaded && !cubit.state.isSelecting && cubit.state.dataList.isNotEmpty) {
+      PopupMenuUtils.addSection(entries, <PopupMenuItem<void>>[
+        SharedList.buildSelectionModeButton(context: context, cubit: cubit),
+      ]);
     }
 
     // Sorting Section
@@ -40,11 +38,12 @@ class CollectionListAppBarMoreButton extends StatelessWidget {
       ),
     );
 
+    // List View Changing Section
+    PopupMenuUtils.addSection(entries, SharedList.buildGeneralViewMenu(context: context, cubit: cubit));
+
     // Operation Section
-    if (cubit.state.code.isLoaded &&
-        cubit.state.isSelecting &&
-        cubit.state.selectedSet.isNotEmpty) {
-      entries.addAll(<PopupMenuEntry<void>>[
+    if (cubit.state.code.isLoaded && cubit.state.isSelecting && cubit.state.selectedSet.isNotEmpty) {
+      PopupMenuUtils.addSection(entries, <PopupMenuEntry<void>>[
         PopupMenuItem<void>(
           onTap: () {
             showDialog(
@@ -63,19 +62,5 @@ class CollectionListAppBarMoreButton extends StatelessWidget {
     }
 
     return entries;
-  }
-
-  /// ==========================================================
-  /// Click Handler
-
-  /// Tap on sorting button
-  void _onTapSorting(BuildContext context, SortOrderCode sortOrder) {
-    final CollectionListCubit cubit =
-        BlocProvider.of<CollectionListCubit>(context);
-    if (cubit.state.sortOrder == sortOrder) {
-      cubit.setListOrder(isAscending: !cubit.state.isAscending);
-    } else {
-      cubit.setListOrder(sortOrder: sortOrder);
-    }
   }
 }

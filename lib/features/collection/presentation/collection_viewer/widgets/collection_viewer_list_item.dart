@@ -15,10 +15,8 @@ class CollectionViewerListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CollectionViewerCubit, CollectionViewerState>(
-      buildWhen:
-          (CollectionViewerState previous, CollectionViewerState current) =>
-              previous.selectedSet.contains(bookData) !=
-              current.selectedSet.contains(bookData),
+      buildWhen: (CollectionViewerState previous, CollectionViewerState current) =>
+          previous.selectedSet.contains(bookData) != current.selectedSet.contains(bookData),
       builder: (BuildContext context, CollectionViewerState state) {
         return SharedListTile(
           isSelecting: isSelecting,
@@ -34,16 +32,14 @@ class CollectionViewerListItem extends StatelessWidget {
   }
 
   void _onTap(BuildContext context) {
-    final CollectionViewerCubit cubit =
-        BlocProvider.of<CollectionViewerCubit>(context);
+    final CollectionViewerCubit cubit = BlocProvider.of<CollectionViewerCubit>(context);
     Navigator.of(context)
-        .push(RouteUtils.defaultRoute(TableOfContents(bookData)))
+        .push(MaterialPageRoute<void>(builder: (_) => TableOfContents(bookData)))
         .then((_) => cubit.refresh());
   }
 
   void _onChanged(BuildContext context) {
-    final CollectionViewerCubit cubit =
-        BlocProvider.of<CollectionViewerCubit>(context);
+    final CollectionViewerCubit cubit = BlocProvider.of<CollectionViewerCubit>(context);
     if (cubit.state.selectedSet.contains(bookData)) {
       cubit.deselectSingle(bookData);
     } else {

@@ -4,18 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/shared_components/common_loading.dart';
 import '../../../../core/shared_components/shared_list/shared_list.dart';
-import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../enum/window_size.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../../bookmark/data/bookmark_data.dart';
-import '../../../bookmark/data/bookmark_repository.dart';
+import '../../../bookmark_service/bookmark_service.dart';
 import '../../../collection/presentation/add_book_page/collection_add_book_scaffold.dart';
 import '../../../reader/presentation/reader_page/cubit/reader_cubit.dart';
 import '../../../reader/presentation/reader_page/reader.dart';
-import '../../data/model/book_data.dart';
-import '../../data/model/chapter_data.dart';
-import '../shared/book_cover_image.dart';
+import '../../book_service.dart';
 
 part 'cubit/cubit.dart';
 part 'views/compact_view.dart';

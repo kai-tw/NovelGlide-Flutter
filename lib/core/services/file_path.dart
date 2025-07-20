@@ -13,9 +13,16 @@ class FilePath {
   static late String documentFolder;
 
   // static late String cacheFolder;
-  static late String tempFolder;
+  static late String tempDirectory;
 
   // static String? downloadFolder;
+
+  static String? _cacheDirectory;
+
+  static Future<String> get cacheDirectory async {
+    _cacheDirectory ??= (await getApplicationCacheDirectory()).path;
+    return _cacheDirectory!;
+  }
 
   /// Platform-specific folders
   static String? _iosLibraryFolder;
@@ -27,16 +34,20 @@ class FilePath {
 
   static String get dataRoot => join(_baseFolder, 'Data');
 
-  static String get cacheRoot => tempFolder;
-
   static Future<void> ensureInitialized() async {
-    // supportFolder = (await getApplicationSupportDirectory()).path;
-    documentFolder = (await getApplicationDocumentsDirectory()).path;
-    // cacheFolder = (await getApplicationCacheDirectory()).path;
-    tempFolder = (await getTemporaryDirectory()).path;
-    // downloadFolder = (await getDownloadsDirectory())?.path;
-    _iosLibraryFolder =
-        Platform.isIOS ? (await getLibraryDirectory()).path : null;
+    final List<Future<void>> tasks = <Future<void>>[
+      getApplicationDocumentsDirectory().then((Directory dir) => documentFolder = dir.path),
+      // getApplicationSupportDirectory().then((Directory dir) => supportFolder = dir.path),
+      // getApplicationCacheDirectory().then((Directory dir) => cacheFolder = dir.path),
+      // getDownloadsDirectory().then((Directory? dir) => downloadFolder = dir?.path),
+      getTemporaryDirectory().then((Directory dir) => tempDirectory = dir.path),
+    ];
+
+    if (Platform.isIOS) {
+      tasks.add(getLibraryDirectory().then((Directory? dir) => _iosLibraryFolder = dir?.path));
+    }
+
+    await Future.wait<void>(tasks);
 
     // Create the folders if they don't exist.
     for (final String folderPath in <String>[libraryRoot, dataRoot]) {
