@@ -6,14 +6,11 @@ class _FloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BookshelfCubit bookshelfCubit =
-        BlocProvider.of<BookshelfCubit>(context);
-    final CollectionListCubit collectionListCubit =
-        BlocProvider.of<CollectionListCubit>(context);
+    final BookshelfCubit bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
+    final CollectionListCubit collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
 
     return BlocBuilder<HomepageCubit, HomepageState>(
-      buildWhen: (HomepageState previous, HomepageState current) =>
-          previous.navItem != current.navItem,
+      buildWhen: (HomepageState previous, HomepageState current) => previous.navItem != current.navItem,
       builder: (BuildContext context, HomepageState state) {
         Widget? child;
 
@@ -22,7 +19,7 @@ class _FloatingActionButton extends StatelessWidget {
             child = FloatingActionButton(
               onPressed: () {
                 Navigator.of(context)
-                    .push<bool?>(RouteUtils.defaultRoute(const BookAddPage()))
+                    .push<bool?>(MaterialPageRoute<bool?>(builder: (_) => const BookAddPage()))
                     .then((bool? isSuccess) {
                   if (isSuccess == true) {
                     bookshelfCubit.refresh();
@@ -40,8 +37,7 @@ class _FloatingActionButton extends StatelessWidget {
                 showDialog<bool?>(
                   context: context,
                   barrierDismissible: false,
-                  builder: (BuildContext context) =>
-                      const CollectionAddDialog(),
+                  builder: (BuildContext context) => const CollectionAddDialog(),
                 ).then((bool? isSuccess) {
                   if (isSuccess == true) {
                     collectionListCubit.refresh();

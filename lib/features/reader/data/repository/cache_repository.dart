@@ -8,7 +8,7 @@ import '../../../book_service/book_service.dart';
 class LocationCacheRepository {
   LocationCacheRepository._();
 
-  static Future<String> get _rootPath async => join((await FilePath.cacheDirectory).path, 'locations');
+  static Future<String> get _rootPath async => join(await FilePath.cacheDirectory, 'locations');
 
   static Future<File> _getTmpFileByPath(String bookPath) async {
     final String relativePath = BookService.repository.getRelativePath(bookPath);

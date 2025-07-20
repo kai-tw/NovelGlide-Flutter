@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/shared_components/common_delete_drag_target.dart';
 import '../../core/shared_components/shared_list/shared_list.dart';
-import '../../core/utils/route_utils.dart';
 import '../../enum/window_size.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../book_service/book_service.dart';

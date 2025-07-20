@@ -19,17 +19,16 @@ class CollectionRepository {
   Map<String, dynamic> get jsonData => JsonUtils.fromFile(jsonFile);
 
   /// JSON data setter
-  set jsonData(Map<String, dynamic> json) =>
-      jsonFile.writeAsStringSync(jsonEncode(json));
+  set jsonData(Map<String, dynamic> json) => jsonFile.writeAsStringSync(jsonEncode(json));
 
   /// Create a new empty collection with a unique ID.
   void create(String name) {
     final Map<String, dynamic> data = jsonData;
-    String id = RandomUtils.getRandomString(10);
+    String id;
 
-    while (data.containsKey(id)) {
-      id = RandomUtils.getRandomString(10);
-    }
+    do {
+      id = Random().nextString(10);
+    } while (data.containsKey(id));
 
     data[id] = CollectionData(id, name, const <String>[]).toJson();
     jsonData = data;
@@ -57,10 +56,7 @@ class CollectionRepository {
   /// Save the current [CollectionData] instance to the JSON file.
   void save(CollectionData data) {
     final Map<String, dynamic> json = jsonData;
-    data.pathList = data.pathList
-        .toSet()
-        .map<String>((String e) => BookService.repository.getRelativePath(e))
-        .toList();
+    data.pathList = data.pathList.toSet().map<String>((String e) => BookService.repository.getRelativePath(e)).toList();
     json[data.id] = data.toJson();
     jsonData = json;
   }
@@ -86,9 +82,8 @@ class CollectionRepository {
 
   /// Delete the book_service from all collections.
   void deleteByPath(String path) {
-    final Iterable<CollectionData> collectionList = getList().where(
-        (CollectionData e) =>
-            e.pathList.contains(BookService.repository.getRelativePath(path)));
+    final Iterable<CollectionData> collectionList =
+        getList().where((CollectionData e) => e.pathList.contains(BookService.repository.getRelativePath(path)));
     for (CollectionData data in collectionList) {
       deleteBook(path, data.id);
     }

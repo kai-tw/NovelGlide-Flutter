@@ -23,8 +23,8 @@ class _FabSection extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: () {
                 Navigator.of(context)
-                    .push(RouteUtils.defaultRoute(
-                      ReaderWidget(
+                    .push(MaterialPageRoute<void>(
+                      builder: (_) => ReaderWidget(
                         bookPath: cubit.bookData.absoluteFilePath,
                         bookData: cubit.bookData,
                       ),
@@ -35,8 +35,7 @@ class _FabSection extends StatelessWidget {
                 iconColor: Theme.of(context).colorScheme.onPrimary,
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 24.0, vertical: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
                 fixedSize: const Size.fromHeight(56.0),
                 elevation: 5.0,
               ),
@@ -51,8 +50,8 @@ class _FabSection extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: () {
                   Navigator.of(context)
-                      .push(RouteUtils.defaultRoute(
-                        ReaderWidget(
+                      .push(MaterialPageRoute<void>(
+                        builder: (_) => ReaderWidget(
                           bookPath: cubit.bookData.absoluteFilePath,
                           bookData: cubit.bookData,
                           destinationType: ReaderDestinationType.bookmark,
@@ -65,8 +64,7 @@ class _FabSection extends StatelessWidget {
                   iconColor: Theme.of(context).colorScheme.onPrimary,
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 24.0, vertical: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
                   fixedSize: const Size.fromHeight(56.0),
                   elevation: 5.0,
                 ),

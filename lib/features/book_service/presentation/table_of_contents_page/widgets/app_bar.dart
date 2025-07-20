@@ -21,8 +21,8 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
         IconButton(
           onPressed: () {
             Navigator.of(context).push(
-              RouteUtils.defaultRoute(
-                CollectionAddBookScaffold(dataSet: <BookData>{bookData}),
+              MaterialPageRoute<void>(
+                builder: (_) => CollectionAddBookScaffold(dataSet: <BookData>{bookData}),
               ),
             );
           },

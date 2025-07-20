@@ -21,16 +21,13 @@ class BookshelfSliverListItem extends StatelessWidget {
               previous.code != current.code ||
               previous.isSelecting != current.isSelecting ||
               previous.isDragging != current.isDragging ||
-              previous.selectedSet.contains(bookData) !=
-                  current.selectedSet.contains(bookData) ||
+              previous.selectedSet.contains(bookData) != current.selectedSet.contains(bookData) ||
               previous.listType != current.listType,
           builder: (BuildContext context, BookshelfState state) {
             return BookshelfDraggableBook(
               bookData: bookData,
               listType: state.listType,
-              isDraggable: state.code.isLoaded &&
-                  !state.isDragging &&
-                  !state.isSelecting,
+              isDraggable: state.code.isLoaded && !state.isDragging && !state.isSelecting,
               isSelecting: state.isSelecting,
               isSelected: state.selectedSet.contains(bookData),
               onChanged: (_) => cubit.toggleSelectSingle(bookData),
@@ -49,8 +46,7 @@ class BookshelfSliverListItem extends StatelessWidget {
       cubit.toggleSelectSingle(bookData);
     } else if (bookData.isExist) {
       // Navigate to the table of contents page.
-      Navigator.of(context)
-          .push(RouteUtils.defaultRoute(TableOfContents(bookData)));
+      Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => TableOfContents(bookData)));
     } else {
       // Show the book is not exist dialog.
       showDialog(

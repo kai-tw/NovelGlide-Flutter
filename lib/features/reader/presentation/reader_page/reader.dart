@@ -6,7 +6,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../../../generated/i18n/app_localizations.dart';
 import '../../../../core/shared_components/common_loading.dart';
-import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/window_size.dart';
 import '../../../book_service/book_service.dart';
 import '../../../tts_service/tts_service.dart';

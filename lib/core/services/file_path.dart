@@ -13,9 +13,16 @@ class FilePath {
   static late String documentFolder;
 
   // static late String cacheFolder;
-  static Future<Directory> get tempDirectory async => getTemporaryDirectory();
+  static late String tempDirectory;
 
   // static String? downloadFolder;
+
+  static String? _cacheDirectory;
+
+  static Future<String> get cacheDirectory async {
+    _cacheDirectory ??= (await getApplicationCacheDirectory()).path;
+    return _cacheDirectory!;
+  }
 
   /// Platform-specific folders
   static String? _iosLibraryFolder;
@@ -27,14 +34,13 @@ class FilePath {
 
   static String get dataRoot => join(_baseFolder, 'Data');
 
-  static Future<Directory> get cacheDirectory async => tempDirectory;
-
   static Future<void> ensureInitialized() async {
     final List<Future<void>> tasks = <Future<void>>[
       getApplicationDocumentsDirectory().then((Directory dir) => documentFolder = dir.path),
       // getApplicationSupportDirectory().then((Directory dir) => supportFolder = dir.path),
       // getApplicationCacheDirectory().then((Directory dir) => cacheFolder = dir.path),
       // getDownloadsDirectory().then((Directory? dir) => downloadFolder = dir?.path),
+      getTemporaryDirectory().then((Directory dir) => tempDirectory = dir.path),
     ];
 
     if (Platform.isIOS) {

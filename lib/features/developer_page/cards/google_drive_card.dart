@@ -13,7 +13,7 @@ class _GoogleDriveCard extends StatelessWidget {
         ),
         ListTile(
           onTap: () => Navigator.of(context).push(
-            RouteUtils.defaultRoute(const _GoogleDriveFileManager()),
+            MaterialPageRoute<void>(builder: (_) => const _GoogleDriveFileManager()),
           ),
           leading: const Icon(Icons.folder),
           title: const Text('File Browser'),

@@ -21,16 +21,13 @@ class BookmarkListItem extends StatelessWidget {
               previous.code != current.code ||
               previous.isSelecting != current.isSelecting ||
               previous.isDragging != current.isDragging ||
-              previous.selectedSet.contains(bookmarkData) !=
-                  current.selectedSet.contains(bookmarkData) ||
+              previous.selectedSet.contains(bookmarkData) != current.selectedSet.contains(bookmarkData) ||
               previous.listType != current.listType,
           builder: (BuildContext context, BookmarkListState state) {
             return BookmarkListDraggableBookmark(
               bookmarkData: bookmarkData,
               listType: state.listType,
-              isDraggable: state.code.isLoaded &&
-                  !state.isDragging &&
-                  !state.isSelecting,
+              isDraggable: state.code.isLoaded && !state.isDragging && !state.isSelecting,
               isSelecting: state.isSelecting,
               isSelected: state.selectedSet.contains(bookmarkData),
               onChanged: (_) => cubit.toggleSelectSingle(bookmarkData),
@@ -49,8 +46,8 @@ class BookmarkListItem extends StatelessWidget {
     } else {
       Navigator.of(context)
           .push(
-            RouteUtils.defaultRoute(
-              ReaderWidget(
+            MaterialPageRoute<void>(
+              builder: (_) => ReaderWidget(
                 bookPath: bookmarkData.bookPath,
                 destinationType: ReaderDestinationType.bookmark,
                 destination: bookmarkData.startCfi,

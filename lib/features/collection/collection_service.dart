@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +8,7 @@ import 'package:path/path.dart';
 
 import '../../../core/services/file_path.dart';
 import '../../../core/utils/json_utils.dart';
-import '../../../core/utils/random_utils.dart';
+import '../../../core/utils/random_extension.dart';
 import '../../core/shared_components/adaptive_lines_text.dart';
 import '../../core/shared_components/common_delete_dialog.dart';
 import '../../core/shared_components/common_loading.dart';
@@ -15,7 +16,6 @@ import '../../core/shared_components/draggable_feedback_widget.dart';
 import '../../core/shared_components/draggable_placeholder_widget.dart';
 import '../../core/shared_components/shared_list/shared_list.dart';
 import '../../core/utils/popup_menu_utils.dart';
-import '../../core/utils/route_utils.dart';
 import '../../enum/loading_state_code.dart';
 import '../../enum/sort_order_code.dart';
 import '../../enum/window_size.dart';

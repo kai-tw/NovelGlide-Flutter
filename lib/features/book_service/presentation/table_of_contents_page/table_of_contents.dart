@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/shared_components/common_loading.dart';
 import '../../../../core/shared_components/shared_list/shared_list.dart';
-import '../../../../core/utils/route_utils.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../enum/window_size.dart';
 import '../../../../generated/i18n/app_localizations.dart';

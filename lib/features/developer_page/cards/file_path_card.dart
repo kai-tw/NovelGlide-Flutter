@@ -21,16 +21,7 @@ class _FilePathCard extends StatelessWidget {
         ),
         ListTile(
           title: const Text('tempDirectory'),
-          subtitle: FutureBuilder<Directory>(
-            future: FilePath.tempDirectory,
-            builder: (BuildContext context, AsyncSnapshot<Directory> snapshot) {
-              if (snapshot.hasData) {
-                return Text(snapshot.data!.path);
-              } else {
-                return const Text('Loading...');
-              }
-            },
-          ),
+          subtitle: Text(FilePath.tempDirectory),
         ),
       ],
     );

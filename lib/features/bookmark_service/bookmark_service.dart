@@ -17,7 +17,6 @@ import '../../core/shared_components/draggable_feedback_widget.dart';
 import '../../core/shared_components/draggable_placeholder_widget.dart';
 import '../../core/shared_components/shared_list/shared_list.dart';
 import '../../core/utils/popup_menu_utils.dart';
-import '../../core/utils/route_utils.dart';
 import '../../enum/loading_state_code.dart';
 import '../../enum/sort_order_code.dart';
 import '../../generated/i18n/app_localizations.dart';

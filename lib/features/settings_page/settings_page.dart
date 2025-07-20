@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../core/utils/route_utils.dart';
 import '../../enum/window_size.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../about_page/about_page.dart';
@@ -30,41 +29,41 @@ class SettingsPage extends StatelessWidget {
     final List<SettingsListTile> buttonList = <SettingsListTile>[
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          RouteUtils.defaultRoute(const AppearanceSettingsPage()),
+          MaterialPageRoute<void>(builder: (_) => const AppearanceSettingsPage()),
         ),
         iconData: Icons.format_paint_outlined,
         title: appLocalizations.appearance,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          RouteUtils.defaultRoute(const BackupServicePage()),
+          MaterialPageRoute<void>(builder: (_) => const BackupServicePage()),
         ),
         iconData: Icons.cloud_outlined,
         title: appLocalizations.generalBackup,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          RouteUtils.defaultRoute(const TtsSettingsPage()),
+          MaterialPageRoute<void>(builder: (_) => const TtsSettingsPage()),
         ),
         iconData: Icons.volume_up_outlined,
         title: appLocalizations.ttsSettingsTitle,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          RouteUtils.defaultRoute(const LocaleSettingsPage()),
+          MaterialPageRoute<void>(builder: (_) => const LocaleSettingsPage()),
         ),
         iconData: Icons.language_rounded,
         title: appLocalizations.generalLanguages,
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          RouteUtils.defaultRoute(const ResetPage()),
+          MaterialPageRoute<void>(builder: (_) => const ResetPage()),
         ),
         iconData: Icons.refresh_rounded,
         title: appLocalizations.resetPageTitle,
       ),
       SettingsListTile(
-        onTap: () => Navigator.of(context).push(RouteUtils.defaultRoute(const FeedbackPage())),
+        onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const FeedbackPage())),
         iconData: Icons.feedback_outlined,
         title: appLocalizations.generalFeedback,
       ),
@@ -78,7 +77,7 @@ class SettingsPage extends StatelessWidget {
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          RouteUtils.defaultRoute(const AboutPage()),
+          MaterialPageRoute<void>(builder: (_) => const AboutPage()),
         ),
         iconData: Icons.info_outline,
         title: appLocalizations.generalAbout,
@@ -88,7 +87,7 @@ class SettingsPage extends StatelessWidget {
     if (kDebugMode) {
       buttonList.add(
         SettingsListTile(
-          onTap: () => Navigator.of(context).push(RouteUtils.defaultRoute(const DeveloperPage())),
+          onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const DeveloperPage())),
           iconData: Icons.code_rounded,
           title: 'Developer Page',
         ),
