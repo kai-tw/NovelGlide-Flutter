@@ -2,7 +2,7 @@
 
 A first attempt to develop a cross-platform app.
 
-[<img src="https://raw.githubusercontent.com/pioug/google-play-badges/refs/heads/main/svg/English.svg" alt="Get it on Google Play" width="230">]((https://play.google.com/store/apps/details?id=com.kai_wu.novelglide))
+[<img src="https://raw.githubusercontent.com/pioug/google-play-badges/refs/heads/main/svg/English.svg" alt="Get it on Google Play" width="230">](https://play.google.com/store/apps/details?id=com.kai_wu.novelglide)
 [<img src="https://toolbox.marketingtools.apple.com/api/badges/download-on-the-app-store/black/en-us" alt="Download on App Store" width="200">](https://apps.apple.com/tw/app/novelglide/id6748090356)
 
 ## Development Environment
