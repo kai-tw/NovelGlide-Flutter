@@ -21,10 +21,4 @@ class GoogleApiInterfaces {
 
   static final GoogleAuthInterface auth = GoogleAuthInterface._();
   static final GoogleDriveInterface drive = GoogleDriveInterface._();
-
-  static Future<void> ensureInitialized() async {
-    await Future.wait(<Future<void>>[
-      auth.ensureInitialized(),
-    ]);
-  }
 }

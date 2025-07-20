@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/app_global_cubit/app_global_cubit.dart';
-import 'core/interfaces/google_api_interfaces/google_api_interfaces.dart';
 import 'core/services/file_path.dart';
 import 'core/services/log_service.dart';
 import 'core/theme/default_theme.dart';
@@ -28,7 +27,6 @@ void main() async {
   await Future.wait(<Future<void>>[
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
     FilePath.ensureInitialized(),
-    GoogleApiInterfaces.ensureInitialized(),
     AppearanceServices.ensureInitialized(),
     LocaleServices.ensureInitialized(),
   ]);
