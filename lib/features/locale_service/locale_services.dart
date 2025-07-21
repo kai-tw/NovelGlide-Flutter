@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:novelglide/core/utils/datetime_extension.dart';
@@ -8,8 +7,6 @@ import '../../core/app_global_cubit/app_global_cubit.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../../preference_keys/preference_keys.dart';
 
-part 'presentation/locale_settings_page/cubit/locale_settings_cubit.dart';
-part 'presentation/locale_settings_page/cubit/locale_settings_state.dart';
 part 'presentation/locale_settings_page/locale_settings_list.dart';
 part 'presentation/locale_settings_page/locale_settings_page.dart';
 

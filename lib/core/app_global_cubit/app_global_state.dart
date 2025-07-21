@@ -2,16 +2,16 @@ part of 'app_global_cubit.dart';
 
 class AppGlobalState extends Equatable {
   const AppGlobalState({
-    this.isDarkMode,
+    this.themeMode,
     this.locale,
   });
 
-  final bool? isDarkMode;
+  final ThemeMode? themeMode;
   final Locale? locale;
 
   @override
   List<Object?> get props => <Object?>[
-        isDarkMode,
+        themeMode,
         locale,
       ];
 }

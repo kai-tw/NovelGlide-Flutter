@@ -14,5 +14,5 @@ class PreferenceKeys {
   static final TtsPref tts = TtsPref();
 
   static const String userLocale = 'userLocale';
-  static const String darkMode = 'darkMode';
+  static const String themeMode = 'themeMode';
 }

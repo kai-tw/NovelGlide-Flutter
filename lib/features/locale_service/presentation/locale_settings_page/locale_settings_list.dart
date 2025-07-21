@@ -5,56 +5,72 @@ class LocaleSettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocaleSettingsCubit cubit =
-        BlocProvider.of<LocaleSettingsCubit>(context);
+    return BlocBuilder<AppGlobalCubit, AppGlobalState>(
+      buildWhen: (AppGlobalState previous, AppGlobalState current) => previous.locale != current.locale,
+      builder: (BuildContext context, AppGlobalState state) {
+        final List<Locale?> localeList = List<Locale?>.from(LocaleServices.supportedLocales);
 
-    return BlocBuilder<LocaleSettingsCubit, LocaleSettingsState>(
-      buildWhen: (LocaleSettingsState previous, LocaleSettingsState current) =>
-          previous.selectedLocale != current.selectedLocale,
-      builder: (BuildContext context, LocaleSettingsState state) {
+        // Use system settings.
+        localeList.insert(0, null);
+
         return ListView.builder(
-          itemCount: LocaleServices.supportedLocales.length + 1,
+          itemCount: localeList.length,
           itemBuilder: (BuildContext context, int index) {
-            if (index == 0) {
-              final bool isSelected = state.selectedLocale == null;
-              return ListTile(
-                onTap:
-                    isSelected ? null : () => cubit.selectLocale(context, null),
-                title: Text(AppLocalizations.of(context)!.useSystemSettings),
-                trailing: isSelected ? const Icon(Icons.check_rounded) : null,
-              );
-            } else {
-              final Locale currentLocale =
-                  LocaleServices.supportedLocales[index - 1];
-              final bool isSelected = state.selectedLocale == currentLocale;
-              return ListTile(
-                onTap: isSelected
-                    ? null
-                    : () => cubit.selectLocale(context, currentLocale),
-                title: Localizations.override(
-                  context: context,
-                  locale: currentLocale,
-                  child: Builder(
-                    builder: (BuildContext context) => Text(
-                      LocaleServices.languageNameOf(
-                        context,
-                        currentLocale,
-                      ),
-                    ),
-                  ),
-                ),
-                subtitle: Text(
-                  LocaleServices.languageNameOf(
-                    context,
-                    currentLocale,
-                  ),
-                ),
-                trailing: isSelected ? const Icon(Icons.check_rounded) : null,
-              );
-            }
+            return _buildListTile(
+              context: context,
+              locale: localeList[index],
+              isSelected: state.locale == localeList[index],
+            );
           },
         );
       },
     );
+  }
+
+  Widget _buildListTile({
+    required BuildContext context,
+    required Locale? locale,
+    required bool isSelected,
+  }) {
+    return ListTile(
+      onTap: isSelected ? null : () => LocaleServices.userLocale = locale,
+      title: _buildTitle(
+        context: context,
+        locale: locale,
+      ),
+      subtitle: _buildSubtitle(
+        context: context,
+        locale: locale,
+      ),
+      trailing: isSelected ? const Icon(Icons.check_rounded) : null,
+    );
+  }
+
+  Widget _buildTitle({
+    required BuildContext context,
+    required Locale? locale,
+  }) {
+    return locale == null
+        ? Text(AppLocalizations.of(context)!.useSystemSettings)
+        : Localizations.override(
+            context: context,
+            locale: locale,
+            child: Builder(
+              builder: (BuildContext context) => Text(
+                LocaleServices.languageNameOf(context, locale),
+              ),
+            ),
+          );
+  }
+
+  Widget? _buildSubtitle({
+    required BuildContext context,
+    required Locale? locale,
+  }) {
+    return locale == null
+        ? null
+        : Text(
+            LocaleServices.languageNameOf(context, locale),
+          );
   }
 }

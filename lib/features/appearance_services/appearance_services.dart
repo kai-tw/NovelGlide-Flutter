@@ -1,43 +1,38 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/app_global_cubit/app_global_cubit.dart';
+import '../../core/utils/preference_enum_utils.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../../preference_keys/preference_keys.dart';
 import '../settings_page/settings_card.dart';
 
 part 'presentation/appearance_settings_dark_mode_card/appearance_settings_dark_mode_card.dart';
-part 'presentation/appearance_settings_dark_mode_card/cubit/appearance_settings_dark_mode_card_cubit.dart';
-part 'presentation/appearance_settings_dark_mode_card/cubit/appearance_settings_dark_mode_card_state.dart';
 part 'presentation/appearance_settings_page/appearance_settings_page.dart';
 
 class AppearanceServices {
   AppearanceServices._();
 
-  static bool? _isDarkMode;
+  static ThemeMode _themeMode = ThemeMode.system;
 
-  static bool? get isDarkMode => _isDarkMode;
+  static ThemeMode get themeMode => _themeMode;
 
   static Future<void> ensureInitialized() async {
-    _isDarkMode = await _getDarkMode();
+    _themeMode = await _getThemeMode();
   }
 
-  static Future<bool?> _getDarkMode() async {
+  static Future<ThemeMode> _getThemeMode() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(PreferenceKeys.darkMode);
+    final int index = PreferenceEnumUtils.getEnumIndex(prefs, PreferenceKeys.themeMode) ?? ThemeMode.system.index;
+    return ThemeMode.values[index];
   }
 
-  static Future<void> setDarkMode(bool? isDarkMode) async {
+  static Future<void> setThemeMode(ThemeMode themeMode) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    _isDarkMode = isDarkMode;
+    _themeMode = themeMode;
 
-    if (isDarkMode == null) {
-      prefs.remove(PreferenceKeys.darkMode);
-    } else {
-      prefs.setBool(PreferenceKeys.darkMode, isDarkMode);
-    }
+    prefs.setInt(PreferenceKeys.themeMode, themeMode.index);
 
     AppGlobalCubit.refreshState();
   }

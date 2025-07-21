@@ -61,14 +61,18 @@ class App extends StatelessWidget {
       builder: (BuildContext context, AppGlobalState state) {
         return MaterialApp(
           title: 'NovelGlide',
-          theme: state.isDarkMode == true ? theme.darkTheme : theme.lightTheme,
-          darkTheme: state.isDarkMode == null ? theme.darkTheme : null,
+          theme: theme.lightTheme,
+          darkTheme: theme.darkTheme,
+          themeMode: state.themeMode,
           locale: state.locale,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: LocaleServices.supportedLocales,
-          home: const Homepage(),
+          routes: <String, WidgetBuilder>{
+            '/': (BuildContext context) => const Homepage(),
+          },
+          initialRoute: '/',
           builder: (BuildContext context, Widget? child) => AccessibilityTools(child: child),
-          // debugShowCheckedModeBanner: false,
+          debugShowCheckedModeBanner: false,
         );
       },
     );

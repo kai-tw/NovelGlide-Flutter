@@ -66,18 +66,18 @@ class SharedListPreference {
     _prefs ??= await SharedPreferences.getInstance();
 
     _sortOrder = SortOrderCode.values[PreferenceEnumUtils.getEnumIndex(
-      _prefs,
-      sortOrderKey,
-      defaultValue: defaultSortOrder.index,
-    )];
+          _prefs,
+          sortOrderKey,
+        ) ??
+        defaultSortOrder.index];
 
     _isAscending = _prefs?.getBool(isAscendingKey) ?? defaultIsAscending;
 
     _listType = SharedListType.values[PreferenceEnumUtils.getEnumIndex(
-      _prefs,
-      listTypeKey,
-      defaultValue: defaultListType.index,
-    )];
+          _prefs,
+          listTypeKey,
+        ) ??
+        defaultListType.index];
   }
 
   /// Reset preferences.

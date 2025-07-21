@@ -1,6 +1,5 @@
-import 'dart:ui';
-
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../features/appearance_services/appearance_services.dart';
@@ -16,7 +15,7 @@ class AppGlobalCubit extends Cubit<AppGlobalState> {
 
   AppGlobalCubit._()
       : super(AppGlobalState(
-          isDarkMode: AppearanceServices.isDarkMode,
+          themeMode: AppearanceServices.themeMode,
           locale: LocaleServices.userLocale,
         ));
 
@@ -26,7 +25,7 @@ class AppGlobalCubit extends Cubit<AppGlobalState> {
 
   void _refreshState() {
     emit(AppGlobalState(
-      isDarkMode: AppearanceServices.isDarkMode,
+      themeMode: AppearanceServices.themeMode,
       locale: LocaleServices.userLocale,
     ));
   }

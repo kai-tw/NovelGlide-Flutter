@@ -11,12 +11,9 @@ class LocaleSettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(appLocalizations.generalLanguages),
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: Scrollbar(
-          child: BlocProvider<LocaleSettingsCubit>(
-            create: (_) => LocaleSettingsCubit(),
-            child: const LocaleSettingsList(),
-          ),
+          child: LocaleSettingsList(),
         ),
       ),
     );
