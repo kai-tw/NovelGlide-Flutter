@@ -7,7 +7,8 @@ class ReaderWebViewHandler {
 
   final String url;
   final WebViewController controller = WebViewController();
-  final Map<String, void Function(dynamic p1)> _channelMap = <String, void Function(dynamic)>{};
+  final Map<String, void Function(dynamic p1)> _channelMap =
+      <String, void Function(dynamic)>{};
 
   void initialize({String? destination, String? savedLocation}) {
     controller.enableZoom(false);
@@ -17,15 +18,19 @@ class ReaderWebViewHandler {
 
     controller.setNavigationDelegate(NavigationDelegate(
       onPageFinished: (String url) async {
-        controller.runJavaScript('window.communicationService.setChannel(window.appApi)');
+        controller.runJavaScript(
+            'window.communicationService.setChannel(window.appApi)');
         send('main', <String, String?>{
           'destination': destination,
           'savedLocation': savedLocation,
         });
       },
       onNavigationRequest: (NavigationRequest request) {
-        final bool isUrlAllowed = <String>[url, 'about:srcdoc'].any((String url) => request.url.startsWith(url));
-        return isUrlAllowed ? NavigationDecision.navigate : NavigationDecision.prevent;
+        final bool isUrlAllowed = <String>[url, 'about:srcdoc']
+            .any((String url) => request.url.startsWith(url));
+        return isUrlAllowed
+            ? NavigationDecision.navigate
+            : NavigationDecision.prevent;
       },
     ));
   }
@@ -39,7 +44,7 @@ class ReaderWebViewHandler {
     final Map<String, dynamic> data = jsonDecode(message.message);
     assert(data['route'] is String);
     _channelMap[data['route']]?.call(data['data']);
-    LogService.info("Reader: Receive - ${data['route']} ${data['data']}");
+    LogDomain.info("Reader: Receive - ${data['route']} ${data['data']}");
   }
 
   void register(String route, void Function(dynamic) handler) {
@@ -68,7 +73,9 @@ class ReaderWebViewHandler {
 
   void searchInWholeBook(String query) => send('searchInWholeBook', query);
 
-  void searchInCurrentChapter(String query) => send('searchInCurrentChapter', query);
+  void searchInCurrentChapter(String query) =>
+      send('searchInCurrentChapter', query);
 
-  void setSmoothScroll(bool isSmoothScroll) => send('setSmoothScroll', isSmoothScroll);
+  void setSmoothScroll(bool isSmoothScroll) =>
+      send('setSmoothScroll', isSmoothScroll);
 }

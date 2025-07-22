@@ -41,7 +41,7 @@ class BackupServiceProcessCollectionCubit
   @override
   Future<void> _restore() async {
     if (googleDriveFileId == null) {
-      LogService.info('Google Drive file id of the collection backup is null.');
+      LogDomain.info('Google Drive file id of the collection backup is null.');
       emit(const BackupServiceProcessItemState(
         step: BackupServiceProcessStepCode.error,
       ));
@@ -67,7 +67,7 @@ class BackupServiceProcessCollectionCubit
         },
       );
     } catch (e) {
-      LogService.error(
+      LogDomain.error(
         'Failed to download collection backup from Google Drive',
         error: e,
       );
@@ -87,8 +87,7 @@ class BackupServiceProcessCollectionCubit
   @override
   Future<void> _delete() async {
     if (googleDriveFileId == null) {
-      LogService.error(
-          'Google Drive file id of the collection backup is null.');
+      LogDomain.error('Google Drive file id of the collection backup is null.');
       emit(const BackupServiceProcessItemState(
         step: BackupServiceProcessStepCode.error,
       ));
@@ -104,7 +103,7 @@ class BackupServiceProcessCollectionCubit
     try {
       await GoogleApiInterfaces.drive.deleteFile(googleDriveFileId!);
     } catch (e) {
-      LogService.error(
+      LogDomain.error(
         'Failed to delete collection backup from Google Drive.',
         error: e,
       );

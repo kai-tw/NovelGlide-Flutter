@@ -46,7 +46,7 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
       );
       tempFolder.deleteSync(recursive: true);
     } catch (e) {
-      LogService.error(
+      LogDomain.error(
         'Upload library zip to Google Drive failed',
         error: e,
       );
@@ -71,7 +71,7 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
   @override
   Future<void> _restore() async {
     if (googleDriveFileId == null) {
-      LogService.error('Google Drive file id of the library backup is null');
+      LogDomain.error('Google Drive file id of the library backup is null');
       emit(const BackupServiceProcessItemState(
         step: BackupServiceProcessStepCode.error,
       ));
@@ -144,7 +144,7 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
   @override
   Future<void> _delete() async {
     if (googleDriveFileId == null) {
-      LogService.error('Google Drive file id of the library backup is null');
+      LogDomain.error('Google Drive file id of the library backup is null');
       emit(const BackupServiceProcessItemState(
         step: BackupServiceProcessStepCode.error,
       ));
