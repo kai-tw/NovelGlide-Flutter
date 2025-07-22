@@ -5,8 +5,12 @@ enum AdUnitId {
     android: 'ca-app-pub-1579558558142906/6034508731',
     ios: 'ca-app-pub-1579558558142906/3980025184',
   ),
-  tableOfContent(
+  tableOfContents(
     android: 'ca-app-pub-1579558558142906/1014366989',
+    ios: '',
+  ),
+  reader(
+    android: 'ca-app-pub-1579558558142906/5399183177',
     ios: '',
   );
 

@@ -44,8 +44,9 @@ class _MediumView extends StatelessWidget {
             ],
           ),
         ),
-
-        /// Ad goes here
+        const Advertisement(
+          unitId: AdUnitId.tableOfContents,
+        ),
       ],
     );
   }
