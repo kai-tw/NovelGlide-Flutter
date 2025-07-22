@@ -32,7 +32,7 @@ class BookmarkListBookmarkWidget extends StatelessWidget {
     final List<Widget> subtitleChildren = <Widget>[
       // Days passed text
       Text(
-        _getSavedTimeString(daysPassed, appLocalizations),
+        appLocalizations.savedTime(daysPassed),
         style: Theme.of(context).textTheme.bodySmall,
       ),
     ];
@@ -92,25 +92,5 @@ class BookmarkListBookmarkWidget extends StatelessWidget {
           onChanged: onChanged,
         );
     }
-  }
-
-  String _getSavedTimeString(
-    int daysPassed,
-    AppLocalizations appLocalizations,
-  ) {
-    String savedTimeString = '';
-
-    switch (daysPassed) {
-      case 0:
-        savedTimeString = appLocalizations.savedTimeToday;
-        break;
-      case 1:
-        savedTimeString = appLocalizations.savedTimeYesterday;
-        break;
-      default:
-        savedTimeString = appLocalizations.savedTimeOthersFunction(daysPassed);
-    }
-
-    return appLocalizations.savedTimeFunction(savedTimeString);
   }
 }
