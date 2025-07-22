@@ -11,7 +11,8 @@ class CommonDeleteDragTarget<T extends Object> extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return DragTarget<T>(
-      builder: (BuildContext context, List<T?> candidateData, List<dynamic> rejectedData) {
+      builder: (BuildContext context, List<T?> candidateData,
+          List<dynamic> rejectedData) {
         return Container(
           padding: const EdgeInsets.symmetric(
             vertical: 16.0,
@@ -22,7 +23,8 @@ class CommonDeleteDragTarget<T extends Object> extends StatelessWidget {
             borderRadius: BorderRadius.circular(36.0),
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color: Theme.of(context).colorScheme.shadow.withValues(alpha: 0.5),
+                color:
+                    Theme.of(context).colorScheme.shadow.withValues(alpha: 0.5),
                 offset: const Offset(0.0, 4.0),
                 blurRadius: 8.0,
               ),
@@ -30,7 +32,6 @@ class CommonDeleteDragTarget<T extends Object> extends StatelessWidget {
           ),
           clipBehavior: Clip.hardEdge,
           child: Row(
-            // mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
@@ -43,6 +44,7 @@ class CommonDeleteDragTarget<T extends Object> extends StatelessWidget {
               Expanded(
                 child: Text(
                   appLocalizations.generalDragHereToDelete,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onError,
                   ),
