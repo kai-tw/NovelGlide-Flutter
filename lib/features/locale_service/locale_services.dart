@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:novelglide/core/utils/datetime_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../core/app_global_cubit/app_global_cubit.dart';
+import '../../core/presentation/app_global_cubit/app_global_cubit.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../../preference_keys/preference_keys.dart';
 
@@ -64,6 +64,7 @@ class LocaleServices {
   }
 
   static String? dateTimeOf(BuildContext context, DateTime? dateTime) {
-    return dateTime?.format(AppLocalizations.of(context)!.generalDatetimeFormat);
+    return dateTime
+        ?.format(AppLocalizations.of(context)!.generalDatetimeFormat);
   }
 }

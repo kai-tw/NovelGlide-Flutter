@@ -2,17 +2,20 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 
-import '../../../../core/services/file_path.dart';
+import '../../../../core/domains/file_system_domain/file_system_domain.dart';
 import '../../../book_service/book_service.dart';
 
 class LocationCacheRepository {
   LocationCacheRepository._();
 
-  static Future<String> get _rootPath async => join(await FilePath.cacheDirectory, 'locations');
+  static Future<String> get _rootPath async =>
+      (await FileSystemDomain.cache.bookLocationDirectory).path;
 
   static Future<File> _getTmpFileByPath(String bookPath) async {
-    final String relativePath = BookService.repository.getRelativePath(bookPath);
-    return File(join(await _rootPath, '${basenameWithoutExtension(relativePath)}.tmp'));
+    final String relativePath =
+        BookService.repository.getRelativePath(bookPath);
+    return File(
+        join(await _rootPath, '${basenameWithoutExtension(relativePath)}.tmp'));
   }
 
   /// Store the location to the cache file.

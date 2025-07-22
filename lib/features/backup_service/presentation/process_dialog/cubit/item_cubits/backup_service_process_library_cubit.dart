@@ -15,7 +15,7 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
     ));
 
     // Get a temporary work directory.
-    final Directory tempFolder = TempService.getDirectory();
+    final Directory tempFolder = await FileSystemDomain.temp.getDirectory();
 
     // Zip the library
     final File zipFile = await BackupService.repository.archiveLibrary(
@@ -83,7 +83,7 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
     ));
 
     // Get a temporary folder.
-    final Directory tempFolder = TempService.getDirectory();
+    final Directory tempFolder = await FileSystemDomain.temp.getDirectory();
 
     // Create an empty file to store the downloaded zip file.
     final File zipFile = File(

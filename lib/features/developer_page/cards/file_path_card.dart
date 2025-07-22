@@ -12,18 +12,33 @@ class _FilePathCard extends StatelessWidget {
           titleTextStyle: Theme.of(context).textTheme.titleLarge,
         ),
         ListTile(
-          title: const Text('libraryRoot'),
-          subtitle: Text(FilePath.libraryRoot),
+          title: const Text('document'),
+          subtitle: _buildPathText(FileSystemDomain.document.rootDirectory),
         ),
         ListTile(
-          title: const Text('dataRoot'),
-          subtitle: Text(FilePath.dataRoot),
+          title: const Text('temp'),
+          subtitle: _buildPathText(FileSystemDomain.temp.rootDirectory),
         ),
         ListTile(
-          title: const Text('tempDirectory'),
-          subtitle: Text(FilePath.tempDirectory),
+          title: const Text('cache'),
+          subtitle: _buildPathText(FileSystemDomain.cache.rootDirectory),
         ),
       ],
+    );
+  }
+
+  Widget _buildPathText(Future<Directory> future) {
+    return FutureBuilder<Directory>(
+      future: future,
+      builder: (BuildContext context, AsyncSnapshot<Directory> snapshot) {
+        if (snapshot.hasData) {
+          return Text(snapshot.data!.path);
+        } else if (snapshot.hasError) {
+          return Text(snapshot.error.toString());
+        } else {
+          return const CircularProgressIndicator();
+        }
+      },
     );
   }
 }

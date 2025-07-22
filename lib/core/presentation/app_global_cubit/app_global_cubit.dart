@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../features/appearance_services/appearance_services.dart';
-import '../../features/locale_service/locale_services.dart';
+import '../../../features/appearance_services/appearance_services.dart';
+import '../../../features/locale_service/locale_services.dart';
 
 part 'app_global_state.dart';
 

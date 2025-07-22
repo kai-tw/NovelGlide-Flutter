@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../core/services/file_path.dart';
+import '../../../../../core/domains/file_system_domain/file_system_domain.dart';
 import '../../../../../core/services/mime_resolver.dart';
 import '../../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';

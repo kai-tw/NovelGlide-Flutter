@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 
 import '../../../../../preference_keys/preference_keys.dart';
-import '../../../core/services/file_path.dart';
+import '../../core/domains/file_system_domain/file_system_domain.dart';
 import '../../core/domains/preference_domain/preference_domain.dart';
 import '../../core/shared_components/common_delete_dialog.dart';
 import '../../core/shared_components/common_loading.dart';

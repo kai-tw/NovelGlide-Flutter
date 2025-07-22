@@ -4,9 +4,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'core/app_global_cubit/app_global_cubit.dart';
+import 'core/domains/file_system_domain/file_system_domain.dart';
 import 'core/domains/log_domain/log_domain.dart';
-import 'core/services/file_path.dart';
+import 'core/presentation/app_global_cubit/app_global_cubit.dart';
 import 'features/appearance_services/appearance_services.dart';
 import 'features/homepage/homepage.dart';
 import 'features/locale_service/locale_services.dart';
