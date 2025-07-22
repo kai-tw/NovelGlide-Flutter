@@ -13,6 +13,8 @@ class BookmarkList extends StatelessWidget {
       buildWhen: (BookmarkListState previous, BookmarkListState current) =>
           previous.code != current.code ||
           previous.dataList != current.dataList ||
+          previous.sortOrder != current.sortOrder ||
+          previous.isAscending != current.isAscending ||
           previous.listType != current.listType,
       builder: (BuildContext context, BookmarkListState state) {
         switch (state.code) {
