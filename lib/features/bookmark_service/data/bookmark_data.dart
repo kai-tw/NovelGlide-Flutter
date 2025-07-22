@@ -18,7 +18,9 @@ class BookmarkData extends Equatable {
       chapterTitle: map['chapterTitle'] ?? '',
       chapterFileName: map['chapterFileName'] ?? '',
       startCfi: map['startCfi'],
-      savedTime: map['savedTime'] != null ? DateTime.parse(map['savedTime']) : DateTime.now(),
+      savedTime: map['savedTime'] != null
+          ? DateTime.parse(map['savedTime'])
+          : DateTime.now(),
     );
   }
 
@@ -40,7 +42,7 @@ class BookmarkData extends Equatable {
       ];
 
   /// Calculates the number of days passed since the bookmark was saved.
-  int get daysPassed => savedTime.difference(DateTime.now()).inDays;
+  int get daysPassed => DateTime.now().difference(savedTime).inDays;
 
   /// Converts the bookmark data to a JSON map.
   Map<String, dynamic> toJson() {
