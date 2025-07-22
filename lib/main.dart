@@ -17,12 +17,6 @@ import 'generated/i18n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Don't initialize ad in release mode
-  // if (kDebugMode) {
-  //   // Ad Initialization
-  //   MobileAds.instance.initialize();
-  // }
-
   // Future initializations
   await Future.wait(<Future<void>>[
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
@@ -61,7 +55,8 @@ class App extends StatelessWidget {
               '/': (BuildContext context) => const Homepage(),
             },
             initialRoute: '/',
-            builder: (BuildContext context, Widget? child) => AccessibilityTools(child: child),
+            builder: (BuildContext context, Widget? child) =>
+                AccessibilityTools(child: child),
             debugShowCheckedModeBanner: false,
           );
         },

@@ -11,7 +11,6 @@ class CollectionListScaffoldBody extends StatelessWidget {
 
     return Column(
       children: <Widget>[
-        /// Ad goes here
         Expanded(
           child: PageStorage(
             bucket: homepageCubit.collectionBucket,

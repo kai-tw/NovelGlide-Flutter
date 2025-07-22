@@ -1,8 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-
-part 'advertisement_state.dart';
+part of '../../ad_service.dart';
 
 class AdvertisementCubit extends Cubit<AdvertisementState> {
   factory AdvertisementCubit(String adUnitId, double width) {

@@ -29,7 +29,8 @@ class BookCoverImage extends StatelessWidget {
           return Image(
             image: CacheMemoryImageProvider(
               bookData.relativeFilePath,
-              _bitmapOptimize(image, constraints),
+              Bitmap.fromHeadless(image.width, image.height, image.getBytes())
+                  .buildHeaded(),
             ),
             width: constraints.maxWidth,
             height: constraints.maxHeight,
@@ -39,20 +40,5 @@ class BookCoverImage extends StatelessWidget {
         },
       );
     }
-  }
-
-  Uint8List _bitmapOptimize(img.Image image, BoxConstraints constraints) {
-    const int ratio = 4;
-    final double widthRatio = constraints.maxWidth / image.width * ratio;
-    final double heightRatio = constraints.maxHeight / image.height * ratio;
-
-    final double maxRatio = max(widthRatio, heightRatio);
-
-    final int displayWidth = (image.width * maxRatio).truncate();
-    final int displayHeight = (image.height * maxRatio).truncate();
-
-    return Bitmap.fromHeadless(image.width, image.height, image.getBytes())
-        .apply(BitmapResize.to(width: displayWidth, height: displayHeight))
-        .buildHeaded();
   }
 }

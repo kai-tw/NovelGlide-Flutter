@@ -1,4 +1,4 @@
-part of 'advertisement_cubit.dart';
+part of '../../ad_service.dart';
 
 class AdvertisementState extends Equatable {
   const AdvertisementState({

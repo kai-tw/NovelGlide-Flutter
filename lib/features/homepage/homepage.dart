@@ -5,6 +5,7 @@ import '../../core/shared_components/common_delete_drag_target.dart';
 import '../../core/shared_components/shared_list/shared_list.dart';
 import '../../enum/window_size.dart';
 import '../../generated/i18n/app_localizations.dart';
+import '../ads_service/ad_service.dart';
 import '../book_service/book_service.dart';
 import '../book_service/presentation/bookshelf/cubit/bookshelf_cubit.dart';
 import '../bookmark_service/bookmark_service.dart';
