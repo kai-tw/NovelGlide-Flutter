@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/app_global_cubit/app_global_cubit.dart';
 import 'core/services/file_path.dart';
 import 'core/services/log_service.dart';
-import 'core/theme/default_theme.dart';
 import 'features/appearance_services/appearance_services.dart';
 import 'features/homepage/homepage.dart';
 import 'features/locale_service/locale_services.dart';
@@ -38,16 +37,15 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DefaultTheme theme = DefaultTheme();
     return BlocProvider<AppGlobalCubit>(
       create: (_) => AppGlobalCubit(),
       child: BlocBuilder<AppGlobalCubit, AppGlobalState>(
         builder: (BuildContext context, AppGlobalState state) {
           return MaterialApp(
             title: 'NovelGlide',
-            theme: theme.lightTheme,
-            darkTheme: theme.darkTheme,
-            themeMode: state.themeMode,
+            theme: state.appearanceData.theme.lightTheme,
+            darkTheme: state.appearanceData.theme.darkTheme,
+            themeMode: state.appearanceData.themeMode,
             locale: state.locale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: LocaleServices.supportedLocales,

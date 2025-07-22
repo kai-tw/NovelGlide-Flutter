@@ -8,25 +8,33 @@ class Advertisement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (AdService.isAllowed) {
-      return LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-        return BlocProvider<AdvertisementCubit>(
-          create: (_) => AdvertisementCubit(unitId.id, constraints.maxWidth),
-          child: BlocBuilder<AdvertisementCubit, AdvertisementState>(
-            builder: (BuildContext context, AdvertisementState state) {
-              if (state.bannerAd == null) {
-                return const SizedBox.shrink();
-              } else {
-                return SizedBox(
-                  width: constraints.maxWidth,
-                  height: state.bannerAd!.size.height.toDouble(),
-                  child: AdWidget(ad: state.bannerAd!),
-                );
-              }
+      return Container(
+        padding: const EdgeInsets.all(4.0),
+        height: 60.0,
+        child: Center(
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return BlocProvider<AdvertisementCubit>(
+                create: (_) =>
+                    AdvertisementCubit(unitId.id, constraints.maxWidth),
+                child: BlocBuilder<AdvertisementCubit, AdvertisementState>(
+                  builder: (BuildContext context, AdvertisementState state) {
+                    if (state.bannerAd == null) {
+                      return const SizedBox.shrink();
+                    } else {
+                      return SizedBox(
+                        width: constraints.maxWidth,
+                        height: state.bannerAd!.size.height.toDouble(),
+                        child: AdWidget(ad: state.bannerAd!),
+                      );
+                    }
+                  },
+                ),
+              );
             },
           ),
-        );
-      });
+        ),
+      );
     } else {
       return const SizedBox.shrink();
     }

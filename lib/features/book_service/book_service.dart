@@ -1,9 +1,6 @@
 import 'dart:io';
-import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:bitmap/bitmap.dart';
-import 'package:collection/collection.dart';
 import 'package:epubx/epubx.dart' as epub;
 import 'package:equatable/equatable.dart';
 import 'package:file_picker/file_picker.dart';
@@ -17,6 +14,7 @@ import '../../../../core/services/file_path.dart';
 import '../../../../core/utils/epub_utils.dart';
 import '../../../../core/utils/file_extension.dart';
 import '../../../../generated/i18n/app_localizations.dart';
+import '../../core/domains/preference_domain/preference_domain.dart';
 import '../../core/services/mime_resolver.dart';
 import '../../core/shared_components/adaptive_lines_text.dart';
 import '../../core/shared_components/common_delete_dialog.dart';

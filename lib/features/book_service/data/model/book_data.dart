@@ -31,21 +31,4 @@ class BookData extends Equatable {
   Future<List<ChapterData>> get chapterList async {
     return EpubUtils.getChapterList(absoluteFilePath);
   }
-
-  static int Function(BookData, BookData) sortCompare(
-    SortOrderCode sortOrder,
-    bool isAscending,
-  ) {
-    switch (sortOrder) {
-      case SortOrderCode.modifiedDate:
-        return (BookData a, BookData b) => isAscending
-            ? a.modifiedDate.compareTo(b.modifiedDate)
-            : b.modifiedDate.compareTo(a.modifiedDate);
-
-      default:
-        return (BookData a, BookData b) => isAscending
-            ? compareNatural(a.name, b.name)
-            : compareNatural(b.name, a.name);
-    }
-  }
 }

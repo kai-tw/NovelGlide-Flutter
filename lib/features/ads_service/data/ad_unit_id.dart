@@ -7,11 +7,11 @@ enum AdUnitId {
   ),
   tableOfContents(
     android: 'ca-app-pub-1579558558142906/1014366989',
-    ios: '',
+    ios: 'ca-app-pub-1579558558142906/4345955953',
   ),
   reader(
     android: 'ca-app-pub-1579558558142906/5399183177',
-    ios: '',
+    ios: 'ca-app-pub-1579558558142906/7476667706',
   );
 
   const AdUnitId({

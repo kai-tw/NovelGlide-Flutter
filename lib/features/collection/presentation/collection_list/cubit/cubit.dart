@@ -24,25 +24,20 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
     }
 
     // Load preferences.
-    await CollectionService.preference.load();
-
-    emit(CollectionListState(
-      code: LoadingStateCode.loading,
-      dataList: List<CollectionData>.from(state.dataList),
-      sortOrder: CollectionService.preference.sortOrder,
-      isAscending: CollectionService.preference.isAscending,
-      listType: CollectionService.preference.listType,
-    ));
+    final SharedListData preference =
+        await CollectionService.preference.list.load();
 
     // Load collection list.
-    final List<CollectionData> collectionList =
-        CollectionService.repository.getList();
-    _sortList(collectionList, CollectionService.preference.sortOrder,
-        CollectionService.preference.isAscending);
-
-    emit(state.copyWith(
+    emit(CollectionListState(
       code: LoadingStateCode.loaded,
-      dataList: collectionList,
+      dataList: sortList(
+        CollectionService.repository.getList(),
+        preference.sortOrder,
+        preference.isAscending,
+      ),
+      sortOrder: preference.sortOrder,
+      isAscending: preference.isAscending,
+      listType: preference.listType,
     ));
   }
 
@@ -52,36 +47,23 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
   }
 
   @override
-  void setListOrder({SortOrderCode? sortOrder, bool? isAscending}) {
-    final SortOrderCode order = sortOrder ?? state.sortOrder;
-    final bool ascending = isAscending ?? state.isAscending;
-    final List<CollectionData> list = List<CollectionData>.from(state.dataList);
-
-    CollectionService.preference.sortOrder = order;
-    CollectionService.preference.isAscending = ascending;
-
-    _sortList(list, order, ascending);
-    emit(state.copyWith(
-      dataList: list,
-      isAscending: ascending,
-      sortOrder: order,
-    ));
+  int sortCompare(
+    CollectionData a,
+    CollectionData b, {
+    required SortOrderCode sortOrder,
+    required bool isAscending,
+  }) {
+    return isAscending
+        ? compareNatural(a.name, b.name)
+        : compareNatural(b.name, a.name);
   }
 
   @override
-  set listType(SharedListType value) {
-    CollectionService.preference.listType = value;
-    super.listType = value;
-  }
-
-  // Helper method to sort the collection list
-  void _sortList(
-    List<CollectionData> list,
-    SortOrderCode sortOrder,
-    bool isAscending,
-  ) {
-    list.sort((CollectionData a, CollectionData b) => isAscending
-        ? compareNatural(a.name, b.name)
-        : compareNatural(b.name, a.name));
+  void savePreference() {
+    CollectionService.preference.list.save(SharedListData(
+      sortOrder: state.sortOrder,
+      isAscending: state.isAscending,
+      listType: state.listType,
+    ));
   }
 }

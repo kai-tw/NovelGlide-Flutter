@@ -28,14 +28,15 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     }
 
     // Load preferences.
-    await BookService.preference.load();
+    final SharedListData preference =
+        await BookService.preference.bookshelf.load();
 
     emit(BookshelfState(
       code: LoadingStateCode.loading,
       dataList: List<BookData>.from(state.dataList),
-      sortOrder: BookService.preference.sortOrder,
-      isAscending: BookService.preference.isAscending,
-      listType: BookService.preference.listType,
+      sortOrder: preference.sortOrder,
+      isAscending: preference.isAscending,
+      listType: preference.listType,
     ));
 
     // Load books.
@@ -56,13 +57,15 @@ class BookshelfCubit extends SharedListCubit<BookData> {
             await BookService.repository.getBookData(epubFile.path);
 
         list.add(target);
-        list.sort(BookData.sortCompare(BookService.preference.sortOrder,
-            BookService.preference.isAscending));
 
         if (!isClosed) {
           emit(state.copyWith(
             code: LoadingStateCode.backgroundLoading,
-            dataList: List<BookData>.from(list), // Make a copy.
+            dataList: sortList(
+              list,
+              preference.sortOrder,
+              preference.isAscending,
+            ), // Make a copy.
           ));
         }
       }
@@ -71,27 +74,6 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     if (!isClosed) {
       emit(state.copyWith(code: LoadingStateCode.loaded));
     }
-  }
-
-  @override
-  set listType(SharedListType value) {
-    BookService.preference.listType = value;
-    super.listType = value;
-  }
-
-  @override
-  void setListOrder({SortOrderCode? sortOrder, bool? isAscending}) {
-    final SortOrderCode order = sortOrder ?? state.sortOrder;
-    final bool ascending = isAscending ?? state.isAscending;
-
-    BookService.preference.sortOrder = order;
-    BookService.preference.isAscending = ascending;
-
-    state.dataList.sort(BookData.sortCompare(order, ascending));
-    emit(state.copyWith(
-      isAscending: ascending,
-      sortOrder: order,
-    ));
   }
 
   bool deleteSelectedBooks() {
@@ -112,5 +94,34 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     newList.remove(bookData);
     emit(state.copyWith(dataList: newList));
     return isSuccess;
+  }
+
+  @override
+  void savePreference() {
+    BookService.preference.bookshelf.save(SharedListData(
+      sortOrder: state.sortOrder,
+      isAscending: state.isAscending,
+      listType: state.listType,
+    ));
+  }
+
+  @override
+  int sortCompare(
+    BookData a,
+    BookData b, {
+    required SortOrderCode sortOrder,
+    required bool isAscending,
+  }) {
+    switch (sortOrder) {
+      case SortOrderCode.modifiedDate:
+        return isAscending
+            ? a.modifiedDate.compareTo(b.modifiedDate)
+            : b.modifiedDate.compareTo(a.modifiedDate);
+
+      default:
+        return isAscending
+            ? compareNatural(a.name, b.name)
+            : compareNatural(b.name, a.name);
+    }
   }
 }

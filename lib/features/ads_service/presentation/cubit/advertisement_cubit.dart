@@ -15,6 +15,7 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
   final String _adUnitId;
 
   Future<void> loadAd(int width) async {
+    await AdService.ensuredInitialized();
     final AnchoredAdaptiveBannerAdSize? size =
         await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(width);
 

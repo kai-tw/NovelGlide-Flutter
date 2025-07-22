@@ -8,10 +8,9 @@ class _ScaffoldBody extends StatelessWidget {
     final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return Column(
       children: <Widget>[
-        // TODO(kai): Renderer should listen on resizing to preventing from webview being overflowed.
-        // const Advertisement(
-        //   unitId: AdUnitId.reader,
-        // ),
+        const Advertisement(
+          unitId: AdUnitId.reader,
+        ),
         Expanded(
           child: Stack(
             children: <Widget>[

@@ -1,16 +1,11 @@
-import 'dart:io';
-
-import 'package:flutter_archive/flutter_archive.dart';
-import 'package:path/path.dart';
-
-import '../../../../core/services/file_path.dart';
+part of '../../backup_service.dart';
 
 class BackupRepository {
-  BackupRepository._();
+  BackupRepository();
 
-  static const String libraryArchiveName = 'Library.zip';
+  final String libraryArchiveName = 'Library.zip';
 
-  static Future<File> archiveLibrary(
+  Future<File> archiveLibrary(
     String tempFolderPath, {
     void Function(double)? onZipping,
   }) async {
@@ -34,7 +29,7 @@ class BackupRepository {
     return zipFile;
   }
 
-  static Future<void> restoreBackup(
+  Future<void> restoreBackup(
     Directory tempFolder,
     File zipFile, {
     void Function(double)? onExtracting,

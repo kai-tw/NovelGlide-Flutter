@@ -19,6 +19,6 @@ part 'google_drive_interface.dart';
 class GoogleApiInterfaces {
   GoogleApiInterfaces._();
 
-  static final GoogleAuthInterface auth = GoogleAuthInterface._();
-  static final GoogleDriveInterface drive = GoogleDriveInterface._();
+  static final GoogleAuthInterface auth = GoogleAuthInterface();
+  static final GoogleDriveInterface drive = GoogleDriveInterface();
 }

@@ -1,7 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+part of '../../../appearance_services.dart';
 
 abstract class ThemeTemplate {
+  const ThemeTemplate();
+
+  ThemeData get lightTheme;
+
+  ThemeData get darkTheme;
+
   /// Generates a [ThemeData] object based on the provided [ColorScheme]
   ThemeData getThemeByScheme(ColorScheme colorScheme) {
     // Configures the [InputDecoration] theme based on the [ColorScheme]

@@ -1,30 +1,29 @@
 part of 'google_api_interfaces.dart';
 
 class GoogleAuthInterface {
+  factory GoogleAuthInterface() {
+    final GoogleAuthInterface instance = GoogleAuthInterface._();
+    GoogleSignIn.instance.initialize().then((_) {
+      LogService.info('GoogleAuthService: Initialized.');
+      instance._initCompleter.complete();
+    });
+    return instance;
+  }
+
   GoogleAuthInterface._();
+
+  final Completer<void> _initCompleter = Completer<void>();
+  GoogleSignInAccount? _currentUser;
 
   bool get isSignedIn => _currentUser != null;
 
-  bool isInit = false;
-  GoogleSignInAccount? _currentUser;
-
-  Future<void> ensureInitialized() async {
-    if (isInit) {
-      return;
-    }
-
-    await GoogleSignIn.instance.initialize();
-    GoogleSignIn.instance.authenticationEvents.listen(_handleAuthenticationEvent).onError(_handleAuthenticationError);
-    LogService.info('GoogleAuthService: Initialized.');
-    isInit = true;
-  }
-
   Future<void> signIn() async {
-    await ensureInitialized();
+    await _initCompleter.future;
     LogService.info('GoogleAuthService.signIn: Start');
 
     // Login silently first
-    _currentUser = await GoogleSignIn.instance.attemptLightweightAuthentication();
+    _currentUser =
+        await GoogleSignIn.instance.attemptLightweightAuthentication();
 
     // If silent login fails, prompt the user to sign in
     try {
@@ -43,7 +42,7 @@ class GoogleAuthInterface {
   }
 
   Future<GoogleAuthClient> getClient(List<String> scopes) async {
-    await ensureInitialized();
+    await _initCompleter.future;
     LogService.info('GoogleAuthService.getClient: Start.');
 
     // Attempt to get authorization for the requested scopes
@@ -52,7 +51,8 @@ class GoogleAuthInterface {
 
     // If authorization is null, prompt the user to authorize
     try {
-      authorization ??= await _currentUser?.authorizationClient.authorizeScopes(scopes);
+      authorization ??=
+          await _currentUser?.authorizationClient.authorizeScopes(scopes);
     } on GoogleSignInException catch (e) {
       LogService.error('GoogleAuthService.getClient: $e');
       throw PlatformException(code: ExceptionCode.googleDrivePermissionDenied);
@@ -64,7 +64,8 @@ class GoogleAuthInterface {
       throw PlatformException(code: ExceptionCode.googleDrivePermissionDenied);
     }
 
-    final Map<String, String>? header = await _currentUser!.authorizationClient.authorizationHeaders(scopes);
+    final Map<String, String>? header =
+        await _currentUser!.authorizationClient.authorizationHeaders(scopes);
 
     // Cannot get the header
     if (header == null) {
@@ -77,12 +78,8 @@ class GoogleAuthInterface {
   }
 
   Future<void> signOut() async {
-    await ensureInitialized();
+    await _initCompleter.future;
     await GoogleSignIn.instance.signOut();
     _currentUser = null;
   }
-
-  Future<void> _handleAuthenticationEvent(GoogleSignInAuthenticationEvent event) async {}
-
-  Future<void> _handleAuthenticationError(Object e) async {}
 }

@@ -2,7 +2,7 @@ part of 'google_api_interfaces.dart';
 
 /// Google Drive API.
 class GoogleDriveInterface {
-  GoogleDriveInterface._();
+  GoogleDriveInterface();
 
   static const String _appDataFolder = 'appDataFolder';
   static final List<String> _scopes = <String>[
@@ -49,7 +49,9 @@ class GoogleDriveInterface {
       q: "name = '$fileName'",
       pageSize: 1,
     );
-    return fileList.files?.isNotEmpty ?? false ? fileList.files?.first.id : null;
+    return fileList.files?.isNotEmpty ?? false
+        ? fileList.files?.first.id
+        : null;
   }
 
   /// Retrieves metadata for a file by its ID.
@@ -90,7 +92,8 @@ class GoogleDriveInterface {
                   onUpload?.call(byteCount, file.lengthSync());
                   sink.add(data);
                 },
-                handleError: (Object e, StackTrace s, EventSink<List<int>> sink) {
+                handleError:
+                    (Object e, StackTrace s, EventSink<List<int>> sink) {
                   LogService.error(
                     'GoogleDriveService.uploadFile: An error occurred',
                     error: e,

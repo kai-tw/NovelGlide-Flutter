@@ -13,13 +13,13 @@ part 'presentation/cubit/advertisement_state.dart';
 class AdService {
   AdService._();
 
-  static bool get isAllowed => Platform.isAndroid;
+  static bool get isAllowed => true;
 
   static bool _isInit = false;
 
-  static void ensuredInitialized() {
+  static Future<void> ensuredInitialized() async {
     if (isAllowed && !_isInit) {
-      MobileAds.instance.initialize();
+      await MobileAds.instance.initialize();
       _isInit = true;
     }
   }

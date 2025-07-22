@@ -10,12 +10,13 @@ part 'app_global_state.dart';
 class AppGlobalCubit extends Cubit<AppGlobalState> {
   factory AppGlobalCubit() {
     _instance ??= AppGlobalCubit._();
+    refreshState();
     return _instance!;
   }
 
   AppGlobalCubit._()
       : super(AppGlobalState(
-          themeMode: AppearanceServices.themeMode,
+          appearanceData: AppearanceServices.preference.data,
           locale: LocaleServices.userLocale,
         ));
 
@@ -23,10 +24,16 @@ class AppGlobalCubit extends Cubit<AppGlobalState> {
 
   static void refreshState() => _instance?._refreshState();
 
-  void _refreshState() {
+  Future<void> _refreshState() async {
     emit(AppGlobalState(
-      themeMode: AppearanceServices.themeMode,
+      appearanceData: await AppearanceServices.preference.load(),
       locale: LocaleServices.userLocale,
     ));
+  }
+
+  @override
+  Future<void> close() {
+    _instance = null;
+    return super.close();
   }
 }

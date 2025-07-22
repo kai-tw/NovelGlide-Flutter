@@ -8,7 +8,7 @@ import '../../../../../../preference_keys/preference_keys.dart';
 import '../../../../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
 import '../../../../bookmark_service/bookmark_service.dart';
 import '../../../../collection/collection_service.dart';
-import '../../../data/repository/backup_repository.dart';
+import '../../../backup_service.dart';
 
 part 'backup_service_google_drive_state.dart';
 
@@ -44,7 +44,7 @@ class BackupServiceGoogleDriveCubit
     if (GoogleApiInterfaces.drive.isSignedIn) {
       // Load the file IDs.
       final List<String> fileNameList = <String>[
-        BackupRepository.libraryArchiveName,
+        BackupService.repository.libraryArchiveName,
         CollectionService.repository.jsonFileName,
         BookmarkService.repository.jsonFileName,
       ];

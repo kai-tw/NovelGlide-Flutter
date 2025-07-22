@@ -21,6 +21,23 @@ abstract class SharedListCubit<T> extends Cubit<SharedListState<T>> {
 
   set listType(SharedListType type) {
     emit(state.copyWith(listType: type));
+    savePreference();
+  }
+
+  set sortOrder(SortOrderCode code) {
+    emit(state.copyWith(
+      dataList: sortList(state.dataList, code, state.isAscending),
+      sortOrder: code,
+    ));
+    savePreference();
+  }
+
+  set isAscending(bool isAscending) {
+    emit(state.copyWith(
+      dataList: sortList(state.dataList, state.sortOrder, isAscending),
+      isAscending: isAscending,
+    ));
+    savePreference();
   }
 
   void toggleSelectSingle(T data) {
@@ -49,5 +66,25 @@ abstract class SharedListCubit<T> extends Cubit<SharedListState<T>> {
     emit(state.copyWith(selectedSet: const <Never>{}));
   }
 
-  void setListOrder({SortOrderCode? sortOrder, bool? isAscending}) {}
+  List<T> sortList(List<T> list, SortOrderCode sortOrder, bool isAscending) {
+    final List<T> copyList = List<T>.from(list);
+    copyList.sort(
+      (T a, T b) => sortCompare(
+        a,
+        b,
+        sortOrder: sortOrder,
+        isAscending: isAscending,
+      ),
+    );
+    return copyList;
+  }
+
+  int sortCompare(
+    T a,
+    T b, {
+    required SortOrderCode sortOrder,
+    required bool isAscending,
+  });
+
+  void savePreference();
 }

@@ -18,7 +18,7 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
     final Directory tempFolder = TempService.getDirectory();
 
     // Zip the library
-    final File zipFile = await BackupRepository.archiveLibrary(
+    final File zipFile = await BackupService.repository.archiveLibrary(
       tempFolder.path,
       onZipping: (double progress) {
         emit(BackupServiceProcessItemState(
@@ -60,7 +60,8 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
 
     // Emit the result
     emit(BackupServiceProcessItemState(
-      step: await GoogleApiInterfaces.drive.fileExists(BackupRepository.libraryArchiveName)
+      step: await GoogleApiInterfaces.drive
+              .fileExists(BackupService.repository.libraryArchiveName)
           ? BackupServiceProcessStepCode.done
           : BackupServiceProcessStepCode.error,
     ));
@@ -86,7 +87,7 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
 
     // Create an empty file to store the downloaded zip file.
     final File zipFile = File(
-      join(tempFolder.path, BackupRepository.libraryArchiveName),
+      join(tempFolder.path, BackupService.repository.libraryArchiveName),
     )..createSync();
 
     // Start the download process
@@ -121,7 +122,7 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
     emit(const BackupServiceProcessItemState(
       step: BackupServiceProcessStepCode.unzip,
     ));
-    await BackupRepository.restoreBackup(
+    await BackupService.repository.restoreBackup(
       tempFolder,
       zipFile,
       onExtracting: (double progress) {
@@ -154,9 +155,12 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
       step: BackupServiceProcessStepCode.delete,
     ));
     await GoogleApiInterfaces.drive.deleteFile(googleDriveFileId!);
-    final bool result = !(await GoogleApiInterfaces.drive.fileExists(BackupRepository.libraryArchiveName));
+    final bool result = !(await GoogleApiInterfaces.drive
+        .fileExists(BackupService.repository.libraryArchiveName));
     emit(BackupServiceProcessItemState(
-      step: result ? BackupServiceProcessStepCode.done : BackupServiceProcessStepCode.error,
+      step: result
+          ? BackupServiceProcessStepCode.done
+          : BackupServiceProcessStepCode.error,
     ));
   }
 }

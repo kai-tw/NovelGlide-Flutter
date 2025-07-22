@@ -2,15 +2,15 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/services/emoticon_collection.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/sort_order_code.dart';
 import '../../../generated/i18n/app_localizations.dart';
-import '../../utils/preference_enum_utils.dart';
+import '../../domains/preference_domain/preference_domain.dart';
 
-part 'data/shared_list_preference.dart';
+part 'data/model/shared_list_data.dart';
+part 'data/repository/shared_list_preference.dart';
 part 'presentation/button/shared_list_delete_button.dart';
 part 'presentation/button/shared_list_done_button.dart';
 part 'presentation/button/shared_list_select_all_button.dart';
@@ -80,9 +80,9 @@ class SharedList extends StatelessWidget {
       return PopupMenuItem<void>(
         onTap: () {
           if (cubit.state.sortOrder == sortOrderCode) {
-            cubit.setListOrder(isAscending: !cubit.state.isAscending);
+            cubit.isAscending = !cubit.state.isAscending;
           } else {
-            cubit.setListOrder(sortOrder: sortOrderCode);
+            cubit.sortOrder = sortOrderCode;
           }
         },
         child: SharedListMoreMenuTile(

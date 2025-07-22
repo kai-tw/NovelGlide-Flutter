@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:novelglide/enum/sort_order_code.dart';
 
 import '../../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
@@ -76,5 +77,21 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
         state.selectedSet.any((BookData e) => e.relativeFilePath == p));
     CollectionService.repository.save(collectionData);
     refresh();
+  }
+
+  @override
+  void savePreference() {
+    // No preferences.
+  }
+
+  @override
+  int sortCompare(
+    BookData a,
+    BookData b, {
+    required SortOrderCode sortOrder,
+    required bool isAscending,
+  }) {
+    // Custom order. Don't care
+    return 0;
   }
 }
