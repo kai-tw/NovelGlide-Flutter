@@ -65,7 +65,8 @@ class ReaderCubit extends Cubit<ReaderState> {
 
     final String absolutePath =
         BookService.repository.getAbsolutePath(bookPath);
-    final BookmarkData? bookmarkData = BookmarkService.repository.get(bookPath);
+    final BookmarkData? bookmarkData =
+        await BookmarkService.repository.get(bookPath);
 
     webViewHandler.initialize(
       destination: destinationType == ReaderDestinationType.bookmark

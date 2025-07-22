@@ -5,7 +5,6 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
 
 import '../../../../../preference_keys/preference_keys.dart';
 import '../../core/domains/file_system_domain/file_system_domain.dart';

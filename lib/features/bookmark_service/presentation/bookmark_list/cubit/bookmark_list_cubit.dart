@@ -25,7 +25,7 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
     emit(BookmarkListState(
       code: LoadingStateCode.loaded,
       dataList: sortList(
-        BookmarkService.repository.getList(),
+        await BookmarkService.repository.getList(),
         preference.sortOrder,
         preference.isAscending,
       ),

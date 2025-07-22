@@ -14,6 +14,6 @@ class DocumentDirectory {
   Future<Directory> get dataDirectory async =>
       Directory(join((await rootDirectory).path, 'Data'));
 
-  Future<File> get bookmarkJsonDataFile async =>
+  Future<File> get bookmarkJsonFile async =>
       File(join((await dataDirectory).path, 'bookmark.json'));
 }
