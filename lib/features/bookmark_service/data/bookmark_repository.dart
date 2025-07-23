@@ -3,7 +3,7 @@ part of '../bookmark_service.dart';
 class BookmarkRepository {
   BookmarkRepository();
 
-  String jsonFileName = 'bookmark.json';
+  Future<String> get jsonFileName async => basename((await jsonFile).path);
 
   Future<File> get jsonFile async {
     final File file = await FileSystemDomain.document.bookmarkJsonFile;
@@ -30,7 +30,9 @@ class BookmarkRepository {
   Future<BookmarkData?> get(String bookPath) async {
     final Map<String, dynamic> jsonData = await this.jsonData;
     bookPath = BookService.repository.getRelativePath(bookPath);
-    return jsonData.containsKey(bookPath) ? BookmarkData.fromJson(jsonData[bookPath]!) : null;
+    return jsonData.containsKey(bookPath)
+        ? BookmarkData.fromJson(jsonData[bookPath]!)
+        : null;
   }
 
   /// Retrieve a list of all bookmarks.
@@ -78,7 +80,8 @@ class BookmarkRepository {
     final List<BookmarkData> list = await getList();
     list
         .where((BookmarkData e) =>
-            BookService.repository.getRelativePath(e.bookPath) == BookService.repository.getRelativePath(path))
+            BookService.repository.getRelativePath(e.bookPath) ==
+            BookService.repository.getRelativePath(path))
         .forEach(delete);
   }
 

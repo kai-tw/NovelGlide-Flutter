@@ -39,7 +39,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
     // Emit the result
     emit(BackupServiceProcessItemState(
       step: await GoogleApiInterfaces.drive
-              .fileExists(BookmarkService.repository.jsonFileName)
+              .fileExists(await BookmarkService.repository.jsonFileName)
           ? BackupServiceProcessStepCode.done
           : BackupServiceProcessStepCode.error,
     ));
@@ -124,7 +124,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
     // Emit the result
     emit(BackupServiceProcessItemState(
       step: !(await GoogleApiInterfaces.drive
-              .fileExists(BookmarkService.repository.jsonFileName))
+              .fileExists(await BookmarkService.repository.jsonFileName))
           ? BackupServiceProcessStepCode.done
           : BackupServiceProcessStepCode.error,
     ));
