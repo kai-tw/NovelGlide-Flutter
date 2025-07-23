@@ -17,7 +17,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
     // Upload the bookmark json file.
     try {
       await GoogleApiInterfaces.drive.uploadFile(
-        await BookmarkService.repository.jsonFile,
+        (await BookmarkService.repository.jsonFile).file,
         onUpload: (int uploaded, int total) {
           emit(BackupServiceProcessItemState(
             step: BackupServiceProcessStepCode.upload,
@@ -26,7 +26,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
         },
       );
     } catch (e) {
-      LogDomain.error(
+      LogService.error(
         'Upload bookmark backup to Google Drive failed.',
         error: e,
       );
@@ -49,7 +49,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
   @override
   Future<void> _restore() async {
     if (googleDriveFileId == null) {
-      LogDomain.error('Google Drive file id of the bookmark backup is null.');
+      LogService.error('Google Drive file id of the bookmark backup is null.');
       emit(const BackupServiceProcessItemState(
         step: BackupServiceProcessStepCode.error,
       ));
@@ -65,7 +65,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
     try {
       await GoogleApiInterfaces.drive.downloadFile(
         googleDriveFileId!,
-        await BookmarkService.repository.jsonFile,
+        (await BookmarkService.repository.jsonFile).file,
         onDownload: (int downloaded, int total) {
           // Update the progress
           emit(BackupServiceProcessItemState(
@@ -75,7 +75,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
         },
       );
     } catch (e) {
-      LogDomain.error(
+      LogService.error(
         'Download bookmark backup from Google Drive failed.',
         error: e,
       );
@@ -95,7 +95,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
   @override
   Future<void> _delete() async {
     if (googleDriveFileId == null) {
-      LogDomain.error('Google Drive file id of the bookmark backup is null.');
+      LogService.error('Google Drive file id of the bookmark backup is null.');
       emit(const BackupServiceProcessItemState(
         step: BackupServiceProcessStepCode.error,
       ));
@@ -111,7 +111,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
     try {
       await GoogleApiInterfaces.drive.deleteFile(googleDriveFileId!);
     } catch (e) {
-      LogDomain.error(
+      LogService.error(
         'Delete bookmark backup from Google Drive failed.',
         error: e,
       );

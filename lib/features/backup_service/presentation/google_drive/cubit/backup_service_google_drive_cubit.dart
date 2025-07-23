@@ -45,7 +45,7 @@ class BackupServiceGoogleDriveCubit
       // Load the file IDs.
       final List<String> fileNameList = <String>[
         BackupService.repository.libraryArchiveName,
-        CollectionService.repository.jsonFileName,
+        await CollectionService.repository.jsonFileName,
         await BookmarkService.repository.jsonFileName,
       ];
       final List<String?> fileIdList = await Future.wait<String?>(

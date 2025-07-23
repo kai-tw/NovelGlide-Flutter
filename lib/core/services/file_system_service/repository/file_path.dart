@@ -1,8 +1,8 @@
-part of '../file_system_domain.dart';
+part of '../file_system_service.dart';
 
 /// A utility class for managing file paths in the application.
 class FilePath {
-  FilePath();
+  const FilePath();
 
   FilePath._();
 

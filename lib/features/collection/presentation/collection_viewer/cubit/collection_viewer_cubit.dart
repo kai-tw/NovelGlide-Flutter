@@ -22,7 +22,7 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
 
   @override
   Future<void> refresh() async {
-    collectionData = CollectionService.repository.get(collectionData.id);
+    collectionData = await CollectionService.repository.get(collectionData.id);
     final Set<String> pathSet = collectionData.pathList.toSet();
 
     if (pathSet.isEmpty) {

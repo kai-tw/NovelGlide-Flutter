@@ -1,4 +1,4 @@
-part of '../../preference_domain.dart';
+part of '../../preference_service.dart';
 
 abstract class PreferenceRepository<T> {
   Future<SharedPreferences> get _prefs => SharedPreferences.getInstance();

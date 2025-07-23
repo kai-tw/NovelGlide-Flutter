@@ -31,7 +31,7 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
     emit(CollectionListState(
       code: LoadingStateCode.loaded,
       dataList: sortList(
-        CollectionService.repository.getList(),
+        await CollectionService.repository.getList(),
         preference.sortOrder,
         preference.isAscending,
       ),

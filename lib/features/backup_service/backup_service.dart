@@ -5,9 +5,9 @@ import 'package:flutter_archive/flutter_archive.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 
-import '../../core/domains/file_system_domain/file_system_domain.dart';
-import '../../core/domains/log_domain/log_domain.dart';
 import '../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
+import '../../core/services/file_system_service/file_system_service.dart';
+import '../../core/services/log_service/log_service.dart';
 import '../bookmark_service/bookmark_service.dart';
 import '../collection/collection_service.dart';
 

@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 
-import '../../core/domains/file_system_domain/file_system_domain.dart';
 import '../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
+import '../../core/services/file_system_service/file_system_service.dart';
 import '../../core/shared_components/common_delete_dialog.dart';
 import '../../core/shared_components/common_error_dialog.dart';
 import '../../core/shared_components/common_loading.dart';

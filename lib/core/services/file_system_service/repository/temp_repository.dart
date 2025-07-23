@@ -1,7 +1,7 @@
-part of '../file_system_domain.dart';
+part of '../file_system_service.dart';
 
-class TempDirectory {
-  TempDirectory();
+class TempRepository {
+  const TempRepository();
 
   Future<Directory> get rootDirectory => getTemporaryDirectory();
 

@@ -3,32 +3,18 @@ part of '../bookmark_service.dart';
 class BookmarkRepository {
   BookmarkRepository();
 
-  Future<String> get jsonFileName async => basename((await jsonFile).path);
+  Future<String> get jsonFileName async => (await jsonFile).baseName;
 
-  Future<File> get jsonFile async {
-    final File file = await FileSystemDomain.document.bookmarkJsonFile;
-    if (!file.existsSync()) {
-      file.createSync(recursive: true);
-    }
-    return file;
-  }
-
-  /// JSON data getter
-  Future<Map<String, dynamic>> get jsonData async {
-    String jsonString = (await jsonFile).readAsStringSync();
-    jsonString = jsonString.isEmpty ? '{}' : jsonString;
-    try {
-      (await jsonFile).writeAsStringSync(jsonString);
-      return jsonDecode(jsonString);
-    } catch (e) {
-      reset();
-      return <String, dynamic>{};
-    }
+  Future<JsonFileModel> get jsonFile async {
+    return FileSystemDomain.json.getJsonFile(
+      await FileSystemDomain.document.bookmarkJsonFile,
+    );
   }
 
   /// Retrieve a bookmark by its book path.
   Future<BookmarkData?> get(String bookPath) async {
-    final Map<String, dynamic> jsonData = await this.jsonData;
+    final JsonFileModel jsonFile = await this.jsonFile;
+    final Map<String, dynamic> jsonData = jsonFile.data;
     bookPath = BookService.repository.getRelativePath(bookPath);
     return jsonData.containsKey(bookPath)
         ? BookmarkData.fromJson(jsonData[bookPath]!)
@@ -37,7 +23,8 @@ class BookmarkRepository {
 
   /// Retrieve a list of all bookmarks.
   Future<List<BookmarkData>> getList() async {
-    final Map<String, dynamic> jsonData = await this.jsonData;
+    final JsonFileModel jsonFile = await this.jsonFile;
+    final Map<String, dynamic> jsonData = jsonFile.data;
     final List<BookmarkData> retList = <BookmarkData>[];
 
     for (String key in jsonData.keys) {
@@ -56,23 +43,23 @@ class BookmarkRepository {
 
   /// Save the current bookmark to the JSON file.
   Future<void> save(BookmarkData data) async {
-    final File jsonFile = await this.jsonFile;
-    final Map<String, dynamic> jsonData = await this.jsonData;
+    final JsonFileModel jsonFile = await this.jsonFile;
+    final Map<String, dynamic> jsonData = jsonFile.data;
     final BookmarkData savedData = data.copyWith(
       bookPath: BookService.repository.getRelativePath(data.bookPath),
       savedTime: DateTime.now(),
     );
     jsonData[savedData.bookPath] = savedData.toJson();
-    jsonFile.writeAsStringSync(jsonEncode(jsonData));
+    jsonFile.data = jsonData;
   }
 
   /// Delete the current bookmark from the JSON file.
   Future<void> delete(BookmarkData data) async {
-    final File jsonFile = await this.jsonFile;
-    final Map<String, dynamic> jsonData = await this.jsonData;
+    final JsonFileModel jsonFile = await this.jsonFile;
+    final Map<String, dynamic> jsonData = jsonFile.data;
     final String path = BookService.repository.getRelativePath(data.bookPath);
     jsonData.remove(path);
-    jsonFile.writeAsStringSync(jsonEncode(jsonData));
+    jsonFile.data = jsonData;
   }
 
   /// Delete the bookmark by path.
@@ -87,7 +74,6 @@ class BookmarkRepository {
 
   /// Reset the bookmark repository.
   Future<void> reset() async {
-    final File jsonFile = await this.jsonFile;
-    jsonFile.writeAsStringSync('{}');
+    (await jsonFile).clear();
   }
 }

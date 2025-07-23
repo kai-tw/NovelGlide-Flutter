@@ -1,7 +1,7 @@
-part of '../file_system_domain.dart';
+part of '../file_system_service.dart';
 
-class CacheDirectory {
-  CacheDirectory();
+class CacheRepository {
+  const CacheRepository();
 
   Future<Directory> get rootDirectory => getApplicationCacheDirectory();
 

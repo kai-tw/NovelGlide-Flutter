@@ -23,9 +23,9 @@ class _Cubit extends Cubit<_State> {
     });
   }
 
-  void refresh() {
+  Future<void> refresh() async {
     final List<CollectionData> collectionList =
-        CollectionService.repository.getList();
+        await CollectionService.repository.getList();
     final Set<String> selectedCollections = collectionList
         .where((CollectionData e) => e.pathList
             .map((String e) => basename(e))

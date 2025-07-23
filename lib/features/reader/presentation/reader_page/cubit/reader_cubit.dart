@@ -10,7 +10,7 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../../../core/domains/log_domain/log_domain.dart';
+import '../../../../../core/services/log_service/log_service.dart';
 import '../../../../../core/utils/color_extension.dart';
 import '../../../../../core/utils/parsers.dart';
 import '../../../../book_service/book_service.dart';

@@ -94,7 +94,7 @@ class GoogleDriveInterface {
                 },
                 handleError:
                     (Object e, StackTrace s, EventSink<List<int>> sink) {
-                  LogDomain.error(
+                  LogService.error(
                     'GoogleDriveService.uploadFile: An error occurred',
                     error: e,
                     stackTrace: s,

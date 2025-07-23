@@ -5,11 +5,10 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
 
 import '../../../../../preference_keys/preference_keys.dart';
-import '../../core/domains/file_system_domain/file_system_domain.dart';
-import '../../core/domains/preference_domain/preference_domain.dart';
+import '../../core/services/file_system_service/file_system_service.dart';
+import '../../core/services/preference_service/preference_service.dart';
 import '../../core/shared_components/common_delete_dialog.dart';
 import '../../core/shared_components/common_loading.dart';
 import '../../core/shared_components/draggable_feedback_widget.dart';

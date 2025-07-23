@@ -1,7 +1,7 @@
-part of '../file_system_domain.dart';
+part of '../file_system_service.dart';
 
-class DocumentDirectory {
-  DocumentDirectory();
+class DocumentRepository {
+  const DocumentRepository();
 
   Future<Directory> get rootDirectory => getApplicationDocumentsDirectory();
 
@@ -16,4 +16,7 @@ class DocumentDirectory {
 
   Future<File> get bookmarkJsonFile async =>
       File(join((await dataDirectory).path, 'bookmark.json'));
+
+  Future<File> get collectionJsonFile async =>
+      File(join((await rootDirectory).path, 'collection.json'));
 }

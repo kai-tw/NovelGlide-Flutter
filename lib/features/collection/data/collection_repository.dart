@@ -1,50 +1,31 @@
 part of '../collection_service.dart';
 
 class CollectionRepository {
-  CollectionRepository();
+  Future<String> get jsonFileName async => (await jsonFile).baseName;
 
-  String jsonFileName = 'collection.json';
-
-  String get jsonPath => join(FilePath.dataRoot, jsonFileName);
-
-  File get jsonFile {
-    final File file = File(jsonPath);
-    if (!file.existsSync()) {
-      file.createSync(recursive: true);
-    }
-    return file;
+  Future<JsonFileModel> get jsonFile async {
+    return FileSystemDomain.json.getJsonFile(
+      await FileSystemDomain.document.collectionJsonFile,
+    );
   }
-
-  /// JSON data getter
-  Map<String, dynamic> get jsonData {
-    String jsonString = jsonFile.readAsStringSync();
-    jsonString = jsonString.isEmpty ? '{}' : jsonString;
-    try {
-      jsonFile.writeAsStringSync(jsonString);
-      return jsonDecode(jsonString);
-    } catch (e) {
-      jsonFile.writeAsStringSync('{}');
-      return <String, dynamic>{};
-    }
-  }
-
-  /// JSON data setter
-  set jsonData(Map<String, dynamic> json) => jsonFile.writeAsStringSync(jsonEncode(json));
 
   /// Create a new empty collection with a unique ID.
-  void create(String name) {
-    final Map<String, dynamic> data = jsonData;
+  Future<void> create(String name) async {
+    final JsonFileModel jsonFile = await this.jsonFile;
+    final Map<String, dynamic> jsonData = jsonFile.data;
     String id;
 
     do {
       id = Random().nextString(10);
-    } while (data.containsKey(id));
+    } while (jsonData.containsKey(id));
 
-    data[id] = CollectionData(id, name, const <String>[]).toJson();
-    jsonData = data;
+    jsonData[id] = CollectionData(id, name, const <String>[]).toJson();
+    jsonFile.data = jsonData;
   }
 
-  CollectionData get(String id) {
+  Future<CollectionData> get(String id) async {
+    final JsonFileModel jsonFile = await this.jsonFile;
+    final Map<String, dynamic> jsonData = jsonFile.data;
     if (jsonData.containsKey(id)) {
       return CollectionData.fromJson(jsonData[id]!);
     } else {
@@ -53,52 +34,60 @@ class CollectionRepository {
   }
 
   /// Retrieve a list of all [CollectionData] instances.
-  List<CollectionData> getList() {
-    final List<CollectionData> list = <CollectionData>[];
-
-    for (String key in jsonData.keys) {
-      list.add(CollectionData.fromJson(jsonData[key]!));
-    }
-
-    return list;
+  Future<List<CollectionData>> getList() async {
+    final JsonFileModel jsonFile = await this.jsonFile;
+    final Map<String, dynamic> jsonData = jsonFile.data;
+    return jsonData.keys
+        .map((String key) => CollectionData.fromJson(jsonData[key]!))
+        .toList();
   }
 
   /// Save the current [CollectionData] instance to the JSON file.
-  void save(CollectionData data) {
-    final Map<String, dynamic> json = jsonData;
-    data.pathList = data.pathList.toSet().map<String>((String e) => BookService.repository.getRelativePath(e)).toList();
-    json[data.id] = data.toJson();
-    jsonData = json;
+  Future<void> save(CollectionData data) async {
+    final JsonFileModel jsonFile = await this.jsonFile;
+    final Map<String, dynamic> jsonData = jsonFile.data;
+    data.pathList = data.pathList
+        .toSet()
+        .map<String>((String e) => BookService.repository.getRelativePath(e))
+        .toList();
+    jsonData[data.id] = data.toJson();
+    jsonFile.data = jsonData;
   }
 
   /// Delete the current [CollectionData] instance from the JSON file.
-  void delete(CollectionData data) {
-    final Map<String, dynamic> json = jsonData;
-    json.remove(data.id);
-    jsonData = json;
+  Future<void> delete(CollectionData data) async {
+    final JsonFileModel jsonFile = await this.jsonFile;
+    final Map<String, dynamic> jsonData = jsonFile.data;
+    jsonData.remove(data.id);
+    jsonFile.data = jsonData;
   }
 
   /// Delete the book_service from the collection.
-  void deleteBook(String path, String id) {
+  Future<void> deleteBook(String path, String id) async {
+    final JsonFileModel jsonFile = await this.jsonFile;
+    final Map<String, dynamic> jsonData = jsonFile.data;
     final String relativePath = BookService.repository.getRelativePath(path);
-    final Map<String, dynamic> json = jsonData;
-    if (json[id] != null) {
-      final CollectionData data = CollectionData.fromJson(json[id]!);
+    if (jsonData[id] != null) {
+      final CollectionData data = CollectionData.fromJson(jsonData[id]!);
       data.pathList.remove(relativePath);
-      json[id] = data.toJson();
-      jsonData = json;
+      jsonData[id] = data.toJson();
+      jsonFile.data = jsonData;
     }
   }
 
   /// Delete the book_service from all collections.
-  void deleteByPath(String path) {
-    final Iterable<CollectionData> collectionList =
-        getList().where((CollectionData e) => e.pathList.contains(BookService.repository.getRelativePath(path)));
+  Future<void> deleteByPath(String path) async {
+    final List<CollectionData> list = await getList();
+    final Iterable<CollectionData> collectionList = list.where(
+        (CollectionData e) =>
+            e.pathList.contains(BookService.repository.getRelativePath(path)));
     for (CollectionData data in collectionList) {
       deleteBook(path, data.id);
     }
   }
 
   /// Reset the collection repository.
-  void reset() => jsonData = <String, dynamic>{};
+  Future<void> reset() async {
+    (await jsonFile).clear();
+  }
 }

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 
-import '../../../../core/domains/file_system_domain/file_system_domain.dart';
+import '../../../../core/services/file_system_service/file_system_service.dart';
 import '../../../book_service/book_service.dart';
 
 class LocationCacheRepository {

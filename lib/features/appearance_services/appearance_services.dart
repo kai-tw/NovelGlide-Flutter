@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/domains/preference_domain/preference_domain.dart';
 import '../../core/presentation/app_global_cubit/app_global_cubit.dart';
+import '../../core/services/preference_service/preference_service.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../../preference_keys/preference_keys.dart';
 import '../settings_page/settings_card.dart';

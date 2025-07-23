@@ -2,8 +2,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
-class LogDomain {
-  LogDomain._();
+class LogService {
+  LogService._();
 
   static final Logger _logger = Logger(
     printer: PrettyPrinter(
