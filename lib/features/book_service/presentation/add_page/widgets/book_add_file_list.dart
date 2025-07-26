@@ -5,29 +5,42 @@ class BookAddFileList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scrollbar(
       child: BlocBuilder<BookAddCubit, BookAddState>(
         buildWhen: (BookAddState previous, BookAddState current) =>
-            previous.pathSet != current.pathSet,
-        builder: (BuildContext context, BookAddState state) {
-          if (state.pathSet.isEmpty) {
-            return Center(
-              child: Text(appLocalizations.addBookEmpty),
-            );
-          } else {
-            return ListView.builder(
-              itemCount: state.pathSet.length,
-              itemBuilder: (BuildContext context, int index) {
-                return BookAddFileTile(
-                  filePath: state.pathSet.elementAt(index),
-                  index: index,
-                );
-              },
-            );
-          }
-        },
+            previous.itemState != current.itemState,
+        builder: _stateBuilder,
       ),
+    );
+  }
+
+  Widget _stateBuilder(BuildContext context, BookAddState state) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    if (state.itemState.isEmpty) {
+      return Center(
+        child: Text(appLocalizations.addBookEmpty),
+      );
+    } else {
+      return ListView.builder(
+        itemCount: state.itemState.length,
+        itemBuilder: (BuildContext context, int index) {
+          return _buildListItem(context, index, state);
+        },
+      );
+    }
+  }
+
+  Widget _buildListItem(BuildContext context, int index, BookAddState state) {
+    final BookAddCubit cubit = BlocProvider.of<BookAddCubit>(context);
+    final BookAddItemState itemState = state.itemState.elementAt(index);
+    return BookAddFileTile(
+      filePath: itemState.absolutePath,
+      isDuplicated: itemState.isExistsInLibrary,
+      isMimeValid: itemState.isMimeValid,
+      baseName: itemState.baseName,
+      lengthString: itemState.lengthString,
+      isValid: itemState.isValid,
+      onDeletePressed: () => cubit.removeFile(itemState),
     );
   }
 }

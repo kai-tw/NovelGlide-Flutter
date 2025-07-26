@@ -8,7 +8,8 @@ class SearchButton extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (ReaderState previous, ReaderState current) =>
-          previous.code != current.code || previous.ttsState != current.ttsState,
+          previous.code != current.code ||
+          previous.ttsState != current.ttsState,
       builder: (BuildContext context, ReaderState state) {
         final bool isEnabled = state.code.isLoaded && state.ttsState.isStopped;
         return IconButton(
@@ -25,7 +26,7 @@ class SearchButton extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => BlocProvider<ReaderSearchCubit>.value(
-          value: cubit.searchCubit,
+          value: cubit.searchCubit!,
           child: const SearchScaffold(),
         ),
       ),

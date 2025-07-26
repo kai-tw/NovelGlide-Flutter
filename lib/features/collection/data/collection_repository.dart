@@ -4,8 +4,8 @@ class CollectionRepository {
   Future<String> get jsonFileName async => (await jsonFile).baseName;
 
   Future<JsonFileModel> get jsonFile async {
-    return FileSystemDomain.json.getJsonFile(
-      await FileSystemDomain.document.collectionJsonFile,
+    return FileSystemService.json.getJsonFile(
+      await FileSystemService.document.collectionJsonFile,
     );
   }
 
@@ -23,7 +23,7 @@ class CollectionRepository {
     jsonFile.data = jsonData;
   }
 
-  Future<CollectionData> get(String id) async {
+  Future<CollectionData> getDataById(String id) async {
     final JsonFileModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
     if (jsonData.containsKey(id)) {
@@ -46,10 +46,17 @@ class CollectionRepository {
   Future<void> save(CollectionData data) async {
     final JsonFileModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
-    data.pathList = data.pathList
-        .toSet()
-        .map<String>((String e) => BookService.repository.getRelativePath(e))
-        .toList();
+
+    // Convert the pathList to relative paths.
+    for (int i = 0; i < data.pathList.length; i++) {
+      data.pathList[i] =
+          await BookService.repository.getRelativePath(data.pathList[i]);
+    }
+
+    // Remove duplicates.
+    data.pathList = data.pathList.toSet().toList();
+
+    // Save the data.
     jsonData[data.id] = data.toJson();
     jsonFile.data = jsonData;
   }
@@ -62,11 +69,12 @@ class CollectionRepository {
     jsonFile.data = jsonData;
   }
 
-  /// Delete the book_service from the collection.
+  /// Delete the book from the collection.
   Future<void> deleteBook(String path, String id) async {
     final JsonFileModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
-    final String relativePath = BookService.repository.getRelativePath(path);
+    final String relativePath =
+        await BookService.repository.getRelativePath(path);
     if (jsonData[id] != null) {
       final CollectionData data = CollectionData.fromJson(jsonData[id]!);
       data.pathList.remove(relativePath);
@@ -75,14 +83,16 @@ class CollectionRepository {
     }
   }
 
-  /// Delete the book_service from all collections.
-  Future<void> deleteByPath(String path) async {
+  /// Delete the book from all collections.
+  Future<void> deleteFromAll(String path) async {
     final List<CollectionData> list = await getList();
-    final Iterable<CollectionData> collectionList = list.where(
-        (CollectionData e) =>
-            e.pathList.contains(BookService.repository.getRelativePath(path)));
-    for (CollectionData data in collectionList) {
-      deleteBook(path, data.id);
+
+    for (CollectionData data in list) {
+      final String relativePath =
+          await BookService.repository.getRelativePath(path);
+      if (data.pathList.contains(relativePath)) {
+        deleteBook(path, data.id);
+      }
     }
   }
 

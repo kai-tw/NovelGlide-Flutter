@@ -13,14 +13,14 @@ class BookAddActionBar extends StatelessWidget {
         // Pick File Button
         BlocBuilder<BookAddCubit, BookAddState>(
           buildWhen: (BookAddState previous, BookAddState current) =>
-              previous.pathSet != current.pathSet,
+              previous.itemState != current.itemState,
           builder: _buildPickFileButton,
         ),
 
         // Submit Button
         BlocBuilder<BookAddCubit, BookAddState>(
           buildWhen: (BookAddState previous, BookAddState current) =>
-              previous.pathSet != current.pathSet,
+              previous.itemState != current.itemState,
           builder: _buildSubmitButton,
         ),
       ],
@@ -55,16 +55,10 @@ class BookAddActionBar extends StatelessWidget {
   Widget _buildSubmitButton(BuildContext context, BookAddState state) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final BookAddCubit cubit = BlocProvider.of<BookAddCubit>(context);
 
     if (state.isValid) {
       return ElevatedButton.icon(
-        onPressed: () {
-          cubit.submit();
-
-          // Return true to tell the bookshelf to refresh.
-          Navigator.of(context).pop(true);
-        },
+        onPressed: () => _onSubmitPressed(context),
         icon: const Icon(Icons.send_rounded),
         label: Text(appLocalizations.generalSubmit),
         style: ElevatedButton.styleFrom(
@@ -85,5 +79,29 @@ class BookAddActionBar extends StatelessWidget {
         ),
       );
     }
+  }
+
+  void _onSubmitPressed(BuildContext context) {
+    final BookAddCubit cubit = BlocProvider.of<BookAddCubit>(context);
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        cubit.submit().then((_) {
+          if (dialogContext.mounted) {
+            Navigator.of(dialogContext).pop();
+          }
+        });
+        return const PopScope(
+          canPop: false,
+          child: CommonLoadingDialog(),
+        );
+      },
+    ).then((_) {
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+    });
   }
 }

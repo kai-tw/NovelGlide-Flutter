@@ -5,14 +5,16 @@ class _ListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
+    final CollectionAddBookCubit cubit =
+        BlocProvider.of<CollectionAddBookCubit>(context);
 
-    return BlocBuilder<_Cubit, _State>(
-      buildWhen: (_State previous, _State current) =>
-          previous.code != current.code ||
-          previous.collectionList != current.collectionList ||
-          previous.selectedCollections != current.selectedCollections,
-      builder: (BuildContext context, _State state) {
+    return BlocBuilder<CollectionAddBookCubit, CollectionAddBookState>(
+      buildWhen:
+          (CollectionAddBookState previous, CollectionAddBookState current) =>
+              previous.code != current.code ||
+              previous.collectionList != current.collectionList ||
+              previous.selectedCollections != current.selectedCollections,
+      builder: (BuildContext context, CollectionAddBookState state) {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
@@ -29,7 +31,7 @@ class _ListView extends StatelessWidget {
                   final CollectionData data = state.collectionList[index];
                   final bool? isSelected =
                       state.selectedCollections.contains(data.id)
-                          ? data.pathList.toSet().containsAll(cubit.pathSet)
+                          ? data.pathList.toSet().containsAll(state.bookPathSet)
                               ? true
                               : null
                           : false;

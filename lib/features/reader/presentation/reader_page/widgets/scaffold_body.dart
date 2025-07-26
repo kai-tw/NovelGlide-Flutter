@@ -16,32 +16,14 @@ class _ScaffoldBody extends StatelessWidget {
             children: <Widget>[
               /// Reader WebView
               Positioned.fill(
-                child: Column(
-                  children: <Widget>[
-                    const _Breadcrumb(),
-                    Expanded(
-                      child: GestureDetector(
-                        behavior: HitTestBehavior.translucent,
-
-                        /// Swipe to prev/next page
-                        onHorizontalDragStart: cubit.gestureHandler.onStart,
-                        onHorizontalDragEnd: cubit.gestureHandler.onEnd,
-                        onHorizontalDragCancel: cubit.gestureHandler.onCancel,
-                        child: WebViewWidget(
-                          controller: cubit.webViewHandler.controller,
-                          gestureRecognizers: <Factory<
-                              OneSequenceGestureRecognizer>>{
-                            Factory<LongPressGestureRecognizer>(
-                              () => LongPressGestureRecognizer(
-                                duration: const Duration(milliseconds: 100),
-                              ),
-                            ),
-                          },
-                        ),
-                      ),
-                    ),
-                    const _Pagination(),
-                  ],
+                child: BlocBuilder<ReaderCubit, ReaderState>(
+                  buildWhen: (ReaderState previous, ReaderState current) =>
+                      previous.code != current.code,
+                  builder: (BuildContext context, ReaderState state) {
+                    return state.code.isInitial
+                        ? const SizedBox.shrink()
+                        : _buildReader(cubit);
+                  },
                 ),
               ),
 
@@ -52,6 +34,35 @@ class _ScaffoldBody extends StatelessWidget {
             ],
           ),
         ),
+      ],
+    );
+  }
+
+  Widget _buildReader(ReaderCubit cubit) {
+    return Column(
+      children: <Widget>[
+        const _Breadcrumb(),
+        Expanded(
+          child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
+
+            /// Swipe to prev/next page
+            onHorizontalDragStart: cubit.gestureHandler!.onStart,
+            onHorizontalDragEnd: cubit.gestureHandler!.onEnd,
+            onHorizontalDragCancel: cubit.gestureHandler!.onCancel,
+            child: WebViewWidget(
+              controller: cubit.webViewHandler!.controller,
+              gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                Factory<LongPressGestureRecognizer>(
+                  () => LongPressGestureRecognizer(
+                    duration: const Duration(milliseconds: 100),
+                  ),
+                ),
+              },
+            ),
+          ),
+        ),
+        const _Pagination(),
       ],
     );
   }

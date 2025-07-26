@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:novelglide/enum/sort_order_code.dart';
 
 import '../../../../../core/shared_components/shared_list/shared_list.dart';
@@ -22,10 +21,11 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
 
   @override
   Future<void> refresh() async {
-    collectionData = await CollectionService.repository.get(collectionData.id);
-    final Set<String> pathSet = collectionData.pathList.toSet();
+    collectionData =
+        await CollectionService.repository.getDataById(collectionData.id);
+    final List<String> pathList = collectionData.pathList;
 
-    if (pathSet.isEmpty) {
+    if (pathList.isEmpty) {
       emit(const CollectionViewerState(
         code: LoadingStateCode.loaded,
         dataList: <BookData>[],
@@ -33,24 +33,24 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
     } else {
       final List<BookData> bookList = <BookData>[];
 
-      for (final String path in collectionData.pathList.toSet()) {
-        final String absolutePath =
-            BookService.repository.getAbsolutePath(path);
-        final BookData target = state.dataList.firstWhereOrNull(
-                (BookData e) => e.absoluteFilePath == absolutePath) ??
-            await BookService.repository.getBookData(absolutePath);
-        bookList.add(target);
+      BookService.repository
+          .getBookListFromPathList(pathList)
+          .listen((BookData data) {
         if (!isClosed) {
+          bookList.add(data);
           emit(CollectionViewerState(
             code: LoadingStateCode.backgroundLoading,
             dataList: List<BookData>.from(bookList),
           ));
         }
-      }
-
-      if (!isClosed) {
-        emit(state.copyWith(code: LoadingStateCode.loaded));
-      }
+      }).onDone(() {
+        if (!isClosed) {
+          emit(CollectionViewerState(
+            code: LoadingStateCode.loaded,
+            dataList: List<BookData>.from(bookList),
+          ));
+        }
+      });
     }
   }
 
@@ -67,16 +67,33 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
       dataList: List<BookData>.from(state.dataList),
     ));
 
+    // Update collection data
     collectionData.pathList =
-        state.dataList.map<String>((BookData e) => e.absoluteFilePath).toList();
+        state.dataList.map((BookData e) => e.absoluteFilePath).toList();
+
+    // Save collection data
     CollectionService.repository.save(collectionData);
   }
 
-  void remove() {
-    collectionData.pathList.removeWhere((String p) =>
-        state.selectedSet.any((BookData e) => e.relativeFilePath == p));
-    CollectionService.repository.save(collectionData);
-    refresh();
+  Future<void> removeBooks() async {
+    // Remove books from collection
+    for (final BookData data in state.selectedSet) {
+      await CollectionService.repository.deleteBook(
+        data.absoluteFilePath,
+        collectionData.id,
+      );
+    }
+
+    // Update collection data
+    collectionData =
+        await CollectionService.repository.getDataById(collectionData.id);
+
+    // Remove books from dataList
+    state.dataList.removeWhere((BookData e) => state.selectedSet.contains(e));
+    emit(state.copyWith(
+      code: LoadingStateCode.loaded,
+      dataList: List<BookData>.from(state.dataList),
+    ));
   }
 
   @override

@@ -1,10 +1,5 @@
-import 'dart:io';
-
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
 
-import '../../../../../core/services/file_system_service/file_system_service.dart';
-import '../../../../../core/services/mime_resolver.dart';
 import '../../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
@@ -15,7 +10,7 @@ typedef BookshelfState = SharedListState<BookData>;
 class BookshelfCubit extends SharedListCubit<BookData> {
   factory BookshelfCubit() {
     final BookshelfCubit cubit = BookshelfCubit._();
-    WidgetsBinding.instance.addPostFrameCallback((_) => cubit.refresh());
+    cubit.refresh();
     return cubit;
   }
 
@@ -31,55 +26,41 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     final SharedListData preference =
         await BookService.preference.bookshelf.load();
 
+    final List<BookData> list = <BookData>[];
+
     emit(BookshelfState(
       code: LoadingStateCode.loading,
-      dataList: List<BookData>.from(state.dataList),
+      dataList: list,
       sortOrder: preference.sortOrder,
       isAscending: preference.isAscending,
       listType: preference.listType,
     ));
 
     // Load books.
-    final Directory folder = Directory(FilePath.libraryRoot);
-    final Iterable<File> fileList = folder
-        .listSync()
-        .whereType<File>()
-        .where((File e) => MimeResolver.lookupAll(e) == 'application/epub+zip');
+    BookService.repository.getBookList().listen((BookData bookData) {
+      list.add(bookData);
 
-    if (fileList.isNotEmpty) {
-      final List<BookData> list = <BookData>[];
-      final List<BookData> oldList = List<BookData>.from(state.dataList);
-
-      // Only read the books that are not read yet.
-      for (File epubFile in fileList) {
-        final BookData target = oldList.firstWhereOrNull(
-                (BookData e) => e.absoluteFilePath == epubFile.path) ??
-            await BookService.repository.getBookData(epubFile.path);
-
-        list.add(target);
-
-        if (!isClosed) {
-          emit(state.copyWith(
-            code: LoadingStateCode.backgroundLoading,
-            dataList: sortList(
-              list,
-              preference.sortOrder,
-              preference.isAscending,
-            ), // Make a copy.
-          ));
-        }
+      if (!isClosed) {
+        emit(state.copyWith(
+          code: LoadingStateCode.backgroundLoading,
+          dataList: sortList(
+            list,
+            preference.sortOrder,
+            preference.isAscending,
+          ), // Make a copy.
+        ));
       }
-    }
-
-    if (!isClosed) {
-      emit(state.copyWith(code: LoadingStateCode.loaded));
-    }
+    }).onDone(() {
+      if (!isClosed) {
+        emit(state.copyWith(code: LoadingStateCode.loaded));
+      }
+    });
   }
 
   bool deleteSelectedBooks() {
     final List<BookData> newList = List<BookData>.from(state.dataList);
     for (BookData bookData in state.selectedSet) {
-      BookService.repository.delete(bookData.absoluteFilePath);
+      BookService.repository.delete(bookData);
       newList.remove(bookData);
     }
     emit(state.copyWith(dataList: newList));
@@ -87,8 +68,7 @@ class BookshelfCubit extends SharedListCubit<BookData> {
   }
 
   bool deleteBook(BookData bookData) {
-    final bool isSuccess =
-        BookService.repository.delete(bookData.absoluteFilePath);
+    final bool isSuccess = BookService.repository.delete(bookData);
 
     final List<BookData> newList = List<BookData>.from(state.dataList);
     newList.remove(bookData);

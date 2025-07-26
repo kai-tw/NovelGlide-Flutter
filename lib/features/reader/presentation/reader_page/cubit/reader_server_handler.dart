@@ -1,11 +1,11 @@
 part of 'reader_cubit.dart';
 
 class ReaderServerHandler {
-  ReaderServerHandler(this._bookPath);
+  ReaderServerHandler(this._bookFile);
 
   final String _host = 'localhost';
   final int _port = 8080;
-  final String _bookPath;
+  final File _bookFile;
   HttpServer? _server;
 
   String get url => 'http://$_host:$_port';
@@ -47,8 +47,7 @@ class ReaderServerHandler {
 
       case 'book.epub':
         return Response.ok(
-          File(BookService.repository.getAbsolutePath(_bookPath))
-              .readAsBytesSync(),
+          _bookFile.readAsBytesSync(),
           headers: <String, Object>{
             HttpHeaders.contentTypeHeader: 'application/epub+zip'
           },

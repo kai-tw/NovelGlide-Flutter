@@ -1,49 +1,58 @@
 part of '../../../book_service.dart';
 
 class BookAddFileTile extends StatelessWidget {
-  const BookAddFileTile({super.key, required this.filePath, required this.index});
+  const BookAddFileTile({
+    super.key,
+    required this.filePath,
+    required this.baseName,
+    required this.lengthString,
+    required this.isValid,
+    required this.isDuplicated,
+    required this.isMimeValid,
+    required this.onDeletePressed,
+  });
 
   final String filePath;
-  final int index;
+  final String baseName;
+  final String lengthString;
+  final bool isValid;
+  final bool isDuplicated;
+  final bool isMimeValid;
+  final void Function() onDeletePressed;
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BookAddCubit cubit = BlocProvider.of<BookAddCubit>(context);
-    final File file = File(filePath);
-    bool isError = false;
-    String subtitle = file.lengthString();
+    String subtitle = lengthString;
 
     // Check if the file is duplicated
-    if (BookService.repository.exists(filePath)) {
-      isError = true;
+    if (isDuplicated) {
       subtitle = appLocalizations.addBookDuplicated;
     }
 
     // Check if the file is invalid
-    if (MimeResolver.lookupAll(file) != 'application/epub+zip') {
-      isError = true;
+    if (!isMimeValid) {
       subtitle = appLocalizations.fileTypeForbidden;
     }
 
     return ListTile(
       leading: Icon(
-        isError ? Icons.error_rounded : Icons.book_rounded,
-        color: isError ? Theme.of(context).colorScheme.error : null,
+        isValid ? Icons.book_rounded : Icons.error_rounded,
+        color: isValid ? null : Theme.of(context).colorScheme.error,
       ),
       title: Text(
-        basename(filePath),
+        baseName,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
         subtitle,
         style: TextStyle(
-          color: isError ? Theme.of(context).colorScheme.error : null,
+          color: isValid ? null : Theme.of(context).colorScheme.error,
         ),
       ),
       trailing: IconButton(
-        onPressed: () => cubit.removeFile(filePath),
+        onPressed: onDeletePressed,
         icon: const Icon(Icons.delete),
         tooltip: appLocalizations.generalDelete,
       ),

@@ -12,7 +12,8 @@ import '../../../book_service/book_service.dart';
 import '../../collection_service.dart';
 import '../add_dialog/collection_add_dialog.dart';
 
-part 'cubit/cubit.dart';
+part 'cubit/collection_add_book_cubit.dart';
+part 'cubit/collection_add_book_state.dart';
 part 'widgets/list_view.dart';
 part 'widgets/navigation.dart';
 
@@ -25,8 +26,8 @@ class CollectionAddBookScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
-    return BlocProvider<_Cubit>(
-      create: (_) => _Cubit(dataSet),
+    return BlocProvider<CollectionAddBookCubit>(
+      create: (_) => CollectionAddBookCubit(dataSet),
       child: Scaffold(
         appBar: AppBar(
           title: Text(appLocalizations.collectionAddToCollections),

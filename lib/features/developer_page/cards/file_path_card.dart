@@ -13,15 +13,15 @@ class _FilePathCard extends StatelessWidget {
         ),
         ListTile(
           title: const Text('document'),
-          subtitle: _buildPathText(FileSystemDomain.document.rootDirectory),
+          subtitle: _buildPathText(FileSystemService.document.rootDirectory),
         ),
         ListTile(
           title: const Text('temp'),
-          subtitle: _buildPathText(FileSystemDomain.temp.rootDirectory),
+          subtitle: _buildPathText(FileSystemService.temp.rootDirectory),
         ),
         ListTile(
           title: const Text('cache'),
-          subtitle: _buildPathText(FileSystemDomain.cache.rootDirectory),
+          subtitle: _buildPathText(FileSystemService.cache.rootDirectory),
         ),
       ],
     );

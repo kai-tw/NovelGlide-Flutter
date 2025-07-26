@@ -6,8 +6,8 @@ class BookmarkRepository {
   Future<String> get jsonFileName async => (await jsonFile).baseName;
 
   Future<JsonFileModel> get jsonFile async {
-    return FileSystemDomain.json.getJsonFile(
-      await FileSystemDomain.document.bookmarkJsonFile,
+    return FileSystemService.json.getJsonFile(
+      await FileSystemService.document.bookmarkJsonFile,
     );
   }
 
@@ -15,7 +15,7 @@ class BookmarkRepository {
   Future<BookmarkData?> get(String bookPath) async {
     final JsonFileModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
-    bookPath = BookService.repository.getRelativePath(bookPath);
+    bookPath = await BookService.repository.getRelativePath(bookPath);
     return jsonData.containsKey(bookPath)
         ? BookmarkData.fromJson(jsonData[bookPath]!)
         : null;
@@ -29,9 +29,8 @@ class BookmarkRepository {
 
     for (String key in jsonData.keys) {
       final BookmarkData data = BookmarkData.fromJson(jsonData[key]!);
-      final String path = BookService.repository.getAbsolutePath(data.bookPath);
 
-      if (File(path).existsSync()) {
+      if (await BookService.repository.exists(data.bookPath)) {
         retList.add(data);
       } else {
         delete(data);
@@ -46,7 +45,7 @@ class BookmarkRepository {
     final JsonFileModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
     final BookmarkData savedData = data.copyWith(
-      bookPath: BookService.repository.getRelativePath(data.bookPath),
+      bookPath: await BookService.repository.getRelativePath(data.bookPath),
       savedTime: DateTime.now(),
     );
     jsonData[savedData.bookPath] = savedData.toJson();
@@ -57,7 +56,8 @@ class BookmarkRepository {
   Future<void> delete(BookmarkData data) async {
     final JsonFileModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
-    final String path = BookService.repository.getRelativePath(data.bookPath);
+    final String path =
+        await BookService.repository.getRelativePath(data.bookPath);
     jsonData.remove(path);
     jsonFile.data = jsonData;
   }

@@ -33,6 +33,7 @@ class BookshelfBookWidget extends StatelessWidget {
         return SharedListGridItem(
           isSelecting: isSelecting,
           isSelected: isSelected,
+          onChanged: onChanged,
           cover: BookshelfCoverWidget(
             bookData: bookData,
             borderRadius: BorderRadius.circular(16.0),

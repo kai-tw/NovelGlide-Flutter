@@ -36,68 +36,83 @@ class ReaderCubit extends Cubit<ReaderState> {
     required this.bookPath,
     this.bookData,
   }) : super(const ReaderState());
+
   final String bookPath;
   BookData? bookData;
   ThemeData currentTheme;
 
-  late final ReaderServerHandler _serverHandler = ReaderServerHandler(bookPath);
-  late final ReaderWebViewHandler webViewHandler =
-      ReaderWebViewHandler(url: _serverHandler.url);
-  late final ReaderSearchCubit searchCubit =
-      ReaderSearchCubit(webViewHandler: webViewHandler);
-  late final ReaderGestureHandler gestureHandler = ReaderGestureHandler(
-    onSwipeLeft: previousPage,
-    onSwipeRight: nextPage,
-  );
-  late final ReaderTTSHandler ttsHandler;
-  late final AppLifecycleListener _lifecycle =
-      AppLifecycleListener(onStateChange: _onLifecycleChanged);
+  ReaderServerHandler? _serverHandler;
+  ReaderWebViewHandler? webViewHandler;
+  ReaderSearchCubit? searchCubit;
+  ReaderGestureHandler? gestureHandler;
+  ReaderTTSHandler? ttsHandler;
+  AppLifecycleListener? _lifecycle;
 
   /// Client initialization.
   Future<void> initAsync({
     required ReaderDestinationType destinationType,
     String? destination,
   }) async {
+    // Initialize handlers
+    webViewHandler = ReaderWebViewHandler();
+    gestureHandler = ReaderGestureHandler(
+      onSwipeLeft: previousPage,
+      onSwipeRight: nextPage,
+    );
+    _lifecycle = AppLifecycleListener(onStateChange: _onLifecycleChanged);
+
+    // Initialize
     emit(state.copyWith(
       bookName: bookData?.name,
       code: ReaderLoadingStateCode.bookLoading,
     ));
 
-    final String absolutePath =
-        BookService.repository.getAbsolutePath(bookPath);
-    final BookmarkData? bookmarkData =
-        await BookmarkService.repository.get(bookPath);
+    // Start loading the data of book, reader settings, and bookmarks.
+    late ReaderSettingsData readerSettingsData;
+    late BookmarkData? bookmarkData;
+    await Future.wait<void>(<Future<void>>[
+      BookService.repository
+          .getBookData(bookPath)
+          .then((BookData value) => bookData = value),
+      ReaderSettingsData.load()
+          .then((ReaderSettingsData value) => readerSettingsData = value),
+      BookmarkService.repository
+          .get(bookPath)
+          .then((BookmarkData? data) => bookmarkData = data),
+    ]);
 
-    webViewHandler.initialize(
+    // Start back-end server
+    _serverHandler = ReaderServerHandler(bookData!.file);
+    await _serverHandler!.start();
+
+    // Initialize webview handler
+    webViewHandler!.initialize(
+      url: _serverHandler!.url,
       destination: destinationType == ReaderDestinationType.bookmark
           ? bookmarkData?.startCfi ?? destination
           : destination,
       savedLocation: await LocationCacheRepository.get(bookPath),
     );
 
-    webViewHandler.register('saveLocation', _receiveSaveLocation);
-    webViewHandler.register('loadDone', _receiveLoadDone);
-    webViewHandler.register('setState', _receiveSetState);
+    // Register commands
+    webViewHandler!.register('saveLocation', _receiveSaveLocation);
+    webViewHandler!.register('loadDone', _receiveLoadDone);
+    webViewHandler!.register('setState', _receiveSetState);
 
+    // Initialize search cubit
+    searchCubit = ReaderSearchCubit(webViewHandler: webViewHandler!);
+
+    // Initialize TTS handler
     ttsHandler = ReaderTTSHandler(
-      webViewHandler: webViewHandler,
+      webViewHandler: webViewHandler!,
       onTtsStateChanged: _onTtsStateChanged,
     );
-
-    late ReaderSettingsData readerSettingsData;
-    await Future.wait<void>(<Future<void>>[
-      BookService.repository
-          .getBookData(absolutePath)
-          .then((BookData value) => bookData = value),
-      ReaderSettingsData.load()
-          .then((ReaderSettingsData value) => readerSettingsData = value),
-      _serverHandler.start(),
-    ]);
 
     if (isClosed) {
       return;
     }
 
+    // Emit state.
     emit(state.copyWith(
       code: ReaderLoadingStateCode.rendering,
       bookName: bookData?.name,
@@ -105,7 +120,8 @@ class ReaderCubit extends Cubit<ReaderState> {
       readerSettings: readerSettingsData,
     ));
 
-    webViewHandler.request();
+    // Start loading the page.
+    webViewHandler!.request();
   }
 
   void setNavState(ReaderNavigationStateCode code) {
@@ -115,9 +131,9 @@ class ReaderCubit extends Cubit<ReaderState> {
   void sendThemeData([ThemeData? newTheme]) {
     currentTheme = newTheme ?? currentTheme;
     if (state.code.isLoaded) {
-      webViewHandler.setFontColor(currentTheme.colorScheme.onSurface);
-      webViewHandler.setFontSize(state.readerSettings.fontSize);
-      webViewHandler.setLineHeight(state.readerSettings.lineHeight);
+      webViewHandler!.setFontColor(currentTheme.colorScheme.onSurface);
+      webViewHandler!.setFontSize(state.readerSettings.fontSize);
+      webViewHandler!.setLineHeight(state.readerSettings.lineHeight);
     }
   }
 
@@ -148,7 +164,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   set isSmoothScroll(bool value) {
     emit(state.copyWith(
         readerSettings: state.readerSettings.copyWith(isSmoothScroll: value)));
-    webViewHandler.setSmoothScroll(value);
+    webViewHandler!.setSmoothScroll(value);
   }
 
   set pageNumType(ReaderPageNumType value) {
@@ -190,14 +206,14 @@ class ReaderCubit extends Cubit<ReaderState> {
     if (!state.ttsState.isStopped) {
       return;
     }
-    webViewHandler.prevPage();
+    webViewHandler!.prevPage();
   }
 
   void nextPage() {
     if (!state.ttsState.isStopped) {
       return;
     }
-    webViewHandler.nextPage();
+    webViewHandler!.nextPage();
   }
 
   /// *************************************************************************
@@ -217,7 +233,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   void _onLifecycleChanged(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.detached:
-        _serverHandler.stop();
+        _serverHandler?.stop();
         break;
       default:
     }
@@ -235,14 +251,14 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   void _receiveLoadDone(dynamic _) {
-    _serverHandler.stop();
+    _serverHandler!.stop();
     emit(state.copyWith(code: ReaderLoadingStateCode.loaded));
 
     // Send theme data after the page is loaded.
     sendThemeData();
 
     // Set smooth scroll.
-    webViewHandler.setSmoothScroll(state.readerSettings.isSmoothScroll);
+    webViewHandler!.setSmoothScroll(state.readerSettings.isSmoothScroll);
   }
 
   void _receiveSetState(dynamic jsonValue) {
@@ -266,10 +282,10 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   @override
   Future<void> close() async {
-    await _serverHandler.stop();
-    await searchCubit.close();
-    _lifecycle.dispose();
-    ttsHandler.dispose();
+    await _serverHandler?.stop();
+    await searchCubit?.close();
+    _lifecycle?.dispose();
+    ttsHandler?.dispose();
     super.close();
   }
 }

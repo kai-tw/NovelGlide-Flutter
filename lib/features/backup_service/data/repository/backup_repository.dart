@@ -9,7 +9,8 @@ class BackupRepository {
     String tempFolderPath, {
     void Function(double)? onZipping,
   }) async {
-    final Directory libraryFolder = Directory(FilePath.libraryRoot);
+    final Directory libraryFolder =
+        await FileSystemService.document.libraryDirectory;
 
     // Create a zip file
     final File zipFile = File(join(tempFolderPath, libraryArchiveName));
@@ -34,7 +35,8 @@ class BackupRepository {
     File zipFile, {
     void Function(double)? onExtracting,
   }) async {
-    final Directory libraryFolder = Directory(FilePath.libraryRoot);
+    final Directory libraryFolder =
+        await FileSystemService.document.libraryDirectory;
 
     // Clear the Library folder.
     libraryFolder.deleteSync(recursive: true);

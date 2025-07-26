@@ -17,7 +17,7 @@ class ReaderTtsStopButton extends StatelessWidget {
         return IconButton(
           icon: const Icon(Icons.stop_rounded),
           tooltip: appLocalizations.ttsStop,
-          onPressed: isEnabled ? cubit.ttsHandler.stopButtonPressed : null,
+          onPressed: isEnabled ? cubit.ttsHandler?.stopButtonPressed : null,
         );
       },
     );

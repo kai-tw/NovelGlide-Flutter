@@ -42,6 +42,7 @@ part 'data/repository/book_preferences.dart';
 part 'data/repository/book_repository.dart';
 part 'presentation/add_page/book_add_page.dart';
 part 'presentation/add_page/cubit/book_add_cubit.dart';
+part 'presentation/add_page/cubit/book_add_item_state.dart';
 part 'presentation/add_page/cubit/book_add_state.dart';
 part 'presentation/add_page/widgets/book_add_action_bar.dart';
 part 'presentation/add_page/widgets/book_add_file_list.dart';

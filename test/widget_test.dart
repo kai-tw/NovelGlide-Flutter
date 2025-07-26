@@ -9,7 +9,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:novelglide/core/services/file_system_service/file_system_service.dart';
 import 'package:novelglide/firebase_options.dart';
 import 'package:novelglide/main.dart';
 
@@ -22,9 +21,6 @@ void main() {
     MobileAds.instance.initialize();
     await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform);
-
-    // File Path Initialization
-    await FilePath.ensureInitialized();
 
     // Build our app and trigger a frame.
     await tester.pumpWidget(const App());

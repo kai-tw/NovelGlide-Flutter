@@ -9,11 +9,11 @@ class LocationCacheRepository {
   LocationCacheRepository._();
 
   static Future<String> get _rootPath async =>
-      (await FileSystemDomain.cache.bookLocationDirectory).path;
+      (await FileSystemService.cache.bookLocationDirectory).path;
 
   static Future<File> _getTmpFileByPath(String bookPath) async {
     final String relativePath =
-        BookService.repository.getRelativePath(bookPath);
+        await BookService.repository.getRelativePath(bookPath);
     return File(
         join(await _rootPath, '${basenameWithoutExtension(relativePath)}.tmp'));
   }

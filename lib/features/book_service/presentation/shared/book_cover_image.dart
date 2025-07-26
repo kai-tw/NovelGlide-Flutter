@@ -28,7 +28,7 @@ class BookCoverImage extends StatelessWidget {
         builder: (BuildContext context, BoxConstraints constraints) {
           return Image(
             image: CacheMemoryImageProvider(
-              bookData.relativeFilePath,
+              bookData.absoluteFilePath,
               Bitmap.fromHeadless(image.width, image.height, image.getBytes())
                   .buildHeaded(),
             ),

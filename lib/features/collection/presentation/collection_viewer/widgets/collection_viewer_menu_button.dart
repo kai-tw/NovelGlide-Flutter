@@ -47,7 +47,7 @@ class CollectionViewerMenuButton extends StatelessWidget {
               context: context,
               builder: (_) {
                 return CommonDeleteDialog(
-                  onDelete: cubit.remove,
+                  onDelete: cubit.removeBooks,
                 );
               },
             );

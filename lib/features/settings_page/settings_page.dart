@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../enum/window_size.dart';
@@ -7,6 +8,7 @@ import '../../generated/i18n/app_localizations.dart';
 import '../about_page/about_page.dart';
 import '../appearance_services/appearance_services.dart';
 import '../backup_service/presentation/backup_service_page.dart';
+import '../book_service/presentation/bookshelf/cubit/bookshelf_cubit.dart';
 import '../developer_page/developer_page.dart';
 import '../feedback_service/feedback_service.dart';
 import '../homepage/homepage.dart';
@@ -29,7 +31,8 @@ class SettingsPage extends StatelessWidget {
     final List<SettingsListTile> buttonList = <SettingsListTile>[
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          MaterialPageRoute<void>(builder: (_) => const AppearanceSettingsPage()),
+          MaterialPageRoute<void>(
+              builder: (_) => const AppearanceSettingsPage()),
         ),
         iconData: Icons.format_paint_outlined,
         title: appLocalizations.appearance,
@@ -57,13 +60,20 @@ class SettingsPage extends StatelessWidget {
       ),
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
-          MaterialPageRoute<void>(builder: (_) => const ResetPage()),
+          MaterialPageRoute<void>(
+            builder: (_) => BlocProvider<BookshelfCubit>.value(
+              value: BlocProvider.of<BookshelfCubit>(context),
+              child: const ResetPage(),
+            ),
+          ),
         ),
         iconData: Icons.refresh_rounded,
         title: appLocalizations.resetPageTitle,
       ),
       SettingsListTile(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const FeedbackPage())),
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute<void>(builder: (_) => const FeedbackPage()),
+        ),
         iconData: Icons.feedback_outlined,
         title: appLocalizations.generalFeedback,
       ),
@@ -87,7 +97,9 @@ class SettingsPage extends StatelessWidget {
     if (kDebugMode) {
       buttonList.add(
         SettingsListTile(
-          onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const DeveloperPage())),
+          onTap: () => Navigator.of(context).push(
+            MaterialPageRoute<void>(builder: (_) => const DeveloperPage()),
+          ),
           iconData: Icons.code_rounded,
           title: 'Developer Page',
         ),

@@ -1,16 +1,18 @@
 part of '../../../book_service.dart';
 
 class BookAddState extends Equatable {
-  const BookAddState({this.pathSet = const <String>{}});
+  const BookAddState({
+    this.itemState = const <BookAddItemState>{},
+  });
 
-  final Set<String> pathSet;
+  final Set<BookAddItemState> itemState;
 
   bool get isValid =>
-      pathSet.isNotEmpty &&
-      !pathSet.any((String path) =>
-          BookService.repository.exists(path) ||
-          MimeResolver.lookupAll(File(path)) != 'application/epub+zip');
+      itemState.isNotEmpty &&
+      !itemState.any((BookAddItemState state) => !state.isValid);
 
   @override
-  List<Object?> get props => <Object?>[pathSet];
+  List<Object?> get props => <Object?>[
+        itemState,
+      ];
 }

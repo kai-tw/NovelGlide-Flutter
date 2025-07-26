@@ -2,9 +2,14 @@ part of '../../../book_service.dart';
 
 /// Cubit to manage the state of adding a book_service.
 class BookAddCubit extends Cubit<BookAddState> {
-  BookAddCubit() : super(const BookAddState());
+  BookAddCubit({
+    required this.bookshelfCubit,
+  }) : super(const BookAddState());
 
-  static final List<String> allowedExtensions = <String>['epub'];
+  final BookshelfCubit bookshelfCubit;
+
+  List<String> get allowedExtensions =>
+      BookService.repository.allowedExtensions;
 
   /// Allows the user to pick a file.
   Future<void> pickFile() async {
@@ -14,30 +19,47 @@ class BookAddCubit extends Cubit<BookAddState> {
       allowMultiple: true,
     );
 
-    final Set<String> newFileSet = (result?.files ?? <PlatformFile>[])
-        .where((PlatformFile file) {
-          // Filter out files that are already in the set.
-          return file.path != null &&
-              !state.pathSet
-                  .any((String path) => basename(path) == basename(file.path!));
-        })
-        .map((PlatformFile file) => file.path!)
-        .toSet();
+    final Set<BookAddItemState> itemStateSet =
+        Set<BookAddItemState>.from(state.itemState);
+    final List<PlatformFile> fileList = result?.files ?? <PlatformFile>[];
 
-    newFileSet.addAll(state.pathSet);
+    for (PlatformFile file in fileList) {
+      if (file.path != null) {
+        if (state.itemState.any((BookAddItemState itemState) =>
+            basename(itemState.absolutePath) == basename(file.path!))) {
+          // If the file is already in the list,
+          // delete it from temporary storage.
+          File(file.path!).deleteSync();
+        } else {
+          itemStateSet.add(BookAddItemState(
+            absolutePath: file.path!,
+            isExistsInLibrary: await BookService.repository.exists(file.path!),
+            isMimeValid: BookService.repository.isMimeValid(File(file.path!)),
+          ));
+        }
+      }
+    }
 
     if (!isClosed) {
-      emit(BookAddState(pathSet: newFileSet));
+      emit(BookAddState(
+        itemState: itemStateSet,
+      ));
     }
   }
 
-  void removeFile(String filePath) {
-    final Set<String> fileList = Set<String>.from(state.pathSet);
-    fileList.remove(filePath);
-    emit(BookAddState(pathSet: fileList));
+  Future<void> removeFile(BookAddItemState itemState) async {
+    final Set<BookAddItemState> fileSet =
+        Set<BookAddItemState>.from(state.itemState);
+    fileSet.remove(itemState);
+    emit(BookAddState(
+      itemState: fileSet,
+    ));
   }
 
-  void submit() {
-    state.pathSet.forEach(BookService.repository.add);
+  Future<void> submit() async {
+    for (BookAddItemState itemState in state.itemState) {
+      await BookService.repository.addBook(itemState.absolutePath);
+    }
+    bookshelfCubit.refresh();
   }
 }

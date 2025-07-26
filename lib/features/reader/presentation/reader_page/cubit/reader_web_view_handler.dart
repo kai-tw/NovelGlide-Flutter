@@ -1,16 +1,20 @@
 part of 'reader_cubit.dart';
 
 class ReaderWebViewHandler {
-  ReaderWebViewHandler({
-    required this.url,
-  });
+  ReaderWebViewHandler();
 
-  final String url;
+  String? url;
   final WebViewController controller = WebViewController();
   final Map<String, void Function(dynamic p1)> _channelMap =
       <String, void Function(dynamic)>{};
 
-  void initialize({String? destination, String? savedLocation}) {
+  void initialize({
+    required String url,
+    String? destination,
+    String? savedLocation,
+  }) {
+    this.url = url;
+
     controller.enableZoom(false);
     controller.setBackgroundColor(Colors.transparent);
     controller.setJavaScriptMode(JavaScriptMode.unrestricted);
@@ -52,7 +56,7 @@ class ReaderWebViewHandler {
   }
 
   Future<void> request() {
-    return controller.loadRequest(Uri.parse(url));
+    return controller.loadRequest(Uri.parse(url!));
   }
 
   /// *************************************************************************

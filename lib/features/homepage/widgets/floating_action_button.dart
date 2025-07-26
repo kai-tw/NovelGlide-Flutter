@@ -6,11 +6,14 @@ class _FloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BookshelfCubit bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
-    final CollectionListCubit collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
+    final BookshelfCubit bookshelfCubit =
+        BlocProvider.of<BookshelfCubit>(context);
+    final CollectionListCubit collectionListCubit =
+        BlocProvider.of<CollectionListCubit>(context);
 
     return BlocBuilder<HomepageCubit, HomepageState>(
-      buildWhen: (HomepageState previous, HomepageState current) => previous.navItem != current.navItem,
+      buildWhen: (HomepageState previous, HomepageState current) =>
+          previous.navItem != current.navItem,
       builder: (BuildContext context, HomepageState state) {
         Widget? child;
 
@@ -18,13 +21,11 @@ class _FloatingActionButton extends StatelessWidget {
           case HomepageNavigationItem.bookshelf:
             child = FloatingActionButton(
               onPressed: () {
-                Navigator.of(context)
-                    .push<bool?>(MaterialPageRoute<bool?>(builder: (_) => const BookAddPage()))
-                    .then((bool? isSuccess) {
-                  if (isSuccess == true) {
-                    bookshelfCubit.refresh();
-                  }
-                });
+                Navigator.of(context).push(MaterialPageRoute<void>(
+                    builder: (_) => BlocProvider<BookshelfCubit>.value(
+                          value: bookshelfCubit,
+                          child: const BookAddPage(),
+                        )));
               },
               tooltip: appLocalizations.accessibilityAddBookButton,
               child: const Icon(Icons.add),
@@ -37,7 +38,8 @@ class _FloatingActionButton extends StatelessWidget {
                 showDialog<bool?>(
                   context: context,
                   barrierDismissible: false,
-                  builder: (BuildContext context) => const CollectionAddDialog(),
+                  builder: (BuildContext context) =>
+                      const CollectionAddDialog(),
                 ).then((bool? isSuccess) {
                   if (isSuccess == true) {
                     collectionListCubit.refresh();

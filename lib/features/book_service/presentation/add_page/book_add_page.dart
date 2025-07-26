@@ -7,7 +7,9 @@ class BookAddPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocProvider<BookAddCubit>(
-      create: (_) => BookAddCubit(),
+      create: (_) => BookAddCubit(
+        bookshelfCubit: BlocProvider.of<BookshelfCubit>(context),
+      ),
       child: Scaffold(
         appBar: AppBar(
           title: Text(appLocalizations.addBookTitle),

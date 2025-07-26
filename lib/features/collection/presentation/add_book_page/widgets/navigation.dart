@@ -6,7 +6,8 @@ class _Navigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
+    final CollectionAddBookCubit cubit =
+        BlocProvider.of<CollectionAddBookCubit>(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
