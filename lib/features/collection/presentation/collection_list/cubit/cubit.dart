@@ -42,7 +42,7 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
   }
 
   void deleteSelectedCollections() {
-    state.selectedSet.forEach(CollectionService.repository.delete);
+    state.selectedSet.forEach(CollectionService.repository.deleteByData);
     refresh();
   }
 

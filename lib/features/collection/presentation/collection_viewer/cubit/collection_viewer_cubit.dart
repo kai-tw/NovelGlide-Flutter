@@ -21,8 +21,6 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
 
   @override
   Future<void> refresh() async {
-    collectionData =
-        await CollectionService.repository.getDataById(collectionData.id);
     final List<String> pathList = collectionData.pathList;
 
     if (pathList.isEmpty) {
@@ -78,7 +76,7 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
   Future<void> removeBooks() async {
     // Remove books from collection
     for (final BookData data in state.selectedSet) {
-      await CollectionService.repository.deleteBook(
+      await CollectionService.repository.deleteBookFromSingle(
         data.absoluteFilePath,
         collectionData.id,
       );
@@ -89,10 +87,12 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
         await CollectionService.repository.getDataById(collectionData.id);
 
     // Remove books from dataList
-    state.dataList.removeWhere((BookData e) => state.selectedSet.contains(e));
+    final List<BookData> bookList = List<BookData>.from(state.dataList);
+    bookList.removeWhere((BookData e) => state.selectedSet.contains(e));
     emit(state.copyWith(
       code: LoadingStateCode.loaded,
-      dataList: List<BookData>.from(state.dataList),
+      selectedSet: <BookData>{},
+      dataList: bookList,
     ));
   }
 

@@ -24,13 +24,12 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
 
     // Get the selected collection set by
     // intersection of book paths and collection paths.
-    final Set<String> selectedCollections = collectionList
+    final Set<CollectionData> selectedCollections = collectionList
         .where((CollectionData e) => e.pathList
             .map((String e) => basename(e))
             .toSet()
             .intersection(pathSet.toSet())
             .isNotEmpty)
-        .map((CollectionData e) => e.id)
         .toSet();
 
     // Sort the collection list by name.
@@ -45,29 +44,29 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
     ));
   }
 
-  Future<void> select(String id) async {
+  Future<void> select(CollectionData data) async {
     final List<CollectionData> newList =
         List<CollectionData>.from(state.collectionList);
     final CollectionData target =
-        newList.firstWhere((CollectionData e) => e.id == id);
+        newList.firstWhere((CollectionData e) => e == data);
     final Set<String> set = target.pathList.toSet();
     set.addAll(state.bookPathSet);
     target.pathList = set.toList();
     emit(state.copyWith(
       collectionList: newList,
-      selectedCollections: <String>{...state.selectedCollections, id},
+      selectedCollections: <CollectionData>{...state.selectedCollections, data},
     ));
   }
 
-  void deselect(String id) {
+  void deselect(CollectionData data) {
     emit(state.copyWith(
-        selectedCollections: <String>{...state.selectedCollections}
-          ..remove(id)));
+        selectedCollections: <CollectionData>{...state.selectedCollections}
+          ..remove(data)));
   }
 
   Future<void> save() async {
     for (CollectionData data in state.collectionList) {
-      if (state.selectedCollections.contains(data.id)) {
+      if (state.selectedCollections.contains(data)) {
         data.pathList.addAll(state.bookPathSet);
       } else {
         data.pathList.removeWhere((String e) => state.bookPathSet.contains(e));

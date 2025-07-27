@@ -42,7 +42,7 @@ class CollectionListDraggableCollection extends StatelessWidget {
           homepageCubit.isEnabled = true;
         },
         onDragCompleted: () async {
-          CollectionService.repository.delete(collectionData);
+          CollectionService.repository.deleteByData(collectionData);
           cubit.refresh();
 
           ScaffoldMessenger.of(context).showSnackBar(

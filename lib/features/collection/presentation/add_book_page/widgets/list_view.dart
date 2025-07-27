@@ -30,7 +30,7 @@ class _ListView extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   final CollectionData data = state.collectionList[index];
                   final bool? isSelected =
-                      state.selectedCollections.contains(data.id)
+                      state.selectedCollections.contains(data)
                           ? data.pathList.toSet().containsAll(state.bookPathSet)
                               ? true
                               : null
@@ -45,9 +45,9 @@ class _ListView extends StatelessWidget {
                     value: isSelected,
                     onChanged: (bool? value) {
                       if (value == true) {
-                        cubit.select(data.id);
+                        cubit.select(data);
                       } else {
-                        cubit.deselect(data.id);
+                        cubit.deselect(data);
                       }
                     },
                   );

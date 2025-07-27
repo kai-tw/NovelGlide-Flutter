@@ -1,5 +1,7 @@
 part of '../collection_service.dart';
 
+typedef CollectionRepositoryJsonMap = Map<String, CollectionData>;
+
 class CollectionRepository {
   Future<String> get jsonFileName async => (await jsonFile).baseName;
 
@@ -9,28 +11,40 @@ class CollectionRepository {
     );
   }
 
-  /// Create a new empty collection with a unique ID.
-  Future<void> create(String name) async {
+  Future<CollectionRepositoryJsonMap> get jsonData async {
     final JsonFileMetaModel jsonFile = await this.jsonFile;
-    final Map<String, dynamic> jsonData = jsonFile.data;
+    return jsonFile.data.map((String key, dynamic value) {
+      return MapEntry<String, CollectionData>(
+          key, CollectionData.fromJson(value));
+    });
+  }
+
+  /// Create a new empty collection with a unique ID.
+  Future<CollectionData> create([String? name]) async {
+    // Load json data;
+    final CollectionRepositoryJsonMap jsonData = await this.jsonData;
+
+    // Create a new id
     String id;
 
+    // Randomly generate a new unique id
     do {
       id = Random().nextString(10);
     } while (jsonData.containsKey(id));
 
-    jsonData[id] = CollectionData(id, name, const <String>[]).toJson();
-    jsonFile.data = jsonData;
+    // Save to json file
+    final CollectionData data =
+        CollectionData(id, name ?? id, const <String>[]);
+    save(data);
+    return data;
   }
 
   Future<CollectionData> getDataById(String id) async {
-    final JsonFileMetaModel jsonFile = await this.jsonFile;
-    final Map<String, dynamic> jsonData = jsonFile.data;
-    if (jsonData.containsKey(id)) {
-      return CollectionData.fromJson(jsonData[id]!);
-    } else {
-      return CollectionData(id, id, const <String>[]);
-    }
+    // Load json data;
+    final CollectionRepositoryJsonMap jsonData = await this.jsonData;
+
+    // Return the data, or create a new one if it doesn't exist
+    return jsonData[id] ?? await create();
   }
 
   /// Retrieve a list of all [CollectionData] instances.
@@ -62,7 +76,7 @@ class CollectionRepository {
   }
 
   /// Delete the current [CollectionData] instance from the JSON file.
-  Future<void> delete(CollectionData data) async {
+  Future<void> deleteByData(CollectionData data) async {
     final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
     jsonData.remove(data.id);
@@ -70,34 +84,39 @@ class CollectionRepository {
   }
 
   /// Delete the book from the collection.
-  Future<void> deleteBook(String path, String id) async {
+  Future<void> deleteBookFromSingle(String path, String id) async {
+    // Load json file
     final JsonFileMetaModel jsonFile = await this.jsonFile;
+
+    // Load json data
     final Map<String, dynamic> jsonData = jsonFile.data;
-    final String relativePath =
-        await BookService.repository.getRelativePath(path);
-    if (jsonData[id] != null) {
+
+    if (jsonData.containsKey(id)) {
+      // Get relative path
+      final String relativePath =
+          await BookService.repository.getRelativePath(path);
+
+      // Remove the path from the collection
       final CollectionData data = CollectionData.fromJson(jsonData[id]!);
       data.pathList.remove(relativePath);
-      jsonData[id] = data.toJson();
-      jsonFile.data = jsonData;
+      save(data);
     }
   }
 
   /// Delete the book from all collections.
-  Future<void> deleteFromAll(String path) async {
+  Future<void> deleteBookFromAll(String path) async {
+    // Get the list of collection data
     final List<CollectionData> list = await getList();
 
+    // Remove the book through each collection
     for (CollectionData data in list) {
-      final String relativePath =
-          await BookService.repository.getRelativePath(path);
-      if (data.pathList.contains(relativePath)) {
-        deleteBook(path, data.id);
-      }
+      await deleteBookFromSingle(path, data.id);
     }
   }
 
   /// Reset the collection repository.
   Future<void> reset() async {
+    // Clear the content of json file
     (await jsonFile).clear();
   }
 }

@@ -5,20 +5,9 @@ class CollectionViewerMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CollectionViewerCubit, CollectionViewerState>(
-      buildWhen:
-          (CollectionViewerState previous, CollectionViewerState current) =>
-              previous.isSelecting != current.isSelecting,
-      builder: (BuildContext context, CollectionViewerState state) {
-        if (state.isSelecting) {
-          return PopupMenuButton<void>(
-            clipBehavior: Clip.hardEdge,
-            itemBuilder: _itemBuilder,
-          );
-        } else {
-          return const SizedBox.shrink();
-        }
-      },
+    return PopupMenuButton<void>(
+      clipBehavior: Clip.hardEdge,
+      itemBuilder: _itemBuilder,
     );
   }
 
