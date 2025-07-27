@@ -9,7 +9,7 @@ import '../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
 import '../../core/services/file_system_service/file_system_service.dart';
 import '../../core/services/log_service/log_service.dart';
 import '../bookmark_service/bookmark_service.dart';
-import '../collection/collection_service.dart';
+import '../collection_service/collection_service.dart';
 
 part 'data/repository/backup_repository.dart';
 part 'presentation/process_dialog/cubit/enum/backup_service_process_step_code.dart';

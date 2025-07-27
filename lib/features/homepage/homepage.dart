@@ -9,9 +9,9 @@ import '../ads_service/ad_service.dart';
 import '../book_service/book_service.dart';
 import '../book_service/presentation/bookshelf/cubit/bookshelf_cubit.dart';
 import '../bookmark_service/bookmark_service.dart';
-import '../collection/collection_service.dart';
-import '../collection/presentation/add_dialog/collection_add_dialog.dart';
-import '../collection/presentation/collection_list/cubit/cubit.dart';
+import '../collection_service/collection_service.dart';
+import '../collection_service/presentation/add_dialog/collection_add_dialog.dart';
+import '../collection_service/presentation/collection_list/cubit/cubit.dart';
 import '../settings_page/settings_page.dart';
 import 'cubit/homepage_cubit.dart';
 

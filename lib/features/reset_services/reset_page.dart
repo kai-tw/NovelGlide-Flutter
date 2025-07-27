@@ -8,7 +8,7 @@ import '../../generated/i18n/app_localizations.dart';
 import '../book_service/book_service.dart';
 import '../book_service/presentation/bookshelf/cubit/bookshelf_cubit.dart';
 import '../bookmark_service/bookmark_service.dart';
-import '../collection/collection_service.dart';
+import '../collection_service/collection_service.dart';
 import '../reader/data/model/reader_settings_data.dart';
 import '../reader/data/repository/cache_repository.dart';
 import '../settings_page/settings_card.dart';
