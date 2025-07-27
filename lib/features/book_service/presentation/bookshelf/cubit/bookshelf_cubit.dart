@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 
 import '../../../../../core/shared_components/shared_list/shared_list.dart';
@@ -11,10 +13,18 @@ class BookshelfCubit extends SharedListCubit<BookData> {
   factory BookshelfCubit() {
     final BookshelfCubit cubit = BookshelfCubit._();
     cubit.refresh();
+
+    // Listen to book changes.
+    cubit._onChangedSubscription = BookService
+        .repository.onChangedController.stream
+        .listen((_) => cubit.refresh());
     return cubit;
   }
 
   BookshelfCubit._() : super(const BookshelfState());
+
+  StreamSubscription<BookData>? _listStreamSubscription;
+  late final StreamSubscription<void> _onChangedSubscription;
 
   @override
   Future<void> refresh() async {
@@ -37,24 +47,27 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     ));
 
     // Load books.
-    BookService.repository.getBookList().listen((BookData bookData) {
-      list.add(bookData);
+    _listStreamSubscription = BookService.repository.getBookList().listen(
+      (BookData bookData) {
+        list.add(bookData);
 
-      if (!isClosed) {
-        emit(state.copyWith(
-          code: LoadingStateCode.backgroundLoading,
-          dataList: sortList(
-            list,
-            preference.sortOrder,
-            preference.isAscending,
-          ), // Make a copy.
-        ));
-      }
-    }).onDone(() {
-      if (!isClosed) {
-        emit(state.copyWith(code: LoadingStateCode.loaded));
-      }
-    });
+        if (!isClosed) {
+          emit(state.copyWith(
+            code: LoadingStateCode.backgroundLoading,
+            dataList: sortList(
+              list,
+              preference.sortOrder,
+              preference.isAscending,
+            ), // Make a copy.
+          ));
+        }
+      },
+      onDone: () {
+        if (!isClosed) {
+          emit(state.copyWith(code: LoadingStateCode.loaded));
+        }
+      },
+    );
   }
 
   bool deleteSelectedBooks() {
@@ -103,5 +116,12 @@ class BookshelfCubit extends SharedListCubit<BookData> {
             ? compareNatural(a.name, b.name)
             : compareNatural(b.name, a.name);
     }
+  }
+
+  @override
+  Future<void> close() {
+    _listStreamSubscription?.cancel();
+    _onChangedSubscription.cancel();
+    return super.close();
   }
 }

@@ -12,9 +12,6 @@ class ResetServiceSettingsListTile extends StatelessWidget {
         MaterialPageRoute<void>(
           builder: (_) => MultiBlocProvider(
             providers: <BlocProvider<dynamic>>[
-              BlocProvider<BookshelfCubit>.value(
-                value: BlocProvider.of<BookshelfCubit>(context),
-              ),
               BlocProvider<CollectionListCubit>.value(
                 value: BlocProvider.of<CollectionListCubit>(context),
               ),

@@ -2,11 +2,7 @@ part of '../../../book_service.dart';
 
 /// Cubit to manage the state of adding a book_service.
 class BookAddCubit extends Cubit<BookAddState> {
-  BookAddCubit({
-    required this.bookshelfCubit,
-  }) : super(const BookAddState());
-
-  final BookshelfCubit bookshelfCubit;
+  BookAddCubit() : super(const BookAddState());
 
   List<String> get allowedExtensions =>
       BookService.repository.allowedExtensions;
@@ -60,6 +56,5 @@ class BookAddCubit extends Cubit<BookAddState> {
     for (BookAddItemState itemState in state.itemState) {
       await BookService.repository.addBook(itemState.absolutePath);
     }
-    bookshelfCubit.refresh();
   }
 }

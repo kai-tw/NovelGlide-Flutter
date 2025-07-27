@@ -5,6 +5,7 @@ class BookRepository {
 
   final List<String> allowedExtensions = <String>['epub'];
   final List<String> allowedMimeTypes = <String>['application/epub+zip'];
+  final StreamController<void> onChangedController = StreamController<void>();
 
   /// Check if the mime of a file is valid.
   bool isMimeValid(File file) {
@@ -48,6 +49,9 @@ class BookRepository {
         await FileSystemService.document.libraryDirectory;
     final String destination = join(libraryDirectory.path, basename(filePath));
     File(filePath).copySync(destination);
+
+    // Send a notification.
+    onChangedController.add(null);
   }
 
   /// Get is the book is in the library.
@@ -75,6 +79,9 @@ class BookRepository {
     // Delete locations cache.
     LocationCacheRepository.delete(absolutePath);
 
+    // Send a notification.
+    onChangedController.add(null);
+
     return !file.existsSync();
   }
 
@@ -100,5 +107,8 @@ class BookRepository {
     BookmarkService.repository.reset();
     CollectionService.repository.reset();
     LocationCacheRepository.clear();
+
+    // Send a notification.
+    onChangedController.add(null);
   }
 }

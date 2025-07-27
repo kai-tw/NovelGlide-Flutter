@@ -6,8 +6,6 @@ class _FloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BookshelfCubit bookshelfCubit =
-        BlocProvider.of<BookshelfCubit>(context);
     final CollectionListCubit collectionListCubit =
         BlocProvider.of<CollectionListCubit>(context);
 
@@ -22,10 +20,7 @@ class _FloatingActionButton extends StatelessWidget {
             child = FloatingActionButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute<void>(
-                    builder: (_) => BlocProvider<BookshelfCubit>.value(
-                          value: bookshelfCubit,
-                          child: const BookAddPage(),
-                        )));
+                    builder: (_) => const BookAddPage()));
               },
               tooltip: appLocalizations.accessibilityAddBookButton,
               child: const Icon(Icons.add),

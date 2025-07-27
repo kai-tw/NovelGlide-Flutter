@@ -23,7 +23,6 @@ class SettingsPageDataCard extends StatelessWidget {
           // Delete all books
           SettingsPageListTile(
             onAccept: BookService.repository.reset,
-            onComplete: BlocProvider.of<BookshelfCubit>(context).refresh,
             iconData: Icons.delete_forever_rounded,
             title: appLocalizations.resetPageDeleteAllBooks,
           ),

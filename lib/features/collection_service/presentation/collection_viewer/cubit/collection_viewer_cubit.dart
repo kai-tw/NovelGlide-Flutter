@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:novelglide/enum/sort_order_code.dart';
 
 import '../../../../../core/shared_components/shared_list/shared_list.dart';
@@ -15,6 +17,7 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
       : super(const CollectionViewerState());
 
   CollectionData collectionData;
+  StreamSubscription<BookData>? _listStreamSubscription;
 
   /// Refresh the state of viewer.
   @override
@@ -37,26 +40,28 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
       final List<BookData> bookList = <BookData>[];
 
       // Get book data from repository
-      BookService.repository
-          .getBookListFromPathList(pathList)
-          .listen((BookData data) {
-        // A new book data is received.
-        if (!isClosed) {
-          bookList.add(data);
-          emit(CollectionViewerState(
-            code: LoadingStateCode.backgroundLoading,
-            dataList: List<BookData>.from(bookList),
-          ));
-        }
-      }).onDone(() {
-        // All book data is received.
-        if (!isClosed) {
-          emit(CollectionViewerState(
-            code: LoadingStateCode.loaded,
-            dataList: List<BookData>.from(bookList),
-          ));
-        }
-      });
+      _listStreamSubscription =
+          BookService.repository.getBookListFromPathList(pathList).listen(
+        (BookData data) {
+          // A new book data is received.
+          if (!isClosed) {
+            bookList.add(data);
+            emit(CollectionViewerState(
+              code: LoadingStateCode.backgroundLoading,
+              dataList: List<BookData>.from(bookList),
+            ));
+          }
+        },
+        onDone: () {
+          // All book data is received.
+          if (!isClosed) {
+            emit(CollectionViewerState(
+              code: LoadingStateCode.loaded,
+              dataList: List<BookData>.from(bookList),
+            ));
+          }
+        },
+      );
     }
   }
 
@@ -119,5 +124,11 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
   }) {
     // Custom order. Don't care
     return 0;
+  }
+
+  @override
+  Future<void> close() {
+    _listStreamSubscription?.cancel();
+    return super.close();
   }
 }
