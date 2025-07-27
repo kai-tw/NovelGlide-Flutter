@@ -13,11 +13,17 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
   final Set<BookData> _dataSet;
 
   Future<void> refresh() async {
+    // Get the collection list from repository.
     final List<CollectionData> collectionList =
         await CollectionService.repository.getList();
+
+    // Get all the book paths from user selected books.
     final Set<String> pathSet =
         (await Future.wait(_dataSet.map((BookData e) => e.relativeFilePath)))
             .toSet();
+
+    // Get the selected collection set by
+    // intersection of book paths and collection paths.
     final Set<String> selectedCollections = collectionList
         .where((CollectionData e) => e.pathList
             .map((String e) => basename(e))
@@ -27,6 +33,7 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
         .map((CollectionData e) => e.id)
         .toSet();
 
+    // Sort the collection list by name.
     collectionList.sort(
         (CollectionData a, CollectionData b) => compareNatural(a.name, b.name));
 

@@ -3,7 +3,7 @@ part of '../collection_service.dart';
 class CollectionRepository {
   Future<String> get jsonFileName async => (await jsonFile).baseName;
 
-  Future<JsonFileModel> get jsonFile async {
+  Future<JsonFileMetaModel> get jsonFile async {
     return FileSystemService.json.getJsonFile(
       await FileSystemService.document.collectionJsonFile,
     );
@@ -11,7 +11,7 @@ class CollectionRepository {
 
   /// Create a new empty collection with a unique ID.
   Future<void> create(String name) async {
-    final JsonFileModel jsonFile = await this.jsonFile;
+    final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
     String id;
 
@@ -24,7 +24,7 @@ class CollectionRepository {
   }
 
   Future<CollectionData> getDataById(String id) async {
-    final JsonFileModel jsonFile = await this.jsonFile;
+    final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
     if (jsonData.containsKey(id)) {
       return CollectionData.fromJson(jsonData[id]!);
@@ -35,7 +35,7 @@ class CollectionRepository {
 
   /// Retrieve a list of all [CollectionData] instances.
   Future<List<CollectionData>> getList() async {
-    final JsonFileModel jsonFile = await this.jsonFile;
+    final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
     return jsonData.keys
         .map((String key) => CollectionData.fromJson(jsonData[key]!))
@@ -44,7 +44,7 @@ class CollectionRepository {
 
   /// Save the current [CollectionData] instance to the JSON file.
   Future<void> save(CollectionData data) async {
-    final JsonFileModel jsonFile = await this.jsonFile;
+    final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
 
     // Convert the pathList to relative paths.
@@ -63,7 +63,7 @@ class CollectionRepository {
 
   /// Delete the current [CollectionData] instance from the JSON file.
   Future<void> delete(CollectionData data) async {
-    final JsonFileModel jsonFile = await this.jsonFile;
+    final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
     jsonData.remove(data.id);
     jsonFile.data = jsonData;
@@ -71,7 +71,7 @@ class CollectionRepository {
 
   /// Delete the book from the collection.
   Future<void> deleteBook(String path, String id) async {
-    final JsonFileModel jsonFile = await this.jsonFile;
+    final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
     final String relativePath =
         await BookService.repository.getRelativePath(path);

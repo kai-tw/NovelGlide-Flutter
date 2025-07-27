@@ -7,7 +7,8 @@ import 'package:novelglide/core/utils/random_extension.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-part 'model/json_file_model.dart';
+part 'model/file_meta_model.dart';
+part 'model/json_file_meta_model.dart';
 part 'repository/cache_repository.dart';
 part 'repository/document_repository.dart';
 part 'repository/json_repository.dart';
