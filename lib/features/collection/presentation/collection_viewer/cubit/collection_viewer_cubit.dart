@@ -8,32 +8,39 @@ import '../../../collection_service.dart';
 typedef CollectionViewerState = SharedListState<BookData>;
 
 class CollectionViewerCubit extends SharedListCubit<BookData> {
-  factory CollectionViewerCubit(CollectionData collectionData) {
-    final CollectionViewerCubit cubit = CollectionViewerCubit._internal(
-        collectionData, const CollectionViewerState());
-    cubit.refresh();
-    return cubit;
-  }
+  factory CollectionViewerCubit(CollectionData collectionData) =>
+      CollectionViewerCubit._(collectionData)..refresh();
 
-  CollectionViewerCubit._internal(this.collectionData, super.initialState);
+  CollectionViewerCubit._(this.collectionData)
+      : super(const CollectionViewerState());
 
   CollectionData collectionData;
 
+  /// Refresh the state of viewer.
   @override
   Future<void> refresh() async {
+    // Update collection data
+    collectionData.pathList =
+        state.dataList.map((BookData e) => e.absoluteFilePath).toList();
+
+    // Get the path list
     final List<String> pathList = collectionData.pathList;
 
     if (pathList.isEmpty) {
+      // Path list is empty.
       emit(const CollectionViewerState(
         code: LoadingStateCode.loaded,
         dataList: <BookData>[],
       ));
     } else {
+      // The current loaded book data list
       final List<BookData> bookList = <BookData>[];
 
+      // Get book data from repository
       BookService.repository
           .getBookListFromPathList(pathList)
           .listen((BookData data) {
+        // A new book data is received.
         if (!isClosed) {
           bookList.add(data);
           emit(CollectionViewerState(
@@ -42,6 +49,7 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
           ));
         }
       }).onDone(() {
+        // All book data is received.
         if (!isClosed) {
           emit(CollectionViewerState(
             code: LoadingStateCode.loaded,
