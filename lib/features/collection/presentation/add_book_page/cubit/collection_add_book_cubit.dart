@@ -45,15 +45,7 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
   }
 
   Future<void> select(CollectionData data) async {
-    final List<CollectionData> newList =
-        List<CollectionData>.from(state.collectionList);
-    final CollectionData target =
-        newList.firstWhere((CollectionData e) => e == data);
-    final Set<String> set = target.pathList.toSet();
-    set.addAll(state.bookPathSet);
-    target.pathList = set.toList();
     emit(state.copyWith(
-      collectionList: newList,
       selectedCollections: <CollectionData>{...state.selectedCollections, data},
     ));
   }

@@ -20,8 +20,8 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
   @override
   Future<void> refresh() async {
     // Update collection data
-    collectionData.pathList =
-        state.dataList.map((BookData e) => e.absoluteFilePath).toList();
+    collectionData =
+        await CollectionService.repository.getDataById(collectionData.id);
 
     // Get the path list
     final List<String> pathList = collectionData.pathList;
@@ -73,9 +73,10 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
       dataList: List<BookData>.from(state.dataList),
     ));
 
-    // Update collection data
-    collectionData.pathList =
-        state.dataList.map((BookData e) => e.absoluteFilePath).toList();
+    // Save the new order to the past list.
+    for (int i = 0; i < state.dataList.length; i++) {
+      collectionData.pathList[i] = state.dataList[i].absoluteFilePath;
+    }
 
     // Save collection data
     CollectionService.repository.save(collectionData);
