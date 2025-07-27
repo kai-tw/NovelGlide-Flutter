@@ -1,4 +1,4 @@
-part of '../../reset_page.dart';
+part of '../../reset_service.dart';
 
 class SettingsPageListTile extends StatelessWidget {
   const SettingsPageListTile({
@@ -7,14 +7,16 @@ class SettingsPageListTile extends StatelessWidget {
     required this.iconData,
     this.deleteLabel,
     this.isDangerous = true,
-    this.onDelete,
+    this.onAccept,
+    this.onComplete,
   });
 
   final String title;
   final IconData iconData;
   final String? deleteLabel;
   final bool isDangerous;
-  final Future<void> Function()? onDelete;
+  final Future<void> Function()? onAccept;
+  final Future<void> Function()? onComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class SettingsPageListTile extends StatelessWidget {
               title: title,
               deleteIcon: iconData,
               deleteLabel: deleteLabel,
-              onDelete: () => _performDeletion(context),
+              onAccept: () => _performDeletion(context),
             ),
           );
         } else {
@@ -40,14 +42,32 @@ class SettingsPageListTile extends StatelessWidget {
     );
   }
 
-  void _performDeletion(BuildContext context) {
-    onDelete?.call().then((_) {
-      if (context.mounted) {
-        showDialog(
-          context: context,
-          builder: (_) => const CommonSuccessDialog(),
-        );
-      }
-    });
+  Future<void> _performDeletion(BuildContext context) async {
+    // Show loading dialog.
+    await showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        // Notify the user accept the process.
+        onAccept?.call().then((_) {
+          // Process end. Close the loading dialog.
+          if (dialogContext.mounted) {
+            Navigator.of(dialogContext).pop();
+          }
+        });
+
+        return const CommonLoadingDialog();
+      },
+    );
+
+    // Process completed.
+    if (context.mounted) {
+      showDialog(
+        context: context,
+        builder: (_) => const CommonSuccessDialog(),
+      );
+    }
+
+    // Notify the process is completed.
+    onComplete?.call();
   }
 }

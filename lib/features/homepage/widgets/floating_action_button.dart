@@ -35,16 +35,15 @@ class _FloatingActionButton extends StatelessWidget {
           case HomepageNavigationItem.collection:
             child = FloatingActionButton(
               onPressed: () {
-                showDialog<bool?>(
+                showDialog<void>(
                   context: context,
                   barrierDismissible: false,
                   builder: (BuildContext context) =>
-                      const CollectionAddDialog(),
-                ).then((bool? isSuccess) {
-                  if (isSuccess == true) {
-                    collectionListCubit.refresh();
-                  }
-                });
+                      BlocProvider<CollectionListCubit>.value(
+                    value: collectionListCubit,
+                    child: const CollectionAddDialog(),
+                  ),
+                );
               },
               tooltip: appLocalizations.collectionAddBtn,
               child: const Icon(Icons.add),

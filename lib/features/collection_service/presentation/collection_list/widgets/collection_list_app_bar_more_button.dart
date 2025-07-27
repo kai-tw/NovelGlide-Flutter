@@ -13,12 +13,15 @@ class CollectionListAppBarMoreButton extends StatelessWidget {
 
   List<PopupMenuEntry<void>> _itemBuilder(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final CollectionListCubit cubit = BlocProvider.of<CollectionListCubit>(context);
+    final CollectionListCubit cubit =
+        BlocProvider.of<CollectionListCubit>(context);
 
     final List<PopupMenuEntry<void>> entries = <PopupMenuEntry<void>>[];
 
     // Selecting mode button
-    if (cubit.state.code.isLoaded && !cubit.state.isSelecting && cubit.state.dataList.isNotEmpty) {
+    if (cubit.state.code.isLoaded &&
+        !cubit.state.isSelecting &&
+        cubit.state.dataList.isNotEmpty) {
       PopupMenuUtils.addSection(entries, <PopupMenuItem<void>>[
         SharedList.buildSelectionModeButton(context: context, cubit: cubit),
       ]);
@@ -39,10 +42,13 @@ class CollectionListAppBarMoreButton extends StatelessWidget {
     );
 
     // List View Changing Section
-    PopupMenuUtils.addSection(entries, SharedList.buildGeneralViewMenu(context: context, cubit: cubit));
+    PopupMenuUtils.addSection(entries,
+        SharedList.buildGeneralViewMenu(context: context, cubit: cubit));
 
     // Operation Section
-    if (cubit.state.code.isLoaded && cubit.state.isSelecting && cubit.state.selectedSet.isNotEmpty) {
+    if (cubit.state.code.isLoaded &&
+        cubit.state.isSelecting &&
+        cubit.state.selectedSet.isNotEmpty) {
       PopupMenuUtils.addSection(entries, <PopupMenuEntry<void>>[
         PopupMenuItem<void>(
           onTap: () {
@@ -50,7 +56,7 @@ class CollectionListAppBarMoreButton extends StatelessWidget {
               context: context,
               builder: (_) {
                 return CommonDeleteDialog(
-                  onDelete: () => cubit.deleteSelectedCollections(),
+                  onAccept: () => cubit.deleteSelectedCollections(),
                 );
               },
             );

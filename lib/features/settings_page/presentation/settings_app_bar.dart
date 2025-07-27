@@ -1,4 +1,4 @@
-part of 'settings_page.dart';
+part of '../settings_service.dart';
 
 class SettingsAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SettingsAppBar({super.key});

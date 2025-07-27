@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+part of '../../settings_service.dart';
 
 class SettingsCard extends StatelessWidget {
   const SettingsCard({

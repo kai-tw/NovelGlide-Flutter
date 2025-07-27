@@ -1,23 +1,4 @@
-import 'package:flutter/foundation.dart' show kDebugMode;
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import '../../enum/window_size.dart';
-import '../../generated/i18n/app_localizations.dart';
-import '../about_page/about_page.dart';
-import '../appearance_services/appearance_services.dart';
-import '../backup_service/presentation/backup_service_page.dart';
-import '../book_service/presentation/bookshelf/cubit/bookshelf_cubit.dart';
-import '../developer_page/developer_page.dart';
-import '../feedback_service/feedback_service.dart';
-import '../homepage/homepage.dart';
-import '../locale_service/locale_services.dart';
-import '../reset_services/reset_page.dart';
-import '../tts_service/tts_service.dart';
-import 'widgets/settings_list_tile.dart';
-
-part 'settings_app_bar.dart';
+part of '../settings_service.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -28,7 +9,8 @@ class SettingsPage extends StatelessWidget {
     final double windowWidth = MediaQuery.sizeOf(context).width;
     final WindowSize windowClass = WindowSize.fromWidth(windowWidth);
 
-    final List<SettingsListTile> buttonList = <SettingsListTile>[
+    final List<Widget> buttonList = <Widget>[
+      // Appearance settings
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(
@@ -37,6 +19,8 @@ class SettingsPage extends StatelessWidget {
         iconData: Icons.format_paint_outlined,
         title: appLocalizations.appearance,
       ),
+
+      // Backup settings
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(builder: (_) => const BackupServicePage()),
@@ -44,6 +28,8 @@ class SettingsPage extends StatelessWidget {
         iconData: Icons.cloud_outlined,
         title: appLocalizations.generalBackup,
       ),
+
+      // TTS settings
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(builder: (_) => const TtsSettingsPage()),
@@ -51,6 +37,8 @@ class SettingsPage extends StatelessWidget {
         iconData: Icons.volume_up_outlined,
         title: appLocalizations.ttsSettingsTitle,
       ),
+
+      // Locale settings
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(builder: (_) => const LocaleSettingsPage()),
@@ -58,18 +46,11 @@ class SettingsPage extends StatelessWidget {
         iconData: Icons.language_rounded,
         title: appLocalizations.generalLanguages,
       ),
-      SettingsListTile(
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute<void>(
-            builder: (_) => BlocProvider<BookshelfCubit>.value(
-              value: BlocProvider.of<BookshelfCubit>(context),
-              child: const ResetPage(),
-            ),
-          ),
-        ),
-        iconData: Icons.refresh_rounded,
-        title: appLocalizations.resetPageTitle,
-      ),
+
+      // Reset settings
+      const ResetServiceSettingsListTile(),
+
+      // Feedback
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(builder: (_) => const FeedbackPage()),
@@ -77,6 +58,8 @@ class SettingsPage extends StatelessWidget {
         iconData: Icons.feedback_outlined,
         title: appLocalizations.generalFeedback,
       ),
+
+      // Privacy policy
       SettingsListTile(
         onTap: () => launchUrl(
           Uri.parse('https://www.kai-wu.net/novelglide-privacy-policy'),
@@ -85,6 +68,8 @@ class SettingsPage extends StatelessWidget {
         title: appLocalizations.privacyPolicy,
         trailing: const Icon(Icons.north_east_rounded),
       ),
+
+      // About
       SettingsListTile(
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute<void>(builder: (_) => const AboutPage()),
@@ -95,6 +80,7 @@ class SettingsPage extends StatelessWidget {
     ];
 
     if (kDebugMode) {
+      // Developer page
       buttonList.add(
         SettingsListTile(
           onTap: () => Navigator.of(context).push(

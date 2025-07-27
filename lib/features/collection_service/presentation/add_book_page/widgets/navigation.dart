@@ -1,4 +1,4 @@
-part of '../collection_add_book_scaffold.dart';
+part of '../../../collection_service.dart';
 
 class _Navigation extends StatelessWidget {
   const _Navigation();
@@ -6,8 +6,6 @@ class _Navigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final CollectionAddBookCubit cubit =
-        BlocProvider.of<CollectionAddBookCubit>(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -18,29 +16,16 @@ class _Navigation extends StatelessWidget {
         child: OverflowBar(
           alignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            // Add a collection button
             TextButton.icon(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (_) => const CollectionAddDialog(),
-                ).then((_) {
-                  cubit.refresh();
-                });
-              },
+              onPressed: () => _onAddPressed(context),
               icon: const Icon(Icons.add),
               label: Text(appLocalizations.generalAdd),
             ),
+
+            // Save button
             TextButton.icon(
-              onPressed: () async {
-                Navigator.of(context).pop();
-                cubit.save();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(appLocalizations.collectionSaved),
-                  ),
-                );
-              },
+              onPressed: () => _onSavePressed(context),
               icon: const Icon(Icons.save_rounded),
               label: Text(appLocalizations.generalSave),
             ),
@@ -48,5 +33,38 @@ class _Navigation extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onAddPressed(BuildContext context) {
+    final CollectionAddBookCubit cubit =
+        BlocProvider.of<CollectionAddBookCubit>(context);
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => BlocProvider<CollectionAddBookCubit>.value(
+        value: cubit,
+        child: const CollectionAddDialog(),
+      ),
+    );
+  }
+
+  Future<void> _onSavePressed(BuildContext context) async {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final CollectionAddBookCubit cubit =
+        BlocProvider.of<CollectionAddBookCubit>(context);
+
+    // Save
+    await cubit.save();
+
+    // Show saved message
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(appLocalizations.collectionSaved),
+        ),
+      );
+      Navigator.of(context).pop();
+    }
   }
 }

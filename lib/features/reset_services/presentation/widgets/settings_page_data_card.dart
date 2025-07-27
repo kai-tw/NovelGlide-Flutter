@@ -1,4 +1,4 @@
-part of '../../reset_page.dart';
+part of '../../reset_service.dart';
 
 class SettingsPageDataCard extends StatelessWidget {
   const SettingsPageDataCard({super.key});
@@ -19,35 +19,28 @@ class SettingsPageDataCard extends StatelessWidget {
                   ),
             ),
           ),
+
+          // Delete all books
           SettingsPageListTile(
-            onDelete: () async => CollectionService.repository.reset(),
+            onAccept: BookService.repository.reset,
+            onComplete: BlocProvider.of<BookshelfCubit>(context).refresh,
+            iconData: Icons.delete_forever_rounded,
+            title: appLocalizations.resetPageDeleteAllBooks,
+          ),
+
+          // Delete all collections
+          SettingsPageListTile(
+            onAccept: CollectionService.repository.reset,
+            onComplete: BlocProvider.of<CollectionListCubit>(context).refresh,
             iconData: Icons.delete_forever_rounded,
             title: appLocalizations.resetPageDeleteAllCollections,
           ),
+
+          // Delete all bookmarks
           SettingsPageListTile(
-            onDelete: () async => BookmarkService.repository.reset(),
+            onAccept: () async => BookmarkService.repository.reset(),
             iconData: Icons.delete_forever_rounded,
             title: appLocalizations.resetPageDeleteAllBookmarks,
-          ),
-          SettingsPageListTile(
-            onDelete: () async {
-              await showDialog<void>(
-                context: context,
-                builder: (BuildContext dialogContext) {
-                  BookService.repository.reset().then((_) {
-                    if (dialogContext.mounted) {
-                      Navigator.of(dialogContext).pop();
-                    }
-                  });
-                  return const CommonLoadingDialog();
-                },
-              );
-              if (context.mounted) {
-                BlocProvider.of<BookshelfCubit>(context).refresh();
-              }
-            },
-            iconData: Icons.delete_forever_rounded,
-            title: appLocalizations.resetPageDeleteAllBooks,
           ),
         ],
       ),

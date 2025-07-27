@@ -1,4 +1,4 @@
-part of '../../reset_page.dart';
+part of '../../reset_service.dart';
 
 class SettingsPageCacheCard extends StatelessWidget {
   const SettingsPageCacheCard({super.key});
@@ -19,8 +19,10 @@ class SettingsPageCacheCard extends StatelessWidget {
                   ),
             ),
           ),
+
+          // Clear cache (Currently only for Reader)
           SettingsPageListTile(
-            onDelete: () async => LocationCacheRepository.clear(),
+            onAccept: () async => LocationCacheRepository.clear(),
             iconData: Icons.delete_forever_rounded,
             title: appLocalizations.resetPageCacheClear,
             isDangerous: false,

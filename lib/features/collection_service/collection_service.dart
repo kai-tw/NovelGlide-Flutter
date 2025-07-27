@@ -1,8 +1,12 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:collection/collection.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path/path.dart';
 
 import '../../../core/utils/random_extension.dart';
 import '../../core/services/file_system_service/file_system_service.dart';
@@ -28,6 +32,18 @@ import 'presentation/collection_viewer/collection_viewer.dart';
 part 'data/collection_data.dart';
 part 'data/collection_preference.dart';
 part 'data/collection_repository.dart';
+part 'presentation/add_book_page/collection_add_book_scaffold.dart';
+part 'presentation/add_book_page/cubit/collection_add_book_cubit.dart';
+part 'presentation/add_book_page/cubit/collection_add_book_state.dart';
+part 'presentation/add_book_page/widgets/list_view.dart';
+part 'presentation/add_book_page/widgets/navigation.dart';
+part 'presentation/add_dialog/collection_add_dialog.dart';
+part 'presentation/add_dialog/cubit/collection_add_cubit.dart';
+part 'presentation/add_dialog/cubit/collection_add_state.dart';
+part 'presentation/add_dialog/widgets/collection_add_cancel_button.dart';
+part 'presentation/add_dialog/widgets/collection_add_form.dart';
+part 'presentation/add_dialog/widgets/collection_add_name_field.dart';
+part 'presentation/add_dialog/widgets/collection_add_submit_button.dart';
 part 'presentation/collection_list/collection_list.dart';
 part 'presentation/collection_list/collection_list_app_bar.dart';
 part 'presentation/collection_list/collection_list_scaffold_body.dart';

@@ -1,18 +1,17 @@
-part of '../collection_add_dialog.dart';
+part of '../../../collection_service.dart';
 
-class _SubmitButton extends StatelessWidget {
-  const _SubmitButton();
+class CollectionAddSubmitButton extends StatelessWidget {
+  const CollectionAddSubmitButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<_Cubit, _State>(
-      buildWhen: (_State previous, _State current) =>
-          previous.name != current.name,
-      builder: (BuildContext context, _State state) {
-        final bool isDisabled = state.name?.isEmpty ?? true;
+    return BlocBuilder<CollectionAddCubit, CollectionAddState>(
+      buildWhen: (CollectionAddState previous, CollectionAddState current) =>
+          previous.isValid != current.isValid,
+      builder: (BuildContext context, CollectionAddState state) {
         return ElevatedButton.icon(
-          onPressed: isDisabled ? null : () => _onPressed(context, state),
+          onPressed: state.isValid ? () => _onPressed(context, state) : null,
           style: ElevatedButton.styleFrom(
             iconColor: Theme.of(context).colorScheme.onPrimary,
             foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -27,13 +26,17 @@ class _SubmitButton extends StatelessWidget {
 
   Future<void> _onPressed(
     BuildContext context,
-    _State state,
+    CollectionAddState state,
   ) async {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
-    if (Form.of(context).validate()) {
-      cubit.submit();
+    final CollectionAddCubit cubit =
+        BlocProvider.of<CollectionAddCubit>(context);
 
+    // Submit the form
+    await cubit.submit();
+
+    // Show up the success message
+    if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -41,7 +44,7 @@ class _SubmitButton extends StatelessWidget {
           ),
         ),
       );
-      Navigator.of(context).pop(true);
+      Navigator.of(context).pop();
     }
   }
 }

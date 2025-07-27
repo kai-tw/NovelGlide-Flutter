@@ -1,7 +1,7 @@
-part of '../collection_add_dialog.dart';
+part of '../../../collection_service.dart';
 
-class _CancelButton extends StatelessWidget {
-  const _CancelButton();
+class CollectionAddCloseButton extends StatelessWidget {
+  const CollectionAddCloseButton({super.key});
 
   @override
   Widget build(BuildContext context) {

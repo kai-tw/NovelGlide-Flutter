@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../enum/common_button_state_code.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../../settings_page/settings_card.dart';
+import '../../../settings_page/settings_service.dart';
 import '../../data/model/reader_page_num_type.dart';
 import '../../data/model/reader_settings_data.dart';
 import '../reader_page/cubit/reader_cubit.dart';

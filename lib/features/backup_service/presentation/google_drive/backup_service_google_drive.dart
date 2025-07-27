@@ -7,7 +7,7 @@ import '../../../../core/shared_components/common_error_dialog.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../locale_service/locale_services.dart';
-import '../../../settings_page/settings_card.dart';
+import '../../../settings_page/settings_service.dart';
 import '../../backup_service.dart';
 import '../process_dialog/backup_service_process_dialog.dart';
 import 'cubit/backup_service_google_drive_cubit.dart';

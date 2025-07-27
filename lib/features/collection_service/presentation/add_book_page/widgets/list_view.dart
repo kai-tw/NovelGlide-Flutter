@@ -1,4 +1,4 @@
-part of '../collection_add_book_scaffold.dart';
+part of '../../../collection_service.dart';
 
 class _ListView extends StatelessWidget {
   const _ListView();

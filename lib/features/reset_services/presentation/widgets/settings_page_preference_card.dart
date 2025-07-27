@@ -1,4 +1,4 @@
-part of '../../reset_page.dart';
+part of '../../reset_service.dart';
 
 class SettingsPagePreferenceCard extends StatelessWidget {
   const SettingsPagePreferenceCard({super.key});
@@ -20,25 +20,25 @@ class SettingsPagePreferenceCard extends StatelessWidget {
             ),
           ),
           SettingsPageListTile(
-            onDelete: BookService.preference.reset,
+            onAccept: BookService.preference.reset,
             iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetBookshelf,
             deleteLabel: appLocalizations.generalReset,
           ),
           SettingsPageListTile(
-            onDelete: CollectionService.preference.reset,
+            onAccept: CollectionService.preference.reset,
             iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetCollectionList,
             deleteLabel: appLocalizations.generalReset,
           ),
           SettingsPageListTile(
-            onDelete: BookmarkService.preference.reset,
+            onAccept: BookmarkService.preference.reset,
             iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetBookmarkList,
             deleteLabel: appLocalizations.generalReset,
           ),
           SettingsPageListTile(
-            onDelete: () async {
+            onAccept: () async {
               await const ReaderSettingsData().save();
             },
             iconData: Icons.refresh_rounded,

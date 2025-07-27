@@ -1,4 +1,4 @@
-part of '../collection_add_book_scaffold.dart';
+part of '../../../collection_service.dart';
 
 class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
   factory CollectionAddBookCubit(Set<BookData> dataSet) {

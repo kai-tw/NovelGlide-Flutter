@@ -5,7 +5,7 @@ import '../../generated/i18n/app_localizations.dart';
 class CommonDeleteDialog extends StatelessWidget {
   const CommonDeleteDialog({
     super.key,
-    this.onDelete,
+    this.onAccept,
     this.title,
     this.content,
     this.deleteIcon,
@@ -16,7 +16,7 @@ class CommonDeleteDialog extends StatelessWidget {
   final String? content;
   final IconData? deleteIcon;
   final String? deleteLabel;
-  final void Function()? onDelete;
+  final void Function()? onAccept;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class CommonDeleteDialog extends StatelessWidget {
         TextButton.icon(
           onPressed: () {
             Navigator.of(context).pop();
-            onDelete?.call();
+            onAccept?.call();
           },
           style: TextButton.styleFrom(
             iconColor: Theme.of(context).colorScheme.error,
