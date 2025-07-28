@@ -81,10 +81,10 @@ class BookAddActionBar extends StatelessWidget {
     }
   }
 
-  void _onSubmitPressed(BuildContext context) {
+  Future<void> _onSubmitPressed(BuildContext context) async {
     final BookAddCubit cubit = BlocProvider.of<BookAddCubit>(context);
 
-    showDialog<void>(
+    await showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
@@ -98,10 +98,10 @@ class BookAddActionBar extends StatelessWidget {
           child: CommonLoadingDialog(),
         );
       },
-    ).then((_) {
-      if (context.mounted) {
-        Navigator.of(context).pop();
-      }
-    });
+    );
+
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 }

@@ -16,9 +16,9 @@ class CollectionAddBookScaffold extends StatelessWidget {
           title: Text(appLocalizations.collectionAddToCollections),
         ),
         body: const SafeArea(
-          child: _ListView(),
+          child: CollectionAddBookList(),
         ),
-        bottomNavigationBar: const _Navigation(),
+        bottomNavigationBar: const CollectionAddBookNavigation(),
       ),
     );
   }

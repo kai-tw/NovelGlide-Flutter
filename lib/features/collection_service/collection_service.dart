@@ -31,47 +31,27 @@ import 'presentation/collection_list/cubit/collection_list_cubit.dart';
 import 'presentation/collection_viewer/collection_viewer.dart';
 
 part 'data/collection_data.dart';
-
 part 'data/collection_preference.dart';
-
 part 'data/collection_repository.dart';
-
 part 'presentation/add_book_page/collection_add_book_scaffold.dart';
-
 part 'presentation/add_book_page/cubit/collection_add_book_cubit.dart';
-
 part 'presentation/add_book_page/cubit/collection_add_book_state.dart';
-
-part 'presentation/add_book_page/widgets/list_view.dart';
-
-part 'presentation/add_book_page/widgets/navigation.dart';
-
+part 'presentation/add_book_page/widgets/collection_add_book_list.dart';
+part 'presentation/add_book_page/widgets/collection_add_book_list_item.dart';
+part 'presentation/add_book_page/widgets/collection_add_book_navigation.dart';
 part 'presentation/add_dialog/collection_add_dialog.dart';
-
 part 'presentation/add_dialog/cubit/collection_add_cubit.dart';
-
 part 'presentation/add_dialog/cubit/collection_add_state.dart';
-
 part 'presentation/add_dialog/widgets/collection_add_cancel_button.dart';
-
 part 'presentation/add_dialog/widgets/collection_add_form.dart';
-
 part 'presentation/add_dialog/widgets/collection_add_name_field.dart';
-
 part 'presentation/add_dialog/widgets/collection_add_submit_button.dart';
-
 part 'presentation/collection_list/collection_list.dart';
-
 part 'presentation/collection_list/collection_list_app_bar.dart';
-
 part 'presentation/collection_list/collection_list_scaffold_body.dart';
-
 part 'presentation/collection_list/widgets/collection_list_app_bar_more_button.dart';
-
 part 'presentation/collection_list/widgets/collection_list_collection_widget.dart';
-
 part 'presentation/collection_list/widgets/collection_list_draggable_collection.dart';
-
 part 'presentation/collection_list/widgets/collection_list_item.dart';
 
 class CollectionService {

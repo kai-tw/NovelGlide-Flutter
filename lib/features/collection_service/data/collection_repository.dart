@@ -45,7 +45,7 @@ class CollectionRepository {
     final Map<String, dynamic> jsonData = jsonFile.data;
 
     // Return the data, or create a new one if it doesn't exist
-    return jsonData[id] ?? await create();
+    return CollectionData.fromJson(jsonData[id]);
   }
 
   /// Retrieve a list of all [CollectionData] instances.

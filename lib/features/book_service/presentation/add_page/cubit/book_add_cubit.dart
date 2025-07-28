@@ -53,8 +53,8 @@ class BookAddCubit extends Cubit<BookAddState> {
   }
 
   Future<void> submit() async {
-    for (BookAddItemState itemState in state.itemState) {
-      await BookService.repository.addBook(itemState.absolutePath);
-    }
+    await BookService.repository.addBooks(state.itemState
+        .map((BookAddItemState itemState) => itemState.absolutePath)
+        .toSet());
   }
 }

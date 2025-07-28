@@ -1,7 +1,7 @@
 part of '../../../collection_service.dart';
 
-class _Navigation extends StatelessWidget {
-  const _Navigation();
+class CollectionAddBookNavigation extends StatelessWidget {
+  const CollectionAddBookNavigation({super.key});
 
   @override
   Widget build(BuildContext context) {

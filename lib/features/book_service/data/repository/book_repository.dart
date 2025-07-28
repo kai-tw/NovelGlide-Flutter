@@ -44,12 +44,15 @@ class BookRepository {
   Future<List<ChapterData>> getChapterList(String path) =>
       EpubUtils.getChapterList(path);
 
-  /// Add a book to the library.
-  Future<void> addBook(String filePath) async {
+  /// Add some books to the library.
+  Future<void> addBooks(Set<String> externalPathSet) async {
     final Directory libraryDirectory =
         await FileSystemService.document.libraryDirectory;
-    final String destination = join(libraryDirectory.path, basename(filePath));
-    File(filePath).copySync(destination);
+
+    for (String path in externalPathSet) {
+      final String destination = join(libraryDirectory.path, basename(path));
+      File(path).copySync(destination);
+    }
 
     // Send a notification.
     onChangedController.add(null);
