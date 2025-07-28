@@ -109,7 +109,7 @@ class BookRepository {
     directory.createSync(recursive: true);
 
     BookmarkService.repository.reset();
-    CollectionService.repository.reset();
+    CollectionService.repository.removeAllBooksFromAll();
     LocationCacheRepository.clear();
 
     // Send a notification.

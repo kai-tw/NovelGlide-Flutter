@@ -144,6 +144,21 @@ class CollectionRepository {
     onChangedController.add(null);
   }
 
+  Future<void> removeAllBooksFromAll() async {
+    // Load json file
+    final JsonFileMetaModel jsonFile = await this.jsonFile;
+
+    // Load json data
+    final Map<String, dynamic> jsonData = jsonFile.data;
+
+    // Remove all the books from all collections
+    for (String id in jsonData.keys) {
+      final CollectionData data = CollectionData.fromJson(jsonData[id]!);
+      data.pathList.clear();
+      _saveData(data);
+    }
+  }
+
   /// Reset the collection repository.
   Future<void> reset() async {
     // Clear the content of json file
