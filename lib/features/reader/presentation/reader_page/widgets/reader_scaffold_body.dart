@@ -1,7 +1,7 @@
 part of '../reader.dart';
 
-class _ScaffoldBody extends StatelessWidget {
-  const _ScaffoldBody();
+class ReaderScaffoldBody extends StatelessWidget {
+  const ReaderScaffoldBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class _ScaffoldBody extends StatelessWidget {
 
               /// Reader Overlay (including loading and searching widgets.)
               const Positioned.fill(
-                child: _OverlapWidget(),
+                child: ReaderOverlapWidget(),
               ),
             ],
           ),
@@ -62,7 +62,7 @@ class _ScaffoldBody extends StatelessWidget {
             ),
           ),
         ),
-        const _Pagination(),
+        const ReaderPagination(),
       ],
     );
   }

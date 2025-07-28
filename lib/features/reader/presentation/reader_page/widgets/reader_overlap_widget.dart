@@ -1,7 +1,7 @@
 part of '../reader.dart';
 
-class _OverlapWidget extends StatelessWidget {
-  const _OverlapWidget();
+class ReaderOverlapWidget extends StatelessWidget {
+  const ReaderOverlapWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class _OverlapWidget extends StatelessWidget {
           switchOutCurve: Curves.easeInOut,
           child: state.code.isLoaded
               ? const SizedBox.shrink()
-              : const _LoadingWidget(),
+              : const ReaderLoadingWidget(),
         );
       },
     );

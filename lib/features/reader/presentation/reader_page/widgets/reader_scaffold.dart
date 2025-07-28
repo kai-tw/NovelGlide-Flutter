@@ -1,7 +1,7 @@
 part of '../reader.dart';
 
-class _Scaffold extends StatelessWidget {
-  const _Scaffold();
+class ReaderScaffold extends StatelessWidget {
+  const ReaderScaffold({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +27,9 @@ class _CompactView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: _AppBar(),
+      appBar: ReaderAppBar(),
       body: SafeArea(
-        child: _ScaffoldBody(),
+        child: ReaderScaffoldBody(),
       ),
       bottomNavigationBar: SafeArea(child: ReaderNavigationBar()),
     );
@@ -42,12 +42,12 @@ class _MediumView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: _AppBar(),
+      appBar: ReaderAppBar(),
       body: SafeArea(
         child: Row(
           children: <Widget>[
             ReaderNavigationRail(),
-            Expanded(child: _ScaffoldBody()),
+            Expanded(child: ReaderScaffoldBody()),
           ],
         ),
       ),

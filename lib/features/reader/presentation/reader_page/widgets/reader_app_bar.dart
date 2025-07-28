@@ -1,7 +1,7 @@
 part of '../reader.dart';
 
-class _AppBar extends StatelessWidget implements PreferredSizeWidget {
-  const _AppBar();
+class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const ReaderAppBar({super.key});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);

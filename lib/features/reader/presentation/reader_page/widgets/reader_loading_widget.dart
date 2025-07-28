@@ -1,7 +1,7 @@
 part of '../reader.dart';
 
-class _LoadingWidget extends StatelessWidget {
-  const _LoadingWidget();
+class ReaderLoadingWidget extends StatelessWidget {
+  const ReaderLoadingWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

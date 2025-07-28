@@ -1,7 +1,7 @@
 part of '../reader.dart';
 
-class _Pagination extends StatelessWidget {
-  const _Pagination();
+class ReaderPagination extends StatelessWidget {
+  const ReaderPagination({super.key});
 
   @override
   Widget build(BuildContext context) {
