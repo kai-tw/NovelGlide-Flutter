@@ -31,7 +31,7 @@ class BookmarkListAppBarMoreButton extends StatelessWidget {
       SharedList.buildSortMenu(
         titleList: <String>[
           appLocalizations.bookmarkListSortName,
-          appLocalizations.bookmarkListSortSavedTime,
+          appLocalizations.bookmarkListSortDateSaved,
         ],
         sortOrderList: <SortOrderCode>[
           SortOrderCode.name,

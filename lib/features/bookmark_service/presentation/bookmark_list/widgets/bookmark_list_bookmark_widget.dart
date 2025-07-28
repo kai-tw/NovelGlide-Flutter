@@ -32,7 +32,7 @@ class BookmarkListBookmarkWidget extends StatelessWidget {
     final List<Widget> subtitleChildren = <Widget>[
       // Days passed text
       Text(
-        appLocalizations.savedTime(daysPassed),
+        appLocalizations.dateSaved(daysPassed),
         style: Theme.of(context).textTheme.bodySmall,
       ),
     ];

@@ -45,22 +45,15 @@ class LocaleServices {
 
   static String languageNameOf(BuildContext context, Locale locale) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    switch (locale.languageCode) {
-      case 'en':
-        return appLocalizations.languageCodeEnUS;
-
-      case 'zh':
-        switch (locale.countryCode) {
-          case 'CN':
-            return appLocalizations.languageCodeZhCN;
-
-          default:
-            return appLocalizations.languageCodeZhTW;
-        }
-
-      default:
-        return locale.languageCode;
-    }
+    return switch (locale) {
+      const Locale('en') => appLocalizations.languageCodeEnUS,
+      const Locale('zh') => appLocalizations.languageCodeZhTW,
+      const Locale.fromSubtags(
+            languageCode: 'zh', countryCode: 'CN', scriptCode: 'Hans') =>
+        appLocalizations.languageCodeZhCN,
+      const Locale('ja') => appLocalizations.languageCodeJaJP,
+      _ => locale.toLanguageTag(),
+    };
   }
 
   static String? dateTimeOf(BuildContext context, DateTime? dateTime) {
