@@ -17,7 +17,6 @@ import '../settings_bottom_sheet/reader_bottom_sheet.dart';
 import 'cubit/reader_cubit.dart';
 
 part 'widgets/app_bar.dart';
-part 'widgets/breadcrumb.dart';
 part 'widgets/loading_widget.dart';
 part 'widgets/nav/default/reader_nav_bookmark_button.dart';
 part 'widgets/nav/default/reader_nav_next_button.dart';
@@ -32,6 +31,7 @@ part 'widgets/nav/tts/reader_tts_settings_button.dart';
 part 'widgets/nav/tts/reader_tts_stop_button.dart';
 part 'widgets/overlap_widget.dart';
 part 'widgets/pagination.dart';
+part 'widgets/reader_breadcrumb.dart';
 part 'widgets/scaffold.dart';
 part 'widgets/scaffold_body.dart';
 

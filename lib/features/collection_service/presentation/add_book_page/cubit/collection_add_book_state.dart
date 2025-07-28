@@ -25,13 +25,13 @@ class CollectionAddBookState extends Equatable {
     LoadingStateCode? code,
     List<CollectionData>? collectionList,
     Set<CollectionData>? selectedCollections,
-    Set<String>? bookPathSet,
+    Set<String>? bookRelativePathSet,
   }) {
     return CollectionAddBookState(
       code: code ?? this.code,
       collectionList: collectionList ?? this.collectionList,
       selectedCollections: selectedCollections ?? this.selectedCollections,
-      bookRelativePathSet: bookPathSet ?? this.bookRelativePathSet,
+      bookRelativePathSet: bookRelativePathSet ?? this.bookRelativePathSet,
     );
   }
 }

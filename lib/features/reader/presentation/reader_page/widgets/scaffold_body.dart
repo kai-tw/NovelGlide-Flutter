@@ -41,7 +41,7 @@ class _ScaffoldBody extends StatelessWidget {
   Widget _buildReader(ReaderCubit cubit) {
     return Column(
       children: <Widget>[
-        const _Breadcrumb(),
+        const ReaderBreadcrumb(),
         Expanded(
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
