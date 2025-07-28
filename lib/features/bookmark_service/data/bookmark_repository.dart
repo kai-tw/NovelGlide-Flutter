@@ -11,20 +11,27 @@ class BookmarkRepository {
     );
   }
 
+  final StreamController<void> onChangedController =
+      StreamController<void>.broadcast();
+
   /// Retrieve a bookmark by its book path.
   Future<BookmarkData?> get(String bookPath) async {
+    // Load json data
     final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
+
+    // Use relative path.
     bookPath = await BookService.repository.getRelativePath(bookPath);
-    return jsonData.containsKey(bookPath)
-        ? BookmarkData.fromJson(jsonData[bookPath]!)
-        : null;
+
+    return jsonData[bookPath];
   }
 
   /// Retrieve a list of all bookmarks.
   Future<List<BookmarkData>> getList() async {
+    // Load json data
     final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
+
     final List<BookmarkData> retList = <BookmarkData>[];
 
     for (String key in jsonData.keys) {
@@ -33,7 +40,7 @@ class BookmarkRepository {
       if (await BookService.repository.exists(data.bookPath)) {
         retList.add(data);
       } else {
-        delete(data);
+        deleteData(data);
       }
     }
 
@@ -41,9 +48,11 @@ class BookmarkRepository {
   }
 
   /// Save the current bookmark to the JSON file.
-  Future<void> save(BookmarkData data) async {
+  Future<void> _saveData(BookmarkData data) async {
+    // Load json data
     final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
+
     final BookmarkData savedData = data.copyWith(
       bookPath: await BookService.repository.getRelativePath(data.bookPath),
       savedTime: DateTime.now(),
@@ -52,8 +61,16 @@ class BookmarkRepository {
     jsonFile.data = jsonData;
   }
 
+  /// Save the current bookmark to the JSON file.
+  Future<void> saveData(BookmarkData data) async {
+    await _saveData(data);
+
+    // Send a notification.
+    onChangedController.add(null);
+  }
+
   /// Delete the current bookmark from the JSON file.
-  Future<void> delete(BookmarkData data) async {
+  Future<void> _deleteData(BookmarkData data) async {
     final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
     final String path =
@@ -62,18 +79,34 @@ class BookmarkRepository {
     jsonFile.data = jsonData;
   }
 
+  /// Delete the current bookmark from the JSON file.
+  Future<void> deleteData(BookmarkData data) async {
+    await _deleteData(data);
+
+    // Send a notification
+    onChangedController.add(null);
+  }
+
   /// Delete the bookmark by path.
   Future<void> deleteByPath(String path) async {
     final List<BookmarkData> list = await getList();
-    list
-        .where((BookmarkData e) =>
-            BookService.repository.getRelativePath(e.bookPath) ==
-            BookService.repository.getRelativePath(path))
-        .forEach(delete);
+
+    for (BookmarkData data in list) {
+      if (await BookService.repository.getRelativePath(data.bookPath) ==
+          await BookService.repository.getRelativePath(path)) {
+        await deleteData(data);
+      }
+    }
+
+    // Send a notification
+    onChangedController.add(null);
   }
 
   /// Reset the bookmark repository.
   Future<void> reset() async {
     (await jsonFile).clear();
+
+    // Send a notification
+    onChangedController.add(null);
   }
 }

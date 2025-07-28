@@ -42,7 +42,7 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
           homepageCubit.isEnabled = true;
         },
         onDragCompleted: () async {
-          BookmarkService.repository.delete(bookmarkData);
+          BookmarkService.repository.deleteData(bookmarkData);
           cubit.refresh();
 
           ScaffoldMessenger.of(context).showSnackBar(

@@ -1,7 +1,5 @@
 part of '../collection_service.dart';
 
-typedef CollectionRepositoryJsonMap = Map<String, CollectionData>;
-
 class CollectionRepository {
   CollectionRepository();
 
@@ -16,18 +14,11 @@ class CollectionRepository {
     );
   }
 
-  Future<CollectionRepositoryJsonMap> get jsonData async {
-    final JsonFileMetaModel jsonFile = await this.jsonFile;
-    return jsonFile.data.map((String key, dynamic value) {
-      return MapEntry<String, CollectionData>(
-          key, CollectionData.fromJson(value));
-    });
-  }
-
   /// Create a new empty collection with a unique ID.
   Future<CollectionData> create([String? name]) async {
-    // Load json data;
-    final CollectionRepositoryJsonMap jsonData = await this.jsonData;
+    // Load json data
+    final JsonFileMetaModel jsonFile = await this.jsonFile;
+    final Map<String, dynamic> jsonData = jsonFile.data;
 
     // Create a new id
     String id;
@@ -49,8 +40,9 @@ class CollectionRepository {
   }
 
   Future<CollectionData> getDataById(String id) async {
-    // Load json data;
-    final CollectionRepositoryJsonMap jsonData = await this.jsonData;
+    // Load json data
+    final JsonFileMetaModel jsonFile = await this.jsonFile;
+    final Map<String, dynamic> jsonData = jsonFile.data;
 
     // Return the data, or create a new one if it doesn't exist
     return jsonData[id] ?? await create();
@@ -67,6 +59,7 @@ class CollectionRepository {
 
   /// Save a collection to json file.
   Future<void> _saveData(CollectionData data) async {
+    // Load json data
     final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
 

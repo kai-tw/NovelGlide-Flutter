@@ -5,11 +5,21 @@ typedef BookmarkListState = SharedListState<BookmarkData>;
 class BookmarkListCubit extends SharedListCubit<BookmarkData> {
   factory BookmarkListCubit() {
     final BookmarkListCubit cubit = BookmarkListCubit._();
-    WidgetsBinding.instance.addPostFrameCallback((_) => cubit.refresh());
+
+    // Refresh at first
+    cubit.refresh();
+
+    // Listen to bookmarks changes.
+    cubit._onChangedSubscription = BookmarkService
+        .repository.onChangedController.stream
+        .listen((_) => cubit.refresh());
+
     return cubit;
   }
 
   BookmarkListCubit._() : super(const SharedListState<BookmarkData>());
+
+  late final StreamSubscription<void> _onChangedSubscription;
 
   @override
   Future<void> refresh() async {
@@ -36,7 +46,7 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
   }
 
   bool deleteSelectedBookmarks() {
-    state.selectedSet.forEach(BookmarkService.repository.delete);
+    state.selectedSet.forEach(BookmarkService.repository.deleteData);
     refresh();
     return true;
   }
@@ -68,5 +78,11 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
       isAscending: state.isAscending,
       listType: state.listType,
     ));
+  }
+
+  @override
+  Future<void> close() {
+    _onChangedSubscription.cancel();
+    return super.close();
   }
 }
