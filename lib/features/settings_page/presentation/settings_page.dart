@@ -70,13 +70,7 @@ class SettingsPage extends StatelessWidget {
       ),
 
       // About
-      SettingsListTile(
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute<void>(builder: (_) => const AboutPage()),
-        ),
-        iconData: Icons.info_outline,
-        title: appLocalizations.generalAbout,
-      ),
+      const AboutPageAppVersion(),
     ];
 
     if (kDebugMode) {
