@@ -5,7 +5,7 @@ class _FabSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
+    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
     final double windowWidth = MediaQuery.sizeOf(context).width;
     final WindowSize windowClass = WindowSize.fromWidth(windowWidth);
     double maxWidth = windowWidth - kFloatingActionButtonMargin;
@@ -17,25 +17,24 @@ class _FabSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(left: kFloatingActionButtonMargin),
       constraints: BoxConstraints(maxWidth: maxWidth),
-      child: BlocBuilder<_Cubit, _State>(
-        builder: (BuildContext context, _State state) {
+      child: BlocBuilder<TocCubit, TocState>(
+        builder: (BuildContext context, TocState state) {
           final List<Widget> children = <Widget>[
             ElevatedButton.icon(
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute<void>(
-                      builder: (_) => ReaderWidget(
-                        bookPath: cubit.bookData.absoluteFilePath,
-                        bookData: cubit.bookData,
-                      ),
-                    ))
-                    .then((_) => cubit.refresh());
+                Navigator.of(context).push(MaterialPageRoute<void>(
+                  builder: (_) => ReaderWidget(
+                    bookPath: cubit.bookData.absoluteFilePath,
+                    bookData: cubit.bookData,
+                  ),
+                ));
               },
               style: ElevatedButton.styleFrom(
                 iconColor: Theme.of(context).colorScheme.onPrimary,
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0, vertical: 12.0),
                 fixedSize: const Size.fromHeight(56.0),
                 elevation: 5.0,
               ),
@@ -49,22 +48,21 @@ class _FabSection extends StatelessWidget {
               padding: const EdgeInsets.only(left: 16.0),
               child: ElevatedButton.icon(
                 onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute<void>(
-                        builder: (_) => ReaderWidget(
-                          bookPath: cubit.bookData.absoluteFilePath,
-                          bookData: cubit.bookData,
-                          destinationType: ReaderDestinationType.bookmark,
-                          destination: state.bookmarkData?.startCfi,
-                        ),
-                      ))
-                      .then((_) => cubit.refresh());
+                  Navigator.of(context).push(MaterialPageRoute<void>(
+                    builder: (_) => ReaderWidget(
+                      bookPath: cubit.bookData.absoluteFilePath,
+                      bookData: cubit.bookData,
+                      destinationType: ReaderDestinationType.bookmark,
+                      destination: state.bookmarkData?.startCfi,
+                    ),
+                  ));
                 },
                 style: ElevatedButton.styleFrom(
                   iconColor: Theme.of(context).colorScheme.onPrimary,
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0, vertical: 12.0),
                   fixedSize: const Size.fromHeight(56.0),
                   elevation: 5.0,
                 ),

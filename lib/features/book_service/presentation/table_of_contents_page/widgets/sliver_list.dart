@@ -8,12 +8,12 @@ class _SliverList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    return BlocBuilder<_Cubit, _State>(
-      buildWhen: (_State previous, _State current) =>
+    return BlocBuilder<TocCubit, TocState>(
+      buildWhen: (TocState previous, TocState current) =>
           previous.code != current.code ||
           previous.chapterList != current.chapterList ||
           previous.bookmarkData != current.bookmarkData,
-      builder: (BuildContext context, _State state) {
+      builder: (BuildContext context, TocState state) {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
@@ -33,9 +33,9 @@ class _SliverList extends StatelessWidget {
     );
   }
 
-  Widget _buildList(BuildContext context, _State state) {
-    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
-    final List<_ListItem> allChapterList = _constructChapterTree(state.chapterList, 0);
+  Widget _buildList(BuildContext context, TocState state) {
+    final List<_ListItem> allChapterList =
+        _constructChapterTree(state.chapterList, 0);
 
     return SliverList(
       delegate: SliverChildBuilderDelegate(
@@ -43,22 +43,21 @@ class _SliverList extends StatelessWidget {
           final ChapterData chapterData = allChapterList[index].chapterData;
           final int nestingLevel = allChapterList[index].nestingLevel;
           final BookmarkData? bookmarkData = state.bookmarkData;
-          final bool isBookmarked = bookmarkData?.chapterFileName == chapterData.fileName;
+          final bool isBookmarked =
+              bookmarkData?.chapterFileName == chapterData.fileName;
           final ThemeData themeData = Theme.of(context);
 
           return ListTile(
             onTap: () {
-              Navigator.of(context)
-                  .push(
-                    MaterialPageRoute<void>(
-                      builder: (_) => ReaderWidget(
-                        bookData: bookData,
-                        bookPath: bookData.absoluteFilePath,
-                        destination: chapterData.fileName,
-                      ),
-                    ),
-                  )
-                  .then((_) => cubit.refresh());
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => ReaderWidget(
+                    bookData: bookData,
+                    bookPath: bookData.absoluteFilePath,
+                    destination: chapterData.fileName,
+                  ),
+                ),
+              );
             },
             dense: true,
             contentPadding: EdgeInsets.only(

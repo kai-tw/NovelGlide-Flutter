@@ -7,7 +7,7 @@ class _CompactView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
+    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
     return SafeArea(
       child: Column(
         children: <Widget>[

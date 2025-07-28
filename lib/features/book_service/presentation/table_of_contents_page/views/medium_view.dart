@@ -52,9 +52,9 @@ class _MediumView extends StatelessWidget {
   }
 
   Widget _buildRightColumn(BuildContext context) {
-    final _Cubit cubit = BlocProvider.of<_Cubit>(context);
+    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
     return RefreshIndicator(
-      onRefresh: () async => BlocProvider.of<_Cubit>(context).refresh(),
+      onRefresh: () async => BlocProvider.of<TocCubit>(context).refresh(),
       child: PageStorage(
         bucket: cubit.bucket,
         child: Scrollbar(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +16,8 @@ import '../../../reader/presentation/reader_page/cubit/reader_cubit.dart';
 import '../../../reader/presentation/reader_page/reader.dart';
 import '../../book_service.dart';
 
-part 'cubit/cubit.dart';
+part 'cubit/toc_cubit.dart';
+part 'cubit/toc_state.dart';
 part 'views/compact_view.dart';
 part 'views/medium_view.dart';
 part 'widgets/app_bar.dart';
@@ -43,8 +46,8 @@ class TableOfContents extends StatelessWidget {
         body = _MediumView(bookData: bookData);
     }
 
-    return BlocProvider<_Cubit>(
-      create: (_) => _Cubit(bookData)..init(),
+    return BlocProvider<TocCubit>(
+      create: (_) => TocCubit(bookData),
       child: Scaffold(
         appBar: _AppBar(bookData: bookData),
         body: body,

@@ -23,7 +23,9 @@ class BookmarkRepository {
     // Use relative path.
     bookPath = await BookService.repository.getRelativePath(bookPath);
 
-    return jsonData[bookPath];
+    return jsonData.containsKey(bookPath)
+        ? BookmarkData.fromJson(jsonData[bookPath])
+        : null;
   }
 
   /// Retrieve a list of all bookmarks.
