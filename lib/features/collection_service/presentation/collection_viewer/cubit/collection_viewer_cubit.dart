@@ -84,7 +84,7 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
     }
 
     // Save collection data
-    CollectionService.repository.save(collectionData);
+    CollectionService.repository.saveData(collectionData);
   }
 
   Future<void> removeBooks() async {

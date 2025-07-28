@@ -5,7 +5,8 @@ class BookRepository {
 
   final List<String> allowedExtensions = <String>['epub'];
   final List<String> allowedMimeTypes = <String>['application/epub+zip'];
-  final StreamController<void> onChangedController = StreamController<void>();
+  final StreamController<void> onChangedController =
+      StreamController<void>.broadcast();
 
   /// Check if the mime of a file is valid.
   bool isMimeValid(File file) {

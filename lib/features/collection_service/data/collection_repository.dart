@@ -3,6 +3,11 @@ part of '../collection_service.dart';
 typedef CollectionRepositoryJsonMap = Map<String, CollectionData>;
 
 class CollectionRepository {
+  CollectionRepository();
+
+  final StreamController<void> onChangedController =
+      StreamController<void>.broadcast();
+
   Future<String> get jsonFileName async => (await jsonFile).baseName;
 
   Future<JsonFileMetaModel> get jsonFile async {
@@ -35,7 +40,11 @@ class CollectionRepository {
     // Save to json file
     final CollectionData data =
         CollectionData(id, name ?? id, const <String>[]);
-    save(data);
+    _saveData(data);
+
+    // Send a notification.
+    onChangedController.add(null);
+
     return data;
   }
 
@@ -56,8 +65,8 @@ class CollectionRepository {
         .toList();
   }
 
-  /// Save the current [CollectionData] instance to the JSON file.
-  Future<void> save(CollectionData data) async {
+  /// Save a collection to json file.
+  Future<void> _saveData(CollectionData data) async {
     final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
 
@@ -75,16 +84,27 @@ class CollectionRepository {
     jsonFile.data = jsonData;
   }
 
-  /// Delete the current [CollectionData] instance from the JSON file.
+  /// Save a collection to json file.
+  Future<void> saveData(CollectionData data) async {
+    await _saveData(data);
+
+    // Send a notification.
+    onChangedController.add(null);
+  }
+
+  /// Delete a collection from json file.
   Future<void> deleteByData(CollectionData data) async {
     final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
     jsonData.remove(data.id);
     jsonFile.data = jsonData;
+
+    // Send a notification
+    onChangedController.add(null);
   }
 
   /// Delete the book from the collection.
-  Future<void> deleteBookFromSingle(String path, String id) async {
+  Future<void> _deleteBookFromSingle(String path, String id) async {
     // Load json file
     final JsonFileMetaModel jsonFile = await this.jsonFile;
 
@@ -99,8 +119,16 @@ class CollectionRepository {
       // Remove the path from the collection
       final CollectionData data = CollectionData.fromJson(jsonData[id]!);
       data.pathList.remove(relativePath);
-      save(data);
+      _saveData(data);
     }
+  }
+
+  /// Delete the book from the collection.
+  Future<void> deleteBookFromSingle(String path, String id) async {
+    await _deleteBookFromSingle(path, id);
+
+    // Send a notification
+    onChangedController.add(null);
   }
 
   /// Delete the book from all collections.
@@ -110,8 +138,11 @@ class CollectionRepository {
 
     // Remove the book through each collection
     for (CollectionData data in list) {
-      await deleteBookFromSingle(path, data.id);
+      await _deleteBookFromSingle(path, data.id);
     }
+
+    // Send a notification
+    onChangedController.add(null);
   }
 
   /// Reset the collection repository.

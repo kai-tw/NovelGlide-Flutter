@@ -6,8 +6,6 @@ class _FloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final CollectionListCubit collectionListCubit =
-        BlocProvider.of<CollectionListCubit>(context);
 
     return BlocBuilder<HomepageCubit, HomepageState>(
       buildWhen: (HomepageState previous, HomepageState current) =>
@@ -34,10 +32,7 @@ class _FloatingActionButton extends StatelessWidget {
                   context: context,
                   barrierDismissible: false,
                   builder: (BuildContext context) =>
-                      BlocProvider<CollectionListCubit>.value(
-                    value: collectionListCubit,
-                    child: const CollectionAddDialog(),
-                  ),
+                      const CollectionAddDialog(),
                 );
               },
               tooltip: appLocalizations.collectionAddBtn,

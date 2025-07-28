@@ -12,6 +12,8 @@ typedef BookshelfState = SharedListState<BookData>;
 class BookshelfCubit extends SharedListCubit<BookData> {
   factory BookshelfCubit() {
     final BookshelfCubit cubit = BookshelfCubit._();
+
+    // Refresh at first.
     cubit.refresh();
 
     // Listen to book changes.

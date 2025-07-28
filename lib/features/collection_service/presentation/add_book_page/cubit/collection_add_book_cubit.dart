@@ -3,7 +3,14 @@ part of '../../../collection_service.dart';
 class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
   factory CollectionAddBookCubit(Set<BookData> dataSet) {
     final CollectionAddBookCubit cubit = CollectionAddBookCubit._(dataSet);
+
+    // Refresh at first.
     cubit.refresh();
+
+    // Listen to collection changes.
+    cubit._onChangedSubscription = CollectionService
+        .repository.onChangedController.stream
+        .listen((_) => cubit.refresh());
     return cubit;
   }
 
@@ -11,6 +18,7 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
       : super(const CollectionAddBookState());
 
   final Set<BookData> _dataSet;
+  late final StreamSubscription<void> _onChangedSubscription;
 
   Future<void> refresh() async {
     // Get the collection list from repository.
@@ -63,7 +71,13 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
       } else {
         data.pathList.removeWhere((String e) => state.bookPathSet.contains(e));
       }
-      CollectionService.repository.save(data);
+      CollectionService.repository.saveData(data);
     }
+  }
+
+  @override
+  Future<void> close() {
+    _onChangedSubscription.cancel();
+    return super.close();
   }
 }

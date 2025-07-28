@@ -36,16 +36,10 @@ class _Navigation extends StatelessWidget {
   }
 
   void _onAddPressed(BuildContext context) {
-    final CollectionAddBookCubit cubit =
-        BlocProvider.of<CollectionAddBookCubit>(context);
-
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (_) => BlocProvider<CollectionAddBookCubit>.value(
-        value: cubit,
-        child: const CollectionAddDialog(),
-      ),
+      builder: (_) => const CollectionAddDialog(),
     );
   }
 
