@@ -23,9 +23,7 @@ class BookAddCubit extends Cubit<BookAddState> {
       if (file.path != null) {
         if (state.itemState.any((BookAddItemState itemState) =>
             basename(itemState.absolutePath) == basename(file.path!))) {
-          // If the file is already in the list,
-          // delete it from temporary storage.
-          File(file.path!).deleteSync();
+          // If the file is already in the list, ignore it!
         } else {
           itemStateSet.add(BookAddItemState(
             absolutePath: file.path!,
@@ -46,7 +44,11 @@ class BookAddCubit extends Cubit<BookAddState> {
   Future<void> removeFile(BookAddItemState itemState) async {
     final Set<BookAddItemState> fileSet =
         Set<BookAddItemState>.from(state.itemState);
+
+    // Remove from list.
     fileSet.remove(itemState);
+
+    // Update state.
     emit(BookAddState(
       itemState: fileSet,
     ));
@@ -56,5 +58,12 @@ class BookAddCubit extends Cubit<BookAddState> {
     await BookService.repository.addBooks(state.itemState
         .map((BookAddItemState itemState) => itemState.absolutePath)
         .toSet());
+  }
+
+  @override
+  Future<void> close() async {
+    // Clear temporary files.
+    await FilePicker.platform.clearTemporaryFiles();
+    return super.close();
   }
 }

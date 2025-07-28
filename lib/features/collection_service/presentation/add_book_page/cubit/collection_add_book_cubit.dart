@@ -26,18 +26,15 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
         await CollectionService.repository.getList();
 
     // Get all the book paths from user selected books.
-    final Set<String> pathSet =
+    final Set<String> relativePathSet =
         (await Future.wait(_dataSet.map((BookData e) => e.relativeFilePath)))
             .toSet();
 
     // Get the selected collection set by
     // intersection of book paths and collection paths.
     final Set<CollectionData> selectedCollections = collectionList
-        .where((CollectionData e) => e.pathList
-            .map((String e) => basename(e))
-            .toSet()
-            .intersection(pathSet.toSet())
-            .isNotEmpty)
+        .where((CollectionData e) =>
+            e.pathList.toSet().intersection(relativePathSet).isNotEmpty)
         .toSet();
 
     // Sort the collection list by name.
@@ -48,7 +45,7 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
       code: LoadingStateCode.loaded,
       collectionList: collectionList,
       selectedCollections: selectedCollections,
-      bookPathSet: pathSet,
+      bookRelativePathSet: relativePathSet,
     ));
   }
 
@@ -67,9 +64,10 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
   Future<void> save() async {
     for (CollectionData data in state.collectionList) {
       if (state.selectedCollections.contains(data)) {
-        data.pathList.addAll(state.bookPathSet);
+        data.pathList.addAll(state.bookRelativePathSet);
       } else {
-        data.pathList.removeWhere((String e) => state.bookPathSet.contains(e));
+        data.pathList
+            .removeWhere((String e) => state.bookRelativePathSet.contains(e));
       }
       CollectionService.repository.saveData(data);
     }

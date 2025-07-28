@@ -5,20 +5,20 @@ class CollectionAddBookState extends Equatable {
     this.code = LoadingStateCode.initial,
     this.collectionList = const <CollectionData>[],
     this.selectedCollections = const <CollectionData>{},
-    this.bookPathSet = const <String>{},
+    this.bookRelativePathSet = const <String>{},
   });
 
   final LoadingStateCode code;
   final List<CollectionData> collectionList;
   final Set<CollectionData> selectedCollections;
-  final Set<String> bookPathSet;
+  final Set<String> bookRelativePathSet;
 
   @override
   List<Object?> get props => <Object?>[
         code,
         collectionList,
         selectedCollections,
-        bookPathSet,
+        bookRelativePathSet,
       ];
 
   CollectionAddBookState copyWith({
@@ -31,7 +31,7 @@ class CollectionAddBookState extends Equatable {
       code: code ?? this.code,
       collectionList: collectionList ?? this.collectionList,
       selectedCollections: selectedCollections ?? this.selectedCollections,
-      bookPathSet: bookPathSet ?? this.bookPathSet,
+      bookRelativePathSet: bookPathSet ?? this.bookRelativePathSet,
     );
   }
 }

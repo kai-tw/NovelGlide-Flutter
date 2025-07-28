@@ -33,7 +33,10 @@ class CollectionAddBookList extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               final CollectionData data = state.collectionList[index];
               final bool? isSelected = state.selectedCollections.contains(data)
-                  ? state.bookPathSet.containsAll(state.bookPathSet)
+                  ? state.selectedCollections.every((CollectionData e) => e
+                          .pathList
+                          .toSet()
+                          .containsAll(state.bookRelativePathSet))
                       ? true
                       : null
                   : false;
