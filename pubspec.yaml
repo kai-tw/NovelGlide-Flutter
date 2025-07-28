@@ -1,5 +1,5 @@
 name: novelglide
-version: 1.2.3+56
+version: 1.2.4+57
 publish_to: none
 environment:
   sdk: ">=3.2.3 <4.0.0"

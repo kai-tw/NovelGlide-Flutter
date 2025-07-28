@@ -51,8 +51,8 @@ class App extends StatelessWidget {
               '/': (BuildContext context) => const Homepage(),
             },
             initialRoute: '/',
-            builder: (BuildContext context, Widget? child) =>
-                AccessibilityTools(child: child),
+            // builder: (BuildContext context, Widget? child) =>
+            //     AccessibilityTools(child: child),
             debugShowCheckedModeBanner: false,
           );
         },

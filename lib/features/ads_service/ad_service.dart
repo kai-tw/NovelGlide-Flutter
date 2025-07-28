@@ -13,7 +13,7 @@ part 'presentation/cubit/advertisement_state.dart';
 class AdService {
   AdService._();
 
-  static bool get isAllowed => true;
+  static bool get isAllowed => false;
 
   static bool _isInit = false;
 

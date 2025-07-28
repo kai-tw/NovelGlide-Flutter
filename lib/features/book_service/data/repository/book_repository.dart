@@ -78,7 +78,7 @@ class BookRepository {
     BookmarkService.repository.deleteByPath(absolutePath);
 
     // Delete associated collections.
-    CollectionService.repository.deleteBookFromAll(absolutePath);
+    CollectionService.repository.removeBookFromAll(absolutePath);
 
     // Delete locations cache.
     LocationCacheRepository.delete(absolutePath);

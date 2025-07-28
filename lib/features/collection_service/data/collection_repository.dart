@@ -78,8 +78,10 @@ class CollectionRepository {
   }
 
   /// Save a collection to json file.
-  Future<void> saveData(CollectionData data) async {
-    await _saveData(data);
+  Future<void> saveData(Set<CollectionData> dataSet) async {
+    for (CollectionData data in dataSet) {
+      await _saveData(data);
+    }
 
     // Send a notification.
     onChangedController.add(null);
@@ -96,8 +98,12 @@ class CollectionRepository {
     onChangedController.add(null);
   }
 
-  /// Delete the book from the collection.
-  Future<void> _deleteBookFromSingle(String path, String id) async {
+  /// Remove a given set of books from a collection.
+  /// Return the updated collection data.
+  Future<CollectionData> removeBooksFromSingle(
+    String id,
+    Set<BookData> bookSet,
+  ) async {
     // Load json file
     final JsonFileMetaModel jsonFile = await this.jsonFile;
 
@@ -105,33 +111,33 @@ class CollectionRepository {
     final Map<String, dynamic> jsonData = jsonFile.data;
 
     if (jsonData.containsKey(id)) {
-      // Get relative path
-      final String relativePath =
-          await BookService.repository.getRelativePath(path);
-
-      // Remove the path from the collection
+      // Load collection data
       final CollectionData data = CollectionData.fromJson(jsonData[id]!);
-      data.pathList.remove(relativePath);
+
+      // Remove all the paths in the book set
+      for (final BookData book in bookSet) {
+        data.pathList.remove(await book.relativeFilePath);
+      }
+
+      // Save the collection data
       _saveData(data);
     }
-  }
-
-  /// Delete the book from the collection.
-  Future<void> deleteBookFromSingle(String path, String id) async {
-    await _deleteBookFromSingle(path, id);
 
     // Send a notification
     onChangedController.add(null);
+
+    return getDataById(id);
   }
 
-  /// Delete the book from all collections.
-  Future<void> deleteBookFromAll(String path) async {
+  /// Remove a book from all collections.
+  Future<void> removeBookFromAll(String path) async {
     // Get the list of collection data
     final List<CollectionData> list = await getList();
 
     // Remove the book through each collection
     for (CollectionData data in list) {
-      await _deleteBookFromSingle(path, data.id);
+      data.pathList.remove(path);
+      await _saveData(data);
     }
 
     // Send a notification
@@ -142,5 +148,8 @@ class CollectionRepository {
   Future<void> reset() async {
     // Clear the content of json file
     (await jsonFile).clear();
+
+    // Send a notification
+    onChangedController.add(null);
   }
 }

@@ -84,21 +84,15 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
     }
 
     // Save collection data
-    CollectionService.repository.saveData(collectionData);
+    CollectionService.repository.saveData(<CollectionData>{collectionData});
   }
 
   Future<void> removeBooks() async {
-    // Remove books from collection
-    for (final BookData data in state.selectedSet) {
-      await CollectionService.repository.deleteBookFromSingle(
-        data.absoluteFilePath,
-        collectionData.id,
-      );
-    }
-
-    // Update collection data
-    collectionData =
-        await CollectionService.repository.getDataById(collectionData.id);
+    // Remove books from collection, and update the data.
+    collectionData = await CollectionService.repository.removeBooksFromSingle(
+      collectionData.id,
+      state.selectedSet,
+    );
 
     // Remove books from dataList
     final List<BookData> bookList = List<BookData>.from(state.dataList);

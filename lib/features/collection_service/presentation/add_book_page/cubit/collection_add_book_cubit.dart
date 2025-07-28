@@ -50,27 +50,22 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
   }
 
   Future<void> select(CollectionData data) async {
+    data.pathList.addAll(state.bookRelativePathSet);
     emit(state.copyWith(
       selectedCollections: <CollectionData>{...state.selectedCollections, data},
     ));
   }
 
   void deselect(CollectionData data) {
+    data.pathList
+        .removeWhere((String e) => state.bookRelativePathSet.contains(e));
     emit(state.copyWith(
         selectedCollections: <CollectionData>{...state.selectedCollections}
           ..remove(data)));
   }
 
-  Future<void> save() async {
-    for (CollectionData data in state.collectionList) {
-      if (state.selectedCollections.contains(data)) {
-        data.pathList.addAll(state.bookRelativePathSet);
-      } else {
-        data.pathList
-            .removeWhere((String e) => state.bookRelativePathSet.contains(e));
-      }
-      CollectionService.repository.saveData(data);
-    }
+  Future<void> save() {
+    return CollectionService.repository.saveData(state.collectionList.toSet());
   }
 
   @override
