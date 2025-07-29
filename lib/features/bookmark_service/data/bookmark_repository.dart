@@ -49,8 +49,8 @@ class BookmarkRepository {
     return retList;
   }
 
-  /// Save the current bookmark to the JSON file.
-  Future<void> _saveData(BookmarkData data) async {
+  /// Create / Update the bookmark data to the JSON file.
+  Future<void> _updateData(BookmarkData data) async {
     // Load json data
     final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
@@ -63,9 +63,9 @@ class BookmarkRepository {
     jsonFile.data = jsonData;
   }
 
-  /// Save the current bookmark to the JSON file.
-  Future<void> saveData(BookmarkData data) async {
-    await _saveData(data);
+  /// Create / Update the bookmark data to the JSON file.
+  Future<void> updateData(BookmarkData data) async {
+    await _updateData(data);
 
     // Send a notification.
     onChangedController.add(null);
@@ -96,7 +96,7 @@ class BookmarkRepository {
     for (BookmarkData data in list) {
       if (await BookService.repository.getRelativePath(data.bookPath) ==
           await BookService.repository.getRelativePath(path)) {
-        await deleteData(data);
+        await _deleteData(data);
       }
     }
 

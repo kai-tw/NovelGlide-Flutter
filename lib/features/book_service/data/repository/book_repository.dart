@@ -59,6 +59,18 @@ class BookRepository {
     onChangedController.add(null);
   }
 
+  /// Get the relative path of the book.
+  Future<String> getRelativePath(String filePath) async {
+    final Directory directory =
+        await FileSystemService.document.libraryDirectory;
+    return isRelative(filePath)
+        ? filePath
+        : relative(
+            filePath,
+            from: directory.path,
+          );
+  }
+
   /// Get is the book is in the library.
   Future<bool> exists(String filePath) async {
     final Directory libraryDirectory =
@@ -90,24 +102,16 @@ class BookRepository {
     return !file.existsSync();
   }
 
-  /// Get the relative path of the book.
-  Future<String> getRelativePath(String filePath) async {
-    final Directory directory =
-        await FileSystemService.document.libraryDirectory;
-    return isRelative(filePath)
-        ? filePath
-        : relative(
-            filePath,
-            from: directory.path,
-          );
-  }
-
-  /// Reset the book repository.
-  Future<void> reset() async {
+  Future<void> deleteAllBooks() async {
     final Directory directory =
         await FileSystemService.document.libraryDirectory;
     directory.deleteSync(recursive: true);
     directory.createSync(recursive: true);
+  }
+
+  /// Reset the book repository.
+  Future<void> reset() async {
+    await deleteAllBooks();
 
     BookmarkService.repository.reset();
     CollectionService.repository.removeAllBooksFromAll();

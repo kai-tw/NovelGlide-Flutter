@@ -64,8 +64,11 @@ class BookBackupRepository extends BackupRepository {
         .map((File file) => file.path)
         .toSet();
 
+    // Delete all books in the library
+    await BookService.repository.deleteAllBooks();
+
     // Perform add book procedures
-    BookService.repository.addBooks(bookFileSet);
+    await BookService.repository.addBooks(bookFileSet);
   }
 
   /// Upload zip to google drive.

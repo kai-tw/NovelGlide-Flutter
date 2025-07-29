@@ -15,33 +15,19 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
     ));
 
     // Upload the bookmark json file.
-    try {
-      await GoogleApiInterfaces.drive.uploadFile(
-        (await BookmarkService.repository.jsonFile).file,
-        onUpload: (int uploaded, int total) {
-          emit(BackupServiceProcessItemState(
-            step: BackupProgressStepCode.upload,
-            progress: (uploaded / total).clamp(0, 1),
-          ));
-        },
-      );
-    } catch (e) {
-      LogService.error(
-        'Upload bookmark backup to Google Drive failed.',
-        error: e,
-      );
-      emit(const BackupServiceProcessItemState(
-        step: BackupProgressStepCode.error,
-      ));
-      return;
-    }
+    final bool result =
+        await BackupService.bookmarkRepository.uploadToGoogleDrive(
+      onUpload: (int uploaded, int total) {
+        emit(BackupServiceProcessItemState(
+          step: BackupProgressStepCode.upload,
+          progress: (uploaded / total).clamp(0, 1),
+        ));
+      },
+    );
 
     // Emit the result
     emit(BackupServiceProcessItemState(
-      step: await GoogleApiInterfaces.drive
-              .fileExists(await BookmarkService.repository.jsonFileName)
-          ? BackupProgressStepCode.done
-          : BackupProgressStepCode.error,
+      step: result ? BackupProgressStepCode.done : BackupProgressStepCode.error,
     ));
   }
 
