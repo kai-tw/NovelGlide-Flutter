@@ -193,7 +193,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       savedTime: DateTime.now(),
     );
 
-    BookmarkService.repository.updateData(data);
+    BookmarkService.repository.updateData(<BookmarkData>{data});
 
     emit(state.copyWith(bookmarkData: data));
   }

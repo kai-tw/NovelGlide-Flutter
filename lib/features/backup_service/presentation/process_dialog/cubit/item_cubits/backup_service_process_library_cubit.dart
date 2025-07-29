@@ -91,29 +91,28 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
       emit(const BackupServiceProcessItemState(
         step: BackupProgressStepCode.error,
       ));
-      return;
+    } else {
+      // Start extracting the zip file
+      emit(const BackupServiceProcessItemState(
+        step: BackupProgressStepCode.unzip,
+      ));
+
+      // Extract the zip file.
+      await BackupService.bookRepository.extract(
+        zipFile: zipFile,
+        onExtracting: (double progress) {
+          emit(BackupServiceProcessItemState(
+            step: BackupProgressStepCode.unzip,
+            progress: progress / 100,
+          ));
+        },
+      );
+
+      // Restoration completed.
+      emit(const BackupServiceProcessItemState(
+        step: BackupProgressStepCode.done,
+      ));
     }
-
-    // Start extracting the zip file
-    emit(const BackupServiceProcessItemState(
-      step: BackupProgressStepCode.unzip,
-    ));
-
-    // Extract the zip file.
-    await BackupService.bookRepository.extract(
-      zipFile: zipFile,
-      onExtracting: (double progress) {
-        emit(BackupServiceProcessItemState(
-          step: BackupProgressStepCode.unzip,
-          progress: progress / 100,
-        ));
-      },
-    );
-
-    // Restoration completed.
-    emit(const BackupServiceProcessItemState(
-      step: BackupProgressStepCode.done,
-    ));
 
     // Finish the task
     BackupService.bookRepository.finishTask();

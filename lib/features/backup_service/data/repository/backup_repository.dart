@@ -1,12 +1,13 @@
 part of '../../backup_service.dart';
 
 abstract class BackupRepository {
-  abstract final String archiveName;
   Directory? tempDirectory;
   Completer<void>? mutexLock;
 
-  Future<String?> get googleDriveFileId =>
-      GoogleApiInterfaces.drive.getFileId(archiveName);
+  Future<String> get fileName;
+
+  Future<String?> get googleDriveFileId async =>
+      GoogleApiInterfaces.drive.getFileId(await fileName);
 
   Future<void> startTask() async {
     // Waiting for another progress complete.

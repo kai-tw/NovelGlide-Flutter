@@ -50,22 +50,27 @@ class BookmarkRepository {
   }
 
   /// Create / Update the bookmark data to the JSON file.
-  Future<void> _updateData(BookmarkData data) async {
+  Future<void> _updateData(Set<BookmarkData> dataSet) async {
     // Load json data
     final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
 
-    final BookmarkData savedData = data.copyWith(
-      bookPath: await BookService.repository.getRelativePath(data.bookPath),
-      savedTime: DateTime.now(),
-    );
-    jsonData[savedData.bookPath] = savedData.toJson();
+    for (BookmarkData data in dataSet) {
+      // Save the data into the JSON data
+      final BookmarkData savedData = data.copyWith(
+        bookPath: await BookService.repository.getRelativePath(data.bookPath),
+      );
+
+      jsonData[savedData.bookPath] = savedData.toJson();
+    }
+
+    // Save the data into the JSON file.
     jsonFile.data = jsonData;
   }
 
   /// Create / Update the bookmark data to the JSON file.
-  Future<void> updateData(BookmarkData data) async {
-    await _updateData(data);
+  Future<void> updateData(Set<BookmarkData> dataSet) async {
+    await _updateData(dataSet);
 
     // Send a notification.
     onChangedController.add(null);

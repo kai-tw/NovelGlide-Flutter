@@ -4,7 +4,7 @@ class BookBackupRepository extends BackupRepository {
   BookBackupRepository();
 
   @override
-  final String archiveName = 'Library.zip';
+  Future<String> get fileName async => 'Library.zip';
 
   /// Archive library to a zip file.
   Future<File> archive({
@@ -15,7 +15,7 @@ class BookBackupRepository extends BackupRepository {
         await FileSystemService.document.libraryDirectory;
 
     // Create the zip file
-    final File zipFile = File(join(tempDirectory!.path, archiveName));
+    final File zipFile = File(join(tempDirectory!.path, await fileName));
 
     // Start archiving books
     await ZipFile.createFromDirectory(
@@ -85,7 +85,7 @@ class BookBackupRepository extends BackupRepository {
       return false;
     }
 
-    return GoogleApiInterfaces.drive.fileExists(archiveName);
+    return GoogleApiInterfaces.drive.fileExists(await fileName);
   }
 
   /// Download the zip from google drive.
@@ -100,7 +100,7 @@ class BookBackupRepository extends BackupRepository {
     }
 
     // Create an empty file to store the downloaded zip file.
-    final File zipFile = File(join(tempDirectory!.path, archiveName));
+    final File zipFile = File(join(tempDirectory!.path, await fileName));
     zipFile.createSync();
 
     try {
@@ -130,7 +130,8 @@ class BookBackupRepository extends BackupRepository {
     await GoogleApiInterfaces.drive.deleteFile(fileId!);
 
     // Success if it doesn't exist.
-    final bool exists = await GoogleApiInterfaces.drive.fileExists(archiveName);
+    final bool exists =
+        await GoogleApiInterfaces.drive.fileExists(await fileName);
     return !exists;
   }
 }

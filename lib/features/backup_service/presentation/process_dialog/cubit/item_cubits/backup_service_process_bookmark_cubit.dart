@@ -14,6 +14,9 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
       step: BackupProgressStepCode.upload,
     ));
 
+    // Start the task!
+    await BackupService.bookmarkRepository.startTask();
+
     // Upload the bookmark json file.
     final bool result =
         await BackupService.bookmarkRepository.uploadToGoogleDrive(
@@ -29,52 +32,55 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
     emit(BackupServiceProcessItemState(
       step: result ? BackupProgressStepCode.done : BackupProgressStepCode.error,
     ));
+
+    // Finish the task!
+    BackupService.bookmarkRepository.finishTask();
   }
 
   /// Restore the bookmark.
   @override
   Future<void> _restore() async {
-    if (googleDriveFileId == null) {
-      LogService.error('Google Drive file id of the bookmark backup is null.');
-      emit(const BackupServiceProcessItemState(
-        step: BackupProgressStepCode.error,
-      ));
-      return;
-    }
-
     // Start the download process
     emit(const BackupServiceProcessItemState(
       step: BackupProgressStepCode.download,
     ));
 
+    // Start the task!
+    await BackupService.bookmarkRepository.startTask();
+
+    // Start downloading the json file.
+    emit(const BackupServiceProcessItemState(
+      step: BackupProgressStepCode.download,
+    ));
+
     // Download the json file.
-    try {
-      await GoogleApiInterfaces.drive.downloadFile(
-        googleDriveFileId!,
-        (await BookmarkService.repository.jsonFile).file,
-        onDownload: (int downloaded, int total) {
-          // Update the progress
-          emit(BackupServiceProcessItemState(
-            step: BackupProgressStepCode.download,
-            progress: (downloaded / total).clamp(0, 1),
-          ));
-        },
-      );
-    } catch (e) {
-      LogService.error(
-        'Download bookmark backup from Google Drive failed.',
-        error: e,
-      );
+    final File? jsonFile =
+        await BackupService.bookmarkRepository.downloadFromGoogleDrive(
+      onDownload: (int downloaded, int total) {
+        emit(BackupServiceProcessItemState(
+          step: BackupProgressStepCode.download,
+          progress: (downloaded / total).clamp(0, 1),
+        ));
+      },
+    );
+
+    if (jsonFile == null) {
+      // Download the json file failed.
       emit(const BackupServiceProcessItemState(
         step: BackupProgressStepCode.error,
       ));
-      return;
+    } else {
+      // Import the data.
+      await BackupService.bookmarkRepository.importData(jsonFile);
+
+      // Restoration completed.
+      emit(const BackupServiceProcessItemState(
+        step: BackupProgressStepCode.done,
+      ));
     }
 
-    // Restoration completed.
-    emit(const BackupServiceProcessItemState(
-      step: BackupProgressStepCode.done,
-    ));
+    // Finish the task!
+    BackupService.bookmarkRepository.finishTask();
   }
 
   /// Delete the bookmark.
