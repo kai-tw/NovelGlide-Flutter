@@ -4,6 +4,9 @@ class JsonRepository {
   const JsonRepository();
 
   JsonFileMetaModel getJsonFile(File file, {String fallbackValue = '{}'}) {
-    return JsonFileMetaModel(file, fallbackValue);
+    return JsonFileMetaModel(
+      file: file,
+      fallbackValue: fallbackValue,
+    );
   }
 }

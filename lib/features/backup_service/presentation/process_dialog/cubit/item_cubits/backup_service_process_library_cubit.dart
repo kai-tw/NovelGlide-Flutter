@@ -4,25 +4,29 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
   BackupServiceProcessLibraryCubit({super.googleDriveFileId});
 
   @override
-  final BackupServiceTargetType _targetType = BackupServiceTargetType.library;
+  final BackupTargetType _targetType = BackupTargetType.library;
 
   /// Backup the library.
   @override
-  Future<void> _backup() async {
+  Future<void> _create() async {
     // Start backup
     emit(const BackupServiceProcessItemState(
-      step: BackupServiceProcessStepCode.backup,
+      step: BackupProgressStepCode.create,
     ));
 
-    // Get a temporary work directory.
-    final Directory tempFolder = await FileSystemService.temp.getDirectory();
+    // Start the task!
+    await BackupService.bookRepository.startTask();
+
+    // Start zipping
+    emit(const BackupServiceProcessItemState(
+      step: BackupProgressStepCode.zip,
+    ));
 
     // Zip the library
-    final File zipFile = await BackupService.repository.archiveLibrary(
-      tempFolder.path,
+    final File zipFile = await BackupService.bookRepository.archive(
       onZipping: (double progress) {
         emit(BackupServiceProcessItemState(
-          step: BackupServiceProcessStepCode.zip,
+          step: BackupProgressStepCode.zip,
           progress: progress / 100,
         ));
       },
@@ -30,137 +34,112 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
 
     // Upload the zip file
     emit(const BackupServiceProcessItemState(
-      step: BackupServiceProcessStepCode.upload,
+      step: BackupProgressStepCode.upload,
     ));
 
     // Upload the zip file to Google Drive
-    try {
-      await GoogleApiInterfaces.drive.uploadFile(
-        zipFile,
-        onUpload: (int uploaded, int total) {
-          emit(BackupServiceProcessItemState(
-            step: BackupServiceProcessStepCode.upload,
-            progress: (uploaded / total).clamp(0, 1),
-          ));
-        },
-      );
-      tempFolder.deleteSync(recursive: true);
-    } catch (e) {
-      LogService.error(
-        'Upload library zip to Google Drive failed',
-        error: e,
-      );
-      // An error occurred.
-      emit(const BackupServiceProcessItemState(
-        step: BackupServiceProcessStepCode.error,
-      ));
-      tempFolder.deleteSync(recursive: true);
-      return;
-    }
+    final bool isSuccessful =
+        await BackupService.bookRepository.uploadToGoogleDrive(
+      zipFile: zipFile,
+      onUpload: (int uploaded, int total) {
+        emit(BackupServiceProcessItemState(
+          step: BackupProgressStepCode.upload,
+          progress: (uploaded / total).clamp(0, 1),
+        ));
+      },
+    );
 
     // Emit the result
     emit(BackupServiceProcessItemState(
-      step: await GoogleApiInterfaces.drive
-              .fileExists(BackupService.repository.libraryArchiveName)
-          ? BackupServiceProcessStepCode.done
-          : BackupServiceProcessStepCode.error,
+      step: isSuccessful
+          ? BackupProgressStepCode.done
+          : BackupProgressStepCode.error,
     ));
+
+    // Backup progress complete!
+    BackupService.bookRepository.finishTask();
   }
 
   /// Restore the library.
   @override
   Future<void> _restore() async {
-    if (googleDriveFileId == null) {
-      LogService.error('Google Drive file id of the library backup is null');
-      emit(const BackupServiceProcessItemState(
-        step: BackupServiceProcessStepCode.error,
-      ));
-      return;
-    }
-
     emit(const BackupServiceProcessItemState(
-      step: BackupServiceProcessStepCode.backup,
+      step: BackupProgressStepCode.create,
     ));
 
-    // Get a temporary folder.
-    final Directory tempFolder = await FileSystemService.temp.getDirectory();
-
-    // Create an empty file to store the downloaded zip file.
-    final File zipFile = File(
-      join(tempFolder.path, BackupService.repository.libraryArchiveName),
-    )..createSync();
+    // Start the task!
+    await BackupService.bookRepository.startTask();
 
     // Start the download process
     emit(const BackupServiceProcessItemState(
-      step: BackupServiceProcessStepCode.download,
+      step: BackupProgressStepCode.download,
     ));
 
     // Download the zip file
-    try {
-      await GoogleApiInterfaces.drive.downloadFile(
-        googleDriveFileId!,
-        zipFile,
-        onDownload: (int downloaded, int total) {
-          emit(BackupServiceProcessItemState(
-            step: BackupServiceProcessStepCode.download,
-            progress: (downloaded / total).clamp(0, 1),
-          ));
-        },
-      );
-    } catch (e) {
-      // An error occurred.
-      emit(const BackupServiceProcessItemState(
-        step: BackupServiceProcessStepCode.error,
-      ));
+    final File? zipFile =
+        await BackupService.bookRepository.downloadFromGoogleDrive(
+      onDownload: (int downloaded, int total) {
+        emit(BackupServiceProcessItemState(
+          step: BackupProgressStepCode.upload,
+          progress: (downloaded / total).clamp(0, 1),
+        ));
+      },
+    );
 
-      // Delete the temporary folder.
-      tempFolder.deleteSync(recursive: true);
+    if (zipFile == null) {
+      // Download zip file failed.
+      emit(const BackupServiceProcessItemState(
+        step: BackupProgressStepCode.error,
+      ));
       return;
     }
 
-    // Extract the zip file
+    // Start extracting the zip file
     emit(const BackupServiceProcessItemState(
-      step: BackupServiceProcessStepCode.unzip,
+      step: BackupProgressStepCode.unzip,
     ));
-    await BackupService.repository.restoreBackup(
-      tempFolder,
-      zipFile,
+
+    // Extract the zip file.
+    await BackupService.bookRepository.extract(
+      zipFile: zipFile,
       onExtracting: (double progress) {
         emit(BackupServiceProcessItemState(
-          step: BackupServiceProcessStepCode.unzip,
+          step: BackupProgressStepCode.unzip,
           progress: progress / 100,
         ));
       },
     );
 
     // Restoration completed.
-    tempFolder.deleteSync(recursive: true);
     emit(const BackupServiceProcessItemState(
-      step: BackupServiceProcessStepCode.done,
+      step: BackupProgressStepCode.done,
     ));
+
+    // Finish the task
+    BackupService.bookRepository.finishTask();
   }
 
   /// Delete the library.
   @override
   Future<void> _delete() async {
-    if (googleDriveFileId == null) {
-      LogService.error('Google Drive file id of the library backup is null');
-      emit(const BackupServiceProcessItemState(
-        step: BackupServiceProcessStepCode.error,
-      ));
-      return;
-    }
+    // Start the task!
+    await BackupService.bookRepository.startTask();
 
+    // Start deleting the backup file.
     emit(const BackupServiceProcessItemState(
-      step: BackupServiceProcessStepCode.delete,
+      step: BackupProgressStepCode.delete,
     ));
-    await GoogleApiInterfaces.drive.deleteFile(googleDriveFileId!);
-    final bool result = !(await GoogleApiInterfaces.drive
-        .fileExists(BackupService.repository.libraryArchiveName));
+
+    // Delete the backup file.
+    final bool result =
+        await BackupService.bookRepository.deleteFromGoogleDrive();
+
+    // Deletion is completed.
     emit(BackupServiceProcessItemState(
-      step: result
-          ? BackupServiceProcessStepCode.done
-          : BackupServiceProcessStepCode.error,
+      step: result ? BackupProgressStepCode.done : BackupProgressStepCode.error,
     ));
+
+    // Finish the task!
+    BackupService.bookRepository.finishTask();
   }
 }

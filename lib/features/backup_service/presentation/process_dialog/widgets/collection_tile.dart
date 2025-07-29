@@ -10,14 +10,14 @@ class _CollectionTile extends StatelessWidget {
         BackupServiceProcessItemState>(
       builder: (BuildContext context, BackupServiceProcessItemState state) {
         switch (state.step) {
-          case BackupServiceProcessStepCode.disabled:
+          case BackupProgressStepCode.disabled:
             return ListTile(
               leading: const Icon(Icons.collections_bookmark_outlined),
               title: Text(appLocalizations.generalCollection(2)),
               enabled: false,
             );
 
-          case BackupServiceProcessStepCode.upload:
+          case BackupProgressStepCode.upload:
             return ListTile(
               leading: const Icon(Icons.upload_outlined),
               title: Text(appLocalizations.generalCollection(2)),
@@ -26,7 +26,7 @@ class _CollectionTile extends StatelessWidget {
               ),
             );
 
-          case BackupServiceProcessStepCode.download:
+          case BackupProgressStepCode.download:
             return ListTile(
               leading: const Icon(Icons.download_outlined),
               title: Text(appLocalizations.generalCollection(2)),
@@ -35,14 +35,14 @@ class _CollectionTile extends StatelessWidget {
               ),
             );
 
-          case BackupServiceProcessStepCode.delete:
+          case BackupProgressStepCode.delete:
             return ListTile(
               leading: const Icon(Icons.delete_outlined),
               title: Text(appLocalizations.generalCollection(2)),
               trailing: const CircularProgressIndicator(),
             );
 
-          case BackupServiceProcessStepCode.done:
+          case BackupProgressStepCode.done:
             return ListTile(
               iconColor: Colors.green,
               textColor: Colors.green,
@@ -50,7 +50,7 @@ class _CollectionTile extends StatelessWidget {
               title: Text(appLocalizations.generalCollection(2)),
             );
 
-          case BackupServiceProcessStepCode.error:
+          case BackupProgressStepCode.error:
             return ListTile(
               iconColor: Theme.of(context).colorScheme.error,
               textColor: Theme.of(context).colorScheme.error,

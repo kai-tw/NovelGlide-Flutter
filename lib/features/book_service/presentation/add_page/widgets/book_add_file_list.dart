@@ -36,7 +36,7 @@ class BookAddFileList extends StatelessWidget {
     return BookAddFileTile(
       filePath: itemState.absolutePath,
       isDuplicated: itemState.isExistsInLibrary,
-      isMimeValid: itemState.isMimeValid,
+      isMimeValid: itemState.isTypeValid,
       baseName: itemState.baseName,
       lengthString: itemState.lengthString,
       isValid: itemState.isValid,

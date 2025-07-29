@@ -5,15 +5,14 @@ class BackupServiceProcessCollectionCubit
   BackupServiceProcessCollectionCubit({super.googleDriveFileId});
 
   @override
-  final BackupServiceTargetType _targetType =
-      BackupServiceTargetType.collection;
+  final BackupTargetType _targetType = BackupTargetType.collection;
 
   /// Backup the collection.
   @override
-  Future<void> _backup() async {
+  Future<void> _create() async {
     // Start the upload process
     emit(const BackupServiceProcessItemState(
-      step: BackupServiceProcessStepCode.upload,
+      step: BackupProgressStepCode.upload,
     ));
 
     // Upload the collection json file
@@ -22,7 +21,7 @@ class BackupServiceProcessCollectionCubit
       onUpload: (int uploaded, int total) {
         // Update the progress
         emit(BackupServiceProcessItemState(
-          step: BackupServiceProcessStepCode.upload,
+          step: BackupProgressStepCode.upload,
           progress: (uploaded / total).clamp(0, 1),
         ));
       },
@@ -32,8 +31,8 @@ class BackupServiceProcessCollectionCubit
     emit(BackupServiceProcessItemState(
       step: await GoogleApiInterfaces.drive
               .fileExists(await CollectionService.repository.jsonFileName)
-          ? BackupServiceProcessStepCode.done
-          : BackupServiceProcessStepCode.error,
+          ? BackupProgressStepCode.done
+          : BackupProgressStepCode.error,
     ));
   }
 
@@ -43,14 +42,14 @@ class BackupServiceProcessCollectionCubit
     if (googleDriveFileId == null) {
       LogService.info('Google Drive file id of the collection backup is null.');
       emit(const BackupServiceProcessItemState(
-        step: BackupServiceProcessStepCode.error,
+        step: BackupProgressStepCode.error,
       ));
       return;
     }
 
     // Start the download process
     emit(const BackupServiceProcessItemState(
-      step: BackupServiceProcessStepCode.download,
+      step: BackupProgressStepCode.download,
     ));
 
     // Download the json file.
@@ -61,7 +60,7 @@ class BackupServiceProcessCollectionCubit
         onDownload: (int downloaded, int total) {
           // Update the progress
           emit(BackupServiceProcessItemState(
-            step: BackupServiceProcessStepCode.download,
+            step: BackupProgressStepCode.download,
             progress: (downloaded / total).clamp(0, 1),
           ));
         },
@@ -72,14 +71,14 @@ class BackupServiceProcessCollectionCubit
         error: e,
       );
       emit(const BackupServiceProcessItemState(
-        step: BackupServiceProcessStepCode.error,
+        step: BackupProgressStepCode.error,
       ));
       return;
     }
 
     // Restoration completed.
     emit(const BackupServiceProcessItemState(
-      step: BackupServiceProcessStepCode.done,
+      step: BackupProgressStepCode.done,
     ));
   }
 
@@ -90,14 +89,14 @@ class BackupServiceProcessCollectionCubit
       LogService.error(
           'Google Drive file id of the collection backup is null.');
       emit(const BackupServiceProcessItemState(
-        step: BackupServiceProcessStepCode.error,
+        step: BackupProgressStepCode.error,
       ));
       return;
     }
 
     // Start the delete process
     emit(const BackupServiceProcessItemState(
-      step: BackupServiceProcessStepCode.delete,
+      step: BackupProgressStepCode.delete,
     ));
 
     // Delete the collection json file from Google Drive
@@ -109,7 +108,7 @@ class BackupServiceProcessCollectionCubit
         error: e,
       );
       emit(const BackupServiceProcessItemState(
-        step: BackupServiceProcessStepCode.error,
+        step: BackupProgressStepCode.error,
       ));
       return;
     }
@@ -117,8 +116,8 @@ class BackupServiceProcessCollectionCubit
     emit(BackupServiceProcessItemState(
       step: !(await GoogleApiInterfaces.drive
               .fileExists(await CollectionService.repository.jsonFileName))
-          ? BackupServiceProcessStepCode.done
-          : BackupServiceProcessStepCode.error,
+          ? BackupProgressStepCode.done
+          : BackupProgressStepCode.error,
     ));
   }
 }

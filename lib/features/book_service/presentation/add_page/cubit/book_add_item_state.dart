@@ -4,12 +4,12 @@ class BookAddItemState extends Equatable {
   const BookAddItemState({
     required this.absolutePath,
     required this.isExistsInLibrary,
-    required this.isMimeValid,
+    required this.isTypeValid,
   });
 
   final String absolutePath;
   final bool isExistsInLibrary;
-  final bool isMimeValid;
+  final bool isTypeValid;
 
   File get _file => File(absolutePath);
 
@@ -17,12 +17,12 @@ class BookAddItemState extends Equatable {
 
   String get baseName => basename(absolutePath);
 
-  bool get isValid => !isExistsInLibrary && isMimeValid;
+  bool get isValid => !isExistsInLibrary && isTypeValid;
 
   @override
   List<Object?> get props => <Object?>[
         absolutePath,
         isExistsInLibrary,
-        isMimeValid,
+        isTypeValid,
       ];
 }

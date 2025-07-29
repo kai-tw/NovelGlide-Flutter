@@ -1,7 +1,7 @@
 part of '../file_system_service.dart';
 
 abstract class FileMetaModel extends Equatable {
-  const FileMetaModel(this.file);
+  const FileMetaModel({required this.file});
 
   final File file;
 

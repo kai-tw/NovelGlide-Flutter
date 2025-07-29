@@ -1,57 +1,29 @@
 part of '../../backup_service.dart';
 
-class BackupRepository {
-  BackupRepository();
+abstract class BackupRepository {
+  abstract final String archiveName;
+  Directory? tempDirectory;
+  Completer<void>? mutexLock;
 
-  final String libraryArchiveName = 'Library.zip';
+  Future<String?> get googleDriveFileId =>
+      GoogleApiInterfaces.drive.getFileId(archiveName);
 
-  Future<File> archiveLibrary(
-    String tempFolderPath, {
-    void Function(double)? onZipping,
-  }) async {
-    final Directory libraryFolder =
-        await FileSystemService.document.libraryDirectory;
+  Future<void> startTask() async {
+    // Waiting for another progress complete.
+    await mutexLock?.future;
 
-    // Create a zip file
-    final File zipFile = File(join(tempFolderPath, libraryArchiveName));
+    // Initialize a new lock
+    mutexLock = Completer<void>();
 
-    await ZipFile.createFromDirectory(
-      sourceDir: libraryFolder,
-      zipFile: zipFile,
-      onZipping: (String fileName, bool isDirectory, double progress) {
-        // Only include epub files.
-        onZipping?.call(progress);
-        return extension(fileName) == '.epub'
-            ? ZipFileOperation.includeItem
-            : ZipFileOperation.skipItem;
-      },
-    );
-
-    return zipFile;
+    // Get a clean temporary directory for working
+    tempDirectory = await FileSystemService.temp.getDirectory();
   }
 
-  Future<void> restoreBackup(
-    Directory tempFolder,
-    File zipFile, {
-    void Function(double)? onExtracting,
-  }) async {
-    final Directory libraryFolder =
-        await FileSystemService.document.libraryDirectory;
+  void finishTask() {
+    tempDirectory?.deleteSync(recursive: true);
 
-    // Clear the Library folder.
-    libraryFolder.deleteSync(recursive: true);
-    libraryFolder.createSync(recursive: true);
-
-    await ZipFile.extractToDirectory(
-      zipFile: zipFile,
-      destinationDir: libraryFolder,
-      onExtracting: (ZipEntry entry, double progress) {
-        // Only extract epub files.
-        onExtracting?.call(progress);
-        return extension(entry.name) == '.epub'
-            ? ZipFileOperation.includeItem
-            : ZipFileOperation.skipItem;
-      },
-    );
+    // Release the lock
+    mutexLock?.complete();
+    mutexLock = null;
   }
 }

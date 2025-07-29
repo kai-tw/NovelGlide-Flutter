@@ -7,19 +7,19 @@ class BackupServiceGoogleDriveActionButton extends StatelessWidget {
     required this.taskType,
   });
 
-  final BackupServiceTargetType targetType;
-  final BackupServiceTaskType taskType;
+  final BackupTargetType targetType;
+  final BackupTaskType taskType;
 
   /// The icon data for the action button.
   IconData get _iconData {
     switch (taskType) {
-      case BackupServiceTaskType.backup:
+      case BackupTaskType.create:
         return Icons.backup_rounded;
 
-      case BackupServiceTaskType.restore:
+      case BackupTaskType.restore:
         return Icons.restore_rounded;
 
-      case BackupServiceTaskType.delete:
+      case BackupTaskType.delete:
         return Icons.delete_forever_rounded;
     }
   }
@@ -49,44 +49,44 @@ class BackupServiceGoogleDriveActionButton extends StatelessWidget {
   /// The tooltip for the action button.
   String _getLabel(
     BuildContext context, {
-    required BackupServiceTaskType taskType,
-    required BackupServiceTargetType targetType,
+    required BackupTaskType taskType,
+    required BackupTargetType targetType,
   }) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     switch (taskType) {
-      case BackupServiceTaskType.backup:
+      case BackupTaskType.create:
         switch (targetType) {
-          case BackupServiceTargetType.all:
+          case BackupTargetType.all:
             return appLocalizations.backupServiceBackupAll;
-          case BackupServiceTargetType.library:
+          case BackupTargetType.library:
             return appLocalizations.backupServiceBackupLibrary;
-          case BackupServiceTargetType.collection:
+          case BackupTargetType.collection:
             return appLocalizations.backupServiceBackupCollection;
-          case BackupServiceTargetType.bookmark:
+          case BackupTargetType.bookmark:
             return appLocalizations.backupServiceBackupBookmark;
         }
 
-      case BackupServiceTaskType.restore:
+      case BackupTaskType.restore:
         switch (targetType) {
-          case BackupServiceTargetType.all:
+          case BackupTargetType.all:
             return appLocalizations.backupServiceRestoreAll;
-          case BackupServiceTargetType.library:
+          case BackupTargetType.library:
             return appLocalizations.backupServiceRestoreLibrary;
-          case BackupServiceTargetType.collection:
+          case BackupTargetType.collection:
             return appLocalizations.backupServiceRestoreCollection;
-          case BackupServiceTargetType.bookmark:
+          case BackupTargetType.bookmark:
             return appLocalizations.backupServiceRestoreBookmark;
         }
 
-      case BackupServiceTaskType.delete:
+      case BackupTaskType.delete:
         switch (targetType) {
-          case BackupServiceTargetType.all:
+          case BackupTargetType.all:
             return appLocalizations.backupServiceDeleteAllBackup;
-          case BackupServiceTargetType.library:
+          case BackupTargetType.library:
             return appLocalizations.backupServiceDeleteLibraryBackup;
-          case BackupServiceTargetType.collection:
+          case BackupTargetType.collection:
             return appLocalizations.backupServiceDeleteCollectionBackup;
-          case BackupServiceTargetType.bookmark:
+          case BackupTargetType.bookmark:
             return appLocalizations.backupServiceDeleteBookmarkBackup;
         }
     }
@@ -95,21 +95,21 @@ class BackupServiceGoogleDriveActionButton extends StatelessWidget {
   /// Whether the action button is enabled.
   bool _isEnabled(BackupServiceGoogleDriveState state) {
     switch (taskType) {
-      case BackupServiceTaskType.backup:
+      case BackupTaskType.create:
         return state.code.isLoaded;
-      case BackupServiceTaskType.restore:
-      case BackupServiceTaskType.delete:
+      case BackupTaskType.restore:
+      case BackupTaskType.delete:
         switch (targetType) {
-          case BackupServiceTargetType.all:
+          case BackupTargetType.all:
             return state.code.isLoaded &&
                 (state.libraryId != null ||
                     state.collectionId != null ||
                     state.bookmarkId != null);
-          case BackupServiceTargetType.library:
+          case BackupTargetType.library:
             return state.code.isLoaded && state.libraryId != null;
-          case BackupServiceTargetType.collection:
+          case BackupTargetType.collection:
             return state.code.isLoaded && state.collectionId != null;
-          case BackupServiceTargetType.bookmark:
+          case BackupTargetType.bookmark:
             return state.code.isLoaded && state.bookmarkId != null;
         }
     }
@@ -118,10 +118,10 @@ class BackupServiceGoogleDriveActionButton extends StatelessWidget {
   /// The color for the action button.
   Color? _getColor(BuildContext context) {
     switch (taskType) {
-      case BackupServiceTaskType.backup:
-      case BackupServiceTaskType.restore:
+      case BackupTaskType.create:
+      case BackupTaskType.restore:
         return null;
-      case BackupServiceTaskType.delete:
+      case BackupTaskType.delete:
         return Theme.of(context).colorScheme.error;
     }
   }

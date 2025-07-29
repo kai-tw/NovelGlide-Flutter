@@ -4,14 +4,14 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
   BackupServiceProcessBookmarkCubit({super.googleDriveFileId});
 
   @override
-  final BackupServiceTargetType _targetType = BackupServiceTargetType.bookmark;
+  final BackupTargetType _targetType = BackupTargetType.bookmark;
 
   /// Backup the bookmark.
   @override
-  Future<void> _backup() async {
+  Future<void> _create() async {
     // Start the upload process
     emit(const BackupServiceProcessItemState(
-      step: BackupServiceProcessStepCode.upload,
+      step: BackupProgressStepCode.upload,
     ));
 
     // Upload the bookmark json file.
@@ -20,7 +20,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
         (await BookmarkService.repository.jsonFile).file,
         onUpload: (int uploaded, int total) {
           emit(BackupServiceProcessItemState(
-            step: BackupServiceProcessStepCode.upload,
+            step: BackupProgressStepCode.upload,
             progress: (uploaded / total).clamp(0, 1),
           ));
         },
@@ -31,7 +31,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
         error: e,
       );
       emit(const BackupServiceProcessItemState(
-        step: BackupServiceProcessStepCode.error,
+        step: BackupProgressStepCode.error,
       ));
       return;
     }
@@ -40,8 +40,8 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
     emit(BackupServiceProcessItemState(
       step: await GoogleApiInterfaces.drive
               .fileExists(await BookmarkService.repository.jsonFileName)
-          ? BackupServiceProcessStepCode.done
-          : BackupServiceProcessStepCode.error,
+          ? BackupProgressStepCode.done
+          : BackupProgressStepCode.error,
     ));
   }
 
@@ -51,14 +51,14 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
     if (googleDriveFileId == null) {
       LogService.error('Google Drive file id of the bookmark backup is null.');
       emit(const BackupServiceProcessItemState(
-        step: BackupServiceProcessStepCode.error,
+        step: BackupProgressStepCode.error,
       ));
       return;
     }
 
     // Start the download process
     emit(const BackupServiceProcessItemState(
-      step: BackupServiceProcessStepCode.download,
+      step: BackupProgressStepCode.download,
     ));
 
     // Download the json file.
@@ -69,7 +69,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
         onDownload: (int downloaded, int total) {
           // Update the progress
           emit(BackupServiceProcessItemState(
-            step: BackupServiceProcessStepCode.download,
+            step: BackupProgressStepCode.download,
             progress: (downloaded / total).clamp(0, 1),
           ));
         },
@@ -80,14 +80,14 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
         error: e,
       );
       emit(const BackupServiceProcessItemState(
-        step: BackupServiceProcessStepCode.error,
+        step: BackupProgressStepCode.error,
       ));
       return;
     }
 
     // Restoration completed.
     emit(const BackupServiceProcessItemState(
-      step: BackupServiceProcessStepCode.done,
+      step: BackupProgressStepCode.done,
     ));
   }
 
@@ -97,14 +97,14 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
     if (googleDriveFileId == null) {
       LogService.error('Google Drive file id of the bookmark backup is null.');
       emit(const BackupServiceProcessItemState(
-        step: BackupServiceProcessStepCode.error,
+        step: BackupProgressStepCode.error,
       ));
       return;
     }
 
     // Start the delete process
     emit(const BackupServiceProcessItemState(
-      step: BackupServiceProcessStepCode.delete,
+      step: BackupProgressStepCode.delete,
     ));
 
     // Request the deleting operation
@@ -116,7 +116,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
         error: e,
       );
       emit(const BackupServiceProcessItemState(
-        step: BackupServiceProcessStepCode.error,
+        step: BackupProgressStepCode.error,
       ));
       return;
     }
@@ -125,8 +125,8 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
     emit(BackupServiceProcessItemState(
       step: !(await GoogleApiInterfaces.drive
               .fileExists(await BookmarkService.repository.jsonFileName))
-          ? BackupServiceProcessStepCode.done
-          : BackupServiceProcessStepCode.error,
+          ? BackupProgressStepCode.done
+          : BackupProgressStepCode.error,
     ));
   }
 }

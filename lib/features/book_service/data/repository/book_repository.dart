@@ -8,9 +8,10 @@ class BookRepository {
   final StreamController<void> onChangedController =
       StreamController<void>.broadcast();
 
-  /// Check if the mime of a file is valid.
-  bool isMimeValid(File file) {
-    return allowedMimeTypes.contains(MimeResolver.lookupAll(file));
+  /// Check if a file is a valid book.
+  bool isFileValid(File file) {
+    return allowedExtensions.contains(extension(file.path).substring(1)) &&
+        allowedMimeTypes.contains(MimeResolver.lookupAll(file));
   }
 
   /// Get the book data from the file path.
@@ -29,7 +30,7 @@ class BookRepository {
   Stream<BookData> getBookList() async* {
     final Directory folder = await FileSystemService.document.libraryDirectory;
     final Iterable<File> fileList =
-        folder.listSync().whereType<File>().where((File e) => isMimeValid(e));
+        folder.listSync().whereType<File>().where((File e) => isFileValid(e));
     for (File epubFile in fileList) {
       yield await getBookData(epubFile.path);
     }

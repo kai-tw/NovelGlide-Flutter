@@ -19,8 +19,8 @@ class BackupServiceProcessDialog extends StatelessWidget {
     this.bookmarkId,
   });
 
-  final BackupServiceTargetType targetType;
-  final BackupServiceTaskType taskType;
+  final BackupTargetType targetType;
+  final BackupTaskType taskType;
   final String? libraryId;
   final String? collectionId;
   final String? bookmarkId;

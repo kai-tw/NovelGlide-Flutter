@@ -31,8 +31,8 @@ class BackupServiceGoogleDrive extends StatelessWidget {
             const BackupServiceGoogleDriveSwitchListTile(),
             const BackupServiceGoogleDriveTimeTile(),
             const Divider(),
-            ...BackupServiceTargetType.values.map<Widget>(
-              (BackupServiceTargetType targetType) =>
+            ...BackupTargetType.values.map<Widget>(
+              (BackupTargetType targetType) =>
                   BackupServiceGoogleDriveTargetTile(targetType: targetType),
             ),
           ],

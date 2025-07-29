@@ -6,7 +6,7 @@ class BackupServiceGoogleDriveTargetTile extends StatelessWidget {
     required this.targetType,
   });
 
-  final BackupServiceTargetType targetType;
+  final BackupTargetType targetType;
 
   @override
   Widget build(BuildContext context) {
@@ -14,16 +14,16 @@ class BackupServiceGoogleDriveTargetTile extends StatelessWidget {
     String title;
 
     switch (targetType) {
-      case BackupServiceTargetType.all:
+      case BackupTargetType.all:
         title = appLocalizations.generalAll;
         break;
-      case BackupServiceTargetType.library:
+      case BackupTargetType.library:
         title = appLocalizations.generalBookshelf;
         break;
-      case BackupServiceTargetType.collection:
+      case BackupTargetType.collection:
         title = appLocalizations.generalCollection(2);
         break;
-      case BackupServiceTargetType.bookmark:
+      case BackupTargetType.bookmark:
         title = appLocalizations.generalBookmark(2);
         break;
     }
@@ -33,10 +33,9 @@ class BackupServiceGoogleDriveTargetTile extends StatelessWidget {
       title: Text(title),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
-        children: BackupServiceTaskType.values
+        children: BackupTaskType.values
             .map<Widget>(
-              (BackupServiceTaskType taskType) =>
-                  BackupServiceGoogleDriveActionButton(
+              (BackupTaskType taskType) => BackupServiceGoogleDriveActionButton(
                 targetType: targetType,
                 taskType: taskType,
               ),

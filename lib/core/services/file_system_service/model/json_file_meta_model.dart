@@ -1,18 +1,21 @@
 part of '../file_system_service.dart';
 
 class JsonFileMetaModel extends FileMetaModel {
-  const JsonFileMetaModel(super.file, this._fallbackValue);
+  const JsonFileMetaModel({
+    required super.file,
+    required this.fallbackValue,
+  });
 
-  final String _fallbackValue;
+  final String fallbackValue;
 
   Map<String, dynamic> get data {
     String jsonString = file.readAsStringSync();
-    jsonString = jsonString.isEmpty ? _fallbackValue : jsonString;
+    jsonString = jsonString.isEmpty ? fallbackValue : jsonString;
     try {
       file.writeAsStringSync(jsonString);
       return jsonDecode(jsonString);
     } catch (e) {
-      file.writeAsStringSync(_fallbackValue);
+      file.writeAsStringSync(fallbackValue);
       return <String, dynamic>{};
     }
   }
@@ -24,10 +27,10 @@ class JsonFileMetaModel extends FileMetaModel {
   @override
   List<Object?> get props => <Object?>[
         ...super.props,
-        _fallbackValue,
+        fallbackValue,
       ];
 
   void clear() {
-    file.writeAsStringSync(_fallbackValue);
+    file.writeAsStringSync(fallbackValue);
   }
 }

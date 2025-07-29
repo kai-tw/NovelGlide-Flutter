@@ -28,7 +28,7 @@ class BookAddCubit extends Cubit<BookAddState> {
           itemStateSet.add(BookAddItemState(
             absolutePath: file.path!,
             isExistsInLibrary: await BookService.repository.exists(file.path!),
-            isMimeValid: BookService.repository.isMimeValid(File(file.path!)),
+            isTypeValid: BookService.repository.isFileValid(File(file.path!)),
           ));
         }
       }

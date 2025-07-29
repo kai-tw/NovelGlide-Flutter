@@ -6,40 +6,39 @@ abstract class BackupServiceProcessItemCubit
       : super(const BackupServiceProcessItemState());
 
   final String? googleDriveFileId;
-  abstract final BackupServiceTargetType _targetType;
+  abstract final BackupTargetType _targetType;
 
   /// Start the process.
   void startUp({
-    required BackupServiceTaskType taskType,
-    required BackupServiceTargetType targetType,
+    required BackupTaskType taskType,
+    required BackupTargetType targetType,
   }) {
     // Do we need to work?
-    if (targetType != BackupServiceTargetType.all &&
-        targetType != _targetType) {
+    if (targetType != BackupTargetType.all && targetType != _targetType) {
       return;
     }
 
     switch (taskType) {
-      case BackupServiceTaskType.backup:
-        _backup();
+      case BackupTaskType.create:
+        _create();
         break;
 
-      case BackupServiceTaskType.restore:
+      case BackupTaskType.restore:
         _restore();
         break;
 
-      case BackupServiceTaskType.delete:
+      case BackupTaskType.delete:
         _delete();
         break;
     }
   }
 
-  /// Backup the library.
-  Future<void> _backup();
+  /// Create a backup.
+  Future<void> _create();
 
-  /// Restore the library.
+  /// Restore from a backup.
   Future<void> _restore();
 
-  /// Delete the library.
+  /// Delete a backup.
   Future<void> _delete();
 }

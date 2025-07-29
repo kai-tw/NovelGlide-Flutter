@@ -44,7 +44,7 @@ class BackupServiceGoogleDriveCubit
     if (GoogleApiInterfaces.drive.isSignedIn) {
       // Load the file IDs.
       final List<String> fileNameList = <String>[
-        BackupService.repository.libraryArchiveName,
+        BackupService.bookRepository.archiveName,
         await CollectionService.repository.jsonFileName,
         await BookmarkService.repository.jsonFileName,
       ];
