@@ -50,6 +50,25 @@ class BookmarkBackupRepository extends BackupRepository {
     return jsonFile;
   }
 
+  Future<bool> deleteFromGoogleDrive() async {
+    if ((await googleDriveFileId) == null) {
+      LogService.error('Google Drive file id of the bookmark backup is null.');
+      return false;
+    }
+
+    try {
+      await GoogleApiInterfaces.drive.deleteFile((await googleDriveFileId)!);
+    } catch (e) {
+      LogService.error(
+        'Delete bookmark backup from Google Drive failed.',
+        error: e,
+      );
+      return false;
+    }
+
+    return !(await GoogleApiInterfaces.drive.fileExists(await fileName));
+  }
+
   Future<void> importData(File file) async {
     // Clear the current data.
     await BookmarkService.repository.reset();
