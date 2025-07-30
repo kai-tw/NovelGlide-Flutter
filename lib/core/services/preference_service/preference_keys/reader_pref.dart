@@ -1,4 +1,4 @@
-part of 'preference_keys.dart';
+part of '../preference_service.dart';
 
 class ReaderPref {
   final String fontSize = 'reader.fontSize';

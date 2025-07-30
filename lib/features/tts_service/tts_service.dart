@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core/services/preference_service/preference_service.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../../preference_keys/preference_keys.dart';
 
 part 'data/tts_service_state.dart';
 part 'data/tts_voice_data.dart';

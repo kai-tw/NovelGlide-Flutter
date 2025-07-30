@@ -1,4 +1,4 @@
-part of 'preference_keys.dart';
+part of '../preference_service.dart';
 
 class TtsPref {
   final String pitch = 'tts_service.pitch';

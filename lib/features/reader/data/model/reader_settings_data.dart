@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../preference_keys/preference_keys.dart';
+import '../../../../core/services/preference_service/preference_service.dart';
 import 'reader_page_num_type.dart';
 
 /// Represents the settings for a reader, including font size, line height, and other preferences.

@@ -4,8 +4,8 @@ import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../../enum/loading_state_code.dart';
-import '../../../../../../preference_keys/preference_keys.dart';
 import '../../../../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
+import '../../../../../core/services/preference_service/preference_service.dart';
 import '../../../../bookmark_service/bookmark_service.dart';
 import '../../../../collection_service/collection_service.dart';
 import '../../../backup_service.dart';

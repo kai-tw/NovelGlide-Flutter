@@ -1,7 +1,4 @@
-part 'backup_service_pref.dart';
-part 'reader_pref.dart';
-part 'shared_list_prefs.dart';
-part 'tts_pref.dart';
+part of '../preference_service.dart';
 
 class PreferenceKeys {
   PreferenceKeys._();

@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/presentation/app_global_cubit/app_global_cubit.dart';
 import '../../core/services/preference_service/preference_service.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../../preference_keys/preference_keys.dart';
 import '../settings_page/settings_service.dart';
 
 part 'data/model/appearance_data.dart';

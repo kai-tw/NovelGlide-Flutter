@@ -4,8 +4,8 @@ import 'package:novelglide/core/utils/datetime_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/presentation/app_global_cubit/app_global_cubit.dart';
+import '../../core/services/preference_service/preference_service.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../../preference_keys/preference_keys.dart';
 
 part 'presentation/locale_settings_page/locale_settings_list.dart';
 part 'presentation/locale_settings_page/locale_settings_page.dart';

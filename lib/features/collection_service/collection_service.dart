@@ -22,7 +22,6 @@ import '../../enum/loading_state_code.dart';
 import '../../enum/sort_order_code.dart';
 import '../../enum/window_size.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../../preference_keys/preference_keys.dart';
 import '../book_service/book_service.dart';
 import '../homepage/cubit/homepage_cubit.dart';
 import '../homepage/homepage.dart';
