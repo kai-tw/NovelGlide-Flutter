@@ -65,7 +65,8 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
   }
 
   Future<void> save() {
-    return CollectionService.repository.saveData(state.collectionList.toSet());
+    return CollectionService.repository
+        .updateData(state.collectionList.toSet());
   }
 
   @override

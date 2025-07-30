@@ -7,7 +7,7 @@ class BackupServiceProcessCollectionCubit
   @override
   final BackupTargetType _targetType = BackupTargetType.collection;
 
-  /// Backup the collection.
+  /// Back collections up
   @override
   Future<void> _create() async {
     // Start the upload process
@@ -15,109 +15,86 @@ class BackupServiceProcessCollectionCubit
       step: BackupProgressStepCode.upload,
     ));
 
+    // Start the task!
+    await BackupService.collectionRepository.startTask();
+
     // Upload the collection json file
-    await GoogleApiInterfaces.drive.uploadFile(
-      (await CollectionService.repository.jsonFile).file,
-      onUpload: (int uploaded, int total) {
-        // Update the progress
-        emit(BackupServiceProcessItemState(
-          step: BackupProgressStepCode.upload,
-          progress: (uploaded / total).clamp(0, 1),
-        ));
-      },
-    );
+    final bool result = await BackupService.collectionRepository
+        .uploadToGoogleDrive(onUpload: (int uploaded, int total) {
+      // Update the progress
+      emit(BackupServiceProcessItemState(
+        step: BackupProgressStepCode.upload,
+        progress: (uploaded / total).clamp(0, 1),
+      ));
+    });
 
     // Emit the result
     emit(BackupServiceProcessItemState(
-      step: await GoogleApiInterfaces.drive
-              .fileExists(await CollectionService.repository.jsonFileName)
-          ? BackupProgressStepCode.done
-          : BackupProgressStepCode.error,
+      step: result ? BackupProgressStepCode.done : BackupProgressStepCode.error,
     ));
+
+    // Finish the task!
+    BackupService.collectionRepository.finishTask();
   }
 
-  /// Restore the collection.
+  /// Restore from the collection backup.
   @override
   Future<void> _restore() async {
-    if (googleDriveFileId == null) {
-      LogService.info('Google Drive file id of the collection backup is null.');
-      emit(const BackupServiceProcessItemState(
-        step: BackupProgressStepCode.error,
-      ));
-      return;
-    }
-
     // Start the download process
     emit(const BackupServiceProcessItemState(
       step: BackupProgressStepCode.download,
     ));
 
     // Download the json file.
-    try {
-      await GoogleApiInterfaces.drive.downloadFile(
-        googleDriveFileId!,
-        (await CollectionService.repository.jsonFile).file,
-        onDownload: (int downloaded, int total) {
-          // Update the progress
-          emit(BackupServiceProcessItemState(
-            step: BackupProgressStepCode.download,
-            progress: (downloaded / total).clamp(0, 1),
-          ));
-        },
-      );
-    } catch (e) {
-      LogService.error(
-        'Failed to download collection backup from Google Drive',
-        error: e,
-      );
+    final File? jsonFile = await BackupService.collectionRepository
+        .downloadFromGoogleDrive(onDownload: (int downloaded, int total) {
+      // Update the progress
+      emit(BackupServiceProcessItemState(
+        step: BackupProgressStepCode.download,
+        progress: (downloaded / total).clamp(0, 1),
+      ));
+    });
+
+    if (jsonFile == null) {
+      // Downloading file was failed.
       emit(const BackupServiceProcessItemState(
         step: BackupProgressStepCode.error,
       ));
-      return;
+    } else {
+      // Downloading file was successful.
+      await BackupService.collectionRepository.importData(jsonFile);
     }
 
     // Restoration completed.
     emit(const BackupServiceProcessItemState(
       step: BackupProgressStepCode.done,
     ));
+
+    // Finish the task
+    BackupService.collectionRepository.finishTask();
   }
 
-  /// Delete the collection.
+  /// Delete the collection backup.
   @override
   Future<void> _delete() async {
-    if (googleDriveFileId == null) {
-      LogService.error(
-          'Google Drive file id of the collection backup is null.');
-      emit(const BackupServiceProcessItemState(
-        step: BackupProgressStepCode.error,
-      ));
-      return;
-    }
-
     // Start the delete process
     emit(const BackupServiceProcessItemState(
       step: BackupProgressStepCode.delete,
     ));
 
-    // Delete the collection json file from Google Drive
-    try {
-      await GoogleApiInterfaces.drive.deleteFile(googleDriveFileId!);
-    } catch (e) {
-      LogService.error(
-        'Failed to delete collection backup from Google Drive.',
-        error: e,
-      );
-      emit(const BackupServiceProcessItemState(
-        step: BackupProgressStepCode.error,
-      ));
-      return;
-    }
+    // Start the task!
+    await BackupService.collectionRepository.startTask();
 
+    // Delete the file
+    final bool result =
+        await BackupService.collectionRepository.deleteFromGoogleDrive();
+
+    // Emit the result
     emit(BackupServiceProcessItemState(
-      step: !(await GoogleApiInterfaces.drive
-              .fileExists(await CollectionService.repository.jsonFileName))
-          ? BackupProgressStepCode.done
-          : BackupProgressStepCode.error,
+      step: result ? BackupProgressStepCode.done : BackupProgressStepCode.error,
     ));
+
+    // Finish the task
+    BackupService.collectionRepository.finishTask();
   }
 }

@@ -31,7 +31,7 @@ class CollectionRepository {
     // Save to json file
     final CollectionData data =
         CollectionData(id, name ?? id, const <String>[]);
-    _saveData(data);
+    _updateData(data);
 
     // Send a notification.
     onChangedController.add(null);
@@ -58,7 +58,7 @@ class CollectionRepository {
   }
 
   /// Save a collection to json file.
-  Future<void> _saveData(CollectionData data) async {
+  Future<void> _updateData(CollectionData data) async {
     // Load json data
     final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
@@ -78,9 +78,9 @@ class CollectionRepository {
   }
 
   /// Save a collection to json file.
-  Future<void> saveData(Set<CollectionData> dataSet) async {
+  Future<void> updateData(Set<CollectionData> dataSet) async {
     for (CollectionData data in dataSet) {
-      await _saveData(data);
+      await _updateData(data);
     }
 
     // Send a notification.
@@ -120,7 +120,7 @@ class CollectionRepository {
       }
 
       // Save the collection data
-      _saveData(data);
+      _updateData(data);
     }
 
     // Send a notification
@@ -137,7 +137,7 @@ class CollectionRepository {
     // Remove the book through each collection
     for (CollectionData data in list) {
       data.pathList.remove(path);
-      await _saveData(data);
+      await _updateData(data);
     }
 
     // Send a notification
@@ -155,7 +155,7 @@ class CollectionRepository {
     for (String id in jsonData.keys) {
       final CollectionData data = CollectionData.fromJson(jsonData[id]!);
       data.pathList.clear();
-      _saveData(data);
+      _updateData(data);
     }
   }
 

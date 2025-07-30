@@ -19,6 +19,7 @@ part 'data/model/backup_task_type.dart';
 part 'data/repository/backup_repository.dart';
 part 'data/repository/book_backup_repository.dart';
 part 'data/repository/bookmark_backup_repository.dart';
+part 'data/repository/collection_backup_repository.dart';
 part 'presentation/process_dialog/cubit/item_cubits/backup_service_process_bookmark_cubit.dart';
 part 'presentation/process_dialog/cubit/item_cubits/backup_service_process_collection_cubit.dart';
 part 'presentation/process_dialog/cubit/item_cubits/backup_service_process_item_cubit.dart';
@@ -31,4 +32,6 @@ class BackupService {
   static final BookBackupRepository bookRepository = BookBackupRepository();
   static final BookmarkBackupRepository bookmarkRepository =
       BookmarkBackupRepository();
+  static final CollectionBackupRepository collectionRepository =
+      CollectionBackupRepository();
 }

@@ -1,20 +1,18 @@
 part of '../../backup_service.dart';
 
-class BookmarkBackupRepository extends BackupRepository {
-  BookmarkBackupRepository();
-
+class CollectionBackupRepository extends BackupRepository {
   @override
-  Future<String> get fileName => BookmarkService.repository.jsonFileName;
+  Future<String> get fileName => CollectionService.repository.jsonFileName;
 
   Future<bool> uploadToGoogleDrive({void Function(int, int)? onUpload}) async {
     try {
       await GoogleApiInterfaces.drive.uploadFile(
-        (await BookmarkService.repository.jsonFile).file,
+        (await CollectionService.repository.jsonFile).file,
         onUpload: onUpload,
       );
     } catch (e) {
       LogService.error(
-        'Failed to upload bookmark backup to Google Drive.',
+        'Failed to upload collection json file to Google Drive',
         error: e,
       );
       return false;
@@ -27,7 +25,8 @@ class BookmarkBackupRepository extends BackupRepository {
     void Function(int, int)? onDownload,
   }) async {
     if ((await googleDriveFileId) == null) {
-      LogService.error('Google Drive file id of the bookmark backup is null.');
+      LogService.error(
+          'Google Drive file id of the collection backup is null.');
       return null;
     }
 
@@ -50,21 +49,41 @@ class BookmarkBackupRepository extends BackupRepository {
     return jsonFile;
   }
 
+  Future<bool> deleteFromGoogleDrive() async {
+    if ((await googleDriveFileId) == null) {
+      LogService.error(
+          'Google Drive file id of the collection backup is null.');
+      return false;
+    }
+
+    try {
+      await GoogleApiInterfaces.drive.deleteFile((await googleDriveFileId)!);
+    } catch (e) {
+      LogService.error(
+        'Failed to delete collection backup from Google Drive.',
+        error: e,
+      );
+      return false;
+    }
+
+    return !(await GoogleApiInterfaces.drive.fileExists(await fileName));
+  }
+
   Future<void> importData(File file) async {
     // Clear the current data.
-    await BookmarkService.repository.reset();
+    await CollectionService.repository.reset();
 
     // Import the data.
     final JsonFileMetaModel jsonFile = FileSystemService.json.getJsonFile(file);
     final Map<String, dynamic> jsonData = jsonFile.data;
 
     // Parse the data.
-    final Set<BookmarkData> dataSet = <BookmarkData>{};
+    final Set<CollectionData> dataSet = <CollectionData>{};
     for (String key in jsonData.keys) {
-      dataSet.add(BookmarkData.fromJson(jsonData[key]!));
+      dataSet.add(CollectionData.fromJson(jsonData[key]!));
     }
 
     // Update the data to the repository.
-    await BookmarkService.repository.updateData(dataSet);
+    await CollectionService.repository.updateData(dataSet);
   }
 }
