@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +9,8 @@ import '../../../core/services/emoticon_collection.dart';
 import '../../../enum/loading_state_code.dart';
 import '../../../enum/sort_order_code.dart';
 import '../../../generated/i18n/app_localizations.dart';
-import '../../services/preference_service/preference_service.dart';
 
 part 'data/model/shared_list_data.dart';
-part 'data/repository/shared_list_preference.dart';
 part 'presentation/button/shared_list_delete_button.dart';
 part 'presentation/button/shared_list_done_button.dart';
 part 'presentation/button/shared_list_select_all_button.dart';

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 
+import '../../../../../core/services/preference_service/preference_service.dart';
 import '../../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
@@ -17,15 +18,19 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
     cubit.refresh();
 
     // Listen to collection changes.
-    cubit._onChangedSubscription = CollectionService
+    cubit.onRepositoryChangedSubscription = CollectionService
         .repository.onChangedController.stream
         .listen((_) => cubit.refresh());
+
+    // Listen to collection list preference changes.
+    cubit.onPreferenceChangedSubscription = PreferenceService
+        .collectionList.onChangedController.stream
+        .listen((_) => cubit.refreshPreference());
+
     return cubit;
   }
 
   CollectionListCubit._() : super(const CollectionListState());
-
-  late final StreamSubscription<void> _onChangedSubscription;
 
   @override
   Future<void> refresh() async {
@@ -35,7 +40,7 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
 
     // Load preferences.
     final SharedListData preference =
-        await CollectionService.preference.list.load();
+        await PreferenceService.collectionList.load();
 
     // Load collection list.
     emit(CollectionListState(
@@ -70,7 +75,7 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
 
   @override
   void savePreference() {
-    CollectionService.preference.list.save(SharedListData(
+    PreferenceService.collectionList.save(SharedListData(
       sortOrder: state.sortOrder,
       isAscending: state.isAscending,
       listType: state.listType,
@@ -78,8 +83,13 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
   }
 
   @override
-  Future<void> close() {
-    _onChangedSubscription.cancel();
-    return super.close();
+  Future<void> refreshPreference() async {
+    final SharedListData preference =
+        await PreferenceService.collectionList.load();
+    emit(state.copyWith(
+      sortOrder: preference.sortOrder,
+      isAscending: preference.isAscending,
+      listType: preference.listType,
+    ));
   }
 }

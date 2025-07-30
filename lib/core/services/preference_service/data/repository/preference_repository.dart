@@ -7,6 +7,9 @@ abstract class PreferenceRepository<T> {
   Future<void> save(T data);
   Future<void> reset();
 
+  final StreamController<void> onChangedController =
+      StreamController<void>.broadcast();
+
   Future<int?> tryGetInt(String key) async {
     try {
       return (await _prefs).getInt(key);

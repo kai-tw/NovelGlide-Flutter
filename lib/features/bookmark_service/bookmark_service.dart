@@ -24,7 +24,6 @@ import '../reader/presentation/reader_page/cubit/reader_cubit.dart';
 import '../reader/presentation/reader_page/reader.dart';
 
 part 'data/bookmark_data.dart';
-part 'data/bookmark_preference.dart';
 part 'data/bookmark_repository.dart';
 part 'presentation/bookmark_list/bookmark_list.dart';
 part 'presentation/bookmark_list/bookmark_list_app_bar.dart';
@@ -38,6 +37,5 @@ part 'presentation/bookmark_list/widgets/bookmark_list_item.dart';
 class BookmarkService {
   BookmarkService._();
 
-  static BookmarkPreference preference = BookmarkPreference();
   static BookmarkRepository repository = BookmarkRepository();
 }

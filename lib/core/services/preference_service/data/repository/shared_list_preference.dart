@@ -1,4 +1,4 @@
-part of '../../shared_list.dart';
+part of '../../preference_service.dart';
 
 class SharedListPreference extends PreferenceRepository<SharedListData> {
   SharedListPreference({
@@ -35,9 +35,14 @@ class SharedListPreference extends PreferenceRepository<SharedListData> {
   /// Reset preferences.
   @override
   Future<void> reset() async {
-    remove(sortOrderKey);
-    remove(isAscendingKey);
-    remove(listTypeKey);
+    await Future.wait(<Future<void>>[
+      remove(sortOrderKey),
+      remove(isAscendingKey),
+      remove(listTypeKey),
+    ]);
+
+    // Notify listeners.
+    onChangedController.add(null);
   }
 
   @override
@@ -47,5 +52,8 @@ class SharedListPreference extends PreferenceRepository<SharedListData> {
       setBool(isAscendingKey, data.isAscending),
       setInt(listTypeKey, data.listType.index),
     ]);
+
+    // Notify listeners.
+    onChangedController.add(null);
   }
 }

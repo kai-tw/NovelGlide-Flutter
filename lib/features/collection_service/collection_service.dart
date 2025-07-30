@@ -10,7 +10,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/utils/random_extension.dart';
 import '../../core/services/file_system_service/file_system_service.dart';
-import '../../core/services/preference_service/preference_service.dart';
 import '../../core/shared_components/adaptive_lines_text.dart';
 import '../../core/shared_components/common_delete_dialog.dart';
 import '../../core/shared_components/common_loading.dart';
@@ -29,7 +28,6 @@ import 'presentation/collection_list/cubit/collection_list_cubit.dart';
 import 'presentation/collection_viewer/collection_viewer.dart';
 
 part 'data/collection_data.dart';
-part 'data/collection_preference.dart';
 part 'data/collection_repository.dart';
 part 'presentation/add_book_page/collection_add_book_scaffold.dart';
 part 'presentation/add_book_page/cubit/collection_add_book_cubit.dart';
@@ -55,6 +53,5 @@ part 'presentation/collection_list/widgets/collection_list_item.dart';
 class CollectionService {
   CollectionService._();
 
-  static CollectionPreference preference = CollectionPreference();
   static CollectionRepository repository = CollectionRepository();
 }

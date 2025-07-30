@@ -3,6 +3,9 @@ part of '../../shared_list.dart';
 abstract class SharedListCubit<T> extends Cubit<SharedListState<T>> {
   SharedListCubit(super.initialState);
 
+  late final StreamSubscription<void> onRepositoryChangedSubscription;
+  late final StreamSubscription<void> onPreferenceChangedSubscription;
+
   Future<void> refresh();
 
   void unfocused() {
@@ -87,4 +90,13 @@ abstract class SharedListCubit<T> extends Cubit<SharedListState<T>> {
   });
 
   void savePreference();
+
+  Future<void> refreshPreference();
+
+  @override
+  Future<void> close() async {
+    onRepositoryChangedSubscription.cancel();
+    onPreferenceChangedSubscription.cancel();
+    return super.close();
+  }
 }

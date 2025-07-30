@@ -20,19 +20,19 @@ class SettingsPagePreferenceCard extends StatelessWidget {
             ),
           ),
           SettingsPageListTile(
-            onAccept: BookService.preference.reset,
+            onAccept: PreferenceService.bookshelf.reset,
             iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetBookshelf,
             deleteLabel: appLocalizations.generalReset,
           ),
           SettingsPageListTile(
-            onAccept: CollectionService.preference.reset,
+            onAccept: PreferenceService.collectionList.reset,
             iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetCollectionList,
             deleteLabel: appLocalizations.generalReset,
           ),
           SettingsPageListTile(
-            onAccept: BookmarkService.preference.reset,
+            onAccept: PreferenceService.bookmarkList.reset,
             iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetBookmarkList,
             deleteLabel: appLocalizations.generalReset,

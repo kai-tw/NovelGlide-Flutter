@@ -10,16 +10,19 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
     cubit.refresh();
 
     // Listen to bookmarks changes.
-    cubit._onChangedSubscription = BookmarkService
+    cubit.onRepositoryChangedSubscription = BookmarkService
         .repository.onChangedController.stream
         .listen((_) => cubit.refresh());
+
+    // Listen to bookmark list preference changes.
+    cubit.onPreferenceChangedSubscription = PreferenceService
+        .bookmarkList.onChangedController.stream
+        .listen((_) => cubit.refreshPreference());
 
     return cubit;
   }
 
   BookmarkListCubit._() : super(const SharedListState<BookmarkData>());
-
-  late final StreamSubscription<void> _onChangedSubscription;
 
   @override
   Future<void> refresh() async {
@@ -29,7 +32,7 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
 
     // Load preferences.
     final SharedListData preference =
-        await BookmarkService.preference.list.load();
+        await PreferenceService.bookmarkList.load();
 
     // Load bookmark list.
     emit(BookmarkListState(
@@ -73,7 +76,7 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
 
   @override
   void savePreference() {
-    BookmarkService.preference.list.save(SharedListData(
+    PreferenceService.bookmarkList.save(SharedListData(
       sortOrder: state.sortOrder,
       isAscending: state.isAscending,
       listType: state.listType,
@@ -81,8 +84,13 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
   }
 
   @override
-  Future<void> close() {
-    _onChangedSubscription.cancel();
-    return super.close();
+  Future<void> refreshPreference() async {
+    final SharedListData preference =
+        await PreferenceService.bookmarkList.load();
+    emit(state.copyWith(
+      sortOrder: preference.sortOrder,
+      isAscending: preference.isAscending,
+      listType: preference.listType,
+    ));
   }
 }

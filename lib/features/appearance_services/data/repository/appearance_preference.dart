@@ -19,6 +19,9 @@ class AppearancePreference extends PreferenceRepository<AppearanceData> {
     await Future.wait(<Future<void>>[
       setInt(_themeModeKey, data.themeMode.index),
     ]);
+
+    // Notify listeners
+    onChangedController.add(null);
   }
 
   @override
@@ -26,5 +29,8 @@ class AppearancePreference extends PreferenceRepository<AppearanceData> {
     await Future.wait(<Future<void>>[
       remove(_themeModeKey),
     ]);
+
+    // Notify listeners
+    onChangedController.add(null);
   }
 }

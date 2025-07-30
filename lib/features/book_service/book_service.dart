@@ -16,7 +16,6 @@ import '../../../../core/utils/file_extension.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../core/services/file_system_service/file_system_service.dart';
 import '../../core/services/mime_resolver.dart';
-import '../../core/services/preference_service/preference_service.dart';
 import '../../core/shared_components/adaptive_lines_text.dart';
 import '../../core/shared_components/common_delete_dialog.dart';
 import '../../core/shared_components/common_error_dialog.dart';
@@ -37,7 +36,6 @@ import 'presentation/table_of_contents_page/table_of_contents.dart';
 
 part 'data/model/book_data.dart';
 part 'data/model/chapter_data.dart';
-part 'data/repository/book_preferences.dart';
 part 'data/repository/book_repository.dart';
 part 'presentation/add_page/book_add_page.dart';
 part 'presentation/add_page/cubit/book_add_cubit.dart';
@@ -61,6 +59,5 @@ part 'presentation/shared/book_cover_image.dart';
 class BookService {
   BookService._();
 
-  static final BookPreference preference = BookPreference();
   static final BookRepository repository = BookRepository();
 }

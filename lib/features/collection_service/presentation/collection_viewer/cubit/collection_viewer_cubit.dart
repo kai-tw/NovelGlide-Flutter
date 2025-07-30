@@ -105,11 +105,6 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
   }
 
   @override
-  void savePreference() {
-    // No preferences.
-  }
-
-  @override
   int sortCompare(
     BookData a,
     BookData b, {
@@ -118,6 +113,16 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
   }) {
     // Custom order. Don't care
     return 0;
+  }
+
+  @override
+  void savePreference() {
+    // No preferences.
+  }
+
+  @override
+  Future<void> refreshPreference() async {
+    // No preferences.
   }
 
   @override

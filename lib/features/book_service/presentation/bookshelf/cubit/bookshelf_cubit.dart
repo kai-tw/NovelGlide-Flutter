@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 
+import '../../../../../core/services/preference_service/preference_service.dart';
 import '../../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
@@ -17,16 +18,20 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     cubit.refresh();
 
     // Listen to book changes.
-    cubit._onChangedSubscription = BookService
+    cubit.onRepositoryChangedSubscription = BookService
         .repository.onChangedController.stream
         .listen((_) => cubit.refresh());
+
+    // Listen to bookshelf preference changes.
+    cubit.onPreferenceChangedSubscription = PreferenceService
+        .bookshelf.onChangedController.stream
+        .listen((_) => cubit.refreshPreference());
     return cubit;
   }
 
   BookshelfCubit._() : super(const BookshelfState());
 
   StreamSubscription<BookData>? _listStreamSubscription;
-  late final StreamSubscription<void> _onChangedSubscription;
 
   @override
   Future<void> refresh() async {
@@ -35,8 +40,8 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     }
 
     // Load preferences.
-    final SharedListData preference =
-        await BookService.preference.bookshelf.load();
+    final SharedListData preference = await PreferenceService.bookshelf.load();
+    emit(state.copyWith());
 
     final List<BookData> list = <BookData>[];
 
@@ -93,7 +98,7 @@ class BookshelfCubit extends SharedListCubit<BookData> {
 
   @override
   void savePreference() {
-    BookService.preference.bookshelf.save(SharedListData(
+    PreferenceService.bookshelf.save(SharedListData(
       sortOrder: state.sortOrder,
       isAscending: state.isAscending,
       listType: state.listType,
@@ -121,9 +126,20 @@ class BookshelfCubit extends SharedListCubit<BookData> {
   }
 
   @override
+  Future<void> refreshPreference() async {
+    final SharedListData preference = await PreferenceService.bookshelf.load();
+    emit(state.copyWith(
+      sortOrder: preference.sortOrder,
+      isAscending: preference.isAscending,
+      listType: preference.listType,
+    ));
+  }
+
+  @override
   Future<void> close() {
+    // Cancel all streams.
     _listStreamSubscription?.cancel();
-    _onChangedSubscription.cancel();
+    onRepositoryChangedSubscription.cancel();
     return super.close();
   }
 }
