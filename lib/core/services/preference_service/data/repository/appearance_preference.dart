@@ -1,4 +1,4 @@
-part of '../../appearance_services.dart';
+part of '../../preference_service.dart';
 
 class AppearancePreference extends PreferenceRepository<AppearanceData> {
   final String _themeModeKey = PreferenceKeys.themeMode;

@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../enum/sort_order_code.dart';
+import '../../../features/appearance_services/appearance_services.dart';
 import '../../shared_components/shared_list/shared_list.dart';
 
+part 'data/repository/appearance_preference.dart';
 part 'data/repository/preference_repository.dart';
 part 'data/repository/shared_list_preference.dart';
 part 'preference_keys/backup_service_pref.dart';
@@ -15,6 +18,9 @@ part 'preference_keys/tts_pref.dart';
 
 class PreferenceService {
   const PreferenceService._();
+
+  static final AppearancePreference appearancePreference =
+      AppearancePreference();
 
   static SharedListPreference bookshelf = SharedListPreference(
     sortOrderKey: PreferenceKeys.bookshelf.sortOrder,

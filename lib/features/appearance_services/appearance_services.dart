@@ -9,7 +9,6 @@ import '../../generated/i18n/app_localizations.dart';
 import '../settings_page/settings_service.dart';
 
 part 'data/model/appearance_data.dart';
-part 'data/repository/appearance_preference.dart';
 part 'data/repository/theme/default_theme.dart';
 part 'data/repository/theme/theme_template.dart';
 part 'presentation/appearance_settings_dark_mode_card/appearance_settings_dark_mode_card.dart';
@@ -18,17 +17,14 @@ part 'presentation/appearance_settings_page/appearance_settings_page.dart';
 class AppearanceServices {
   AppearanceServices._();
 
-  static final AppearancePreference preference = AppearancePreference();
-
   static Future<void> ensureInitialized() async {
     // Load appearance data before starting app.
-    await preference.load();
+    await PreferenceService.appearancePreference.load();
   }
 
   static void setThemeMode(ThemeMode themeMode) {
-    preference.save(AppearanceData(
+    PreferenceService.appearancePreference.save(AppearanceData(
       themeMode: themeMode,
     ));
-    AppGlobalCubit.refreshState();
   }
 }
