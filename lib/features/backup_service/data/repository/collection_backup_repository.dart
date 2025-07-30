@@ -1,6 +1,8 @@
 part of '../../backup_service.dart';
 
 class CollectionBackupRepository extends BackupRepository {
+  CollectionBackupRepository();
+
   @override
   Future<String> get fileName => CollectionService.repository.jsonFileName;
 
