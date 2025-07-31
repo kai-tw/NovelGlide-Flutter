@@ -1,15 +1,15 @@
-part of '../preference_service.dart';
+part of '../../preference_service.dart';
 
-class SharedListPrefs {
-  factory SharedListPrefs(String prefix) {
-    return SharedListPrefs._internal(
+class SharedListPreferenceKey {
+  factory SharedListPreferenceKey(String prefix) {
+    return SharedListPreferenceKey._(
       sortOrder: '$prefix.sortOrder',
       isAscending: '$prefix.isAscending',
       listType: '$prefix.listType',
     );
   }
 
-  SharedListPrefs._internal({
+  SharedListPreferenceKey._({
     required this.sortOrder,
     required this.isAscending,
     required this.listType,

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/exceptions.dart';
-import '../../../../core/shared_components/common_error_dialog.dart';
+import '../../../../core/services/exception_service/exception_service.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../locale_service/locale_services.dart';

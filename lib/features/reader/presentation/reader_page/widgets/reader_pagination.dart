@@ -7,12 +7,13 @@ class ReaderPagination extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (ReaderState prev, ReaderState curr) =>
-          prev.readerSettings.pageNumType != curr.readerSettings.pageNumType ||
-          curr.readerSettings.pageNumType != ReaderPageNumType.hidden &&
+          prev.readerPreference.pageNumType !=
+              curr.readerPreference.pageNumType ||
+          curr.readerPreference.pageNumType != ReaderPageNumType.hidden &&
               prev.chapterCurrentPage != curr.chapterCurrentPage ||
           prev.chapterTotalPage != curr.chapterTotalPage,
       builder: (BuildContext context, ReaderState state) {
-        switch (state.readerSettings.pageNumType) {
+        switch (state.readerPreference.pageNumType) {
           case ReaderPageNumType.hidden:
             return const SizedBox();
 

@@ -15,17 +15,17 @@ class ReaderNavBookmarkButton extends StatelessWidget {
           previous.bookmarkData != current.bookmarkData ||
           previous.startCfi != current.startCfi ||
           previous.ttsState != current.ttsState ||
-          previous.readerSettings.isAutoSaving !=
-              current.readerSettings.isAutoSaving,
+          previous.readerPreference.isAutoSaving !=
+              current.readerPreference.isAutoSaving,
       builder: (BuildContext context, ReaderState state) {
         // Was the current page bookmarked?
-        final bool isBookmarked = !state.readerSettings.isAutoSaving &&
+        final bool isBookmarked = !state.readerPreference.isAutoSaving &&
             state.bookmarkData?.startCfi == state.startCfi;
 
         // Can the current page be bookmarked?
         final bool isEnabled = state.code.isLoaded &&
             state.ttsState.isStopped &&
-            !state.readerSettings.isAutoSaving &&
+            !state.readerPreference.isAutoSaving &&
             state.bookmarkData?.startCfi != state.startCfi;
 
         return IconButton(

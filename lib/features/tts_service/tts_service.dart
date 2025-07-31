@@ -1,10 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/services/preference_service/preference_service.dart';
 import '../../generated/i18n/app_localizations.dart';
@@ -22,81 +22,77 @@ part 'tts_settings_page/widgets/voice_select_tile.dart';
 class TtsService extends FlutterTts {
   factory TtsService({void Function()? onReady}) {
     final TtsService instance = TtsService._();
+
     instance.setProgressHandler();
-    return instance.._init(onReady);
+    instance.reload().then((_) => onReady?.call());
+
+    return instance;
   }
 
   TtsService._() : super();
-  static const double defaultPitch = 1.0;
-  static const double defaultVolume = 1.0;
-  static const double defaultSpeedRate = 0.5;
 
-  late final SharedPreferences prefs;
   String? _pausedText;
   int? _pausedStartOffset;
-  double? _pitch;
-  double? _volume;
-  double? _speechRate;
-  TtsVoiceData? _voiceData;
+  late TtsPreferenceData data;
 
-  double get pitch => _pitch ?? defaultPitch;
+  @override
+  Future<dynamic> setPitch(double pitch) async {
+    // Update data
+    data = data.copyWith(pitch: pitch);
 
-  double get volume => _volume ?? defaultVolume;
+    // Save data
+    await PreferenceService.tts.save(data);
 
-  double get speechRate => _speechRate ?? defaultSpeedRate;
-
-  TtsVoiceData? get voiceData => _voiceData;
-
-  set pitch(double value) {
-    _pitch = value;
-    prefs.setDouble(PreferenceKeys.tts.pitch, value);
-    setPitch(value);
-  }
-
-  set volume(double value) {
-    _volume = value;
-    prefs.setDouble(PreferenceKeys.tts.volume, value);
-    setVolume(value);
-  }
-
-  set speechRate(double value) {
-    _speechRate = value;
-    prefs.setDouble(PreferenceKeys.tts.speedRate, value);
-    setSpeechRate(value);
-  }
-
-  set voiceData(TtsVoiceData? value) {
-    _voiceData = value;
-    if (value == null) {
-      prefs.remove(PreferenceKeys.tts.voiceData);
-      clearVoice();
-    } else {
-      prefs.setString(PreferenceKeys.tts.voiceData, value.toJson());
-      setVoice(value.toMap());
-    }
-  }
-
-  Future<void> _init(void Function()? onReady) async {
-    prefs = await SharedPreferences.getInstance();
+    // reload
     await reload();
-    onReady?.call();
+  }
+
+  @override
+  Future<dynamic> setVolume(double volume) async {
+    // Update data
+    data = data.copyWith(volume: volume);
+
+    // Save data
+    await PreferenceService.tts.save(data);
+
+    // reload
+    await reload();
+  }
+
+  @override
+  Future<dynamic> setSpeechRate(double rate) async {
+    // Update data
+    data = data.copyWith(speechRate: rate);
+
+    // Save data
+    PreferenceService.tts.save(data);
+
+    // reload
+    await reload();
+  }
+
+  Future<void> setVoiceData(TtsVoiceData? value) async {
+    // Update data
+    data = data.copyWithVoiceData(value);
+
+    // Save data
+    PreferenceService.tts.save(data);
+
+    // reload
+    await reload();
   }
 
   Future<void> reload() async {
-    _pitch = prefs.getDouble(PreferenceKeys.tts.pitch);
-    _volume = prefs.getDouble(PreferenceKeys.tts.volume);
-    _speechRate = prefs.getDouble(PreferenceKeys.tts.speedRate);
+    data = await PreferenceService.tts.load();
 
-    await setPitch(pitch);
-    await setVolume(volume);
-    await setSpeechRate(speechRate);
+    super.setPitch(data.pitch);
+    super.setVolume(data.volume);
+    super.setSpeechRate(data.speechRate);
 
-    final String? voiceData = prefs.getString(PreferenceKeys.tts.voiceData);
-    _voiceData = voiceData == null ? null : TtsVoiceData.fromJson(voiceData);
-    if (_voiceData == null) {
+    if (data.voiceData == null) {
       clearVoice();
     } else {
-      await setVoice(_voiceData!.toMap());
+      await setVoice(data.voiceData!.toMap());
     }
   }
 
@@ -124,11 +120,11 @@ class TtsService extends FlutterTts {
     await super.stop();
   }
 
-  void reset() {
-    pitch = defaultPitch;
-    volume = defaultVolume;
-    speechRate = defaultSpeedRate;
-    voiceData = null;
+  Future<void> reset() async {
+    await PreferenceService.tts.reset();
+
+    // reload
+    await reload();
   }
 
   Future<List<TtsVoiceData>> get voiceList async {

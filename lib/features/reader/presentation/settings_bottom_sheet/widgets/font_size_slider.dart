@@ -7,7 +7,8 @@ class _FontSizeSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (ReaderState previous, ReaderState current) =>
-          previous.readerSettings.fontSize != current.readerSettings.fontSize,
+          previous.readerPreference.fontSize !=
+          current.readerPreference.fontSize,
       builder: (BuildContext context, ReaderState state) {
         final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
         final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
@@ -15,18 +16,18 @@ class _FontSizeSlider extends StatelessWidget {
           leading: Icon(
             Icons.format_size_rounded,
             color: Theme.of(context).colorScheme.primary,
-            size: ReaderSettingsData.minFontSize,
+            size: ReaderPreferenceData.minFontSize,
             semanticLabel: appLocalizations.readerMinFontSize,
           ),
           trailing: Icon(
             Icons.format_size_rounded,
             color: Theme.of(context).colorScheme.primary,
-            size: ReaderSettingsData.maxFontSize,
+            size: ReaderPreferenceData.maxFontSize,
             semanticLabel: appLocalizations.readerMaxFontSize,
           ),
-          min: ReaderSettingsData.minFontSize,
-          max: ReaderSettingsData.maxFontSize,
-          value: state.readerSettings.fontSize,
+          min: ReaderPreferenceData.minFontSize,
+          max: ReaderPreferenceData.maxFontSize,
+          value: state.readerPreference.fontSize,
           semanticFormatterCallback: (double value) {
             return '${appLocalizations.readerFontSizeSlider} ${value.toStringAsFixed(1)}';
           },

@@ -32,33 +32,40 @@ class _PageScaffold extends StatelessWidget {
                 const _VoiceSelectTile(),
                 _Slider(
                   title: appLocalizations.ttsSettingsPitch,
-                  buildWhen: (TtsSettingsState previous, TtsSettingsState current) =>
-                      previous.ttsState != current.ttsState || previous.pitch != current.pitch,
+                  buildWhen:
+                      (TtsSettingsState previous, TtsSettingsState current) =>
+                          previous.ttsState != current.ttsState ||
+                          previous.data != current.data,
                   onChanged: cubit.setPitch,
                   min: 0.5,
                   max: 2.0,
                   divisions: 15,
-                  valueSelector: (TtsSettingsState state) => state.pitch,
+                  valueSelector: (TtsSettingsState state) => state.data.pitch,
                 ),
                 _Slider(
                   title: appLocalizations.ttsSettingsVolume,
-                  buildWhen: (TtsSettingsState previous, TtsSettingsState current) =>
-                      previous.ttsState != current.ttsState || previous.volume != current.volume,
+                  buildWhen:
+                      (TtsSettingsState previous, TtsSettingsState current) =>
+                          previous.ttsState != current.ttsState ||
+                          previous.data != current.data,
                   onChanged: cubit.setVolume,
                   min: 0.0,
                   max: 1.0,
                   divisions: 10,
-                  valueSelector: (TtsSettingsState state) => state.volume,
+                  valueSelector: (TtsSettingsState state) => state.data.volume,
                 ),
                 _Slider(
                   title: appLocalizations.ttsSettingsSpeechRate,
-                  buildWhen: (TtsSettingsState previous, TtsSettingsState current) =>
-                      previous.ttsState != current.ttsState || previous.speechRate != current.speechRate,
+                  buildWhen:
+                      (TtsSettingsState previous, TtsSettingsState current) =>
+                          previous.ttsState != current.ttsState ||
+                          previous.data != current.data,
                   onChanged: cubit.setSpeechRate,
                   min: 0.5,
                   max: 2.0,
                   divisions: 15,
-                  valueSelector: (TtsSettingsState state) => state.speechRate,
+                  valueSelector: (TtsSettingsState state) =>
+                      state.data.speechRate,
                 ),
               ],
             ),

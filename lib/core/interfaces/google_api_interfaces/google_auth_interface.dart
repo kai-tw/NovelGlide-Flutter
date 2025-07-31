@@ -30,12 +30,12 @@ class GoogleAuthInterface {
       _currentUser ??= await GoogleSignIn.instance.authenticate();
     } on GoogleSignInException catch (e) {
       LogService.error('GoogleAuthService.signIn: $e', error: e);
-      throw PlatformException(code: ExceptionCode.googleSignInFailed);
+      throw GoogleAuthSignInException();
     }
 
     if (_currentUser == null) {
       LogService.error('GoogleAuthService.signIn: Authentication failed.');
-      throw PlatformException(code: ExceptionCode.googleSignInFailed);
+      throw GoogleAuthSignInException();
     }
 
     LogService.info('GoogleAuthService.signIn: done.');
@@ -55,13 +55,13 @@ class GoogleAuthInterface {
           await _currentUser?.authorizationClient.authorizeScopes(scopes);
     } on GoogleSignInException catch (e) {
       LogService.error('GoogleAuthService.getClient: $e');
-      throw PlatformException(code: ExceptionCode.googleDrivePermissionDenied);
+      throw GoogleDrivePermissionException();
     }
 
     // Cannot get the required scopes
     if (authorization == null) {
       LogService.error('GoogleAuthService.getClient: permission denied');
-      throw PlatformException(code: ExceptionCode.googleDrivePermissionDenied);
+      throw GoogleDrivePermissionException();
     }
 
     final Map<String, String>? header =
@@ -70,7 +70,7 @@ class GoogleAuthInterface {
     // Cannot get the header
     if (header == null) {
       LogService.error('GoogleAuthService.getClient: header is null');
-      throw PlatformException(code: ExceptionCode.googleDrivePermissionDenied);
+      throw GoogleDrivePermissionException();
     }
 
     LogService.info('GoogleAuthService.getClient: done.');

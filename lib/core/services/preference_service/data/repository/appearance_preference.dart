@@ -2,7 +2,7 @@ part of '../../preference_service.dart';
 
 class AppearancePreference
     extends PreferenceRepository<AppearancePreferenceData> {
-  final String _themeModeKey = PreferenceKeys.themeMode;
+  final String _themeModeKey = 'themeMode';
 
   @override
   Future<AppearancePreferenceData> load() async {

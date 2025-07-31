@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../../enum/loading_state_code.dart';
 import '../../../../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
@@ -16,24 +15,22 @@ part 'backup_service_google_drive_state.dart';
 class BackupServiceGoogleDriveCubit
     extends Cubit<BackupServiceGoogleDriveState> {
   factory BackupServiceGoogleDriveCubit() {
-    const BackupServiceGoogleDriveState initialState =
-        BackupServiceGoogleDriveState();
     final BackupServiceGoogleDriveCubit cubit =
-        BackupServiceGoogleDriveCubit._internal(initialState);
+        BackupServiceGoogleDriveCubit._();
     cubit.refresh();
     return cubit;
   }
 
-  BackupServiceGoogleDriveCubit._internal(super.initialState);
+  BackupServiceGoogleDriveCubit._()
+      : super(const BackupServiceGoogleDriveState());
 
   /// Refreshes the backup state by checking preferences and updating metadata.
   Future<void> refresh() async {
     emit(const BackupServiceGoogleDriveState(code: LoadingStateCode.loading));
 
     // Load preferences.
-    final String key = PreferenceKeys.backupService.isBackupToGoogleDrive;
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool isEnabled = prefs.getBool(key) ?? false;
+    final BackupPreferenceData data = await PreferenceService.backup.load();
+    final bool isEnabled = data.isGoogleDriveEnabled;
 
     if (isEnabled && !GoogleApiInterfaces.drive.isSignedIn) {
       try {
@@ -83,8 +80,6 @@ class BackupServiceGoogleDriveCubit
 
   /// Sets the backup enabled state and manages sign-in status.
   Future<void> setEnabled(bool isEnabled) async {
-    final String key = PreferenceKeys.backupService.isBackupToGoogleDrive;
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
     final bool isSignedIn = GoogleApiInterfaces.drive.isSignedIn;
 
     if (isEnabled != isSignedIn) {
@@ -93,6 +88,8 @@ class BackupServiceGoogleDriveCubit
           : await GoogleApiInterfaces.drive.signOut();
     }
 
-    await prefs.setBool(key, GoogleApiInterfaces.drive.isSignedIn);
+    await PreferenceService.backup.save(BackupPreferenceData(
+      isGoogleDriveEnabled: GoogleApiInterfaces.drive.isSignedIn,
+    ));
   }
 }

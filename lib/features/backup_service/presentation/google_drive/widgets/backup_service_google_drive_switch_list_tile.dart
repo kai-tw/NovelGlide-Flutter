@@ -26,39 +26,32 @@ class BackupServiceGoogleDriveSwitchListTile extends StatelessWidget {
                   try {
                     await cubit.setEnabled(value);
                     cubit.refresh();
-                  } on PlatformException catch (e) {
+                  } on GoogleAuthSignInException {
                     if (context.mounted) {
-                      _errorHandler(context, e);
+                      ExceptionService.showExceptionDialog(
+                        context: context,
+                        contents: appLocalizations.exceptionGoogleDriveSignIn,
+                      );
+                    }
+                  } on GoogleDrivePermissionException {
+                    if (context.mounted) {
+                      ExceptionService.showExceptionDialog(
+                        context: context,
+                        contents: appLocalizations
+                            .exceptionGoogleDrivePermissionDenied,
+                      );
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      ExceptionService.showExceptionDialog(
+                        context: context,
+                        contents: appLocalizations.exceptionUnknownError,
+                      );
                     }
                   }
                 }
               : null,
         );
-      },
-    );
-  }
-
-  void _errorHandler(BuildContext context, PlatformException e) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        switch (e.code) {
-          case ExceptionCode.googleSignInFailed:
-            return CommonErrorDialog(
-              content: appLocalizations.exceptionGoogleDriveSignIn,
-            );
-
-          case ExceptionCode.googleDrivePermissionDenied:
-            return CommonErrorDialog(
-              content: appLocalizations.exceptionGoogleDrivePermissionDenied,
-            );
-
-          default:
-            return CommonErrorDialog(
-              content: appLocalizations.exceptionUnknownError,
-            );
-        }
       },
     );
   }

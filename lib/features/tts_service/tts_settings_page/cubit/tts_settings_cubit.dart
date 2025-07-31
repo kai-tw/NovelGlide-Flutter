@@ -1,15 +1,15 @@
 part of '../../tts_service.dart';
 
 class TtsSettingsCubit extends Cubit<TtsSettingsState> {
-  factory TtsSettingsCubit() => TtsSettingsCubit._().._init();
+  factory TtsSettingsCubit() {
+    final TtsSettingsCubit cubit = TtsSettingsCubit._();
+    cubit._ttsService = TtsService(onReady: cubit._onReady);
+    return cubit;
+  }
 
   TtsSettingsCubit._() : super(const TtsSettingsState());
   late final TtsService _ttsService;
   final TextEditingController controller = TextEditingController();
-
-  void _init() {
-    _ttsService = TtsService(onReady: _onReady);
-  }
 
   Future<void> _onReady() async {
     _ttsService.setStartHandler(_onSpeakStart);
@@ -24,10 +24,7 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
       emit(state.copyWith(
         ttsState: TtsServiceState.stopped,
         voiceList: dataList,
-        pitch: _ttsService.pitch,
-        volume: _ttsService.volume,
-        speechRate: _ttsService.speechRate,
-        voiceData: _ttsService.voiceData,
+        data: _ttsService.data,
       ));
     }
   }
@@ -60,14 +57,10 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
     await _ttsService.stop();
   }
 
-  void reset() {
-    _ttsService.reset();
+  Future<void> reset() async {
+    await _ttsService.reset();
     emit(state.copyWith(
-      pitch: _ttsService.pitch,
-      volume: _ttsService.volume,
-      speechRate: _ttsService.speechRate,
-      voiceData: _ttsService.voiceData,
-      isVoiceNull: true,
+      data: _ttsService.data,
     ));
   }
 
@@ -78,42 +71,24 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
     super.close();
   }
 
-  void setPitch(double pitch, bool isEnd) {
-    if (isClosed) {
-      return;
-    }
-    emit(state.copyWith(pitch: pitch));
-    if (isEnd) {
-      _ttsService.pitch = pitch;
-    }
+  Future<void> setPitch(double pitch) async {
+    await _ttsService.setPitch(pitch);
+    emit(state.copyWith(data: _ttsService.data));
   }
 
-  void setVolume(double volume, bool isEnd) {
-    if (isClosed) {
-      return;
-    }
-    emit(state.copyWith(volume: volume));
-    if (isEnd) {
-      _ttsService.volume = volume;
-    }
+  Future<void> setVolume(double volume) async {
+    await _ttsService.setVolume(volume);
+    emit(state.copyWith(data: _ttsService.data));
   }
 
-  void setSpeechRate(double speechRate, bool isEnd) {
-    if (isClosed) {
-      return;
-    }
-    emit(state.copyWith(speechRate: speechRate));
-    if (isEnd) {
-      _ttsService.speechRate = speechRate;
-    }
+  Future<void> setSpeechRate(double speechRate) async {
+    await _ttsService.setSpeechRate(speechRate);
+    emit(state.copyWith(data: _ttsService.data));
   }
 
-  void setVoiceData(TtsVoiceData voiceData) {
-    if (isClosed) {
-      return;
-    }
-    emit(state.copyWith(voiceData: voiceData));
-    _ttsService.voiceData = voiceData;
+  Future<void> setVoiceData(TtsVoiceData voiceData) async {
+    await _ttsService.setVoiceData(voiceData);
+    emit(state.copyWith(data: _ttsService.data));
   }
 
   void _onSpeakStart() {

@@ -10,16 +10,16 @@ class _VoiceSelectTile extends StatelessWidget {
     return BlocBuilder<TtsSettingsCubit, TtsSettingsState>(
       buildWhen: (TtsSettingsState previous, TtsSettingsState current) =>
           previous.ttsState != current.ttsState ||
-          previous.voiceData != current.voiceData,
+          previous.data != current.data,
       builder: (BuildContext context, TtsSettingsState state) {
         return ListTile(
           contentPadding: const EdgeInsets.symmetric(horizontal: 24.0),
           leading: const Icon(Icons.record_voice_over_rounded),
           title: Text(appLocalizations.ttsSettingsSelectVoice),
           subtitle: Text(
-            state.voiceData == null
+            state.data.voiceData == null
                 ? appLocalizations.generalDefault
-                : '${state.voiceData!.getLocaleName(context)}\n${state.voiceData!.name}',
+                : '${state.data.voiceData!.getLocaleName(context)}\n${state.data.voiceData!.name}',
           ),
           onTap: state.ttsState.isStopped
               ? () async {

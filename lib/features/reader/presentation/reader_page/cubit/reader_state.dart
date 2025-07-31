@@ -12,7 +12,7 @@ class ReaderState extends Equatable {
     this.navigationStateCode = ReaderNavigationStateCode.defaultState,
     this.ttsState = TtsServiceState.initial,
     this.bookmarkData,
-    this.readerSettings = const ReaderSettingsData(),
+    this.readerPreference = const ReaderPreferenceData(),
   });
 
   final ReaderLoadingStateCode code;
@@ -35,7 +35,7 @@ class ReaderState extends Equatable {
   final BookmarkData? bookmarkData;
 
   /// Settings
-  final ReaderSettingsData readerSettings;
+  final ReaderPreferenceData readerPreference;
 
   @override
   List<Object?> get props => <Object?>[
@@ -48,7 +48,7 @@ class ReaderState extends Equatable {
         navigationStateCode,
         ttsState,
         bookmarkData,
-        readerSettings,
+        readerPreference,
       ];
 
   ReaderState copyWith({
@@ -62,7 +62,7 @@ class ReaderState extends Equatable {
     ReaderNavigationStateCode? navigationStateCode,
     TtsServiceState? ttsState,
     BookmarkData? bookmarkData,
-    ReaderSettingsData? readerSettings,
+    ReaderPreferenceData? readerPreference,
   }) {
     return ReaderState(
       code: code ?? this.code,
@@ -75,7 +75,7 @@ class ReaderState extends Equatable {
       navigationStateCode: navigationStateCode ?? this.navigationStateCode,
       ttsState: ttsState ?? this.ttsState,
       bookmarkData: bookmarkData ?? this.bookmarkData,
-      readerSettings: readerSettings ?? this.readerSettings,
+      readerPreference: readerPreference ?? this.readerPreference,
     );
   }
 }

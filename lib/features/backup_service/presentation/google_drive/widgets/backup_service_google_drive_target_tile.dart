@@ -11,26 +11,15 @@ class BackupServiceGoogleDriveTargetTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    String title;
-
-    switch (targetType) {
-      case BackupTargetType.all:
-        title = appLocalizations.generalAll;
-        break;
-      case BackupTargetType.library:
-        title = appLocalizations.generalBookshelf;
-        break;
-      case BackupTargetType.collection:
-        title = appLocalizations.generalCollection(2);
-        break;
-      case BackupTargetType.bookmark:
-        title = appLocalizations.generalBookmark(2);
-        break;
-    }
 
     return ListTile(
       contentPadding: const EdgeInsets.fromLTRB(16.0, 4.0, 8.0, 4.0),
-      title: Text(title),
+      title: Text(switch (targetType) {
+        BackupTargetType.all => appLocalizations.generalAll,
+        BackupTargetType.library => appLocalizations.generalBookshelf,
+        BackupTargetType.collection => appLocalizations.generalCollection(2),
+        BackupTargetType.bookmark => appLocalizations.generalBookmark(2),
+      }),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: BackupTaskType.values

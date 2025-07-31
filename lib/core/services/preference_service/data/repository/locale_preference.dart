@@ -1,7 +1,7 @@
 part of '../../preference_service.dart';
 
 class LocalePreference extends PreferenceRepository<LocalePreferenceData> {
-  String get _localeKey => PreferenceKeys.userLocale;
+  final String _localeKey = 'userLocale';
 
   @override
   Future<LocalePreferenceData> load() async {

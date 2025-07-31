@@ -11,8 +11,8 @@ class _PageNumSelector extends StatelessWidget {
         builder: (BuildContext context, BoxConstraints constraints) {
       return BlocBuilder<ReaderCubit, ReaderState>(
         buildWhen: (ReaderState previous, ReaderState current) =>
-            previous.readerSettings.pageNumType !=
-            current.readerSettings.pageNumType,
+            previous.readerPreference.pageNumType !=
+            current.readerPreference.pageNumType,
         builder: (BuildContext context, ReaderState state) {
           return DropdownMenu<ReaderPageNumType>(
             width: constraints.maxWidth,
@@ -26,7 +26,7 @@ class _PageNumSelector extends StatelessWidget {
               Icons.keyboard_arrow_up_rounded,
               semanticLabel: appLocalizations.readerPageNumTypeHelperText,
             ),
-            initialSelection: state.readerSettings.pageNumType,
+            initialSelection: state.readerPreference.pageNumType,
             onSelected: (ReaderPageNumType? value) {
               if (value != null) {
                 cubit.pageNumType = value;

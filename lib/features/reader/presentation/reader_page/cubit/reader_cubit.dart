@@ -11,6 +11,8 @@ import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../../core/services/log_service/log_service.dart';
+import '../../../../../core/services/preference_service/data/model/reader_preference_data.dart';
+import '../../../../../core/services/preference_service/preference_service.dart';
 import '../../../../../core/utils/color_extension.dart';
 import '../../../../../core/utils/parsers.dart';
 import '../../../../book_service/book_service.dart';
@@ -18,7 +20,6 @@ import '../../../../bookmark_service/bookmark_service.dart';
 import '../../../../tts_service/tts_service.dart';
 import '../../../data/model/reader_navigation_state_code.dart';
 import '../../../data/model/reader_page_num_type.dart';
-import '../../../data/model/reader_settings_data.dart';
 import '../../../data/repository/cache_repository.dart';
 import '../../search_page/cubit/reader_search_cubit.dart';
 
@@ -68,14 +69,15 @@ class ReaderCubit extends Cubit<ReaderState> {
     ));
 
     // Start loading the data of book, reader settings, and bookmarks.
-    late ReaderSettingsData readerSettingsData;
+    late ReaderPreferenceData readerSettingsData;
     late BookmarkData? bookmarkData;
     await Future.wait<void>(<Future<void>>[
       BookService.repository
           .getBookData(bookPath)
           .then((BookData value) => bookData = value),
-      ReaderSettingsData.load()
-          .then((ReaderSettingsData value) => readerSettingsData = value),
+      PreferenceService.reader
+          .load()
+          .then((ReaderPreferenceData value) => readerSettingsData = value),
       BookmarkService.repository
           .get(bookPath)
           .then((BookmarkData? data) => bookmarkData = data),
@@ -117,7 +119,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       code: ReaderLoadingStateCode.rendering,
       bookName: bookData?.name,
       bookmarkData: bookmarkData,
-      readerSettings: readerSettingsData,
+      readerPreference: readerSettingsData,
     ));
 
     // Start loading the page.
@@ -132,8 +134,8 @@ class ReaderCubit extends Cubit<ReaderState> {
     currentTheme = newTheme ?? currentTheme;
     if (state.code.isLoaded) {
       webViewHandler!.setFontColor(currentTheme.colorScheme.onSurface);
-      webViewHandler!.setFontSize(state.readerSettings.fontSize);
-      webViewHandler!.setLineHeight(state.readerSettings.lineHeight);
+      webViewHandler!.setFontSize(state.readerPreference.fontSize);
+      webViewHandler!.setLineHeight(state.readerPreference.lineHeight);
     }
   }
 
@@ -143,19 +145,28 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   set fontSize(double value) {
     emit(state.copyWith(
-        readerSettings: state.readerSettings.copyWith(fontSize: value)));
+      readerPreference: state.readerPreference.copyWith(
+        fontSize: value,
+      ),
+    ));
     sendThemeData();
   }
 
   set lineHeight(double value) {
     emit(state.copyWith(
-        readerSettings: state.readerSettings.copyWith(lineHeight: value)));
+      readerPreference: state.readerPreference.copyWith(
+        lineHeight: value,
+      ),
+    ));
     sendThemeData();
   }
 
   set isAutoSaving(bool value) {
     emit(state.copyWith(
-        readerSettings: state.readerSettings.copyWith(isAutoSaving: value)));
+      readerPreference: state.readerPreference.copyWith(
+        isAutoSaving: value,
+      ),
+    ));
     if (value) {
       saveBookmark();
     }
@@ -163,19 +174,25 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   set isSmoothScroll(bool value) {
     emit(state.copyWith(
-        readerSettings: state.readerSettings.copyWith(isSmoothScroll: value)));
+      readerPreference: state.readerPreference.copyWith(
+        isSmoothScroll: value,
+      ),
+    ));
     webViewHandler!.setSmoothScroll(value);
   }
 
   set pageNumType(ReaderPageNumType value) {
     emit(state.copyWith(
-        readerSettings: state.readerSettings.copyWith(pageNumType: value)));
+      readerPreference: state.readerPreference.copyWith(
+        pageNumType: value,
+      ),
+    ));
   }
 
-  void saveSettings() => state.readerSettings.save();
+  void saveSettings() => PreferenceService.reader.save(state.readerPreference);
 
-  void resetSettings() {
-    emit(state.copyWith(readerSettings: const ReaderSettingsData()));
+  Future<void> resetSettings() async {
+    await PreferenceService.reader.reset();
     sendThemeData();
   }
 
@@ -258,7 +275,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     sendThemeData();
 
     // Set smooth scroll.
-    webViewHandler!.setSmoothScroll(state.readerSettings.isSmoothScroll);
+    webViewHandler!.setSmoothScroll(state.readerPreference.isSmoothScroll);
   }
 
   void _receiveSetState(dynamic jsonValue) {
@@ -271,7 +288,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       chapterTotalPage: parseInt(jsonValue['chapterTotalPage']),
     ));
 
-    if (state.readerSettings.isAutoSaving) {
+    if (state.readerPreference.isAutoSaving) {
       saveBookmark();
     }
   }

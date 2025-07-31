@@ -10,7 +10,6 @@ import '../book_service/book_service.dart';
 import '../bookmark_service/bookmark_service.dart';
 import '../collection_service/collection_service.dart';
 import '../collection_service/presentation/collection_list/cubit/collection_list_cubit.dart';
-import '../reader/data/model/reader_settings_data.dart';
 import '../reader/data/repository/cache_repository.dart';
 import '../settings_page/settings_service.dart';
 

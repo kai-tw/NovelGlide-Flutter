@@ -9,13 +9,13 @@ class _SmoothScrollSwitch extends StatelessWidget {
     final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (ReaderState previous, ReaderState current) =>
-          previous.readerSettings.isSmoothScroll !=
-          current.readerSettings.isSmoothScroll,
+          previous.readerPreference.isSmoothScroll !=
+          current.readerPreference.isSmoothScroll,
       builder: (BuildContext context, ReaderState state) {
         return SwitchListTile(
           contentPadding: EdgeInsets.zero,
           title: Text(appLocalizations.readerFlippingAnime),
-          value: state.readerSettings.isSmoothScroll,
+          value: state.readerPreference.isSmoothScroll,
           onChanged: (bool value) {
             cubit.isSmoothScroll = value;
             cubit.saveSettings();

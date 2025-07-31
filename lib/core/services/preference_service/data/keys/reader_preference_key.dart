@@ -1,6 +1,6 @@
-part of '../preference_service.dart';
+part of '../../preference_service.dart';
 
-class ReaderPref {
+class ReaderPreferenceKey {
   final String fontSize = 'reader.fontSize';
   final String lineHeight = 'reader.lineHeight';
   final String isAutoSaving = 'reader.autoSave';

@@ -43,8 +43,7 @@ class _SettingsResetButtonState extends State<_SettingsResetButton> {
   void _onPressed() {
     final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     _showAlertDialog(onConfirm: () async {
-      cubit.resetSettings();
-      cubit.saveSettings();
+      await cubit.resetSettings();
 
       setState(() => _stateCode = CommonButtonStateCode.success);
       await Future<void>.delayed(const Duration(seconds: 2));

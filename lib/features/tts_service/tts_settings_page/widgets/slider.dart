@@ -13,7 +13,7 @@ class _Slider extends StatelessWidget {
 
   final String title;
   final BlocBuilderCondition<TtsSettingsState> buildWhen;
-  final Function(double, bool) onChanged;
+  final Function(double) onChanged;
   final double min;
   final double max;
   final int divisions;
@@ -34,10 +34,8 @@ class _Slider extends StatelessWidget {
             builder: (BuildContext context, TtsSettingsState state) {
               return Slider(
                 value: valueSelector(state),
-                onChanged: state.ttsState == TtsServiceState.stopped
-                    ? (double value) => onChanged(value, false)
-                    : null,
-                onChangeEnd: (double value) => onChanged(value, true),
+                onChanged: state.ttsState.isStopped ? onChanged : null,
+                onChangeEnd: onChanged,
                 min: min,
                 max: max,
                 divisions: divisions,

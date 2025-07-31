@@ -38,9 +38,7 @@ class SettingsPagePreferenceCard extends StatelessWidget {
             deleteLabel: appLocalizations.generalReset,
           ),
           SettingsPageListTile(
-            onAccept: () async {
-              await const ReaderSettingsData().save();
-            },
+            onAccept: PreferenceService.reader.reset,
             iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetReader,
             deleteLabel: appLocalizations.generalReset,
