@@ -40,6 +40,13 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
   /// Restore the bookmark.
   @override
   Future<void> _restore() async {
+    if (!(await BackupService.bookmarkRepository.isBackupExists())) {
+      emit(const BackupServiceProcessItemState(
+        step: BackupProgressStepCode.disabled,
+      ));
+      return;
+    }
+
     // Start the download process
     emit(const BackupServiceProcessItemState(
       step: BackupProgressStepCode.download,
@@ -86,6 +93,13 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
   /// Delete the bookmark.
   @override
   Future<void> _delete() async {
+    if (!(await BackupService.bookmarkRepository.isBackupExists())) {
+      emit(const BackupServiceProcessItemState(
+        step: BackupProgressStepCode.disabled,
+      ));
+      return;
+    }
+
     // Start the delete process
     emit(const BackupServiceProcessItemState(
       step: BackupProgressStepCode.delete,

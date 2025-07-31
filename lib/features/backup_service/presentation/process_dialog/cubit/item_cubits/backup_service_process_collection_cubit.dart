@@ -40,6 +40,13 @@ class BackupServiceProcessCollectionCubit
   /// Restore from the collection backup.
   @override
   Future<void> _restore() async {
+    if (!(await BackupService.collectionRepository.isBackupExists())) {
+      emit(const BackupServiceProcessItemState(
+        step: BackupProgressStepCode.disabled,
+      ));
+      return;
+    }
+
     // Start the download process
     emit(const BackupServiceProcessItemState(
       step: BackupProgressStepCode.download,
@@ -63,12 +70,12 @@ class BackupServiceProcessCollectionCubit
     } else {
       // Downloading file was successful.
       await BackupService.collectionRepository.importData(jsonFile);
-    }
 
-    // Restoration completed.
-    emit(const BackupServiceProcessItemState(
-      step: BackupProgressStepCode.done,
-    ));
+      // Restoration completed.
+      emit(const BackupServiceProcessItemState(
+        step: BackupProgressStepCode.done,
+      ));
+    }
 
     // Finish the task
     BackupService.collectionRepository.finishTask();
@@ -77,6 +84,13 @@ class BackupServiceProcessCollectionCubit
   /// Delete the collection backup.
   @override
   Future<void> _delete() async {
+    if (!(await BackupService.collectionRepository.isBackupExists())) {
+      emit(const BackupServiceProcessItemState(
+        step: BackupProgressStepCode.disabled,
+      ));
+      return;
+    }
+
     // Start the delete process
     emit(const BackupServiceProcessItemState(
       step: BackupProgressStepCode.delete,

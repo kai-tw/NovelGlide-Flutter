@@ -63,6 +63,13 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
   /// Restore the library.
   @override
   Future<void> _restore() async {
+    if (!(await BackupService.bookRepository.isBackupExists())) {
+      emit(const BackupServiceProcessItemState(
+        step: BackupProgressStepCode.disabled,
+      ));
+      return;
+    }
+
     emit(const BackupServiceProcessItemState(
       step: BackupProgressStepCode.create,
     ));
@@ -80,7 +87,7 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
         await BackupService.bookRepository.downloadFromGoogleDrive(
       onDownload: (int downloaded, int total) {
         emit(BackupServiceProcessItemState(
-          step: BackupProgressStepCode.upload,
+          step: BackupProgressStepCode.download,
           progress: (downloaded / total).clamp(0, 1),
         ));
       },
@@ -121,6 +128,13 @@ class BackupServiceProcessLibraryCubit extends BackupServiceProcessItemCubit {
   /// Delete the library.
   @override
   Future<void> _delete() async {
+    if (!(await BackupService.bookRepository.isBackupExists())) {
+      emit(const BackupServiceProcessItemState(
+        step: BackupProgressStepCode.disabled,
+      ));
+      return;
+    }
+
     // Start the task!
     await BackupService.bookRepository.startTask();
 

@@ -6,6 +6,9 @@ class CollectionBackupRepository extends BackupRepository {
   @override
   Future<String> get fileName => CollectionService.repository.jsonFileName;
 
+  Future<bool> isBackupExists() async =>
+      GoogleApiInterfaces.drive.fileExists(await fileName);
+
   Future<bool> uploadToGoogleDrive({void Function(int, int)? onUpload}) async {
     try {
       await GoogleApiInterfaces.drive.uploadFile(
@@ -20,7 +23,7 @@ class CollectionBackupRepository extends BackupRepository {
       return false;
     }
 
-    return await GoogleApiInterfaces.drive.fileExists(await fileName);
+    return isBackupExists();
   }
 
   Future<File?> downloadFromGoogleDrive({
@@ -68,7 +71,7 @@ class CollectionBackupRepository extends BackupRepository {
       return false;
     }
 
-    return !(await GoogleApiInterfaces.drive.fileExists(await fileName));
+    return !(await isBackupExists());
   }
 
   Future<void> importData(File file) async {

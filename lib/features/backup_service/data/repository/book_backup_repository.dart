@@ -71,6 +71,9 @@ class BookBackupRepository extends BackupRepository {
     await BookService.repository.addBooks(bookFileSet);
   }
 
+  Future<bool> isBackupExists() async =>
+      GoogleApiInterfaces.drive.fileExists(await fileName);
+
   /// Upload zip to google drive.
   /// Return true if it's successful.
   Future<bool> uploadToGoogleDrive({
@@ -85,7 +88,7 @@ class BookBackupRepository extends BackupRepository {
       return false;
     }
 
-    return GoogleApiInterfaces.drive.fileExists(await fileName);
+    return isBackupExists();
   }
 
   /// Download the zip from google drive.
@@ -130,8 +133,6 @@ class BookBackupRepository extends BackupRepository {
     await GoogleApiInterfaces.drive.deleteFile(fileId!);
 
     // Success if it doesn't exist.
-    final bool exists =
-        await GoogleApiInterfaces.drive.fileExists(await fileName);
-    return !exists;
+    return !(await isBackupExists());
   }
 }
