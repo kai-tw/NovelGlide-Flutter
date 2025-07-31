@@ -1,18 +1,10 @@
-import 'dart:io';
+part of '../file_system_service.dart';
 
-import 'package:collection/collection.dart';
-import 'package:epubx/epubx.dart' as epub;
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:image/image.dart';
-
-import '../../features/book_service/book_service.dart';
-
-class EpubUtils {
-  EpubUtils._();
+class EpubRepository extends FileSystemRepository {
+  const EpubRepository();
 
   /// Loads an EpubBook asynchronously, potentially a heavy operation.
-  static Future<epub.EpubBook> loadEpubBook(String filePath) async {
+  Future<epub.EpubBook> loadEpubBook(String filePath) async {
     final RootIsolateToken rootIsolateToken = RootIsolateToken.instance!;
     return await compute<Map<String, dynamic>, epub.EpubBook>(
         _loadEpubBookIsolate, <String, dynamic>{
@@ -22,7 +14,7 @@ class EpubUtils {
   }
 
   /// Isolate function to load an EpubBook.
-  static Future<epub.EpubBook> _loadEpubBookIsolate(
+  Future<epub.EpubBook> _loadEpubBookIsolate(
       Map<String, dynamic> message) async {
     final RootIsolateToken rootIsolateToken = message['rootIsolateToken'];
     final String path = message['path'];
@@ -31,7 +23,7 @@ class EpubUtils {
   }
 
   /// Retrieve the list of chapters from a epub book_service.
-  static Future<List<ChapterData>> getChapterList(String filePath) async {
+  Future<List<ChapterData>> getChapterList(String filePath) async {
     final epub.EpubBook epubBook = await loadEpubBook(filePath);
     return epubBook.Chapters?.map(
             (epub.EpubChapter e) => ChapterData.fromEpubChapter(e)).toList() ??
@@ -39,7 +31,7 @@ class EpubUtils {
   }
 
   /// Find the possible cover image of the book_service.
-  static epub.Image? findCoverImage(epub.EpubBook epubBook) {
+  epub.Image? findCoverImage(epub.EpubBook epubBook) {
     // The cover image found by epub package.
     if (epubBook.CoverImage != null) {
       return epubBook.CoverImage!;
@@ -60,7 +52,7 @@ class EpubUtils {
                   item.MediaType?.toLowerCase() == 'image/gif' ||
                   item.MediaType?.toLowerCase() == 'image/bmp'));
       if (coverItem != null) {
-        return readImage(epubBook, coverItem.Href!);
+        return _readImage(epubBook, coverItem.Href!);
       }
     }
 
@@ -69,7 +61,7 @@ class EpubUtils {
   }
 
   /// Read an image from the book_service.
-  static epub.Image? readImage(epub.EpubBook epubBook, String href) {
+  epub.Image? _readImage(epub.EpubBook epubBook, String href) {
     if (epubBook.Content?.Images?.containsKey(href) == true) {
       final epub.EpubByteContentFile ref = epubBook.Content!.Images![href]!;
       final List<int>? content = ref.Content;

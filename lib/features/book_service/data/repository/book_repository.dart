@@ -19,11 +19,12 @@ class BookRepository {
     final Directory directory =
         await FileSystemService.document.libraryDirectory;
     final String absolutePath = absolute(directory.path, filePath);
-    final epub.EpubBook epubBook = await EpubUtils.loadEpubBook(absolutePath);
+    final epub.EpubBook epubBook =
+        await FileSystemService.epub.loadEpubBook(absolutePath);
     return BookData(
       absoluteFilePath: absolutePath,
       name: epubBook.Title ?? '',
-      coverImage: EpubUtils.findCoverImage(epubBook),
+      coverImage: FileSystemService.epub.findCoverImage(epubBook),
     );
   }
 
@@ -41,9 +42,6 @@ class BookRepository {
       yield await getBookData(path);
     }
   }
-
-  Future<List<ChapterData>> getChapterList(String path) =>
-      EpubUtils.getChapterList(path);
 
   /// Add some books to the library.
   Future<void> addBooks(Set<String> externalPathSet) async {

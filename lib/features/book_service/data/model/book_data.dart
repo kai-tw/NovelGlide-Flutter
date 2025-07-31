@@ -29,5 +29,5 @@ class BookData extends Equatable {
 
   /// Get the list of chapters from this book.
   Future<List<ChapterData>> get chapterList =>
-      BookService.repository.getChapterList(absoluteFilePath);
+      FileSystemService.epub.getChapterList(absoluteFilePath);
 }

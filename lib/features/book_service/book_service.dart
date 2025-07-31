@@ -11,7 +11,6 @@ import 'package:image/image.dart' as img;
 import 'package:path/path.dart';
 
 import '../../../../core/services/cache_memory_image_provider.dart';
-import '../../../../core/utils/epub_utils.dart';
 import '../../../../core/utils/file_extension.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../core/services/file_system_service/file_system_service.dart';
