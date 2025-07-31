@@ -2,16 +2,19 @@ part of 'app_global_cubit.dart';
 
 class AppGlobalState extends Equatable {
   const AppGlobalState({
-    this.appearanceData = const AppearanceData(),
+    required this.themeMode,
+    required this.theme,
     this.locale,
   });
 
-  final AppearanceData appearanceData;
+  final ThemeMode themeMode;
+  final ThemeTemplate theme;
   final Locale? locale;
 
   @override
   List<Object?> get props => <Object?>[
-        appearanceData,
+        themeMode,
+        theme,
         locale,
       ];
 }

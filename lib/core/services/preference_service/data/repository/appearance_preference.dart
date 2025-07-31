@@ -1,21 +1,19 @@
 part of '../../preference_service.dart';
 
-class AppearancePreference extends PreferenceRepository<AppearanceData> {
+class AppearancePreference
+    extends PreferenceRepository<AppearancePreferenceData> {
   final String _themeModeKey = PreferenceKeys.themeMode;
 
-  late AppearanceData data;
-
   @override
-  Future<AppearanceData> load() async {
-    data = AppearanceData(
+  Future<AppearancePreferenceData> load() async {
+    return AppearancePreferenceData(
       themeMode: ThemeMode
           .values[await tryGetInt(_themeModeKey) ?? ThemeMode.system.index],
     );
-    return data;
   }
 
   @override
-  Future<void> save(AppearanceData data) async {
+  Future<void> save(AppearancePreferenceData data) async {
     await Future.wait(<Future<void>>[
       setInt(_themeModeKey, data.themeMode.index),
     ]);

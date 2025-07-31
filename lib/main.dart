@@ -40,9 +40,9 @@ class App extends StatelessWidget {
         builder: (BuildContext context, AppGlobalState state) {
           return MaterialApp(
             title: 'NovelGlide',
-            theme: state.appearanceData.theme.lightTheme,
-            darkTheme: state.appearanceData.theme.darkTheme,
-            themeMode: state.appearanceData.themeMode,
+            theme: state.theme.lightTheme,
+            darkTheme: state.theme.darkTheme,
+            themeMode: state.themeMode,
             locale: state.locale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: LocaleServices.supportedLocales,

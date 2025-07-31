@@ -12,41 +12,43 @@ part 'app_global_state.dart';
 
 class AppGlobalCubit extends Cubit<AppGlobalState> {
   factory AppGlobalCubit() {
-    _instance ??= AppGlobalCubit._();
-    _instance?._refreshState();
+    final AppGlobalCubit cubit = AppGlobalCubit._();
 
     // Listen to appearance changes.
-    _instance?.onAppearanceChangedSubscription = PreferenceService
-        .appearancePreference.onChangedController.stream
-        .listen((_) => _instance?._refreshState());
+    cubit.onAppearanceChangedSubscription = PreferenceService
+        .appearance.onChangedController.stream
+        .listen((_) => cubit._refreshState());
 
-    return _instance!;
+    // Listen to locale changes.
+    cubit.onLocaleChangedSubscription = PreferenceService
+        .locale.onChangedController.stream
+        .listen((_) => cubit._refreshState());
+    return cubit;
   }
 
   AppGlobalCubit._()
       : super(AppGlobalState(
-          appearanceData: PreferenceService.appearancePreference.data,
+          themeMode: AppearanceServices.themeMode,
+          theme: AppearanceServices.theme,
           locale: LocaleServices.userLocale,
         ));
 
-  static AppGlobalCubit? _instance;
-
-  static void refreshState() => _instance?._refreshState();
-
-  // Listen to appearance changes.
+  // Listen changes.
   late final StreamSubscription<void> onAppearanceChangedSubscription;
+  late final StreamSubscription<void> onLocaleChangedSubscription;
 
   Future<void> _refreshState() async {
     emit(AppGlobalState(
-      appearanceData: await PreferenceService.appearancePreference.load(),
+      themeMode: AppearanceServices.themeMode,
+      theme: AppearanceServices.theme,
       locale: LocaleServices.userLocale,
     ));
   }
 
   @override
   Future<void> close() {
-    _instance = null;
     onAppearanceChangedSubscription.cancel();
+    onLocaleChangedSubscription.cancel();
     return super.close();
   }
 }

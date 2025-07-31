@@ -1,7 +1,7 @@
-part of '../../appearance_services.dart';
+part of '../../preference_service.dart';
 
-class AppearanceData extends Equatable {
-  const AppearanceData({
+class AppearancePreferenceData extends Equatable {
+  const AppearancePreferenceData({
     this.themeMode = ThemeMode.system,
     this.theme = const DefaultTheme(),
   });

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:novelglide/core/utils/datetime_extension.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/presentation/app_global_cubit/app_global_cubit.dart';
 import '../../core/services/preference_service/preference_service.dart';
@@ -16,31 +15,18 @@ class LocaleServices {
   static List<Locale> get supportedLocales => AppLocalizations.supportedLocales;
 
   static Future<void> ensureInitialized() async {
-    _userLocale = await LocaleServices._getUserLocale();
+    _data = await PreferenceService.locale.load();
   }
 
-  static Locale? _userLocale;
+  static LocalePreferenceData? _data;
 
-  static Locale? get userLocale => _userLocale;
+  static Locale? get userLocale => _data?.userLocale;
 
   static set userLocale(Locale? locale) {
-    _userLocale = locale;
-    AppGlobalCubit.refreshState();
+    _data = LocalePreferenceData(userLocale: locale);
 
-    // Save preferences
-    SharedPreferences.getInstance().then((SharedPreferences prefs) {
-      if (locale == null) {
-        prefs.remove(PreferenceKeys.userLocale);
-      } else {
-        prefs.setString(PreferenceKeys.userLocale, locale.toLanguageTag());
-      }
-    });
-  }
-
-  static Future<Locale?> _getUserLocale() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? languageCode = prefs.getString(PreferenceKeys.userLocale);
-    return languageCode == null ? null : Locale(languageCode);
+    // Save the preference
+    PreferenceService.locale.save(_data!);
   }
 
   static String languageNameOf(BuildContext context, Locale locale) {
