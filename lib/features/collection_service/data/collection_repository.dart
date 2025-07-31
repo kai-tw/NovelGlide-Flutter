@@ -8,11 +8,8 @@ class CollectionRepository {
 
   Future<String> get jsonFileName async => (await jsonFile).baseName;
 
-  Future<JsonFileMetaModel> get jsonFile async {
-    return FileSystemService.json.getJsonFile(
-      await FileSystemService.document.collectionJsonFile,
-    );
-  }
+  Future<JsonFileMetaModel> get jsonFile =>
+      FileSystemService.json.collectionJsonFile;
 
   /// Create a new empty collection with a unique ID.
   Future<CollectionData> create([String? name]) async {

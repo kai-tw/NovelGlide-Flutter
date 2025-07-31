@@ -11,6 +11,7 @@ part 'model/file_meta_model.dart';
 part 'model/json_file_meta_model.dart';
 part 'repository/cache_repository.dart';
 part 'repository/document_repository.dart';
+part 'repository/file_system_repository.dart';
 part 'repository/json_repository.dart';
 part 'repository/temp_repository.dart';
 

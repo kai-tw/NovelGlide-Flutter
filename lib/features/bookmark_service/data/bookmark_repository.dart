@@ -5,11 +5,8 @@ class BookmarkRepository {
 
   Future<String> get jsonFileName async => (await jsonFile).baseName;
 
-  Future<JsonFileMetaModel> get jsonFile async {
-    return FileSystemService.json.getJsonFile(
-      await FileSystemService.document.bookmarkJsonFile,
-    );
-  }
+  Future<JsonFileMetaModel> get jsonFile =>
+      FileSystemService.json.bookmarkJsonFile;
 
   final StreamController<void> onChangedController =
       StreamController<void>.broadcast();
