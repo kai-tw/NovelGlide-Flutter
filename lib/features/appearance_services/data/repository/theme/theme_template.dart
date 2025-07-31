@@ -33,20 +33,6 @@ abstract class ThemeTemplate {
           fontSize: 20.0,
           fontWeight: FontWeight.w900,
         ),
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          statusBarIconBrightness: switch (colorScheme.brightness) {
-            Brightness.dark => Brightness.light,
-            Brightness.light => Brightness.dark,
-          },
-          systemStatusBarContrastEnforced: false,
-          systemNavigationBarColor: Colors.transparent,
-          systemNavigationBarContrastEnforced: false,
-          systemNavigationBarIconBrightness: switch (colorScheme.brightness) {
-            Brightness.dark => Brightness.light,
-            Brightness.light => Brightness.dark,
-          },
-        ),
       ),
       brightness: colorScheme.brightness,
       colorScheme: colorScheme,

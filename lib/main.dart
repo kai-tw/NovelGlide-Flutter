@@ -46,10 +46,7 @@ class App extends StatelessWidget {
             locale: state.locale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: LocaleServices.supportedLocales,
-            routes: <String, WidgetBuilder>{
-              '/': (BuildContext context) => const Homepage(),
-            },
-            initialRoute: '/',
+            home: const Homepage(),
             // builder: (BuildContext context, Widget? child) =>
             //     AccessibilityTools(child: child),
             debugShowCheckedModeBanner: false,

@@ -12,8 +12,8 @@ class ReaderPreference extends PreferenceRepository<ReaderPreferenceData> {
           ) ??
           ReaderPreferenceData.defaultFontSize,
       lineHeight: (await tryGetDouble(_key.lineHeight))?.clamp(
-            ReaderPreferenceData.minFontSize,
-            ReaderPreferenceData.maxFontSize,
+            ReaderPreferenceData.minLineHeight,
+            ReaderPreferenceData.maxLineHeight,
           ) ??
           ReaderPreferenceData.defaultLineHeight,
       isAutoSaving: await tryGetBool(_key.isAutoSaving) ??

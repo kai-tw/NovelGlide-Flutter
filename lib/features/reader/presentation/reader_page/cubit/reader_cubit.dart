@@ -193,6 +193,9 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   Future<void> resetSettings() async {
     await PreferenceService.reader.reset();
+    emit(state.copyWith(
+      readerPreference: await PreferenceService.reader.load(),
+    ));
     sendThemeData();
   }
 
