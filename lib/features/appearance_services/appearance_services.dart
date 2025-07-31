@@ -23,12 +23,14 @@ class AppearanceServices {
   }
 
   static ThemeMode get themeMode => _data?.themeMode ?? ThemeMode.system;
-  static ThemeTemplate get theme => const DefaultTheme();
+
   static set themeMode(ThemeMode mode) {
     _data = AppearancePreferenceData(
-      themeMode: themeMode,
+      themeMode: mode,
     );
 
     PreferenceService.appearance.save(_data!);
   }
+
+  static ThemeTemplate get theme => const DefaultTheme();
 }
