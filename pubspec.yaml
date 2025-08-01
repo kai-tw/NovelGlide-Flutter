@@ -25,6 +25,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_tts: ^4.2.2
+  get_it: ^8.1.0
   google_mobile_ads: ^6.0.0
   google_sign_in: ^7.0.0
   googleapis: ^14.0.0
@@ -39,9 +40,11 @@ dependencies:
   package_info_plus: ^8.0.0
   path: ^1.8.3
   path_provider: ^2.1.1
+  rss_dart: ^1.0.13
   shared_preferences: ^2.3.2
   shelf: ^1.4.1
   url_launcher: ^6.3.0
+  uuid: ^4.5.1
   webview_flutter: ^4.8.0
   xml: ^6.5.0
 dev_dependencies:
