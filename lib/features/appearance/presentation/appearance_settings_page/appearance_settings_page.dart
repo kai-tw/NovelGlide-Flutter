@@ -1,4 +1,7 @@
-part of '../../appearance_services.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../generated/i18n/app_localizations.dart';
+import '../appearance_settings_dark_mode_card/appearance_settings_dark_mode_card.dart';
 
 class AppearanceSettingsPage extends StatelessWidget {
   const AppearanceSettingsPage({super.key});

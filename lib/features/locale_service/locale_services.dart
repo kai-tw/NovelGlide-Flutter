@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:novelglide/core/utils/datetime_extension.dart';
+import 'package:novel_glide/core/utils/datetime_extension.dart';
 
-import '../../core/presentation/app_global_cubit/app_global_cubit.dart';
+import '../../app/cubit/app_cubit.dart';
 import '../../core/services/preference_service/preference_service.dart';
 import '../../generated/i18n/app_localizations.dart';
 

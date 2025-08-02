@@ -1,4 +1,10 @@
-part of '../../appearance_services.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../app/cubit/app_cubit.dart';
+import '../../../../generated/i18n/app_localizations.dart';
+import '../../../settings_page/settings_service.dart';
+import '../../domain/entities/appearance_settings.dart';
 
 class AppearanceSettingsDarkModeCard extends StatelessWidget {
   const AppearanceSettingsDarkModeCard({super.key});
@@ -6,16 +12,17 @@ class AppearanceSettingsDarkModeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SettingsCard(
-      child: BlocBuilder<AppGlobalCubit, AppGlobalState>(
-        buildWhen: (AppGlobalState previous, AppGlobalState current) =>
+      child: BlocBuilder<AppCubit, AppState>(
+        buildWhen: (AppState previous, AppState current) =>
             previous.themeMode != current.themeMode,
         builder: _buildList,
       ),
     );
   }
 
-  Widget _buildList(BuildContext context, AppGlobalState state) {
+  Widget _buildList(BuildContext context, AppState state) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final AppCubit cubit = BlocProvider.of<AppCubit>(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,34 +38,34 @@ class AppearanceSettingsDarkModeCard extends StatelessWidget {
           contentPadding: EdgeInsets.zero,
           leading: const Icon(Icons.brightness_auto_rounded),
           title: Text(appLocalizations.useSystemSettings),
-          trailing: state.themeMode == ThemeMode.system
+          trailing: state.themeMode == AppThemeMode.system
               ? const Icon(Icons.check)
               : null,
-          onTap: state.themeMode == ThemeMode.system
+          onTap: state.themeMode == AppThemeMode.system
               ? null
-              : () => AppearanceServices.themeMode = ThemeMode.system,
+              : () => cubit.changeThemeMode(AppThemeMode.system),
         ),
         ListTile(
           contentPadding: EdgeInsets.zero,
           leading: const Icon(Icons.light_mode_rounded),
           title: Text(appLocalizations.lightMode),
-          trailing: state.themeMode == ThemeMode.light
+          trailing: state.themeMode == AppThemeMode.light
               ? const Icon(Icons.check)
               : null,
-          onTap: state.themeMode == ThemeMode.light
+          onTap: state.themeMode == AppThemeMode.light
               ? null
-              : () => AppearanceServices.themeMode = ThemeMode.light,
+              : () => cubit.changeThemeMode(AppThemeMode.light),
         ),
         ListTile(
           contentPadding: EdgeInsets.zero,
           leading: const Icon(Icons.dark_mode_rounded),
           title: Text(appLocalizations.darkMode),
-          trailing: state.themeMode == ThemeMode.dark
+          trailing: state.themeMode == AppThemeMode.dark
               ? const Icon(Icons.check)
               : null,
-          onTap: state.themeMode == ThemeMode.dark
+          onTap: state.themeMode == AppThemeMode.dark
               ? null
-              : () => AppearanceServices.themeMode = ThemeMode.dark,
+              : () => cubit.changeThemeMode(AppThemeMode.dark),
         ),
       ],
     );

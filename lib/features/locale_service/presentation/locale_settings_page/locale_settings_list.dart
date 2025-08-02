@@ -5,10 +5,12 @@ class LocaleSettingsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppGlobalCubit, AppGlobalState>(
-      buildWhen: (AppGlobalState previous, AppGlobalState current) => previous.locale != current.locale,
-      builder: (BuildContext context, AppGlobalState state) {
-        final List<Locale?> localeList = List<Locale?>.from(LocaleServices.supportedLocales);
+    return BlocBuilder<AppCubit, AppState>(
+      buildWhen: (AppState previous, AppState current) =>
+          previous.locale != current.locale,
+      builder: (BuildContext context, AppState state) {
+        final List<Locale?> localeList =
+            List<Locale?>.from(LocaleServices.supportedLocales);
 
         // Use system settings.
         localeList.insert(0, null);

@@ -1,23 +1,26 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
-import 'core/presentation/app_global_cubit/app_global_cubit.dart';
+import 'app/app.dart';
 import 'core/services/log_service/log_service.dart';
-import 'features/appearance_services/appearance_services.dart';
-import 'features/homepage/homepage.dart';
+import 'core/setup_dependencies.dart';
 import 'features/locale_service/locale_services.dart';
 import 'firebase_options.dart';
-import 'generated/i18n/app_localizations.dart';
+
+final GetIt sl = GetIt.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Setup dependencies
+  await setupDependencies();
+  sl.allReadySync();
+
   // Future initializations
   await Future.wait(<Future<void>>[
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
-    AppearanceServices.ensureInitialized(),
     LocaleServices.ensureInitialized(),
   ]);
 
@@ -27,32 +30,4 @@ void main() async {
   // Start App
   FirebaseAnalytics.instance.logAppOpen();
   runApp(const App());
-}
-
-class App extends StatelessWidget {
-  const App({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider<AppGlobalCubit>(
-      create: (_) => AppGlobalCubit(),
-      child: BlocBuilder<AppGlobalCubit, AppGlobalState>(
-        builder: (BuildContext context, AppGlobalState state) {
-          return MaterialApp(
-            title: 'NovelGlide',
-            theme: state.theme.lightTheme,
-            darkTheme: state.theme.darkTheme,
-            themeMode: state.themeMode,
-            locale: state.locale,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: LocaleServices.supportedLocales,
-            home: const Homepage(),
-            // builder: (BuildContext context, Widget? child) =>
-            //     AccessibilityTools(child: child),
-            debugShowCheckedModeBanner: false,
-          );
-        },
-      ),
-    );
-  }
 }

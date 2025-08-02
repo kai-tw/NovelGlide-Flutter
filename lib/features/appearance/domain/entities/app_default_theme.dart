@@ -1,7 +1,9 @@
-part of '../../../appearance_services.dart';
+import 'package:flutter/material.dart';
 
-class DefaultTheme extends ThemeTemplate {
-  const DefaultTheme();
+import 'app_theme.dart';
+
+class AppDefaultTheme extends AppTheme {
+  const AppDefaultTheme();
 
   @override
   ThemeData get lightTheme => getThemeByScheme(_lightColorScheme);

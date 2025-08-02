@@ -9,8 +9,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:novelglide/firebase_options.dart';
-import 'package:novelglide/main.dart';
+import 'package:novel_glide/app/app.dart';
+import 'package:novel_glide/firebase_options.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

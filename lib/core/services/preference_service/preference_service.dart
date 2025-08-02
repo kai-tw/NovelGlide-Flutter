@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../enum/sort_order_code.dart';
-import '../../../features/appearance_services/appearance_services.dart';
 import '../../../features/reader/data/model/reader_page_num_type.dart';
 import '../../../features/tts_service/tts_service.dart';
 import '../../shared_components/shared_list/shared_list.dart';
@@ -15,11 +14,9 @@ part 'data/keys/backup_preference_key.dart';
 part 'data/keys/reader_preference_key.dart';
 part 'data/keys/shared_list_preference_key.dart';
 part 'data/keys/tts_preference_key.dart';
-part 'data/model/appearance_preference_data.dart';
 part 'data/model/backup_preference_data.dart';
 part 'data/model/locale_preference_data.dart';
 part 'data/model/tts_preference_data.dart';
-part 'data/repository/appearance_preference.dart';
 part 'data/repository/backup_preference.dart';
 part 'data/repository/bookmark_list_preference.dart';
 part 'data/repository/bookshelf_preference.dart';
@@ -33,7 +30,6 @@ part 'data/repository/tts_preference.dart';
 class PreferenceService {
   const PreferenceService._();
 
-  static final AppearancePreference appearance = AppearancePreference();
   static final BackupPreference backup = BackupPreference();
   static BookmarkListPreference bookmarkList = BookmarkListPreference();
   static final BookshelfPreference bookshelf = BookshelfPreference();

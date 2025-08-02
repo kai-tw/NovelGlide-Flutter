@@ -8,7 +8,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart';
-import 'package:novelglide/core/utils/random_extension.dart';
+import 'package:novel_glide/core/utils/random_extension.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 

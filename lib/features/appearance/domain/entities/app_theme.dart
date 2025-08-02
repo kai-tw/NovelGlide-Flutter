@@ -1,7 +1,7 @@
-part of '../../../appearance_services.dart';
+import 'package:flutter/material.dart';
 
-abstract class ThemeTemplate {
-  const ThemeTemplate();
+abstract class AppTheme {
+  const AppTheme();
 
   ThemeData get lightTheme;
 

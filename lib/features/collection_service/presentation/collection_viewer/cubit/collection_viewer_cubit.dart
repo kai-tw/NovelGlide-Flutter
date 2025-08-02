@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:novelglide/enum/sort_order_code.dart';
+import 'package:novel_glide/enum/sort_order_code.dart';
 
 import '../../../../../core/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
