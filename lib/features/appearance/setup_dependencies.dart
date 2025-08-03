@@ -1,29 +1,31 @@
-import 'package:get_it/get_it.dart';
-import 'package:novel_glide/features/appearance/data/data_sources/appearance_local_data_source.dart';
-import 'package:novel_glide/features/appearance/data/repositories/appearance_repository_impl.dart';
-import 'package:novel_glide/features/appearance/domain/repositories/appearance_repository.dart';
-import 'package:novel_glide/features/appearance/domain/use_cases/get_appearance_settings_use_case.dart';
-import 'package:novel_glide/features/appearance/domain/use_cases/save_appearance_settings_use_case.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> setupAppearanceDependencies(
-  GetIt getIt,
-  SharedPreferences prefs,
-) async {
-  getIt.registerLazySingleton<AppearanceLocalDataSource>(
-    () => AppearanceLocalDataSourceImpl(prefs: prefs),
+import '../../main.dart';
+import 'data/data_sources/appearance_local_data_source.dart';
+import 'data/repositories/appearance_repository_impl.dart';
+import 'domain/repositories/appearance_repository.dart';
+import 'domain/use_cases/get_appearance_settings_use_case.dart';
+import 'domain/use_cases/save_appearance_settings_use_case.dart';
+
+Future<void> setupAppearanceDependencies(SharedPreferences prefs) async {
+  // Register local data source
+  sl.registerLazySingleton<AppearanceLocalDataSource>(
+    () => AppearanceLocalDataSourceImpl(prefs),
   );
 
-  getIt.registerLazySingleton<AppearanceRepository>(
+  // Register repository
+  sl.registerLazySingleton<AppearanceRepository>(
     () => AppearanceRepositoryImpl(
-        localDataSource: getIt<AppearanceLocalDataSource>()),
+      localDataSource: sl<AppearanceLocalDataSource>(),
+    ),
   );
 
-  getIt.registerFactory<GetAppearanceSettingsUseCase>(
-    () => GetAppearanceSettingsUseCase(getIt<AppearanceRepository>()),
+  // Register use cases
+  sl.registerFactory<GetAppearanceSettingsUseCase>(
+    () => GetAppearanceSettingsUseCase(sl<AppearanceRepository>()),
   );
 
-  getIt.registerFactory<SaveAppearanceSettingsUseCase>(
-    () => SaveAppearanceSettingsUseCase(getIt<AppearanceRepository>()),
+  sl.registerFactory<SaveAppearanceSettingsUseCase>(
+    () => SaveAppearanceSettingsUseCase(sl<AppearanceRepository>()),
   );
 }

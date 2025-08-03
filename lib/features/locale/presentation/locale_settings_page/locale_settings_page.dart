@@ -1,4 +1,4 @@
-part of '../../locale_services.dart';
+part of '../../locale_utils.dart';
 
 class LocaleSettingsPage extends StatelessWidget {
   const LocaleSettingsPage({super.key});

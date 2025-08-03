@@ -8,9 +8,9 @@ import '../about_page/about_page_app_version.dart';
 import '../appearance/presentation/appearance_settings_page/appearance_settings_page.dart';
 import '../backup_service/presentation/backup_service_page.dart';
 import '../developer_page/developer_page.dart';
-import '../feedback_service/feedback_service.dart';
+import '../feedback_service/presentation/feedback_page.dart';
 import '../homepage/homepage.dart';
-import '../locale_service/locale_services.dart';
+import '../locale/locale_utils.dart';
 import '../reset_services/reset_service.dart';
 import '../tts_service/tts_service.dart';
 

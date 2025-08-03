@@ -4,29 +4,37 @@ class AppState extends Equatable {
   const AppState({
     required this.themeMode,
     required this.theme,
-    this.locale,
+    this.userLocale,
   });
 
   final AppThemeMode themeMode;
   final AppTheme theme;
-  final Locale? locale;
+  final AppLocale? userLocale;
 
   @override
   List<Object?> get props => <Object?>[
         themeMode,
         theme,
-        locale,
+        userLocale,
       ];
 
   AppState copyWith({
     AppThemeMode? themeMode,
     AppTheme? theme,
-    Locale? locale,
+    AppLocale? userLocale,
   }) {
     return AppState(
       themeMode: themeMode ?? this.themeMode,
       theme: theme ?? this.theme,
-      locale: locale ?? this.locale,
+      userLocale: userLocale ?? this.userLocale,
+    );
+  }
+
+  AppState copyWithUserLocale(AppLocale? userLocale) {
+    return AppState(
+      themeMode: themeMode,
+      theme: theme,
+      userLocale: userLocale,
     );
   }
 }

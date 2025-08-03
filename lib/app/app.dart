@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../features/appearance/domain/entities/appearance_settings.dart';
 import '../features/homepage/homepage.dart';
-import '../features/locale_service/locale_services.dart';
+import '../features/locale/domain/entities/app_locale.dart';
+import '../features/locale/locale_utils.dart';
 import '../generated/i18n/app_localizations.dart';
 import '../main.dart';
 import 'cubit/app_cubit.dart';
@@ -28,9 +29,14 @@ class App extends StatelessWidget {
               AppThemeMode.light => ThemeMode.light,
               AppThemeMode.dark => ThemeMode.dark,
             },
-            locale: state.locale,
+            locale: state.userLocale == null
+                ? null
+                : LocaleUtils.convertAppLocaleToLocale(state.userLocale!),
             localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: LocaleServices.supportedLocales,
+            supportedLocales: LocaleUtils.supportedLocales
+                .map((AppLocale appLocale) =>
+                    LocaleUtils.convertAppLocaleToLocale(appLocale))
+                .toList(),
             home: const Homepage(),
             // builder: (BuildContext context, Widget? child) =>
             //     AccessibilityTools(child: child),

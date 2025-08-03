@@ -8,7 +8,7 @@ abstract class AppearanceLocalDataSource {
 }
 
 class AppearanceLocalDataSourceImpl implements AppearanceLocalDataSource {
-  AppearanceLocalDataSourceImpl({required this.prefs});
+  AppearanceLocalDataSourceImpl(this.prefs);
   final SharedPreferences prefs;
   final String _themeModeKey = 'themeMode';
 

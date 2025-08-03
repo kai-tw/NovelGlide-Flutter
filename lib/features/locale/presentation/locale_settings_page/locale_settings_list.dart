@@ -1,4 +1,4 @@
-part of '../../locale_services.dart';
+part of '../../locale_utils.dart';
 
 class LocaleSettingsList extends StatelessWidget {
   const LocaleSettingsList({super.key});
@@ -7,10 +7,10 @@ class LocaleSettingsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
       buildWhen: (AppState previous, AppState current) =>
-          previous.locale != current.locale,
+          previous.userLocale != current.userLocale,
       builder: (BuildContext context, AppState state) {
-        final List<Locale?> localeList =
-            List<Locale?>.from(LocaleServices.supportedLocales);
+        final List<AppLocale?> localeList =
+            List<AppLocale?>.from(LocaleUtils.supportedLocales);
 
         // Use system settings.
         localeList.insert(0, null);
@@ -21,7 +21,7 @@ class LocaleSettingsList extends StatelessWidget {
             return _buildListTile(
               context: context,
               locale: localeList[index],
-              isSelected: state.locale == localeList[index],
+              isSelected: state.userLocale == localeList[index],
             );
           },
         );
@@ -31,11 +31,12 @@ class LocaleSettingsList extends StatelessWidget {
 
   Widget _buildListTile({
     required BuildContext context,
-    required Locale? locale,
+    required AppLocale? locale,
     required bool isSelected,
   }) {
+    final AppCubit cubit = BlocProvider.of<AppCubit>(context);
     return ListTile(
-      onTap: isSelected ? null : () => LocaleServices.userLocale = locale,
+      onTap: isSelected ? null : () => cubit.changeLocale(locale),
       title: _buildTitle(
         context: context,
         locale: locale,
@@ -50,16 +51,16 @@ class LocaleSettingsList extends StatelessWidget {
 
   Widget _buildTitle({
     required BuildContext context,
-    required Locale? locale,
+    required AppLocale? locale,
   }) {
     return locale == null
         ? Text(AppLocalizations.of(context)!.useSystemSettings)
         : Localizations.override(
             context: context,
-            locale: locale,
+            locale: LocaleUtils.convertAppLocaleToLocale(locale),
             child: Builder(
               builder: (BuildContext context) => Text(
-                LocaleServices.languageNameOf(context, locale),
+                LocaleUtils.languageNameOf(context, locale),
               ),
             ),
           );
@@ -67,12 +68,12 @@ class LocaleSettingsList extends StatelessWidget {
 
   Widget? _buildSubtitle({
     required BuildContext context,
-    required Locale? locale,
+    required AppLocale? locale,
   }) {
     return locale == null
         ? null
         : Text(
-            LocaleServices.languageNameOf(context, locale),
+            LocaleUtils.languageNameOf(context, locale),
           );
   }
 }

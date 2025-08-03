@@ -6,7 +6,6 @@ import 'package:get_it/get_it.dart';
 import 'app/app.dart';
 import 'core/services/log_service/log_service.dart';
 import 'core/setup_dependencies.dart';
-import 'features/locale_service/locale_services.dart';
 import 'firebase_options.dart';
 
 final GetIt sl = GetIt.instance;
@@ -18,11 +17,8 @@ void main() async {
   await setupDependencies();
   sl.allReadySync();
 
-  // Future initializations
-  await Future.wait(<Future<void>>[
-    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
-    LocaleServices.ensureInitialized(),
-  ]);
+  // Firebase initializations
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Log Initialization
   LogService.ensureInitialized();
