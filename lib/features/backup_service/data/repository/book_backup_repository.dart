@@ -84,7 +84,7 @@ class BookBackupRepository extends BackupRepository {
       await GoogleApiInterfaces.drive.uploadFile(zipFile, onUpload: onUpload);
     } catch (e) {
       // An error occurred.
-      LogService.error('Upload library zip to Google Drive failed', error: e);
+      LogSystem.error('Upload library zip to Google Drive failed', error: e);
       return false;
     }
 
@@ -97,7 +97,7 @@ class BookBackupRepository extends BackupRepository {
     void Function(int, int)? onDownload,
   }) async {
     if (await googleDriveFileId == null) {
-      LogService.error('Download library backup failed.'
+      LogSystem.error('Download library backup failed.'
           'Google Drive file id is null');
       return null;
     }
@@ -112,7 +112,7 @@ class BookBackupRepository extends BackupRepository {
           .downloadFile(fileId!, zipFile, onDownload: onDownload);
     } catch (e) {
       // An error occurred.
-      LogService.error('Google Drive download file failed', error: e);
+      LogSystem.error('Google Drive download file failed', error: e);
       return null;
     }
 
@@ -123,7 +123,7 @@ class BookBackupRepository extends BackupRepository {
   /// Return true if it's successful
   Future<bool> deleteFromGoogleDrive() async {
     if (await googleDriveFileId == null) {
-      LogService.error('Delete library backup failed.'
+      LogSystem.error('Delete library backup failed.'
           'Google Drive file id is null.');
       return false;
     }

@@ -7,8 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart';
 
 import '../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
+import '../../core/log_system/log_system.dart';
 import '../../core/services/file_system_service/file_system_service.dart';
-import '../../core/services/log_service/log_service.dart';
 import '../book_service/book_service.dart';
 import '../bookmark_service/bookmark_service.dart';
 import '../collection_service/collection_service.dart';

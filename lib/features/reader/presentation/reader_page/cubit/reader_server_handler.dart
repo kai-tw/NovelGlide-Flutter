@@ -15,7 +15,7 @@ class ReaderServerHandler {
         const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
     _server = await shelf_io.serve(handler, _host, _port);
     _server?.autoCompress = true;
-    LogService.info('Reader: Server started on $_host:$_port.');
+    LogSystem.info('Reader: Server started on $_host:$_port.');
   }
 
   Future<Response> _echoRequest(Request request) async {
@@ -63,7 +63,7 @@ class ReaderServerHandler {
     if (_server != null) {
       await _server!.close();
       _server = null;
-      LogService.info('Reader: Server stopped.');
+      LogSystem.info('Reader: Server stopped.');
     }
   }
 }

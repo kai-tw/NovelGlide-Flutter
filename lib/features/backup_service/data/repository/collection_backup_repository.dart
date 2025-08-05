@@ -16,7 +16,7 @@ class CollectionBackupRepository extends BackupRepository {
         onUpload: onUpload,
       );
     } catch (e) {
-      LogService.error(
+      LogSystem.error(
         'Failed to upload collection json file to Google Drive',
         error: e,
       );
@@ -30,8 +30,7 @@ class CollectionBackupRepository extends BackupRepository {
     void Function(int, int)? onDownload,
   }) async {
     if ((await googleDriveFileId) == null) {
-      LogService.error(
-          'Google Drive file id of the collection backup is null.');
+      LogSystem.error('Google Drive file id of the collection backup is null.');
       return null;
     }
 
@@ -44,7 +43,7 @@ class CollectionBackupRepository extends BackupRepository {
         onDownload: onDownload,
       );
     } catch (e) {
-      LogService.error(
+      LogSystem.error(
         'Download bookmark backup from Google Drive failed.',
         error: e,
       );
@@ -56,15 +55,14 @@ class CollectionBackupRepository extends BackupRepository {
 
   Future<bool> deleteFromGoogleDrive() async {
     if ((await googleDriveFileId) == null) {
-      LogService.error(
-          'Google Drive file id of the collection backup is null.');
+      LogSystem.error('Google Drive file id of the collection backup is null.');
       return false;
     }
 
     try {
       await GoogleApiInterfaces.drive.deleteFile((await googleDriveFileId)!);
     } catch (e) {
-      LogService.error(
+      LogSystem.error(
         'Failed to delete collection backup from Google Drive.',
         error: e,
       );

@@ -8,6 +8,7 @@ import '../features/locale/domain/use_cases/get_locale_settings_use_case.dart';
 import '../features/locale/domain/use_cases/save_locale_settings_use_case.dart';
 import '../features/locale/setup_dependencies.dart';
 import '../main.dart';
+import 'log_system/setup_dependencies.dart';
 
 Future<void> setupDependencies() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -15,6 +16,7 @@ Future<void> setupDependencies() async {
   // Dependencies injection for all features
   setupAppearanceDependencies(prefs);
   setupLocaleDependencies(prefs);
+  setupLogDependencies();
 
   // Dependencies injection for app
   sl.registerSingletonAsync<AppCubit>(() async {

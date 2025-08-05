@@ -4,7 +4,7 @@ class GoogleAuthInterface {
   factory GoogleAuthInterface() {
     final GoogleAuthInterface instance = GoogleAuthInterface._();
     GoogleSignIn.instance.initialize().then((_) {
-      LogService.info('GoogleAuthService: Initialized.');
+      LogSystem.info('GoogleAuthService: Initialized.');
       instance._initCompleter.complete();
     });
     return instance;
@@ -19,7 +19,7 @@ class GoogleAuthInterface {
 
   Future<void> signIn() async {
     await _initCompleter.future;
-    LogService.info('GoogleAuthService.signIn: Start');
+    LogSystem.info('GoogleAuthService.signIn: Start');
 
     // Login silently first
     _currentUser =
@@ -29,21 +29,21 @@ class GoogleAuthInterface {
     try {
       _currentUser ??= await GoogleSignIn.instance.authenticate();
     } on GoogleSignInException catch (e) {
-      LogService.error('GoogleAuthService.signIn: $e', error: e);
+      LogSystem.error('GoogleAuthService.signIn: $e', error: e);
       throw GoogleAuthSignInException();
     }
 
     if (_currentUser == null) {
-      LogService.error('GoogleAuthService.signIn: Authentication failed.');
+      LogSystem.error('GoogleAuthService.signIn: Authentication failed.');
       throw GoogleAuthSignInException();
     }
 
-    LogService.info('GoogleAuthService.signIn: done.');
+    LogSystem.info('GoogleAuthService.signIn: done.');
   }
 
   Future<GoogleAuthClient> getClient(List<String> scopes) async {
     await _initCompleter.future;
-    LogService.info('GoogleAuthService.getClient: Start.');
+    LogSystem.info('GoogleAuthService.getClient: Start.');
 
     // Attempt to get authorization for the requested scopes
     GoogleSignInClientAuthorization? authorization =
@@ -54,13 +54,13 @@ class GoogleAuthInterface {
       authorization ??=
           await _currentUser?.authorizationClient.authorizeScopes(scopes);
     } on GoogleSignInException catch (e) {
-      LogService.error('GoogleAuthService.getClient: $e');
+      LogSystem.error('GoogleAuthService.getClient: $e');
       throw GoogleDrivePermissionException();
     }
 
     // Cannot get the required scopes
     if (authorization == null) {
-      LogService.error('GoogleAuthService.getClient: permission denied');
+      LogSystem.error('GoogleAuthService.getClient: permission denied');
       throw GoogleDrivePermissionException();
     }
 
@@ -69,11 +69,11 @@ class GoogleAuthInterface {
 
     // Cannot get the header
     if (header == null) {
-      LogService.error('GoogleAuthService.getClient: header is null');
+      LogSystem.error('GoogleAuthService.getClient: header is null');
       throw GoogleDrivePermissionException();
     }
 
-    LogService.info('GoogleAuthService.getClient: done.');
+    LogSystem.info('GoogleAuthService.getClient: done.');
     return GoogleAuthClient(header);
   }
 

@@ -6,8 +6,8 @@ import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
+import '../../../core/log_system/log_system.dart';
 import '../../services/exception_service/exception_service.dart';
-import '../../services/log_service/log_service.dart';
 import '../../services/mime_resolver.dart';
 import '../../utils/parsers.dart';
 

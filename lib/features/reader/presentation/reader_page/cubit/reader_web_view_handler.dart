@@ -48,7 +48,7 @@ class ReaderWebViewHandler {
     final Map<String, dynamic> data = jsonDecode(message.message);
     assert(data['route'] is String);
     _channelMap[data['route']]?.call(data['data']);
-    LogService.info("Reader: Receive - ${data['route']} ${data['data']}");
+    LogSystem.info("Reader: Receive - ${data['route']} ${data['data']}");
   }
 
   void register(String route, void Function(dynamic) handler) {
