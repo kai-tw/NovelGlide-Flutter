@@ -5,45 +5,51 @@ import '../data_sources/adapters/logger_adapter.dart';
 
 class LogRepositoryImpl extends LogRepository {
   LogRepositoryImpl(
-    this._loggerDataSource,
-    this._firebaseCrashlyticsDataSourceImpl,
-    this._firebaseAnalyticsDataSource,
+    this._loggerAdapter,
+    this._firebaseCrashlyticsAdapter,
+    this._firebaseAnalyticsAdapter,
   );
 
-  final LoggerAdapter _loggerDataSource;
-  final FirebaseCrashlyticsAdapter _firebaseCrashlyticsDataSourceImpl;
-  final FirebaseAnalyticsAdapter _firebaseAnalyticsDataSource;
+  final LoggerAdapter _loggerAdapter;
+  final FirebaseCrashlyticsAdapter _firebaseCrashlyticsAdapter;
+  final FirebaseAnalyticsAdapter _firebaseAnalyticsAdapter;
 
   @override
-  Future<void> error(
-    String message, {
-    Object? error,
-    StackTrace? stackTrace,
-  }) async {
-    _loggerDataSource.error(message, error: error, stackTrace: stackTrace);
-    _firebaseCrashlyticsDataSourceImpl.error(message,
-        error: error, stackTrace: stackTrace);
-    _firebaseAnalyticsDataSource.error(message,
-        error: error, stackTrace: stackTrace);
+  Future<void> error(String message, {Object? error, StackTrace? stackTrace}) {
+    return Future.wait(<Future<void>>[
+      _loggerAdapter.error(message, error: error, stackTrace: stackTrace),
+      _firebaseCrashlyticsAdapter.error(message,
+          error: error, stackTrace: stackTrace),
+      _firebaseAnalyticsAdapter.error(message,
+          error: error, stackTrace: stackTrace),
+    ]);
   }
 
   @override
-  Future<void> fatal(
-    String message, {
-    Object? error,
-    StackTrace? stackTrace,
-  }) async {
-    _loggerDataSource.fatal(message, error: error, stackTrace: stackTrace);
-    _firebaseCrashlyticsDataSourceImpl.fatal(message,
-        error: error, stackTrace: stackTrace);
-    _firebaseAnalyticsDataSource.fatal(message,
-        error: error, stackTrace: stackTrace);
+  Future<void> fatal(String message, {Object? error, StackTrace? stackTrace}) {
+    return Future.wait(<Future<void>>[
+      _loggerAdapter.fatal(message, error: error, stackTrace: stackTrace),
+      _firebaseCrashlyticsAdapter.fatal(message,
+          error: error, stackTrace: stackTrace),
+      _firebaseAnalyticsAdapter.fatal(message,
+          error: error, stackTrace: stackTrace),
+    ]);
   }
 
   @override
-  Future<void> info(String message) async {
-    _loggerDataSource.info(message);
-    _firebaseCrashlyticsDataSourceImpl.info(message);
-    _firebaseAnalyticsDataSource.info(message);
+  Future<void> info(String message) {
+    return Future.wait(<Future<void>>[
+      _loggerAdapter.info(message),
+      _firebaseCrashlyticsAdapter.info(message),
+      _firebaseAnalyticsAdapter.info(message),
+    ]);
+  }
+
+  @override
+  Future<void> event(String name, {Map<String, Object>? parameters}) {
+    return Future.wait(<Future<void>>[
+      _loggerAdapter.event(name, parameters: parameters),
+      _firebaseAnalyticsAdapter.event(name, parameters: parameters),
+    ]);
   }
 }

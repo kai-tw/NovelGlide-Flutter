@@ -14,6 +14,9 @@ class LogSystem {
   void _fatal(dynamic message, {Object? error, StackTrace? stackTrace}) =>
       _repository.fatal(message, error: error, stackTrace: stackTrace);
 
+  void _event(String name, {Map<String, Object>? parameters}) =>
+      _repository.event(name, parameters: parameters);
+
   /// Static members
 
   static void info(dynamic message) => sl<LogSystem>()._info(message);
@@ -23,4 +26,7 @@ class LogSystem {
 
   static void fatal(dynamic message, {Object? error, StackTrace? stackTrace}) =>
       sl<LogSystem>()._fatal(message, error: error, stackTrace: stackTrace);
+
+  static void event(String name, {Map<String, Object>? parameters}) =>
+      sl<LogSystem>()._event(name, parameters: parameters);
 }

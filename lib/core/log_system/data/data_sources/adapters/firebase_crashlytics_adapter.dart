@@ -6,12 +6,8 @@ class FirebaseCrashlyticsAdapter extends LogDataSource {
   final FirebaseCrashlytics _instance = FirebaseCrashlytics.instance;
 
   @override
-  Future<void> error(
-    String message, {
-    Object? error,
-    StackTrace? stackTrace,
-  }) async {
-    _instance.recordError(
+  Future<void> error(String message, {Object? error, StackTrace? stackTrace}) {
+    return _instance.recordError(
       Exception(message),
       stackTrace,
       reason: message,
@@ -20,12 +16,8 @@ class FirebaseCrashlyticsAdapter extends LogDataSource {
   }
 
   @override
-  Future<void> fatal(
-    String message, {
-    Object? error,
-    StackTrace? stackTrace,
-  }) async {
-    _instance.recordError(
+  Future<void> fatal(String message, {Object? error, StackTrace? stackTrace}) {
+    return _instance.recordError(
       Exception(message),
       stackTrace,
       reason: message,
@@ -34,7 +26,12 @@ class FirebaseCrashlyticsAdapter extends LogDataSource {
   }
 
   @override
-  Future<void> info(String message) async {
-    _instance.log('Info: $message');
+  Future<void> info(String message) {
+    return _instance.log('Info: $message');
+  }
+
+  @override
+  Future<void> event(String name, {Map<String, dynamic>? parameters}) async {
+    // No-ops
   }
 }

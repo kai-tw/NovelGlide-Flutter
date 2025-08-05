@@ -17,8 +17,11 @@ class LoggerAdapter extends LogDataSource {
   }
 
   @override
-  Future<void> fatal(String message,
-      {Object? error, StackTrace? stackTrace}) async {
+  Future<void> fatal(
+    String message, {
+    Object? error,
+    StackTrace? stackTrace,
+  }) async {
     return _logger.f(
       message,
       error: error,
@@ -29,5 +32,10 @@ class LoggerAdapter extends LogDataSource {
   @override
   Future<void> info(String message) async {
     return _logger.i(message);
+  }
+
+  @override
+  Future<void> event(String name, {Map<String, Object>? parameters}) async {
+    return _logger.i('Event: $name\n$parameters');
   }
 }
