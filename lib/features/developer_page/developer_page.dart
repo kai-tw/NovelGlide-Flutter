@@ -8,11 +8,11 @@ import 'package:googleapis/drive/v3.dart' as drive;
 
 import '../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
 import '../../core/services/file_system_service/file_system_service.dart';
-import '../../core/shared_components/common_delete_dialog.dart';
-import '../../core/shared_components/common_error_dialog.dart';
-import '../../core/shared_components/common_loading.dart';
-import '../../core/shared_components/common_success_dialog.dart';
-import '../../core/shared_components/shared_list/shared_list.dart';
+import '../../features/shared_components/common_delete_dialog.dart';
+import '../../features/shared_components/common_error_dialog.dart';
+import '../../features/shared_components/common_loading.dart';
+import '../../features/shared_components/common_success_dialog.dart';
+import '../../features/shared_components/shared_list/shared_list.dart';
 import '../../enum/window_size.dart';
 import '../locale/locale_utils.dart';
 

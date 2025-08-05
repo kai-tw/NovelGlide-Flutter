@@ -8,11 +8,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/services/file_system_service/file_system_service.dart';
 import '../../core/services/preference_service/preference_service.dart';
-import '../../core/shared_components/common_delete_dialog.dart';
-import '../../core/shared_components/common_loading.dart';
-import '../../core/shared_components/draggable_feedback_widget.dart';
-import '../../core/shared_components/draggable_placeholder_widget.dart';
-import '../../core/shared_components/shared_list/shared_list.dart';
+import '../../features/shared_components/common_delete_dialog.dart';
+import '../../features/shared_components/common_loading.dart';
+import '../../features/shared_components/draggable_feedback_widget.dart';
+import '../../features/shared_components/draggable_placeholder_widget.dart';
+import '../../features/shared_components/shared_list/shared_list.dart';
 import '../../core/utils/popup_menu_utils.dart';
 import '../../enum/loading_state_code.dart';
 import '../../enum/sort_order_code.dart';

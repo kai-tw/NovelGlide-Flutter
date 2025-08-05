@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:novel_glide/enum/sort_order_code.dart';
 
-import '../../../../../core/shared_components/shared_list/shared_list.dart';
+import '../../../../../features/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../book_service/book_service.dart';
 import '../../../collection_service.dart';

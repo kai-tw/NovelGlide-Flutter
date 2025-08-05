@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/services/preference_service/preference_service.dart';
-import '../../core/shared_components/common_delete_dialog.dart';
-import '../../core/shared_components/common_loading.dart';
-import '../../core/shared_components/common_success_dialog.dart';
+import '../../features/shared_components/common_delete_dialog.dart';
+import '../../features/shared_components/common_loading.dart';
+import '../../features/shared_components/common_success_dialog.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../book_service/book_service.dart';
 import '../bookmark_service/bookmark_service.dart';

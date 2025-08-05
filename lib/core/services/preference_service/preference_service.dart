@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../enum/sort_order_code.dart';
 import '../../../features/reader/data/model/reader_page_num_type.dart';
+import '../../../features/shared_components/shared_list/shared_list.dart';
 import '../../../features/tts_service/tts_service.dart';
-import '../../shared_components/shared_list/shared_list.dart';
 import 'data/model/reader_preference_data.dart';
 
 part 'data/keys/backup_preference_key.dart';

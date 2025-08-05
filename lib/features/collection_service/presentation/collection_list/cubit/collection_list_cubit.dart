@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 
 import '../../../../../core/services/preference_service/preference_service.dart';
-import '../../../../../core/shared_components/shared_list/shared_list.dart';
+import '../../../../../features/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../collection_service.dart';
