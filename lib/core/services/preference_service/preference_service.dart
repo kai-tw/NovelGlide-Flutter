@@ -21,7 +21,6 @@ part 'data/repository/backup_preference.dart';
 part 'data/repository/bookmark_list_preference.dart';
 part 'data/repository/bookshelf_preference.dart';
 part 'data/repository/collection_list_preference.dart';
-part 'data/repository/locale_preference.dart';
 part 'data/repository/preference_repository.dart';
 part 'data/repository/reader_preference.dart';
 part 'data/repository/shared_list_preference.dart';
@@ -34,7 +33,6 @@ class PreferenceService {
   static BookmarkListPreference bookmarkList = BookmarkListPreference();
   static final BookshelfPreference bookshelf = BookshelfPreference();
   static CollectionListPreference collectionList = CollectionListPreference();
-  static final LocalePreference locale = LocalePreference();
   static final ReaderPreference reader = ReaderPreference();
   static final TtsPreference tts = TtsPreference();
 }
