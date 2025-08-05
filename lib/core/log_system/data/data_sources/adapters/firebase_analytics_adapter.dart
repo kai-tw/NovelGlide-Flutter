@@ -1,10 +1,8 @@
-// data/data_sources/impl/firebase_analytics_data_source_impl.dart
-
 import 'package:firebase_analytics/firebase_analytics.dart';
 
 import '../log_data_source.dart';
 
-class FirebaseAnalyticsDataSourceImpl extends LogDataSource {
+class FirebaseAnalyticsAdapter extends LogDataSource {
   final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
 
   @override

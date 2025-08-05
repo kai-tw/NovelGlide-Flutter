@@ -1,7 +1,7 @@
 import '../../domain/repositories/log_repository.dart';
-import '../data_sources/impl/firebase_analytics_data_source_impl.dart';
-import '../data_sources/impl/firebase_crashlytics_data_source_impl.dart';
-import '../data_sources/impl/logger_data_source_impl.dart';
+import '../data_sources/adapters/firebase_analytics_adapter.dart';
+import '../data_sources/adapters/firebase_crashlytics_adapter.dart';
+import '../data_sources/adapters/logger_adapter.dart';
 
 class LogRepositoryImpl extends LogRepository {
   LogRepositoryImpl(
@@ -10,9 +10,9 @@ class LogRepositoryImpl extends LogRepository {
     this._firebaseAnalyticsDataSource,
   );
 
-  final LoggerDataSourceImpl _loggerDataSource;
-  final FirebaseCrashlyticsDataSourceImpl _firebaseCrashlyticsDataSourceImpl;
-  final FirebaseAnalyticsDataSourceImpl _firebaseAnalyticsDataSource;
+  final LoggerAdapter _loggerDataSource;
+  final FirebaseCrashlyticsAdapter _firebaseCrashlyticsDataSourceImpl;
+  final FirebaseAnalyticsAdapter _firebaseAnalyticsDataSource;
 
   @override
   Future<void> error(

@@ -2,8 +2,8 @@ import 'package:logger/logger.dart';
 
 import '../log_data_source.dart';
 
-class LoggerDataSourceImpl extends LogDataSource {
-  LoggerDataSourceImpl(this._logger);
+class LoggerAdapter extends LogDataSource {
+  LoggerAdapter(this._logger);
 
   final Logger _logger;
 

@@ -1,9 +1,9 @@
 import 'package:logger/logger.dart';
 
 import '../../main.dart';
-import 'data/data_sources/impl/firebase_analytics_data_source_impl.dart';
-import 'data/data_sources/impl/firebase_crashlytics_data_source_impl.dart';
-import 'data/data_sources/impl/logger_data_source_impl.dart';
+import 'data/data_sources/adapters/firebase_analytics_adapter.dart';
+import 'data/data_sources/adapters/firebase_crashlytics_adapter.dart';
+import 'data/data_sources/adapters/logger_adapter.dart';
 import 'data/repositories/log_repository_impl.dart';
 import 'domain/repositories/log_repository.dart';
 import 'log_system.dart';
@@ -11,26 +11,26 @@ import 'log_system.dart';
 void setupLogDependencies() {
   // Register Logger for console logging.
   final Logger logger = Logger();
-  sl.registerLazySingleton<LoggerDataSourceImpl>(
-    () => LoggerDataSourceImpl(logger),
+  sl.registerLazySingleton<LoggerAdapter>(
+    () => LoggerAdapter(logger),
   );
 
   // Register FirebaseCrashlytics.
-  sl.registerLazySingleton<FirebaseCrashlyticsDataSourceImpl>(
-    () => FirebaseCrashlyticsDataSourceImpl(),
+  sl.registerLazySingleton<FirebaseCrashlyticsAdapter>(
+    () => FirebaseCrashlyticsAdapter(),
   );
 
   // Register FirebaseCrashlytics.
-  sl.registerLazySingleton<FirebaseAnalyticsDataSourceImpl>(
-    () => FirebaseAnalyticsDataSourceImpl(),
+  sl.registerLazySingleton<FirebaseAnalyticsAdapter>(
+    () => FirebaseAnalyticsAdapter(),
   );
 
   // Register LogRepository
   sl.registerLazySingleton<LogRepository>(
     () => LogRepositoryImpl(
-      sl<LoggerDataSourceImpl>(),
-      sl<FirebaseCrashlyticsDataSourceImpl>(),
-      sl<FirebaseAnalyticsDataSourceImpl>(),
+      sl<LoggerAdapter>(),
+      sl<FirebaseCrashlyticsAdapter>(),
+      sl<FirebaseAnalyticsAdapter>(),
     ),
   );
 

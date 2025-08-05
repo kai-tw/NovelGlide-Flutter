@@ -2,7 +2,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import '../log_data_source.dart';
 
-class FirebaseCrashlyticsDataSourceImpl extends LogDataSource {
+class FirebaseCrashlyticsAdapter extends LogDataSource {
   final FirebaseCrashlytics _instance = FirebaseCrashlytics.instance;
 
   @override
