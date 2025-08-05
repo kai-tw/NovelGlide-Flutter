@@ -1,4 +1,5 @@
 import '../../domain/repositories/log_repository.dart';
+import '../data_sources/impl/firebase_analytics_data_source_impl.dart';
 import '../data_sources/impl/firebase_crashlytics_data_source_impl.dart';
 import '../data_sources/impl/logger_data_source_impl.dart';
 
@@ -6,10 +7,12 @@ class LogRepositoryImpl extends LogRepository {
   LogRepositoryImpl(
     this._loggerDataSource,
     this._firebaseCrashlyticsDataSourceImpl,
+    this._firebaseAnalyticsDataSource,
   );
 
   final LoggerDataSourceImpl _loggerDataSource;
   final FirebaseCrashlyticsDataSourceImpl _firebaseCrashlyticsDataSourceImpl;
+  final FirebaseAnalyticsDataSourceImpl _firebaseAnalyticsDataSource;
 
   @override
   Future<void> error(
@@ -19,6 +22,8 @@ class LogRepositoryImpl extends LogRepository {
   }) async {
     _loggerDataSource.error(message, error: error, stackTrace: stackTrace);
     _firebaseCrashlyticsDataSourceImpl.error(message,
+        error: error, stackTrace: stackTrace);
+    _firebaseAnalyticsDataSource.error(message,
         error: error, stackTrace: stackTrace);
   }
 
@@ -31,11 +36,14 @@ class LogRepositoryImpl extends LogRepository {
     _loggerDataSource.fatal(message, error: error, stackTrace: stackTrace);
     _firebaseCrashlyticsDataSourceImpl.fatal(message,
         error: error, stackTrace: stackTrace);
+    _firebaseAnalyticsDataSource.fatal(message,
+        error: error, stackTrace: stackTrace);
   }
 
   @override
   Future<void> info(String message) async {
     _loggerDataSource.info(message);
     _firebaseCrashlyticsDataSourceImpl.info(message);
+    _firebaseAnalyticsDataSource.info(message);
   }
 }
