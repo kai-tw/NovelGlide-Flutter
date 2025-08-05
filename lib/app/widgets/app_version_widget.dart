@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /// Displays the app version.
-class AboutPageAppVersion extends StatelessWidget {
-  const AboutPageAppVersion({super.key});
+class AppVersionWidget extends StatelessWidget {
+  const AppVersionWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

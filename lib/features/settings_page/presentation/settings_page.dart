@@ -70,7 +70,7 @@ class SettingsPage extends StatelessWidget {
       ),
 
       // About
-      const AboutPageAppVersion(),
+      const AppVersionWidget(),
     ];
 
     if (kDebugMode) {
