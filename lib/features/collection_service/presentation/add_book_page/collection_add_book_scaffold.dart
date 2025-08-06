@@ -3,7 +3,7 @@ part of '../../collection_service.dart';
 class CollectionAddBookScaffold extends StatelessWidget {
   const CollectionAddBookScaffold({super.key, required this.dataSet});
 
-  final Set<BookData> dataSet;
+  final Set<Book> dataSet;
 
   @override
   Widget build(BuildContext context) {

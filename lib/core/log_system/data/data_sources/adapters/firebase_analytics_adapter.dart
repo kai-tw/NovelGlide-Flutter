@@ -9,7 +9,7 @@ class FirebaseAnalyticsAdapter extends LogDataSource {
   Future<void> info(String message) {
     return _analytics.logEvent(
       name: 'info_log',
-      parameters: {'message': message},
+      parameters: <String, Object>{'message': message},
     );
   }
 
@@ -17,7 +17,7 @@ class FirebaseAnalyticsAdapter extends LogDataSource {
   Future<void> error(String message, {Object? error, StackTrace? stackTrace}) {
     return _analytics.logEvent(
       name: 'app_error',
-      parameters: {
+      parameters: <String, Object>{
         'message': message,
         'error_type': error?.runtimeType.toString() ?? 'RuntimeType is null',
       },
@@ -28,7 +28,7 @@ class FirebaseAnalyticsAdapter extends LogDataSource {
   Future<void> fatal(String message, {Object? error, StackTrace? stackTrace}) {
     return _analytics.logEvent(
       name: 'fatal_error',
-      parameters: {
+      parameters: <String, Object>{
         'message': message,
         'error_type': error?.runtimeType.toString() ?? 'RuntimeType is null',
       },

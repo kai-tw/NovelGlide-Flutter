@@ -31,8 +31,7 @@ class _FloatingActionWidget extends StatelessWidget {
                 builder: (BuildContext context, HomepageState state) {
                   switch (state.navItem) {
                     case HomepageNavigationItem.bookshelf:
-                      return const _DeleteDragTarget<BookshelfCubit,
-                          BookData>();
+                      return const _DeleteDragTarget<BookshelfCubit, Book>();
 
                     case HomepageNavigationItem.collection:
                       return const _DeleteDragTarget<CollectionListCubit,

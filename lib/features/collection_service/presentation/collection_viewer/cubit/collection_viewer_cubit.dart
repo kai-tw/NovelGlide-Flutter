@@ -2,22 +2,40 @@ import 'dart:async';
 
 import 'package:novel_glide/enum/sort_order_code.dart';
 
-import '../../../../../features/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
-import '../../../../book_service/book_service.dart';
+import '../../../../../features/shared_components/shared_list/shared_list.dart';
+import '../../../../book_service/domain/entities/book.dart';
+import '../../../../book_service/domain/use_cases/get_book_list_by_identifier_set_use_case.dart';
 import '../../../collection_service.dart';
 
-typedef CollectionViewerState = SharedListState<BookData>;
+typedef CollectionViewerState = SharedListState<Book>;
 
-class CollectionViewerCubit extends SharedListCubit<BookData> {
-  factory CollectionViewerCubit(CollectionData collectionData) =>
-      CollectionViewerCubit._(collectionData)..refresh();
+class CollectionViewerCubit extends SharedListCubit<Book> {
+  factory CollectionViewerCubit(
+    CollectionData collectionData, {
+    required GetBookListByIdentifierSetUseCase
+        getBookListByIdentifierSetUseCase,
+  }) {
+    final CollectionViewerCubit cubit = CollectionViewerCubit._(
+      collectionData,
+      getBookListByIdentifierSetUseCase,
+    );
 
-  CollectionViewerCubit._(this.collectionData)
-      : super(const CollectionViewerState());
+    cubit.refresh();
+
+    return cubit;
+  }
+
+  CollectionViewerCubit._(
+    this.collectionData,
+    this._getBookListByIdentifierSetUseCase,
+  ) : super(const CollectionViewerState());
 
   CollectionData collectionData;
-  StreamSubscription<BookData>? _listStreamSubscription;
+  StreamSubscription<Book>? _listStreamSubscription;
+
+  /// Use cases
+  final GetBookListByIdentifierSetUseCase _getBookListByIdentifierSetUseCase;
 
   /// Refresh the state of viewer.
   @override
@@ -33,22 +51,22 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
       // Path list is empty.
       emit(const CollectionViewerState(
         code: LoadingStateCode.loaded,
-        dataList: <BookData>[],
+        dataList: <Book>[],
       ));
     } else {
       // The current loaded book data list
-      final List<BookData> bookList = <BookData>[];
+      final List<Book> bookList = <Book>[];
 
       // Get book data from repository
       _listStreamSubscription =
-          BookService.repository.getBookListFromPathList(pathList).listen(
-        (BookData data) {
+          _getBookListByIdentifierSetUseCase(pathList.toSet()).listen(
+        (Book data) {
           // A new book data is received.
           if (!isClosed) {
             bookList.add(data);
             emit(CollectionViewerState(
               code: LoadingStateCode.backgroundLoading,
-              dataList: List<BookData>.from(bookList),
+              dataList: List<Book>.from(bookList),
             ));
           }
         },
@@ -57,7 +75,7 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
           if (!isClosed) {
             emit(CollectionViewerState(
               code: LoadingStateCode.loaded,
-              dataList: List<BookData>.from(bookList),
+              dataList: List<Book>.from(bookList),
             ));
           }
         },
@@ -70,17 +88,17 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
       return;
     }
 
-    final BookData target = state.dataList.removeAt(oldIndex);
+    final Book target = state.dataList.removeAt(oldIndex);
     state.dataList
         .insert(oldIndex < newIndex ? newIndex - 1 : newIndex, target);
     emit(state.copyWith(
       code: LoadingStateCode.loaded,
-      dataList: List<BookData>.from(state.dataList),
+      dataList: List<Book>.from(state.dataList),
     ));
 
     // Save the new order to the past list.
     for (int i = 0; i < state.dataList.length; i++) {
-      collectionData.pathList[i] = state.dataList[i].absoluteFilePath;
+      collectionData.pathList[i] = state.dataList[i].identifier;
     }
 
     // Save collection data
@@ -95,19 +113,19 @@ class CollectionViewerCubit extends SharedListCubit<BookData> {
     );
 
     // Remove books from dataList
-    final List<BookData> bookList = List<BookData>.from(state.dataList);
-    bookList.removeWhere((BookData e) => state.selectedSet.contains(e));
+    final List<Book> bookList = List<Book>.from(state.dataList);
+    bookList.removeWhere((Book e) => state.selectedSet.contains(e));
     emit(state.copyWith(
       code: LoadingStateCode.loaded,
-      selectedSet: <BookData>{},
+      selectedSet: <Book>{},
       dataList: bookList,
     ));
   }
 
   @override
   int sortCompare(
-    BookData a,
-    BookData b, {
+    Book a,
+    Book b, {
     required SortOrderCode sortOrder,
     required bool isAscending,
   }) {

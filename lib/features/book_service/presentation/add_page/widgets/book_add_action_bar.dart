@@ -1,4 +1,10 @@
-part of '../../../book_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../shared_components/common_loading.dart';
+import '../cubit/book_add_cubit.dart';
+import '../cubit/book_add_state.dart';
 
 class BookAddActionBar extends StatelessWidget {
   const BookAddActionBar({super.key});

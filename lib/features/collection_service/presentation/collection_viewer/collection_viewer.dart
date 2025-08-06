@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/utils/popup_menu_utils.dart';
+import '../../../../enum/loading_state_code.dart';
 import '../../../../features/shared_components/common_delete_dialog.dart';
 import '../../../../features/shared_components/common_loading.dart';
 import '../../../../features/shared_components/shared_list/shared_list.dart';
-import '../../../../core/utils/popup_menu_utils.dart';
-import '../../../../enum/loading_state_code.dart';
-import '../../../book_service/book_service.dart';
+import '../../../book_service/domain/entities/book.dart';
 import '../../../book_service/presentation/table_of_contents_page/table_of_contents.dart';
 import '../../collection_service.dart';
 import 'cubit/collection_viewer_cubit.dart';
@@ -23,6 +23,7 @@ class CollectionViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CollectionViewerCubit>(
+      // TODO(kai): Dependencies Injection
       create: (_) => CollectionViewerCubit(collectionData),
       child: Scaffold(
         appBar: AppBar(

@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../../../generated/i18n/app_localizations.dart';
-import '../../../../features/shared_components/common_loading.dart';
 import '../../../../enum/window_size.dart';
+import '../../../../features/shared_components/common_loading.dart';
 import '../../../ads_service/ad_service.dart';
 import '../../../book_service/book_service.dart';
 import '../../../tts_service/tts_service.dart';

@@ -1,4 +1,14 @@
-part of '../../../book_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../homepage/cubit/homepage_cubit.dart';
+import '../../../../shared_components/draggable_feedback_widget.dart';
+import '../../../../shared_components/draggable_placeholder_widget.dart';
+import '../../../../shared_components/shared_list/shared_list.dart';
+import '../../../domain/entities/book.dart';
+import '../cubit/bookshelf_cubit.dart';
+import 'bookshelf_book_widget.dart';
 
 class BookshelfDraggableBook extends StatelessWidget {
   const BookshelfDraggableBook({
@@ -11,7 +21,7 @@ class BookshelfDraggableBook extends StatelessWidget {
     required this.listType,
   });
 
-  final BookData bookData;
+  final Book bookData;
   final bool isDraggable;
   final bool isSelecting;
   final bool isSelected;
@@ -32,7 +42,7 @@ class BookshelfDraggableBook extends StatelessWidget {
             ? const EdgeInsets.all(16.0)
             : EdgeInsets.zero;
 
-        return LongPressDraggable<BookData>(
+        return LongPressDraggable<Book>(
           onDragStarted: () {
             cubit.isDragging = true;
             homepageCubit.isEnabled = false;
@@ -41,10 +51,10 @@ class BookshelfDraggableBook extends StatelessWidget {
             cubit.isDragging = false;
             homepageCubit.isEnabled = true;
           },
-          onDragCompleted: () {
+          onDragCompleted: () async {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(cubit.deleteBook(bookData)
+                content: Text(await cubit.deleteBook(bookData)
                     ? appLocalizations.deleteBookSuccessfully
                     : appLocalizations.deleteBookFailed),
               ),

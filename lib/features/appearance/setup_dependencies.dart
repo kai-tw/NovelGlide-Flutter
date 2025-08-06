@@ -7,7 +7,7 @@ import 'domain/repositories/appearance_repository.dart';
 import 'domain/use_cases/get_appearance_settings_use_case.dart';
 import 'domain/use_cases/save_appearance_settings_use_case.dart';
 
-Future<void> setupAppearanceDependencies(SharedPreferences prefs) async {
+void setupAppearanceDependencies(SharedPreferences prefs) {
   // Register local data source
   sl.registerLazySingleton<AppearanceLocalDataSource>(
     () => AppearanceLocalDataSourceImpl(prefs),

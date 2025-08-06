@@ -3,7 +3,7 @@ part of '../table_of_contents.dart';
 class _CompactView extends StatelessWidget {
   const _CompactView({required this.bookData});
 
-  final BookData bookData;
+  final Book bookData;
 
   @override
   Widget build(BuildContext context) {

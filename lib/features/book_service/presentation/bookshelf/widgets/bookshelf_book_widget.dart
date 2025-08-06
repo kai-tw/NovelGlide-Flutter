@@ -1,4 +1,10 @@
-part of '../../../book_service.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../shared_components/adaptive_lines_text.dart';
+import '../../../../shared_components/shared_list/shared_list.dart';
+import '../../../domain/entities/book.dart';
+import 'bookshelf_cover_widget.dart';
 
 class BookshelfBookWidget extends StatelessWidget {
   const BookshelfBookWidget({
@@ -10,7 +16,7 @@ class BookshelfBookWidget extends StatelessWidget {
     required this.listType,
   });
 
-  final BookData bookData;
+  final Book bookData;
   final bool isSelecting;
   final bool isSelected;
   final ValueChanged<bool?>? onChanged;
@@ -38,7 +44,7 @@ class BookshelfBookWidget extends StatelessWidget {
             bookData: bookData,
             borderRadius: BorderRadius.circular(16.0),
           ),
-          title: AdaptiveLinesText(bookData.name),
+          title: AdaptiveLinesText(bookData.title),
           semanticLabel: appLocalizations.bookshelfSelectBook,
         );
 
@@ -55,7 +61,7 @@ class BookshelfBookWidget extends StatelessWidget {
             ),
           ),
           title: Text(
-            bookData.name,
+            bookData.title,
             overflow: TextOverflow.ellipsis,
           ),
         );

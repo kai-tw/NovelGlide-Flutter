@@ -4,6 +4,7 @@ import '../app/cubit/app_cubit.dart';
 import '../features/appearance/domain/use_cases/get_appearance_settings_use_case.dart';
 import '../features/appearance/domain/use_cases/save_appearance_settings_use_case.dart';
 import '../features/appearance/setup_dependencies.dart';
+import '../features/book_service/setup_dependencies.dart';
 import '../features/locale_system/domain/use_cases/get_locale_settings_use_case.dart';
 import '../features/locale_system/domain/use_cases/save_locale_settings_use_case.dart';
 import '../features/locale_system/setup_dependencies.dart';
@@ -11,12 +12,14 @@ import '../main.dart';
 import 'log_system/setup_dependencies.dart';
 
 Future<void> setupDependencies() async {
+  // Shared instances
   final SharedPreferences prefs = await SharedPreferences.getInstance();
 
   // Dependencies injection for all features
   setupAppearanceDependencies(prefs);
   setupLocaleDependencies(prefs);
   setupLogDependencies();
+  setupBookDependencies();
 
   // Dependencies injection for app
   sl.registerSingletonAsync<AppCubit>(() async {

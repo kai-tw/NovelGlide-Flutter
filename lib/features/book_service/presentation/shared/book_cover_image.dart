@@ -1,36 +1,37 @@
-part of '../../book_service.dart';
+import 'package:bitmap/bitmap.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../core/services/cache_memory_image_provider.dart';
+import '../../../../generated/i18n/app_localizations.dart';
+import '../../domain/entities/book_cover.dart';
 
 class BookCoverImage extends StatelessWidget {
   const BookCoverImage({
     super.key,
-    required this.bookData,
+    required this.coverData,
     required this.fit,
   });
 
-  final BookData bookData;
+  final BookCover coverData;
   final BoxFit fit;
 
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final img.Image? image = bookData.coverImage;
-    if (image == null) {
-      final Brightness brightness = Theme.of(context).brightness;
 
-      return Image.asset(
-        'assets/images/book_cover_${brightness == Brightness.dark ? 'dark' : 'light'}.jpg',
-        fit: BoxFit.cover,
-        gaplessPlayback: true,
-        semanticLabel: appLocalizations.generalBookCover,
-      );
-    } else {
+    // Bytes are not null
+    if (coverData.bytes != null && coverData.hasSize) {
+      // Use bitmap to display the cover
       return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
           return Image(
             image: CacheMemoryImageProvider(
-              bookData.absoluteFilePath,
-              Bitmap.fromHeadless(image.width, image.height, image.getBytes())
-                  .buildHeaded(),
+              coverData.identifier,
+              Bitmap.fromHeadless(
+                coverData.width!.truncate(),
+                coverData.height!.truncate(),
+                coverData.bytes!,
+              ).buildHeaded(),
             ),
             width: constraints.maxWidth,
             height: constraints.maxHeight,
@@ -40,5 +41,21 @@ class BookCoverImage extends StatelessWidget {
         },
       );
     }
+
+    // Url are not empty
+    if (coverData.url != null && coverData.hasSize) {
+      // Load the network image
+      // TODO(kai): Implementation.
+    }
+
+    // There is not an image. Use the image in the asset.
+    final Brightness brightness = Theme.of(context).brightness;
+
+    return Image.asset(
+      'assets/images/book_cover_${brightness == Brightness.dark ? 'dark' : 'light'}.jpg',
+      fit: BoxFit.cover,
+      gaplessPlayback: true,
+      semanticLabel: appLocalizations.generalBookCover,
+    );
   }
 }

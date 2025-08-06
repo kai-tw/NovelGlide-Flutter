@@ -5,8 +5,11 @@ import '../../enum/window_size.dart';
 import '../../features/shared_components/common_delete_drag_target.dart';
 import '../../features/shared_components/shared_list/shared_list.dart';
 import '../../generated/i18n/app_localizations.dart';
+import '../../main.dart';
 import '../ads_service/ad_service.dart';
 import '../book_service/book_service.dart';
+import '../book_service/domain/entities/book.dart';
+import '../book_service/presentation/add_page/book_add_page.dart';
 import '../book_service/presentation/bookshelf/cubit/bookshelf_cubit.dart';
 import '../bookmark_service/bookmark_service.dart';
 import '../collection_service/collection_service.dart';
@@ -34,7 +37,7 @@ class Homepage extends StatelessWidget {
     return MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
         BlocProvider<HomepageCubit>(create: (_) => HomepageCubit()),
-        BlocProvider<BookshelfCubit>(create: (_) => BookshelfCubit()),
+        BlocProvider<BookshelfCubit>(create: (_) => sl<BookshelfCubit>()),
         BlocProvider<CollectionListCubit>(create: (_) => CollectionListCubit()),
         BlocProvider<BookmarkListCubit>(create: (_) => BookmarkListCubit()),
       ],

@@ -1,4 +1,8 @@
-part of '../../../book_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../cubit/book_add_cubit.dart';
 
 class BookAddHelperText extends StatelessWidget {
   const BookAddHelperText({super.key});

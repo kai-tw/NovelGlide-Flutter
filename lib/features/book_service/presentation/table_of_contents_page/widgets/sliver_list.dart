@@ -3,7 +3,7 @@ part of '../table_of_contents.dart';
 class _SliverList extends StatelessWidget {
   const _SliverList({required this.bookData});
 
-  final BookData bookData;
+  final Book bookData;
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +34,19 @@ class _SliverList extends StatelessWidget {
   }
 
   Widget _buildList(BuildContext context, TocState state) {
-    final List<_ListItem> allChapterList =
-        _constructChapterTree(state.chapterList, 0);
+    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
+    final List<TocNestedChapterData> allChapterList =
+        cubit.constructChapterTree();
 
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
-          final ChapterData chapterData = allChapterList[index].chapterData;
-          final int nestingLevel = allChapterList[index].nestingLevel;
+          final BookChapter chapterData = allChapterList[index].chapterData;
+          final int nestedLevel = allChapterList[index].nestedLevel;
           final BookmarkData? bookmarkData = state.bookmarkData;
           final bool isBookmarked =
-              bookmarkData?.chapterFileName == chapterData.fileName;
+              // TODO(kai): Change to identifier.
+              bookmarkData?.chapterFileName == chapterData.identifier;
           final ThemeData themeData = Theme.of(context);
 
           return ListTile(
@@ -52,16 +54,17 @@ class _SliverList extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute<void>(
                   builder: (_) => ReaderWidget(
+                    // TODO(kai): Change to identifier.
                     bookData: bookData,
-                    bookPath: bookData.absoluteFilePath,
-                    destination: chapterData.fileName,
+                    bookPath: bookData.identifier,
+                    destination: chapterData.identifier,
                   ),
                 ),
               );
             },
             dense: true,
             contentPadding: EdgeInsets.only(
-              left: 12.0 + 16 * nestingLevel,
+              left: 12.0 + 16 * nestedLevel,
               right: 12.0,
             ),
             shape: RoundedRectangleBorder(
@@ -82,45 +85,4 @@ class _SliverList extends StatelessWidget {
       ),
     );
   }
-
-  /// Constructs the chapter n-ary tree.
-  /// [chapterDataList] is the list of chapters to be traversed.
-  /// [nestingLevel] is the nesting level of the current chapter.
-  /// [nestingLevel] will be used to calculate the indentation of the chapter tile.
-  List<_ListItem> _constructChapterTree(
-    List<ChapterData> chapterDataList,
-    int nestingLevel,
-  ) {
-    // Tree root
-    final List<_ListItem> list = <_ListItem>[];
-
-    // Traverse the sub chapters
-    for (final ChapterData data in chapterDataList) {
-      list.add(_ListItem(
-        chapterData: data,
-        nestingLevel: nestingLevel,
-      ));
-
-      // If the chapter has sub chapters, traverse them
-      if (data.subChapterList != null) {
-        list.addAll(
-          _constructChapterTree(
-            data.subChapterList!,
-            nestingLevel + 1,
-          ),
-        );
-      }
-    }
-    return list;
-  }
-}
-
-class _ListItem {
-  const _ListItem({
-    required this.chapterData,
-    required this.nestingLevel,
-  });
-
-  final ChapterData chapterData;
-  final int nestingLevel;
 }

@@ -1,4 +1,11 @@
-part of '../../../book_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../cubit/book_add_cubit.dart';
+import '../cubit/book_add_item_state.dart';
+import '../cubit/book_add_state.dart';
+import 'book_add_file_tile.dart';
 
 class BookAddFileList extends StatelessWidget {
   const BookAddFileList({super.key});
@@ -35,7 +42,7 @@ class BookAddFileList extends StatelessWidget {
     final BookAddItemState itemState = state.itemState.elementAt(index);
     return BookAddFileTile(
       filePath: itemState.absolutePath,
-      isDuplicated: itemState.isExistsInLibrary,
+      isDuplicated: itemState.existsInLibrary,
       isMimeValid: itemState.isTypeValid,
       baseName: itemState.baseName,
       lengthString: itemState.lengthString,

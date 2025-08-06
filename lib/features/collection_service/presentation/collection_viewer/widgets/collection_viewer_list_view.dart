@@ -35,10 +35,10 @@ class CollectionViewerListView extends StatelessWidget {
                 buildDefaultDragHandles: isDraggable,
                 itemCount: state.dataList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final BookData data = state.dataList[index];
+                  final Book book = state.dataList[index];
                   return CollectionViewerListItem(
-                    bookData: data,
-                    key: ValueKey<String>(data.absoluteFilePath),
+                    bookData: book,
+                    key: ValueKey<String>(book.identifier),
                     isSelecting: state.isSelecting,
                     isDraggable: isDraggable,
                   );

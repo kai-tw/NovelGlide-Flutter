@@ -3,7 +3,7 @@ part of '../table_of_contents.dart';
 class _CoverBanner extends StatelessWidget {
   const _CoverBanner({required this.bookData});
 
-  final BookData bookData;
+  final Book bookData;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class _CoverBanner extends StatelessWidget {
       ),
       clipBehavior: Clip.hardEdge,
       child: BookCoverImage(
-        bookData: bookData,
+        coverData: bookData.cover,
         fit: BoxFit.contain,
       ),
     );

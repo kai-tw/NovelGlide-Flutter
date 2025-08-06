@@ -1,4 +1,12 @@
-part of '../../book_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../generated/i18n/app_localizations.dart';
+import '../../../../main.dart';
+import 'cubit/book_add_cubit.dart';
+import 'widgets/book_add_action_bar.dart';
+import 'widgets/book_add_file_list.dart';
+import 'widgets/book_add_helper_text.dart';
 
 class BookAddPage extends StatelessWidget {
   const BookAddPage({super.key});
@@ -7,7 +15,7 @@ class BookAddPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return BlocProvider<BookAddCubit>(
-      create: (_) => BookAddCubit(),
+      create: (_) => sl<BookAddCubit>(),
       child: Scaffold(
         appBar: AppBar(
           title: Text(appLocalizations.addBookTitle),

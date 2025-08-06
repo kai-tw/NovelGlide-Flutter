@@ -1,4 +1,6 @@
-part of '../../../book_service.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
 
 class BookAddFileTile extends StatelessWidget {
   const BookAddFileTile({

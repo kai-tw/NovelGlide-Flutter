@@ -1,4 +1,6 @@
-part of '../../../book_service.dart';
+import 'package:equatable/equatable.dart';
+
+import 'book_add_item_state.dart';
 
 class BookAddState extends Equatable {
   const BookAddState({

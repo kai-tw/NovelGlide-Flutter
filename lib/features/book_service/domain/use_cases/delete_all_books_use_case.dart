@@ -1,0 +1,13 @@
+import '../../../../core/use_cases/use_case.dart';
+import '../repository/book_repository.dart';
+
+class DeleteAllBooksUseCase extends UseCase<Future<void>, void> {
+  const DeleteAllBooksUseCase(this._repository);
+
+  final BookRepository _repository;
+
+  @override
+  Future<void> call([void parameter]) {
+    return _repository.deleteAllBooks();
+  }
+}

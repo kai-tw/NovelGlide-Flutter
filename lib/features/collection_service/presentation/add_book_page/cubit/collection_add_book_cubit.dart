@@ -1,7 +1,7 @@
 part of '../../../collection_service.dart';
 
 class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
-  factory CollectionAddBookCubit(Set<BookData> dataSet) {
+  factory CollectionAddBookCubit(Set<Book> dataSet) {
     final CollectionAddBookCubit cubit = CollectionAddBookCubit._(dataSet);
 
     // Refresh at first.
@@ -17,7 +17,7 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
   CollectionAddBookCubit._(this._dataSet)
       : super(const CollectionAddBookState());
 
-  final Set<BookData> _dataSet;
+  final Set<Book> _dataSet;
   late final StreamSubscription<void> _onChangedSubscription;
 
   Future<void> refresh() async {
@@ -25,10 +25,9 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
     final List<CollectionData> collectionList =
         await CollectionService.repository.getList();
 
-    // Get all the book paths from user selected books.
+    // Get all the identifiers from user selected books.
     final Set<String> relativePathSet =
-        (await Future.wait(_dataSet.map((BookData e) => e.relativeFilePath)))
-            .toSet();
+        _dataSet.map((Book e) => e.identifier).toSet();
 
     // Get the selected collection set by
     // intersection of book paths and collection paths.

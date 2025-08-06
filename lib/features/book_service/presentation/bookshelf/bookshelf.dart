@@ -1,4 +1,12 @@
-part of '../../book_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../enum/loading_state_code.dart';
+import '../../../../generated/i18n/app_localizations.dart';
+import '../../../shared_components/common_loading.dart';
+import '../../../shared_components/shared_list/shared_list.dart';
+import 'cubit/bookshelf_cubit.dart';
+import 'widgets/bookshelf_list_item.dart';
 
 class Bookshelf extends StatelessWidget {
   const Bookshelf({super.key});

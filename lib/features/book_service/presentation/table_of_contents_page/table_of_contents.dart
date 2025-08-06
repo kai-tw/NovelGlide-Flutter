@@ -4,17 +4,20 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../features/shared_components/common_loading.dart';
-import '../../../../features/shared_components/shared_list/shared_list.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../enum/window_size.dart';
+import '../../../../features/shared_components/common_loading.dart';
+import '../../../../features/shared_components/shared_list/shared_list.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../ads_service/ad_service.dart';
 import '../../../bookmark_service/bookmark_service.dart';
 import '../../../collection_service/collection_service.dart';
 import '../../../reader/presentation/reader_page/cubit/reader_cubit.dart';
 import '../../../reader/presentation/reader_page/reader.dart';
-import '../../book_service.dart';
+import '../../domain/entities/book.dart';
+import '../../domain/entities/book_chapter.dart';
+import '../shared/book_cover_image.dart';
+import 'cubit/toc_nested_chapter_data.dart';
 
 part 'cubit/toc_cubit.dart';
 part 'cubit/toc_state.dart';
@@ -29,7 +32,7 @@ part 'widgets/sliver_list.dart';
 class TableOfContents extends StatelessWidget {
   const TableOfContents(this.bookData, {super.key});
 
-  final BookData bookData;
+  final Book bookData;
 
   @override
   Widget build(BuildContext context) {

@@ -14,10 +14,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppCubit cubit = sl<AppCubit>();
-
-    return BlocProvider<AppCubit>.value(
-      value: cubit,
+    return BlocProvider<AppCubit>(
+      create: (_) => sl<AppCubit>(),
       child: BlocBuilder<AppCubit, AppState>(
         builder: (BuildContext context, AppState state) {
           return MaterialApp(

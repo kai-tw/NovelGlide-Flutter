@@ -3,7 +3,7 @@ part of '../table_of_contents.dart';
 class _BookName extends StatelessWidget {
   const _BookName({required this.bookData});
 
-  final BookData bookData;
+  final Book bookData;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class _BookName extends StatelessWidget {
       ),
       clipBehavior: Clip.hardEdge,
       child: Text(
-        bookData.name,
+        bookData.title,
         style: TextStyle(
           fontSize: 16.0,
           fontWeight: FontWeight.bold,

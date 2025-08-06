@@ -4,12 +4,12 @@ class TocState extends Equatable {
   const TocState({
     this.code = LoadingStateCode.initial,
     this.bookmarkData,
-    this.chapterList = const <ChapterData>[],
+    this.chapterList = const <BookChapter>[],
   });
 
   final LoadingStateCode code;
   final BookmarkData? bookmarkData;
-  final List<ChapterData> chapterList;
+  final List<BookChapter> chapterList;
 
   @override
   List<Object?> get props => <Object?>[code, bookmarkData, chapterList];
@@ -17,7 +17,7 @@ class TocState extends Equatable {
   TocState copyWith({
     LoadingStateCode? code,
     BookmarkData? bookmarkData,
-    List<ChapterData>? chapterList,
+    List<BookChapter>? chapterList,
   }) {
     return TocState(
       code: code ?? this.code,

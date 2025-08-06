@@ -3,24 +3,36 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 
 import '../../../../../core/services/preference_service/preference_service.dart';
-import '../../../../../features/shared_components/shared_list/shared_list.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
-import '../../../book_service.dart';
+import '../../../../../features/shared_components/shared_list/shared_list.dart';
+import '../../../domain/entities/book.dart';
+import '../../../domain/use_cases/book_exists_use_case.dart';
+import '../../../domain/use_cases/delete_book_use_case.dart';
+import '../../../domain/use_cases/get_book_list_use_case.dart';
+import '../../../domain/use_cases/observe_book_change_use_case.dart';
 
-typedef BookshelfState = SharedListState<BookData>;
+typedef BookshelfState = SharedListState<Book>;
 
-class BookshelfCubit extends SharedListCubit<BookData> {
-  factory BookshelfCubit() {
-    final BookshelfCubit cubit = BookshelfCubit._();
+class BookshelfCubit extends SharedListCubit<Book> {
+  factory BookshelfCubit({
+    required GetBookListUseCase getBookListUseCase,
+    required DeleteBookUseCase deleteBookUseCase,
+    required ObserveBookChangeUseCase observeBookChangeUseCase,
+    required BookExistsUseCase bookExistsUseCase,
+  }) {
+    final BookshelfCubit cubit = BookshelfCubit._(
+      getBookListUseCase,
+      deleteBookUseCase,
+      bookExistsUseCase,
+    );
 
     // Refresh at first.
     cubit.refresh();
 
     // Listen to book changes.
-    cubit.onRepositoryChangedSubscription = BookService
-        .repository.onChangedController.stream
-        .listen((_) => cubit.refresh());
+    cubit.onRepositoryChangedSubscription =
+        observeBookChangeUseCase().listen((_) => cubit.refresh());
 
     // Listen to bookshelf preference changes.
     cubit.onPreferenceChangedSubscription = PreferenceService
@@ -29,9 +41,16 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     return cubit;
   }
 
-  BookshelfCubit._() : super(const BookshelfState());
+  BookshelfCubit._(
+    this._getBookListUseCase,
+    this._deleteBookUseCase,
+    this._bookExistsUseCase,
+  ) : super(const BookshelfState());
 
-  StreamSubscription<BookData>? _listStreamSubscription;
+  final GetBookListUseCase _getBookListUseCase;
+  final DeleteBookUseCase _deleteBookUseCase;
+  final BookExistsUseCase _bookExistsUseCase;
+  StreamSubscription<Book>? _listStreamSubscription;
 
   @override
   Future<void> refresh() async {
@@ -43,7 +62,7 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     final SharedListData preference = await PreferenceService.bookshelf.load();
     emit(state.copyWith());
 
-    final List<BookData> list = <BookData>[];
+    final List<Book> list = <Book>[];
 
     emit(BookshelfState(
       code: LoadingStateCode.loading,
@@ -54,9 +73,9 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     ));
 
     // Load books.
-    _listStreamSubscription = BookService.repository.getBookList().listen(
-      (BookData bookData) {
-        list.add(bookData);
+    _listStreamSubscription = _getBookListUseCase().listen(
+      (Book book) {
+        list.add(book);
 
         if (!isClosed) {
           emit(state.copyWith(
@@ -77,23 +96,27 @@ class BookshelfCubit extends SharedListCubit<BookData> {
     );
   }
 
-  bool deleteSelectedBooks() {
-    final List<BookData> newList = List<BookData>.from(state.dataList);
-    for (BookData bookData in state.selectedSet) {
-      BookService.repository.delete(bookData);
+  Future<bool> deleteSelectedBooks() async {
+    final List<Book> newList = List<Book>.from(state.dataList);
+    for (Book bookData in state.selectedSet) {
+      await _deleteBookUseCase(bookData.identifier);
       newList.remove(bookData);
     }
     emit(state.copyWith(dataList: newList));
     return true;
   }
 
-  bool deleteBook(BookData bookData) {
-    final bool isSuccess = BookService.repository.delete(bookData);
+  Future<bool> deleteBook(Book bookData) async {
+    final bool isSuccess = await _deleteBookUseCase(bookData.identifier);
 
-    final List<BookData> newList = List<BookData>.from(state.dataList);
+    final List<Book> newList = List<Book>.from(state.dataList);
     newList.remove(bookData);
     emit(state.copyWith(dataList: newList));
     return isSuccess;
+  }
+
+  Future<bool> bookExists(Book bookData) {
+    return _bookExistsUseCase(bookData.identifier);
   }
 
   @override
@@ -107,8 +130,8 @@ class BookshelfCubit extends SharedListCubit<BookData> {
 
   @override
   int sortCompare(
-    BookData a,
-    BookData b, {
+    Book a,
+    Book b, {
     required SortOrderCode sortOrder,
     required bool isAscending,
   }) {
@@ -120,8 +143,8 @@ class BookshelfCubit extends SharedListCubit<BookData> {
 
       default:
         return isAscending
-            ? compareNatural(a.name, b.name)
-            : compareNatural(b.name, a.name);
+            ? compareNatural(a.title, b.title)
+            : compareNatural(b.title, a.title);
     }
   }
 
@@ -139,7 +162,6 @@ class BookshelfCubit extends SharedListCubit<BookData> {
   Future<void> close() {
     // Cancel all streams.
     _listStreamSubscription?.cancel();
-    onRepositoryChangedSubscription.cancel();
     return super.close();
   }
 }

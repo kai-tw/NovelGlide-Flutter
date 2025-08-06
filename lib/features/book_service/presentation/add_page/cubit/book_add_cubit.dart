@@ -1,43 +1,54 @@
-part of '../../../book_service.dart';
+import 'dart:io';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../book_service.dart';
+import '../../../domain/use_cases/add_books_use_case.dart';
+import '../../../domain/use_cases/book_exists_use_case.dart';
+import '../../../domain/use_cases/clear_temporary_picked_books_use_case.dart';
+import '../../../domain/use_cases/get_book_allowed_extensions_use_case.dart';
+import '../../../domain/use_cases/pick_books_use_case.dart';
+import 'book_add_item_state.dart';
+import 'book_add_state.dart';
 
 /// Cubit to manage the state of adding a book_service.
 class BookAddCubit extends Cubit<BookAddState> {
-  BookAddCubit() : super(const BookAddState());
+  BookAddCubit(
+    this._addBooksUseCase,
+    this._bookExistsUseCase,
+    this._clearTemporaryPickedBooksUseCase,
+    this._getBookAllowedExtensionsUseCase,
+    this._pickBooksUseCase,
+  ) : super(const BookAddState());
 
-  List<String> get allowedExtensions =>
-      BookService.repository.allowedExtensions;
+  final AddBooksUseCase _addBooksUseCase;
+  final BookExistsUseCase _bookExistsUseCase;
+  final ClearTemporaryPickedBooksUseCase _clearTemporaryPickedBooksUseCase;
+  final GetBookAllowedExtensionsUseCase _getBookAllowedExtensionsUseCase;
+  final PickBooksUseCase _pickBooksUseCase;
+
+  List<String> get allowedExtensions => _getBookAllowedExtensionsUseCase();
 
   /// Allows the user to pick a file.
   Future<void> pickFile() async {
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: allowedExtensions,
-      allowMultiple: true,
-    );
+    final Set<String> selectedFileName =
+        state.itemState.map((BookAddItemState s) => s.absolutePath).toSet();
 
-    final Set<BookAddItemState> itemStateSet =
-        Set<BookAddItemState>.from(state.itemState);
-    final List<PlatformFile> fileList = result?.files ?? <PlatformFile>[];
+    // Pick file
+    final Set<String> pickedFileSet = await _pickBooksUseCase(selectedFileName);
+    final Set<BookAddItemState> stateSet = <BookAddItemState>{};
 
-    for (PlatformFile file in fileList) {
-      if (file.path != null) {
-        if (state.itemState.any((BookAddItemState itemState) =>
-            basename(itemState.absolutePath) == basename(file.path!))) {
-          // If the file is already in the list, ignore it!
-        } else {
-          itemStateSet.add(BookAddItemState(
-            absolutePath: file.path!,
-            isExistsInLibrary: await BookService.repository.exists(file.path!),
-            isTypeValid: BookService.repository.isFileValid(File(file.path!)),
-          ));
-        }
-      }
+    // Convert to item state.
+    for (String path in pickedFileSet) {
+      stateSet.add(BookAddItemState(
+        absolutePath: path,
+        existsInLibrary: await _bookExistsUseCase(path),
+        isTypeValid: BookService.repository.isFileValid(File(path)),
+      ));
     }
 
     if (!isClosed) {
-      emit(BookAddState(
-        itemState: itemStateSet,
-      ));
+      emit(BookAddState(itemState: stateSet));
     }
   }
 
@@ -55,7 +66,7 @@ class BookAddCubit extends Cubit<BookAddState> {
   }
 
   Future<void> submit() async {
-    await BookService.repository.addBooks(state.itemState
+    await _addBooksUseCase(state.itemState
         .map((BookAddItemState itemState) => itemState.absolutePath)
         .toSet());
   }
@@ -63,7 +74,7 @@ class BookAddCubit extends Cubit<BookAddState> {
   @override
   Future<void> close() async {
     // Clear temporary files.
-    await FilePicker.platform.clearTemporaryFiles();
+    _clearTemporaryPickedBooksUseCase();
     return super.close();
   }
 }

@@ -3,7 +3,7 @@ part of '../table_of_contents.dart';
 class _MediumView extends StatelessWidget {
   const _MediumView({required this.bookData});
 
-  final BookData bookData;
+  final Book bookData;
 
   @override
   Widget build(BuildContext context) {

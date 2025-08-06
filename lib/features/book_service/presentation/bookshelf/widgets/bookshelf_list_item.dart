@@ -1,9 +1,17 @@
-part of '../../../book_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../shared_components/common_error_dialog.dart';
+import '../../../domain/entities/book.dart';
+import '../../table_of_contents_page/table_of_contents.dart';
+import '../cubit/bookshelf_cubit.dart';
+import 'bookshelf_draggable_book.dart';
 
 class BookshelfSliverListItem extends StatelessWidget {
   const BookshelfSliverListItem({super.key, required this.bookData});
 
-  final BookData bookData;
+  final Book bookData;
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +29,16 @@ class BookshelfSliverListItem extends StatelessWidget {
               previous.code != current.code ||
               previous.isSelecting != current.isSelecting ||
               previous.isDragging != current.isDragging ||
-              previous.selectedSet.contains(bookData) != current.selectedSet.contains(bookData) ||
+              previous.selectedSet.contains(bookData) !=
+                  current.selectedSet.contains(bookData) ||
               previous.listType != current.listType,
           builder: (BuildContext context, BookshelfState state) {
             return BookshelfDraggableBook(
               bookData: bookData,
               listType: state.listType,
-              isDraggable: state.code.isLoaded && !state.isDragging && !state.isSelecting,
+              isDraggable: state.code.isLoaded &&
+                  !state.isDragging &&
+                  !state.isSelecting,
               isSelecting: state.isSelecting,
               isSelected: state.selectedSet.contains(bookData),
               onChanged: (_) => cubit.toggleSelectSingle(bookData),
@@ -38,23 +49,28 @@ class BookshelfSliverListItem extends StatelessWidget {
     );
   }
 
-  void _onTap(BuildContext context) {
+  Future<void> _onTap(BuildContext context) async {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
 
+    final bool isExists = await cubit.bookExists(bookData);
+
     if (cubit.state.isSelecting) {
       cubit.toggleSelectSingle(bookData);
-    } else if (bookData.isExist) {
-      // Navigate to the table of contents page.
-      Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => TableOfContents(bookData)));
-    } else {
-      // Show the book is not exist dialog.
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => CommonErrorDialog(
-          content: appLocalizations.bookshelfBookNotExist,
-        ),
-      ).then((_) => cubit.refresh());
+    } else if (context.mounted) {
+      if (isExists) {
+        // Navigate to the table of contents page.
+        Navigator.of(context).push(
+            MaterialPageRoute<void>(builder: (_) => TableOfContents(bookData)));
+      } else {
+        // Show the book is not exist dialog.
+        showDialog(
+          context: context,
+          builder: (BuildContext context) => CommonErrorDialog(
+            content: appLocalizations.bookshelfBookNotExist,
+          ),
+        ).then((_) => cubit.refresh());
+      }
     }
   }
 }
