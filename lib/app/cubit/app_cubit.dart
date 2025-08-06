@@ -7,10 +7,10 @@ import '../../features/appearance/domain/entities/app_theme.dart';
 import '../../features/appearance/domain/entities/appearance_settings.dart';
 import '../../features/appearance/domain/use_cases/get_appearance_settings_use_case.dart';
 import '../../features/appearance/domain/use_cases/save_appearance_settings_use_case.dart';
-import '../../features/locale/domain/entities/app_locale.dart';
-import '../../features/locale/domain/entities/locale_settings.dart';
-import '../../features/locale/domain/use_cases/get_locale_settings_use_case.dart';
-import '../../features/locale/domain/use_cases/save_locale_settings_use_case.dart';
+import '../../features/locale_system/domain/entities/app_locale.dart';
+import '../../features/locale_system/domain/entities/locale_settings.dart';
+import '../../features/locale_system/domain/use_cases/get_locale_settings_use_case.dart';
+import '../../features/locale_system/domain/use_cases/save_locale_settings_use_case.dart';
 
 part 'app_state.dart';
 

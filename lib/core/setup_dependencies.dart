@@ -4,9 +4,9 @@ import '../app/cubit/app_cubit.dart';
 import '../features/appearance/domain/use_cases/get_appearance_settings_use_case.dart';
 import '../features/appearance/domain/use_cases/save_appearance_settings_use_case.dart';
 import '../features/appearance/setup_dependencies.dart';
-import '../features/locale/domain/use_cases/get_locale_settings_use_case.dart';
-import '../features/locale/domain/use_cases/save_locale_settings_use_case.dart';
-import '../features/locale/setup_dependencies.dart';
+import '../features/locale_system/domain/use_cases/get_locale_settings_use_case.dart';
+import '../features/locale_system/domain/use_cases/save_locale_settings_use_case.dart';
+import '../features/locale_system/setup_dependencies.dart';
 import '../main.dart';
 import 'log_system/setup_dependencies.dart';
 

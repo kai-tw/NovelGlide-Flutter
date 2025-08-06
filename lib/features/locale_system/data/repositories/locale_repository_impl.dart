@@ -1,4 +1,4 @@
-import 'package:novel_glide/features/locale/domain/entities/locale_settings.dart';
+import 'package:novel_glide/features/locale_system/domain/entities/locale_settings.dart';
 
 import '../../domain/repositories/locale_repository.dart';
 import '../data_sources/locale_local_data_source.dart';

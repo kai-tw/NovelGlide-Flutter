@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:novel_glide/features/locale/domain/entities/app_locale.dart';
+import 'package:novel_glide/features/locale_system/domain/entities/app_locale.dart';
 
 void main() {
   group('AppLocale', () {

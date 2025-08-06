@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../generated/i18n/app_localizations.dart';
-import '../../locale/domain/entities/app_locale.dart';
-import '../../locale/locale_utils.dart';
+import '../../locale_system/domain/entities/app_locale.dart';
+import '../../locale_system/locale_utils.dart';
 
 class FeedbackPage extends StatelessWidget {
   const FeedbackPage({super.key});
