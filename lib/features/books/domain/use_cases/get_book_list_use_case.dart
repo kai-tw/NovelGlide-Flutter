@@ -9,6 +9,6 @@ class GetBookListUseCase extends UseCase<Stream<Book>, void> {
 
   @override
   Stream<Book> call([void parameter]) {
-    return _repository.getBookList();
+    return _repository.getBooks();
   }
 }

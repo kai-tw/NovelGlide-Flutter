@@ -61,13 +61,8 @@ class BookRepositoryImpl extends BookRepository {
   }
 
   @override
-  Stream<Book> getBookList() {
-    return _epubDataSource.getBookList();
-  }
-
-  @override
-  Stream<Book> getBookListByIdentifierSet(Set<String> identifierSet) {
-    return _epubDataSource.getBookListByIdentifierSet(identifierSet);
+  Stream<Book> getBooks([Set<String>? identifierSet]) {
+    return _epubDataSource.getBooks(identifierSet);
   }
 
   @override

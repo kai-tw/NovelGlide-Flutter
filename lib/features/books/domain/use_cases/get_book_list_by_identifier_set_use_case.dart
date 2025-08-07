@@ -10,6 +10,6 @@ class GetBookListByIdentifierSetUseCase
 
   @override
   Stream<Book> call(Set<String> parameters) {
-    return _repository.getBookListByIdentifierSet(parameters);
+    return _repository.getBooks(parameters);
   }
 }

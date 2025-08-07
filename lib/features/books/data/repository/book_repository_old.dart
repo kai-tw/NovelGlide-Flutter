@@ -24,7 +24,6 @@ class BookRepositoryOld {
     return BookData(
       absoluteFilePath: absolutePath,
       name: epubBook.Title ?? '',
-      coverImage: FileSystemService.epub.findCoverImage(epubBook),
     );
   }
 

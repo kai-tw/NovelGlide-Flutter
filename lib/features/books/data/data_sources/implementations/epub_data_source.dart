@@ -86,21 +86,16 @@ class EpubDataSource extends BookLocalDataSource {
   }
 
   @override
-  Stream<Book> getBookList() async* {
-    final Directory folder = await FileSystemService.document.libraryDirectory;
-    final Iterable<File> fileList =
-        folder.listSync().whereType<File>().where((File e) => isFileValid(e));
-    for (File epubFile in fileList) {
-      yield await getBook(epubFile.path);
-    }
-  }
-
-  @override
-  Stream<Book> getBookListByIdentifierSet(Set<String> identifierSet) async* {
-    await for (Book book in getBookList()) {
-      if (identifierSet.contains(book.identifier)) {
-        yield book;
-      }
+  Stream<Book> getBooks([Set<String>? identifierSet]) async* {
+    final Set<String> idSet = identifierSet ??
+        (await FileSystemService.document.libraryDirectory)
+            .listSync()
+            .whereType<File>()
+            .where((File e) => isFileValid(e))
+            .map((File e) => basename(e.path))
+            .toSet();
+    for (String id in idSet) {
+      yield await getBook(id);
     }
   }
 

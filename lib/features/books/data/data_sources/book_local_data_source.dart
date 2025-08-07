@@ -13,8 +13,7 @@ abstract class BookLocalDataSource {
   Future<bool> delete(String identifier);
   Future<void> deleteAllBooks();
   Future<Book> getBook(String identifier);
-  Stream<Book> getBookList();
-  Stream<Book> getBookListByIdentifierSet(Set<String> identifierSet);
+  Stream<Book> getBooks([Set<String>? identifierSet]);
 
   // Validator
   bool isFileValid(File file);

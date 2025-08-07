@@ -23,7 +23,6 @@ import 'presentation/bookshelf/bookshelf.dart';
 import 'presentation/bookshelf/cubit/bookshelf_cubit.dart';
 
 part 'data/model/book_data.dart';
-part 'data/model/chapter_data.dart';
 part 'data/repository/book_repository_old.dart';
 part 'presentation/bookshelf/bookshelf_app_bar.dart';
 part 'presentation/bookshelf/bookshelf_loading_indicator.dart';

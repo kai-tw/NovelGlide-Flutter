@@ -14,8 +14,7 @@ abstract class BookRepository {
   Future<bool> delete(String identifier);
   Future<void> deleteAllBooks();
   Future<Book> getBook(String identifier);
-  Stream<Book> getBookList();
-  Stream<Book> getBookListByIdentifierSet(Set<String> identifierSet);
+  Stream<Book> getBooks([Set<String>? identifierSet]);
   Future<Set<String>> pickBooks(Set<String> selectedFileName);
   Future<void> clearTemporaryPickedBooks();
   Future<void> reset();
