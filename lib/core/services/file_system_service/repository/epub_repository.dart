@@ -1,6 +1,6 @@
 part of '../file_system_service.dart';
 
-class EpubRepository extends FileSystemRepository {
+class EpubRepository extends FileSystemRepositoryOld {
   const EpubRepository();
 
   /// Loads an EpubBook asynchronously, potentially a heavy operation.

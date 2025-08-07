@@ -1,7 +1,7 @@
-part of '../collection_service.dart';
+part of '../../collection_service.dart';
 
-class CollectionRepository {
-  CollectionRepository();
+class CollectionRepositoryOld {
+  CollectionRepositoryOld();
 
   final StreamController<void> onChangedController =
       StreamController<void>.broadcast();
@@ -67,7 +67,7 @@ class CollectionRepository {
     }
 
     // Remove duplicates.
-    data.pathList = data.pathList.toSet().toList();
+    data = data.copyWith(pathList: data.pathList.toSet().toList());
 
     // Save the data.
     jsonData[data.id] = data.toJson();
@@ -93,37 +93,6 @@ class CollectionRepository {
 
     // Send a notification
     onChangedController.add(null);
-  }
-
-  /// Remove a given set of books from a collection.
-  /// Return the updated collection data.
-  Future<CollectionData> removeBooksFromSingle(
-    String id,
-    Set<BookData> bookSet,
-  ) async {
-    // Load json file
-    final JsonFileMetaModel jsonFile = await this.jsonFile;
-
-    // Load json data
-    final Map<String, dynamic> jsonData = jsonFile.data;
-
-    if (jsonData.containsKey(id)) {
-      // Load collection data
-      final CollectionData data = CollectionData.fromJson(jsonData[id]!);
-
-      // Remove all the paths in the book set
-      for (final BookData book in bookSet) {
-        data.pathList.remove(await book.relativeFilePath);
-      }
-
-      // Save the collection data
-      _updateData(data);
-    }
-
-    // Send a notification
-    onChangedController.add(null);
-
-    return getDataById(id);
   }
 
   /// Remove a book from all collections.

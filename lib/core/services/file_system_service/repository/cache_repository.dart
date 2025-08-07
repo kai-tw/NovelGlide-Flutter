@@ -1,6 +1,6 @@
 part of '../file_system_service.dart';
 
-class CacheRepository extends FileSystemRepository {
+class CacheRepository extends FileSystemRepositoryOld {
   const CacheRepository();
 
   Future<Directory> get rootDirectory => getApplicationCacheDirectory();

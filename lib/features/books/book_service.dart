@@ -24,7 +24,7 @@ import 'presentation/bookshelf/cubit/bookshelf_cubit.dart';
 
 part 'data/model/book_data.dart';
 part 'data/model/chapter_data.dart';
-part 'data/repository/book_repository.dart';
+part 'data/repository/book_repository_old.dart';
 part 'presentation/bookshelf/bookshelf_app_bar.dart';
 part 'presentation/bookshelf/bookshelf_loading_indicator.dart';
 part 'presentation/bookshelf/bookshelf_scaffold_body.dart';
@@ -33,5 +33,5 @@ part 'presentation/bookshelf/widgets/bookshelf_app_bar_more_button.dart';
 class BookService {
   BookService._();
 
-  static final BookRepository repository = BookRepository();
+  static final BookRepositoryOld repository = BookRepositoryOld();
 }

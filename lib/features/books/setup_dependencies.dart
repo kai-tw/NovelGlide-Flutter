@@ -1,4 +1,5 @@
 import '../../main.dart';
+import '../collection_service/domain/use_cases/delete_all_books_from_collection_use_case.dart';
 import 'data/data_sources/book_local_data_source.dart';
 import 'data/data_sources/implementations/epub_data_source.dart';
 import 'data/data_sources/implementations/pick_book_data_source_impl.dart';
@@ -16,75 +17,56 @@ import 'domain/use_cases/get_book_list_use_case.dart';
 import 'domain/use_cases/get_book_use_case.dart';
 import 'domain/use_cases/observe_book_change_use_case.dart';
 import 'domain/use_cases/pick_books_use_case.dart';
-import 'domain/use_cases/reset_book_repository_use_case.dart';
+import 'domain/use_cases/reset_book_system_use_case.dart';
 import 'presentation/add_page/cubit/book_add_cubit.dart';
 import 'presentation/bookshelf/cubit/bookshelf_cubit.dart';
 
 void setupBookDependencies() {
   // Register data source
-  sl.registerLazySingleton<BookLocalDataSource>(
-    () => EpubDataSource(),
-  );
-  sl.registerLazySingleton<PickBookDataSource>(
-    () => PickBookDataSourceImpl(),
-  );
+  sl.registerLazySingleton<BookLocalDataSource>(() => EpubDataSource());
+  sl.registerLazySingleton<PickBookDataSource>(() => PickBookDataSourceImpl());
 
   // Register repositories
-  sl.registerLazySingleton<BookRepository>(
-    () => BookRepositoryImpl(
-      sl<BookLocalDataSource>(),
-      sl<PickBookDataSource>(),
-    ),
-  );
+  sl.registerLazySingleton<BookRepository>(() => BookRepositoryImpl(
+        sl<BookLocalDataSource>(),
+        sl<PickBookDataSource>(),
+        sl<DeleteAllBooksFromCollectionUseCase>(),
+      ));
 
   // Register use cases
   sl.registerLazySingleton<AddBooksUseCase>(
-    () => AddBooksUseCase(sl<BookRepository>()),
-  );
+      () => AddBooksUseCase(sl<BookRepository>()));
   sl.registerLazySingleton<BookExistsUseCase>(
-    () => BookExistsUseCase(sl<BookRepository>()),
-  );
+      () => BookExistsUseCase(sl<BookRepository>()));
   sl.registerLazySingleton<ClearTemporaryPickedBooksUseCase>(
-    () => ClearTemporaryPickedBooksUseCase(sl<BookRepository>()),
-  );
+      () => ClearTemporaryPickedBooksUseCase(sl<BookRepository>()));
   sl.registerLazySingleton<DeleteAllBooksUseCase>(
-    () => DeleteAllBooksUseCase(sl<BookRepository>()),
-  );
+      () => DeleteAllBooksUseCase(sl<BookRepository>()));
   sl.registerLazySingleton<DeleteBookUseCase>(
-    () => DeleteBookUseCase(sl<BookRepository>()),
-  );
+      () => DeleteBookUseCase(sl<BookRepository>()));
   sl.registerLazySingleton<GetBookAllowedExtensionsUseCase>(
-    () => GetBookAllowedExtensionsUseCase(sl<BookRepository>()),
-  );
+      () => GetBookAllowedExtensionsUseCase(sl<BookRepository>()));
   sl.registerLazySingleton<GetBookListByIdentifierSetUseCase>(
-    () => GetBookListByIdentifierSetUseCase(sl<BookRepository>()),
-  );
+      () => GetBookListByIdentifierSetUseCase(sl<BookRepository>()));
   sl.registerLazySingleton<GetBookListUseCase>(
-    () => GetBookListUseCase(sl<BookRepository>()),
-  );
+      () => GetBookListUseCase(sl<BookRepository>()));
   sl.registerLazySingleton<GetBookUseCase>(
-    () => GetBookUseCase(sl<BookRepository>()),
-  );
+      () => GetBookUseCase(sl<BookRepository>()));
   sl.registerLazySingleton<ObserveBookChangeUseCase>(
-    () => ObserveBookChangeUseCase(sl<BookRepository>()),
-  );
+      () => ObserveBookChangeUseCase(sl<BookRepository>()));
   sl.registerLazySingleton<PickBooksUseCase>(
-    () => PickBooksUseCase(sl<BookRepository>()),
-  );
-  sl.registerLazySingleton<ResetBookRepositoryUseCase>(
-    () => ResetBookRepositoryUseCase(sl<BookRepository>()),
-  );
+      () => PickBooksUseCase(sl<BookRepository>()));
+  sl.registerLazySingleton<ResetBookSystemUseCase>(
+      () => ResetBookSystemUseCase(sl<BookRepository>()));
 
-  // Register the BookshelfCubit
-  sl.registerLazySingleton(() => BookshelfCubit(
+  // Cubit factories
+  sl.registerFactory<BookshelfCubit>(() => BookshelfCubit(
         getBookListUseCase: sl<GetBookListUseCase>(),
         deleteBookUseCase: sl<DeleteBookUseCase>(),
         observeBookChangeUseCase: sl<ObserveBookChangeUseCase>(),
         bookExistsUseCase: sl<BookExistsUseCase>(),
       ));
-
-  // Register the BookAddCubit
-  sl.registerLazySingleton<BookAddCubit>(() => BookAddCubit(
+  sl.registerFactory<BookAddCubit>(() => BookAddCubit(
         sl<AddBooksUseCase>(),
         sl<BookExistsUseCase>(),
         sl<ClearTemporaryPickedBooksUseCase>(),

@@ -10,7 +10,7 @@ class CollectionAddBookScaffold extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return BlocProvider<CollectionAddBookCubit>(
-      create: (_) => CollectionAddBookCubit(dataSet),
+      create: (_) => sl<CollectionAddBookCubit>()..init(dataSet),
       child: Scaffold(
         appBar: AppBar(
           title: Text(appLocalizations.collectionAddToCollections),

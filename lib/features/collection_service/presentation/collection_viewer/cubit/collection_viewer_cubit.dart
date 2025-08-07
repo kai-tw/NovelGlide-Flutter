@@ -4,45 +4,41 @@ import 'package:novel_glide/enum/sort_order_code.dart';
 
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../features/shared_components/shared_list/shared_list.dart';
-import '../../../../book_service/domain/entities/book.dart';
-import '../../../../book_service/domain/use_cases/get_book_list_by_identifier_set_use_case.dart';
-import '../../../collection_service.dart';
+import '../../../../books/domain/entities/book.dart';
+import '../../../../books/domain/use_cases/get_book_list_by_identifier_set_use_case.dart';
+import '../../../domain/entities/collection_data.dart';
+import '../../../domain/use_cases/get_collection_data_by_id_use_case.dart';
+import '../../../domain/use_cases/update_collection_data_use_case.dart';
 
 typedef CollectionViewerState = SharedListState<Book>;
 
 class CollectionViewerCubit extends SharedListCubit<Book> {
-  factory CollectionViewerCubit(
-    CollectionData collectionData, {
-    required GetBookListByIdentifierSetUseCase
-        getBookListByIdentifierSetUseCase,
-  }) {
-    final CollectionViewerCubit cubit = CollectionViewerCubit._(
-      collectionData,
-      getBookListByIdentifierSetUseCase,
-    );
-
-    cubit.refresh();
-
-    return cubit;
-  }
-
-  CollectionViewerCubit._(
-    this.collectionData,
+  CollectionViewerCubit(
     this._getBookListByIdentifierSetUseCase,
+    this._getCollectionDataByIdUseCase,
+    this._updateCollectionDataUseCase,
   ) : super(const CollectionViewerState());
 
-  CollectionData collectionData;
+  late CollectionData collectionData;
   StreamSubscription<Book>? _listStreamSubscription;
 
   /// Use cases
   final GetBookListByIdentifierSetUseCase _getBookListByIdentifierSetUseCase;
+  final GetCollectionDataByIdUseCase _getCollectionDataByIdUseCase;
+  final UpdateCollectionDataUseCase _updateCollectionDataUseCase;
+
+  /// Get the data from UI.
+  void init(CollectionData data) {
+    collectionData = data;
+
+    refresh();
+  }
 
   /// Refresh the state of viewer.
   @override
   Future<void> refresh() async {
     // Update collection data
-    collectionData =
-        await CollectionService.repository.getDataById(collectionData.id);
+    collectionData = await _getCollectionDataByIdUseCase(collectionData.id);
 
     // Get the path list
     final List<String> pathList = collectionData.pathList;
@@ -102,15 +98,14 @@ class CollectionViewerCubit extends SharedListCubit<Book> {
     }
 
     // Save collection data
-    CollectionService.repository.updateData(<CollectionData>{collectionData});
+    _updateCollectionDataUseCase(<CollectionData>{collectionData});
   }
 
   Future<void> removeBooks() async {
     // Remove books from collection, and update the data.
-    collectionData = await CollectionService.repository.removeBooksFromSingle(
-      collectionData.id,
-      state.selectedSet,
-    );
+    for (Book book in state.selectedSet) {
+      collectionData.pathList.remove(book.identifier);
+    }
 
     // Remove books from dataList
     final List<Book> bookList = List<Book>.from(state.dataList);
@@ -120,6 +115,9 @@ class CollectionViewerCubit extends SharedListCubit<Book> {
       selectedSet: <Book>{},
       dataList: bookList,
     ));
+
+    // Save the collection data
+    _updateCollectionDataUseCase(<CollectionData>{collectionData});
   }
 
   @override

@@ -9,9 +9,10 @@ import 'package:path/path.dart';
 import '../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
 import '../../core/log_system/log_system.dart';
 import '../../core/services/file_system_service/file_system_service.dart';
-import '../book_service/book_service.dart';
 import '../bookmark_service/bookmark_service.dart';
+import '../books/book_service.dart';
 import '../collection_service/collection_service.dart';
+import '../collection_service/domain/entities/collection_data.dart';
 
 part 'data/model/backup_progress_step_code.dart';
 part 'data/model/backup_target_type.dart';

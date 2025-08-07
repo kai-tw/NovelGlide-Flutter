@@ -17,7 +17,7 @@ import '../../features/shared_components/draggable_feedback_widget.dart';
 import '../../features/shared_components/draggable_placeholder_widget.dart';
 import '../../features/shared_components/shared_list/shared_list.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../book_service/book_service.dart';
+import '../books/book_service.dart';
 import '../homepage/cubit/homepage_cubit.dart';
 import '../homepage/homepage.dart';
 import '../reader/presentation/reader_page/cubit/reader_cubit.dart';

@@ -1,8 +1,8 @@
 import '../../../../core/use_cases/use_case.dart';
 import '../repository/book_repository.dart';
 
-class ResetBookRepositoryUseCase extends UseCase<Future<void>, void> {
-  const ResetBookRepositoryUseCase(this._repository);
+class ResetBookSystemUseCase extends UseCase<Future<void>, void> {
+  const ResetBookSystemUseCase(this._repository);
 
   final BookRepository _repository;
 

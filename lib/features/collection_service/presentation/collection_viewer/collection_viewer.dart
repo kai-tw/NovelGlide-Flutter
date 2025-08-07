@@ -6,9 +6,10 @@ import '../../../../enum/loading_state_code.dart';
 import '../../../../features/shared_components/common_delete_dialog.dart';
 import '../../../../features/shared_components/common_loading.dart';
 import '../../../../features/shared_components/shared_list/shared_list.dart';
-import '../../../book_service/domain/entities/book.dart';
-import '../../../book_service/presentation/table_of_contents_page/table_of_contents.dart';
-import '../../collection_service.dart';
+import '../../../../main.dart';
+import '../../../books/domain/entities/book.dart';
+import '../../../books/presentation/table_of_contents_page/table_of_contents.dart';
+import '../../domain/entities/collection_data.dart';
 import 'cubit/collection_viewer_cubit.dart';
 
 part 'widgets/collection_viewer_list_item.dart';
@@ -23,8 +24,7 @@ class CollectionViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CollectionViewerCubit>(
-      // TODO(kai): Dependencies Injection
-      create: (_) => CollectionViewerCubit(collectionData),
+      create: (_) => sl<CollectionViewerCubit>()..init(collectionData),
       child: Scaffold(
         appBar: AppBar(
           title: Text(collectionData.name),

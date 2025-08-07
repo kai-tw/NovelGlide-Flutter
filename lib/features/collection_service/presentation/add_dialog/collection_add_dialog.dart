@@ -9,7 +9,7 @@ class CollectionAddDialog extends StatelessWidget {
       child: ConstrainedBox(
         constraints: BoxConstraints(maxWidth: WindowSize.compact.maxWidth),
         child: BlocProvider<CollectionAddCubit>(
-          create: (_) => CollectionAddCubit(),
+          create: (_) => sl<CollectionAddCubit>(),
           child: const CollectionAddForm(),
         ),
       ),

@@ -42,14 +42,15 @@ class CollectionListDraggableCollection extends StatelessWidget {
           homepageCubit.isEnabled = true;
         },
         onDragCompleted: () async {
-          CollectionService.repository.deleteByData(collectionData);
-          cubit.refresh();
+          await cubit.dragToDelete(collectionData);
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(appLocalizations.deleteCollectionSuccessfully),
-            ),
-          );
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(appLocalizations.deleteCollectionSuccessfully),
+              ),
+            );
+          }
         },
         data: collectionData,
         maxSimultaneousDrags: isDraggable ? 1 : 0,

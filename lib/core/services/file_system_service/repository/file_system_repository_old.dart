@@ -1,7 +1,7 @@
 part of '../file_system_service.dart';
 
-abstract class FileSystemRepository {
-  const FileSystemRepository();
+abstract class FileSystemRepositoryOld {
+  const FileSystemRepositoryOld();
 
   Directory createDirectory(String path) {
     final Directory directory = Directory(path);

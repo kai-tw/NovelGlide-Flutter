@@ -11,31 +11,23 @@ import 'log_system.dart';
 void setupLogDependencies() {
   // Register Logger for console logging.
   final Logger logger = Logger();
-  sl.registerLazySingleton<LoggerAdapter>(
-    () => LoggerAdapter(logger),
-  );
+  sl.registerLazySingleton<LoggerAdapter>(() => LoggerAdapter(logger));
 
   // Register FirebaseCrashlytics.
   sl.registerLazySingleton<FirebaseCrashlyticsAdapter>(
-    () => FirebaseCrashlyticsAdapter(),
-  );
+      () => FirebaseCrashlyticsAdapter());
 
   // Register FirebaseCrashlytics.
   sl.registerLazySingleton<FirebaseAnalyticsAdapter>(
-    () => FirebaseAnalyticsAdapter(),
-  );
+      () => FirebaseAnalyticsAdapter());
 
   // Register LogRepository
-  sl.registerLazySingleton<LogRepository>(
-    () => LogRepositoryImpl(
-      sl<LoggerAdapter>(),
-      sl<FirebaseCrashlyticsAdapter>(),
-      sl<FirebaseAnalyticsAdapter>(),
-    ),
-  );
+  sl.registerLazySingleton<LogRepository>(() => LogRepositoryImpl(
+        sl<LoggerAdapter>(),
+        sl<FirebaseCrashlyticsAdapter>(),
+        sl<FirebaseAnalyticsAdapter>(),
+      ));
 
   // Register LogSystem
-  sl.registerLazySingleton<LogSystem>(
-    () => LogSystem(sl<LogRepository>()),
-  );
+  sl.registerLazySingleton<LogSystem>(() => LogSystem(sl<LogRepository>()));
 }

@@ -12,15 +12,15 @@ import 'package:novel_glide/core/utils/random_extension.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../../features/book_service/book_service.dart';
+import '../../../features/books/book_service.dart';
 
 part 'model/file_meta_model.dart';
 part 'model/json_file_meta_model.dart';
 part 'repository/cache_repository.dart';
 part 'repository/document_repository.dart';
 part 'repository/epub_repository.dart';
-part 'repository/file_system_repository.dart';
-part 'repository/json_repository.dart';
+part 'repository/file_system_repository_old.dart';
+part 'repository/json_repository_old.dart';
 part 'repository/temp_repository.dart';
 
 class FileSystemService {
@@ -29,6 +29,6 @@ class FileSystemService {
   static CacheRepository cache = const CacheRepository();
   static DocumentRepository document = const DocumentRepository();
   static EpubRepository epub = const EpubRepository();
-  static JsonRepository json = const JsonRepository();
+  static JsonRepositoryOld json = const JsonRepositoryOld();
   static TempRepository temp = const TempRepository();
 }

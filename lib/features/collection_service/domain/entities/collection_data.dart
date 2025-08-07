@@ -1,7 +1,7 @@
-part of '../collection_service.dart';
+import 'package:equatable/equatable.dart';
 
-class CollectionData {
-  CollectionData(
+class CollectionData extends Equatable {
+  const CollectionData(
     this.id,
     this.name,
     this.pathList,
@@ -17,7 +17,14 @@ class CollectionData {
 
   final String id;
   final String name;
-  List<String> pathList;
+  final List<String> pathList;
+
+  @override
+  List<Object?> get props => <Object?>[
+        id,
+        name,
+        pathList,
+      ];
 
   /// Converts the [CollectionData] instance to a JSON map.
   Map<String, dynamic> toJson() {
@@ -28,18 +35,15 @@ class CollectionData {
     };
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is CollectionData &&
-          runtimeType == other.runtimeType &&
-          name == other.name &&
-          id == other.id &&
-          pathList == other.pathList;
-
-  @override
-  int get hashCode => id.hashCode;
-
-  @override
-  String toString() => jsonEncode(toJson());
+  CollectionData copyWith({
+    String? id,
+    String? name,
+    List<String>? pathList,
+  }) {
+    return CollectionData(
+      id ?? this.id,
+      name ?? this.name,
+      pathList ?? this.pathList,
+    );
+  }
 }

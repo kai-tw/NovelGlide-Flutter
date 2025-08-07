@@ -1,7 +1,7 @@
 part of '../file_system_service.dart';
 
-class JsonRepository extends FileSystemRepository {
-  const JsonRepository();
+class JsonRepositoryOld extends FileSystemRepositoryOld {
+  const JsonRepositoryOld();
 
   Future<Directory> get rootDirectory =>
       FileSystemService.document.dataDirectory;

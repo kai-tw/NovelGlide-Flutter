@@ -1,7 +1,7 @@
 part of '../../book_service.dart';
 
-class BookRepository {
-  BookRepository();
+class BookRepositoryOld {
+  BookRepositoryOld();
 
   final List<String> allowedExtensions = <String>['epub'];
   final List<String> allowedMimeTypes = <String>['application/epub+zip'];
@@ -26,21 +26,6 @@ class BookRepository {
       name: epubBook.Title ?? '',
       coverImage: FileSystemService.epub.findCoverImage(epubBook),
     );
-  }
-
-  Stream<BookData> getBookList() async* {
-    final Directory folder = await FileSystemService.document.libraryDirectory;
-    final Iterable<File> fileList =
-        folder.listSync().whereType<File>().where((File e) => isFileValid(e));
-    for (File epubFile in fileList) {
-      yield await getBookData(epubFile.path);
-    }
-  }
-
-  Stream<BookData> getBookListFromPathList(List<String> pathList) async* {
-    for (String path in pathList) {
-      yield await getBookData(path);
-    }
   }
 
   /// Add some books to the library.
@@ -75,29 +60,6 @@ class BookRepository {
         await FileSystemService.document.libraryDirectory;
     final String destination = join(libraryDirectory.path, basename(filePath));
     return File(destination).existsSync();
-  }
-
-  /// Delete the book and associated bookmarks and collections.
-  bool delete(BookData bookData) {
-    final String absolutePath = bookData.absoluteFilePath;
-    final File file = File(absolutePath);
-    if (file.existsSync()) {
-      file.deleteSync();
-    }
-
-    // Delete associated bookmarks.
-    BookmarkService.repository.deleteByPath(absolutePath);
-
-    // Delete associated collections.
-    CollectionService.repository.removeBookFromAll(absolutePath);
-
-    // Delete locations cache.
-    LocationCacheRepository.delete(absolutePath);
-
-    // Send a notification.
-    onChangedController.add(null);
-
-    return !file.existsSync();
   }
 
   Future<void> deleteAllBooks() async {

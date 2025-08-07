@@ -1,29 +1,39 @@
 part of '../../../collection_service.dart';
 
 class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
-  factory CollectionAddBookCubit(Set<Book> dataSet) {
-    final CollectionAddBookCubit cubit = CollectionAddBookCubit._(dataSet);
+  CollectionAddBookCubit(
+    this._getCollectionListUseCase,
+    this._observeCollectionChangeUseCase,
+    this._updateCollectionDataUseCase,
+  ) : super(const CollectionAddBookState());
 
-    // Refresh at first.
-    cubit.refresh();
-
-    // Listen to collection changes.
-    cubit._onChangedSubscription = CollectionService
-        .repository.onChangedController.stream
-        .listen((_) => cubit.refresh());
-    return cubit;
-  }
-
-  CollectionAddBookCubit._(this._dataSet)
-      : super(const CollectionAddBookState());
-
-  final Set<Book> _dataSet;
+  late final Set<Book> _dataSet;
   late final StreamSubscription<void> _onChangedSubscription;
 
+  final GetCollectionListUseCase _getCollectionListUseCase;
+  final ObserveCollectionChangeUseCase _observeCollectionChangeUseCase;
+  final UpdateCollectionDataUseCase _updateCollectionDataUseCase;
+
+  /// Get data from widget.
+  Future<void> init(Set<Book> dataSet) async {
+    _dataSet = dataSet;
+
+    // Refresh at first.
+    refresh();
+
+    // Listen to collection changes.
+    _onChangedSubscription =
+        _observeCollectionChangeUseCase().listen((_) => refresh());
+  }
+
   Future<void> refresh() async {
+    if (state.code.isLoading || state.code.isBackgroundLoading) {
+      return;
+    }
+
     // Get the collection list from repository.
     final List<CollectionData> collectionList =
-        await CollectionService.repository.getList();
+        await _getCollectionListUseCase();
 
     // Get all the identifiers from user selected books.
     final Set<String> relativePathSet =
@@ -64,8 +74,7 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
   }
 
   Future<void> save() {
-    return CollectionService.repository
-        .updateData(state.collectionList.toSet());
+    return _updateCollectionDataUseCase(state.collectionList.toSet());
   }
 
   @override

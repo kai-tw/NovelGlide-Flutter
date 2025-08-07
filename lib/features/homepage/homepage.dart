@@ -7,12 +7,13 @@ import '../../features/shared_components/shared_list/shared_list.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../../main.dart';
 import '../ads_service/ad_service.dart';
-import '../book_service/book_service.dart';
-import '../book_service/domain/entities/book.dart';
-import '../book_service/presentation/add_page/book_add_page.dart';
-import '../book_service/presentation/bookshelf/cubit/bookshelf_cubit.dart';
 import '../bookmark_service/bookmark_service.dart';
+import '../books/book_service.dart';
+import '../books/domain/entities/book.dart';
+import '../books/presentation/add_page/book_add_page.dart';
+import '../books/presentation/bookshelf/cubit/bookshelf_cubit.dart';
 import '../collection_service/collection_service.dart';
+import '../collection_service/domain/entities/collection_data.dart';
 import '../collection_service/presentation/collection_list/cubit/collection_list_cubit.dart';
 import '../settings_page/settings_service.dart';
 import 'cubit/homepage_cubit.dart';
@@ -38,7 +39,8 @@ class Homepage extends StatelessWidget {
       providers: <BlocProvider<dynamic>>[
         BlocProvider<HomepageCubit>(create: (_) => HomepageCubit()),
         BlocProvider<BookshelfCubit>(create: (_) => sl<BookshelfCubit>()),
-        BlocProvider<CollectionListCubit>(create: (_) => CollectionListCubit()),
+        BlocProvider<CollectionListCubit>(
+            create: (_) => sl<CollectionListCubit>()),
         BlocProvider<BookmarkListCubit>(create: (_) => BookmarkListCubit()),
       ],
       child: const _Scaffold(),

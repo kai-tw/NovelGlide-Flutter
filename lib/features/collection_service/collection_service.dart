@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:collection/collection.dart';
@@ -21,15 +20,20 @@ import '../../features/shared_components/draggable_feedback_widget.dart';
 import '../../features/shared_components/draggable_placeholder_widget.dart';
 import '../../features/shared_components/shared_list/shared_list.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../book_service/book_service.dart';
-import '../book_service/domain/entities/book.dart';
+import '../../main.dart';
+import '../books/book_service.dart';
+import '../books/domain/entities/book.dart';
 import '../homepage/cubit/homepage_cubit.dart';
 import '../homepage/homepage.dart';
+import 'domain/entities/collection_data.dart';
+import 'domain/use_cases/create_collection_data_use_case.dart';
+import 'domain/use_cases/get_collection_list_use_case.dart';
+import 'domain/use_cases/observe_collection_change_use_case.dart';
+import 'domain/use_cases/update_collection_data_use_case.dart';
 import 'presentation/collection_list/cubit/collection_list_cubit.dart';
 import 'presentation/collection_viewer/collection_viewer.dart';
 
-part 'data/collection_data.dart';
-part 'data/collection_repository.dart';
+part 'domain/repositories/collection_repository_old.dart';
 part 'presentation/add_book_page/collection_add_book_scaffold.dart';
 part 'presentation/add_book_page/cubit/collection_add_book_cubit.dart';
 part 'presentation/add_book_page/cubit/collection_add_book_state.dart';
@@ -54,5 +58,5 @@ part 'presentation/collection_list/widgets/collection_list_item.dart';
 class CollectionService {
   CollectionService._();
 
-  static CollectionRepository repository = CollectionRepository();
+  static CollectionRepositoryOld repository = CollectionRepositoryOld();
 }

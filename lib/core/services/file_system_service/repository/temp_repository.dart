@@ -1,6 +1,6 @@
 part of '../file_system_service.dart';
 
-class TempRepository extends FileSystemRepository {
+class TempRepository extends FileSystemRepositoryOld {
   const TempRepository();
 
   Future<Directory> get rootDirectory => getTemporaryDirectory();

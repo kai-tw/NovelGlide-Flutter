@@ -22,14 +22,14 @@ class SettingsPageDataCard extends StatelessWidget {
 
           // Delete all books
           SettingsPageListTile(
-            onAccept: BookService.repository.reset,
+            onAccept: sl<ResetBookSystemUseCase>(),
             iconData: Icons.delete_forever_rounded,
             title: appLocalizations.resetPageDeleteAllBooks,
           ),
 
           // Delete all collections
           SettingsPageListTile(
-            onAccept: CollectionService.repository.reset,
+            onAccept: sl<ResetCollectionSystemUseCase>(),
             onComplete: BlocProvider.of<CollectionListCubit>(context).refresh,
             iconData: Icons.delete_forever_rounded,
             title: appLocalizations.resetPageDeleteAllCollections,

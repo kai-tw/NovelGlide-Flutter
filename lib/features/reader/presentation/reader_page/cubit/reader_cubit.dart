@@ -15,8 +15,8 @@ import '../../../../../core/services/preference_service/data/model/reader_prefer
 import '../../../../../core/services/preference_service/preference_service.dart';
 import '../../../../../core/utils/color_extension.dart';
 import '../../../../../core/utils/parsers.dart';
-import '../../../../book_service/book_service.dart';
 import '../../../../bookmark_service/bookmark_service.dart';
+import '../../../../books/book_service.dart';
 import '../../../../tts_service/tts_service.dart';
 import '../../../data/model/reader_navigation_state_code.dart';
 import '../../../data/model/reader_page_num_type.dart';

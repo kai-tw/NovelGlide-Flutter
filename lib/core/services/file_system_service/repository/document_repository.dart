@@ -1,6 +1,6 @@
 part of '../file_system_service.dart';
 
-class DocumentRepository extends FileSystemRepository {
+class DocumentRepository extends FileSystemRepositoryOld {
   const DocumentRepository();
 
   Future<Directory> get rootDirectory => Platform.isIOS

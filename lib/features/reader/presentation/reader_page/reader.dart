@@ -8,7 +8,7 @@ import '../../../../../../generated/i18n/app_localizations.dart';
 import '../../../../enum/window_size.dart';
 import '../../../../features/shared_components/common_loading.dart';
 import '../../../ads_service/ad_service.dart';
-import '../../../book_service/book_service.dart';
+import '../../../books/book_service.dart';
 import '../../../tts_service/tts_service.dart';
 import '../../data/model/reader_navigation_state_code.dart';
 import '../../data/model/reader_page_num_type.dart';

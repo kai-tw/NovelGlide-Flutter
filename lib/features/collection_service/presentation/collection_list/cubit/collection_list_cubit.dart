@@ -6,21 +6,30 @@ import '../../../../../core/services/preference_service/preference_service.dart'
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../../../features/shared_components/shared_list/shared_list.dart';
-import '../../../collection_service.dart';
+import '../../../domain/entities/collection_data.dart';
+import '../../../domain/use_cases/delete_collection_data_use_case.dart';
+import '../../../domain/use_cases/get_collection_list_use_case.dart';
+import '../../../domain/use_cases/observe_collection_change_use_case.dart';
 
 typedef CollectionListState = SharedListState<CollectionData>;
 
 class CollectionListCubit extends SharedListCubit<CollectionData> {
-  factory CollectionListCubit() {
-    final CollectionListCubit cubit = CollectionListCubit._();
+  factory CollectionListCubit(
+    DeleteCollectionDataUseCase deleteCollectionDataUseCase,
+    GetCollectionListUseCase getCollectionListUseCase,
+    ObserveCollectionChangeUseCase observeCollectionChangeUseCase,
+  ) {
+    final CollectionListCubit cubit = CollectionListCubit._(
+      deleteCollectionDataUseCase,
+      getCollectionListUseCase,
+    );
 
     // Refresh at first.
     cubit.refresh();
 
     // Listen to collection changes.
-    cubit.onRepositoryChangedSubscription = CollectionService
-        .repository.onChangedController.stream
-        .listen((_) => cubit.refresh());
+    cubit.onRepositoryChangedSubscription =
+        observeCollectionChangeUseCase().listen((_) => cubit.refresh());
 
     // Listen to collection list preference changes.
     cubit.onPreferenceChangedSubscription = PreferenceService
@@ -30,7 +39,13 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
     return cubit;
   }
 
-  CollectionListCubit._() : super(const CollectionListState());
+  CollectionListCubit._(
+    this._deleteCollectionDataUseCase,
+    this._getCollectionListUseCase,
+  ) : super(const CollectionListState());
+
+  final DeleteCollectionDataUseCase _deleteCollectionDataUseCase;
+  final GetCollectionListUseCase _getCollectionListUseCase;
 
   @override
   Future<void> refresh() async {
@@ -46,7 +61,7 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
     emit(CollectionListState(
       code: LoadingStateCode.loaded,
       dataList: sortList(
-        await CollectionService.repository.getList(),
+        await _getCollectionListUseCase(),
         preference.sortOrder,
         preference.isAscending,
       ),
@@ -56,9 +71,14 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
     ));
   }
 
-  void deleteSelectedCollections() {
-    state.selectedSet.forEach(CollectionService.repository.deleteByData);
-    refresh();
+  Future<void> dragToDelete(CollectionData data) async {
+    await _deleteCollectionDataUseCase(<CollectionData>{data});
+    await refresh();
+  }
+
+  Future<void> deleteSelectedCollections() async {
+    await _deleteCollectionDataUseCase(state.selectedSet);
+    await refresh();
   }
 
   @override
