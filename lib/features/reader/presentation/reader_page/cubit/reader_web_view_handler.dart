@@ -52,23 +52,4 @@ class ReaderWebViewHandler {
   Future<void> request() {
     return controller.loadRequest(uri);
   }
-
-  /// *************************************************************************
-  /// Communication
-  /// *************************************************************************
-
-  void prevPage() => send('prevPage');
-
-  void nextPage() => send('nextPage');
-
-  void goto(String cfi) => send('goto', cfi);
-
-  void setFontColor(Color color) => send('setFontColor', color.toCssRgba());
-
-  void setFontSize(double fontSize) => send('setFontSize', fontSize);
-
-  void setLineHeight(double lineHeight) => send('setLineHeight', lineHeight);
-
-  void setSmoothScroll(bool isSmoothScroll) =>
-      send('setSmoothScroll', isSmoothScroll);
 }

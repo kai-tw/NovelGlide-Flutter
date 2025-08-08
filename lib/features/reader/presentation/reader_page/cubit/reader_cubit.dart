@@ -8,7 +8,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../../../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../../../../core/services/preference_service/data/model/reader_preference_data.dart';
 import '../../../../../core/services/preference_service/preference_service.dart';
-import '../../../../../core/utils/color_extension.dart';
 import '../../../../bookmark_service/bookmark_service.dart';
 import '../../../../books/domain/entities/book.dart';
 import '../../../../books/domain/use_cases/get_book_use_case.dart';
@@ -30,8 +29,14 @@ import '../../../domain/use_cases/reader_observe_save_location_use_case.dart';
 import '../../../domain/use_cases/reader_observe_search_list_use_case.dart';
 import '../../../domain/use_cases/reader_observe_set_state_use_case.dart';
 import '../../../domain/use_cases/reader_send_goto_use_case.dart';
+import '../../../domain/use_cases/reader_send_next_page_use_case.dart';
+import '../../../domain/use_cases/reader_send_previous_page_use_case.dart';
 import '../../../domain/use_cases/reader_send_search_in_current_chapter_use_case.dart';
 import '../../../domain/use_cases/reader_send_search_in_whole_book_use_case.dart';
+import '../../../domain/use_cases/reader_send_set_font_color_use_case.dart';
+import '../../../domain/use_cases/reader_send_set_font_size_use_case.dart';
+import '../../../domain/use_cases/reader_send_set_line_height_use_case.dart';
+import '../../../domain/use_cases/reader_send_set_smooth_scroll_use_case.dart';
 import '../../../domain/use_cases/reader_start_reader_server_use_case.dart';
 import '../../../domain/use_cases/reader_stop_reader_server_use_case.dart';
 import '../../search_page/cubit/reader_search_cubit.dart';
@@ -71,6 +76,18 @@ class ReaderCubit extends Cubit<ReaderState> {
         ReaderObserveLoadDoneUseCase(webViewRepository);
     final ReaderObserveSetStateUseCase observeSetStateUseCase =
         ReaderObserveSetStateUseCase(webViewRepository);
+    final ReaderSendPreviousPageUseCase sendPreviousPageUseCase =
+        ReaderSendPreviousPageUseCase(webViewRepository);
+    final ReaderSendNextPageUseCase sendNextPageUseCase =
+        ReaderSendNextPageUseCase(webViewRepository);
+    final ReaderSendSetFontColorUseCase sendSetFontColorUseCase =
+        ReaderSendSetFontColorUseCase(webViewRepository);
+    final ReaderSendSetFontSizeUseCase sendSetFontSizeUseCase =
+        ReaderSendSetFontSizeUseCase(webViewRepository);
+    final ReaderSendSetLineHeightUseCase sendSetLineHeightUseCase =
+        ReaderSendSetLineHeightUseCase(webViewRepository);
+    final ReaderSendSetSmoothScrollUseCase sendSetSmoothScrollUseCase =
+        ReaderSendSetSmoothScrollUseCase(webViewRepository);
 
     // Create searching use cases
     final ReaderSendSearchInCurrentChapterUseCase
@@ -87,6 +104,12 @@ class ReaderCubit extends Cubit<ReaderState> {
       observeSaveLocationUseCase,
       observeSetStateUseCase,
       observeLoadDoneUseCase,
+      sendPreviousPageUseCase,
+      sendNextPageUseCase,
+      sendSetFontColorUseCase,
+      sendSetFontSizeUseCase,
+      sendSetLineHeightUseCase,
+      sendSetSmoothScrollUseCase,
       getBookUseCase,
       webViewController,
       webViewRepository,
@@ -106,6 +129,12 @@ class ReaderCubit extends Cubit<ReaderState> {
     this._observeSaveLocationUseCase,
     this._observeSetStateUseCase,
     this._observeLoadDoneUseCase,
+    this._sendPreviousPageUseCase,
+    this._sendNextPageUseCase,
+    this._sendSetFontColorUseCase,
+    this._sendSetFontSizeUseCase,
+    this._sendSetLineHeightUseCase,
+    this._sendSetSmoothScrollUseCase,
     this._getBookUseCase,
     this._webViewController,
     this._webViewRepository,
@@ -142,6 +171,12 @@ class ReaderCubit extends Cubit<ReaderState> {
   final ReaderObserveSaveLocationUseCase _observeSaveLocationUseCase;
   final ReaderObserveLoadDoneUseCase _observeLoadDoneUseCase;
   final ReaderObserveSetStateUseCase _observeSetStateUseCase;
+  final ReaderSendPreviousPageUseCase _sendPreviousPageUseCase;
+  final ReaderSendNextPageUseCase _sendNextPageUseCase;
+  final ReaderSendSetFontColorUseCase _sendSetFontColorUseCase;
+  final ReaderSendSetFontSizeUseCase _sendSetFontSizeUseCase;
+  final ReaderSendSetLineHeightUseCase _sendSetLineHeightUseCase;
+  final ReaderSendSetSmoothScrollUseCase _sendSetSmoothScrollUseCase;
 
   /// Initialize from widgets.
   Future<void> initAsync({
@@ -226,9 +261,9 @@ class ReaderCubit extends Cubit<ReaderState> {
   void sendThemeData([ThemeData? newTheme]) {
     currentTheme = newTheme ?? currentTheme;
     if (state.code.isLoaded) {
-      webViewHandler.setFontColor(currentTheme.colorScheme.onSurface);
-      webViewHandler.setFontSize(state.readerPreference.fontSize);
-      webViewHandler.setLineHeight(state.readerPreference.lineHeight);
+      _sendSetFontColorUseCase(currentTheme.colorScheme.onSurface);
+      _sendSetFontSizeUseCase(state.readerPreference.fontSize);
+      _sendSetLineHeightUseCase(state.readerPreference.lineHeight);
     }
   }
 
@@ -271,7 +306,7 @@ class ReaderCubit extends Cubit<ReaderState> {
         isSmoothScroll: value,
       ),
     ));
-    webViewHandler.setSmoothScroll(value);
+    _sendSetSmoothScrollUseCase(value);
   }
 
   set pageNumType(ReaderPageNumType value) {
@@ -316,17 +351,15 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// *************************************************************************
 
   void previousPage() {
-    if (!state.ttsState.isStopped) {
-      return;
+    if (state.ttsState.isStopped) {
+      _sendPreviousPageUseCase();
     }
-    webViewHandler.prevPage();
   }
 
   void nextPage() {
-    if (!state.ttsState.isStopped) {
-      return;
+    if (state.ttsState.isStopped) {
+      _sendNextPageUseCase();
     }
-    webViewHandler.nextPage();
   }
 
   /// *************************************************************************
@@ -370,7 +403,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     sendThemeData();
 
     // Set smooth scroll.
-    webViewHandler.setSmoothScroll(state.readerPreference.isSmoothScroll);
+    _sendSetSmoothScrollUseCase(state.readerPreference.isSmoothScroll);
   }
 
   void _receiveSetState(ReaderSetStateData data) {
