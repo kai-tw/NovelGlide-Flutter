@@ -12,9 +12,9 @@ import '../books/book_service.dart';
 import '../books/domain/entities/book.dart';
 import '../books/presentation/add_page/book_add_page.dart';
 import '../books/presentation/bookshelf/cubit/bookshelf_cubit.dart';
-import '../collection_service/collection_service.dart';
-import '../collection_service/domain/entities/collection_data.dart';
-import '../collection_service/presentation/collection_list/cubit/collection_list_cubit.dart';
+import '../collection/collection_service.dart';
+import '../collection/domain/entities/collection_data.dart';
+import '../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
 import '../settings_page/settings_service.dart';
 import 'cubit/homepage_cubit.dart';
 

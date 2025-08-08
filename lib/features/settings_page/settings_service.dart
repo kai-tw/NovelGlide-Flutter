@@ -8,7 +8,7 @@ import '../../generated/i18n/app_localizations.dart';
 import '../appearance/presentation/appearance_settings_page/appearance_settings_page.dart';
 import '../backup_service/presentation/backup_service_page.dart';
 import '../developer_page/developer_page.dart';
-import '../feedback_service/presentation/feedback_page.dart';
+import '../feedback/presentation/feedback_page.dart';
 import '../homepage/homepage.dart';
 import '../locale_system/locale_utils.dart';
 import '../reset_services/reset_service.dart';

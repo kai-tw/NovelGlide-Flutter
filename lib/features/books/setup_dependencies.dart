@@ -1,5 +1,5 @@
 import '../../main.dart';
-import '../collection_service/domain/use_cases/delete_all_books_from_collection_use_case.dart';
+import '../collection/domain/use_cases/delete_all_books_from_collection_use_case.dart';
 import 'data/data_sources/book_local_data_source.dart';
 import 'data/data_sources/implementations/epub_data_source.dart';
 import 'data/data_sources/implementations/pick_book_data_source_impl.dart';

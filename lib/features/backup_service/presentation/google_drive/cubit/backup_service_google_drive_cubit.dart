@@ -6,7 +6,7 @@ import '../../../../../../enum/loading_state_code.dart';
 import '../../../../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
 import '../../../../../core/services/preference_service/preference_service.dart';
 import '../../../../bookmark_service/bookmark_service.dart';
-import '../../../../collection_service/collection_service.dart';
+import '../../../../collection/collection_service.dart';
 import '../../../backup_service.dart';
 
 part 'backup_service_google_drive_state.dart';

@@ -1,4 +1,4 @@
-import 'package:novel_glide/features/collection_service/domain/entities/collection_data.dart';
+import 'package:novel_glide/features/collection/domain/entities/collection_data.dart';
 
 import '../../domain/repositories/collection_repository.dart';
 import '../data_sources/collection_local_json_data_source.dart';

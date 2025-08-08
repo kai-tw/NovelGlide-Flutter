@@ -11,7 +11,7 @@ import '../../../../features/shared_components/shared_list/shared_list.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../ads_service/ad_service.dart';
 import '../../../bookmark_service/bookmark_service.dart';
-import '../../../collection_service/collection_service.dart';
+import '../../../collection/collection_service.dart';
 import '../../../reader/presentation/reader_page/cubit/reader_cubit.dart';
 import '../../../reader/presentation/reader_page/reader.dart';
 import '../../domain/entities/book.dart';
