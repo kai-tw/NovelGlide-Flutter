@@ -27,11 +27,8 @@ void setupBookDependencies() {
   sl.registerLazySingleton<PickBookDataSource>(() => PickBookDataSourceImpl());
 
   // Register repositories
-  sl.registerLazySingleton<BookRepository>(() => BookRepositoryImpl(
-        sl<BookLocalDataSource>(),
-        sl<PickBookDataSource>(),
-        sl<DeleteAllBooksFromCollectionUseCase>(),
-      ));
+  sl.registerLazySingleton<BookRepository>(() =>
+      BookRepositoryImpl(sl<BookLocalDataSource>(), sl<PickBookDataSource>()));
 
   // Register use cases
   sl.registerLazySingleton<AddBooksUseCase>(
@@ -56,8 +53,8 @@ void setupBookDependencies() {
       () => ObserveBookChangeUseCase(sl<BookRepository>()));
   sl.registerLazySingleton<PickBooksUseCase>(
       () => PickBooksUseCase(sl<BookRepository>()));
-  sl.registerLazySingleton<ResetBookSystemUseCase>(
-      () => ResetBookSystemUseCase(sl<BookRepository>()));
+  sl.registerLazySingleton<ResetBookSystemUseCase>(() => ResetBookSystemUseCase(
+      sl<BookRepository>(), sl<DeleteAllBooksFromCollectionUseCase>()));
 
   // Cubit factories
   sl.registerFactory<BookshelfCubit>(() => BookshelfCubit(
