@@ -5,10 +5,14 @@ class ReaderTTSHandler {
     required ReaderWebViewHandler webViewHandler,
     required void Function(TtsServiceState state) onTtsStateChanged,
   }) {
-    return ReaderTTSHandler._(
+    final ReaderTTSHandler handler = ReaderTTSHandler._(
       webViewHandler: webViewHandler,
       onTtsStateChanged: onTtsStateChanged,
-    ).._init();
+    );
+    handler._ttsService = TtsService(onReady: handler._onReady);
+    handler._messageStreamSubscription =
+        webViewHandler.messages.listen(handler._messageDispatcher);
+    return handler;
   }
 
   ReaderTTSHandler._({
@@ -18,25 +22,20 @@ class ReaderTTSHandler {
 
   late TtsService _ttsService;
   final ReaderWebViewHandler webViewHandler;
+  late final StreamSubscription<ReaderWebMessage> _messageStreamSubscription;
   final void Function(TtsServiceState state) onTtsStateChanged;
+
   bool isPaused = false;
   bool isCanceled = false;
 
-  void _init() {
-    _ttsService = TtsService(onReady: _onReady);
-  }
-
   void reload() {
-    _init();
+    _ttsService = TtsService(onReady: _onReady);
   }
 
   /// Events
 
   /// TTS service is ready
   void _onReady() {
-    webViewHandler.register('ttsPlay', _ttsPlay);
-    webViewHandler.register('ttsStop', _ttsStop);
-    webViewHandler.register('ttsEnd', _ttsEnd);
     onTtsStateChanged(TtsServiceState.stopped);
 
     _ttsService.setStartHandler(_onPlaying);
@@ -105,6 +104,22 @@ class ReaderTTSHandler {
   }
 
   /// Messages
+  void _messageDispatcher(ReaderWebMessage message) {
+    switch (message.route) {
+      case 'ttsPlay':
+        assert(message.data is String);
+        _ttsPlay(message.data as String);
+        break;
+
+      case 'ttsStop':
+        _ttsStop();
+        break;
+
+      case 'ttsEnd':
+        _ttsEnd();
+        break;
+    }
+  }
 
   /// Request to play TTS
   void _ttsPlay(dynamic data) {
@@ -112,17 +127,18 @@ class ReaderTTSHandler {
   }
 
   /// Stop TTS
-  void _ttsStop(dynamic _) {
+  void _ttsStop() {
     _ttsService.stop();
   }
 
   /// Terminate TTS
-  void _ttsEnd(dynamic _) {
+  void _ttsEnd() {
     _ttsService.stop();
     _onCancel();
   }
 
-  void dispose() {
-    _ttsService.stop();
+  Future<void> dispose() async {
+    await _messageStreamSubscription.cancel();
+    await _ttsService.stop();
   }
 }

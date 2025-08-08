@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../enum/sort_order_code.dart';
-import '../../../features/reader/data/model/reader_page_num_type.dart';
+import '../../../features/reader/domain/entities/reader_page_num_type.dart';
 import '../../../features/shared_components/shared_list/shared_list.dart';
 import '../../../features/tts_service/tts_service.dart';
 import 'data/model/reader_preference_data.dart';

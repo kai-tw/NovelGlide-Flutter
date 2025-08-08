@@ -24,8 +24,7 @@ class _FabSection extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute<void>(
                   builder: (_) => ReaderWidget(
-                    // TODO(kai): Change to identifier.
-                    bookPath: cubit.bookData.identifier,
+                    bookIdentifier: cubit.bookData.identifier,
                     bookData: cubit.bookData,
                   ),
                 ));
@@ -51,8 +50,7 @@ class _FabSection extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute<void>(
                     builder: (_) => ReaderWidget(
-                      // TODO(kai): Change to identifier.
-                      bookPath: cubit.bookData.absoluteFilePath,
+                      bookIdentifier: cubit.bookData.identifier,
                       bookData: cubit.bookData,
                       destinationType: ReaderDestinationType.bookmark,
                       destination: state.bookmarkData?.startCfi,

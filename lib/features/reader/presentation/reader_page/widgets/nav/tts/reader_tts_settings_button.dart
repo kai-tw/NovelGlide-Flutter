@@ -24,6 +24,6 @@ class ReaderTtsSettingsButton extends StatelessWidget {
     final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     Navigator.of(context)
         .push(MaterialPageRoute<void>(builder: (_) => const TtsSettingsPage()))
-        .then((_) => cubit.ttsHandler?.reload());
+        .then((_) => cubit.ttsHandler.reload());
   }
 }

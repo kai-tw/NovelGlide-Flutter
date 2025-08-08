@@ -67,16 +67,4 @@ class BookRepositoryOld {
     directory.deleteSync(recursive: true);
     directory.createSync(recursive: true);
   }
-
-  /// Reset the book repository.
-  Future<void> reset() async {
-    await deleteAllBooks();
-
-    BookmarkService.repository.reset();
-    CollectionService.repository.removeAllBooksFromAll();
-    LocationCacheRepository.clear();
-
-    // Send a notification.
-    onChangedController.add(null);
-  }
 }

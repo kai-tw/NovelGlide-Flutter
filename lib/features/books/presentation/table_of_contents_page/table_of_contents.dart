@@ -12,7 +12,7 @@ import '../../../../generated/i18n/app_localizations.dart';
 import '../../../ads_service/ad_service.dart';
 import '../../../bookmark_service/bookmark_service.dart';
 import '../../../collection/collection_service.dart';
-import '../../../reader/presentation/reader_page/cubit/reader_cubit.dart';
+import '../../../reader/domain/entities/reader_destination_type.dart';
 import '../../../reader/presentation/reader_page/reader.dart';
 import '../../domain/entities/book.dart';
 import '../../domain/entities/book_chapter.dart';

@@ -19,8 +19,8 @@ class ReaderTtsPlayPauseButton extends StatelessWidget {
               isPlaying ? appLocalizations.ttsPause : appLocalizations.ttsPlay,
           onPressed: state.ttsState.isReady
               ? isPlaying
-                  ? cubit.ttsHandler?.pauseButtonPressed
-                  : cubit.ttsHandler?.playButtonPressed
+                  ? cubit.ttsHandler.pauseButtonPressed
+                  : cubit.ttsHandler.playButtonPressed
               : null,
         );
       },

@@ -4,30 +4,31 @@ class ReaderGestureHandler {
   ReaderGestureHandler({
     required this.onSwipeLeft,
     required this.onSwipeRight,
+    this.sensitivity = 50,
   });
 
   final Function()? onSwipeLeft;
   final Function()? onSwipeRight;
-  double? startDragX;
+  int sensitivity;
+  double? _startDragX;
 
   void onStart(DragStartDetails details) {
-    startDragX = details.localPosition.dx;
+    _startDragX = details.localPosition.dx;
   }
 
   void onEnd(DragEndDetails details) {
-    const int sensitivity = 50;
     final double endDragX = details.localPosition.dx;
-    if (startDragX != null) {
-      if (startDragX! + sensitivity < endDragX) {
+    if (_startDragX != null) {
+      if (_startDragX! + sensitivity < endDragX) {
         onSwipeLeft?.call();
-      } else if (startDragX! - sensitivity > endDragX) {
+      } else if (_startDragX! - sensitivity > endDragX) {
         onSwipeRight?.call();
       }
     }
-    startDragX = null;
+    _startDragX = null;
   }
 
   void onCancel() {
-    startDragX = null;
+    _startDragX = null;
   }
 }

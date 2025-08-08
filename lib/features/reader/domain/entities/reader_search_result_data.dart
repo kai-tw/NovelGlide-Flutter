@@ -1,4 +1,4 @@
-part of 'reader_search_cubit.dart';
+import 'package:equatable/equatable.dart';
 
 class ReaderSearchResultData extends Equatable {
   const ReaderSearchResultData({

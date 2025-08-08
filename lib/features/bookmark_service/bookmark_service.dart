@@ -20,7 +20,7 @@ import '../../generated/i18n/app_localizations.dart';
 import '../books/book_service.dart';
 import '../homepage/cubit/homepage_cubit.dart';
 import '../homepage/homepage.dart';
-import '../reader/presentation/reader_page/cubit/reader_cubit.dart';
+import '../reader/domain/entities/reader_destination_type.dart';
 import '../reader/presentation/reader_page/reader.dart';
 
 part 'data/bookmark_data.dart';

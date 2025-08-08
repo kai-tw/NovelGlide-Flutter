@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:novel_glide/features/books/domain/entities/book.dart';
 
 import '../../domain/repository/book_repository.dart';
 import '../data_sources/book_local_data_source.dart';
 import '../data_sources/pick_book_data_source.dart';
 
-class BookRepositoryImpl extends BookRepository {
+class BookRepositoryImpl implements BookRepository {
   BookRepositoryImpl(
     this._epubDataSource,
     this._pickBookDataSource,
@@ -17,6 +19,12 @@ class BookRepositoryImpl extends BookRepository {
   List<String> get allowedExtensions => _epubDataSource.allowedExtensions;
   @override
   List<String> get allowedMimeTypes => _epubDataSource.allowedMimeTypes;
+
+  final StreamController<void> _onChangedController =
+      StreamController<void>.broadcast();
+
+  @override
+  StreamController<void> get onChangedController => _onChangedController;
 
   @override
   Future<void> addBooks(Set<String> externalPathSet) async {

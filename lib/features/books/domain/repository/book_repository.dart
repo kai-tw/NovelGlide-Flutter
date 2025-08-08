@@ -6,8 +6,7 @@ abstract class BookRepository {
   List<String> get allowedExtensions;
   List<String> get allowedMimeTypes;
 
-  final StreamController<void> onChangedController =
-      StreamController<void>.broadcast();
+  StreamController<void> get onChangedController;
 
   Future<void> addBooks(Set<String> externalPathSet);
   Future<bool> exists(String identifier);

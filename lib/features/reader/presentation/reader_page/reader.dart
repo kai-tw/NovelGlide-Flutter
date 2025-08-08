@@ -7,11 +7,13 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../../../../../../generated/i18n/app_localizations.dart';
 import '../../../../enum/window_size.dart';
 import '../../../../features/shared_components/common_loading.dart';
+import '../../../../main.dart';
 import '../../../ads_service/ad_service.dart';
-import '../../../books/book_service.dart';
+import '../../../books/domain/entities/book.dart';
 import '../../../tts_service/tts_service.dart';
-import '../../data/model/reader_navigation_state_code.dart';
-import '../../data/model/reader_page_num_type.dart';
+import '../../domain/entities/reader_destination_type.dart';
+import '../../domain/entities/reader_navigation_state_code.dart';
+import '../../domain/entities/reader_page_num_type.dart';
 import '../search_page/search_scaffold.dart';
 import '../settings_bottom_sheet/reader_bottom_sheet.dart';
 import 'cubit/reader_cubit.dart';
@@ -38,25 +40,25 @@ part 'widgets/reader_scaffold_body.dart';
 class ReaderWidget extends StatelessWidget {
   const ReaderWidget({
     super.key,
-    required this.bookPath,
+    required this.bookIdentifier,
     this.bookData,
     this.destinationType = ReaderDestinationType.none,
     this.destination,
   });
 
-  final String bookPath;
-  final BookData? bookData;
+  final String bookIdentifier;
+  final Book? bookData;
   final ReaderDestinationType destinationType;
   final String? destination;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ReaderCubit>(
-      create: (_) => ReaderCubit(
-        bookData: bookData,
-        bookPath: bookPath,
-        currentTheme: Theme.of(context),
-      )..initAsync(
+      create: (_) => sl<ReaderCubit>()
+        ..initAsync(
+          bookData: bookData,
+          bookIdentifier: bookIdentifier,
+          currentTheme: Theme.of(context),
           destinationType: destinationType,
           destination: destination,
         ),

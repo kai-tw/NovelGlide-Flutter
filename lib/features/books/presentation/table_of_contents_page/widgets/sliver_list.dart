@@ -56,7 +56,7 @@ class _SliverList extends StatelessWidget {
                   builder: (_) => ReaderWidget(
                     // TODO(kai): Change to identifier.
                     bookData: bookData,
-                    bookPath: bookData.identifier,
+                    bookIdentifier: bookData.identifier,
                     destination: chapterData.identifier,
                   ),
                 ),

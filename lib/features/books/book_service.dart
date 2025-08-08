@@ -14,11 +14,9 @@ import '../../core/utils/popup_menu_utils.dart';
 import '../../enum/sort_order_code.dart';
 import '../../features/shared_components/common_delete_dialog.dart';
 import '../../features/shared_components/shared_list/shared_list.dart';
-import '../bookmark_service/bookmark_service.dart';
 import '../collection/collection_service.dart';
 import '../homepage/cubit/homepage_cubit.dart';
 import '../homepage/homepage.dart';
-import '../reader/data/repository/cache_repository.dart';
 import 'presentation/bookshelf/bookshelf.dart';
 import 'presentation/bookshelf/cubit/bookshelf_cubit.dart';
 

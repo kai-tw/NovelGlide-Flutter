@@ -1,4 +1,4 @@
-part of 'reader_cubit.dart';
+part of '../../presentation/reader_page/cubit/reader_cubit.dart';
 
 enum ReaderLoadingStateCode {
   initial,
