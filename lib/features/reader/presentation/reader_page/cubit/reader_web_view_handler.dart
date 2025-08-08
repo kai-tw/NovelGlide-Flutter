@@ -9,7 +9,7 @@ class ReaderWebViewHandler {
     String? savedLocation,
   }) {
     final ReaderWebViewHandler handler =
-        ReaderWebViewHandler._(repository, controller, uri);
+        ReaderWebViewHandler._(controller, uri);
 
     // Setup the webview controller.
     controller.enableZoom(false);
@@ -37,19 +37,12 @@ class ReaderWebViewHandler {
     return handler;
   }
 
-  ReaderWebViewHandler._(this._repository, this.controller, this.uri);
+  ReaderWebViewHandler._(this.controller, this._uri);
 
-  final Uri uri;
+  final Uri _uri;
   final WebViewController controller;
-  final ReaderWebViewRepository _repository;
-
-  Stream<ReaderWebMessageDto> get messages => _repository.messages;
-
-  void send(String route, [Object? data]) {
-    _repository.send(ReaderWebMessageDto(route: route, data: data));
-  }
 
   Future<void> request() {
-    return controller.loadRequest(uri);
+    return controller.loadRequest(_uri);
   }
 }

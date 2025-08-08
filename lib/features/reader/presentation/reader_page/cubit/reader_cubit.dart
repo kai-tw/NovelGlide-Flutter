@@ -15,6 +15,7 @@ import '../../../../tts_service/tts_service.dart';
 import '../../../data/data_transfer_objects/reader_web_message_dto.dart';
 import '../../../data/repositories/reader_search_repository_impl.dart';
 import '../../../data/repositories/reader_server_repository_impl.dart';
+import '../../../data/repositories/reader_tts_repository_impl.dart';
 import '../../../data/repositories/reader_web_view_repository_impl.dart';
 import '../../../data/repository/cache_repository.dart';
 import '../../../domain/entities/reader_destination_type.dart';
@@ -23,11 +24,15 @@ import '../../../domain/entities/reader_page_num_type.dart';
 import '../../../domain/entities/reader_set_state_data.dart';
 import '../../../domain/repositories/reader_search_repository.dart';
 import '../../../domain/repositories/reader_server_repository.dart';
+import '../../../domain/repositories/reader_tts_repository.dart';
 import '../../../domain/repositories/reader_web_view_repository.dart';
 import '../../../domain/use_cases/reader_observe_load_done_use_case.dart';
 import '../../../domain/use_cases/reader_observe_save_location_use_case.dart';
 import '../../../domain/use_cases/reader_observe_search_list_use_case.dart';
 import '../../../domain/use_cases/reader_observe_set_state_use_case.dart';
+import '../../../domain/use_cases/reader_observe_tts_end_use_case.dart';
+import '../../../domain/use_cases/reader_observe_tts_play_use_case.dart';
+import '../../../domain/use_cases/reader_observe_tts_stop_use_case.dart';
 import '../../../domain/use_cases/reader_send_goto_use_case.dart';
 import '../../../domain/use_cases/reader_send_next_page_use_case.dart';
 import '../../../domain/use_cases/reader_send_previous_page_use_case.dart';
@@ -37,6 +42,9 @@ import '../../../domain/use_cases/reader_send_set_font_color_use_case.dart';
 import '../../../domain/use_cases/reader_send_set_font_size_use_case.dart';
 import '../../../domain/use_cases/reader_send_set_line_height_use_case.dart';
 import '../../../domain/use_cases/reader_send_set_smooth_scroll_use_case.dart';
+import '../../../domain/use_cases/reader_send_tts_next_use_case.dart';
+import '../../../domain/use_cases/reader_send_tts_play_use_case.dart';
+import '../../../domain/use_cases/reader_send_tts_stop_use_case.dart';
 import '../../../domain/use_cases/reader_start_reader_server_use_case.dart';
 import '../../../domain/use_cases/reader_stop_reader_server_use_case.dart';
 import '../../search_page/cubit/reader_search_cubit.dart';
@@ -64,8 +72,6 @@ class ReaderCubit extends Cubit<ReaderState> {
     final WebViewController webViewController = WebViewController();
     final ReaderWebViewRepository webViewRepository =
         ReaderWebViewRepositoryImpl(webViewController);
-    final ReaderSearchRepository searchRepository =
-        ReaderSearchRepositoryImpl(webViewRepository);
 
     // Create reader use cases
     final ReaderSendGotoUseCase sendGotoUseCase =
@@ -89,7 +95,9 @@ class ReaderCubit extends Cubit<ReaderState> {
     final ReaderSendSetSmoothScrollUseCase sendSetSmoothScrollUseCase =
         ReaderSendSetSmoothScrollUseCase(webViewRepository);
 
-    // Create searching use cases
+    // Create searching dependencies
+    final ReaderSearchRepository searchRepository =
+        ReaderSearchRepositoryImpl(webViewRepository);
     final ReaderSendSearchInCurrentChapterUseCase
         sendSearchInCurrentChapterUseCase =
         ReaderSendSearchInCurrentChapterUseCase(webViewRepository);
@@ -98,7 +106,23 @@ class ReaderCubit extends Cubit<ReaderState> {
     final ReaderObserveSearchListUseCase observeSearchListUseCase =
         ReaderObserveSearchListUseCase(searchRepository);
 
-    return ReaderCubit._(
+    // Create TTS dependencies
+    final ReaderTtsRepository ttsRepository =
+        ReaderTtsRepositoryImpl(webViewRepository);
+    final ReaderObserveTtsPlayUseCase observeTtsPlayUseCase =
+        ReaderObserveTtsPlayUseCase(ttsRepository);
+    final ReaderObserveTtsStopUseCase observeTtsStopUseCase =
+        ReaderObserveTtsStopUseCase(ttsRepository);
+    final ReaderObserveTtsEndUseCase observeTtsEndUseCase =
+        ReaderObserveTtsEndUseCase(ttsRepository);
+    final ReaderSendTtsPlayUseCase sendTtsPlayUseCase =
+        ReaderSendTtsPlayUseCase(webViewRepository);
+    final ReaderSendTtsStopUseCase sendTtsStopUseCase =
+        ReaderSendTtsStopUseCase(webViewRepository);
+    final ReaderSendTtsNextUseCase sendTtsNextUseCase =
+        ReaderSendTtsNextUseCase(webViewRepository);
+
+    final ReaderCubit cubit = ReaderCubit._(
       startReaderServerUseCase,
       stopReaderServerUseCase,
       observeSaveLocationUseCase,
@@ -114,6 +138,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       webViewController,
       webViewRepository,
       searchRepository,
+      ttsRepository,
       ReaderSearchCubit(
         sendSearchInCurrentChapterUseCase,
         sendSearchInWholeBookUseCase,
@@ -121,6 +146,18 @@ class ReaderCubit extends Cubit<ReaderState> {
         observeSearchListUseCase,
       ),
     );
+
+    cubit.ttsHandler = ReaderTTSHandler(
+      sendTtsNextUseCase,
+      sendTtsPlayUseCase,
+      sendTtsStopUseCase,
+      observeTtsEndUseCase,
+      observeTtsPlayUseCase,
+      observeTtsStopUseCase,
+      onTtsStateChanged: cubit._onTtsStateChanged,
+    );
+
+    return cubit;
   }
 
   ReaderCubit._(
@@ -139,6 +176,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     this._webViewController,
     this._webViewRepository,
     this._searchRepository,
+    this._ttsRepository,
     this.searchCubit,
   ) : super(const ReaderState());
 
@@ -158,6 +196,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   final WebViewController _webViewController;
   final ReaderWebViewRepository _webViewRepository;
   final ReaderSearchRepository _searchRepository;
+  final ReaderTtsRepository _ttsRepository;
 
   /// Stream Subscriptions
   late final StreamSubscription<String> _saveLocationStreamSubscription;
@@ -231,12 +270,6 @@ class ReaderCubit extends Cubit<ReaderState> {
         _observeLoadDoneUseCase().listen(_receiveLoadDone);
     _setStateStreamSubscription =
         _observeSetStateUseCase().listen(_receiveSetState);
-
-    // Initialize TTS handler
-    ttsHandler = ReaderTTSHandler(
-      webViewHandler: webViewHandler,
-      onTtsStateChanged: _onTtsStateChanged,
-    );
 
     if (isClosed) {
       return;
@@ -433,6 +466,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     await _stopReaderServerUseCase();
     await _webViewRepository.dispose();
     await _searchRepository.dispose();
+    await _ttsRepository.dispose();
     await searchCubit.close();
     await ttsHandler.dispose();
     super.close();
