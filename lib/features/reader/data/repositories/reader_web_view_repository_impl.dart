@@ -84,8 +84,12 @@ class ReaderWebViewRepositoryImpl implements ReaderWebViewRepository {
 
       case 'setState':
         if (message.data is Map<String, dynamic>) {
-          _setStateStreamController
-              .add(ReaderSetStateData.fromJson(message.data));
+          try {
+            _setStateStreamController
+                .add(ReaderSetStateData.fromJson(message.data));
+          } catch (e) {
+            print(e);
+          }
         }
         break;
     }

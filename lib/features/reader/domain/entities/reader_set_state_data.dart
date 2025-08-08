@@ -18,11 +18,11 @@ class ReaderSetStateData extends Equatable {
         chapterTotalPage: json['chapterTotalPage'],
       );
 
-  final String breadcrumb;
-  final String chapterIdentifier;
-  final String startCfi;
-  final int chapterCurrentPage;
-  final int chapterTotalPage;
+  final String? breadcrumb;
+  final String? chapterIdentifier;
+  final String? startCfi;
+  final int? chapterCurrentPage;
+  final int? chapterTotalPage;
 
   @override
   List<Object?> get props => <Object?>[
