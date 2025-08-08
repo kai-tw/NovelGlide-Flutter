@@ -22,7 +22,7 @@ class ReaderTTSHandler {
 
   late TtsService _ttsService;
   final ReaderWebViewHandler webViewHandler;
-  late final StreamSubscription<ReaderWebMessage> _messageStreamSubscription;
+  late final StreamSubscription<ReaderWebMessageDto> _messageStreamSubscription;
   final void Function(TtsServiceState state) onTtsStateChanged;
 
   bool isPaused = false;
@@ -104,7 +104,7 @@ class ReaderTTSHandler {
   }
 
   /// Messages
-  void _messageDispatcher(ReaderWebMessage message) {
+  void _messageDispatcher(ReaderWebMessageDto message) {
     switch (message.route) {
       case 'ttsPlay':
         assert(message.data is String);

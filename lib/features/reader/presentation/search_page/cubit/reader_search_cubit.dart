@@ -26,7 +26,7 @@ class ReaderSearchCubit extends Cubit<ReaderSearchState> {
       sendGotoUseCase,
     );
 
-    // Setup message dispatcher.
+    // Setup resultList subscription.
     cubit._resultListSubscription =
         observeSearchListUseCase().listen(cubit._setResultList);
 

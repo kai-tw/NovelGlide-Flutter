@@ -1,16 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shelf/shelf.dart';
-import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../../core/file_system/domain/repositories/file_system_repository.dart';
-import '../../../../../core/log_system/log_system.dart';
 import '../../../../../core/services/preference_service/data/model/reader_preference_data.dart';
 import '../../../../../core/services/preference_service/preference_service.dart';
 import '../../../../../core/utils/color_extension.dart';
@@ -40,7 +35,6 @@ import '../../search_page/cubit/reader_search_cubit.dart';
 
 part '../../../domain/entities/reader_loading_state_code.dart';
 part 'reader_gesture_handler.dart';
-part 'reader_server_handler.dart';
 part 'reader_state.dart';
 part 'reader_tts_handler.dart';
 part 'reader_web_view_handler.dart';
@@ -393,7 +387,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     _lifecycle.dispose();
     await _messageStreamSubscription.cancel();
     await _stopReaderServerUseCase();
-    await searchCubit?.close();
+    await searchCubit.close();
     await webViewHandler.dispose();
     await ttsHandler.dispose();
     super.close();

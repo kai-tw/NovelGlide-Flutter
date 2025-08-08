@@ -26,7 +26,7 @@ class SearchButton extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => BlocProvider<ReaderSearchCubit>.value(
-          value: cubit.searchCubit!,
+          value: cubit.searchCubit,
           child: const SearchScaffold(),
         ),
       ),
