@@ -2,17 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:collection/collection.dart';
 import 'package:epubx/epubx.dart' as epub;
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:image/image.dart';
 import 'package:novel_glide/core/utils/random_extension.dart';
 import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-
-import '../../../features/books/book_service.dart';
 
 part 'model/file_meta_model.dart';
 part 'model/json_file_meta_model.dart';
