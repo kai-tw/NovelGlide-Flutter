@@ -9,7 +9,6 @@ import '../../../../../core/file_system/domain/repositories/file_system_reposito
 import '../../../../../core/services/preference_service/data/model/reader_preference_data.dart';
 import '../../../../../core/services/preference_service/preference_service.dart';
 import '../../../../../core/utils/color_extension.dart';
-import '../../../../../core/utils/parsers.dart';
 import '../../../../bookmark_service/bookmark_service.dart';
 import '../../../../books/domain/entities/book.dart';
 import '../../../../books/domain/use_cases/get_book_use_case.dart';
@@ -22,10 +21,14 @@ import '../../../data/repository/cache_repository.dart';
 import '../../../domain/entities/reader_destination_type.dart';
 import '../../../domain/entities/reader_navigation_state_code.dart';
 import '../../../domain/entities/reader_page_num_type.dart';
+import '../../../domain/entities/reader_set_state_data.dart';
 import '../../../domain/repositories/reader_search_repository.dart';
 import '../../../domain/repositories/reader_server_repository.dart';
 import '../../../domain/repositories/reader_web_view_repository.dart';
+import '../../../domain/use_cases/reader_observe_load_done_use_case.dart';
+import '../../../domain/use_cases/reader_observe_save_location_use_case.dart';
 import '../../../domain/use_cases/reader_observe_search_list_use_case.dart';
+import '../../../domain/use_cases/reader_observe_set_state_use_case.dart';
 import '../../../domain/use_cases/reader_send_goto_use_case.dart';
 import '../../../domain/use_cases/reader_send_search_in_current_chapter_use_case.dart';
 import '../../../domain/use_cases/reader_send_search_in_whole_book_use_case.dart';
@@ -62,6 +65,12 @@ class ReaderCubit extends Cubit<ReaderState> {
     // Create reader use cases
     final ReaderSendGotoUseCase sendGotoUseCase =
         ReaderSendGotoUseCase(webViewRepository);
+    final ReaderObserveSaveLocationUseCase observeSaveLocationUseCase =
+        ReaderObserveSaveLocationUseCase(webViewRepository);
+    final ReaderObserveLoadDoneUseCase observeLoadDoneUseCase =
+        ReaderObserveLoadDoneUseCase(webViewRepository);
+    final ReaderObserveSetStateUseCase observeSetStateUseCase =
+        ReaderObserveSetStateUseCase(webViewRepository);
 
     // Create searching use cases
     final ReaderSendSearchInCurrentChapterUseCase
@@ -75,10 +84,14 @@ class ReaderCubit extends Cubit<ReaderState> {
     return ReaderCubit._(
       startReaderServerUseCase,
       stopReaderServerUseCase,
+      observeSaveLocationUseCase,
+      observeSetStateUseCase,
+      observeLoadDoneUseCase,
       getBookUseCase,
       webViewController,
       webViewRepository,
-      searchCubit: ReaderSearchCubit(
+      searchRepository,
+      ReaderSearchCubit(
         sendSearchInCurrentChapterUseCase,
         sendSearchInWholeBookUseCase,
         sendGotoUseCase,
@@ -90,11 +103,15 @@ class ReaderCubit extends Cubit<ReaderState> {
   ReaderCubit._(
     this._startReaderServerUseCase,
     this._stopReaderServerUseCase,
+    this._observeSaveLocationUseCase,
+    this._observeSetStateUseCase,
+    this._observeLoadDoneUseCase,
     this._getBookUseCase,
     this._webViewController,
-    this._webViewRepository, {
-    required this.searchCubit,
-  }) : super(const ReaderState());
+    this._webViewRepository,
+    this._searchRepository,
+    this.searchCubit,
+  ) : super(const ReaderState());
 
   Book? bookData;
   late ThemeData currentTheme;
@@ -111,14 +128,20 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Dependencies
   final WebViewController _webViewController;
   final ReaderWebViewRepository _webViewRepository;
+  final ReaderSearchRepository _searchRepository;
 
   /// Stream Subscriptions
-  late final StreamSubscription<ReaderWebMessageDto> _messageStreamSubscription;
+  late final StreamSubscription<String> _saveLocationStreamSubscription;
+  late final StreamSubscription<void> _loadDoneStreamSubscription;
+  late final StreamSubscription<ReaderSetStateData> _setStateStreamSubscription;
 
   /// Use cases
   final ReaderStartReaderServerUseCase _startReaderServerUseCase;
   final ReaderStopReaderServerUseCase _stopReaderServerUseCase;
   final GetBookUseCase _getBookUseCase;
+  final ReaderObserveSaveLocationUseCase _observeSaveLocationUseCase;
+  final ReaderObserveLoadDoneUseCase _observeLoadDoneUseCase;
+  final ReaderObserveSetStateUseCase _observeSetStateUseCase;
 
   /// Initialize from widgets.
   Future<void> initAsync({
@@ -167,8 +190,12 @@ class ReaderCubit extends Cubit<ReaderState> {
     );
 
     // Listen messages
-    _messageStreamSubscription =
-        webViewHandler.messages.listen(_messageDispatcher);
+    _saveLocationStreamSubscription =
+        _observeSaveLocationUseCase().listen(_receiveSaveLocation);
+    _loadDoneStreamSubscription =
+        _observeLoadDoneUseCase().listen(_receiveLoadDone);
+    _setStateStreamSubscription =
+        _observeSetStateUseCase().listen(_receiveSetState);
 
     // Initialize TTS handler
     ttsHandler = ReaderTTSHandler(
@@ -329,31 +356,13 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Communication
   /// *************************************************************************
 
-  void _messageDispatcher(ReaderWebMessageDto message) {
-    switch (message.route) {
-      case 'saveLocation':
-        assert(message.data is String);
-        _receiveSaveLocation(message.data as String);
-        break;
-
-      case 'loadDone':
-        _receiveLoadDone();
-        break;
-
-      case 'setState':
-        assert(message.data is Map<String, dynamic>);
-        _receiveSetState(message.data as Map<String, dynamic>);
-        break;
-    }
-  }
-
   void _receiveSaveLocation(String data) {
     if (bookData != null) {
       LocationCacheRepository.store(bookData!.identifier, data);
     }
   }
 
-  void _receiveLoadDone() {
+  void _receiveLoadDone(void _) {
     _stopReaderServerUseCase();
     emit(state.copyWith(code: ReaderLoadingStateCode.loaded));
 
@@ -364,13 +373,13 @@ class ReaderCubit extends Cubit<ReaderState> {
     webViewHandler.setSmoothScroll(state.readerPreference.isSmoothScroll);
   }
 
-  void _receiveSetState(Map<String, dynamic> jsonValue) {
+  void _receiveSetState(ReaderSetStateData data) {
     emit(state.copyWith(
-      breadcrumb: jsonValue['breadcrumb'],
-      chapterFileName: jsonValue['chapterFileName'],
-      startCfi: jsonValue['startCfi'],
-      chapterCurrentPage: parseInt(jsonValue['chapterCurrentPage']),
-      chapterTotalPage: parseInt(jsonValue['chapterTotalPage']),
+      breadcrumb: data.breadcrumb,
+      chapterFileName: data.chapterIdentifier,
+      startCfi: data.startCfi,
+      chapterCurrentPage: data.chapterCurrentPage,
+      chapterTotalPage: data.chapterTotalPage,
     ));
 
     if (state.readerPreference.isAutoSaving) {
@@ -385,10 +394,13 @@ class ReaderCubit extends Cubit<ReaderState> {
   @override
   Future<void> close() async {
     _lifecycle.dispose();
-    await _messageStreamSubscription.cancel();
+    await _saveLocationStreamSubscription.cancel();
+    await _loadDoneStreamSubscription.cancel();
+    await _setStateStreamSubscription.cancel();
     await _stopReaderServerUseCase();
+    await _webViewRepository.dispose();
+    await _searchRepository.dispose();
     await searchCubit.close();
-    await webViewHandler.dispose();
     await ttsHandler.dispose();
     super.close();
   }

@@ -53,10 +53,6 @@ class ReaderWebViewHandler {
     return controller.loadRequest(uri);
   }
 
-  Future<void> dispose() async {
-    await _repository.dispose();
-  }
-
   /// *************************************************************************
   /// Communication
   /// *************************************************************************
