@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import '../../domain/entities/book.dart';
 
@@ -9,11 +10,18 @@ abstract class BookLocalDataSource {
   abstract final List<String> allowedMimeTypes;
 
   Future<void> addBooks(Set<String> externalPathSet);
+
   Future<bool> exists(String identifier);
+
   Future<bool> delete(String identifier);
+
   Future<void> deleteAllBooks();
+
   Future<Book> getBook(String identifier);
+
   Stream<Book> getBooks([Set<String>? identifierSet]);
+
+  Future<Uint8List> readBookBytes(String identifier);
 
   // Validator
   bool isFileValid(File file);

@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:image/image.dart';
 import 'package:path/path.dart';
 
+import '../../../../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../../../../core/services/file_system_service/file_system_service.dart';
 import '../../../../../core/services/mime_resolver.dart';
 import '../../../domain/entities/book.dart';
@@ -15,7 +16,9 @@ import '../../../domain/entities/book_cover.dart';
 import '../book_local_data_source.dart';
 
 class EpubDataSource extends BookLocalDataSource {
-  EpubDataSource();
+  EpubDataSource(this._fileSystemRepository);
+
+  final FileSystemRepository _fileSystemRepository;
 
   @override
   final List<String> allowedExtensions = <String>['epub'];
@@ -29,7 +32,7 @@ class EpubDataSource extends BookLocalDataSource {
 
     for (String path in externalPathSet) {
       final String destination = join(libraryDirectory.path, basename(path));
-      File(path).copySync(destination);
+      _fileSystemRepository.copyFile(path, destination);
     }
   }
 
@@ -97,6 +100,14 @@ class EpubDataSource extends BookLocalDataSource {
     for (String id in idSet) {
       yield await getBook(id);
     }
+  }
+
+  @override
+  Future<Uint8List> readBookBytes(String identifier) async {
+    final Directory directory =
+        await FileSystemService.document.libraryDirectory;
+    final String absolutePath = absolute(directory.path, identifier);
+    return _fileSystemRepository.readFileAsBytes(absolutePath);
   }
 
   @override

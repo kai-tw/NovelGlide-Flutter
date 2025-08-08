@@ -1,8 +1,8 @@
 import '../../../../core/use_cases/use_case.dart';
 import '../repository/book_repository.dart';
 
-class PickBooksUseCase extends UseCase<Future<Set<String>>, Set<String>> {
-  const PickBooksUseCase(this._repository);
+class BookPickUseCase extends UseCase<Future<Set<String>>, Set<String>> {
+  const BookPickUseCase(this._repository);
 
   final BookRepository _repository;
 

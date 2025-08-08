@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../../../../core/services/preference_service/data/model/reader_preference_data.dart';
 import '../../../../../core/services/preference_service/preference_service.dart';
 import '../../../../bookmark_service/bookmark_service.dart';
 import '../../../../books/domain/entities/book.dart';
-import '../../../../books/domain/use_cases/get_book_use_case.dart';
+import '../../../../books/domain/use_cases/book_get_use_case.dart';
+import '../../../../books/domain/use_cases/book_read_bytes_use_case.dart';
 import '../../../../tts_service/tts_service.dart';
 import '../../../data/data_transfer_objects/reader_web_message_dto.dart';
 import '../../../data/repositories/reader_search_repository_impl.dart';
@@ -57,12 +57,12 @@ part 'reader_web_view_handler.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
   factory ReaderCubit(
-    FileSystemRepository fileSystemRepository,
-    GetBookUseCase getBookUseCase,
+    BookReadBytesUseCase bookReadBytesUseCase,
+    BookGetUseCase bookGetUseCase,
   ) {
     // Setup server dependencies
     final ReaderServerRepository serverRepository =
-        ReaderServerRepositoryImpl(fileSystemRepository);
+        ReaderServerRepositoryImpl(bookReadBytesUseCase);
     final ReaderStartReaderServerUseCase startReaderServerUseCase =
         ReaderStartReaderServerUseCase(serverRepository);
     final ReaderStopReaderServerUseCase stopReaderServerUseCase =
@@ -134,7 +134,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       sendSetFontSizeUseCase,
       sendSetLineHeightUseCase,
       sendSetSmoothScrollUseCase,
-      getBookUseCase,
+      bookGetUseCase,
       webViewController,
       webViewRepository,
       searchRepository,
@@ -172,8 +172,8 @@ class ReaderCubit extends Cubit<ReaderState> {
     this._sendSetFontSizeUseCase,
     this._sendSetLineHeightUseCase,
     this._sendSetSmoothScrollUseCase,
-    this._getBookUseCase,
-    this._webViewController,
+    this._bookGetUseCase,
+    this.webViewController,
     this._webViewRepository,
     this._searchRepository,
     this._ttsRepository,
@@ -193,7 +193,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       AppLifecycleListener(onStateChange: _onLifecycleChanged);
 
   /// Dependencies
-  final WebViewController _webViewController;
+  final WebViewController webViewController;
   final ReaderWebViewRepository _webViewRepository;
   final ReaderSearchRepository _searchRepository;
   final ReaderTtsRepository _ttsRepository;
@@ -206,7 +206,6 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Use cases
   final ReaderStartReaderServerUseCase _startReaderServerUseCase;
   final ReaderStopReaderServerUseCase _stopReaderServerUseCase;
-  final GetBookUseCase _getBookUseCase;
   final ReaderObserveSaveLocationUseCase _observeSaveLocationUseCase;
   final ReaderObserveLoadDoneUseCase _observeLoadDoneUseCase;
   final ReaderObserveSetStateUseCase _observeSetStateUseCase;
@@ -216,6 +215,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   final ReaderSendSetFontSizeUseCase _sendSetFontSizeUseCase;
   final ReaderSendSetLineHeightUseCase _sendSetLineHeightUseCase;
   final ReaderSendSetSmoothScrollUseCase _sendSetSmoothScrollUseCase;
+  final BookGetUseCase _bookGetUseCase;
 
   /// Initialize from widgets.
   Future<void> initAsync({
@@ -239,7 +239,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     late ReaderPreferenceData readerSettingsData;
     late BookmarkData? bookmarkData;
     await Future.wait<void>(<Future<void>>[
-      _getBookUseCase(bookIdentifier)
+      _bookGetUseCase(bookIdentifier)
           .then((Book value) => this.bookData = value),
       PreferenceService.reader
           .load()
@@ -254,7 +254,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
     // Initialize webview handler
     webViewHandler = ReaderWebViewHandler(
-      controller: _webViewController,
+      controller: webViewController,
       repository: _webViewRepository,
       uri: serverUri,
       destination: destinationType == ReaderDestinationType.bookmark

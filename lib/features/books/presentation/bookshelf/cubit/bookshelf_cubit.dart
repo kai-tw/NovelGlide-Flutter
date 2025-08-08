@@ -7,18 +7,18 @@ import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../../../features/shared_components/shared_list/shared_list.dart';
 import '../../../domain/entities/book.dart';
+import '../../../domain/use_cases/book_delete_use_case.dart';
 import '../../../domain/use_cases/book_exists_use_case.dart';
-import '../../../domain/use_cases/delete_book_use_case.dart';
-import '../../../domain/use_cases/get_book_list_use_case.dart';
-import '../../../domain/use_cases/observe_book_change_use_case.dart';
+import '../../../domain/use_cases/book_get_list_use_case.dart';
+import '../../../domain/use_cases/book_observe_change_use_case.dart';
 
 typedef BookshelfState = SharedListState<Book>;
 
 class BookshelfCubit extends SharedListCubit<Book> {
   factory BookshelfCubit({
-    required GetBookListUseCase getBookListUseCase,
-    required DeleteBookUseCase deleteBookUseCase,
-    required ObserveBookChangeUseCase observeBookChangeUseCase,
+    required BookGetListUseCase getBookListUseCase,
+    required BookDeleteUseCase deleteBookUseCase,
+    required BookObserveChangeUseCase observeBookChangeUseCase,
     required BookExistsUseCase bookExistsUseCase,
   }) {
     final BookshelfCubit cubit = BookshelfCubit._(
@@ -47,8 +47,8 @@ class BookshelfCubit extends SharedListCubit<Book> {
     this._bookExistsUseCase,
   ) : super(const BookshelfState());
 
-  final GetBookListUseCase _getBookListUseCase;
-  final DeleteBookUseCase _deleteBookUseCase;
+  final BookGetListUseCase _getBookListUseCase;
+  final BookDeleteUseCase _deleteBookUseCase;
   final BookExistsUseCase _bookExistsUseCase;
   StreamSubscription<Book>? _listStreamSubscription;
 

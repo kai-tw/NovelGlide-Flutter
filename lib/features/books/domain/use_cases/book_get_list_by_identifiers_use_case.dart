@@ -2,9 +2,9 @@ import '../../../../core/use_cases/use_case.dart';
 import '../entities/book.dart';
 import '../repository/book_repository.dart';
 
-class GetBookListByIdentifierSetUseCase
+class BookGetListByIdentifiersUseCase
     extends UseCase<Stream<Book>, Set<String>> {
-  const GetBookListByIdentifierSetUseCase(this._repository);
+  const BookGetListByIdentifiersUseCase(this._repository);
 
   final BookRepository _repository;
 

@@ -1,7 +1,7 @@
 import '../../core/file_system/domain/repositories/json_repository.dart';
 import '../../core/path_provider/domain/repositories/json_path_provider.dart';
 import '../../main.dart';
-import '../books/domain/use_cases/get_book_list_by_identifier_set_use_case.dart';
+import '../books/domain/use_cases/book_get_list_by_identifiers_use_case.dart';
 import 'collection_service.dart';
 import 'data/data_sources/collection_local_json_data_source.dart';
 import 'data/data_sources/impl/collection_local_json_data_source_impl.dart';
@@ -50,7 +50,7 @@ void setupCollectionDependencies() {
 
   // Cubit factories
   sl.registerFactory<CollectionViewerCubit>(() => CollectionViewerCubit(
-        sl<GetBookListByIdentifierSetUseCase>(),
+        sl<BookGetListByIdentifiersUseCase>(),
         sl<GetCollectionDataByIdUseCase>(),
         sl<UpdateCollectionDataUseCase>(),
       ));

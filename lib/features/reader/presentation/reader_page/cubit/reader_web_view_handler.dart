@@ -37,12 +37,12 @@ class ReaderWebViewHandler {
     return handler;
   }
 
-  ReaderWebViewHandler._(this.controller, this._uri);
+  ReaderWebViewHandler._(this._controller, this._uri);
 
   final Uri _uri;
-  final WebViewController controller;
+  final WebViewController _controller;
 
   Future<void> request() {
-    return controller.loadRequest(_uri);
+    return _controller.loadRequest(_uri);
   }
 }

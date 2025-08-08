@@ -22,7 +22,7 @@ class SettingsPageDataCard extends StatelessWidget {
 
           // Delete all books
           SettingsPageListTile(
-            onAccept: sl<ResetBookSystemUseCase>(),
+            onAccept: sl<BookResetUseCase>(),
             iconData: Icons.delete_forever_rounded,
             title: appLocalizations.resetPageDeleteAllBooks,
           ),

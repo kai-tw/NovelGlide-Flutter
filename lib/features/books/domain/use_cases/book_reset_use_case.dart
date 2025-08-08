@@ -4,8 +4,8 @@ import '../../../collection/domain/use_cases/delete_all_books_from_collection_us
 import '../../../reader/data/repository/cache_repository.dart';
 import '../repository/book_repository.dart';
 
-class ResetBookSystemUseCase extends UseCase<Future<void>, void> {
-  const ResetBookSystemUseCase(
+class BookResetUseCase extends UseCase<Future<void>, void> {
+  const BookResetUseCase(
     this._repository,
     this._deleteAllBooksFromCollectionUseCase,
   );

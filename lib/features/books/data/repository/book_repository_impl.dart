@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:novel_glide/features/books/domain/entities/book.dart';
 
@@ -17,6 +18,7 @@ class BookRepositoryImpl implements BookRepository {
 
   @override
   List<String> get allowedExtensions => _epubDataSource.allowedExtensions;
+
   @override
   List<String> get allowedMimeTypes => _epubDataSource.allowedMimeTypes;
 
@@ -73,6 +75,11 @@ class BookRepositoryImpl implements BookRepository {
       allowedExtensions: allowedExtensions,
       selectedFileName: selectedFileName,
     );
+  }
+
+  @override
+  Future<Uint8List> readBookBytes(String identifier) async {
+    return _epubDataSource.readBookBytes(identifier);
   }
 
   @override

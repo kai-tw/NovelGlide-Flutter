@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:path/path.dart' as p;
 
@@ -32,6 +33,11 @@ class FileSystemRepositoryImpl implements FileSystemRepository {
   }
 
   @override
+  Future<void> copyFile(String sourcePath, String destinationPath) async {
+    await File(sourcePath).copy(destinationPath);
+  }
+
+  @override
   Future<bool> existsDirectory(String path) async {
     final Directory directory = Directory(path);
     return directory.exists();
@@ -44,13 +50,13 @@ class FileSystemRepositoryImpl implements FileSystemRepository {
   }
 
   @override
-  Future<void> writeFileAsBytes(String path, List<int> bytes) async {
+  Future<void> writeFileAsBytes(String path, Uint8List bytes) async {
     final File file = await createFile(path);
     await file.writeAsBytes(bytes);
   }
 
   @override
-  Future<List<int>> readFileAsBytes(String path) async {
+  Future<Uint8List> readFileAsBytes(String path) async {
     final File file = File(path);
     if (!await file.exists()) {
       throw FileSystemException('File not found', path);

@@ -5,7 +5,7 @@ import 'package:novel_glide/enum/sort_order_code.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../features/shared_components/shared_list/shared_list.dart';
 import '../../../../books/domain/entities/book.dart';
-import '../../../../books/domain/use_cases/get_book_list_by_identifier_set_use_case.dart';
+import '../../../../books/domain/use_cases/book_get_list_by_identifiers_use_case.dart';
 import '../../../domain/entities/collection_data.dart';
 import '../../../domain/use_cases/get_collection_data_by_id_use_case.dart';
 import '../../../domain/use_cases/update_collection_data_use_case.dart';
@@ -23,7 +23,7 @@ class CollectionViewerCubit extends SharedListCubit<Book> {
   StreamSubscription<Book>? _listStreamSubscription;
 
   /// Use cases
-  final GetBookListByIdentifierSetUseCase _getBookListByIdentifierSetUseCase;
+  final BookGetListByIdentifiersUseCase _getBookListByIdentifierSetUseCase;
   final GetCollectionDataByIdUseCase _getCollectionDataByIdUseCase;
   final UpdateCollectionDataUseCase _updateCollectionDataUseCase;
 

@@ -8,7 +8,7 @@ import '../../features/shared_components/common_success_dialog.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../../main.dart';
 import '../bookmark_service/bookmark_service.dart';
-import '../books/domain/use_cases/reset_book_system_use_case.dart';
+import '../books/domain/use_cases/book_reset_use_case.dart';
 import '../collection/domain/use_cases/reset_collection_system_use_case.dart';
 import '../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
 import '../reader/data/repository/cache_repository.dart';

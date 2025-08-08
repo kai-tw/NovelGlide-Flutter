@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import '../../domain/repositories/file_system_repository.dart';
 import '../../domain/repositories/json_repository.dart';
@@ -38,7 +39,7 @@ class JsonRepositoryImpl implements JsonRepository {
     required Map<String, dynamic> data,
   }) async {
     final String jsonString = jsonEncode(data);
-    final List<int> fileBytes = utf8.encode(jsonString);
+    final Uint8List fileBytes = utf8.encode(jsonString);
     await _fileSystemRepository.writeFileAsBytes(path, fileBytes);
   }
 }

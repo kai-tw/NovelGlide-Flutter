@@ -2,8 +2,8 @@ import '../../../../core/use_cases/use_case.dart';
 import '../entities/book.dart';
 import '../repository/book_repository.dart';
 
-class GetBookUseCase extends UseCase<Future<Book>, String> {
-  const GetBookUseCase(this._repository);
+class BookGetUseCase extends UseCase<Future<Book>, String> {
+  const BookGetUseCase(this._repository);
 
   final BookRepository _repository;
 

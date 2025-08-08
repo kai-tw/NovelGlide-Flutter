@@ -51,7 +51,7 @@ class ReaderScaffoldBody extends StatelessWidget {
             onHorizontalDragEnd: cubit.gestureHandler.onEnd,
             onHorizontalDragCancel: cubit.gestureHandler.onCancel,
             child: WebViewWidget(
-              controller: cubit.webViewHandler.controller,
+              controller: cubit.webViewController,
               gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
                 Factory<LongPressGestureRecognizer>(
                   () => LongPressGestureRecognizer(

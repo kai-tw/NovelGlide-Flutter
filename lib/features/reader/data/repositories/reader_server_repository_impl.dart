@@ -4,23 +4,23 @@ import 'package:flutter/services.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 
-import '../../../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../../../core/log_system/log_system.dart';
+import '../../../books/domain/use_cases/book_read_bytes_use_case.dart';
 import '../../domain/repositories/reader_server_repository.dart';
 
 class ReaderServerRepositoryImpl implements ReaderServerRepository {
-  ReaderServerRepositoryImpl(this._fileSystemRepository);
+  ReaderServerRepositoryImpl(this._bookReadBytesUseCase);
 
   final Uri _uri = Uri.http('localhost:8080');
 
-  late String _bookFilePath;
+  late String _bookIdentifier;
   HttpServer? _server;
 
-  final FileSystemRepository _fileSystemRepository;
+  final BookReadBytesUseCase _bookReadBytesUseCase;
 
   @override
   Future<Uri> start(String bookFilePath) async {
-    _bookFilePath = bookFilePath;
+    _bookIdentifier = bookFilePath;
     final Handler handler =
         const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
     _server = await shelf_io.serve(handler, _uri.host, _uri.port);
@@ -59,14 +59,13 @@ class ReaderServerRepositoryImpl implements ReaderServerRepository {
 
       case 'book.epub':
         return Response.ok(
-          await _fileSystemRepository.readFileAsBytes(_bookFilePath),
+          await _bookReadBytesUseCase(_bookIdentifier),
           headers: <String, Object>{
             HttpHeaders.contentTypeHeader: 'application/epub+zip'
           },
         );
 
       default:
-        LogSystem.error('Reader: The book at $_bookFilePath is not found.');
         return Response.notFound('Not found');
     }
   }

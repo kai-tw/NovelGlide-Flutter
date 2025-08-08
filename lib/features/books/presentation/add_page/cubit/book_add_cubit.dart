@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../book_service.dart';
-import '../../../domain/use_cases/add_books_use_case.dart';
+import '../../../domain/use_cases/book_add_use_case.dart';
+import '../../../domain/use_cases/book_clear_temporary_picked_files_use_case.dart';
 import '../../../domain/use_cases/book_exists_use_case.dart';
-import '../../../domain/use_cases/clear_temporary_picked_books_use_case.dart';
-import '../../../domain/use_cases/get_book_allowed_extensions_use_case.dart';
-import '../../../domain/use_cases/pick_books_use_case.dart';
+import '../../../domain/use_cases/book_get_allowed_extensions_use_case.dart';
+import '../../../domain/use_cases/book_pick_use_case.dart';
 import 'book_add_item_state.dart';
 import 'book_add_state.dart';
 
@@ -21,11 +21,11 @@ class BookAddCubit extends Cubit<BookAddState> {
     this._pickBooksUseCase,
   ) : super(const BookAddState());
 
-  final AddBooksUseCase _addBooksUseCase;
+  final BookAddUseCase _addBooksUseCase;
   final BookExistsUseCase _bookExistsUseCase;
-  final ClearTemporaryPickedBooksUseCase _clearTemporaryPickedBooksUseCase;
-  final GetBookAllowedExtensionsUseCase _getBookAllowedExtensionsUseCase;
-  final PickBooksUseCase _pickBooksUseCase;
+  final BookClearTemporaryPickedFilesUseCase _clearTemporaryPickedBooksUseCase;
+  final BookGetAllowedExtensionsUseCase _getBookAllowedExtensionsUseCase;
+  final BookPickUseCase _pickBooksUseCase;
 
   List<String> get allowedExtensions => _getBookAllowedExtensionsUseCase();
 
