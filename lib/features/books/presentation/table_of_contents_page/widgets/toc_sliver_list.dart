@@ -1,7 +1,19 @@
-part of '../table_of_contents.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class _SliverList extends StatelessWidget {
-  const _SliverList({required this.bookData});
+import '../../../../../enum/loading_state_code.dart';
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../bookmark_service/bookmark_service.dart';
+import '../../../../reader/presentation/reader_page/reader.dart';
+import '../../../../shared_components/common_loading.dart';
+import '../../../../shared_components/shared_list/shared_list.dart';
+import '../../../domain/entities/book.dart';
+import '../../../domain/entities/book_chapter.dart';
+import '../cubit/toc_cubit.dart';
+import '../cubit/toc_state.dart';
+
+class TocSliverList extends StatelessWidget {
+  const TocSliverList({super.key, required this.bookData});
 
   final Book bookData;
 
@@ -34,15 +46,11 @@ class _SliverList extends StatelessWidget {
   }
 
   Widget _buildList(BuildContext context, TocState state) {
-    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
-    final List<TocNestedChapterData> allChapterList =
-        cubit.constructChapterTree();
-
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
-          final BookChapter chapterData = allChapterList[index].chapterData;
-          final int nestedLevel = allChapterList[index].nestedLevel;
+          final BookChapter chapterData = state.chapterList[index].chapterData;
+          final int nestedLevel = state.chapterList[index].nestedLevel;
           final BookmarkData? bookmarkData = state.bookmarkData;
           final bool isBookmarked =
               // TODO(kai): Change to identifier.
@@ -81,7 +89,7 @@ class _SliverList extends StatelessWidget {
             ),
           );
         },
-        childCount: allChapterList.length,
+        childCount: state.chapterList.length,
       ),
     );
   }

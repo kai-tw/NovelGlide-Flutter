@@ -3,6 +3,8 @@ import 'dart:typed_data';
 
 import 'package:novel_glide/features/books/domain/entities/book.dart';
 
+import '../../domain/entities/book_chapter.dart';
+import '../../domain/entities/book_cover.dart';
 import '../../domain/repository/book_repository.dart';
 import '../data_sources/book_local_data_source.dart';
 import '../data_sources/pick_book_data_source.dart';
@@ -80,6 +82,16 @@ class BookRepositoryImpl implements BookRepository {
   @override
   Future<Uint8List> readBookBytes(String identifier) async {
     return _epubDataSource.readBookBytes(identifier);
+  }
+
+  @override
+  Future<BookCover> getCover(String identifier) async {
+    return _epubDataSource.getCover(identifier);
+  }
+
+  @override
+  Future<List<BookChapter>> getChapterList(String identifier) {
+    return _epubDataSource.getChapterList(identifier);
   }
 
   @override

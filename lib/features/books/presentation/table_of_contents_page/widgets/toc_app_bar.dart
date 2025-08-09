@@ -1,7 +1,11 @@
-part of '../table_of_contents.dart';
+import 'package:flutter/material.dart';
 
-class _AppBar extends StatelessWidget implements PreferredSizeWidget {
-  const _AppBar({required this.bookData});
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../collection/collection_service.dart';
+import '../../../domain/entities/book.dart';
+
+class TocAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const TocAppBar({super.key, required this.bookData});
 
   final Book bookData;
 

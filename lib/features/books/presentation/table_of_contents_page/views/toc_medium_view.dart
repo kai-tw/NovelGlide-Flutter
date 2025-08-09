@@ -1,7 +1,15 @@
-part of '../table_of_contents.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class _MediumView extends StatelessWidget {
-  const _MediumView({required this.bookData});
+import '../../../../ads_service/ad_service.dart';
+import '../../../domain/entities/book.dart';
+import '../cubit/toc_cubit.dart';
+import '../widgets/toc_book_name.dart';
+import '../widgets/toc_cover_banner.dart';
+import '../widgets/toc_sliver_list.dart';
+
+class TocMediumView extends StatelessWidget {
+  const TocMediumView({super.key, required this.bookData});
 
   final Book bookData;
 
@@ -34,11 +42,11 @@ class _MediumView extends StatelessWidget {
         Expanded(
           child: Stack(
             children: <Widget>[
-              _CoverBanner(bookData: bookData),
+              TocCoverBanner(bookData: bookData),
               Positioned.fill(
                 child: Align(
                   alignment: Alignment.bottomLeft,
-                  child: _BookName(bookData: bookData),
+                  child: TocBookName(bookData: bookData),
                 ),
               ),
             ],
@@ -65,7 +73,7 @@ class _MediumView extends StatelessWidget {
             slivers: <Widget>[
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 80.0),
-                sliver: _SliverList(bookData: bookData),
+                sliver: TocSliverList(bookData: bookData),
               ),
             ],
           ),

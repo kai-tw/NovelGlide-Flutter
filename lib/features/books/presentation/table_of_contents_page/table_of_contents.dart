@@ -1,33 +1,14 @@
-import 'dart:async';
-
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../enum/loading_state_code.dart';
 import '../../../../enum/window_size.dart';
-import '../../../../features/shared_components/common_loading.dart';
-import '../../../../features/shared_components/shared_list/shared_list.dart';
-import '../../../../generated/i18n/app_localizations.dart';
-import '../../../ads_service/ad_service.dart';
-import '../../../bookmark_service/bookmark_service.dart';
-import '../../../collection/collection_service.dart';
-import '../../../reader/domain/entities/reader_destination_type.dart';
-import '../../../reader/presentation/reader_page/reader.dart';
+import '../../../../main.dart';
 import '../../domain/entities/book.dart';
-import '../../domain/entities/book_chapter.dart';
-import '../shared/book_cover_image.dart';
-import 'cubit/toc_nested_chapter_data.dart';
-
-part 'cubit/toc_cubit.dart';
-part 'cubit/toc_state.dart';
-part 'views/compact_view.dart';
-part 'views/medium_view.dart';
-part 'widgets/app_bar.dart';
-part 'widgets/book_name.dart';
-part 'widgets/cover_banner.dart';
-part 'widgets/fab_section.dart';
-part 'widgets/sliver_list.dart';
+import 'cubit/toc_cubit.dart';
+import 'views/toc_compact_view.dart';
+import 'views/toc_medium_view.dart';
+import 'widgets/toc_app_bar.dart';
+import 'widgets/toc_fab_section.dart';
 
 class TableOfContents extends StatelessWidget {
   const TableOfContents(this.bookData, {super.key});
@@ -42,19 +23,19 @@ class TableOfContents extends StatelessWidget {
 
     switch (windowClass) {
       case WindowSize.compact:
-        body = _CompactView(bookData: bookData);
+        body = TocCompactView(bookData: bookData);
         break;
 
       default:
-        body = _MediumView(bookData: bookData);
+        body = TocMediumView(bookData: bookData);
     }
 
     return BlocProvider<TocCubit>(
-      create: (_) => TocCubit(bookData),
+      create: (_) => sl<TocCubit>()..startLoading(bookData),
       child: Scaffold(
-        appBar: _AppBar(bookData: bookData),
+        appBar: TocAppBar(bookData: bookData),
         body: body,
-        floatingActionButton: const _FabSection(),
+        floatingActionButton: const TocFabSection(),
       ),
     );
   }

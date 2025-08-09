@@ -5,7 +5,7 @@ import 'data/data_sources/book_local_data_source.dart';
 import 'data/data_sources/implementations/epub_data_source.dart';
 import 'data/data_sources/implementations/pick_book_data_source_impl.dart';
 import 'data/data_sources/pick_book_data_source.dart';
-import 'data/repository/book_repository_impl.dart';
+import 'data/repositories/book_repository_impl.dart';
 import 'domain/repository/book_repository.dart';
 import 'domain/use_cases/book_add_use_case.dart';
 import 'domain/use_cases/book_clear_temporary_picked_files_use_case.dart';
@@ -13,6 +13,8 @@ import 'domain/use_cases/book_delete_all_use_case.dart';
 import 'domain/use_cases/book_delete_use_case.dart';
 import 'domain/use_cases/book_exists_use_case.dart';
 import 'domain/use_cases/book_get_allowed_extensions_use_case.dart';
+import 'domain/use_cases/book_get_chapter_list_use_case.dart';
+import 'domain/use_cases/book_get_cover_use_case.dart';
 import 'domain/use_cases/book_get_list_by_identifiers_use_case.dart';
 import 'domain/use_cases/book_get_list_use_case.dart';
 import 'domain/use_cases/book_get_use_case.dart';
@@ -21,7 +23,9 @@ import 'domain/use_cases/book_pick_use_case.dart';
 import 'domain/use_cases/book_read_bytes_use_case.dart';
 import 'domain/use_cases/book_reset_use_case.dart';
 import 'presentation/add_page/cubit/book_add_cubit.dart';
+import 'presentation/book_cover/cubit/book_cover_cubit.dart';
 import 'presentation/bookshelf/cubit/bookshelf_cubit.dart';
+import 'presentation/table_of_contents_page/cubit/toc_cubit.dart';
 
 void setupBookDependencies() {
   // Register data source
@@ -58,15 +62,20 @@ void setupBookDependencies() {
       () => BookObserveChangeUseCase(sl<BookRepository>()));
   sl.registerLazySingleton<BookPickUseCase>(
       () => BookPickUseCase(sl<BookRepository>()));
+  sl.registerLazySingleton<BookGetCoverUseCase>(
+      () => BookGetCoverUseCase(sl<BookRepository>()));
+  sl.registerLazySingleton<BookGetChapterListUseCase>(
+      () => BookGetChapterListUseCase(sl<BookRepository>()));
   sl.registerLazySingleton<BookResetUseCase>(() => BookResetUseCase(
       sl<BookRepository>(), sl<DeleteAllBooksFromCollectionUseCase>()));
 
   // Cubit factories
   sl.registerFactory<BookshelfCubit>(() => BookshelfCubit(
-        getBookListUseCase: sl<BookGetListUseCase>(),
-        deleteBookUseCase: sl<BookDeleteUseCase>(),
-        observeBookChangeUseCase: sl<BookObserveChangeUseCase>(),
-        bookExistsUseCase: sl<BookExistsUseCase>(),
+        sl<BookGetListUseCase>(),
+        sl<BookDeleteUseCase>(),
+        sl<BookObserveChangeUseCase>(),
+        sl<BookExistsUseCase>(),
+        sl<BookGetCoverUseCase>(),
       ));
   sl.registerFactory<BookAddCubit>(() => BookAddCubit(
         sl<BookAddUseCase>(),
@@ -74,5 +83,11 @@ void setupBookDependencies() {
         sl<BookClearTemporaryPickedFilesUseCase>(),
         sl<BookGetAllowedExtensionsUseCase>(),
         sl<BookPickUseCase>(),
+      ));
+  sl.registerFactory<BookCoverCubit>(() => BookCoverCubit(
+        sl<BookGetCoverUseCase>(),
+      ));
+  sl.registerFactory<TocCubit>(() => TocCubit(
+        sl<BookGetChapterListUseCase>(),
       ));
 }

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import '../entities/book.dart';
+import '../entities/book_chapter.dart';
+import '../entities/book_cover.dart';
 
 abstract class BookRepository {
   List<String> get allowedExtensions;
@@ -25,6 +27,10 @@ abstract class BookRepository {
   Future<Set<String>> pickBooks(Set<String> selectedFileName);
 
   Future<Uint8List> readBookBytes(String identifier);
+
+  Future<BookCover> getCover(String identifier);
+
+  Future<List<BookChapter>> getChapterList(String identifier);
 
   Future<void> clearTemporaryPickedBooks();
 

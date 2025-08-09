@@ -1,7 +1,10 @@
-part of '../table_of_contents.dart';
+import 'package:flutter/material.dart';
 
-class _CoverBanner extends StatelessWidget {
-  const _CoverBanner({required this.bookData});
+import '../../../domain/entities/book.dart';
+import '../../book_cover/book_cover_widget.dart';
+
+class TocCoverBanner extends StatelessWidget {
+  const TocCoverBanner({super.key, required this.bookData});
 
   final Book bookData;
 
@@ -15,8 +18,8 @@ class _CoverBanner extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(24.0)),
       ),
       clipBehavior: Clip.hardEdge,
-      child: BookCoverImage(
-        coverData: bookData.cover,
+      child: BookCoverWidget(
+        identifier: bookData.coverIdentifier,
         fit: BoxFit.contain,
       ),
     );

@@ -1,26 +1,45 @@
-part of '../table_of_contents.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../enum/loading_state_code.dart';
+import '../../../../bookmark_service/bookmark_service.dart';
+import '../../../domain/entities/book.dart';
+import '../../../domain/entities/book_chapter.dart';
+import '../../../domain/use_cases/book_get_chapter_list_use_case.dart';
+import 'toc_nested_chapter_data.dart';
+import 'toc_state.dart';
 
 class TocCubit extends Cubit<TocState> {
-  factory TocCubit(Book bookData) {
-    final TocCubit cubit = TocCubit._(bookData);
+  TocCubit(
+    this._bookGetChapterListUseCase,
+  ) : super(const TocState());
 
-    // Refresh at first
-    cubit.refresh();
+  /// Use cases
+  final BookGetChapterListUseCase _bookGetChapterListUseCase;
 
-    // Listen to bookmarks changes.
-    cubit._onChangedSubscription = BookmarkService
-        .repository.onChangedController.stream
-        .listen((_) => cubit.refresh());
-
-    return cubit;
-  }
-
-  TocCubit._(this.bookData) : super(const TocState());
-
+  /// Used by widgets
   final PageStorageBucket bucket = PageStorageBucket();
   final ScrollController scrollController = ScrollController();
-  final Book bookData;
+
+  /// Cubit data
+  late final Book bookData;
+
+  /// Stream subscription
   late final StreamSubscription<void> _onChangedSubscription;
+
+  Future<void> startLoading(Book bookData) async {
+    this.bookData = bookData;
+
+    // Listen to bookmarks changes.
+    _onChangedSubscription = BookmarkService
+        .repository.onChangedController.stream
+        .listen((_) => refresh());
+
+    // Refresh at first
+    refresh();
+  }
 
   Future<void> refresh() async {
     // Start loading
@@ -30,18 +49,17 @@ class TocCubit extends Cubit<TocState> {
     final BookmarkData? bookmarkData =
         await BookmarkService.repository.get(bookData.identifier);
 
+    // Load the chapter list
+    final List<BookChapter> chapterList =
+        await _bookGetChapterListUseCase(bookData.identifier);
+
     // Finish loading
     emit(state.copyWith(
       code: LoadingStateCode.loaded,
       bookmarkData: bookmarkData,
-      chapterList: bookData.chapterList,
+      chapterList: _constructChapterTree(chapterList, 0),
     ));
   }
-
-  /// Constructs the chapter n-ary tree.
-  /// Driver function.
-  List<TocNestedChapterData> constructChapterTree() =>
-      _constructChapterTree(bookData.chapterList, 0);
 
   /// Constructs the chapter n-ary tree.
   /// [chapterDataList] is the list of chapters to be traversed.

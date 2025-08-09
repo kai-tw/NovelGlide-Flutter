@@ -1,7 +1,15 @@
-part of '../table_of_contents.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class _CompactView extends StatelessWidget {
-  const _CompactView({required this.bookData});
+import '../../../../ads_service/ad_service.dart';
+import '../../../domain/entities/book.dart';
+import '../cubit/toc_cubit.dart';
+import '../widgets/toc_book_name.dart';
+import '../widgets/toc_cover_banner.dart';
+import '../widgets/toc_sliver_list.dart';
+
+class TocCompactView extends StatelessWidget {
+  const TocCompactView({super.key, required this.bookData});
 
   final Book bookData;
 
@@ -32,12 +40,12 @@ class _CompactView extends StatelessWidget {
                             children: <Widget>[
                               AspectRatio(
                                 aspectRatio: 1,
-                                child: _CoverBanner(bookData: bookData),
+                                child: TocCoverBanner(bookData: bookData),
                               ),
                               Positioned.fill(
                                 child: Align(
                                   alignment: Alignment.bottomLeft,
-                                  child: _BookName(bookData: bookData),
+                                  child: TocBookName(bookData: bookData),
                                 ),
                               ),
                             ],
@@ -47,7 +55,7 @@ class _CompactView extends StatelessWidget {
                       SliverPadding(
                         padding:
                             const EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 80.0),
-                        sliver: _SliverList(bookData: bookData),
+                        sliver: TocSliverList(bookData: bookData),
                       ),
                     ],
                   ),

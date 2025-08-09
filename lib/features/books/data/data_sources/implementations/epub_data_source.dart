@@ -19,6 +19,9 @@ class EpubDataSource extends BookLocalDataSource {
   EpubDataSource(this._fileSystemRepository);
 
   final FileSystemRepository _fileSystemRepository;
+  final Map<String, BookCover> _coverBytesCache = <String, BookCover>{};
+  final Map<String, List<BookChapter>> _chapterCache =
+      <String, List<BookChapter>>{};
 
   @override
   final List<String> allowedExtensions = <String>['epub'];
@@ -71,20 +74,26 @@ class EpubDataSource extends BookLocalDataSource {
     final File epubFile = File(absolutePath);
     final epub.EpubBook epubBook = await _loadEpubBook(absolutePath);
     final epub.Image? coverImage = _findCoverImage(epubBook);
+
+    // Cache cover image
+    final String bookIdentifier = basename(absolutePath);
+    _coverBytesCache[bookIdentifier] = BookCover(
+      identifier: bookIdentifier,
+      width: coverImage?.width.toDouble(),
+      height: coverImage?.height.toDouble(),
+      bytes: coverImage?.getBytes(),
+    );
+
+    // Cache chapter list
+    _chapterCache[bookIdentifier] = (epubBook.Chapters ?? <epub.EpubChapter>[])
+        .map((epub.EpubChapter e) => _createBookChapter(e))
+        .toList();
+
     return Book(
-      identifier: basename(absolutePath),
+      identifier: bookIdentifier,
       title: epubBook.Title ?? '',
-      cover: BookCover(
-        identifier: basename(absolutePath),
-        width: coverImage?.width.toDouble(),
-        height: coverImage?.height.toDouble(),
-        bytes: coverImage?.getBytes(),
-      ),
-      chapterList:
-          epubBook.Chapters?.map((epub.EpubChapter e) => _createBookChapter(e))
-                  .toList() ??
-              <BookChapter>[],
       modifiedDate: epubFile.statSync().modified,
+      coverIdentifier: bookIdentifier,
     );
   }
 
@@ -108,6 +117,24 @@ class EpubDataSource extends BookLocalDataSource {
         await FileSystemService.document.libraryDirectory;
     final String absolutePath = absolute(directory.path, identifier);
     return _fileSystemRepository.readFileAsBytes(absolutePath);
+  }
+
+  @override
+  Future<BookCover> getCover(String identifier) async {
+    if (!_coverBytesCache.containsKey(identifier)) {
+      // Cover was not loaded. Load the book data first.
+      await getBook(identifier);
+    }
+    return _coverBytesCache[identifier]!;
+  }
+
+  @override
+  Future<List<BookChapter>> getChapterList(String identifier) async {
+    if (!_chapterCache.containsKey(identifier)) {
+      // Cover was not loaded. Load the book data first.
+      await getBook(identifier);
+    }
+    return _chapterCache[identifier]!;
   }
 
   @override

@@ -1,7 +1,9 @@
-part of '../table_of_contents.dart';
+import 'package:flutter/material.dart';
 
-class _BookName extends StatelessWidget {
-  const _BookName({required this.bookData});
+import '../../../domain/entities/book.dart';
+
+class TocBookName extends StatelessWidget {
+  const TocBookName({super.key, required this.bookData});
 
   final Book bookData;
 

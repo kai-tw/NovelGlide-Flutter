@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import '../../domain/entities/book.dart';
+import '../../domain/entities/book_chapter.dart';
+import '../../domain/entities/book_cover.dart';
 
 abstract class BookLocalDataSource {
   BookLocalDataSource();
@@ -22,6 +24,10 @@ abstract class BookLocalDataSource {
   Stream<Book> getBooks([Set<String>? identifierSet]);
 
   Future<Uint8List> readBookBytes(String identifier);
+
+  Future<BookCover> getCover(String identifier);
+
+  Future<List<BookChapter>> getChapterList(String identifier);
 
   // Validator
   bool isFileValid(File file);

@@ -7,24 +7,28 @@ import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../../../features/shared_components/shared_list/shared_list.dart';
 import '../../../domain/entities/book.dart';
+import '../../../domain/entities/book_cover.dart';
 import '../../../domain/use_cases/book_delete_use_case.dart';
 import '../../../domain/use_cases/book_exists_use_case.dart';
+import '../../../domain/use_cases/book_get_cover_use_case.dart';
 import '../../../domain/use_cases/book_get_list_use_case.dart';
 import '../../../domain/use_cases/book_observe_change_use_case.dart';
 
 typedef BookshelfState = SharedListState<Book>;
 
 class BookshelfCubit extends SharedListCubit<Book> {
-  factory BookshelfCubit({
-    required BookGetListUseCase getBookListUseCase,
-    required BookDeleteUseCase deleteBookUseCase,
-    required BookObserveChangeUseCase observeBookChangeUseCase,
-    required BookExistsUseCase bookExistsUseCase,
-  }) {
+  factory BookshelfCubit(
+    BookGetListUseCase getBookListUseCase,
+    BookDeleteUseCase deleteBookUseCase,
+    BookObserveChangeUseCase observeBookChangeUseCase,
+    BookExistsUseCase bookExistsUseCase,
+    BookGetCoverUseCase bookGetCoverUseCase,
+  ) {
     final BookshelfCubit cubit = BookshelfCubit._(
       getBookListUseCase,
       deleteBookUseCase,
       bookExistsUseCase,
+      bookGetCoverUseCase,
     );
 
     // Refresh at first.
@@ -45,11 +49,16 @@ class BookshelfCubit extends SharedListCubit<Book> {
     this._getBookListUseCase,
     this._deleteBookUseCase,
     this._bookExistsUseCase,
+    this._bookGetCoverUseCase,
   ) : super(const BookshelfState());
 
+  /// Use cases
   final BookGetListUseCase _getBookListUseCase;
   final BookDeleteUseCase _deleteBookUseCase;
   final BookExistsUseCase _bookExistsUseCase;
+  final BookGetCoverUseCase _bookGetCoverUseCase;
+
+  /// Stream subscriptions
   StreamSubscription<Book>? _listStreamSubscription;
 
   @override
@@ -115,9 +124,11 @@ class BookshelfCubit extends SharedListCubit<Book> {
     return isSuccess;
   }
 
-  Future<bool> bookExists(Book bookData) {
-    return _bookExistsUseCase(bookData.identifier);
-  }
+  Future<bool> bookExists(Book bookData) =>
+      _bookExistsUseCase(bookData.identifier);
+
+  Future<BookCover> getCover(Book bookData) =>
+      _bookGetCoverUseCase(bookData.identifier);
 
   @override
   void savePreference() {

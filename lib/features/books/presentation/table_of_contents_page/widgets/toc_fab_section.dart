@@ -1,7 +1,15 @@
-part of '../table_of_contents.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class _FabSection extends StatelessWidget {
-  const _FabSection();
+import '../../../../../enum/window_size.dart';
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../reader/domain/entities/reader_destination_type.dart';
+import '../../../../reader/presentation/reader_page/reader.dart';
+import '../cubit/toc_cubit.dart';
+import '../cubit/toc_state.dart';
+
+class TocFabSection extends StatelessWidget {
+  const TocFabSection({super.key});
 
   @override
   Widget build(BuildContext context) {

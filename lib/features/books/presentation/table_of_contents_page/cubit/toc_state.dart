@@ -1,15 +1,19 @@
-part of '../table_of_contents.dart';
+import 'package:equatable/equatable.dart';
+
+import '../../../../../enum/loading_state_code.dart';
+import '../../../../bookmark_service/bookmark_service.dart';
+import 'toc_nested_chapter_data.dart';
 
 class TocState extends Equatable {
   const TocState({
     this.code = LoadingStateCode.initial,
     this.bookmarkData,
-    this.chapterList = const <BookChapter>[],
+    this.chapterList = const <TocNestedChapterData>[],
   });
 
   final LoadingStateCode code;
   final BookmarkData? bookmarkData;
-  final List<BookChapter> chapterList;
+  final List<TocNestedChapterData> chapterList;
 
   @override
   List<Object?> get props => <Object?>[code, bookmarkData, chapterList];
@@ -17,7 +21,7 @@ class TocState extends Equatable {
   TocState copyWith({
     LoadingStateCode? code,
     BookmarkData? bookmarkData,
-    List<BookChapter>? chapterList,
+    List<TocNestedChapterData>? chapterList,
   }) {
     return TocState(
       code: code ?? this.code,
