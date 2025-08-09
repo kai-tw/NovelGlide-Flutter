@@ -5,15 +5,17 @@ import '../../../../../enum/window_size.dart';
 import '../../../../../generated/i18n/app_localizations.dart';
 import '../../../../reader/domain/entities/reader_destination_type.dart';
 import '../../../../reader/presentation/reader_page/reader.dart';
+import '../../../domain/entities/book.dart';
 import '../cubit/toc_cubit.dart';
 import '../cubit/toc_state.dart';
 
 class TocFabSection extends StatelessWidget {
-  const TocFabSection({super.key});
+  const TocFabSection({super.key, required this.bookData});
+
+  final Book bookData;
 
   @override
   Widget build(BuildContext context) {
-    final TocCubit cubit = BlocProvider.of<TocCubit>(context);
     final double windowWidth = MediaQuery.sizeOf(context).width;
     final WindowSize windowClass = WindowSize.fromWidth(windowWidth);
     double maxWidth = windowWidth - kFloatingActionButtonMargin;
@@ -32,8 +34,8 @@ class TocFabSection extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute<void>(
                   builder: (_) => ReaderWidget(
-                    bookIdentifier: cubit.bookData.identifier,
-                    bookData: cubit.bookData,
+                    bookIdentifier: bookData.identifier,
+                    bookData: bookData,
                   ),
                 ));
               },
@@ -58,8 +60,8 @@ class TocFabSection extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute<void>(
                     builder: (_) => ReaderWidget(
-                      bookIdentifier: cubit.bookData.identifier,
-                      bookData: cubit.bookData,
+                      bookIdentifier: bookData.identifier,
+                      bookData: bookData,
                       destinationType: ReaderDestinationType.bookmark,
                       destination: state.bookmarkData?.startCfi,
                     ),

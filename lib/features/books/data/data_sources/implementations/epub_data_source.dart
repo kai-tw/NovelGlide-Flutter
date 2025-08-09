@@ -20,8 +20,6 @@ class EpubDataSource extends BookLocalDataSource {
 
   final FileSystemRepository _fileSystemRepository;
   final Map<String, BookCover> _coverBytesCache = <String, BookCover>{};
-  final Map<String, List<BookChapter>> _chapterCache =
-      <String, List<BookChapter>>{};
 
   @override
   final List<String> allowedExtensions = <String>['epub'];
@@ -84,11 +82,6 @@ class EpubDataSource extends BookLocalDataSource {
       bytes: coverImage?.getBytes(),
     );
 
-    // Cache chapter list
-    _chapterCache[bookIdentifier] = (epubBook.Chapters ?? <epub.EpubChapter>[])
-        .map((epub.EpubChapter e) => _createBookChapter(e))
-        .toList();
-
     return Book(
       identifier: bookIdentifier,
       title: epubBook.Title ?? '',
@@ -130,11 +123,14 @@ class EpubDataSource extends BookLocalDataSource {
 
   @override
   Future<List<BookChapter>> getChapterList(String identifier) async {
-    if (!_chapterCache.containsKey(identifier)) {
-      // Cover was not loaded. Load the book data first.
-      await getBook(identifier);
-    }
-    return _chapterCache[identifier]!;
+    final Directory directory =
+        await FileSystemService.document.libraryDirectory;
+    final String absolutePath = absolute(directory.path, identifier);
+    final epub.EpubBook epubBook = await _loadEpubBook(absolutePath);
+
+    return (epubBook.Chapters ?? <epub.EpubChapter>[])
+        .map((epub.EpubChapter e) => _createBookChapter(e))
+        .toList();
   }
 
   @override

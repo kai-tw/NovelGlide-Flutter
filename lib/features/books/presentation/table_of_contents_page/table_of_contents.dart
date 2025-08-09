@@ -31,11 +31,11 @@ class TableOfContents extends StatelessWidget {
     }
 
     return BlocProvider<TocCubit>(
-      create: (_) => sl<TocCubit>()..startLoading(bookData),
+      create: (_) => sl<TocCubit>()..startLoading(bookData.identifier),
       child: Scaffold(
         appBar: TocAppBar(bookData: bookData),
         body: body,
-        floatingActionButton: const TocFabSection(),
+        floatingActionButton: TocFabSection(bookData: bookData),
       ),
     );
   }

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../bookmark_service/bookmark_service.dart';
-import '../../../domain/entities/book.dart';
 import '../../../domain/entities/book_chapter.dart';
 import '../../../domain/use_cases/book_get_chapter_list_use_case.dart';
 import 'toc_nested_chapter_data.dart';
@@ -24,13 +23,13 @@ class TocCubit extends Cubit<TocState> {
   final ScrollController scrollController = ScrollController();
 
   /// Cubit data
-  late final Book bookData;
+  late final String _bookIdentifier;
 
   /// Stream subscription
   late final StreamSubscription<void> _onChangedSubscription;
 
-  Future<void> startLoading(Book bookData) async {
-    this.bookData = bookData;
+  Future<void> startLoading(String identifier) async {
+    _bookIdentifier = identifier;
 
     // Listen to bookmarks changes.
     _onChangedSubscription = BookmarkService
@@ -47,11 +46,11 @@ class TocCubit extends Cubit<TocState> {
 
     // Get bookmark data
     final BookmarkData? bookmarkData =
-        await BookmarkService.repository.get(bookData.identifier);
+        await BookmarkService.repository.get(_bookIdentifier);
 
     // Load the chapter list
     final List<BookChapter> chapterList =
-        await _bookGetChapterListUseCase(bookData.identifier);
+        await _bookGetChapterListUseCase(_bookIdentifier);
 
     // Finish loading
     emit(state.copyWith(
