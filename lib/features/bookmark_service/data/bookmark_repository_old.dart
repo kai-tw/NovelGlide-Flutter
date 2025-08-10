@@ -1,7 +1,7 @@
 part of '../bookmark_service.dart';
 
-class BookmarkRepository {
-  BookmarkRepository();
+class BookmarkRepositoryOld {
+  BookmarkRepositoryOld();
 
   Future<String> get jsonFileName async => (await jsonFile).baseName;
 

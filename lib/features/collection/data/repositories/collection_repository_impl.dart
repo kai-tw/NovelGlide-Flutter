@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:novel_glide/features/collection/domain/entities/collection_data.dart';
 
 import '../../domain/repositories/collection_repository.dart';
@@ -8,13 +10,19 @@ class CollectionRepositoryImpl extends CollectionRepository {
 
   final CollectionLocalJsonDataSource _collectionLocalDataSource;
 
+  final StreamController<void> _onChangedController =
+      StreamController<void>.broadcast();
+
+  @override
+  StreamController<void> get onChangedController => _onChangedController;
+
   @override
   Future<CollectionData> createData([String? name]) async {
     final CollectionData data =
         await _collectionLocalDataSource.createData(name);
 
     // Send a notification
-    onChangedController.add(null);
+    _onChangedController.add(null);
 
     return data;
   }
@@ -24,7 +32,7 @@ class CollectionRepositoryImpl extends CollectionRepository {
     await _collectionLocalDataSource.deleteData(dataSet);
 
     // Send a notification
-    onChangedController.add(null);
+    _onChangedController.add(null);
   }
 
   @override
@@ -42,7 +50,7 @@ class CollectionRepositoryImpl extends CollectionRepository {
     await _collectionLocalDataSource.updateData(dataSet);
 
     // Send a notification
-    onChangedController.add(null);
+    _onChangedController.add(null);
   }
 
   @override
@@ -50,6 +58,6 @@ class CollectionRepositoryImpl extends CollectionRepository {
     await _collectionLocalDataSource.reset();
 
     // Send a notification
-    onChangedController.add(null);
+    _onChangedController.add(null);
   }
 }

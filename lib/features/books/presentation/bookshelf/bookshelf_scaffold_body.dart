@@ -1,4 +1,10 @@
-part of '../../book_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../homepage/cubit/homepage_cubit.dart';
+import 'bookshelf.dart';
+import 'bookshelf_loading_indicator.dart';
+import 'cubit/bookshelf_cubit.dart';
 
 class BookshelfScaffoldBody extends StatelessWidget {
   const BookshelfScaffoldBody({super.key});

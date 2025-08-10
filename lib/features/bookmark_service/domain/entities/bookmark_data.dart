@@ -1,4 +1,4 @@
-part of '../bookmark_service.dart';
+part of '../../bookmark_service.dart';
 
 class BookmarkData extends Equatable {
   const BookmarkData({
@@ -6,20 +6,19 @@ class BookmarkData extends Equatable {
     required this.bookName,
     required this.chapterTitle,
     required this.chapterFileName,
-    this.startCfi,
+    required this.startCfi,
     required this.savedTime,
   });
 
-  /// Factory constructor to create a BookmarkData instance from a JSON map.
-  factory BookmarkData.fromJson(Map<String, dynamic> map) {
+  factory BookmarkData.fromJson(Map<String, dynamic> json) {
     return BookmarkData(
-      bookPath: map['bookPath'] ?? '',
-      bookName: map['bookName'] ?? '',
-      chapterTitle: map['chapterTitle'] ?? '',
-      chapterFileName: map['chapterFileName'] ?? '',
-      startCfi: map['startCfi'],
-      savedTime: map['savedTime'] != null
-          ? DateTime.parse(map['savedTime'])
+      bookPath: json['bookPath'] ?? '',
+      bookName: json['bookName'] ?? '',
+      chapterTitle: json['chapterTitle'] ?? '',
+      chapterFileName: json['chapterFileName'] ?? '',
+      startCfi: json['startCfi'],
+      savedTime: json['savedTime'] != null
+          ? DateTime.parse(json['savedTime'])
           : DateTime.now(),
     );
   }
@@ -28,7 +27,7 @@ class BookmarkData extends Equatable {
   final String bookName;
   final String chapterTitle;
   final String chapterFileName;
-  final String? startCfi;
+  final String startCfi;
   final DateTime savedTime;
 
   @override

@@ -23,8 +23,8 @@ import '../homepage/homepage.dart';
 import '../reader/domain/entities/reader_destination_type.dart';
 import '../reader/presentation/reader_page/reader.dart';
 
-part 'data/bookmark_data.dart';
-part 'data/bookmark_repository.dart';
+part 'data/bookmark_repository_old.dart';
+part 'domain/entities/bookmark_data.dart';
 part 'presentation/bookmark_list/bookmark_list.dart';
 part 'presentation/bookmark_list/bookmark_list_app_bar.dart';
 part 'presentation/bookmark_list/bookmark_list_scaffold_body.dart';
@@ -37,5 +37,5 @@ part 'presentation/bookmark_list/widgets/bookmark_list_item.dart';
 class BookmarkService {
   BookmarkService._();
 
-  static BookmarkRepository repository = BookmarkRepository();
+  static BookmarkRepositoryOld repository = BookmarkRepositoryOld();
 }

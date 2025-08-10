@@ -1,4 +1,10 @@
-part of '../../book_service.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../generated/i18n/app_localizations.dart';
+import '../../../homepage/homepage.dart';
+import '../../../shared_components/shared_list/shared_list.dart';
+import 'cubit/bookshelf_cubit.dart';
+import 'widgets/bookshelf_app_bar_more_button.dart';
 
 class BookshelfAppBar extends StatelessWidget implements PreferredSizeWidget {
   const BookshelfAppBar({super.key});

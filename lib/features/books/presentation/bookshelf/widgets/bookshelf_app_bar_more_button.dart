@@ -1,4 +1,13 @@
-part of '../../../book_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../core/utils/popup_menu_utils.dart';
+import '../../../../../enum/sort_order_code.dart';
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../collection/collection_service.dart';
+import '../../../../shared_components/common_delete_dialog.dart';
+import '../../../../shared_components/shared_list/shared_list.dart';
+import '../cubit/bookshelf_cubit.dart';
 
 class BookshelfAppBarMoreButton extends StatelessWidget {
   const BookshelfAppBarMoreButton({super.key});

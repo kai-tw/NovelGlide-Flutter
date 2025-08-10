@@ -14,19 +14,6 @@ class BookRepositoryOld {
         allowedMimeTypes.contains(MimeResolver.lookupAll(file));
   }
 
-  /// Get the book data from the file path.
-  Future<BookData> getBookData(String filePath) async {
-    final Directory directory =
-        await FileSystemService.document.libraryDirectory;
-    final String absolutePath = absolute(directory.path, filePath);
-    final epub.EpubBook epubBook =
-        await FileSystemService.epub.loadEpubBook(absolutePath);
-    return BookData(
-      absoluteFilePath: absolutePath,
-      name: epubBook.Title ?? '',
-    );
-  }
-
   /// Add some books to the library.
   Future<void> addBooks(Set<String> externalPathSet) async {
     final Directory libraryDirectory =
