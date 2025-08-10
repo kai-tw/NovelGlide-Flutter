@@ -3,7 +3,9 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import '../log_data_source.dart';
 
 class FirebaseCrashlyticsAdapter extends LogDataSource {
-  final FirebaseCrashlytics _instance = FirebaseCrashlytics.instance;
+  FirebaseCrashlyticsAdapter(this._instance);
+
+  final FirebaseCrashlytics _instance;
 
   @override
   Future<void> error(String message, {Object? error, StackTrace? stackTrace}) {

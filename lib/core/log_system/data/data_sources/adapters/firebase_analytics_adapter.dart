@@ -3,7 +3,9 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import '../log_data_source.dart';
 
 class FirebaseAnalyticsAdapter extends LogDataSource {
-  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
+  FirebaseAnalyticsAdapter(this._analytics);
+
+  final FirebaseAnalytics _analytics;
 
   @override
   Future<void> info(String message) {
