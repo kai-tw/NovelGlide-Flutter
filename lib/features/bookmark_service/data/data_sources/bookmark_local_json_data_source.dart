@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import '../entities/bookmark_data.dart';
+import '../../domain/entities/bookmark_data.dart';
 
-abstract class BookmarkRepository {
-  Stream<void> get onChangedStream;
-
-  Future<BookmarkData?> getDataById(String id);
+abstract class BookmarkLocalJsonDataSource {
+  Future<BookmarkData?> getDataById(String identifier);
 
   Future<List<BookmarkData>> getList();
 

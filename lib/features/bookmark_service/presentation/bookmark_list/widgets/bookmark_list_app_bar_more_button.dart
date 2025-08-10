@@ -56,7 +56,7 @@ class BookmarkListAppBarMoreButton extends StatelessWidget {
               context: context,
               builder: (BuildContext context) {
                 return CommonDeleteDialog(
-                  onAccept: () => cubit.deleteSelectedBookmarks(),
+                  onAccept: cubit.deleteSelectedBookmarks,
                 );
               },
             );

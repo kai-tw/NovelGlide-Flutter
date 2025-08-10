@@ -14,12 +14,6 @@ class CollectionRepositoryOld {
     final JsonFileMetaModel jsonFile = await this.jsonFile;
     final Map<String, dynamic> jsonData = jsonFile.data;
 
-    // Convert the pathList to relative paths.
-    for (int i = 0; i < data.pathList.length; i++) {
-      data.pathList[i] =
-          await BookService.repository.getRelativePath(data.pathList[i]);
-    }
-
     // Remove duplicates.
     data = data.copyWith(pathList: data.pathList.toSet().toList());
 

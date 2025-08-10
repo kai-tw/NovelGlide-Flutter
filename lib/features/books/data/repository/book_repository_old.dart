@@ -5,8 +5,6 @@ class BookRepositoryOld {
 
   final List<String> allowedExtensions = <String>['epub'];
   final List<String> allowedMimeTypes = <String>['application/epub+zip'];
-  final StreamController<void> onChangedController =
-      StreamController<void>.broadcast();
 
   /// Check if a file is a valid book.
   bool isFileValid(File file) {
@@ -23,21 +21,6 @@ class BookRepositoryOld {
       final String destination = join(libraryDirectory.path, basename(path));
       File(path).copySync(destination);
     }
-
-    // Send a notification.
-    onChangedController.add(null);
-  }
-
-  /// Get the relative path of the book.
-  Future<String> getRelativePath(String filePath) async {
-    final Directory directory =
-        await FileSystemService.document.libraryDirectory;
-    return isRelative(filePath)
-        ? filePath
-        : relative(
-            filePath,
-            from: directory.path,
-          );
   }
 
   /// Get is the book is in the library.

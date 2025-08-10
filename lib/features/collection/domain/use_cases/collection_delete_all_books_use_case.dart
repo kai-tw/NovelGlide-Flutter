@@ -2,8 +2,8 @@ import '../../../../core/use_cases/use_case.dart';
 import '../entities/collection_data.dart';
 import '../repositories/collection_repository.dart';
 
-class DeleteAllBooksFromCollectionUseCase extends UseCase<Future<void>, void> {
-  const DeleteAllBooksFromCollectionUseCase(this._repository);
+class CollectionDeleteAllBooksUseCase extends UseCase<Future<void>, void> {
+  const CollectionDeleteAllBooksUseCase(this._repository);
 
   final CollectionRepository _repository;
 

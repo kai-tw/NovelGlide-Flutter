@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import '../../../../../core/file_system/domain/repositories/json_repository.dart';
-import '../../../../../core/path_provider/domain/repositories/json_path_provider.dart';
-import '../../../../../core/utils/random_extension.dart';
-import '../../../domain/entities/collection_data.dart';
-import '../collection_local_json_data_source.dart';
+import '../../../../core/file_system/domain/repositories/json_repository.dart';
+import '../../../../core/path_provider/domain/repositories/json_path_provider.dart';
+import '../../../../core/utils/random_extension.dart';
+import '../../domain/entities/collection_data.dart';
+import 'collection_local_json_data_source.dart';
 
 class CollectionLocalJsonDataSourceImpl extends CollectionLocalJsonDataSource {
   CollectionLocalJsonDataSourceImpl(

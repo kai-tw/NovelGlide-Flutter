@@ -10,9 +10,9 @@ class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
   late final Set<Book> _dataSet;
   late final StreamSubscription<void> _onChangedSubscription;
 
-  final GetCollectionListUseCase _getCollectionListUseCase;
-  final ObserveCollectionChangeUseCase _observeCollectionChangeUseCase;
-  final UpdateCollectionDataUseCase _updateCollectionDataUseCase;
+  final CollectionGetListUseCase _getCollectionListUseCase;
+  final CollectionObserveChangeUseCase _observeCollectionChangeUseCase;
+  final CollectionUpdateDataUseCase _updateCollectionDataUseCase;
 
   /// Get data from widget.
   Future<void> init(Set<Book> dataSet) async {

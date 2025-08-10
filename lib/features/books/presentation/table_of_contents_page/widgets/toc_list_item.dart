@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../bookmark_service/bookmark_service.dart';
+import '../../../../bookmark_service/domain/entities/bookmark_data.dart';
 import '../../../../reader/presentation/reader_page/reader.dart';
 import '../../../domain/entities/book.dart';
 import '../../../domain/entities/book_chapter.dart';
@@ -23,7 +23,7 @@ class TocListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isBookmarked =
         // TODO(kai): Change to identifier.
-        bookmark?.chapterFileName == bookChapter.identifier;
+        bookmark?.chapterIdentifier == bookChapter.identifier;
     final ThemeData themeData = Theme.of(context);
 
     return ListTile(

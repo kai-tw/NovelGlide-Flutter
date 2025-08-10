@@ -29,7 +29,7 @@ class SettingsPageDataCard extends StatelessWidget {
 
           // Delete all collections
           SettingsPageListTile(
-            onAccept: sl<ResetCollectionSystemUseCase>(),
+            onAccept: sl<CollectionResetUseCase>(),
             onComplete: BlocProvider.of<CollectionListCubit>(context).refresh,
             iconData: Icons.delete_forever_rounded,
             title: appLocalizations.resetPageDeleteAllCollections,
@@ -37,7 +37,7 @@ class SettingsPageDataCard extends StatelessWidget {
 
           // Delete all bookmarks
           SettingsPageListTile(
-            onAccept: () async => BookmarkService.repository.reset(),
+            onAccept: sl<BookmarkResetUseCase>(),
             iconData: Icons.delete_forever_rounded,
             title: appLocalizations.resetPageDeleteAllBookmarks,
           ),

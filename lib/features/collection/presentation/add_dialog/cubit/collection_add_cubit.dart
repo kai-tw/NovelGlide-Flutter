@@ -5,7 +5,7 @@ class CollectionAddCubit extends Cubit<CollectionAddState> {
     this._createCollectionDataUseCase,
   ) : super(const CollectionAddState());
 
-  final CreateCollectionDataUseCase _createCollectionDataUseCase;
+  final CollectionCreateDataUseCase _createCollectionDataUseCase;
 
   set name(String name) => emit(CollectionAddState(name: name));
 

@@ -1,18 +1,33 @@
-part of '../../../bookmark_service.dart';
+import 'package:collection/collection.dart';
+
+import '../../../../../core/services/preference_service/preference_service.dart';
+import '../../../../../enum/loading_state_code.dart';
+import '../../../../../enum/sort_order_code.dart';
+import '../../../../shared_components/shared_list/shared_list.dart';
+import '../../../domain/entities/bookmark_data.dart';
+import '../../../domain/use_cases/bookmark_delete_data_use_case.dart';
+import '../../../domain/use_cases/bookmark_get_list_use_case.dart';
+import '../../../domain/use_cases/bookmark_observe_change_use_case.dart';
 
 typedef BookmarkListState = SharedListState<BookmarkData>;
 
 class BookmarkListCubit extends SharedListCubit<BookmarkData> {
-  factory BookmarkListCubit() {
-    final BookmarkListCubit cubit = BookmarkListCubit._();
+  factory BookmarkListCubit(
+    BookmarkGetListUseCase getListUseCase,
+    BookmarkDeleteDataUseCase deleteDataUseCase,
+    BookmarkObserveChangeUseCase observeChangeUseCase,
+  ) {
+    final BookmarkListCubit cubit = BookmarkListCubit._(
+      getListUseCase,
+      deleteDataUseCase,
+    );
 
     // Refresh at first
     cubit.refresh();
 
     // Listen to bookmarks changes.
-    cubit.onRepositoryChangedSubscription = BookmarkService
-        .repository.onChangedController.stream
-        .listen((_) => cubit.refresh());
+    cubit.onRepositoryChangedSubscription =
+        observeChangeUseCase().listen((_) => cubit.refresh());
 
     // Listen to bookmark list preference changes.
     cubit.onPreferenceChangedSubscription = PreferenceService
@@ -22,7 +37,14 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
     return cubit;
   }
 
-  BookmarkListCubit._() : super(const SharedListState<BookmarkData>());
+  BookmarkListCubit._(
+    this._getListUseCase,
+    this._deleteDataUseCase,
+  ) : super(const SharedListState<BookmarkData>());
+
+  /// Use cases
+  final BookmarkGetListUseCase _getListUseCase;
+  final BookmarkDeleteDataUseCase _deleteDataUseCase;
 
   @override
   Future<void> refresh() async {
@@ -38,7 +60,7 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
     emit(BookmarkListState(
       code: LoadingStateCode.loaded,
       dataList: sortList(
-        await BookmarkService.repository.getList(),
+        await _getListUseCase(),
         preference.sortOrder,
         preference.isAscending,
       ),
@@ -48,10 +70,12 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
     ));
   }
 
-  bool deleteSelectedBookmarks() {
-    state.selectedSet.forEach(BookmarkService.repository.deleteData);
-    refresh();
-    return true;
+  Future<void> deleteBookmark(BookmarkData data) {
+    return _deleteDataUseCase(<BookmarkData>{data});
+  }
+
+  void deleteSelectedBookmarks() {
+    _deleteDataUseCase(state.selectedSet);
   }
 
   @override
@@ -64,8 +88,8 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
     switch (sortOrder) {
       case SortOrderCode.name:
         return isAscending
-            ? compareNatural(a.bookPath, b.bookPath)
-            : compareNatural(b.bookPath, a.bookPath);
+            ? compareNatural(a.bookIdentifier, b.bookIdentifier)
+            : compareNatural(b.bookIdentifier, a.bookIdentifier);
 
       default:
         return isAscending

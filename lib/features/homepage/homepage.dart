@@ -8,6 +8,8 @@ import '../../generated/i18n/app_localizations.dart';
 import '../../main.dart';
 import '../ads_service/ad_service.dart';
 import '../bookmark_service/bookmark_service.dart';
+import '../bookmark_service/domain/entities/bookmark_data.dart';
+import '../bookmark_service/presentation/bookmark_list/cubit/bookmark_list_cubit.dart';
 import '../books/domain/entities/book.dart';
 import '../books/presentation/add_page/book_add_page.dart';
 import '../books/presentation/bookshelf/bookshelf_app_bar.dart';
@@ -42,7 +44,7 @@ class Homepage extends StatelessWidget {
         BlocProvider<BookshelfCubit>(create: (_) => sl<BookshelfCubit>()),
         BlocProvider<CollectionListCubit>(
             create: (_) => sl<CollectionListCubit>()),
-        BlocProvider<BookmarkListCubit>(create: (_) => BookmarkListCubit()),
+        BlocProvider<BookmarkListCubit>(create: (_) => sl<BookmarkListCubit>()),
       ],
       child: const _Scaffold(),
     );

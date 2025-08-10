@@ -4,17 +4,17 @@ import '../../main.dart';
 import '../books/domain/use_cases/book_get_list_by_identifiers_use_case.dart';
 import 'collection_service.dart';
 import 'data/data_sources/collection_local_json_data_source.dart';
-import 'data/data_sources/impl/collection_local_json_data_source_impl.dart';
+import 'data/data_sources/collection_local_json_data_source_impl.dart';
 import 'data/repositories/collection_repository_impl.dart';
 import 'domain/repositories/collection_repository.dart';
-import 'domain/use_cases/create_collection_data_use_case.dart';
-import 'domain/use_cases/delete_all_books_from_collection_use_case.dart';
-import 'domain/use_cases/delete_collection_data_use_case.dart';
-import 'domain/use_cases/get_collection_data_by_id_use_case.dart';
-import 'domain/use_cases/get_collection_list_use_case.dart';
-import 'domain/use_cases/observe_collection_change_use_case.dart';
-import 'domain/use_cases/reset_collection_system_use_case.dart';
-import 'domain/use_cases/update_collection_data_use_case.dart';
+import 'domain/use_cases/collection_create_data_use_case.dart';
+import 'domain/use_cases/collection_delete_all_books_use_case.dart';
+import 'domain/use_cases/collection_delete_data_use_case.dart';
+import 'domain/use_cases/collection_get_data_use_case.dart';
+import 'domain/use_cases/collection_get_list_use_case.dart';
+import 'domain/use_cases/collection_observe_change_use_case.dart';
+import 'domain/use_cases/collection_reset_use_case.dart';
+import 'domain/use_cases/collection_update_data_use_case.dart';
 import 'presentation/collection_list/cubit/collection_list_cubit.dart';
 import 'presentation/collection_viewer/cubit/collection_viewer_cubit.dart';
 
@@ -31,40 +31,40 @@ void setupCollectionDependencies() {
       () => CollectionRepositoryImpl(sl<CollectionLocalJsonDataSource>()));
 
   // Register use cases
-  sl.registerFactory<CreateCollectionDataUseCase>(
-      () => CreateCollectionDataUseCase(sl<CollectionRepository>()));
-  sl.registerFactory<DeleteAllBooksFromCollectionUseCase>(
-      () => DeleteAllBooksFromCollectionUseCase(sl<CollectionRepository>()));
-  sl.registerFactory<DeleteCollectionDataUseCase>(
-      () => DeleteCollectionDataUseCase(sl<CollectionRepository>()));
-  sl.registerFactory<GetCollectionDataByIdUseCase>(
-      () => GetCollectionDataByIdUseCase(sl<CollectionRepository>()));
-  sl.registerFactory<GetCollectionListUseCase>(
-      () => GetCollectionListUseCase(sl<CollectionRepository>()));
-  sl.registerFactory<ObserveCollectionChangeUseCase>(
-      () => ObserveCollectionChangeUseCase(sl<CollectionRepository>()));
-  sl.registerFactory<ResetCollectionSystemUseCase>(
-      () => ResetCollectionSystemUseCase(sl<CollectionRepository>()));
-  sl.registerFactory<UpdateCollectionDataUseCase>(
-      () => UpdateCollectionDataUseCase(sl<CollectionRepository>()));
+  sl.registerFactory<CollectionCreateDataUseCase>(
+      () => CollectionCreateDataUseCase(sl<CollectionRepository>()));
+  sl.registerFactory<CollectionDeleteAllBooksUseCase>(
+      () => CollectionDeleteAllBooksUseCase(sl<CollectionRepository>()));
+  sl.registerFactory<CollectionDeleteDataUseCase>(
+      () => CollectionDeleteDataUseCase(sl<CollectionRepository>()));
+  sl.registerFactory<CollectionGetDataUseCase>(
+      () => CollectionGetDataUseCase(sl<CollectionRepository>()));
+  sl.registerFactory<CollectionGetListUseCase>(
+      () => CollectionGetListUseCase(sl<CollectionRepository>()));
+  sl.registerFactory<CollectionObserveChangeUseCase>(
+      () => CollectionObserveChangeUseCase(sl<CollectionRepository>()));
+  sl.registerFactory<CollectionResetUseCase>(
+      () => CollectionResetUseCase(sl<CollectionRepository>()));
+  sl.registerFactory<CollectionUpdateDataUseCase>(
+      () => CollectionUpdateDataUseCase(sl<CollectionRepository>()));
 
   // Cubit factories
   sl.registerFactory<CollectionViewerCubit>(() => CollectionViewerCubit(
         sl<BookGetListByIdentifiersUseCase>(),
-        sl<GetCollectionDataByIdUseCase>(),
-        sl<UpdateCollectionDataUseCase>(),
+        sl<CollectionGetDataUseCase>(),
+        sl<CollectionUpdateDataUseCase>(),
       ));
   sl.registerFactory<CollectionListCubit>(() => CollectionListCubit(
-        sl<DeleteCollectionDataUseCase>(),
-        sl<GetCollectionListUseCase>(),
-        sl<ObserveCollectionChangeUseCase>(),
+        sl<CollectionDeleteDataUseCase>(),
+        sl<CollectionGetListUseCase>(),
+        sl<CollectionObserveChangeUseCase>(),
       ));
   sl.registerFactory<CollectionAddBookCubit>(() => CollectionAddBookCubit(
-        sl<GetCollectionListUseCase>(),
-        sl<ObserveCollectionChangeUseCase>(),
-        sl<UpdateCollectionDataUseCase>(),
+        sl<CollectionGetListUseCase>(),
+        sl<CollectionObserveChangeUseCase>(),
+        sl<CollectionUpdateDataUseCase>(),
       ));
   sl.registerFactory<CollectionAddCubit>(() => CollectionAddCubit(
-        sl<CreateCollectionDataUseCase>(),
+        sl<CollectionCreateDataUseCase>(),
       ));
 }

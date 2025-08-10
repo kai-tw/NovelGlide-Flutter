@@ -9,6 +9,12 @@ class JsonPathProviderImpl extends JsonPathProvider {
   final AppPathProvider _pathProvider;
 
   @override
+  Future<String> get bookmarkJsonPath async {
+    final String dataPath = await _pathProvider.dataPath;
+    return join(dataPath, 'bookmark.json');
+  }
+
+  @override
   Future<String> get collectionJsonPath async {
     final String dataPath = await _pathProvider.dataPath;
     return join(dataPath, 'collection.json');

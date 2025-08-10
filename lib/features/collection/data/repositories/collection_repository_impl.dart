@@ -14,7 +14,7 @@ class CollectionRepositoryImpl extends CollectionRepository {
       StreamController<void>.broadcast();
 
   @override
-  StreamController<void> get onChangedController => _onChangedController;
+  Stream<void> get onChangedStream => _onChangedController.stream;
 
   @override
   Future<CollectionData> createData([String? name]) async {

@@ -26,7 +26,7 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
 
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-      final double? contraintHeight =
+      final double? constraintHeight =
           listType == SharedListType.grid ? constraints.maxHeight : null;
       final EdgeInsets padding = listType == SharedListType.grid
           ? const EdgeInsets.all(8.0)
@@ -42,20 +42,21 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
           homepageCubit.isEnabled = true;
         },
         onDragCompleted: () async {
-          BookmarkService.repository.deleteData(bookmarkData);
-          cubit.refresh();
+          await cubit.deleteBookmark(bookmarkData);
 
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(appLocalizations.deleteBookmarkSuccessfully),
-            ),
-          );
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(appLocalizations.deleteBookmarkSuccessfully),
+              ),
+            );
+          }
         },
         data: bookmarkData,
         maxSimultaneousDrags: isDraggable ? 1 : 0,
         feedback: DraggableFeedbackWidget(
           width: constraints.maxWidth,
-          height: contraintHeight,
+          height: constraintHeight,
           padding: padding,
           child: BookmarkListBookmarkWidget(
             bookmarkData: bookmarkData,
@@ -64,7 +65,7 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
         ),
         childWhenDragging: DraggablePlaceholderWidget(
           width: constraints.maxWidth,
-          height: contraintHeight,
+          height: constraintHeight,
           padding: padding,
           child: BookmarkListBookmarkWidget(
             bookmarkData: bookmarkData,
@@ -73,7 +74,7 @@ class BookmarkListDraggableBookmark extends StatelessWidget {
         ),
         child: Container(
           width: constraints.maxWidth,
-          height: contraintHeight,
+          height: constraintHeight,
           padding: padding,
           child: BookmarkListBookmarkWidget(
             bookmarkData: bookmarkData,

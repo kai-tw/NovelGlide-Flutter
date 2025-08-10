@@ -7,7 +7,9 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../../core/services/preference_service/data/model/reader_preference_data.dart';
 import '../../../../../core/services/preference_service/preference_service.dart';
-import '../../../../bookmark_service/bookmark_service.dart';
+import '../../../../bookmark_service/domain/entities/bookmark_data.dart';
+import '../../../../bookmark_service/domain/use_cases/bookmark_get_data_use_case.dart';
+import '../../../../bookmark_service/domain/use_cases/bookmark_update_data_use_case.dart';
 import '../../../../books/domain/entities/book.dart';
 import '../../../../books/domain/use_cases/book_get_use_case.dart';
 import '../../../../books/domain/use_cases/book_read_bytes_use_case.dart';
@@ -58,10 +60,15 @@ part 'reader_web_view_handler.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
   factory ReaderCubit(
+    // Book use cases
     BookReadBytesUseCase bookReadBytesUseCase,
     BookGetUseCase bookGetUseCase,
+    // Location cache use cases
     ReaderStoreLocationCacheUseCase storeLocationCacheUseCase,
     ReaderGetLocationCacheUseCase getLocationCacheUseCase,
+    // Bookmark use cases
+    BookmarkGetDataUseCase bookmarkGetDataUseCase,
+    BookmarkUpdateDataUseCase bookmarkUpdateDataUseCase,
   ) {
     // Setup server dependencies
     final ReaderServerRepository serverRepository =
@@ -126,8 +133,10 @@ class ReaderCubit extends Cubit<ReaderState> {
         ReaderSendTtsNextUseCase(webViewRepository);
 
     final ReaderCubit cubit = ReaderCubit._(
+      // Server use cases
       startReaderServerUseCase,
       stopReaderServerUseCase,
+      // Communication use cases
       observeSaveLocationUseCase,
       observeSetStateUseCase,
       observeLoadDoneUseCase,
@@ -137,13 +146,20 @@ class ReaderCubit extends Cubit<ReaderState> {
       sendSetFontSizeUseCase,
       sendSetLineHeightUseCase,
       sendSetSmoothScrollUseCase,
+      // Book use cases
       bookGetUseCase,
+      // Location cache use cases
       storeLocationCacheUseCase,
       getLocationCacheUseCase,
+      // Bookmark use cases
+      bookmarkGetDataUseCase,
+      bookmarkUpdateDataUseCase,
+      // Dependencies
       webViewController,
       webViewRepository,
       searchRepository,
       ttsRepository,
+      // Cubits
       ReaderSearchCubit(
         sendSearchInCurrentChapterUseCase,
         sendSearchInWholeBookUseCase,
@@ -166,8 +182,10 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   ReaderCubit._(
+    // Server use cases
     this._startReaderServerUseCase,
     this._stopReaderServerUseCase,
+    // Communication use cases
     this._observeSaveLocationUseCase,
     this._observeSetStateUseCase,
     this._observeLoadDoneUseCase,
@@ -177,9 +195,15 @@ class ReaderCubit extends Cubit<ReaderState> {
     this._sendSetFontSizeUseCase,
     this._sendSetLineHeightUseCase,
     this._sendSetSmoothScrollUseCase,
+    // Book use cases
     this._bookGetUseCase,
+    // Location cache use cases
     this._storeLocationCacheUseCase,
     this._getLocationCacheUseCase,
+    // Bookmark use cases
+    this._bookmarkGetDataUseCase,
+    this._bookmarkUpdateDataUseCase,
+    // Dependencies
     this.webViewController,
     this._webViewRepository,
     this._searchRepository,
@@ -210,9 +234,11 @@ class ReaderCubit extends Cubit<ReaderState> {
   late final StreamSubscription<void> _loadDoneStreamSubscription;
   late final StreamSubscription<ReaderSetStateData> _setStateStreamSubscription;
 
-  /// Use cases
+  /// Server use cases
   final ReaderStartReaderServerUseCase _startReaderServerUseCase;
   final ReaderStopReaderServerUseCase _stopReaderServerUseCase;
+
+  /// Communication use cases
   final ReaderObserveSaveLocationUseCase _observeSaveLocationUseCase;
   final ReaderObserveLoadDoneUseCase _observeLoadDoneUseCase;
   final ReaderObserveSetStateUseCase _observeSetStateUseCase;
@@ -222,11 +248,17 @@ class ReaderCubit extends Cubit<ReaderState> {
   final ReaderSendSetFontSizeUseCase _sendSetFontSizeUseCase;
   final ReaderSendSetLineHeightUseCase _sendSetLineHeightUseCase;
   final ReaderSendSetSmoothScrollUseCase _sendSetSmoothScrollUseCase;
+
+  /// Book use cases
   final BookGetUseCase _bookGetUseCase;
 
   /// Location cache use cases
   final ReaderStoreLocationCacheUseCase _storeLocationCacheUseCase;
   final ReaderGetLocationCacheUseCase _getLocationCacheUseCase;
+
+  /// Bookmark use cases
+  final BookmarkGetDataUseCase _bookmarkGetDataUseCase;
+  final BookmarkUpdateDataUseCase _bookmarkUpdateDataUseCase;
 
   /// Initialize from widgets.
   Future<void> initAsync({
@@ -255,8 +287,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       PreferenceService.reader
           .load()
           .then((ReaderPreferenceData value) => readerSettingsData = value),
-      BookmarkService.repository
-          .get(bookIdentifier)
+      _bookmarkGetDataUseCase(bookIdentifier)
           .then((BookmarkData? data) => bookmarkData = data),
     ]);
 
@@ -377,15 +408,15 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   void saveBookmark() {
     final BookmarkData data = BookmarkData(
-      bookPath: bookData!.identifier,
+      bookIdentifier: bookData!.identifier,
       bookName: state.bookName,
       chapterTitle: state.breadcrumb,
-      chapterFileName: state.chapterFileName,
+      chapterIdentifier: state.chapterFileName,
       startCfi: state.startCfi,
       savedTime: DateTime.now(),
     );
 
-    BookmarkService.repository.updateData(<BookmarkData>{data});
+    _bookmarkUpdateDataUseCase(<BookmarkData>{data});
 
     emit(state.copyWith(bookmarkData: data));
   }

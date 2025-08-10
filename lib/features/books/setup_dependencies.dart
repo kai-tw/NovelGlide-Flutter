@@ -1,6 +1,8 @@
 import '../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../main.dart';
-import '../collection/domain/use_cases/delete_all_books_from_collection_use_case.dart';
+import '../bookmark_service/domain/use_cases/bookmark_get_data_use_case.dart';
+import '../bookmark_service/domain/use_cases/bookmark_observe_change_use_case.dart';
+import '../collection/domain/use_cases/collection_delete_all_books_use_case.dart';
 import '../reader/domain/use_cases/reader_clear_location_cache_use_case.dart';
 import '../reader/domain/use_cases/reader_delete_location_cache_use_case.dart';
 import 'data/data_sources/book_local_data_source.dart';
@@ -69,7 +71,7 @@ void setupBookDependencies() {
       () => BookGetChapterListUseCase(sl<BookRepository>()));
   sl.registerFactory<BookResetUseCase>(() => BookResetUseCase(
         sl<BookRepository>(),
-        sl<DeleteAllBooksFromCollectionUseCase>(),
+        sl<CollectionDeleteAllBooksUseCase>(),
         sl<ReaderClearLocationCacheUseCase>(),
       ));
 
@@ -93,5 +95,7 @@ void setupBookDependencies() {
       ));
   sl.registerFactory<TocCubit>(() => TocCubit(
         sl<BookGetChapterListUseCase>(),
+        sl<BookmarkGetDataUseCase>(),
+        sl<BookmarkObserveChangeUseCase>(),
       ));
 }

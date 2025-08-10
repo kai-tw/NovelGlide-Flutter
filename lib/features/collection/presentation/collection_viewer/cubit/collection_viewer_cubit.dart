@@ -7,8 +7,8 @@ import '../../../../../features/shared_components/shared_list/shared_list.dart';
 import '../../../../books/domain/entities/book.dart';
 import '../../../../books/domain/use_cases/book_get_list_by_identifiers_use_case.dart';
 import '../../../domain/entities/collection_data.dart';
-import '../../../domain/use_cases/get_collection_data_by_id_use_case.dart';
-import '../../../domain/use_cases/update_collection_data_use_case.dart';
+import '../../../domain/use_cases/collection_get_data_use_case.dart';
+import '../../../domain/use_cases/collection_update_data_use_case.dart';
 
 typedef CollectionViewerState = SharedListState<Book>;
 
@@ -24,8 +24,8 @@ class CollectionViewerCubit extends SharedListCubit<Book> {
 
   /// Use cases
   final BookGetListByIdentifiersUseCase _getBookListByIdentifierSetUseCase;
-  final GetCollectionDataByIdUseCase _getCollectionDataByIdUseCase;
-  final UpdateCollectionDataUseCase _updateCollectionDataUseCase;
+  final CollectionGetDataUseCase _getCollectionDataByIdUseCase;
+  final CollectionUpdateDataUseCase _updateCollectionDataUseCase;
 
   /// Get the data from UI.
   void init(CollectionData data) {

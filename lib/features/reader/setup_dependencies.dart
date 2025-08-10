@@ -1,6 +1,8 @@
 import '../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../core/path_provider/domain/repositories/app_path_provider.dart';
 import '../../main.dart';
+import '../bookmark_service/domain/use_cases/bookmark_get_data_use_case.dart';
+import '../bookmark_service/domain/use_cases/bookmark_update_data_use_case.dart';
 import '../books/domain/use_cases/book_get_use_case.dart';
 import '../books/domain/use_cases/book_read_bytes_use_case.dart';
 import 'data/repositories/reader_location_cache_repository_impl.dart';
@@ -39,9 +41,14 @@ void setupReaderDependencies() {
 
   // Register factories
   sl.registerFactory<ReaderCubit>(() => ReaderCubit(
+        // Book use cases
         sl<BookReadBytesUseCase>(),
         sl<BookGetUseCase>(),
+        // Location cache use cases
         sl<ReaderStoreLocationCacheUseCase>(),
         sl<ReaderGetLocationCacheUseCase>(),
+        // Bookmark use cases
+        sl<BookmarkGetDataUseCase>(),
+        sl<BookmarkUpdateDataUseCase>(),
       ));
 }

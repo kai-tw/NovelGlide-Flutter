@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../enum/loading_state_code.dart';
-import '../../../../bookmark_service/bookmark_service.dart';
+import '../../../../bookmark_service/domain/entities/bookmark_data.dart';
+import '../../../../bookmark_service/domain/use_cases/bookmark_get_data_use_case.dart';
+import '../../../../bookmark_service/domain/use_cases/bookmark_observe_change_use_case.dart';
 import '../../../domain/entities/book_chapter.dart';
 import '../../../domain/use_cases/book_get_chapter_list_use_case.dart';
 import 'toc_nested_chapter_data.dart';
@@ -13,10 +15,14 @@ import 'toc_state.dart';
 class TocCubit extends Cubit<TocState> {
   TocCubit(
     this._bookGetChapterListUseCase,
+    this._bookmarkGetDataUseCase,
+    this._bookmarkObserveChangeUseCase,
   ) : super(const TocState());
 
   /// Use cases
   final BookGetChapterListUseCase _bookGetChapterListUseCase;
+  final BookmarkGetDataUseCase _bookmarkGetDataUseCase;
+  final BookmarkObserveChangeUseCase _bookmarkObserveChangeUseCase;
 
   /// Used by widgets
   final PageStorageBucket bucket = PageStorageBucket();
@@ -32,9 +38,8 @@ class TocCubit extends Cubit<TocState> {
     _bookIdentifier = identifier;
 
     // Listen to bookmarks changes.
-    _onChangedSubscription = BookmarkService
-        .repository.onChangedController.stream
-        .listen((_) => refresh());
+    _onChangedSubscription =
+        _bookmarkObserveChangeUseCase().listen((_) => refresh());
 
     // Refresh at first
     refresh();
@@ -46,7 +51,7 @@ class TocCubit extends Cubit<TocState> {
 
     // Get bookmark data
     final BookmarkData? bookmarkData =
-        await BookmarkService.repository.get(_bookIdentifier);
+        await _bookmarkGetDataUseCase(_bookIdentifier);
 
     // Load the chapter list
     final List<BookChapter> chapterList =

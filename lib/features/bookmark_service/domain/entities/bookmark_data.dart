@@ -1,21 +1,21 @@
-part of '../../bookmark_service.dart';
+import 'package:equatable/equatable.dart';
 
 class BookmarkData extends Equatable {
   const BookmarkData({
-    required this.bookPath,
+    required this.bookIdentifier,
     required this.bookName,
     required this.chapterTitle,
-    required this.chapterFileName,
+    required this.chapterIdentifier,
     required this.startCfi,
     required this.savedTime,
   });
 
   factory BookmarkData.fromJson(Map<String, dynamic> json) {
     return BookmarkData(
-      bookPath: json['bookPath'] ?? '',
+      bookIdentifier: json['bookPath'] ?? '',
       bookName: json['bookName'] ?? '',
       chapterTitle: json['chapterTitle'] ?? '',
-      chapterFileName: json['chapterFileName'] ?? '',
+      chapterIdentifier: json['chapterFileName'] ?? '',
       startCfi: json['startCfi'],
       savedTime: json['savedTime'] != null
           ? DateTime.parse(json['savedTime'])
@@ -23,19 +23,19 @@ class BookmarkData extends Equatable {
     );
   }
 
-  final String bookPath;
+  final String bookIdentifier;
   final String bookName;
   final String chapterTitle;
-  final String chapterFileName;
+  final String chapterIdentifier;
   final String startCfi;
   final DateTime savedTime;
 
   @override
   List<Object?> get props => <Object?>[
-        bookPath,
+        bookIdentifier,
         bookName,
         chapterTitle,
-        chapterFileName,
+        chapterIdentifier,
         startCfi,
         savedTime,
       ];
@@ -46,35 +46,12 @@ class BookmarkData extends Equatable {
   /// Converts the bookmark data to a JSON map.
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'bookPath': bookPath,
+      'bookPath': bookIdentifier,
       'bookName': bookName,
       'chapterTitle': chapterTitle,
-      'chapterFileName': chapterFileName,
+      'chapterFileName': chapterIdentifier,
       'startCfi': startCfi,
       'savedTime': savedTime.toIso8601String(),
     };
-  }
-
-  /// Returns a JSON string representation of the bookmark.
-  @override
-  String toString() => jsonEncode(toJson());
-
-  /// Copy with new values.
-  BookmarkData copyWith({
-    String? bookPath,
-    String? bookName,
-    String? chapterTitle,
-    String? chapterFileName,
-    String? startCfi,
-    DateTime? savedTime,
-  }) {
-    return BookmarkData(
-      bookPath: bookPath ?? this.bookPath,
-      bookName: bookName ?? this.bookName,
-      chapterTitle: chapterTitle ?? this.chapterTitle,
-      chapterFileName: chapterFileName ?? this.chapterFileName,
-      startCfi: startCfi ?? this.startCfi,
-      savedTime: savedTime ?? this.savedTime,
-    );
   }
 }

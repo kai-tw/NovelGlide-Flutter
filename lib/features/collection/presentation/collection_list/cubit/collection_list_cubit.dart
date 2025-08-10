@@ -7,17 +7,17 @@ import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../../../features/shared_components/shared_list/shared_list.dart';
 import '../../../domain/entities/collection_data.dart';
-import '../../../domain/use_cases/delete_collection_data_use_case.dart';
-import '../../../domain/use_cases/get_collection_list_use_case.dart';
-import '../../../domain/use_cases/observe_collection_change_use_case.dart';
+import '../../../domain/use_cases/collection_delete_data_use_case.dart';
+import '../../../domain/use_cases/collection_get_list_use_case.dart';
+import '../../../domain/use_cases/collection_observe_change_use_case.dart';
 
 typedef CollectionListState = SharedListState<CollectionData>;
 
 class CollectionListCubit extends SharedListCubit<CollectionData> {
   factory CollectionListCubit(
-    DeleteCollectionDataUseCase deleteCollectionDataUseCase,
-    GetCollectionListUseCase getCollectionListUseCase,
-    ObserveCollectionChangeUseCase observeCollectionChangeUseCase,
+    CollectionDeleteDataUseCase deleteCollectionDataUseCase,
+    CollectionGetListUseCase getCollectionListUseCase,
+    CollectionObserveChangeUseCase observeCollectionChangeUseCase,
   ) {
     final CollectionListCubit cubit = CollectionListCubit._(
       deleteCollectionDataUseCase,
@@ -44,8 +44,8 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
     this._getCollectionListUseCase,
   ) : super(const CollectionListState());
 
-  final DeleteCollectionDataUseCase _deleteCollectionDataUseCase;
-  final GetCollectionListUseCase _getCollectionListUseCase;
+  final CollectionDeleteDataUseCase _deleteCollectionDataUseCase;
+  final CollectionGetListUseCase _getCollectionListUseCase;
 
   @override
   Future<void> refresh() async {

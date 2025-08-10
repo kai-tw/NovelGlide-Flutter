@@ -1,8 +1,8 @@
 import '../../../../core/use_cases/use_case.dart';
 import '../repositories/collection_repository.dart';
 
-class ResetCollectionSystemUseCase extends UseCase<Future<void>, void> {
-  const ResetCollectionSystemUseCase(this._repository);
+class CollectionResetUseCase extends UseCase<Future<void>, void> {
+  const CollectionResetUseCase(this._repository);
 
   final CollectionRepository _repository;
 

@@ -3,7 +3,7 @@ import 'dart:async';
 import '../entities/collection_data.dart';
 
 abstract class CollectionRepository {
-  StreamController<void> get onChangedController;
+  Stream<void> get onChangedStream;
 
   Future<CollectionData> createData([String? name]);
 
