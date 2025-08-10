@@ -14,7 +14,7 @@ void setupFileSystemDependencies() {
       () => JsonRepositoryImpl(sl<FileSystemRepository>()));
 
   // Register use cases
-  sl.registerLazySingleton<CreateTemporaryDirectoryUseCase>(
+  sl.registerFactory<CreateTemporaryDirectoryUseCase>(
       () => CreateTemporaryDirectoryUseCase(
             sl<AppPathProvider>(),
             sl<FileSystemRepository>(),

@@ -1,6 +1,8 @@
 import '../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../main.dart';
 import '../collection/domain/use_cases/delete_all_books_from_collection_use_case.dart';
+import '../reader/domain/use_cases/reader_clear_location_cache_use_case.dart';
+import '../reader/domain/use_cases/reader_delete_location_cache_use_case.dart';
 import 'data/data_sources/book_local_data_source.dart';
 import 'data/data_sources/implementations/epub_data_source.dart';
 import 'data/data_sources/implementations/pick_book_data_source_impl.dart';
@@ -9,7 +11,6 @@ import 'data/repositories/book_repository_impl.dart';
 import 'domain/repository/book_repository.dart';
 import 'domain/use_cases/book_add_use_case.dart';
 import 'domain/use_cases/book_clear_temporary_picked_files_use_case.dart';
-import 'domain/use_cases/book_delete_all_use_case.dart';
 import 'domain/use_cases/book_delete_use_case.dart';
 import 'domain/use_cases/book_exists_use_case.dart';
 import 'domain/use_cases/book_get_allowed_extensions_use_case.dart';
@@ -38,36 +39,39 @@ void setupBookDependencies() {
       BookRepositoryImpl(sl<BookLocalDataSource>(), sl<PickBookDataSource>()));
 
   // Register use cases
-  sl.registerLazySingleton<BookAddUseCase>(
+  sl.registerFactory<BookAddUseCase>(
       () => BookAddUseCase(sl<BookRepository>()));
-  sl.registerLazySingleton<BookExistsUseCase>(
+  sl.registerFactory<BookExistsUseCase>(
       () => BookExistsUseCase(sl<BookRepository>()));
-  sl.registerLazySingleton<BookReadBytesUseCase>(
+  sl.registerFactory<BookReadBytesUseCase>(
       () => BookReadBytesUseCase(sl<BookRepository>()));
-  sl.registerLazySingleton<BookClearTemporaryPickedFilesUseCase>(
+  sl.registerFactory<BookClearTemporaryPickedFilesUseCase>(
       () => BookClearTemporaryPickedFilesUseCase(sl<BookRepository>()));
-  sl.registerLazySingleton<BookDeleteAllUseCase>(
-      () => BookDeleteAllUseCase(sl<BookRepository>()));
-  sl.registerLazySingleton<BookDeleteUseCase>(
-      () => BookDeleteUseCase(sl<BookRepository>()));
-  sl.registerLazySingleton<BookGetAllowedExtensionsUseCase>(
+  sl.registerFactory<BookDeleteUseCase>(() => BookDeleteUseCase(
+        sl<BookRepository>(),
+        sl<ReaderDeleteLocationCacheUseCase>(),
+      ));
+  sl.registerFactory<BookGetAllowedExtensionsUseCase>(
       () => BookGetAllowedExtensionsUseCase(sl<BookRepository>()));
-  sl.registerLazySingleton<BookGetListByIdentifiersUseCase>(
+  sl.registerFactory<BookGetListByIdentifiersUseCase>(
       () => BookGetListByIdentifiersUseCase(sl<BookRepository>()));
-  sl.registerLazySingleton<BookGetListUseCase>(
+  sl.registerFactory<BookGetListUseCase>(
       () => BookGetListUseCase(sl<BookRepository>()));
-  sl.registerLazySingleton<BookGetUseCase>(
+  sl.registerFactory<BookGetUseCase>(
       () => BookGetUseCase(sl<BookRepository>()));
-  sl.registerLazySingleton<BookObserveChangeUseCase>(
+  sl.registerFactory<BookObserveChangeUseCase>(
       () => BookObserveChangeUseCase(sl<BookRepository>()));
-  sl.registerLazySingleton<BookPickUseCase>(
+  sl.registerFactory<BookPickUseCase>(
       () => BookPickUseCase(sl<BookRepository>()));
-  sl.registerLazySingleton<BookGetCoverUseCase>(
+  sl.registerFactory<BookGetCoverUseCase>(
       () => BookGetCoverUseCase(sl<BookRepository>()));
-  sl.registerLazySingleton<BookGetChapterListUseCase>(
+  sl.registerFactory<BookGetChapterListUseCase>(
       () => BookGetChapterListUseCase(sl<BookRepository>()));
-  sl.registerLazySingleton<BookResetUseCase>(() => BookResetUseCase(
-      sl<BookRepository>(), sl<DeleteAllBooksFromCollectionUseCase>()));
+  sl.registerFactory<BookResetUseCase>(() => BookResetUseCase(
+        sl<BookRepository>(),
+        sl<DeleteAllBooksFromCollectionUseCase>(),
+        sl<ReaderClearLocationCacheUseCase>(),
+      ));
 
   // Cubit factories
   sl.registerFactory<BookshelfCubit>(() => BookshelfCubit(

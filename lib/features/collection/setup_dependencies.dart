@@ -31,21 +31,21 @@ void setupCollectionDependencies() {
       () => CollectionRepositoryImpl(sl<CollectionLocalJsonDataSource>()));
 
   // Register use cases
-  sl.registerLazySingleton<CreateCollectionDataUseCase>(
+  sl.registerFactory<CreateCollectionDataUseCase>(
       () => CreateCollectionDataUseCase(sl<CollectionRepository>()));
-  sl.registerLazySingleton<DeleteAllBooksFromCollectionUseCase>(
+  sl.registerFactory<DeleteAllBooksFromCollectionUseCase>(
       () => DeleteAllBooksFromCollectionUseCase(sl<CollectionRepository>()));
-  sl.registerLazySingleton<DeleteCollectionDataUseCase>(
+  sl.registerFactory<DeleteCollectionDataUseCase>(
       () => DeleteCollectionDataUseCase(sl<CollectionRepository>()));
-  sl.registerLazySingleton<GetCollectionDataByIdUseCase>(
+  sl.registerFactory<GetCollectionDataByIdUseCase>(
       () => GetCollectionDataByIdUseCase(sl<CollectionRepository>()));
-  sl.registerLazySingleton<GetCollectionListUseCase>(
+  sl.registerFactory<GetCollectionListUseCase>(
       () => GetCollectionListUseCase(sl<CollectionRepository>()));
-  sl.registerLazySingleton<ObserveCollectionChangeUseCase>(
+  sl.registerFactory<ObserveCollectionChangeUseCase>(
       () => ObserveCollectionChangeUseCase(sl<CollectionRepository>()));
-  sl.registerLazySingleton<ResetCollectionSystemUseCase>(
+  sl.registerFactory<ResetCollectionSystemUseCase>(
       () => ResetCollectionSystemUseCase(sl<CollectionRepository>()));
-  sl.registerLazySingleton<UpdateCollectionDataUseCase>(
+  sl.registerFactory<UpdateCollectionDataUseCase>(
       () => UpdateCollectionDataUseCase(sl<CollectionRepository>()));
 
   // Cubit factories

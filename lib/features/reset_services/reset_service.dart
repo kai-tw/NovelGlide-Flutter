@@ -11,7 +11,7 @@ import '../bookmark_service/bookmark_service.dart';
 import '../books/domain/use_cases/book_reset_use_case.dart';
 import '../collection/domain/use_cases/reset_collection_system_use_case.dart';
 import '../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
-import '../reader/data/repository/cache_repository.dart';
+import '../reader/domain/use_cases/reader_clear_location_cache_use_case.dart';
 import '../settings_page/settings_service.dart';
 
 part 'presentation/reset_page.dart';

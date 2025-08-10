@@ -1,0 +1,13 @@
+import '../../../../core/use_cases/use_case.dart';
+import '../repositories/reader_location_cache_repository.dart';
+
+class ReaderDeleteLocationCacheUseCase extends UseCase<Future<void>, String> {
+  const ReaderDeleteLocationCacheUseCase(this._repository);
+
+  final ReaderLocationCacheRepository _repository;
+
+  @override
+  Future<void> call(String parameter) {
+    return _repository.delete(parameter);
+  }
+}

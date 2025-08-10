@@ -14,15 +14,19 @@ class SettingsPageCacheCard extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 12.0),
             child: Text(
               appLocalizations.resetPageCacheTitle,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w900,
-                  ),
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(
+                fontWeight: FontWeight.w900,
+              ),
             ),
           ),
 
           // Clear cache (Currently only for Reader)
           SettingsPageListTile(
-            onAccept: () async => LocationCacheRepository.clear(),
+            onAccept: sl<ReaderClearLocationCacheUseCase>(),
             iconData: Icons.delete_forever_rounded,
             title: appLocalizations.resetPageCacheClear,
             isDangerous: false,

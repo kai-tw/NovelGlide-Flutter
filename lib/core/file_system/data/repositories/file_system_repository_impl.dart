@@ -65,10 +65,33 @@ class FileSystemRepositoryImpl implements FileSystemRepository {
   }
 
   @override
+  Future<void> writeFileAsString(String path, String content) async {
+    final File file = await createFile(path);
+    await file.writeAsString(content);
+  }
+
+  @override
+  Future<String> readFileAsString(String path) async {
+    final File file = File(path);
+    if (!await file.exists()) {
+      throw FileSystemException('File not found', path);
+    }
+    return file.readAsString();
+  }
+
+  @override
   Future<void> deleteFile(String path) async {
     final File file = File(path);
     if (await file.exists()) {
       await file.delete();
+    }
+  }
+
+  @override
+  Future<void> deleteDirectory(String path) async {
+    final Directory directory = Directory(path);
+    if (await directory.exists()) {
+      await directory.delete(recursive: true);
     }
   }
 }

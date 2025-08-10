@@ -10,10 +10,8 @@ import '../data_sources/book_local_data_source.dart';
 import '../data_sources/pick_book_data_source.dart';
 
 class BookRepositoryImpl implements BookRepository {
-  BookRepositoryImpl(
-    this._epubDataSource,
-    this._pickBookDataSource,
-  );
+  BookRepositoryImpl(this._epubDataSource,
+      this._pickBookDataSource,);
 
   final BookLocalDataSource _epubDataSource;
   final PickBookDataSource _pickBookDataSource;
@@ -25,7 +23,7 @@ class BookRepositoryImpl implements BookRepository {
   List<String> get allowedMimeTypes => _epubDataSource.allowedMimeTypes;
 
   final StreamController<void> _onChangedController =
-      StreamController<void>.broadcast();
+  StreamController<void>.broadcast();
 
   @override
   StreamController<void> get onChangedController => _onChangedController;
@@ -46,14 +44,6 @@ class BookRepositoryImpl implements BookRepository {
     onChangedController.add(null);
 
     return result;
-  }
-
-  @override
-  Future<void> deleteAllBooks() async {
-    await _epubDataSource.deleteAllBooks();
-
-    // Send a notification.
-    onChangedController.add(null);
   }
 
   @override
@@ -101,7 +91,7 @@ class BookRepositoryImpl implements BookRepository {
 
   @override
   Future<void> reset() async {
-    await deleteAllBooks();
+    await _epubDataSource.deleteAllBooks();
 
     // Send a notification.
     onChangedController.add(null);

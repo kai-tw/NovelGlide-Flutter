@@ -17,7 +17,6 @@ import '../../../data/repositories/reader_search_repository_impl.dart';
 import '../../../data/repositories/reader_server_repository_impl.dart';
 import '../../../data/repositories/reader_tts_repository_impl.dart';
 import '../../../data/repositories/reader_web_view_repository_impl.dart';
-import '../../../data/repository/cache_repository.dart';
 import '../../../domain/entities/reader_destination_type.dart';
 import '../../../domain/entities/reader_navigation_state_code.dart';
 import '../../../domain/entities/reader_page_num_type.dart';
@@ -26,6 +25,7 @@ import '../../../domain/repositories/reader_search_repository.dart';
 import '../../../domain/repositories/reader_server_repository.dart';
 import '../../../domain/repositories/reader_tts_repository.dart';
 import '../../../domain/repositories/reader_web_view_repository.dart';
+import '../../../domain/use_cases/reader_get_location_cache_use_case.dart';
 import '../../../domain/use_cases/reader_observe_load_done_use_case.dart';
 import '../../../domain/use_cases/reader_observe_save_location_use_case.dart';
 import '../../../domain/use_cases/reader_observe_search_list_use_case.dart';
@@ -47,6 +47,7 @@ import '../../../domain/use_cases/reader_send_tts_play_use_case.dart';
 import '../../../domain/use_cases/reader_send_tts_stop_use_case.dart';
 import '../../../domain/use_cases/reader_start_reader_server_use_case.dart';
 import '../../../domain/use_cases/reader_stop_reader_server_use_case.dart';
+import '../../../domain/use_cases/reader_store_location_cache_use_case.dart';
 import '../../search_page/cubit/reader_search_cubit.dart';
 
 part '../../../domain/entities/reader_loading_state_code.dart';
@@ -59,6 +60,8 @@ class ReaderCubit extends Cubit<ReaderState> {
   factory ReaderCubit(
     BookReadBytesUseCase bookReadBytesUseCase,
     BookGetUseCase bookGetUseCase,
+    ReaderStoreLocationCacheUseCase storeLocationCacheUseCase,
+    ReaderGetLocationCacheUseCase getLocationCacheUseCase,
   ) {
     // Setup server dependencies
     final ReaderServerRepository serverRepository =
@@ -135,6 +138,8 @@ class ReaderCubit extends Cubit<ReaderState> {
       sendSetLineHeightUseCase,
       sendSetSmoothScrollUseCase,
       bookGetUseCase,
+      storeLocationCacheUseCase,
+      getLocationCacheUseCase,
       webViewController,
       webViewRepository,
       searchRepository,
@@ -173,6 +178,8 @@ class ReaderCubit extends Cubit<ReaderState> {
     this._sendSetLineHeightUseCase,
     this._sendSetSmoothScrollUseCase,
     this._bookGetUseCase,
+    this._storeLocationCacheUseCase,
+    this._getLocationCacheUseCase,
     this.webViewController,
     this._webViewRepository,
     this._searchRepository,
@@ -217,6 +224,10 @@ class ReaderCubit extends Cubit<ReaderState> {
   final ReaderSendSetSmoothScrollUseCase _sendSetSmoothScrollUseCase;
   final BookGetUseCase _bookGetUseCase;
 
+  /// Location cache use cases
+  final ReaderStoreLocationCacheUseCase _storeLocationCacheUseCase;
+  final ReaderGetLocationCacheUseCase _getLocationCacheUseCase;
+
   /// Initialize from widgets.
   Future<void> initAsync({
     required String bookIdentifier,
@@ -260,7 +271,7 @@ class ReaderCubit extends Cubit<ReaderState> {
       destination: destinationType == ReaderDestinationType.bookmark
           ? bookmarkData?.startCfi ?? destination
           : destination,
-      savedLocation: await LocationCacheRepository.get(bookIdentifier),
+      savedLocation: await _getLocationCacheUseCase(bookIdentifier),
     );
 
     // Listen messages
@@ -422,9 +433,12 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// Communication
   /// *************************************************************************
 
-  void _receiveSaveLocation(String data) {
+  void _receiveSaveLocation(String locationData) {
     if (bookData != null) {
-      LocationCacheRepository.store(bookData!.identifier, data);
+      _storeLocationCacheUseCase(ReaderStoreLocationCacheUseCaseParam(
+        bookIdentifier: bookData!.identifier,
+        location: locationData,
+      ));
     }
   }
 

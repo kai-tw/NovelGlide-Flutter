@@ -16,5 +16,11 @@ abstract class FileSystemRepository {
 
   Future<Uint8List> readFileAsBytes(String path);
 
+  Future<void> writeFileAsString(String path, String content);
+
+  Future<String> readFileAsString(String path);
+
   Future<void> deleteFile(String path);
+
+  Future<void> deleteDirectory(String path);
 }

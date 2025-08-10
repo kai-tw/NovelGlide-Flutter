@@ -18,8 +18,6 @@ abstract class BookRepository {
 
   Future<bool> delete(String identifier);
 
-  Future<void> deleteAllBooks();
-
   Future<Book> getBook(String identifier);
 
   Stream<Book> getBooks([Set<String>? identifierSet]);
