@@ -18,7 +18,8 @@ import '../books/presentation/bookshelf/cubit/bookshelf_cubit.dart';
 import '../collection/collection_service.dart';
 import '../collection/domain/entities/collection_data.dart';
 import '../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
-import '../settings_page/settings_service.dart';
+import '../settings_page/presentation/settings_app_bar.dart';
+import '../settings_page/presentation/settings_page.dart';
 import 'cubit/homepage_cubit.dart';
 
 part 'homepage_app_bar.dart';

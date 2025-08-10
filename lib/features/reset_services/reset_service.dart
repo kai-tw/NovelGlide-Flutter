@@ -12,7 +12,8 @@ import '../books/domain/use_cases/book_reset_use_case.dart';
 import '../collection/domain/use_cases/collection_reset_use_case.dart';
 import '../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
 import '../reader/domain/use_cases/reader_clear_location_cache_use_case.dart';
-import '../settings_page/settings_service.dart';
+import '../settings_page/presentation/widgets/settings_card.dart';
+import '../settings_page/presentation/widgets/settings_list_tile.dart';
 
 part 'presentation/reset_page.dart';
 part 'presentation/reset_service_settings_list_tile.dart';

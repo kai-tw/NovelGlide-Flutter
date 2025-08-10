@@ -30,7 +30,6 @@ class SettingsPageDataCard extends StatelessWidget {
           // Delete all collections
           SettingsPageListTile(
             onAccept: sl<CollectionResetUseCase>(),
-            onComplete: BlocProvider.of<CollectionListCubit>(context).refresh,
             iconData: Icons.delete_forever_rounded,
             title: appLocalizations.resetPageDeleteAllCollections,
           ),
