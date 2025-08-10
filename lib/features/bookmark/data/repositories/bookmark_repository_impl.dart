@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:novel_glide/features/bookmark_service/domain/entities/bookmark_data.dart';
+import 'package:novel_glide/features/bookmark/domain/entities/bookmark_data.dart';
 
 import '../../../books/domain/repository/book_repository.dart';
 import '../../domain/repositories/bookmark_repository.dart';

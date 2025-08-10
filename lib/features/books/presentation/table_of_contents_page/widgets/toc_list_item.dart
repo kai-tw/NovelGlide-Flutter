@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../bookmark_service/domain/entities/bookmark_data.dart';
+import '../../../../bookmark/domain/entities/bookmark_data.dart';
 import '../../../../reader/presentation/reader_page/reader.dart';
 import '../../../domain/entities/book.dart';
 import '../../../domain/entities/book_chapter.dart';

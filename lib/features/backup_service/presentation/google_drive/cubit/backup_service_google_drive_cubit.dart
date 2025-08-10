@@ -5,7 +5,7 @@ import 'package:googleapis/drive/v3.dart' as drive;
 import '../../../../../../enum/loading_state_code.dart';
 import '../../../../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
 import '../../../../../core/services/preference_service/preference_service.dart';
-import '../../../../bookmark_service/bookmark_service.dart';
+import '../../../../bookmark/bookmark_service.dart';
 import '../../../../collection/collection_service.dart';
 import '../../../backup_service.dart';
 

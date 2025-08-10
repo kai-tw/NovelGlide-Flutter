@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../enum/loading_state_code.dart';
-import '../../../../bookmark_service/domain/entities/bookmark_data.dart';
-import '../../../../bookmark_service/domain/use_cases/bookmark_get_data_use_case.dart';
-import '../../../../bookmark_service/domain/use_cases/bookmark_observe_change_use_case.dart';
+import '../../../../bookmark/domain/entities/bookmark_data.dart';
+import '../../../../bookmark/domain/use_cases/bookmark_get_data_use_case.dart';
+import '../../../../bookmark/domain/use_cases/bookmark_observe_change_use_case.dart';
 import '../../../domain/entities/book_chapter.dart';
 import '../../../domain/use_cases/book_get_chapter_list_use_case.dart';
 import 'toc_nested_chapter_data.dart';

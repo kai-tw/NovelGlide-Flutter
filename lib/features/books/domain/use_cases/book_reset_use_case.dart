@@ -1,5 +1,5 @@
 import '../../../../core/use_cases/use_case.dart';
-import '../../../bookmark_service/bookmark_service.dart';
+import '../../../bookmark/bookmark_service.dart';
 import '../../../collection/domain/use_cases/collection_delete_all_books_use_case.dart';
 import '../../../reader/domain/use_cases/reader_clear_location_cache_use_case.dart';
 import '../repository/book_repository.dart';

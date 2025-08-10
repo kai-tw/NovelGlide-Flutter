@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 import '../../../../../enum/loading_state_code.dart';
-import '../../../../bookmark_service/domain/entities/bookmark_data.dart';
+import '../../../../bookmark/domain/entities/bookmark_data.dart';
 import 'toc_nested_chapter_data.dart';
 
 class TocState extends Equatable {

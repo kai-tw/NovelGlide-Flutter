@@ -7,9 +7,9 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../../core/services/preference_service/data/model/reader_preference_data.dart';
 import '../../../../../core/services/preference_service/preference_service.dart';
-import '../../../../bookmark_service/domain/entities/bookmark_data.dart';
-import '../../../../bookmark_service/domain/use_cases/bookmark_get_data_use_case.dart';
-import '../../../../bookmark_service/domain/use_cases/bookmark_update_data_use_case.dart';
+import '../../../../bookmark/domain/entities/bookmark_data.dart';
+import '../../../../bookmark/domain/use_cases/bookmark_get_data_use_case.dart';
+import '../../../../bookmark/domain/use_cases/bookmark_update_data_use_case.dart';
 import '../../../../books/domain/entities/book.dart';
 import '../../../../books/domain/use_cases/book_get_use_case.dart';
 import '../../../../books/domain/use_cases/book_read_bytes_use_case.dart';
