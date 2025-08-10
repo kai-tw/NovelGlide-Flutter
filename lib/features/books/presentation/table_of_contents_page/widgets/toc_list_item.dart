@@ -22,7 +22,6 @@ class TocListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isBookmarked =
-        // TODO(kai): Change to identifier.
         bookmark?.chapterIdentifier == bookChapter.identifier;
     final ThemeData themeData = Theme.of(context);
 
@@ -31,7 +30,6 @@ class TocListItem extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
             builder: (_) => ReaderWidget(
-              // TODO(kai): Change to identifier.
               bookData: bookData,
               bookIdentifier: bookData.identifier,
               destination: bookChapter.identifier,
