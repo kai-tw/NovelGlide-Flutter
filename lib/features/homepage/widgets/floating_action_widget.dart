@@ -21,31 +21,43 @@ class _FloatingActionWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: kFloatingActionButtonMargin,
-              ),
-              child: BlocBuilder<HomepageCubit, HomepageState>(
-                buildWhen: (HomepageState previous, HomepageState current) =>
-                    previous.navItem != current.navItem,
-                builder: (BuildContext context, HomepageState state) {
-                  switch (state.navItem) {
-                    case HomepageNavigationItem.bookshelf:
-                      return const _DeleteDragTarget<BookshelfCubit, Book>();
+            child: BlocBuilder<HomepageCubit, HomepageState>(
+              buildWhen: (HomepageState previous, HomepageState current) =>
+                  previous.navItem != current.navItem,
+              builder: (BuildContext context, HomepageState state) {
+                switch (state.navItem) {
+                  case HomepageNavigationItem.bookshelf:
+                    return const Padding(
+                      padding: EdgeInsets.only(
+                        left: kFloatingActionButtonMargin,
+                        right: kFloatingActionButtonMargin,
+                      ),
+                      child: _DeleteDragTarget<BookshelfCubit, Book>(),
+                    );
 
-                    case HomepageNavigationItem.collection:
-                      return const _DeleteDragTarget<CollectionListCubit,
-                          CollectionData>();
+                  case HomepageNavigationItem.collection:
+                    return const Padding(
+                      padding: EdgeInsets.only(
+                        left: kFloatingActionButtonMargin,
+                        right: kFloatingActionButtonMargin,
+                      ),
+                      child: _DeleteDragTarget<CollectionListCubit,
+                          CollectionData>(),
+                    );
 
-                    case HomepageNavigationItem.bookmark:
-                      return const _DeleteDragTarget<BookmarkListCubit,
-                          BookmarkData>();
+                  case HomepageNavigationItem.bookmark:
+                    return const Padding(
+                      padding: EdgeInsets.only(
+                        left: kFloatingActionButtonMargin,
+                      ),
+                      child:
+                          _DeleteDragTarget<BookmarkListCubit, BookmarkData>(),
+                    );
 
-                    default:
-                      return const SizedBox.shrink();
-                  }
-                },
-              ),
+                  default:
+                    return const SizedBox.shrink();
+                }
+              },
             ),
           ),
           const _FloatingActionButton(),
