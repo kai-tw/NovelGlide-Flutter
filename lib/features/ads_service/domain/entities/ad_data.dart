@@ -1,13 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class AdvertisementState extends Equatable {
-  const AdvertisementState({
+class AdData extends Equatable {
+  const AdData({
     this.adMobBannerAd,
   });
 
   final BannerAd? adMobBannerAd;
 
   @override
-  List<Object?> get props => <Object?>[adMobBannerAd];
+  List<Object?> get props => <Object?>[
+        adMobBannerAd,
+      ];
 }

@@ -1,48 +1,39 @@
-part of '../../ad_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../domain/entities/ad_data.dart';
+import '../../domain/entities/ad_unit_id.dart';
+import '../../domain/use_cases/ad_check_enabled_use_case.dart';
+import '../../domain/use_cases/ad_load_banner_ad_use_case.dart';
+import 'advertisement_state.dart';
 
 class AdvertisementCubit extends Cubit<AdvertisementState> {
-  factory AdvertisementCubit(String adUnitId, double width) {
-    final AdvertisementCubit cubit = AdvertisementCubit._internal(
-      adUnitId,
-      const AdvertisementState(),
-    );
-    cubit.loadAd(width.truncate());
-    return cubit;
-  }
+  AdvertisementCubit(
+    this._loadBannerAdUseCase,
+    this._checkEnabledUseCase,
+  ) : super(const AdvertisementState());
 
-  AdvertisementCubit._internal(this._adUnitId, super.initialState);
+  final AdLoadBannerAdUseCase _loadBannerAdUseCase;
+  final AdCheckEnabledUseCase _checkEnabledUseCase;
 
-  final String _adUnitId;
+  Future<void> loadAd(AdUnitId unitId, int width) async {
+    if (!_checkEnabledUseCase()) {
+      // Ad is not enabled.
+      return;
+    }
 
-  Future<void> loadAd(int width) async {
-    await AdService.ensuredInitialized();
-    final AnchoredAdaptiveBannerAdSize? size =
-        await AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(width);
+    final AdData data = await _loadBannerAdUseCase(AdLoadBannerAdUseCaseParam(
+      unitId: unitId,
+      width: width,
+    ));
 
-    BannerAd(
-      adUnitId: _adUnitId,
-      request: const AdRequest(),
-      size: size ?? AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (Ad ad) {
-          if (!isClosed) {
-            // Dispose of the old ad.
-            state.bannerAd?.dispose();
-
-            // Update the state to display the new ad.
-            emit(AdvertisementState(bannerAd: ad as BannerAd));
-          }
-        },
-        onAdFailedToLoad: (Ad ad, LoadAdError err) {
-          ad.dispose();
-        },
-      ),
-    ).load();
+    emit(AdvertisementState(
+      adMobBannerAd: data.adMobBannerAd,
+    ));
   }
 
   @override
   Future<void> close() async {
-    state.bannerAd?.dispose();
+    state.adMobBannerAd?.dispose();
     super.close();
   }
 }

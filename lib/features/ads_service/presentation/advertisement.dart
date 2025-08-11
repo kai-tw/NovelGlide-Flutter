@@ -1,42 +1,58 @@
-part of '../ad_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+import '../../../main.dart';
+import '../domain/entities/ad_unit_id.dart';
+import 'cubit/advertisement_cubit.dart';
+import 'cubit/advertisement_state.dart';
 
 class Advertisement extends StatelessWidget {
-  const Advertisement({super.key, required this.unitId});
+  const Advertisement({
+    super.key,
+    required this.unitId,
+    this.height,
+  });
 
   final AdUnitId unitId;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
-    if (AdService.isAllowed) {
-      return Container(
-        padding: const EdgeInsets.all(4.0),
-        height: 60.0,
-        child: Center(
-          child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              return BlocProvider<AdvertisementCubit>(
-                create: (_) =>
-                    AdvertisementCubit(unitId.id, constraints.maxWidth),
-                child: BlocBuilder<AdvertisementCubit, AdvertisementState>(
-                  builder: (BuildContext context, AdvertisementState state) {
-                    if (state.bannerAd == null) {
-                      return const SizedBox.shrink();
-                    } else {
-                      return SizedBox(
-                        width: constraints.maxWidth,
-                        height: state.bannerAd!.size.height.toDouble(),
-                        child: AdWidget(ad: state.bannerAd!),
-                      );
-                    }
-                  },
-                ),
-              );
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return BlocProvider<AdvertisementCubit>(
+          create: (_) => sl<AdvertisementCubit>()
+            ..loadAd(
+              unitId,
+              constraints.maxWidth.toInt(),
+            ),
+          child: BlocBuilder<AdvertisementCubit, AdvertisementState>(
+            builder: (BuildContext context, AdvertisementState state) {
+              if (state.adMobBannerAd == null) {
+                return Container(
+                  margin: const EdgeInsets.all(4.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                  ),
+                  width: constraints.maxWidth,
+                  height: height,
+                );
+              } else {
+                return Container(
+                  margin: const EdgeInsets.all(4.0),
+                  width: constraints.maxWidth,
+                  height: state.adMobBannerAd!.size.height.toDouble(),
+                  child: Center(
+                    child: AdWidget(ad: state.adMobBannerAd!),
+                  ),
+                );
+              }
             },
           ),
-        ),
-      );
-    } else {
-      return const SizedBox.shrink();
-    }
+        );
+      },
+    );
   }
 }

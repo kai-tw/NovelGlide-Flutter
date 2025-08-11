@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../ads_service/ad_service.dart';
+import '../../../../ads_service/domain/entities/ad_unit_id.dart';
+import '../../../../ads_service/presentation/advertisement.dart';
 import '../../../domain/entities/book.dart';
 import '../../../domain/entities/book_cover.dart';
 import '../cubit/toc_cubit.dart';

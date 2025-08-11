@@ -10,6 +10,7 @@ class ReaderScaffoldBody extends StatelessWidget {
       children: <Widget>[
         const Advertisement(
           unitId: AdUnitId.reader,
+          height: 60.0,
         ),
         Expanded(
           child: Stack(
