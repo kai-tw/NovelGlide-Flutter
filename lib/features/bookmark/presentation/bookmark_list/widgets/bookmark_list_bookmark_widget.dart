@@ -1,4 +1,8 @@
-part of '../../../bookmark_service.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../shared_components/shared_list/shared_list.dart';
+import '../../../domain/entities/bookmark_data.dart';
 
 class BookmarkListBookmarkWidget extends StatelessWidget {
   const BookmarkListBookmarkWidget({

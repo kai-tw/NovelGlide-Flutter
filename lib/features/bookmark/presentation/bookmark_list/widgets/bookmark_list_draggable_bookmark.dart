@@ -1,4 +1,14 @@
-part of '../../../bookmark_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../homepage/cubit/homepage_cubit.dart';
+import '../../../../shared_components/draggable_feedback_widget.dart';
+import '../../../../shared_components/draggable_placeholder_widget.dart';
+import '../../../../shared_components/shared_list/shared_list.dart';
+import '../../../domain/entities/bookmark_data.dart';
+import '../cubit/bookmark_list_cubit.dart';
+import 'bookmark_list_bookmark_widget.dart';
 
 class BookmarkListDraggableBookmark extends StatelessWidget {
   const BookmarkListDraggableBookmark({

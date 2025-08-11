@@ -1,4 +1,12 @@
-part of '../../../bookmark_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../core/utils/popup_menu_utils.dart';
+import '../../../../../enum/sort_order_code.dart';
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../shared_components/common_delete_dialog.dart';
+import '../../../../shared_components/shared_list/shared_list.dart';
+import '../cubit/bookmark_list_cubit.dart';
 
 class BookmarkListAppBarMoreButton extends StatelessWidget {
   const BookmarkListAppBarMoreButton({super.key});

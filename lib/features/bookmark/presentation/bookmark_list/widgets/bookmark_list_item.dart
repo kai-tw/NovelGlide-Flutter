@@ -1,4 +1,12 @@
-part of '../../../bookmark_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../reader/domain/entities/reader_destination_type.dart';
+import '../../../../reader/presentation/reader_page/reader.dart';
+import '../../../domain/entities/bookmark_data.dart';
+import '../cubit/bookmark_list_cubit.dart';
+import 'bookmark_list_draggable_bookmark.dart';
 
 class BookmarkListItem extends StatelessWidget {
   const BookmarkListItem({super.key, required this.bookmarkData});

@@ -1,4 +1,12 @@
-part of '../../bookmark_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../enum/loading_state_code.dart';
+import '../../../../generated/i18n/app_localizations.dart';
+import '../../../shared_components/common_loading.dart';
+import '../../../shared_components/shared_list/shared_list.dart';
+import 'cubit/bookmark_list_cubit.dart';
+import 'widgets/bookmark_list_item.dart';
 
 class BookmarkList extends StatelessWidget {
   const BookmarkList({super.key});
