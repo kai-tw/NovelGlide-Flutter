@@ -1,4 +1,6 @@
-part of '../../../../backup_service.dart';
+import 'package:equatable/equatable.dart';
+
+import '../../../../domain/entities/backup_progress_step_code.dart';
 
 class BackupServiceProcessItemState extends Equatable {
   const BackupServiceProcessItemState({

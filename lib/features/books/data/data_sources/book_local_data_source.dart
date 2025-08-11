@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import '../../domain/entities/book.dart';
@@ -30,5 +29,5 @@ abstract class BookLocalDataSource {
   Future<List<BookChapter>> getChapterList(String identifier);
 
   // Validator
-  bool isFileValid(File file);
+  bool isFileValid(String path);
 }

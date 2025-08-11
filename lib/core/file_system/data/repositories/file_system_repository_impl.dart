@@ -94,4 +94,16 @@ class FileSystemRepositoryImpl implements FileSystemRepository {
       await directory.delete(recursive: true);
     }
   }
+
+  @override
+  Stream<FileSystemEntity> listDirectory(String path) async* {
+    final Directory directory = Directory(path);
+    if (!await directory.exists()) {
+      throw FileSystemException('Directory not found', path);
+    }
+
+    await for (FileSystemEntity entity in directory.list()) {
+      yield entity;
+    }
+  }
 }

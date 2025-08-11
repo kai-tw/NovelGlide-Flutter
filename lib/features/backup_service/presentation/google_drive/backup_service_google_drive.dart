@@ -6,7 +6,8 @@ import '../../../../enum/loading_state_code.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../locale_system/locale_utils.dart';
 import '../../../settings_page/presentation/widgets/settings_card.dart';
-import '../../backup_service.dart';
+import '../../domain/entities/backup_target_type.dart';
+import '../../domain/entities/backup_task_type.dart';
 import '../process_dialog/backup_service_process_dialog.dart';
 import 'cubit/backup_service_google_drive_cubit.dart';
 

@@ -1,7 +1,13 @@
-part of '../backup_service_process_dialog.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class _BookmarkTile extends StatelessWidget {
-  const _BookmarkTile();
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../domain/entities/backup_progress_step_code.dart';
+import '../cubit/item_cubits/backup_service_process_bookmark_cubit.dart';
+import '../cubit/states/backup_service_process_item_state.dart';
+
+class BackupBookmarkTile extends StatelessWidget {
+  const BackupBookmarkTile({super.key});
 
   @override
   Widget build(BuildContext context) {

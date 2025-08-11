@@ -1,4 +1,8 @@
-part of '../../../../backup_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../domain/entities/backup_target_type.dart';
+import '../../../../domain/entities/backup_task_type.dart';
+import '../states/backup_service_process_item_state.dart';
 
 abstract class BackupServiceProcessItemCubit
     extends Cubit<BackupServiceProcessItemState> {
@@ -6,7 +10,7 @@ abstract class BackupServiceProcessItemCubit
       : super(const BackupServiceProcessItemState());
 
   final String? googleDriveFileId;
-  abstract final BackupTargetType _targetType;
+  abstract final BackupTargetType targetType;
 
   /// Start the process.
   void startUp({
@@ -14,31 +18,31 @@ abstract class BackupServiceProcessItemCubit
     required BackupTargetType targetType,
   }) {
     // Do we need to work?
-    if (targetType != BackupTargetType.all && targetType != _targetType) {
+    if (targetType != BackupTargetType.all && targetType != this.targetType) {
       return;
     }
 
     switch (taskType) {
       case BackupTaskType.create:
-        _create();
+        createBackup();
         break;
 
       case BackupTaskType.restore:
-        _restore();
+        restoreBackup();
         break;
 
       case BackupTaskType.delete:
-        _delete();
+        deleteBackup();
         break;
     }
   }
 
   /// Create a backup.
-  Future<void> _create();
+  Future<void> createBackup();
 
   /// Restore from a backup.
-  Future<void> _restore();
+  Future<void> restoreBackup();
 
   /// Delete a backup.
-  Future<void> _delete();
+  Future<void> deleteBackup();
 }

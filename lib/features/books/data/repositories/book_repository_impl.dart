@@ -10,8 +10,10 @@ import '../data_sources/book_local_data_source.dart';
 import '../data_sources/pick_book_data_source.dart';
 
 class BookRepositoryImpl implements BookRepository {
-  BookRepositoryImpl(this._epubDataSource,
-      this._pickBookDataSource,);
+  BookRepositoryImpl(
+    this._epubDataSource,
+    this._pickBookDataSource,
+  );
 
   final BookLocalDataSource _epubDataSource;
   final PickBookDataSource _pickBookDataSource;
@@ -23,7 +25,7 @@ class BookRepositoryImpl implements BookRepository {
   List<String> get allowedMimeTypes => _epubDataSource.allowedMimeTypes;
 
   final StreamController<void> _onChangedController =
-  StreamController<void>.broadcast();
+      StreamController<void>.broadcast();
 
   @override
   StreamController<void> get onChangedController => _onChangedController;
@@ -95,5 +97,10 @@ class BookRepositoryImpl implements BookRepository {
 
     // Send a notification.
     onChangedController.add(null);
+  }
+
+  @override
+  bool isFileValid(String path) {
+    return _epubDataSource.isFileValid(path);
   }
 }

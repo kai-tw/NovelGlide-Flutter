@@ -1,14 +1,20 @@
-part of '../../../../backup_service.dart';
+import 'dart:io';
+
+import '../../../../backup_service.dart';
+import '../../../../domain/entities/backup_progress_step_code.dart';
+import '../../../../domain/entities/backup_target_type.dart';
+import '../states/backup_service_process_item_state.dart';
+import 'backup_service_process_item_cubit.dart';
 
 class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
   BackupServiceProcessBookmarkCubit({super.googleDriveFileId});
 
   @override
-  final BackupTargetType _targetType = BackupTargetType.bookmark;
+  final BackupTargetType targetType = BackupTargetType.bookmark;
 
   /// Backup the bookmark.
   @override
-  Future<void> _create() async {
+  Future<void> createBackup() async {
     // Start the upload process
     emit(const BackupServiceProcessItemState(
       step: BackupProgressStepCode.upload,
@@ -39,7 +45,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
 
   /// Restore the bookmark.
   @override
-  Future<void> _restore() async {
+  Future<void> restoreBackup() async {
     if (!(await BackupService.bookmarkRepository.isBackupExists())) {
       emit(const BackupServiceProcessItemState(
         step: BackupProgressStepCode.disabled,
@@ -92,7 +98,7 @@ class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
 
   /// Delete the bookmark.
   @override
-  Future<void> _delete() async {
+  Future<void> deleteBackup() async {
     if (!(await BackupService.bookmarkRepository.isBackupExists())) {
       emit(const BackupServiceProcessItemState(
         step: BackupProgressStepCode.disabled,

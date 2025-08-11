@@ -1,15 +1,21 @@
-part of '../../../../backup_service.dart';
+import 'dart:io';
+
+import '../../../../backup_service.dart';
+import '../../../../domain/entities/backup_progress_step_code.dart';
+import '../../../../domain/entities/backup_target_type.dart';
+import '../states/backup_service_process_item_state.dart';
+import 'backup_service_process_item_cubit.dart';
 
 class BackupServiceProcessCollectionCubit
     extends BackupServiceProcessItemCubit {
   BackupServiceProcessCollectionCubit({super.googleDriveFileId});
 
   @override
-  final BackupTargetType _targetType = BackupTargetType.collection;
+  final BackupTargetType targetType = BackupTargetType.collection;
 
   /// Back collections up
   @override
-  Future<void> _create() async {
+  Future<void> createBackup() async {
     // Start the upload process
     emit(const BackupServiceProcessItemState(
       step: BackupProgressStepCode.upload,
@@ -39,7 +45,7 @@ class BackupServiceProcessCollectionCubit
 
   /// Restore from the collection backup.
   @override
-  Future<void> _restore() async {
+  Future<void> restoreBackup() async {
     if (!(await BackupService.collectionRepository.isBackupExists())) {
       emit(const BackupServiceProcessItemState(
         step: BackupProgressStepCode.disabled,
@@ -83,7 +89,7 @@ class BackupServiceProcessCollectionCubit
 
   /// Delete the collection backup.
   @override
-  Future<void> _delete() async {
+  Future<void> deleteBackup() async {
     if (!(await BackupService.collectionRepository.isBackupExists())) {
       emit(const BackupServiceProcessItemState(
         step: BackupProgressStepCode.disabled,

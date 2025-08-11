@@ -33,4 +33,6 @@ abstract class BookRepository {
   Future<void> clearTemporaryPickedBooks();
 
   Future<void> reset();
+
+  bool isFileValid(String path);
 }

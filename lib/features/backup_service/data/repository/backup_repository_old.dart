@@ -1,6 +1,6 @@
 part of '../../backup_service.dart';
 
-abstract class BackupRepository {
+abstract class BackupRepositoryOld {
   Directory? tempDirectory;
   Completer<void>? mutexLock;
 

@@ -28,8 +28,8 @@ class GoogleAuthInterface {
     // If silent login fails, prompt the user to sign in
     try {
       _currentUser ??= await GoogleSignIn.instance.authenticate();
-    } on GoogleSignInException catch (e) {
-      LogSystem.error('GoogleAuthService.signIn: $e', error: e);
+    } on GoogleSignInException catch (e, s) {
+      LogSystem.error('GoogleAuthService.signIn: $e', error: e, stackTrace: s);
       throw GoogleAuthSignInException();
     }
 

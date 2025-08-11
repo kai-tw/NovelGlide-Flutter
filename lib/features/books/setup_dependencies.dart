@@ -1,4 +1,5 @@
 import '../../core/file_system/domain/repositories/file_system_repository.dart';
+import '../../core/path_provider/domain/repositories/app_path_provider.dart';
 import '../../main.dart';
 import '../bookmark/domain/use_cases/bookmark_get_data_use_case.dart';
 import '../bookmark/domain/use_cases/bookmark_observe_change_use_case.dart';
@@ -31,8 +32,10 @@ import 'presentation/table_of_contents_page/cubit/toc_cubit.dart';
 
 void setupBookDependencies() {
   // Register data source
-  sl.registerLazySingleton<BookLocalDataSource>(
-      () => EpubDataSource(sl<FileSystemRepository>()));
+  sl.registerLazySingleton<BookLocalDataSource>(() => EpubDataSource(
+        sl<AppPathProvider>(),
+        sl<FileSystemRepository>(),
+      ));
   sl.registerLazySingleton<PickBookDataSource>(() => PickBookDataSourceImpl());
 
   // Register repositories

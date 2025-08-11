@@ -5,6 +5,7 @@ import '../features/advertisement/setup_dependencies.dart';
 import '../features/appearance/domain/use_cases/get_appearance_settings_use_case.dart';
 import '../features/appearance/domain/use_cases/save_appearance_settings_use_case.dart';
 import '../features/appearance/setup_dependencies.dart';
+import '../features/backup_service/setup_dependencies.dart';
 import '../features/bookmark/setup_dependencies.dart';
 import '../features/books/setup_dependencies.dart';
 import '../features/collection/setup_dependencies.dart';
@@ -28,6 +29,7 @@ Future<void> setupDependencies() async {
   // Dependencies injection for all features
   setupAdDependencies();
   setupAppearanceDependencies(prefs);
+  setupBackupDependencies();
   setupLocaleDependencies(prefs);
   setupLogDependencies();
   setupBookDependencies();

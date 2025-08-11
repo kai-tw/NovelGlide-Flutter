@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
@@ -8,7 +9,7 @@ import 'package:image/image.dart';
 import 'package:path/path.dart';
 
 import '../../../../../core/file_system/domain/repositories/file_system_repository.dart';
-import '../../../../../core/services/file_system_service/file_system_service.dart';
+import '../../../../../core/path_provider/domain/repositories/app_path_provider.dart';
 import '../../../../../core/services/mime_resolver.dart';
 import '../../../domain/entities/book.dart';
 import '../../../domain/entities/book_chapter.dart';
@@ -16,8 +17,9 @@ import '../../../domain/entities/book_cover.dart';
 import '../book_local_data_source.dart';
 
 class EpubDataSource extends BookLocalDataSource {
-  EpubDataSource(this._fileSystemRepository);
+  EpubDataSource(this._pathProvider, this._fileSystemRepository);
 
+  final AppPathProvider _pathProvider;
   final FileSystemRepository _fileSystemRepository;
   final Map<String, BookCover> _coverBytesCache = <String, BookCover>{};
 
@@ -28,11 +30,10 @@ class EpubDataSource extends BookLocalDataSource {
 
   @override
   Future<void> addBooks(Set<String> externalPathSet) async {
-    final Directory libraryDirectory =
-        await FileSystemService.document.libraryDirectory;
+    final String libraryPath = await _pathProvider.libraryPath;
 
     for (String path in externalPathSet) {
-      final String destination = join(libraryDirectory.path, basename(path));
+      final String destination = join(libraryPath, basename(path));
       _fileSystemRepository.copyFile(path, destination);
     }
   }
@@ -49,26 +50,23 @@ class EpubDataSource extends BookLocalDataSource {
 
   @override
   Future<void> deleteAllBooks() async {
-    final Directory directory =
-        await FileSystemService.document.libraryDirectory;
+    final String libraryPath = await _pathProvider.libraryPath;
+    final Directory directory = Directory(libraryPath);
     directory.deleteSync(recursive: true);
     directory.createSync(recursive: true);
   }
 
   @override
   Future<bool> exists(String identifier) async {
-    final Directory libraryDirectory =
-        await FileSystemService.document.libraryDirectory;
-    final String destination =
-        join(libraryDirectory.path, basename(identifier));
+    final String libraryPath = await _pathProvider.libraryPath;
+    final String destination = join(libraryPath, basename(identifier));
     return File(destination).existsSync();
   }
 
   @override
   Future<Book> getBook(String identifier) async {
-    final Directory directory =
-        await FileSystemService.document.libraryDirectory;
-    final String absolutePath = absolute(directory.path, identifier);
+    final String libraryPath = await _pathProvider.libraryPath;
+    final String absolutePath = absolute(libraryPath, identifier);
     final File epubFile = File(absolutePath);
     final epub.EpubBook epubBook = await _loadEpubBook(absolutePath);
     final epub.Image? coverImage = _findCoverImage(epubBook);
@@ -92,23 +90,28 @@ class EpubDataSource extends BookLocalDataSource {
 
   @override
   Stream<Book> getBooks([Set<String>? identifierSet]) async* {
-    final Set<String> idSet = identifierSet ??
-        (await FileSystemService.document.libraryDirectory)
-            .listSync()
-            .whereType<File>()
-            .where((File e) => isFileValid(e))
-            .map((File e) => basename(e.path))
-            .toSet();
-    for (String id in idSet) {
-      yield await getBook(id);
+    final String libraryPath = await _pathProvider.libraryPath;
+
+    if (identifierSet == null) {
+      // List all books
+      await for (FileSystemEntity entity
+          in _fileSystemRepository.listDirectory(libraryPath)) {
+        if (entity is File && isFileValid(entity.path)) {
+          yield await getBook(entity.path);
+        }
+      }
+    } else {
+      // List specific books
+      for (String id in identifierSet) {
+        yield await getBook(id);
+      }
     }
   }
 
   @override
   Future<Uint8List> readBookBytes(String identifier) async {
-    final Directory directory =
-        await FileSystemService.document.libraryDirectory;
-    final String absolutePath = absolute(directory.path, identifier);
+    final String libraryPath = await _pathProvider.libraryPath;
+    final String absolutePath = absolute(libraryPath, identifier);
     return _fileSystemRepository.readFileAsBytes(absolutePath);
   }
 
@@ -123,9 +126,8 @@ class EpubDataSource extends BookLocalDataSource {
 
   @override
   Future<List<BookChapter>> getChapterList(String identifier) async {
-    final Directory directory =
-        await FileSystemService.document.libraryDirectory;
-    final String absolutePath = absolute(directory.path, identifier);
+    final String libraryPath = await _pathProvider.libraryPath;
+    final String absolutePath = absolute(libraryPath, identifier);
     final epub.EpubBook epubBook = await _loadEpubBook(absolutePath);
 
     return (epubBook.Chapters ?? <epub.EpubChapter>[])
@@ -134,9 +136,9 @@ class EpubDataSource extends BookLocalDataSource {
   }
 
   @override
-  bool isFileValid(File file) {
-    return allowedExtensions.contains(extension(file.path).substring(1)) &&
-        allowedMimeTypes.contains(MimeResolver.lookupAll(file));
+  bool isFileValid(String path) {
+    return allowedExtensions.contains(extension(path).substring(1)) &&
+        allowedMimeTypes.contains(MimeResolver.lookupAll(File(path)));
   }
 
   /// Loads an EpubBook asynchronously, potentially a heavy operation.

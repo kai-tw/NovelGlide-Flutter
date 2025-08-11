@@ -1,6 +1,6 @@
 part of '../../backup_service.dart';
 
-class BookBackupRepository extends BackupRepository {
+class BookBackupRepository extends BackupRepositoryOld {
   BookBackupRepository();
 
   @override
