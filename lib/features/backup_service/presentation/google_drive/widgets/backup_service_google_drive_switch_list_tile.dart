@@ -25,7 +25,6 @@ class BackupServiceGoogleDriveSwitchListTile extends StatelessWidget {
               ? (bool value) async {
                   try {
                     await cubit.setEnabled(value);
-                    cubit.refresh();
                   } on GoogleAuthSignInException {
                     if (context.mounted) {
                       ExceptionService.showExceptionDialog(

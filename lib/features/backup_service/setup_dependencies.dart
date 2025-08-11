@@ -5,7 +5,7 @@ import '../../core/path_provider/domain/repositories/app_path_provider.dart';
 import '../../core/path_provider/domain/repositories/json_path_provider.dart';
 import '../../main.dart';
 import '../bookmark/domain/repositories/bookmark_repository.dart';
-import '../books/domain/repository/book_repository.dart';
+import '../books/domain/repositories/book_repository.dart';
 import '../collection/domain/repositories/collection_repository.dart';
 import 'data/repositories/book_backup_repository_impl.dart';
 import 'data/repositories/bookmark_backup_repository_impl.dart';
@@ -22,6 +22,11 @@ import 'domain/use_cases/backup_bookmark_restore_use_case.dart';
 import 'domain/use_cases/backup_collection_create_use_case.dart';
 import 'domain/use_cases/backup_collection_delete_use_case.dart';
 import 'domain/use_cases/backup_collection_restore_use_case.dart';
+import 'domain/use_cases/backup_get_book_backup_exists_use_case.dart';
+import 'domain/use_cases/backup_get_bookmark_backup_exists_use_case.dart';
+import 'domain/use_cases/backup_get_collection_backup_exists_use_case.dart';
+import 'domain/use_cases/backup_get_last_backup_time_use_case.dart';
+import 'presentation/google_drive/cubit/backup_service_google_drive_cubit.dart';
 import 'presentation/process_dialog/cubit/item_cubits/backup_service_process_bookmark_cubit.dart';
 import 'presentation/process_dialog/cubit/item_cubits/backup_service_process_collection_cubit.dart';
 import 'presentation/process_dialog/cubit/item_cubits/backup_service_process_library_cubit.dart';
@@ -88,6 +93,24 @@ void setupBackupDependencies() {
       () => BackupCollectionDeleteUseCase(
             sl<CollectionBackupRepository>(),
           ));
+  sl.registerFactory<BackupGetLastBackupTimeUseCase>(
+      () => BackupGetLastBackupTimeUseCase(
+            sl<BookBackupRepository>(),
+            sl<BookmarkBackupRepository>(),
+            sl<CollectionBackupRepository>(),
+          ));
+  sl.registerFactory<BackupGetBookBackupExistsUseCase>(
+      () => BackupGetBookBackupExistsUseCase(
+            sl<BookBackupRepository>(),
+          ));
+  sl.registerFactory<BackupGetBookmarkBackupExistsUseCase>(
+      () => BackupGetBookmarkBackupExistsUseCase(
+            sl<BookmarkBackupRepository>(),
+          ));
+  sl.registerFactory<BackupGetCollectionBackupExistsUseCase>(
+      () => BackupGetCollectionBackupExistsUseCase(
+            sl<CollectionBackupRepository>(),
+          ));
 
   // Register cubits
   sl.registerFactory<BackupServiceProcessLibraryCubit>(
@@ -107,5 +130,12 @@ void setupBackupDependencies() {
             sl<BackupCollectionCreateUseCase>(),
             sl<BackupCollectionRestoreUseCase>(),
             sl<BackupCollectionDeleteUseCase>(),
+          ));
+  sl.registerFactory<BackupServiceGoogleDriveCubit>(
+      () => BackupServiceGoogleDriveCubit(
+            sl<BackupGetBookBackupExistsUseCase>(),
+            sl<BackupGetBookmarkBackupExistsUseCase>(),
+            sl<BackupGetCollectionBackupExistsUseCase>(),
+            sl<BackupGetLastBackupTimeUseCase>(),
           ));
 }

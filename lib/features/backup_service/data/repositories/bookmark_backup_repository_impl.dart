@@ -16,6 +16,23 @@ class BookmarkBackupRepositoryImpl implements BookmarkBackupRepository {
       GoogleApiInterfaces.drive.getFileId(await fileName);
 
   @override
+  Future<String> get fileName async =>
+      basename(await _jsonPathProvider.bookmarkJsonPath);
+
+  @override
+  Future<DateTime?> get lastBackupTime async {
+    final String? fileId = await googleDriveFileId;
+
+    if (fileId == null) {
+      return null;
+    } else {
+      return (await GoogleApiInterfaces.drive
+              .getMetadataById(fileId, field: 'modifiedTime'))
+          .modifiedTime;
+    }
+  }
+
+  @override
   Future<bool> deleteFromCloud() async {
     if ((await googleDriveFileId) == null) {
       LogSystem.error('Google Drive file id of the bookmark backup is null.');
@@ -69,10 +86,6 @@ class BookmarkBackupRepositoryImpl implements BookmarkBackupRepository {
   @override
   Future<bool> isBackupExists() async =>
       GoogleApiInterfaces.drive.fileExists(await fileName);
-
-  @override
-  Future<String> get fileName async =>
-      basename(await _jsonPathProvider.bookmarkJsonPath);
 
   @override
   Future<bool> uploadToCloud(

@@ -75,17 +75,17 @@ class BackupServiceGoogleDriveActionButton extends StatelessWidget {
   /// Whether the action button is enabled.
   bool _isEnabled(BackupServiceGoogleDriveState state) {
     final bool isLoaded = state.code.isLoaded;
-    final bool libraryExists = state.libraryId != null;
-    final bool bookmarkExists = state.bookmarkId != null;
-    final bool collectionExists = state.collectionId != null;
     return switch (taskType) {
       BackupTaskType.create => isLoaded,
       BackupTaskType.restore || BackupTaskType.delete => switch (targetType) {
-          BackupTargetType.all =>
-            isLoaded && (libraryExists || bookmarkExists || collectionExists),
-          BackupTargetType.library => isLoaded && libraryExists,
-          BackupTargetType.collection => isLoaded && collectionExists,
-          BackupTargetType.bookmark => isLoaded && bookmarkExists
+          BackupTargetType.all => isLoaded &&
+              (state.isBookBackupExists ||
+                  state.isBookmarkBackupExists ||
+                  state.isCollectionBackupExists),
+          BackupTargetType.library => isLoaded && state.isBookBackupExists,
+          BackupTargetType.collection =>
+            isLoaded && state.isCollectionBackupExists,
+          BackupTargetType.bookmark => isLoaded && state.isBookmarkBackupExists,
         }
     };
   }

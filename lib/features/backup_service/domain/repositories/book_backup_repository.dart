@@ -1,6 +1,8 @@
 abstract class BookBackupRepository {
   Future<String> get archiveName;
 
+  Future<DateTime?> get lastBackupTime;
+
   Future<String> archive(
     String tempDirectoryPath,
     void Function(double progress)? onZipping,

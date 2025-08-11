@@ -1,6 +1,6 @@
 import '../../../../core/use_cases/use_case.dart';
 import '../entities/book.dart';
-import '../repository/book_repository.dart';
+import '../repositories/book_repository.dart';
 
 class BookGetListByIdentifiersUseCase
     extends UseCase<Stream<Book>, Set<String>> {

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:novel_glide/features/bookmark/domain/entities/bookmark_data.dart';
 
-import '../../../books/domain/repository/book_repository.dart';
+import '../../../books/domain/repositories/book_repository.dart';
 import '../../domain/repositories/bookmark_repository.dart';
 import '../data_sources/bookmark_local_json_data_source.dart';
 

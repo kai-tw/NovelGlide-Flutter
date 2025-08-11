@@ -1,27 +1,31 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:googleapis/drive/v3.dart' as drive;
 
 import '../../../../../../enum/loading_state_code.dart';
 import '../../../../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
 import '../../../../../core/services/preference_service/preference_service.dart';
-import '../../../../bookmark/bookmark_service.dart';
-import '../../../backup_service.dart';
+import '../../../domain/use_cases/backup_get_book_backup_exists_use_case.dart';
+import '../../../domain/use_cases/backup_get_bookmark_backup_exists_use_case.dart';
+import '../../../domain/use_cases/backup_get_collection_backup_exists_use_case.dart';
+import '../../../domain/use_cases/backup_get_last_backup_time_use_case.dart';
 
 part 'backup_service_google_drive_state.dart';
 
 /// Manages Google Drive backup operations.
 class BackupServiceGoogleDriveCubit
     extends Cubit<BackupServiceGoogleDriveState> {
-  factory BackupServiceGoogleDriveCubit() {
-    final BackupServiceGoogleDriveCubit cubit =
-        BackupServiceGoogleDriveCubit._();
-    cubit.refresh();
-    return cubit;
-  }
+  BackupServiceGoogleDriveCubit(
+    this._getBookBackupExistsUseCase,
+    this._getBookmarkBackupExistsUseCase,
+    this._getCollectionBackupExistsUseCase,
+    this._getLastBackupTimeUseCase,
+  ) : super(const BackupServiceGoogleDriveState());
 
-  BackupServiceGoogleDriveCubit._()
-      : super(const BackupServiceGoogleDriveState());
+  final BackupGetBookBackupExistsUseCase _getBookBackupExistsUseCase;
+  final BackupGetBookmarkBackupExistsUseCase _getBookmarkBackupExistsUseCase;
+  final BackupGetCollectionBackupExistsUseCase
+      _getCollectionBackupExistsUseCase;
+  final BackupGetLastBackupTimeUseCase _getLastBackupTimeUseCase;
 
   /// Refreshes the backup state by checking preferences and updating metadata.
   Future<void> refresh() async {
@@ -38,38 +42,13 @@ class BackupServiceGoogleDriveCubit
     }
 
     if (GoogleApiInterfaces.drive.isSignedIn) {
-      // Load the file IDs.
-      final List<String> fileNameList =
-          await Future.wait<String>(<Future<String>>[
-        BackupService.bookRepository.fileName,
-        CollectionService.repository.jsonFileName,
-        BookmarkService.repository.jsonFileName,
-      ]);
-      final List<String?> fileIdList = await Future.wait<String?>(
-        fileNameList.map(
-            (String fileName) => GoogleApiInterfaces.drive.getFileId(fileName)),
-      );
-
-      // Get the last backup time.
-      final List<DateTime> timeList = (await Future.wait<drive.File>(
-        fileIdList.whereType<String>().map((String fileId) =>
-            GoogleApiInterfaces.drive
-                .getMetadataById(fileId, field: 'modifiedTime')),
-      ))
-          .map((drive.File e) => e.modifiedTime)
-          .whereType<DateTime>()
-          .toList();
-      final DateTime? lastBackupTime = timeList.isNotEmpty
-          ? timeList.reduce((DateTime a, DateTime b) => a.isAfter(b) ? a : b)
-          : null;
-
       if (!isClosed) {
         emit(BackupServiceGoogleDriveState(
           code: LoadingStateCode.loaded,
-          libraryId: fileIdList[0],
-          collectionId: fileIdList[1],
-          bookmarkId: fileIdList[2],
-          lastBackupTime: lastBackupTime,
+          isBookBackupExists: await _getBookBackupExistsUseCase(),
+          isBookmarkBackupExists: await _getBookmarkBackupExistsUseCase(),
+          isCollectionBackupExists: await _getCollectionBackupExistsUseCase(),
+          lastBackupTime: await _getLastBackupTimeUseCase(),
         ));
       }
     } else if (!isClosed) {
@@ -85,10 +64,12 @@ class BackupServiceGoogleDriveCubit
       isEnabled
           ? await GoogleApiInterfaces.drive.signIn()
           : await GoogleApiInterfaces.drive.signOut();
-    }
 
-    await PreferenceService.backup.save(BackupPreferenceData(
-      isGoogleDriveEnabled: GoogleApiInterfaces.drive.isSignedIn,
-    ));
+      await PreferenceService.backup.save(BackupPreferenceData(
+        isGoogleDriveEnabled: GoogleApiInterfaces.drive.isSignedIn,
+      ));
+
+      refresh();
+    }
   }
 }

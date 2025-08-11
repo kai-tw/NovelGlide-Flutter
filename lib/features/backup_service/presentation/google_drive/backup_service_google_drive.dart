@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/services/exception_service/exception_service.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../generated/i18n/app_localizations.dart';
+import '../../../../main.dart';
 import '../../../locale_system/locale_utils.dart';
 import '../../../settings_page/presentation/widgets/settings_card.dart';
 import '../../domain/entities/backup_target_type.dart';
@@ -22,7 +23,7 @@ class BackupServiceGoogleDrive extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<BackupServiceGoogleDriveCubit>(
-      create: (_) => BackupServiceGoogleDriveCubit(),
+      create: (_) => sl<BackupServiceGoogleDriveCubit>()..refresh(),
       child: SettingsCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

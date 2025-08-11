@@ -1,5 +1,5 @@
 import '../../../../core/use_cases/use_case.dart';
-import '../repository/book_repository.dart';
+import '../repositories/book_repository.dart';
 
 class BookGetAllowedExtensionsUseCase extends UseCase<List<String>, void> {
   const BookGetAllowedExtensionsUseCase(this._repository);

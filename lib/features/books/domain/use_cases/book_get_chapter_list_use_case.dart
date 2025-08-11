@@ -1,6 +1,6 @@
 import '../../../../core/use_cases/use_case.dart';
 import '../entities/book_chapter.dart';
-import '../repository/book_repository.dart';
+import '../repositories/book_repository.dart';
 
 class BookGetChapterListUseCase
     extends UseCase<Future<List<BookChapter>>, String> {

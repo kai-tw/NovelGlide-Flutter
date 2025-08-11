@@ -1,7 +1,7 @@
 import '../../core/file_system/domain/repositories/json_repository.dart';
 import '../../core/path_provider/domain/repositories/json_path_provider.dart';
 import '../../main.dart';
-import '../books/domain/repository/book_repository.dart';
+import '../books/domain/repositories/book_repository.dart';
 import 'data/data_sources/bookmark_local_json_data_source.dart';
 import 'data/data_sources/bookmark_local_json_data_source_impl.dart';
 import 'data/repositories/bookmark_repository_impl.dart';

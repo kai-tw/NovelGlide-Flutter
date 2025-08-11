@@ -5,7 +5,7 @@ import 'package:novel_glide/features/books/domain/entities/book.dart';
 
 import '../../domain/entities/book_chapter.dart';
 import '../../domain/entities/book_cover.dart';
-import '../../domain/repository/book_repository.dart';
+import '../../domain/repositories/book_repository.dart';
 import '../data_sources/book_local_data_source.dart';
 import '../data_sources/pick_book_data_source.dart';
 

@@ -16,6 +16,23 @@ class CollectionBackupRepositoryImpl implements CollectionBackupRepository {
       GoogleApiInterfaces.drive.getFileId(await fileName);
 
   @override
+  Future<String> get fileName async =>
+      basename(await _jsonPathProvider.collectionJsonPath);
+
+  @override
+  Future<DateTime?> get lastBackupTime async {
+    final String? fileId = await googleDriveFileId;
+
+    if (fileId == null) {
+      return null;
+    } else {
+      return (await GoogleApiInterfaces.drive
+              .getMetadataById(fileId, field: 'modifiedTime'))
+          .modifiedTime;
+    }
+  }
+
+  @override
   Future<bool> deleteFromCloud() async {
     if ((await googleDriveFileId) == null) {
       LogSystem.error('Google Drive file id of the collection backup is null.');
@@ -69,10 +86,6 @@ class CollectionBackupRepositoryImpl implements CollectionBackupRepository {
   @override
   Future<bool> isBackupExists() async =>
       GoogleApiInterfaces.drive.fileExists(await fileName);
-
-  @override
-  Future<String> get fileName async =>
-      basename(await _jsonPathProvider.collectionJsonPath);
 
   @override
   Future<bool> uploadToCloud(

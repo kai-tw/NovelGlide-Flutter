@@ -8,7 +8,7 @@ import '../../../../core/file_system/domain/repositories/file_system_repository.
 import '../../../../core/interfaces/google_api_interfaces/google_api_interfaces.dart';
 import '../../../../core/log_system/log_system.dart';
 import '../../../../core/path_provider/domain/repositories/app_path_provider.dart';
-import '../../../books/domain/repository/book_repository.dart';
+import '../../../books/domain/repositories/book_repository.dart';
 import '../../domain/repositories/book_backup_repository.dart';
 
 class BookBackupRepositoryImpl implements BookBackupRepository {
@@ -59,6 +59,19 @@ class BookBackupRepositoryImpl implements BookBackupRepository {
   Future<String> get archiveName async => 'Library.zip';
 
   @override
+  Future<DateTime?> get lastBackupTime async {
+    final String? fileId = await googleDriveFileId;
+
+    if (fileId == null) {
+      return null;
+    } else {
+      return (await GoogleApiInterfaces.drive
+              .getMetadataById(fileId, field: 'modifiedTime'))
+          .modifiedTime;
+    }
+  }
+
+  @override
   Future<bool> deleteFromCloud() async {
     if (await googleDriveFileId == null) {
       LogSystem.error('Delete library backup failed.'
@@ -76,7 +89,7 @@ class BookBackupRepositoryImpl implements BookBackupRepository {
 
   @override
   Future<String?> downloadFromCloud(
-      String tempDirectoryPath,
+    String tempDirectoryPath,
     void Function(int downloaded, int total)? onDownload,
   ) async {
     if (await googleDriveFileId == null) {
@@ -126,7 +139,8 @@ class BookBackupRepositoryImpl implements BookBackupRepository {
     final Set<String> importSet = <String>{};
 
     // Get all paths of every book.
-    await for (FileSystemEntity entity in _fileSystemRepository.listDirectory(tempDirectoryPath)) {
+    await for (FileSystemEntity entity
+        in _fileSystemRepository.listDirectory(tempDirectoryPath)) {
       // Only import the valid files.
       if (entity is File && _bookRepository.isFileValid(entity.path)) {
         importSet.add(entity.path);
@@ -142,8 +156,7 @@ class BookBackupRepositoryImpl implements BookBackupRepository {
 
   @override
   Future<bool> isBackupExists() async {
-    return
-      GoogleApiInterfaces.drive.fileExists(await archiveName);
+    return GoogleApiInterfaces.drive.fileExists(await archiveName);
   }
 
   @override
@@ -152,7 +165,8 @@ class BookBackupRepositoryImpl implements BookBackupRepository {
     void Function(int uploaded, int total)? onUpload,
   ) async {
     try {
-      await GoogleApiInterfaces.drive.uploadFile(File(zipFilePath), onUpload: onUpload);
+      await GoogleApiInterfaces.drive
+          .uploadFile(File(zipFilePath), onUpload: onUpload);
     } catch (e) {
       // An error occurred.
       LogSystem.error('Upload library zip to Google Drive failed', error: e);
