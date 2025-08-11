@@ -44,9 +44,9 @@ class BookBackupRepositoryImpl implements BookBackupRepository {
         // Call callback for sending the progress.
         onZipping?.call(progress / 100);
 
-        // Only include epub files.
-        final String absolutePath = join(libraryFolder, fileName);
-        return _bookRepository.isFileValid(absolutePath)
+        // Only check the extension is acceptable.
+        final String ext = extension(fileName);
+        return _bookRepository.allowedExtensions.contains(ext.substring(1))
             ? ZipFileOperation.includeItem
             : ZipFileOperation.skipItem;
       },
@@ -142,7 +142,7 @@ class BookBackupRepositoryImpl implements BookBackupRepository {
     await for (FileSystemEntity entity
         in _fileSystemRepository.listDirectory(tempDirectoryPath)) {
       // Only import the valid files.
-      if (entity is File && _bookRepository.isFileValid(entity.path)) {
+      if (entity is File && await _bookRepository.isFileValid(entity.path)) {
         importSet.add(entity.path);
       }
     }

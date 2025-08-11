@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import '../../../../core/use_cases/use_case.dart';
+import '../../../../core/domain/use_cases/use_case.dart';
 import '../entities/backup_progress_data.dart';
 import '../entities/backup_progress_step_code.dart';
 import '../repositories/collection_backup_repository.dart';

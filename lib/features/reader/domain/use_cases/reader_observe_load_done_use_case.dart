@@ -1,4 +1,4 @@
-import '../../../../core/use_cases/use_case.dart';
+import '../../../../core/domain/use_cases/use_case.dart';
 import '../repositories/reader_web_view_repository.dart';
 
 class ReaderObserveLoadDoneUseCase extends UseCase<Stream<void>, void> {

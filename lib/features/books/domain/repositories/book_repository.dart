@@ -34,5 +34,5 @@ abstract class BookRepository {
 
   Future<void> reset();
 
-  bool isFileValid(String path);
+  Future<bool> isFileValid(String path);
 }

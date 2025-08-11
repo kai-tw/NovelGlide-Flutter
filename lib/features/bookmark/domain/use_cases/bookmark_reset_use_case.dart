@@ -1,4 +1,4 @@
-import '../../../../core/use_cases/use_case.dart';
+import '../../../../core/domain/use_cases/use_case.dart';
 import '../repositories/bookmark_repository.dart';
 
 class BookmarkResetUseCase extends UseCase<Future<void>, void> {

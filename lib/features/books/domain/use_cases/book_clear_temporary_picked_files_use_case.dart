@@ -1,4 +1,4 @@
-import 'package:novel_glide/core/use_cases/use_case.dart';
+import '../../../../core/domain/use_cases/use_case.dart';
 
 import '../repositories/book_repository.dart';
 

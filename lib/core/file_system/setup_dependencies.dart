@@ -6,7 +6,6 @@ import 'data/repositories/temp_repository_impl.dart';
 import 'domain/repositories/file_system_repository.dart';
 import 'domain/repositories/json_repository.dart';
 import 'domain/repositories/temp_repository.dart';
-import 'domain/use_cases/create_temporary_directory_use_case.dart';
 
 void setupFileSystemDependencies() {
   // Register repositories
@@ -18,10 +17,4 @@ void setupFileSystemDependencies() {
         sl<AppPathProvider>(),
         sl<FileSystemRepository>(),
       ));
-
-  // Register use cases
-  sl.registerFactory<CreateTemporaryDirectoryUseCase>(
-      () => CreateTemporaryDirectoryUseCase(
-            sl<TempRepository>(),
-          ));
 }

@@ -5,6 +5,7 @@ class _FilePathCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppPathProvider pathProvider = sl<AppPathProvider>();
     return _CardTemplate(
       children: <Widget>[
         ListTile(
@@ -13,32 +14,38 @@ class _FilePathCard extends StatelessWidget {
         ),
         ListTile(
           title: const Text('document'),
-          subtitle: _buildPathText(FileSystemService.document.rootDirectory),
+          subtitle: FutureBuilder<String>(
+            future: pathProvider.documentPath,
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              return SimpleFadeSwitcher(
+                child: snapshot.hasData ? Text(snapshot.data!) : null,
+              );
+            },
+          ),
         ),
         ListTile(
           title: const Text('temp'),
-          subtitle: _buildPathText(FileSystemService.temp.rootDirectory),
+          subtitle: FutureBuilder<String>(
+            future: pathProvider.tempPath,
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              return SimpleFadeSwitcher(
+                child: snapshot.hasData ? Text(snapshot.data!) : null,
+              );
+            },
+          ),
         ),
         ListTile(
           title: const Text('cache'),
-          subtitle: _buildPathText(FileSystemService.cache.rootDirectory),
+          subtitle: FutureBuilder<String>(
+            future: pathProvider.cachePath,
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              return SimpleFadeSwitcher(
+                child: snapshot.hasData ? Text(snapshot.data!) : null,
+              );
+            },
+          ),
         ),
       ],
-    );
-  }
-
-  Widget _buildPathText(Future<Directory> future) {
-    return FutureBuilder<Directory>(
-      future: future,
-      builder: (BuildContext context, AsyncSnapshot<Directory> snapshot) {
-        if (snapshot.hasData) {
-          return Text(snapshot.data!.path);
-        } else if (snapshot.hasError) {
-          return Text(snapshot.error.toString());
-        } else {
-          return const CircularProgressIndicator();
-        }
-      },
     );
   }
 }

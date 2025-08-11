@@ -1,4 +1,4 @@
-import '../../../../core/use_cases/use_case.dart';
+import '../../../../core/domain/use_cases/use_case.dart';
 import '../entities/ad_data.dart';
 import '../entities/ad_unit_id.dart';
 import '../repositories/ad_repository.dart';

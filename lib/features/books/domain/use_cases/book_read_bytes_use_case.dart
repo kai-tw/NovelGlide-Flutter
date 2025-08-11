@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import '../../../../core/use_cases/use_case.dart';
+import '../../../../core/domain/use_cases/use_case.dart';
 import '../repositories/book_repository.dart';
 
 class BookReadBytesUseCase extends UseCase<Future<Uint8List>, String> {

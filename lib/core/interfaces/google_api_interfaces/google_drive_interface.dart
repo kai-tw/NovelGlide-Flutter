@@ -81,7 +81,9 @@ class GoogleDriveInterface {
 
     final drive.File driveFile = drive.File();
     driveFile.name = basename(file.path);
-    driveFile.mimeType = MimeResolver.lookupAll(file);
+
+    // TODO(kai): DI
+    driveFile.mimeType = await sl<MimeRepository>().lookupAll(file.path);
 
     int byteCount = 0;
     final drive.Media media = drive.Media(

@@ -29,5 +29,5 @@ abstract class BookLocalDataSource {
   Future<List<BookChapter>> getChapterList(String identifier);
 
   // Validator
-  bool isFileValid(String path);
+  Future<bool> isFileValid(String path);
 }

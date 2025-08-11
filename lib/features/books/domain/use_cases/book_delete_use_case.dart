@@ -1,4 +1,4 @@
-import '../../../../core/use_cases/use_case.dart';
+import '../../../../core/domain/use_cases/use_case.dart';
 import '../../../reader/domain/use_cases/reader_delete_location_cache_use_case.dart';
 import '../repositories/book_repository.dart';
 

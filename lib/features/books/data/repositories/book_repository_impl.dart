@@ -100,7 +100,7 @@ class BookRepositoryImpl implements BookRepository {
   }
 
   @override
-  bool isFileValid(String path) {
+  Future<bool> isFileValid(String path) {
     return _epubDataSource.isFileValid(path);
   }
 }

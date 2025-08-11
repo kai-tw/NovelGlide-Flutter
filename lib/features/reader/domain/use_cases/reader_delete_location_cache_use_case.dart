@@ -1,4 +1,4 @@
-import '../../../../core/use_cases/use_case.dart';
+import '../../../../core/domain/use_cases/use_case.dart';
 import '../repositories/reader_location_cache_repository.dart';
 
 class ReaderDeleteLocationCacheUseCase extends UseCase<Future<void>, String> {

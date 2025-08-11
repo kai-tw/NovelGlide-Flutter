@@ -7,8 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
 import '../../../core/log_system/log_system.dart';
+import '../../../main.dart';
+import '../../mime_resolver/domain/repositories/mime_repository.dart';
 import '../../services/exception_service/exception_service.dart';
-import '../../services/mime_resolver.dart';
 import '../../utils/parsers.dart';
 
 part 'google_auth_client.dart';

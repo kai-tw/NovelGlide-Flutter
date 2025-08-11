@@ -56,12 +56,23 @@ class FileSystemRepositoryImpl implements FileSystemRepository {
   }
 
   @override
-  Future<Uint8List> readFileAsBytes(String path) async {
-    final File file = File(path);
-    if (!await file.exists()) {
-      throw FileSystemException('File not found', path);
+  Future<Uint8List> readFileAsBytes(String path, {int? start, int? end}) async {
+    final List<int> bytes = <int>[];
+
+    final File entry = File(path);
+    if (await entry.exists()) {
+      final RandomAccessFile file = await entry.open(mode: FileMode.read);
+
+      if (start != null && end != null && start <= end) {
+        await file.readInto(bytes, start, end);
+      } else {
+        bytes.addAll(await entry.readAsBytes());
+      }
+
+      await file.close();
     }
-    return file.readAsBytes();
+
+    return Uint8List.fromList(bytes);
   }
 
   @override

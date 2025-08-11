@@ -1,4 +1,4 @@
-import '../../../../core/use_cases/use_case.dart';
+import '../../../../core/domain/use_cases/use_case.dart';
 import '../repositories/reader_server_repository.dart';
 
 class ReaderStopReaderServerUseCase extends UseCase<Future<void>, void> {

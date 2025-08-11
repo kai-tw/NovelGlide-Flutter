@@ -1,4 +1,4 @@
-import '../../../../core/use_cases/use_case.dart';
+import '../../../../core/domain/use_cases/use_case.dart';
 import '../repositories/book_repository.dart';
 
 class BookExistsUseCase extends UseCase<Future<bool>, String> {

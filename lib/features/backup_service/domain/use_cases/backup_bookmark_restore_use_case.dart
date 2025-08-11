@@ -3,7 +3,7 @@ import 'dart:async';
 import '../../../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../../../core/file_system/domain/repositories/json_repository.dart';
 import '../../../../core/file_system/domain/repositories/temp_repository.dart';
-import '../../../../core/use_cases/use_case.dart';
+import '../../../../core/domain/use_cases/use_case.dart';
 import '../../../bookmark/domain/entities/bookmark_data.dart';
 import '../../../bookmark/domain/repositories/bookmark_repository.dart';
 import '../entities/backup_progress_data.dart';

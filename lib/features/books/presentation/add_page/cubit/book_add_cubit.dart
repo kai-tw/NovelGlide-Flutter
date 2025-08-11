@@ -43,7 +43,7 @@ class BookAddCubit extends Cubit<BookAddState> {
       stateSet.add(BookAddItemState(
         absolutePath: path,
         existsInLibrary: await _bookExistsUseCase(path),
-        isTypeValid: _isFileValidUseCase(path),
+        isTypeValid: await _isFileValidUseCase(path),
       ));
     }
 

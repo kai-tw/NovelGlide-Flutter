@@ -9,18 +9,24 @@ import 'package:image/image.dart';
 import 'package:path/path.dart';
 
 import '../../../../../core/file_system/domain/repositories/file_system_repository.dart';
+import '../../../../../core/mime_resolver/domain/repositories/mime_repository.dart';
 import '../../../../../core/path_provider/domain/repositories/app_path_provider.dart';
-import '../../../../../core/services/mime_resolver.dart';
 import '../../../domain/entities/book.dart';
 import '../../../domain/entities/book_chapter.dart';
 import '../../../domain/entities/book_cover.dart';
 import '../book_local_data_source.dart';
 
 class EpubDataSource extends BookLocalDataSource {
-  EpubDataSource(this._pathProvider, this._fileSystemRepository);
+  EpubDataSource(
+    this._pathProvider,
+    this._fileSystemRepository,
+    this._mimeRepository,
+  );
 
   final AppPathProvider _pathProvider;
   final FileSystemRepository _fileSystemRepository;
+  final MimeRepository _mimeRepository;
+
   final Map<String, BookCover> _coverBytesCache = <String, BookCover>{};
 
   @override
@@ -96,7 +102,7 @@ class EpubDataSource extends BookLocalDataSource {
       // List all books
       await for (FileSystemEntity entity
           in _fileSystemRepository.listDirectory(libraryPath)) {
-        if (entity is File && isFileValid(entity.path)) {
+        if (entity is File && await isFileValid(entity.path)) {
           yield await getBook(entity.path);
         }
       }
@@ -136,9 +142,9 @@ class EpubDataSource extends BookLocalDataSource {
   }
 
   @override
-  bool isFileValid(String path) {
+  Future<bool> isFileValid(String path) async {
     return allowedExtensions.contains(extension(path).substring(1)) &&
-        allowedMimeTypes.contains(MimeResolver.lookupAll(File(path)));
+        allowedMimeTypes.contains(await _mimeRepository.lookupAll(path));
   }
 
   /// Loads an EpubBook asynchronously, potentially a heavy operation.
@@ -157,7 +163,7 @@ class EpubDataSource extends BookLocalDataSource {
     final RootIsolateToken rootIsolateToken = message['rootIsolateToken'];
     final String path = message['path'];
     BackgroundIsolateBinaryMessenger.ensureInitialized(rootIsolateToken);
-    return await epub.EpubReader.readBook(File(path).readAsBytesSync());
+    return await epub.EpubReader.readBook(File(path).readAsBytes());
   }
 
   /// Find the possible cover image of the book.
