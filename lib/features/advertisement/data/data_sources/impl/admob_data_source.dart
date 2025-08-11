@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:novel_glide/features/ads_service/domain/entities/ad_data.dart';
-import 'package:novel_glide/features/ads_service/domain/entities/ad_unit_id.dart';
+import 'package:novel_glide/features/advertisement/domain/entities/ad_data.dart';
+import 'package:novel_glide/features/advertisement/domain/entities/ad_unit_id.dart';
 
 import '../ad_data_source.dart';
 
