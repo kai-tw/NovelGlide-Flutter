@@ -1,4 +1,7 @@
-part of '../../../collection_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../domain/use_cases/collection_create_data_use_case.dart';
+import 'collection_add_state.dart';
 
 class CollectionAddCubit extends Cubit<CollectionAddState> {
   CollectionAddCubit(

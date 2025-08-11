@@ -1,17 +1,17 @@
 import 'package:equatable/equatable.dart';
 
 class CollectionData extends Equatable {
-  const CollectionData(
-    this.id,
-    this.name,
-    this.pathList,
-  );
+  const CollectionData({
+    required this.id,
+    required this.name,
+    required this.pathList,
+  });
 
   factory CollectionData.fromJson(Map<String, dynamic> json) {
     return CollectionData(
-      json['id'] as String,
-      json['name'] as String,
-      List<String>.from(json['pathList'] ?? <String>[]),
+      id: json['id'] as String,
+      name: json['name'] as String,
+      pathList: List<String>.from(json['pathList'] ?? <String>[]),
     );
   }
 
@@ -41,9 +41,9 @@ class CollectionData extends Equatable {
     List<String>? pathList,
   }) {
     return CollectionData(
-      id ?? this.id,
-      name ?? this.name,
-      pathList ?? this.pathList,
+      id: id ?? this.id,
+      name: name ?? this.name,
+      pathList: pathList ?? this.pathList,
     );
   }
 }

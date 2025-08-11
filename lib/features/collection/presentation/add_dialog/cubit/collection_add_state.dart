@@ -1,4 +1,4 @@
-part of '../../../collection_service.dart';
+import 'package:equatable/equatable.dart';
 
 class CollectionAddState extends Equatable {
   const CollectionAddState({

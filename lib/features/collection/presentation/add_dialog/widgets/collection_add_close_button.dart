@@ -1,4 +1,6 @@
-part of '../../../collection_service.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
 
 class CollectionAddCloseButton extends StatelessWidget {
   const CollectionAddCloseButton({super.key});

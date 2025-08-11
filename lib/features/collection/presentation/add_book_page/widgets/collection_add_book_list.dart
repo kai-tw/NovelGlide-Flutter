@@ -1,4 +1,13 @@
-part of '../../../collection_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../enum/loading_state_code.dart';
+import '../../../../shared_components/common_loading.dart';
+import '../../../../shared_components/shared_list/shared_list.dart';
+import '../../../domain/entities/collection_data.dart';
+import '../cubit/collection_add_book_cubit.dart';
+import '../cubit/collection_add_book_state.dart';
+import 'collection_add_book_list_item.dart';
 
 class CollectionAddBookList extends StatelessWidget {
   const CollectionAddBookList({super.key});

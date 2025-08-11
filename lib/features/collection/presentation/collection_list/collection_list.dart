@@ -1,4 +1,13 @@
-part of '../../collection_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:novel_glide/features/collection/presentation/collection_list/widgets/collection_list_item.dart';
+
+import '../../../../enum/loading_state_code.dart';
+import '../../../../enum/window_size.dart';
+import '../../../../generated/i18n/app_localizations.dart';
+import '../../../shared_components/common_loading.dart';
+import '../../../shared_components/shared_list/shared_list.dart';
+import 'cubit/collection_list_cubit.dart';
 
 class CollectionList extends StatelessWidget {
   const CollectionList({super.key});

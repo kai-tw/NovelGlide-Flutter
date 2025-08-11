@@ -1,4 +1,9 @@
-part of '../../../collection_service.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../shared_components/adaptive_lines_text.dart';
+import '../../../../shared_components/shared_list/shared_list.dart';
+import '../../../domain/entities/collection_data.dart';
 
 class CollectionListCollectionWidget extends StatelessWidget {
   const CollectionListCollectionWidget({

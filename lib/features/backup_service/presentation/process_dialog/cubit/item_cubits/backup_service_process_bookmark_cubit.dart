@@ -8,7 +8,10 @@ import 'backup_service_process_item_cubit.dart';
 
 class BackupServiceProcessBookmarkCubit extends BackupServiceProcessItemCubit {
   BackupServiceProcessBookmarkCubit(
-      this._createUseCase, this._restoreUseCase, this._deleteUseCase);
+    this._createUseCase,
+    this._restoreUseCase,
+    this._deleteUseCase,
+  );
 
   /// Use cases
   final BackupBookmarkCreateUseCase _createUseCase;

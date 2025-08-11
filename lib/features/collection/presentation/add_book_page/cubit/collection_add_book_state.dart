@@ -1,4 +1,7 @@
-part of '../../../collection_service.dart';
+import 'package:equatable/equatable.dart';
+
+import '../../../../../enum/loading_state_code.dart';
+import '../../../domain/entities/collection_data.dart';
 
 class CollectionAddBookState extends Equatable {
   const CollectionAddBookState({

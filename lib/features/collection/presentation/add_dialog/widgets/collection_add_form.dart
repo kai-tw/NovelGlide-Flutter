@@ -1,4 +1,9 @@
-part of '../../../collection_service.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
+import 'collection_add_close_button.dart';
+import 'collection_add_name_field.dart';
+import 'collection_add_submit_button.dart';
 
 class CollectionAddForm extends StatelessWidget {
   const CollectionAddForm({super.key});

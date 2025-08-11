@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../generated/i18n/app_localizations.dart';
-import '../../../../collection/collection_service.dart';
+import '../../../../collection/presentation/add_book_page/collection_add_book_scaffold.dart';
 import '../../../domain/entities/book.dart';
 
 class TocAppBar extends StatelessWidget implements PreferredSizeWidget {

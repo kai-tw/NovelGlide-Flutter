@@ -1,4 +1,10 @@
-part of '../../collection_service.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../generated/i18n/app_localizations.dart';
+import '../../../homepage/homepage.dart';
+import '../../../shared_components/shared_list/shared_list.dart';
+import 'cubit/collection_list_cubit.dart';
+import 'widgets/collection_list_app_bar_more_button.dart';
 
 class CollectionListAppBar extends StatelessWidget
     implements PreferredSizeWidget {

@@ -1,4 +1,12 @@
-part of '../../../collection_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../core/utils/popup_menu_utils.dart';
+import '../../../../../enum/sort_order_code.dart';
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../shared_components/common_delete_dialog.dart';
+import '../../../../shared_components/shared_list/shared_list.dart';
+import '../cubit/collection_list_cubit.dart';
 
 class CollectionListAppBarMoreButton extends StatelessWidget {
   const CollectionListAppBarMoreButton({super.key});

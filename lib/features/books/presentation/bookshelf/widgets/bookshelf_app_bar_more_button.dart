@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/utils/popup_menu_utils.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../../../generated/i18n/app_localizations.dart';
-import '../../../../collection/collection_service.dart';
+import '../../../../collection/presentation/add_book_page/collection_add_book_scaffold.dart';
 import '../../../../shared_components/common_delete_dialog.dart';
 import '../../../../shared_components/shared_list/shared_list.dart';
 import '../cubit/bookshelf_cubit.dart';

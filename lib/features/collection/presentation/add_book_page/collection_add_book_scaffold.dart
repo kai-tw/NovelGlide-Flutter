@@ -1,4 +1,12 @@
-part of '../../collection_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../generated/i18n/app_localizations.dart';
+import '../../../../main.dart';
+import '../../../books/domain/entities/book.dart';
+import 'cubit/collection_add_book_cubit.dart';
+import 'widgets/collection_add_book_list.dart';
+import 'widgets/collection_add_book_navigation.dart';
 
 class CollectionAddBookScaffold extends StatelessWidget {
   const CollectionAddBookScaffold({super.key, required this.dataSet});

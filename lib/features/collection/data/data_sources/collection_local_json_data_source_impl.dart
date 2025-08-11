@@ -27,11 +27,18 @@ class CollectionLocalJsonDataSourceImpl extends CollectionLocalJsonDataSource {
     } while (json.containsKey(id));
 
     // Create a new collection data
-    final CollectionData data =
-        CollectionData(id, name ?? id, const <String>[]);
+    final CollectionData data = CollectionData(
+      id: id,
+      name: name ?? id,
+      pathList: const <String>[],
+    );
 
     // Save to json file
-    json[data.id] = data.toJson();
+    json[data.id] = <String, dynamic>{
+      'id': data.id,
+      'name': data.name,
+      'pathList': data.pathList,
+    };
     await _writeData(json);
 
     return data;
@@ -58,8 +65,16 @@ class CollectionLocalJsonDataSourceImpl extends CollectionLocalJsonDataSource {
 
     // Return the data, or create a new one if it doesn't exist
     return json.containsKey(id)
-        ? CollectionData.fromJson(json[id])
-        : CollectionData(id, id, const <String>[]);
+        ? CollectionData(
+            id: json[id]['id'],
+            name: json[id]['name'],
+            pathList: List<String>.from(json[id]['pathList']),
+          )
+        : CollectionData(
+            id: id,
+            name: id,
+            pathList: const <String>[],
+          );
   }
 
   @override
@@ -69,7 +84,11 @@ class CollectionLocalJsonDataSourceImpl extends CollectionLocalJsonDataSource {
 
     // Create the list
     return json.keys
-        .map((String key) => CollectionData.fromJson(json[key]))
+        .map((String key) => CollectionData(
+              id: json[key]['id'],
+              name: json[key]['name'],
+              pathList: List<String>.from(json[key]['pathList']),
+            ))
         .toList();
   }
 
@@ -79,7 +98,11 @@ class CollectionLocalJsonDataSourceImpl extends CollectionLocalJsonDataSource {
     final Map<String, dynamic> json = await _loadData();
 
     for (CollectionData data in dataSet) {
-      json[data.id] = data.toJson();
+      json[data.id] = <String, dynamic>{
+        'id': data.id,
+        'name': data.name,
+        'pathList': data.pathList,
+      };
     }
 
     // Save to file

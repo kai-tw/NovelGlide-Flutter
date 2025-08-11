@@ -1,4 +1,15 @@
-part of '../../../collection_service.dart';
+import 'dart:async';
+
+import 'package:collection/collection.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../enum/loading_state_code.dart';
+import '../../../../books/domain/entities/book.dart';
+import '../../../domain/entities/collection_data.dart';
+import '../../../domain/use_cases/collection_get_list_use_case.dart';
+import '../../../domain/use_cases/collection_observe_change_use_case.dart';
+import '../../../domain/use_cases/collection_update_data_use_case.dart';
+import 'collection_add_book_state.dart';
 
 class CollectionAddBookCubit extends Cubit<CollectionAddBookState> {
   CollectionAddBookCubit(

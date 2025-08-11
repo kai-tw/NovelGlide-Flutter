@@ -1,4 +1,14 @@
-part of '../../../collection_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../homepage/cubit/homepage_cubit.dart';
+import '../../../../shared_components/draggable_feedback_widget.dart';
+import '../../../../shared_components/draggable_placeholder_widget.dart';
+import '../../../../shared_components/shared_list/shared_list.dart';
+import '../../../domain/entities/collection_data.dart';
+import '../cubit/collection_list_cubit.dart';
+import 'collection_list_collection_widget.dart';
 
 class CollectionListDraggableCollection extends StatelessWidget {
   const CollectionListDraggableCollection({
@@ -27,7 +37,7 @@ class CollectionListDraggableCollection extends StatelessWidget {
 
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-      final double? contraintHeight =
+      final double? constraintHeight =
           listType == SharedListType.grid ? constraints.maxHeight : null;
       final EdgeInsets padding = listType == SharedListType.grid
           ? const EdgeInsets.all(8.0)
@@ -56,7 +66,7 @@ class CollectionListDraggableCollection extends StatelessWidget {
         maxSimultaneousDrags: isDraggable ? 1 : 0,
         feedback: DraggableFeedbackWidget(
           width: constraints.maxWidth,
-          height: contraintHeight,
+          height: constraintHeight,
           padding: padding,
           child: CollectionListCollectionWidget(
             collectionData: collectionData,
@@ -65,7 +75,7 @@ class CollectionListDraggableCollection extends StatelessWidget {
         ),
         childWhenDragging: DraggablePlaceholderWidget(
           width: constraints.maxWidth,
-          height: contraintHeight,
+          height: constraintHeight,
           padding: padding,
           child: CollectionListCollectionWidget(
             collectionData: collectionData,
@@ -74,7 +84,7 @@ class CollectionListDraggableCollection extends StatelessWidget {
         ),
         child: Container(
           width: constraints.maxWidth,
-          height: contraintHeight,
+          height: constraintHeight,
           padding: padding,
           child: CollectionListCollectionWidget(
             collectionData: collectionData,

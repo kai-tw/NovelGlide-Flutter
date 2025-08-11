@@ -1,4 +1,9 @@
-part of '../../../collection_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../add_dialog/collection_add_dialog.dart';
+import '../cubit/collection_add_book_cubit.dart';
 
 class CollectionAddBookNavigation extends StatelessWidget {
   const CollectionAddBookNavigation({super.key});

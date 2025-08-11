@@ -1,4 +1,9 @@
-part of '../../../collection_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../cubit/collection_add_cubit.dart';
+import '../cubit/collection_add_state.dart';
 
 class CollectionAddSubmitButton extends StatelessWidget {
   const CollectionAddSubmitButton({super.key});

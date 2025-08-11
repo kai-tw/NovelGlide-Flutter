@@ -21,16 +21,10 @@ class BackupServiceProcessDialog extends StatelessWidget {
     super.key,
     required this.taskType,
     required this.targetType,
-    this.libraryId,
-    this.collectionId,
-    this.bookmarkId,
   });
 
   final BackupTargetType targetType;
   final BackupTaskType taskType;
-  final String? libraryId;
-  final String? collectionId;
-  final String? bookmarkId;
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +39,8 @@ class BackupServiceProcessDialog extends StatelessWidget {
             ..startUp(taskType: taskType, targetType: targetType),
         ),
         BlocProvider<BackupServiceProcessCollectionCubit>(
-          create: (_) => BackupServiceProcessCollectionCubit(
-            googleDriveFileId: collectionId,
-          )..startUp(taskType: taskType, targetType: targetType),
+          create: (_) => sl<BackupServiceProcessCollectionCubit>()
+            ..startUp(taskType: taskType, targetType: targetType),
         ),
       ],
       child: const PopScope(

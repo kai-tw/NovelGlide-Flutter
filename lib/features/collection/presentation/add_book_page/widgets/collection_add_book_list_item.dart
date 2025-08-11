@@ -1,4 +1,8 @@
-part of '../../../collection_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../domain/entities/collection_data.dart';
+import '../cubit/collection_add_book_cubit.dart';
 
 class CollectionAddBookListItem extends StatelessWidget {
   const CollectionAddBookListItem({

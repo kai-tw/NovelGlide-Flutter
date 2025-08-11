@@ -101,9 +101,6 @@ class BackupServiceGoogleDriveActionButton extends StatelessWidget {
       builder: (_) => BackupServiceProcessDialog(
         taskType: taskType,
         targetType: targetType,
-        libraryId: cubit.state.libraryId,
-        collectionId: cubit.state.collectionId,
-        bookmarkId: cubit.state.bookmarkId,
       ),
     );
 

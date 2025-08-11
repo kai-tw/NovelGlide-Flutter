@@ -6,17 +6,24 @@ import '../../core/path_provider/domain/repositories/json_path_provider.dart';
 import '../../main.dart';
 import '../bookmark/domain/repositories/bookmark_repository.dart';
 import '../books/domain/repository/book_repository.dart';
+import '../collection/domain/repositories/collection_repository.dart';
 import 'data/repositories/book_backup_repository_impl.dart';
 import 'data/repositories/bookmark_backup_repository_impl.dart';
+import 'data/repositories/collection_backup_repository_impl.dart';
 import 'domain/repositories/book_backup_repository.dart';
 import 'domain/repositories/bookmark_backup_repository.dart';
+import 'domain/repositories/collection_backup_repository.dart';
 import 'domain/use_cases/backup_book_create_use_case.dart';
 import 'domain/use_cases/backup_book_delete_use_case.dart';
 import 'domain/use_cases/backup_book_restore_use_case.dart';
 import 'domain/use_cases/backup_bookmark_create_use_case.dart';
 import 'domain/use_cases/backup_bookmark_delete_use_case.dart';
 import 'domain/use_cases/backup_bookmark_restore_use_case.dart';
+import 'domain/use_cases/backup_collection_create_use_case.dart';
+import 'domain/use_cases/backup_collection_delete_use_case.dart';
+import 'domain/use_cases/backup_collection_restore_use_case.dart';
 import 'presentation/process_dialog/cubit/item_cubits/backup_service_process_bookmark_cubit.dart';
+import 'presentation/process_dialog/cubit/item_cubits/backup_service_process_collection_cubit.dart';
 import 'presentation/process_dialog/cubit/item_cubits/backup_service_process_library_cubit.dart';
 
 void setupBackupDependencies() {
@@ -28,6 +35,10 @@ void setupBackupDependencies() {
       ));
   sl.registerLazySingleton<BookmarkBackupRepository>(
       () => BookmarkBackupRepositoryImpl(
+            sl<JsonPathProvider>(),
+          ));
+  sl.registerLazySingleton<CollectionBackupRepository>(
+      () => CollectionBackupRepositoryImpl(
             sl<JsonPathProvider>(),
           ));
 
@@ -61,6 +72,22 @@ void setupBackupDependencies() {
       () => BackupBookmarkDeleteUseCase(
             sl<BookmarkBackupRepository>(),
           ));
+  sl.registerFactory<BackupCollectionCreateUseCase>(
+      () => BackupCollectionCreateUseCase(
+            sl<CollectionBackupRepository>(),
+          ));
+  sl.registerFactory<BackupCollectionRestoreUseCase>(
+      () => BackupCollectionRestoreUseCase(
+            sl<CollectionBackupRepository>(),
+            sl<FileSystemRepository>(),
+            sl<JsonRepository>(),
+            sl<TempRepository>(),
+            sl<CollectionRepository>(),
+          ));
+  sl.registerFactory<BackupCollectionDeleteUseCase>(
+      () => BackupCollectionDeleteUseCase(
+            sl<CollectionBackupRepository>(),
+          ));
 
   // Register cubits
   sl.registerFactory<BackupServiceProcessLibraryCubit>(
@@ -74,5 +101,11 @@ void setupBackupDependencies() {
             sl<BackupBookmarkCreateUseCase>(),
             sl<BackupBookmarkRestoreUseCase>(),
             sl<BackupBookmarkDeleteUseCase>(),
+          ));
+  sl.registerFactory<BackupServiceProcessCollectionCubit>(
+      () => BackupServiceProcessCollectionCubit(
+            sl<BackupCollectionCreateUseCase>(),
+            sl<BackupCollectionRestoreUseCase>(),
+            sl<BackupCollectionDeleteUseCase>(),
           ));
 }
