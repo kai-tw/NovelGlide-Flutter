@@ -14,16 +14,17 @@ import '../collection/collection_service.dart';
 import '../collection/domain/entities/collection_data.dart';
 
 part 'data/repository/backup_repository_old.dart';
-part 'data/repository/book_backup_repository.dart';
-part 'data/repository/bookmark_backup_repository.dart';
-part 'data/repository/collection_backup_repository.dart';
+part 'data/repository/book_backup_repository_old.dart';
+part 'data/repository/bookmark_backup_repository_old.dart';
+part 'data/repository/collection_backup_repository_old.dart';
 
 class BackupService {
   BackupService._();
 
-  static final BookBackupRepository bookRepository = BookBackupRepository();
-  static final BookmarkBackupRepository bookmarkRepository =
-      BookmarkBackupRepository();
+  static final BookBackupRepositoryOld bookRepository =
+      BookBackupRepositoryOld();
+  static final BookmarkBackupRepositoryOld bookmarkRepository =
+      BookmarkBackupRepositoryOld();
   static final CollectionBackupRepository collectionRepository =
       CollectionBackupRepository();
 }

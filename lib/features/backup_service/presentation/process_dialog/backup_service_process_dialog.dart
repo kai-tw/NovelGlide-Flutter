@@ -41,9 +41,8 @@ class BackupServiceProcessDialog extends StatelessWidget {
             ..startUp(taskType: taskType, targetType: targetType),
         ),
         BlocProvider<BackupServiceProcessBookmarkCubit>(
-          create: (_) => BackupServiceProcessBookmarkCubit(
-            googleDriveFileId: bookmarkId,
-          )..startUp(taskType: taskType, targetType: targetType),
+          create: (_) => sl<BackupServiceProcessBookmarkCubit>()
+            ..startUp(taskType: taskType, targetType: targetType),
         ),
         BlocProvider<BackupServiceProcessCollectionCubit>(
           create: (_) => BackupServiceProcessCollectionCubit(
