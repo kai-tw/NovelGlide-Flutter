@@ -7,6 +7,7 @@ import 'data/repositories/book_backup_repository_impl.dart';
 import 'domain/repositories/book_backup_repository.dart';
 import 'domain/use_cases/backup_book_create_use_case.dart';
 import 'domain/use_cases/backup_book_delete_use_case.dart';
+import 'domain/use_cases/backup_book_get_archive_name_use_case.dart';
 import 'domain/use_cases/backup_book_restore_use_case.dart';
 import 'presentation/process_dialog/cubit/item_cubits/backup_service_process_library_cubit.dart';
 
@@ -29,6 +30,10 @@ void setupBackupDependencies() {
         sl<TempRepository>(),
         sl<BookBackupRepository>(),
       ));
+  sl.registerFactory<BackupBookGetArchiveNameUseCase>(
+      () => BackupBookGetArchiveNameUseCase(
+            sl<BookBackupRepository>(),
+          ));
   sl.registerFactory<BackupBookDeleteUseCase>(() => BackupBookDeleteUseCase(
         sl<BookBackupRepository>(),
       ));
