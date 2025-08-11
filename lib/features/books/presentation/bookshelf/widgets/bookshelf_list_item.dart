@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../generated/i18n/app_localizations.dart';
 import '../../../../shared_components/common_error_dialog.dart';
 import '../../../domain/entities/book.dart';
+import '../../../domain/entities/book_cover.dart';
+import '../../book_cover/book_cover_builder.dart';
 import '../../table_of_contents_page/table_of_contents.dart';
 import '../cubit/bookshelf_cubit.dart';
 import 'bookshelf_draggable_book.dart';
@@ -15,10 +17,17 @@ class BookshelfSliverListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BookCoverBuilder(
+      bookData: bookData,
+      builder: _buildItem,
+    );
+  }
+
+  Widget _buildItem(BuildContext context, BookCover coverData) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
     return InkWell(
-      onTap: () => _onTap(context),
+      onTap: () => _onTap(context, coverData),
       borderRadius: BorderRadius.circular(24.0),
       child: Semantics(
         label: appLocalizations.generalBook,
@@ -35,6 +44,7 @@ class BookshelfSliverListItem extends StatelessWidget {
           builder: (BuildContext context, BookshelfState state) {
             return BookshelfDraggableBook(
               bookData: bookData,
+              coverData: coverData,
               listType: state.listType,
               isDraggable: state.code.isLoaded &&
                   !state.isDragging &&
@@ -49,7 +59,7 @@ class BookshelfSliverListItem extends StatelessWidget {
     );
   }
 
-  Future<void> _onTap(BuildContext context) async {
+  Future<void> _onTap(BuildContext context, BookCover coverData) async {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
 
@@ -60,8 +70,11 @@ class BookshelfSliverListItem extends StatelessWidget {
     } else if (context.mounted) {
       if (isExists) {
         // Navigate to the table of contents page.
-        Navigator.of(context).push(
-            MaterialPageRoute<void>(builder: (_) => TableOfContents(bookData)));
+        Navigator.of(context).push(MaterialPageRoute<void>(
+            builder: (_) => TableOfContents(
+                  bookData,
+                  coverData,
+                )));
       } else {
         // Show the book is not exist dialog.
         showDialog(

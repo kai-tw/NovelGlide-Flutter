@@ -1,44 +1,22 @@
 import 'package:bitmap/bitmap.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/services/cache_memory_image_provider.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../../../main.dart';
 import '../../domain/entities/book_cover.dart';
-import 'cubit/book_cover_cubit.dart';
 
 class BookCoverWidget extends StatelessWidget {
   const BookCoverWidget({
     super.key,
-    required this.identifier,
+    required this.coverData,
     required this.fit,
   });
 
-  final String identifier;
+  final BookCover coverData;
   final BoxFit fit;
 
   @override
   Widget build(BuildContext context) {
-    final BookCoverCubit cubit = sl<BookCoverCubit>();
-    return BlocProvider<BookCoverCubit>(
-      create: (_) => cubit,
-      child: FutureBuilder<BookCover>(
-        future: cubit.startLoading(identifier),
-        builder: (BuildContext context, AsyncSnapshot<BookCover> snapshot) {
-          if (snapshot.hasData) {
-            return _buildImage(context, snapshot.data!);
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
-    );
-  }
-
-  Widget _buildImage(BuildContext context, BookCover coverData) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     // Bytes are not null

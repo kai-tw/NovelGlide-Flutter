@@ -7,13 +7,15 @@ import '../../../../shared_components/draggable_feedback_widget.dart';
 import '../../../../shared_components/draggable_placeholder_widget.dart';
 import '../../../../shared_components/shared_list/shared_list.dart';
 import '../../../domain/entities/book.dart';
+import '../../../domain/entities/book_cover.dart';
+import '../../book_widget/book_widget.dart';
 import '../cubit/bookshelf_cubit.dart';
-import 'bookshelf_book_widget.dart';
 
 class BookshelfDraggableBook extends StatelessWidget {
   const BookshelfDraggableBook({
     super.key,
     required this.bookData,
+    required this.coverData,
     required this.isDraggable,
     required this.isSelecting,
     required this.isSelected,
@@ -22,6 +24,7 @@ class BookshelfDraggableBook extends StatelessWidget {
   });
 
   final Book bookData;
+  final BookCover coverData;
   final bool isDraggable;
   final bool isSelecting;
   final bool isSelected;
@@ -36,7 +39,7 @@ class BookshelfDraggableBook extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        final double? contraintHeight =
+        final double? constraintHeight =
             listType == SharedListType.grid ? constraints.maxHeight : null;
         final EdgeInsets padding = listType == SharedListType.grid
             ? const EdgeInsets.all(16.0)
@@ -64,29 +67,32 @@ class BookshelfDraggableBook extends StatelessWidget {
           maxSimultaneousDrags: isDraggable ? 1 : 0,
           feedback: DraggableFeedbackWidget(
             width: constraints.maxWidth,
-            height: contraintHeight,
+            height: constraintHeight,
             padding: padding,
-            child: BookshelfBookWidget(
+            child: BookWidget(
               bookData: bookData,
+              coverData: coverData,
               listType: listType,
             ),
           ),
           childWhenDragging: DraggablePlaceholderWidget(
             width: constraints.maxWidth,
-            height: contraintHeight,
+            height: constraintHeight,
             padding: padding,
-            child: BookshelfBookWidget(
+            child: BookWidget(
               bookData: bookData,
+              coverData: coverData,
               listType: listType,
             ),
           ),
           child: Container(
             width: constraints.maxWidth,
-            height: contraintHeight,
+            height: constraintHeight,
             padding: padding,
             color: Colors.transparent,
-            child: BookshelfBookWidget(
+            child: BookWidget(
               bookData: bookData,
+              coverData: coverData,
               isSelecting: isSelecting,
               isSelected: isSelected,
               onChanged: onChanged,

@@ -4,42 +4,74 @@ class CollectionViewerListItem extends StatelessWidget {
   const CollectionViewerListItem({
     super.key,
     required this.bookData,
-    this.isSelecting = false,
-    this.isDraggable = true,
+    required this.index,
   });
 
   final Book bookData;
-  final bool isSelecting;
-  final bool isDraggable;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CollectionViewerCubit, CollectionViewerState>(
       buildWhen:
           (CollectionViewerState previous, CollectionViewerState current) =>
+              previous.code != current.code ||
               previous.selectedSet.contains(bookData) !=
-              current.selectedSet.contains(bookData),
+                  current.selectedSet.contains(bookData) ||
+              previous.dataList != current.dataList ||
+              previous.isSelecting != current.isSelecting,
       builder: (BuildContext context, CollectionViewerState state) {
-        return SharedListTile(
-          isSelecting: isSelecting,
-          isSelected: state.selectedSet.contains(bookData),
-          onTap: () => _onTap(context),
-          onChanged: (_) => _onChanged(context),
-          leading: const Icon(Icons.book_outlined),
-          title: Text(bookData.title),
-          trailing: isDraggable ? const Icon(Icons.drag_handle_rounded) : null,
+        return BookCoverBuilder(
+          bookData: bookData,
+          builder: (_, BookCover coverData) {
+            return _buildGestureListener(context, state, coverData);
+          },
         );
       },
     );
   }
 
-  void _onTap(BuildContext context) {
-    final CollectionViewerCubit cubit =
-        BlocProvider.of<CollectionViewerCubit>(context);
-    Navigator.of(context)
-        .push(
-            MaterialPageRoute<void>(builder: (_) => TableOfContents(bookData)))
-        .then((_) => cubit.refresh());
+  Widget _buildGestureListener(
+    BuildContext context,
+    CollectionViewerState state,
+    BookCover coverData,
+  ) {
+    final bool isDraggable =
+        state.code.isLoaded && !state.isSelecting && state.dataList.length > 1;
+
+    return ReorderableDragStartListener(
+      index: index,
+      enabled: isDraggable,
+      child: _buildBookWidget(context, state, coverData, isDraggable),
+    );
+  }
+
+  Widget _buildBookWidget(
+    BuildContext context,
+    CollectionViewerState state,
+    BookCover coverData,
+    bool isDraggable,
+  ) {
+    return InkWell(
+      onTap: state.isSelecting ? null : () => _onTap(context, coverData),
+      child: BookWidget(
+        bookData: bookData,
+        coverData: coverData,
+        listType: SharedListType.list,
+        isSelecting: state.isSelecting,
+        isSelected: state.selectedSet.contains(bookData),
+        onChanged: (_) => _onChanged(context),
+        trailing: isDraggable ? const Icon(Icons.drag_handle_rounded) : null,
+      ),
+    );
+  }
+
+  void _onTap(BuildContext context, BookCover coverData) {
+    Navigator.of(context).push(MaterialPageRoute<void>(
+        builder: (_) => TableOfContents(
+              bookData,
+              coverData,
+            )));
   }
 
   void _onChanged(BuildContext context) {

@@ -26,7 +26,6 @@ import 'domain/use_cases/book_pick_use_case.dart';
 import 'domain/use_cases/book_read_bytes_use_case.dart';
 import 'domain/use_cases/book_reset_use_case.dart';
 import 'presentation/add_page/cubit/book_add_cubit.dart';
-import 'presentation/book_cover/cubit/book_cover_cubit.dart';
 import 'presentation/bookshelf/cubit/bookshelf_cubit.dart';
 import 'presentation/table_of_contents_page/cubit/toc_cubit.dart';
 
@@ -89,9 +88,6 @@ void setupBookDependencies() {
         sl<BookClearTemporaryPickedFilesUseCase>(),
         sl<BookGetAllowedExtensionsUseCase>(),
         sl<BookPickUseCase>(),
-      ));
-  sl.registerFactory<BookCoverCubit>(() => BookCoverCubit(
-        sl<BookGetCoverUseCase>(),
       ));
   sl.registerFactory<TocCubit>(() => TocCubit(
         sl<BookGetChapterListUseCase>(),

@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../generated/i18n/app_localizations.dart';
-import '../../../../shared_components/adaptive_lines_text.dart';
-import '../../../../shared_components/shared_list/shared_list.dart';
-import '../../../domain/entities/book.dart';
-import 'bookshelf_cover_widget.dart';
+import '../../../../generated/i18n/app_localizations.dart';
+import '../../../shared_components/adaptive_lines_text.dart';
+import '../../../shared_components/shared_list/shared_list.dart';
+import '../../domain/entities/book.dart';
+import '../../domain/entities/book_cover.dart';
+import '../bookshelf/widgets/bookshelf_cover_widget.dart';
 
-class BookshelfBookWidget extends StatelessWidget {
-  const BookshelfBookWidget({
+class BookWidget extends StatelessWidget {
+  const BookWidget({
     super.key,
     required this.bookData,
+    required this.coverData,
     this.isSelecting = false,
     this.isSelected = false,
     this.onChanged,
     required this.listType,
+    this.trailing,
   });
 
   final Book bookData;
+  final BookCover coverData;
   final bool isSelecting;
   final bool isSelected;
   final ValueChanged<bool?>? onChanged;
   final SharedListType listType;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +46,7 @@ class BookshelfBookWidget extends StatelessWidget {
           isSelected: isSelected,
           onChanged: onChanged,
           cover: BookshelfCoverWidget(
-            bookData: bookData,
+            coverData: coverData,
             borderRadius: BorderRadius.circular(16.0),
           ),
           title: AdaptiveLinesText(bookData.title),
@@ -56,7 +61,7 @@ class BookshelfBookWidget extends StatelessWidget {
           leading: Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
             child: BookshelfCoverWidget(
-              bookData: bookData,
+              coverData: coverData,
               borderRadius: BorderRadius.circular(4.0),
             ),
           ),
@@ -64,6 +69,7 @@ class BookshelfBookWidget extends StatelessWidget {
             bookData.title,
             overflow: TextOverflow.ellipsis,
           ),
+          trailing: trailing,
         );
     }
   }

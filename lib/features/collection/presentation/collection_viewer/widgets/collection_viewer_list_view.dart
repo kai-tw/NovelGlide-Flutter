@@ -11,8 +11,7 @@ class CollectionViewerListView extends StatelessWidget {
       buildWhen:
           (CollectionViewerState previous, CollectionViewerState current) =>
               previous.code != current.code ||
-              previous.dataList != current.dataList ||
-              previous.isSelecting != current.isSelecting,
+              previous.dataList != current.dataList,
       builder: (BuildContext context, CollectionViewerState state) {
         switch (state.code) {
           case LoadingStateCode.initial:
@@ -24,23 +23,19 @@ class CollectionViewerListView extends StatelessWidget {
             if (state.dataList.isEmpty) {
               return const SharedListEmpty();
             } else {
-              final bool isDraggable = state.code.isLoaded &&
-                  !state.isSelecting &&
-                  state.dataList.length > 1;
               return ReorderableListView.builder(
                 header: state.code.isBackgroundLoading
                     ? const LinearProgressIndicator()
                     : null,
                 onReorder: cubit.reorder,
-                buildDefaultDragHandles: isDraggable,
+                buildDefaultDragHandles: false,
                 itemCount: state.dataList.length,
                 itemBuilder: (BuildContext context, int index) {
                   final Book book = state.dataList[index];
                   return CollectionViewerListItem(
                     bookData: book,
+                    index: index,
                     key: ValueKey<String>(book.identifier),
-                    isSelecting: state.isSelecting,
-                    isDraggable: isDraggable,
                   );
                 },
               );

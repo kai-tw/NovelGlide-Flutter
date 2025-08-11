@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/entities/book.dart';
+import '../../../domain/entities/book_cover.dart';
 import '../../book_cover/book_cover_widget.dart';
 
 class BookshelfCoverWidget extends StatelessWidget {
   const BookshelfCoverWidget({
     super.key,
-    required this.bookData,
+    required this.coverData,
     this.borderRadius,
   });
 
-  final Book bookData;
+  final BookCover coverData;
   final BorderRadiusGeometry? borderRadius;
 
   @override
@@ -24,7 +24,7 @@ class BookshelfCoverWidget extends StatelessWidget {
         ),
         clipBehavior: Clip.hardEdge,
         child: BookCoverWidget(
-          identifier: bookData.coverIdentifier,
+          coverData: coverData,
           fit: BoxFit.cover,
         ),
       ),
