@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import '../../../../core/domain/use_cases/use_case.dart';
 import '../../../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../../../core/file_system/domain/repositories/temp_repository.dart';
-import '../../../../core/domain/use_cases/use_case.dart';
 import '../entities/backup_progress_data.dart';
 import '../entities/backup_progress_step_code.dart';
 import '../repositories/book_backup_repository.dart';
@@ -55,10 +55,10 @@ class BackupBookCreateUseCase
 
     // Upload the zip file to cloud
     final bool isSuccessful = await _bookBackupRepository
-        .uploadToCloud(zipFilePath, (int uploaded, int total) {
+        .uploadToCloud(zipFilePath, (double progress) {
       _controller.add(BackupProgressData(
         step: BackupProgressStepCode.upload,
-        progress: (uploaded / total).clamp(0, 1),
+        progress: progress,
       ));
     });
 

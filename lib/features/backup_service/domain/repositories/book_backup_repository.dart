@@ -18,12 +18,12 @@ abstract class BookBackupRepository {
 
   Future<bool> uploadToCloud(
     String zipFilePath,
-    void Function(int uploaded, int total)? onUpload,
+    void Function(double progress)? onUpload,
   );
 
   Future<String?> downloadFromCloud(
     String tempDirectoryPath,
-    void Function(int downloaded, int total)? onDownload,
+    void Function(double progress)? onDownload,
   );
 
   Future<bool> deleteFromCloud();

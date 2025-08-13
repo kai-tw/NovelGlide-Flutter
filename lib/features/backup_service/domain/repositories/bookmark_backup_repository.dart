@@ -5,11 +5,11 @@ abstract class BookmarkBackupRepository {
 
   Future<bool> isBackupExists();
 
-  Future<bool> uploadToCloud(void Function(int uploaded, int total)? onUpload);
+  Future<bool> uploadToCloud(void Function(double progress)? onUpload);
 
   Future<String?> downloadFromCloud(
     String tempDirectoryPath,
-    void Function(int downloaded, int total)? onDownload,
+    void Function(double progress)? onDownload,
   );
 
   Future<bool> deleteFromCloud();

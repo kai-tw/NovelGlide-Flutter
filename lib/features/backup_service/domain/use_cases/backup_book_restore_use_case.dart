@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import '../../../../core/domain/use_cases/use_case.dart';
 import '../../../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../../../core/file_system/domain/repositories/temp_repository.dart';
 import '../../../../core/log_system/log_system.dart';
-import '../../../../core/domain/use_cases/use_case.dart';
 import '../entities/backup_progress_data.dart';
 import '../entities/backup_progress_step_code.dart';
 import '../repositories/book_backup_repository.dart';
@@ -46,10 +46,10 @@ class BackupBookRestoreUseCase
       // Download the backup file from the cloud
       final String? zipFilePath = await _bookBackupRepository.downloadFromCloud(
         tempDirectoryPath,
-        (int downloaded, int total) {
+        (double progress) {
           _controller.add(BackupProgressData(
             step: BackupProgressStepCode.download,
-            progress: total > 0 ? (downloaded / total).clamp(0, 1) : 0,
+            progress: progress,
           ));
         },
       );

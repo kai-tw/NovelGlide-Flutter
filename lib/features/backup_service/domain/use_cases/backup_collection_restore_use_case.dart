@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import '../../../../core/domain/use_cases/use_case.dart';
 import '../../../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../../../core/file_system/domain/repositories/json_repository.dart';
 import '../../../../core/file_system/domain/repositories/temp_repository.dart';
-import '../../../../core/domain/use_cases/use_case.dart';
 import '../../../collection/domain/entities/collection_data.dart';
 import '../../../collection/domain/repositories/collection_repository.dart';
 import '../entities/backup_progress_data.dart';
@@ -55,10 +55,10 @@ class BackupCollectionRestoreUseCase
     // Download the file
     final String? jsonFilePath = await _repository.downloadFromCloud(
       tempDirectoryPath,
-      (int downloaded, int total) {
+      (double progress) {
         _controller.add(BackupProgressData(
           step: BackupProgressStepCode.download,
-          progress: (downloaded / total).clamp(0, 1),
+          progress: progress,
         ));
       },
     );

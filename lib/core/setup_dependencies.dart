@@ -9,6 +9,7 @@ import '../features/auth/setup_dependencies.dart';
 import '../features/backup_service/setup_dependencies.dart';
 import '../features/bookmark/setup_dependencies.dart';
 import '../features/books/setup_dependencies.dart';
+import '../features/cloud/setup_dependencies.dart';
 import '../features/collection/setup_dependencies.dart';
 import '../features/locale_system/domain/use_cases/get_locale_settings_use_case.dart';
 import '../features/locale_system/domain/use_cases/save_locale_settings_use_case.dart';
@@ -18,6 +19,7 @@ import '../features/reader/setup_dependencies.dart';
 import '../main.dart';
 import 'file_system/setup_dependencies.dart';
 import 'log_system/setup_dependencies.dart';
+import 'mime_resolver/setup_dependencies.dart';
 import 'path_provider/setup_dependencies.dart';
 
 Future<void> setupDependencies() async {
@@ -36,8 +38,10 @@ Future<void> setupDependencies() async {
   setupBookDependencies();
   setupBookmarkDependencies();
   setupCollectionDependencies();
+  setupCloudDependencies();
   setupLocaleDependencies(prefs);
   setupLogDependencies();
+  setupMimeResolverDependencies();
   setupPickFileDependencies();
   setupReaderDependencies();
 

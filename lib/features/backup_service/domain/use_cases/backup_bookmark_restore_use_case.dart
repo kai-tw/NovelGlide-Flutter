@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import '../../../../core/domain/use_cases/use_case.dart';
 import '../../../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../../../core/file_system/domain/repositories/json_repository.dart';
 import '../../../../core/file_system/domain/repositories/temp_repository.dart';
-import '../../../../core/domain/use_cases/use_case.dart';
 import '../../../bookmark/domain/entities/bookmark_data.dart';
 import '../../../bookmark/domain/repositories/bookmark_repository.dart';
 import '../entities/backup_progress_data.dart';
@@ -55,10 +55,10 @@ class BackupBookmarkRestoreUseCase
     // Download the file
     final String? jsonFilePath = await _repository.downloadFromCloud(
       tempDirectoryPath,
-      (int downloaded, int total) {
+      (double progress) {
         _controller.add(BackupProgressData(
           step: BackupProgressStepCode.download,
-          progress: (downloaded / total).clamp(0, 1),
+          progress: progress,
         ));
       },
     );

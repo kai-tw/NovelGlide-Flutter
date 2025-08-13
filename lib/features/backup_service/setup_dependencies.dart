@@ -6,6 +6,7 @@ import '../../core/path_provider/domain/repositories/json_path_provider.dart';
 import '../../main.dart';
 import '../bookmark/domain/repositories/bookmark_repository.dart';
 import '../books/domain/repositories/book_repository.dart';
+import '../cloud/domain/repositories/cloud_repository.dart';
 import '../collection/domain/repositories/collection_repository.dart';
 import 'data/repositories/book_backup_repository_impl.dart';
 import 'data/repositories/bookmark_backup_repository_impl.dart';
@@ -37,14 +38,19 @@ void setupBackupDependencies() {
         sl<AppPathProvider>(),
         sl<FileSystemRepository>(),
         sl<BookRepository>(),
+        sl<CloudRepository>(),
       ));
   sl.registerLazySingleton<BookmarkBackupRepository>(
       () => BookmarkBackupRepositoryImpl(
             sl<JsonPathProvider>(),
+            sl<FileSystemRepository>(),
+            sl<CloudRepository>(),
           ));
   sl.registerLazySingleton<CollectionBackupRepository>(
       () => CollectionBackupRepositoryImpl(
             sl<JsonPathProvider>(),
+            sl<FileSystemRepository>(),
+            sl<CloudRepository>(),
           ));
 
   // Register use cases

@@ -57,16 +57,17 @@ class FileSystemRepositoryImpl implements FileSystemRepository {
 
   @override
   Future<Uint8List> readFileAsBytes(String path, {int? start, int? end}) async {
-    final List<int> bytes = <int>[];
+    List<int> bytes = <int>[];
 
     final File entry = File(path);
     if (await entry.exists()) {
       final RandomAccessFile file = await entry.open(mode: FileMode.read);
 
       if (start != null && end != null && start <= end) {
+        bytes = List<int>.filled(end - start + 1, 0);
         await file.readInto(bytes, start, end);
       } else {
-        bytes.addAll(await entry.readAsBytes());
+        bytes = await entry.readAsBytes();
       }
 
       await file.close();

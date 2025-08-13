@@ -113,10 +113,10 @@ class GoogleDriveApi implements CloudDriveApi {
       // File exists. Get the metadata of this file.
       final File metadata = await (await _files).get(
         fileId,
-        $fields: 'id,name,size,modifiedTime',
+        $fields: 'files(name,createdTime,id,mimeType,modifiedTime)',
       ) as File;
       return CloudFile(
-        identifier: fileId,
+        identifier: metadata.id ?? fileId,
         name: metadata.name ?? '',
         length: int.tryParse(metadata.size ?? '0') ?? 0,
         modifiedTime: metadata.modifiedTime!,

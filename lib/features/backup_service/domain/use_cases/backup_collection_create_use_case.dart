@@ -27,11 +27,10 @@ class BackupCollectionCreateUseCase
     ));
 
     // Upload the file to cloud
-    final bool result =
-        await _repository.uploadToCloud((int uploaded, int total) {
+    final bool result = await _repository.uploadToCloud((double progress) {
       _controller.add(BackupProgressData(
         step: BackupProgressStepCode.upload,
-        progress: (uploaded / total).clamp(0, 1),
+        progress: progress,
       ));
     });
 
