@@ -17,7 +17,7 @@ class BookAddItemState extends Equatable {
 
   File get _file => File(absolutePath);
 
-  String get lengthString => _file.lengthString();
+  String get lengthString => parseFileLengthToString(_file.lengthSync());
 
   String get baseName => basename(absolutePath);
 

@@ -45,25 +45,6 @@ class GoogleAuthInterface {
     await _initCompleter.future;
     LogSystem.info('GoogleAuthService.getClient: Start.');
 
-    // Attempt to get authorization for the requested scopes
-    GoogleSignInClientAuthorization? authorization =
-        await _currentUser?.authorizationClient.authorizationForScopes(scopes);
-
-    // If authorization is null, prompt the user to authorize
-    try {
-      authorization ??=
-          await _currentUser?.authorizationClient.authorizeScopes(scopes);
-    } on GoogleSignInException catch (e) {
-      LogSystem.error('GoogleAuthService.getClient: $e');
-      throw GoogleDrivePermissionException();
-    }
-
-    // Cannot get the required scopes
-    if (authorization == null) {
-      LogSystem.error('GoogleAuthService.getClient: permission denied');
-      throw GoogleDrivePermissionException();
-    }
-
     final Map<String, String>? header =
         await _currentUser!.authorizationClient.authorizationHeaders(scopes);
 
