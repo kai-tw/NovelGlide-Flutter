@@ -76,6 +76,18 @@ class FileSystemRepositoryImpl implements FileSystemRepository {
   }
 
   @override
+  Stream<Uint8List> streamFileAsBytes(
+    String path, {
+    int? start,
+    int? end,
+  }) async* {
+    final File entry = File(path);
+    await for (List<int> chunk in entry.openRead(start, end)) {
+      yield Uint8List.fromList(chunk);
+    }
+  }
+
+  @override
   Future<void> writeFileAsString(String path, String content) async {
     final File file = await createFile(path);
     await file.writeAsString(content);

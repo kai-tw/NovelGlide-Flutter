@@ -4,7 +4,7 @@ import '../entities/cloud_file.dart';
 import '../entities/cloud_providers.dart';
 
 abstract class CloudRepository {
-  Future<CloudFile> getFile(CloudProviders providers, String fileName);
+  Future<CloudFile?> getFile(CloudProviders providers, String fileName);
 
   Future<void> uploadFile(
     CloudProviders providers,

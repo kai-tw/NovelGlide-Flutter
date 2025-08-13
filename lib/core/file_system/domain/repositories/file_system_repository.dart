@@ -16,6 +16,8 @@ abstract class FileSystemRepository {
 
   Future<Uint8List> readFileAsBytes(String path, {int? start, int? end});
 
+  Stream<Uint8List> streamFileAsBytes(String path, {int? start, int? end});
+
   Future<void> writeFileAsString(String path, String content);
 
   Future<String> readFileAsString(String path);
