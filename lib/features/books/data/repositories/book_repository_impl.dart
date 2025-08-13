@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:novel_glide/features/books/domain/entities/book.dart';
 import 'package:path/path.dart';
 
 import '../../../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../pick_file/domain/repositories/pick_file_repository.dart';
+import '../../domain/entities/book.dart';
 import '../../domain/entities/book_chapter.dart';
 import '../../domain/entities/book_cover.dart';
 import '../../domain/entities/book_pick_file_data.dart';

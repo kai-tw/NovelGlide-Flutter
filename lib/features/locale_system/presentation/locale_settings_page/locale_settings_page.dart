@@ -1,4 +1,7 @@
-part of '../../locale_utils.dart';
+import 'package:flutter/material.dart';
+
+import '../../../../generated/i18n/app_localizations.dart';
+import 'locale_settings_list.dart';
 
 class LocaleSettingsPage extends StatelessWidget {
   const LocaleSettingsPage({super.key});

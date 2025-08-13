@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:novel_glide/core/utils/datetime_extension.dart';
 
-import '../../app/cubit/app_cubit.dart';
+import '../../../../core/utils/datetime_extension.dart';
 import '../../generated/i18n/app_localizations.dart';
 import 'domain/entities/app_locale.dart';
-
-part 'presentation/locale_settings_page/locale_settings_list.dart';
-part 'presentation/locale_settings_page/locale_settings_page.dart';
 
 class LocaleUtils {
   LocaleUtils._();

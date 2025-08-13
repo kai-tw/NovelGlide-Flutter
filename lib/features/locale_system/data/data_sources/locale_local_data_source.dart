@@ -1,11 +1,12 @@
-import 'package:novel_glide/core/utils/shared_preference_extension.dart';
-import 'package:novel_glide/features/locale_system/domain/entities/app_locale.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../core/utils/shared_preference_extension.dart';
+import '../../domain/entities/app_locale.dart';
 import '../../domain/entities/locale_settings.dart';
 
 abstract class LocaleLocalDataSource {
   Future<LocaleSettings> getLocaleSettings();
+
   Future<void> saveLocaleSettings(LocaleSettings settings);
 }
 

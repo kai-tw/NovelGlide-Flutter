@@ -9,7 +9,7 @@ import '../../appearance/presentation/appearance_settings_page/appearance_settin
 import '../../backup_service/presentation/backup_service_page.dart';
 import '../../developer_page/developer_page.dart';
 import '../../feedback/presentation/feedback_page.dart';
-import '../../locale_system/locale_utils.dart';
+import '../../locale_system/presentation/locale_settings_page/locale_settings_page.dart';
 import '../../reset_services/reset_service.dart';
 import '../../tts_service/tts_service.dart';
 import 'widgets/settings_list_tile.dart';

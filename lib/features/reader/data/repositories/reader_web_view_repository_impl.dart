@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:novel_glide/features/reader/data/data_transfer_objects/reader_web_message_dto.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../../core/log_system/log_system.dart';
 import '../../domain/entities/reader_set_state_data.dart';
 import '../../domain/repositories/reader_web_view_repository.dart';
+import '../data_transfer_objects/reader_web_message_dto.dart';
 
 class ReaderWebViewRepositoryImpl implements ReaderWebViewRepository {
   factory ReaderWebViewRepositoryImpl(WebViewController controller) {

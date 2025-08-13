@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:novel_glide/features/reader/domain/entities/reader_search_result_data.dart';
-
+import '../../domain/entities/reader_search_result_data.dart';
 import '../../domain/repositories/reader_search_repository.dart';
 import '../../domain/repositories/reader_web_view_repository.dart';
 import '../data_transfer_objects/reader_web_message_dto.dart';

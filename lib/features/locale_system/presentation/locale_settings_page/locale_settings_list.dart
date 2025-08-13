@@ -1,4 +1,10 @@
-part of '../../locale_utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../app/cubit/app_cubit.dart';
+import '../../../../generated/i18n/app_localizations.dart';
+import '../../domain/entities/app_locale.dart';
+import '../../locale_utils.dart';
 
 class LocaleSettingsList extends StatelessWidget {
   const LocaleSettingsList({super.key});

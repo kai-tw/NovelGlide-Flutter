@@ -1,7 +1,7 @@
-import 'package:novel_glide/features/appearance/data/data_sources/appearance_local_data_source.dart';
-import 'package:novel_glide/features/appearance/domain/entities/app_default_theme.dart';
-import 'package:novel_glide/features/appearance/domain/entities/appearance_settings.dart';
-import 'package:novel_glide/features/appearance/domain/repositories/appearance_repository.dart';
+import '../../domain/entities/app_default_theme.dart';
+import '../../domain/entities/appearance_settings.dart';
+import '../../domain/repositories/appearance_repository.dart';
+import '../data_sources/appearance_local_data_source.dart';
 
 class AppearanceRepositoryImpl extends AppearanceRepository {
   AppearanceRepositoryImpl({

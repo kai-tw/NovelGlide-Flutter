@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:novel_glide/core/utils/random_extension.dart';
 import 'package:path/path.dart';
 
+import '../../../../core/utils/random_extension.dart';
 import '../../../path_provider/domain/repositories/app_path_provider.dart';
 import '../../domain/repositories/file_system_repository.dart';
 import '../../domain/repositories/temp_repository.dart';

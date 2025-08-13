@@ -1,7 +1,6 @@
-import 'package:novel_glide/features/appearance/domain/entities/appearance_settings.dart';
-import 'package:novel_glide/features/appearance/domain/repositories/appearance_repository.dart';
-
 import '../../../../core/domain/use_cases/use_case.dart';
+import '../entities/appearance_settings.dart';
+import '../repositories/appearance_repository.dart';
 
 class SaveAppearanceSettingsUseCase
     extends UseCase<Future<void>, AppearanceSettings> {

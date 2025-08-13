@@ -1,9 +1,8 @@
 import 'dart:typed_data';
 
-import 'package:novel_glide/features/cloud/domain/entities/cloud_file.dart';
-import 'package:novel_glide/features/cloud/domain/entities/cloud_providers.dart';
-
 import '../../../../main.dart';
+import '../../domain/entities/cloud_file.dart';
+import '../../domain/entities/cloud_providers.dart';
 import '../../domain/repositories/cloud_repository.dart';
 import '../data_sources/cloud_drive_api.dart';
 

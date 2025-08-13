@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:novel_glide/enum/sort_order_code.dart';
-
 import '../../../../../enum/loading_state_code.dart';
+import '../../../../../enum/sort_order_code.dart';
 import '../../../../../features/shared_components/shared_list/shared_list.dart';
 import '../../../../books/domain/entities/book.dart';
 import '../../../../books/domain/use_cases/book_get_list_by_identifiers_use_case.dart';
