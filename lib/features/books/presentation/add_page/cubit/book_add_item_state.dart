@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
-import 'package:novel_glide/core/utils/file_extension.dart';
+import 'package:novel_glide/core/utils/file_utils.dart';
 import 'package:path/path.dart';
 
 class BookAddItemState extends Equatable {
