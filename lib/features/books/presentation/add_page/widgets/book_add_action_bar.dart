@@ -19,14 +19,14 @@ class BookAddActionBar extends StatelessWidget {
         // Pick File Button
         BlocBuilder<BookAddCubit, BookAddState>(
           buildWhen: (BookAddState previous, BookAddState current) =>
-              previous.itemState != current.itemState,
+              previous.fileSet != current.fileSet,
           builder: _buildPickFileButton,
         ),
 
         // Submit Button
         BlocBuilder<BookAddCubit, BookAddState>(
           buildWhen: (BookAddState previous, BookAddState current) =>
-              previous.itemState != current.itemState,
+              previous.fileSet != current.fileSet,
           builder: _buildSubmitButton,
         ),
       ],

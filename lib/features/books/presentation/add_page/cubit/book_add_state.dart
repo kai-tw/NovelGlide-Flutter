@@ -1,20 +1,20 @@
 import 'package:equatable/equatable.dart';
 
-import 'book_add_item_state.dart';
+import '../../../domain/entities/book_pick_file_data.dart';
 
 class BookAddState extends Equatable {
   const BookAddState({
-    this.itemState = const <BookAddItemState>{},
+    this.fileSet = const <BookPickFileData>{},
   });
 
-  final Set<BookAddItemState> itemState;
+  final Set<BookPickFileData> fileSet;
 
   bool get isValid =>
-      itemState.isNotEmpty &&
-      !itemState.any((BookAddItemState state) => !state.isValid);
+      fileSet.isNotEmpty &&
+      !fileSet.any((BookPickFileData state) => !state.isValid);
 
   @override
   List<Object?> get props => <Object?>[
-        itemState,
+        fileSet,
       ];
 }

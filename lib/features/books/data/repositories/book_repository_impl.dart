@@ -2,30 +2,37 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:novel_glide/features/books/domain/entities/book.dart';
+import 'package:path/path.dart';
 
+import '../../../../core/file_system/domain/repositories/file_system_repository.dart';
+import '../../../../core/utils/file_utils.dart';
+import '../../../pick_file/domain/repositories/pick_file_repository.dart';
 import '../../domain/entities/book_chapter.dart';
 import '../../domain/entities/book_cover.dart';
+import '../../domain/entities/book_pick_file_data.dart';
 import '../../domain/repositories/book_repository.dart';
 import '../data_sources/book_local_data_source.dart';
-import '../data_sources/pick_book_data_source.dart';
 
 class BookRepositoryImpl implements BookRepository {
   BookRepositoryImpl(
     this._epubDataSource,
-    this._pickBookDataSource,
+    this._fileSystemRepository,
+    this._pickFileRepository,
   );
 
   final BookLocalDataSource _epubDataSource;
-  final PickBookDataSource _pickBookDataSource;
+
+  final FileSystemRepository _fileSystemRepository;
+  final PickFileRepository _pickFileRepository;
+
+  final StreamController<void> _onChangedController =
+      StreamController<void>.broadcast();
 
   @override
   List<String> get allowedExtensions => _epubDataSource.allowedExtensions;
 
   @override
   List<String> get allowedMimeTypes => _epubDataSource.allowedMimeTypes;
-
-  final StreamController<void> _onChangedController =
-      StreamController<void>.broadcast();
 
   @override
   StreamController<void> get onChangedController => _onChangedController;
@@ -64,11 +71,25 @@ class BookRepositoryImpl implements BookRepository {
   }
 
   @override
-  Future<Set<String>> pickBooks(Set<String> selectedFileName) {
-    return _pickBookDataSource.pickFiles(
+  Future<Set<BookPickFileData>> pickBooks() async {
+    final Set<String> pickedFileSet = await _pickFileRepository.pickFiles(
       allowedExtensions: allowedExtensions,
-      selectedFileName: selectedFileName,
     );
+    final Set<BookPickFileData> dataSet = <BookPickFileData>{};
+
+    for (String absolutePath in pickedFileSet) {
+      final String baseName = basename(absolutePath);
+      dataSet.add(BookPickFileData(
+        absolutePath: absolutePath,
+        baseName: baseName,
+        fileSize: parseFileLengthToString(
+            await _fileSystemRepository.getFileSize(absolutePath)),
+        existsInLibrary: await exists(baseName),
+        isTypeValid: await isFileValid(absolutePath),
+      ));
+    }
+
+    return dataSet;
   }
 
   @override
@@ -88,7 +109,7 @@ class BookRepositoryImpl implements BookRepository {
 
   @override
   Future<void> clearTemporaryPickedBooks() {
-    return _pickBookDataSource.clearTemporaryFiles();
+    return _pickFileRepository.clearTemporaryFiles();
   }
 
   @override

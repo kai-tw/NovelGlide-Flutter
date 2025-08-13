@@ -1,31 +1,27 @@
-import 'dart:io';
-
 import 'package:equatable/equatable.dart';
-import 'package:novel_glide/core/utils/file_utils.dart';
-import 'package:path/path.dart';
 
-class BookAddItemState extends Equatable {
-  const BookAddItemState({
+class BookPickFileData extends Equatable {
+  const BookPickFileData({
     required this.absolutePath,
+    required this.baseName,
+    required this.fileSize,
     required this.existsInLibrary,
     required this.isTypeValid,
   });
 
   final String absolutePath;
+  final String baseName;
+  final String fileSize;
   final bool existsInLibrary;
   final bool isTypeValid;
-
-  File get _file => File(absolutePath);
-
-  String get lengthString => parseFileLengthToString(_file.lengthSync());
-
-  String get baseName => basename(absolutePath);
 
   bool get isValid => !existsInLibrary && isTypeValid;
 
   @override
   List<Object?> get props => <Object?>[
         absolutePath,
+        baseName,
+        fileSize,
         existsInLibrary,
         isTypeValid,
       ];

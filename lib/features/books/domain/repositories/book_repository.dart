@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import '../entities/book.dart';
 import '../entities/book_chapter.dart';
 import '../entities/book_cover.dart';
+import '../entities/book_pick_file_data.dart';
 
 abstract class BookRepository {
   List<String> get allowedExtensions;
@@ -22,7 +23,7 @@ abstract class BookRepository {
 
   Stream<Book> getBooks([Set<String>? identifierSet]);
 
-  Future<Set<String>> pickBooks(Set<String> selectedFileName);
+  Future<Set<BookPickFileData>> pickBooks();
 
   Future<Uint8List> readBookBytes(String identifier);
 

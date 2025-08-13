@@ -25,4 +25,6 @@ abstract class FileSystemRepository {
   Future<void> deleteDirectory(String path);
 
   Stream<FileSystemEntity> listDirectory(String path);
+
+  Future<int> getFileSize(String path);
 }

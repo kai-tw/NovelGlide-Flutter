@@ -117,4 +117,13 @@ class FileSystemRepositoryImpl implements FileSystemRepository {
       yield entity;
     }
   }
+
+  @override
+  Future<int> getFileSize(String path) async {
+    final File file = File(path);
+    if (!await file.exists()) {
+      throw FileSystemException('File not found', path);
+    }
+    return file.length();
+  }
 }

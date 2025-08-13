@@ -6,12 +6,11 @@ import '../bookmark/domain/use_cases/bookmark_get_data_use_case.dart';
 import '../bookmark/domain/use_cases/bookmark_observe_change_use_case.dart';
 import '../bookmark/domain/use_cases/bookmark_reset_use_case.dart';
 import '../collection/domain/use_cases/collection_delete_all_books_use_case.dart';
+import '../pick_file/domain/repositories/pick_file_repository.dart';
 import '../reader/domain/use_cases/reader_clear_location_cache_use_case.dart';
 import '../reader/domain/use_cases/reader_delete_location_cache_use_case.dart';
 import 'data/data_sources/book_local_data_source.dart';
 import 'data/data_sources/implementations/epub_data_source.dart';
-import 'data/data_sources/implementations/pick_book_data_source_impl.dart';
-import 'data/data_sources/pick_book_data_source.dart';
 import 'data/repositories/book_repository_impl.dart';
 import 'domain/repositories/book_repository.dart';
 import 'domain/use_cases/book_add_use_case.dart';
@@ -40,12 +39,12 @@ void setupBookDependencies() {
         sl<FileSystemRepository>(),
         sl<MimeRepository>(),
       ));
-  sl.registerLazySingleton<PickBookDataSource>(() => PickBookDataSourceImpl());
 
   // Register repositories
   sl.registerLazySingleton<BookRepository>(() => BookRepositoryImpl(
         sl<BookLocalDataSource>(),
-        sl<PickBookDataSource>(),
+        sl<FileSystemRepository>(),
+        sl<PickFileRepository>(),
       ));
 
   // Register use cases
@@ -96,11 +95,9 @@ void setupBookDependencies() {
       ));
   sl.registerFactory<BookAddCubit>(() => BookAddCubit(
         sl<BookAddUseCase>(),
-        sl<BookExistsUseCase>(),
         sl<BookClearTemporaryPickedFilesUseCase>(),
         sl<BookGetAllowedExtensionsUseCase>(),
         sl<BookPickUseCase>(),
-        sl<BookIsFileValidUseCase>(),
       ));
   sl.registerFactory<TocCubit>(() => TocCubit(
         sl<BookGetChapterListUseCase>(),
