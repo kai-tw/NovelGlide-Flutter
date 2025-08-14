@@ -63,7 +63,7 @@ class TtsEngineImpl implements TtsEngine {
   void _completionHandler() {
     _pausedText = null;
     _pausedStartOffset = null;
-    _streamController.add(TtsStateCode.ready);
+    _streamController.add(TtsStateCode.completed);
   }
 
   void _pauseHandler() {
@@ -102,7 +102,6 @@ class TtsEngineImpl implements TtsEngine {
   @override
   Future<void> pause() async {
     await _tts.pause();
-    _streamController.add(TtsStateCode.paused);
   }
 
   @override
@@ -195,5 +194,6 @@ class TtsEngineImpl implements TtsEngine {
   @override
   Future<void> stop() async {
     await _tts.stop();
+    _tts.cancelHandler?.call();
   }
 }

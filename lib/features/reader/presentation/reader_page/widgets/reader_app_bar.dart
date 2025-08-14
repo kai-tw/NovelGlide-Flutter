@@ -17,7 +17,7 @@ class ReaderAppBar extends StatelessWidget implements PreferredSizeWidget {
         },
       ),
       actions: const <Widget>[
-        SearchButton(),
+        ReaderSearchButton(),
       ],
     );
   }

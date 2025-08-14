@@ -10,7 +10,6 @@ class ReaderState extends Equatable {
     this.chapterCurrentPage = 0,
     this.chapterTotalPage = 0,
     this.navigationStateCode = ReaderNavigationStateCode.defaultState,
-    this.ttsState = TtsStateCode.initial,
     this.bookmarkData,
     this.readerPreference = const ReaderPreferenceData(),
   });
@@ -28,9 +27,6 @@ class ReaderState extends Equatable {
   /// Bottom buttons state.
   final ReaderNavigationStateCode navigationStateCode;
 
-  /// TTS state.
-  final TtsStateCode ttsState;
-
   /// Bookmark
   final BookmarkData? bookmarkData;
 
@@ -46,7 +42,6 @@ class ReaderState extends Equatable {
         chapterCurrentPage,
         chapterTotalPage,
         navigationStateCode,
-        ttsState,
         bookmarkData,
         readerPreference,
       ];
@@ -60,7 +55,6 @@ class ReaderState extends Equatable {
     int? chapterCurrentPage,
     int? chapterTotalPage,
     ReaderNavigationStateCode? navigationStateCode,
-    TtsStateCode? ttsState,
     BookmarkData? bookmarkData,
     ReaderPreferenceData? readerPreference,
   }) {
@@ -73,7 +67,6 @@ class ReaderState extends Equatable {
       chapterCurrentPage: chapterCurrentPage ?? this.chapterCurrentPage,
       chapterTotalPage: chapterTotalPage ?? this.chapterTotalPage,
       navigationStateCode: navigationStateCode ?? this.navigationStateCode,
-      ttsState: ttsState ?? this.ttsState,
       bookmarkData: bookmarkData ?? this.bookmarkData,
       readerPreference: readerPreference ?? this.readerPreference,
     );

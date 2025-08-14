@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../domain/entities/tts_state_code.dart';
 import '../../../domain/entities/tts_voice_data.dart';
 import '../cubit/tts_settings_cubit.dart';
 import '../cubit/tts_settings_state.dart';
@@ -13,7 +14,7 @@ class TtsVoiceSelectTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final TtsSettingsCubit cubit = BlocProvider.of<TtsSettingsCubit>(context);
+
     return BlocBuilder<TtsSettingsCubit, TtsSettingsState>(
       buildWhen: (TtsSettingsState previous, TtsSettingsState current) =>
           previous.ttsState != current.ttsState ||
@@ -28,22 +29,30 @@ class TtsVoiceSelectTile extends StatelessWidget {
                 ? appLocalizations.generalDefault
                 : '${state.data.voiceData!.getLocaleName(context)}\n${state.data.voiceData!.name}',
           ),
-          onTap: state.ttsState.isReady
-              ? () async {
-                  final TtsVoiceData? voiceData =
-                      await showDialog<TtsVoiceData>(
-                    context: context,
-                    builder: (_) => TtsVoiceSelectDialog(
-                      voiceList: cubit.state.voiceList,
-                    ),
-                  );
-                  if (voiceData != null) {
-                    cubit.setVoiceData(voiceData);
-                  }
-                }
-              : null,
+          onTap: switch (state.ttsState) {
+            TtsStateCode.ready => () => _showSelectDialog(context),
+            TtsStateCode.initial => null,
+            TtsStateCode.playing => null,
+            TtsStateCode.paused => null,
+            TtsStateCode.continued => null,
+            TtsStateCode.completed => () => _showSelectDialog(context),
+            TtsStateCode.canceled => () => _showSelectDialog(context),
+          },
         );
       },
     );
+  }
+
+  Future<void> _showSelectDialog(BuildContext context) async {
+    final TtsSettingsCubit cubit = BlocProvider.of<TtsSettingsCubit>(context);
+    final TtsVoiceData? voiceData = await showDialog<TtsVoiceData>(
+      context: context,
+      builder: (_) => TtsVoiceSelectDialog(
+        voiceList: cubit.state.voiceList,
+      ),
+    );
+    if (voiceData != null) {
+      cubit.setVoiceData(voiceData);
+    }
   }
 }

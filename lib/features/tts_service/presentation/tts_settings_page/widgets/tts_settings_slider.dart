@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../domain/entities/tts_state_code.dart';
 import '../cubit/tts_settings_cubit.dart';
 import '../cubit/tts_settings_state.dart';
 
@@ -39,7 +40,15 @@ class TtsSettingSlider extends StatelessWidget {
             builder: (BuildContext context, TtsSettingsState state) {
               return Slider(
                 value: valueSelector(state),
-                onChanged: state.ttsState.isReady ? onChanged : null,
+                onChanged: switch (state.ttsState) {
+                  TtsStateCode.ready => onChanged,
+                  TtsStateCode.initial => null,
+                  TtsStateCode.playing => null,
+                  TtsStateCode.paused => null,
+                  TtsStateCode.continued => null,
+                  TtsStateCode.completed => onChanged,
+                  TtsStateCode.canceled => onChanged,
+                },
                 onChangeEnd: onChanged,
                 min: min,
                 max: max,

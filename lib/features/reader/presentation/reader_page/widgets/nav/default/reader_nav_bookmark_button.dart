@@ -1,4 +1,8 @@
-part of '../../../reader.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../../../generated/i18n/app_localizations.dart';
+import '../../../cubit/reader_cubit.dart';
 
 class ReaderNavBookmarkButton extends StatelessWidget {
   const ReaderNavBookmarkButton({super.key});
@@ -14,7 +18,6 @@ class ReaderNavBookmarkButton extends StatelessWidget {
           previous.code != current.code ||
           previous.bookmarkData != current.bookmarkData ||
           previous.startCfi != current.startCfi ||
-          previous.ttsState != current.ttsState ||
           previous.readerPreference.isAutoSaving !=
               current.readerPreference.isAutoSaving,
       builder: (BuildContext context, ReaderState state) {
@@ -24,7 +27,6 @@ class ReaderNavBookmarkButton extends StatelessWidget {
 
         // Can the current page be bookmarked?
         final bool isEnabled = state.code.isLoaded &&
-            state.ttsState.isReady &&
             !state.readerPreference.isAutoSaving &&
             state.bookmarkData?.startCfi != state.startCfi;
 

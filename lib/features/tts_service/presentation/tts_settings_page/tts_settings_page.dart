@@ -15,7 +15,7 @@ class TtsSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<TtsSettingsCubit>(
-      create: (_) => sl<TtsSettingsCubit>(),
+      create: (_) => sl<TtsSettingsCubit>()..startLoading(),
       child: const _PageScaffold(),
     );
   }

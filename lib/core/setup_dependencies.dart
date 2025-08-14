@@ -17,6 +17,7 @@ import '../features/locale_system/setup_dependencies.dart';
 import '../features/pick_file/setup_dependencies.dart';
 import '../features/preference/setup_dependencies.dart';
 import '../features/reader/setup_dependencies.dart';
+import '../features/tts_service/setup_dependencies.dart';
 import '../main.dart';
 import 'file_system/setup_dependencies.dart';
 import 'log_system/setup_dependencies.dart';
@@ -46,6 +47,7 @@ Future<void> setupDependencies() async {
   setupPickFileDependencies();
   setupPreferenceDependencies(prefs);
   setupReaderDependencies();
+  setupTtsDependencies();
 
   // Dependencies injection for app
   sl.registerSingletonAsync<AppCubit>(() async {

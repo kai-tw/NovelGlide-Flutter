@@ -5,6 +5,12 @@ import '../bookmark/domain/use_cases/bookmark_get_data_use_case.dart';
 import '../bookmark/domain/use_cases/bookmark_update_data_use_case.dart';
 import '../books/domain/use_cases/book_get_use_case.dart';
 import '../books/domain/use_cases/book_read_bytes_use_case.dart';
+import '../tts_service/domain/use_cases/tts_observe_state_changed_use_case.dart';
+import '../tts_service/domain/use_cases/tts_pause_use_case.dart';
+import '../tts_service/domain/use_cases/tts_reload_preference_use_case.dart';
+import '../tts_service/domain/use_cases/tts_resume_use_case.dart';
+import '../tts_service/domain/use_cases/tts_speak_use_case.dart';
+import '../tts_service/domain/use_cases/tts_stop_use_case.dart';
 import 'data/repositories/reader_location_cache_repository_impl.dart';
 import 'domain/repositories/reader_location_cache_repository.dart';
 import 'domain/use_cases/reader_clear_location_cache_use_case.dart';
@@ -50,5 +56,12 @@ void setupReaderDependencies() {
         // Bookmark use cases
         sl<BookmarkGetDataUseCase>(),
         sl<BookmarkUpdateDataUseCase>(),
+        // TTS use cases
+        sl<TtsReloadPreferenceUseCase>(),
+        sl<TtsObserveStateChangedUseCase>(),
+        sl<TtsSpeakUseCase>(),
+        sl<TtsStopUseCase>(),
+        sl<TtsPauseUseCase>(),
+        sl<TtsResumeUseCase>(),
       ));
 }

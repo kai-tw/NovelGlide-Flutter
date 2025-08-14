@@ -9,6 +9,7 @@ import '../../../domain/use_cases/tts_get_preference_use_case.dart';
 import '../../../domain/use_cases/tts_get_voice_list_use_case.dart';
 import '../../../domain/use_cases/tts_observe_state_changed_use_case.dart';
 import '../../../domain/use_cases/tts_pause_use_case.dart';
+import '../../../domain/use_cases/tts_reload_preference_use_case.dart';
 import '../../../domain/use_cases/tts_reset_use_case.dart';
 import '../../../domain/use_cases/tts_resume_use_case.dart';
 import '../../../domain/use_cases/tts_set_pitch_use_case.dart';
@@ -33,6 +34,7 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
     this._ttsSetSpeechRateUseCase,
     this._ttsSetVoiceDataUseCase,
     this._ttsGetPreferenceUseCase,
+    this._ttsReloadPreferenceUseCase,
   ) : super(const TtsSettingsState());
 
   /// Use cases
@@ -48,21 +50,26 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
   final TtsSetSpeechRateUseCase _ttsSetSpeechRateUseCase;
   final TtsSetVoiceDataUseCase _ttsSetVoiceDataUseCase;
   final TtsGetPreferenceUseCase _ttsGetPreferenceUseCase;
+  final TtsReloadPreferenceUseCase _ttsReloadPreferenceUseCase;
 
   /// Stream subscription
-  late final StreamSubscription<TtsStateCode> _ttsStateSubscription =
-      _ttsObserveStateChangedUseCase()
-          .listen((TtsStateCode code) => emit(state.copyWith(ttsState: code)));
+  late final StreamSubscription<TtsStateCode> _ttsStateSubscription;
 
   /// Text editing controller
   final TextEditingController controller = TextEditingController();
 
-  Future<void> loadVoiceList() async {
-    if (!isClosed) {
-      emit(state.copyWith(
-        voiceList: await _ttsGetVoiceListUseCase(),
-      ));
-    }
+  Future<void> startLoading() async {
+    emit(state.copyWith(
+      voiceList: await _ttsGetVoiceListUseCase(),
+    ));
+
+    _ttsStateSubscription =
+        _ttsObserveStateChangedUseCase().listen((TtsStateCode code) {
+      emit(state.copyWith(ttsState: code));
+      print(code);
+    });
+
+    await _ttsReloadPreferenceUseCase();
   }
 
   Future<void> play() async {

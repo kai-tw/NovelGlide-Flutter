@@ -84,6 +84,7 @@ void setupTtsDependencies() {
       sl<TtsSetSpeechRateUseCase>(),
       sl<TtsSetVoiceDataUseCase>(),
       sl<TtsGetPreferenceUseCase>(),
+      sl<TtsReloadPreferenceUseCase>(),
     ),
   );
 }
