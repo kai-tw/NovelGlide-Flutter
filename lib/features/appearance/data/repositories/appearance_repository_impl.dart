@@ -1,26 +1,33 @@
+import '../../../preference/domain/entities/preference_keys.dart';
+import '../../../preference/domain/repositories/preference_repository.dart';
 import '../../domain/entities/app_default_theme.dart';
 import '../../domain/entities/appearance_settings.dart';
 import '../../domain/repositories/appearance_repository.dart';
-import '../data_sources/appearance_local_data_source.dart';
 
 class AppearanceRepositoryImpl extends AppearanceRepository {
-  AppearanceRepositoryImpl({
-    required this.localDataSource,
-  });
+  AppearanceRepositoryImpl(
+    this._preferenceRepository,
+  );
 
-  final AppearanceLocalDataSource localDataSource;
+  final PreferenceRepository _preferenceRepository;
 
   @override
   Future<AppearanceSettings> getAppearanceSettings() async {
-    final AppThemeMode themeMode = await localDataSource.getThemeMode();
+    // Load the theme mode preference.
+    final int themeModeIndex =
+        await _preferenceRepository.tryGetInt(PreferenceKeys.appThemeMode) ??
+            AppThemeMode.system.index;
+
+    // Return the settings.
     return AppearanceSettings(
-      themeMode: themeMode,
+      themeMode: AppThemeMode.values[themeModeIndex],
       theme: const AppDefaultTheme(),
     );
   }
 
   @override
   Future<void> saveAppearanceSettings(AppearanceSettings settings) {
-    return localDataSource.saveThemeMode(settings.themeMode);
+    return _preferenceRepository.setInt(
+        PreferenceKeys.appThemeMode, settings.themeMode.index);
   }
 }

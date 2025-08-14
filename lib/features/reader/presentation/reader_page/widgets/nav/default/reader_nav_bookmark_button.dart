@@ -24,7 +24,7 @@ class ReaderNavBookmarkButton extends StatelessWidget {
 
         // Can the current page be bookmarked?
         final bool isEnabled = state.code.isLoaded &&
-            state.ttsState.isStopped &&
+            state.ttsState.isReady &&
             !state.readerPreference.isAutoSaving &&
             state.bookmarkData?.startCfi != state.startCfi;
 

@@ -11,7 +11,7 @@ import '../../developer_page/developer_page.dart';
 import '../../feedback/presentation/feedback_page.dart';
 import '../../locale_system/presentation/locale_settings_page/locale_settings_page.dart';
 import '../../reset_services/reset_service.dart';
-import '../../tts_service/tts_service.dart';
+import '../../tts_service/presentation/tts_settings_page/tts_settings_page.dart';
 import 'widgets/settings_list_tile.dart';
 
 class SettingsPage extends StatelessWidget {

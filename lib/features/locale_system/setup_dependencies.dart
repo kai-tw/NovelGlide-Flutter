@@ -1,22 +1,15 @@
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../main.dart';
-import 'data/data_sources/locale_local_data_source.dart';
+import '../preference/domain/repositories/preference_repository.dart';
 import 'data/repositories/locale_repository_impl.dart';
 import 'domain/repositories/locale_repository.dart';
 import 'domain/use_cases/get_locale_settings_use_case.dart';
 import 'domain/use_cases/save_locale_settings_use_case.dart';
 
-void setupLocaleDependencies(SharedPreferences prefs) {
-  // Register local data source
-  sl.registerLazySingleton<LocaleLocalDataSource>(
-    () => LocaleLocalDataSourceImpl(prefs),
-  );
-
+void setupLocaleDependencies() {
   // Register repository
   sl.registerLazySingleton<LocaleRepository>(
     () => LocaleRepositoryImpl(
-      localDataSource: sl<LocaleLocalDataSource>(),
+      sl<PreferenceRepository>(),
     ),
   );
 

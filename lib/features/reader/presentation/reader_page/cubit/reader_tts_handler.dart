@@ -8,7 +8,7 @@ class ReaderTTSHandler {
     ReaderObserveTtsEndUseCase readerObserveTtsEndUseCase,
     ReaderObserveTtsPlayUseCase readerObserveTtsPlayUseCase,
     ReaderObserveTtsStopUseCase readerObserveTtsStopUseCase, {
-    required void Function(TtsServiceState state) onTtsStateChanged,
+    required void Function(TtsStateCode state) onTtsStateChanged,
   }) {
     final ReaderTTSHandler handler = ReaderTTSHandler._(
       readerSendTtsNextUseCase,
@@ -36,7 +36,7 @@ class ReaderTTSHandler {
   );
 
   late TtsService _ttsService;
-  final void Function(TtsServiceState state) onTtsStateChanged;
+  final void Function(TtsStateCode state) onTtsStateChanged;
 
   /// Stream subscription
   late final StreamSubscription<void> _ttsEndStreamSubscription;
@@ -59,7 +59,7 @@ class ReaderTTSHandler {
 
   /// TTS service is ready
   void _onReady() {
-    onTtsStateChanged(TtsServiceState.stopped);
+    onTtsStateChanged(TtsStateCode.ready);
 
     _ttsService.setStartHandler(_onPlaying);
     _ttsService.setPauseHandler(_onPaused);
@@ -72,13 +72,13 @@ class ReaderTTSHandler {
   void _onPlaying() {
     isPaused = false;
     isCanceled = false;
-    onTtsStateChanged(TtsServiceState.playing);
+    onTtsStateChanged(TtsStateCode.playing);
   }
 
   /// TTS is paused
   void _onPaused() {
     isPaused = true;
-    onTtsStateChanged(TtsServiceState.paused);
+    onTtsStateChanged(TtsStateCode.paused);
   }
 
   /// TTS is completed
@@ -95,13 +95,13 @@ class ReaderTTSHandler {
   void _onCancel() {
     isPaused = false;
     isCanceled = true;
-    onTtsStateChanged(TtsServiceState.stopped);
+    onTtsStateChanged(TtsStateCode.ready);
   }
 
   /// TTS is continued
   void _onContinue() {
     isPaused = false;
-    onTtsStateChanged(TtsServiceState.continued);
+    onTtsStateChanged(TtsStateCode.continued);
   }
 
   /// Pressing buttons

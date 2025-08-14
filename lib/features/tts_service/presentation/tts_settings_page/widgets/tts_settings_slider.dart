@@ -1,9 +1,13 @@
-part of '../../tts_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class _Slider extends StatelessWidget {
-  const _Slider({
+import '../cubit/tts_settings_cubit.dart';
+import '../cubit/tts_settings_state.dart';
+
+class TtsSettingSlider extends StatelessWidget {
+  const TtsSettingSlider({
+    super.key,
     required this.title,
-    required this.buildWhen,
     required this.onChanged,
     required this.min,
     required this.max,
@@ -12,7 +16,6 @@ class _Slider extends StatelessWidget {
   });
 
   final String title;
-  final BlocBuilderCondition<TtsSettingsState> buildWhen;
   final Function(double) onChanged;
   final double min;
   final double max;
@@ -30,11 +33,13 @@ class _Slider extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           BlocBuilder<TtsSettingsCubit, TtsSettingsState>(
-            buildWhen: buildWhen,
+            buildWhen: (TtsSettingsState previous, TtsSettingsState current) =>
+                previous.ttsState != current.ttsState ||
+                previous.data != current.data,
             builder: (BuildContext context, TtsSettingsState state) {
               return Slider(
                 value: valueSelector(state),
-                onChanged: state.ttsState.isStopped ? onChanged : null,
+                onChanged: state.ttsState.isReady ? onChanged : null,
                 onChangeEnd: onChanged,
                 min: min,
                 max: max,

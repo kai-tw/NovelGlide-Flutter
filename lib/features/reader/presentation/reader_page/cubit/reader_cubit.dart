@@ -13,7 +13,7 @@ import '../../../../bookmark/domain/use_cases/bookmark_update_data_use_case.dart
 import '../../../../books/domain/entities/book.dart';
 import '../../../../books/domain/use_cases/book_get_use_case.dart';
 import '../../../../books/domain/use_cases/book_read_bytes_use_case.dart';
-import '../../../../tts_service/tts_service.dart';
+import '../../../../tts_service/domain/entities/tts_state_code.dart';
 import '../../../data/data_transfer_objects/reader_web_message_dto.dart';
 import '../../../data/repositories/reader_search_repository_impl.dart';
 import '../../../data/repositories/reader_server_repository_impl.dart';
@@ -426,13 +426,13 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// *************************************************************************
 
   void previousPage() {
-    if (state.ttsState.isStopped) {
+    if (state.ttsState.isReady) {
       _sendPreviousPageUseCase();
     }
   }
 
   void nextPage() {
-    if (state.ttsState.isStopped) {
+    if (state.ttsState.isReady) {
       _sendNextPageUseCase();
     }
   }
@@ -441,7 +441,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   /// TTS
   /// *************************************************************************
 
-  void _onTtsStateChanged(TtsServiceState ttsState) {
+  void _onTtsStateChanged(TtsStateCode ttsState) {
     if (!isClosed) {
       emit(state.copyWith(ttsState: ttsState));
     }

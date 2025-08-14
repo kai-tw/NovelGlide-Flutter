@@ -1,7 +1,10 @@
-part of '../../tts_service.dart';
+import 'package:flutter/material.dart';
 
-class _VoiceSelectDialog extends StatelessWidget {
-  const _VoiceSelectDialog({required this.voiceList});
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../domain/entities/tts_voice_data.dart';
+
+class TtsVoiceSelectDialog extends StatelessWidget {
+  const TtsVoiceSelectDialog({super.key, required this.voiceList});
 
   final List<TtsVoiceData> voiceList;
 

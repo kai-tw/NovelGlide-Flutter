@@ -11,7 +11,7 @@ import '../../../../main.dart';
 import '../../../advertisement/domain/entities/ad_unit_id.dart';
 import '../../../advertisement/presentation/advertisement.dart';
 import '../../../books/domain/entities/book.dart';
-import '../../../tts_service/tts_service.dart';
+import '../../../tts_service/presentation/tts_settings_page/tts_settings_page.dart';
 import '../../domain/entities/reader_destination_type.dart';
 import '../../domain/entities/reader_navigation_state_code.dart';
 import '../../domain/entities/reader_page_num_type.dart';

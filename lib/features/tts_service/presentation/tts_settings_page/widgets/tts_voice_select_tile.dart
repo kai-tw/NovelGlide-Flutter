@@ -1,7 +1,14 @@
-part of '../../tts_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class _VoiceSelectTile extends StatelessWidget {
-  const _VoiceSelectTile();
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../domain/entities/tts_voice_data.dart';
+import '../cubit/tts_settings_cubit.dart';
+import '../cubit/tts_settings_state.dart';
+import '../dialog/tts_voice_select_dialog.dart';
+
+class TtsVoiceSelectTile extends StatelessWidget {
+  const TtsVoiceSelectTile({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +28,12 @@ class _VoiceSelectTile extends StatelessWidget {
                 ? appLocalizations.generalDefault
                 : '${state.data.voiceData!.getLocaleName(context)}\n${state.data.voiceData!.name}',
           ),
-          onTap: state.ttsState.isStopped
+          onTap: state.ttsState.isReady
               ? () async {
                   final TtsVoiceData? voiceData =
                       await showDialog<TtsVoiceData>(
                     context: context,
-                    builder: (_) => _VoiceSelectDialog(
+                    builder: (_) => TtsVoiceSelectDialog(
                       voiceList: cubit.state.voiceList,
                     ),
                   );

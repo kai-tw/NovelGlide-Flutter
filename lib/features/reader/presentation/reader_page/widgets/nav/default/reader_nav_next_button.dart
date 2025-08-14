@@ -12,7 +12,7 @@ class ReaderNavNextButton extends StatelessWidget {
           previous.code != current.code ||
           previous.ttsState != current.ttsState,
       builder: (BuildContext context, ReaderState state) {
-        final bool isEnabled = state.code.isLoaded && state.ttsState.isStopped;
+        final bool isEnabled = state.code.isLoaded && state.ttsState.isReady;
         return IconButton(
           icon: const Icon(Icons.arrow_forward_ios_rounded),
           tooltip: appLocalizations.readerNextPage,

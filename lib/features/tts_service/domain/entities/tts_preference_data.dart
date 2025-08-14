@@ -1,4 +1,6 @@
-part of '../../preference_service.dart';
+import 'package:equatable/equatable.dart';
+
+import 'tts_voice_data.dart';
 
 class TtsPreferenceData extends Equatable {
   const TtsPreferenceData({

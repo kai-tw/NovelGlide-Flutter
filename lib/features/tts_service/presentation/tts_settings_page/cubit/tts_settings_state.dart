@@ -1,14 +1,18 @@
-part of '../../tts_service.dart';
+import 'package:equatable/equatable.dart';
+
+import '../../../domain/entities/tts_preference_data.dart';
+import '../../../domain/entities/tts_state_code.dart';
+import '../../../domain/entities/tts_voice_data.dart';
 
 class TtsSettingsState extends Equatable {
   const TtsSettingsState({
-    this.ttsState = TtsServiceState.initial,
+    this.ttsState = TtsStateCode.initial,
     this.voiceList = const <TtsVoiceData>[],
     this.data = const TtsPreferenceData(),
     this.isTextEmpty = false,
   });
 
-  final TtsServiceState ttsState;
+  final TtsStateCode ttsState;
   final List<TtsVoiceData> voiceList;
   final TtsPreferenceData data;
   final bool isTextEmpty;
@@ -22,7 +26,7 @@ class TtsSettingsState extends Equatable {
       ];
 
   TtsSettingsState copyWith({
-    TtsServiceState? ttsState,
+    TtsStateCode? ttsState,
     List<TtsVoiceData>? voiceList,
     TtsPreferenceData? data,
     bool? isVoiceNull,

@@ -10,7 +10,7 @@ class ReaderTtsSettingsButton extends StatelessWidget {
       buildWhen: (ReaderState previous, ReaderState current) =>
           previous.ttsState != current.ttsState,
       builder: (BuildContext context, ReaderState state) {
-        final bool isEnabled = state.ttsState.isStopped;
+        final bool isEnabled = state.ttsState.isReady;
         return IconButton(
           icon: const Icon(Icons.settings_rounded),
           tooltip: appLocalizations.ttsSettingsTitle,

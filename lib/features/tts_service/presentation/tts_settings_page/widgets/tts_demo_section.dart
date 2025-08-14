@@ -1,7 +1,12 @@
-part of '../../tts_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class _DemoSection extends StatelessWidget {
-  const _DemoSection();
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../cubit/tts_settings_cubit.dart';
+import '../cubit/tts_settings_state.dart';
+
+class TtsDemoSection extends StatelessWidget {
+  const TtsDemoSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +74,7 @@ class _DemoSection extends StatelessWidget {
                         previous.ttsState != current.ttsState,
                 builder: (BuildContext context, TtsSettingsState state) {
                   return TextButton.icon(
-                    onPressed: state.ttsState.isStopped ? cubit.reset : null,
+                    onPressed: state.ttsState.isReady ? cubit.reset : null,
                     icon: const Icon(Icons.replay),
                     label: Text(appLocalizations.ttsSettingsReset),
                   );

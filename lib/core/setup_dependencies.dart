@@ -15,6 +15,7 @@ import '../features/locale_system/domain/use_cases/get_locale_settings_use_case.
 import '../features/locale_system/domain/use_cases/save_locale_settings_use_case.dart';
 import '../features/locale_system/setup_dependencies.dart';
 import '../features/pick_file/setup_dependencies.dart';
+import '../features/preference/setup_dependencies.dart';
 import '../features/reader/setup_dependencies.dart';
 import '../main.dart';
 import 'file_system/setup_dependencies.dart';
@@ -32,17 +33,18 @@ Future<void> setupDependencies() async {
 
   // Dependencies injection for all features
   setupAdDependencies();
-  setupAppearanceDependencies(prefs);
+  setupAppearanceDependencies();
   setupAuthDependencies();
   setupBackupDependencies();
   setupBookDependencies();
   setupBookmarkDependencies();
   setupCollectionDependencies();
   setupCloudDependencies();
-  setupLocaleDependencies(prefs);
+  setupLocaleDependencies();
   setupLogDependencies();
   setupMimeResolverDependencies();
   setupPickFileDependencies();
+  setupPreferenceDependencies(prefs);
   setupReaderDependencies();
 
   // Dependencies injection for app

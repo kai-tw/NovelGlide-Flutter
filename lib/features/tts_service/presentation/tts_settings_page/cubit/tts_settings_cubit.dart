@@ -1,4 +1,9 @@
-part of '../../tts_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../domain/entities/tts_state_code.dart';
+import '../../../domain/entities/tts_voice_data.dart';
+import 'tts_settings_state.dart';
 
 class TtsSettingsCubit extends Cubit<TtsSettingsState> {
   factory TtsSettingsCubit() {
@@ -22,7 +27,7 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
     final List<TtsVoiceData> dataList = await _ttsService.voiceList;
     if (!isClosed) {
       emit(state.copyWith(
-        ttsState: TtsServiceState.stopped,
+        ttsState: TtsStateCode.ready,
         voiceList: dataList,
         data: _ttsService.data,
       ));
@@ -31,11 +36,11 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
 
   Future<void> play() async {
     switch (state.ttsState) {
-      case TtsServiceState.paused:
+      case TtsStateCode.paused:
         await _ttsService.resume();
         break;
 
-      case TtsServiceState.stopped:
+      case TtsStateCode.ready:
         final String text = controller.text;
 
         emit(state.copyWith(isTextEmpty: text.isEmpty));
@@ -93,25 +98,25 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
 
   void _onSpeakStart() {
     if (!isClosed) {
-      emit(state.copyWith(ttsState: TtsServiceState.playing));
+      emit(state.copyWith(ttsState: TtsStateCode.playing));
     }
   }
 
   void _onSpeakPause() {
     if (!isClosed) {
-      emit(state.copyWith(ttsState: TtsServiceState.paused));
+      emit(state.copyWith(ttsState: TtsStateCode.paused));
     }
   }
 
   void _onSpeakContinue() {
     if (!isClosed) {
-      emit(state.copyWith(ttsState: TtsServiceState.continued));
+      emit(state.copyWith(ttsState: TtsStateCode.continued));
     }
   }
 
   void _onSpeakEnd([dynamic _]) {
     if (!isClosed) {
-      emit(state.copyWith(ttsState: TtsServiceState.stopped));
+      emit(state.copyWith(ttsState: TtsStateCode.ready));
     }
   }
 }
