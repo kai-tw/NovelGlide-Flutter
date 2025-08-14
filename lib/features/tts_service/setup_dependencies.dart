@@ -4,6 +4,7 @@ import 'data/repositories/tts_engine_impl.dart';
 import 'data/repositories/tts_preference_repository_impl.dart';
 import 'domain/repositories/tts_engine.dart';
 import 'domain/repositories/tts_preference_repository.dart';
+import 'domain/use_cases/tts_get_preference_use_case.dart';
 import 'domain/use_cases/tts_get_voice_list_use_case.dart';
 import 'domain/use_cases/tts_observe_state_changed_use_case.dart';
 import 'domain/use_cases/tts_pause_use_case.dart';
@@ -16,6 +17,7 @@ import 'domain/use_cases/tts_set_voice_data_use_case.dart';
 import 'domain/use_cases/tts_set_volume_use_case.dart';
 import 'domain/use_cases/tts_speak_use_case.dart';
 import 'domain/use_cases/tts_stop_use_case.dart';
+import 'presentation/tts_settings_page/cubit/tts_settings_cubit.dart';
 
 void setupTtsDependencies() {
   // Register repositories
@@ -27,6 +29,9 @@ void setupTtsDependencies() {
   );
 
   // Register use cases
+  sl.registerFactory<TtsGetPreferenceUseCase>(
+    () => TtsGetPreferenceUseCase(sl<TtsPreferenceRepository>()),
+  );
   sl.registerFactory<TtsGetVoiceListUseCase>(
     () => TtsGetVoiceListUseCase(sl<TtsEngine>()),
   );
@@ -62,5 +67,23 @@ void setupTtsDependencies() {
   );
   sl.registerFactory<TtsStopUseCase>(
     () => TtsStopUseCase(sl<TtsEngine>()),
+  );
+
+  // Register cubits
+  sl.registerFactory<TtsSettingsCubit>(
+    () => TtsSettingsCubit(
+      sl<TtsObserveStateChangedUseCase>(),
+      sl<TtsGetVoiceListUseCase>(),
+      sl<TtsSpeakUseCase>(),
+      sl<TtsResumeUseCase>(),
+      sl<TtsStopUseCase>(),
+      sl<TtsPauseUseCase>(),
+      sl<TtsResetUseCase>(),
+      sl<TtsSetPitchUseCase>(),
+      sl<TtsSetVolumeUseCase>(),
+      sl<TtsSetSpeechRateUseCase>(),
+      sl<TtsSetVoiceDataUseCase>(),
+      sl<TtsGetPreferenceUseCase>(),
+    ),
   );
 }

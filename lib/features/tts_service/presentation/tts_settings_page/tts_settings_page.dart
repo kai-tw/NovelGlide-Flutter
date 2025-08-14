@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../generated/i18n/app_localizations.dart';
+import '../../../../main.dart';
 import 'cubit/tts_settings_cubit.dart';
 import 'cubit/tts_settings_state.dart';
 import 'widgets/tts_demo_section.dart';
@@ -14,7 +15,7 @@ class TtsSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<TtsSettingsCubit>(
-      create: (_) => TtsSettingsCubit(),
+      create: (_) => sl<TtsSettingsCubit>(),
       child: const _PageScaffold(),
     );
   }

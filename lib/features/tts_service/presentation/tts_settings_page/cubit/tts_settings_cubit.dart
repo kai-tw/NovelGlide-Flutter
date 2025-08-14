@@ -1,122 +1,132 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/entities/tts_state_code.dart';
 import '../../../domain/entities/tts_voice_data.dart';
+import '../../../domain/use_cases/tts_get_preference_use_case.dart';
+import '../../../domain/use_cases/tts_get_voice_list_use_case.dart';
+import '../../../domain/use_cases/tts_observe_state_changed_use_case.dart';
+import '../../../domain/use_cases/tts_pause_use_case.dart';
+import '../../../domain/use_cases/tts_reset_use_case.dart';
+import '../../../domain/use_cases/tts_resume_use_case.dart';
+import '../../../domain/use_cases/tts_set_pitch_use_case.dart';
+import '../../../domain/use_cases/tts_set_speech_rate_use_case.dart';
+import '../../../domain/use_cases/tts_set_voice_data_use_case.dart';
+import '../../../domain/use_cases/tts_set_volume_use_case.dart';
+import '../../../domain/use_cases/tts_speak_use_case.dart';
+import '../../../domain/use_cases/tts_stop_use_case.dart';
 import 'tts_settings_state.dart';
 
 class TtsSettingsCubit extends Cubit<TtsSettingsState> {
-  factory TtsSettingsCubit() {
-    final TtsSettingsCubit cubit = TtsSettingsCubit._();
-    cubit._ttsService = TtsService(onReady: cubit._onReady);
-    return cubit;
-  }
+  TtsSettingsCubit(
+    this._ttsObserveStateChangedUseCase,
+    this._ttsGetVoiceListUseCase,
+    this._ttsSpeakUseCase,
+    this._ttsResumeUseCase,
+    this._ttsStopUseCase,
+    this._ttsPauseUseCase,
+    this._ttsResetUseCase,
+    this._ttsSetPitchUseCase,
+    this._ttsSetVolumeUseCase,
+    this._ttsSetSpeechRateUseCase,
+    this._ttsSetVoiceDataUseCase,
+    this._ttsGetPreferenceUseCase,
+  ) : super(const TtsSettingsState());
 
-  TtsSettingsCubit._() : super(const TtsSettingsState());
-  late final TtsService _ttsService;
+  /// Use cases
+  final TtsObserveStateChangedUseCase _ttsObserveStateChangedUseCase;
+  final TtsGetVoiceListUseCase _ttsGetVoiceListUseCase;
+  final TtsSpeakUseCase _ttsSpeakUseCase;
+  final TtsResumeUseCase _ttsResumeUseCase;
+  final TtsStopUseCase _ttsStopUseCase;
+  final TtsPauseUseCase _ttsPauseUseCase;
+  final TtsResetUseCase _ttsResetUseCase;
+  final TtsSetPitchUseCase _ttsSetPitchUseCase;
+  final TtsSetVolumeUseCase _ttsSetVolumeUseCase;
+  final TtsSetSpeechRateUseCase _ttsSetSpeechRateUseCase;
+  final TtsSetVoiceDataUseCase _ttsSetVoiceDataUseCase;
+  final TtsGetPreferenceUseCase _ttsGetPreferenceUseCase;
+
+  /// Stream subscription
+  late final StreamSubscription<TtsStateCode> _ttsStateSubscription =
+      _ttsObserveStateChangedUseCase()
+          .listen((TtsStateCode code) => emit(state.copyWith(ttsState: code)));
+
+  /// Text editing controller
   final TextEditingController controller = TextEditingController();
 
-  Future<void> _onReady() async {
-    _ttsService.setStartHandler(_onSpeakStart);
-    _ttsService.setCompletionHandler(_onSpeakEnd);
-    _ttsService.setPauseHandler(_onSpeakPause);
-    _ttsService.setCancelHandler(_onSpeakEnd);
-    _ttsService.setContinueHandler(_onSpeakContinue);
-    _ttsService.setErrorHandler(_onSpeakEnd);
-
-    final List<TtsVoiceData> dataList = await _ttsService.voiceList;
+  Future<void> loadVoiceList() async {
     if (!isClosed) {
       emit(state.copyWith(
-        ttsState: TtsStateCode.ready,
-        voiceList: dataList,
-        data: _ttsService.data,
+        voiceList: await _ttsGetVoiceListUseCase(),
       ));
     }
   }
 
   Future<void> play() async {
-    switch (state.ttsState) {
-      case TtsStateCode.paused:
-        await _ttsService.resume();
-        break;
-
-      case TtsStateCode.ready:
-        final String text = controller.text;
-
-        emit(state.copyWith(isTextEmpty: text.isEmpty));
-
-        if (text.isNotEmpty) {
-          await _ttsService.speak(text);
-        }
-        break;
-
-      default:
+    final String text = controller.text;
+    if (text.isNotEmpty) {
+      await _ttsSpeakUseCase(controller.text);
     }
   }
 
-  Future<void> pause() async {
-    await _ttsService.pause();
-  }
+  Future<void> resume() => _ttsResumeUseCase();
 
-  Future<void> stop() async {
-    await _ttsService.stop();
-  }
+  Future<void> pause() => _ttsPauseUseCase();
+
+  Future<void> stop() => _ttsStopUseCase();
 
   Future<void> reset() async {
-    await _ttsService.reset();
+    await _ttsStopUseCase();
+    await _ttsResetUseCase();
+
+    // Reload preferences data
     emit(state.copyWith(
-      data: _ttsService.data,
+      data: await _ttsGetPreferenceUseCase(),
     ));
   }
 
   @override
   Future<void> close() async {
-    _ttsService.stop();
+    await _ttsStopUseCase();
     controller.dispose();
+    _ttsStateSubscription.cancel();
     super.close();
   }
 
   Future<void> setPitch(double pitch) async {
-    await _ttsService.setPitch(pitch);
-    emit(state.copyWith(data: _ttsService.data));
+    await _ttsSetPitchUseCase(pitch);
+    emit(state.copyWith(
+      data: state.data.copyWith(
+        pitch: pitch,
+      ),
+    ));
   }
 
   Future<void> setVolume(double volume) async {
-    await _ttsService.setVolume(volume);
-    emit(state.copyWith(data: _ttsService.data));
+    await _ttsSetVolumeUseCase(volume);
+    emit(state.copyWith(
+      data: state.data.copyWith(
+        volume: volume,
+      ),
+    ));
   }
 
   Future<void> setSpeechRate(double speechRate) async {
-    await _ttsService.setSpeechRate(speechRate);
-    emit(state.copyWith(data: _ttsService.data));
+    await _ttsSetSpeechRateUseCase(speechRate);
+    emit(state.copyWith(
+      data: state.data.copyWith(
+        speechRate: speechRate,
+      ),
+    ));
   }
 
   Future<void> setVoiceData(TtsVoiceData voiceData) async {
-    await _ttsService.setVoiceData(voiceData);
-    emit(state.copyWith(data: _ttsService.data));
-  }
-
-  void _onSpeakStart() {
-    if (!isClosed) {
-      emit(state.copyWith(ttsState: TtsStateCode.playing));
-    }
-  }
-
-  void _onSpeakPause() {
-    if (!isClosed) {
-      emit(state.copyWith(ttsState: TtsStateCode.paused));
-    }
-  }
-
-  void _onSpeakContinue() {
-    if (!isClosed) {
-      emit(state.copyWith(ttsState: TtsStateCode.continued));
-    }
-  }
-
-  void _onSpeakEnd([dynamic _]) {
-    if (!isClosed) {
-      emit(state.copyWith(ttsState: TtsStateCode.ready));
-    }
+    await _ttsSetVoiceDataUseCase(voiceData);
+    emit(state.copyWith(
+      data: state.data.copyWithVoiceData(voiceData),
+    ));
   }
 }
