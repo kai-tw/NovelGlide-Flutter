@@ -7,6 +7,12 @@ import '../data_sources/auth_api.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   @override
+  Future<bool> isSignIn(AuthProviders provider) async {
+    final AuthApi authApi = sl<AuthApi>(param1: provider);
+    return await authApi.isSignIn;
+  }
+
+  @override
   Future<AuthClient> getClient(
     AuthProviders provider,
     List<String> scopes,

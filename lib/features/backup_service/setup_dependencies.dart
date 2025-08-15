@@ -4,6 +4,9 @@ import '../../core/file_system/domain/repositories/temp_repository.dart';
 import '../../core/path_provider/domain/repositories/app_path_provider.dart';
 import '../../core/path_provider/domain/repositories/json_path_provider.dart';
 import '../../main.dart';
+import '../auth/domain/use_cases/auth_is_sign_in_use_case.dart';
+import '../auth/domain/use_cases/auth_sign_in_use_case.dart';
+import '../auth/domain/use_cases/auth_sign_out_use_case.dart';
 import '../bookmark/domain/repositories/bookmark_repository.dart';
 import '../books/domain/repositories/book_repository.dart';
 import '../cloud/domain/repositories/cloud_repository.dart';
@@ -143,5 +146,8 @@ void setupBackupDependencies() {
             sl<BackupGetBookmarkBackupExistsUseCase>(),
             sl<BackupGetCollectionBackupExistsUseCase>(),
             sl<BackupGetLastBackupTimeUseCase>(),
+            sl<AuthIsSignInUseCase>(),
+            sl<AuthSignInUseCase>(),
+            sl<AuthSignOutUseCase>(),
           ));
 }

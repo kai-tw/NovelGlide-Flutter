@@ -24,6 +24,12 @@ class GoogleAuthApi implements AuthApi {
   GoogleSignInAccount? _currentUser;
 
   @override
+  Future<bool> get isSignIn async {
+    await _initCompleter.future;
+    return _currentUser != null;
+  }
+
+  @override
   Future<AuthClient> getClient(List<String> scopes) async {
     await _initCompleter.future;
 
