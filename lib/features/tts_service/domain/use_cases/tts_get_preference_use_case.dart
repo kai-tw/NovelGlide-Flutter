@@ -1,6 +1,6 @@
 import '../../../../core/domain/use_cases/use_case.dart';
-import '../entities/tts_preference_data.dart';
-import '../repositories/tts_preference_repository.dart';
+import '../../../preference/domain/entities/tts_preference_data.dart';
+import '../../../preference/domain/repositories/preference_repository.dart';
 
 class TtsGetPreferenceUseCase extends UseCase<Future<TtsPreferenceData>, void> {
   const TtsGetPreferenceUseCase(this._repository);

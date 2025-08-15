@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../features/appearance/domain/entities/appearance_settings.dart';
 import '../features/homepage/homepage.dart';
 import '../features/locale_system/domain/entities/app_locale.dart';
 import '../features/locale_system/locale_utils.dart';
+import '../features/preference/domain/entities/appearance_preference_data.dart';
 import '../generated/i18n/app_localizations.dart';
 import '../main.dart';
 import 'cubit/app_cubit.dart';

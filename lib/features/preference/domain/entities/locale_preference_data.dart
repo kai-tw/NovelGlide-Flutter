@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-import 'app_locale.dart';
+import '../../../locale_system/domain/entities/app_locale.dart';
 
-class LocaleSettings extends Equatable {
-  const LocaleSettings({
+class LocalePreferenceData extends Equatable {
+  const LocalePreferenceData({
     this.userLocale,
   });
 

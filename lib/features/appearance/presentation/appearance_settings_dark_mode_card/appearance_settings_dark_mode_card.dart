@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../app/cubit/app_cubit.dart';
 import '../../../../generated/i18n/app_localizations.dart';
+import '../../../preference/domain/entities/appearance_preference_data.dart';
 import '../../../settings_page/presentation/widgets/settings_card.dart';
-import '../../domain/entities/appearance_settings.dart';
 
 class AppearanceSettingsDarkModeCard extends StatelessWidget {
   const AppearanceSettingsDarkModeCard({super.key});

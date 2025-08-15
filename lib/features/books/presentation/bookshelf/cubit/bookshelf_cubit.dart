@@ -93,7 +93,7 @@ class BookshelfCubit extends SharedListCubit<Book> {
               list,
               preference.sortOrder,
               preference.isAscending,
-            ), // Make a copy.
+            ),
           ));
         }
       },

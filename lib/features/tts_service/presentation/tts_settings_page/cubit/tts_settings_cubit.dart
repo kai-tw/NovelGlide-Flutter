@@ -63,11 +63,8 @@ class TtsSettingsCubit extends Cubit<TtsSettingsState> {
       voiceList: await _ttsGetVoiceListUseCase(),
     ));
 
-    _ttsStateSubscription =
-        _ttsObserveStateChangedUseCase().listen((TtsStateCode code) {
-      emit(state.copyWith(ttsState: code));
-      print(code);
-    });
+    _ttsStateSubscription = _ttsObserveStateChangedUseCase()
+        .listen((TtsStateCode code) => emit(state.copyWith(ttsState: code)));
 
     await _ttsReloadPreferenceUseCase();
   }

@@ -8,4 +8,7 @@ enum PreferenceKeys {
   ttsVolume,
   ttsSpeechRate,
   ttsVoiceData,
+
+  /// Bookshelf preferences
+  bookshelf
 }

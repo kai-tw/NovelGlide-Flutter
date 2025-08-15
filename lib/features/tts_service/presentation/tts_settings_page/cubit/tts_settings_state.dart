@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../domain/entities/tts_preference_data.dart';
+import '../../../../preference/domain/entities/tts_preference_data.dart';
 import '../../../domain/entities/tts_state_code.dart';
 import '../../../domain/entities/tts_voice_data.dart';
 

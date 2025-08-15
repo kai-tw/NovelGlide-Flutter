@@ -4,10 +4,10 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:novel_glide/features/tts_service/domain/entities/tts_voice_data.dart';
 
 import '../../../../core/log_system/log_system.dart';
-import '../../domain/entities/tts_preference_data.dart';
+import '../../../preference/domain/entities/tts_preference_data.dart';
+import '../../../preference/domain/repositories/preference_repository.dart';
 import '../../domain/entities/tts_state_code.dart';
 import '../../domain/repositories/tts_engine.dart';
-import '../../domain/repositories/tts_preference_repository.dart';
 
 class TtsEngineImpl implements TtsEngine {
   factory TtsEngineImpl(
@@ -128,7 +128,7 @@ class TtsEngineImpl implements TtsEngine {
 
   @override
   Future<void> reset() async {
-    await _preferenceRepository.reset();
+    await _preferenceRepository.resetPreference();
     await reloadPreference();
   }
 
@@ -146,7 +146,7 @@ class TtsEngineImpl implements TtsEngine {
 
     // Update preferences
     final TtsPreferenceData pref = await _preferenceRepository.getPreference();
-    await _preferenceRepository.save(pref.copyWith(pitch: pitch));
+    await _preferenceRepository.savePreference(pref.copyWith(pitch: pitch));
   }
 
   @override
@@ -156,7 +156,8 @@ class TtsEngineImpl implements TtsEngine {
 
     // Update preferences
     final TtsPreferenceData pref = await _preferenceRepository.getPreference();
-    await _preferenceRepository.save(pref.copyWith(speechRate: speechRate));
+    await _preferenceRepository
+        .savePreference(pref.copyWith(speechRate: speechRate));
   }
 
   @override
@@ -173,7 +174,8 @@ class TtsEngineImpl implements TtsEngine {
 
     // Update preferences
     final TtsPreferenceData pref = await _preferenceRepository.getPreference();
-    await _preferenceRepository.save(pref.copyWithVoiceData(voiceData));
+    await _preferenceRepository
+        .savePreference(pref.copyWithVoiceData(voiceData));
   }
 
   @override
@@ -183,7 +185,7 @@ class TtsEngineImpl implements TtsEngine {
 
     // Update preferences
     final TtsPreferenceData pref = await _preferenceRepository.getPreference();
-    await _preferenceRepository.save(pref.copyWith(volume: volume));
+    await _preferenceRepository.savePreference(pref.copyWith(volume: volume));
   }
 
   @override

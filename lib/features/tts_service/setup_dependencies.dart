@@ -1,9 +1,7 @@
 import '../../main.dart';
 import '../preference/domain/repositories/preference_repository.dart';
 import 'data/repositories/tts_engine_impl.dart';
-import 'data/repositories/tts_preference_repository_impl.dart';
 import 'domain/repositories/tts_engine.dart';
-import 'domain/repositories/tts_preference_repository.dart';
 import 'domain/use_cases/tts_get_preference_use_case.dart';
 import 'domain/use_cases/tts_get_voice_list_use_case.dart';
 import 'domain/use_cases/tts_observe_state_changed_use_case.dart';
@@ -21,9 +19,6 @@ import 'presentation/tts_settings_page/cubit/tts_settings_cubit.dart';
 
 void setupTtsDependencies() {
   // Register repositories
-  sl.registerLazySingleton<TtsPreferenceRepository>(
-    () => TtsPreferenceRepositoryImpl(sl<PreferenceRepository>()),
-  );
   sl.registerLazySingleton<TtsEngine>(
     () => TtsEngineImpl(sl<TtsPreferenceRepository>()),
   );

@@ -2,8 +2,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app/cubit/app_cubit.dart';
 import '../features/advertisement/setup_dependencies.dart';
-import '../features/appearance/domain/use_cases/get_appearance_settings_use_case.dart';
-import '../features/appearance/domain/use_cases/save_appearance_settings_use_case.dart';
+import '../features/appearance/domain/use_cases/appearance_get_preference_use_case.dart';
+import '../features/appearance/domain/use_cases/appearance_observe_preference_change_use_case.dart';
+import '../features/appearance/domain/use_cases/appearance_save_preference_use_case.dart';
 import '../features/appearance/setup_dependencies.dart';
 import '../features/auth/setup_dependencies.dart';
 import '../features/backup_service/setup_dependencies.dart';
@@ -11,8 +12,9 @@ import '../features/bookmark/setup_dependencies.dart';
 import '../features/books/setup_dependencies.dart';
 import '../features/cloud/setup_dependencies.dart';
 import '../features/collection/setup_dependencies.dart';
-import '../features/locale_system/domain/use_cases/get_locale_settings_use_case.dart';
-import '../features/locale_system/domain/use_cases/save_locale_settings_use_case.dart';
+import '../features/locale_system/domain/use_cases/locale_get_preference_use_case.dart';
+import '../features/locale_system/domain/use_cases/locale_observe_preference_change_use_case.dart';
+import '../features/locale_system/domain/use_cases/locale_save_preference_use_case.dart';
 import '../features/locale_system/setup_dependencies.dart';
 import '../features/pick_file/setup_dependencies.dart';
 import '../features/preference/setup_dependencies.dart';
@@ -52,10 +54,12 @@ Future<void> setupDependencies() async {
   // Dependencies injection for app
   sl.registerSingletonAsync<AppCubit>(() async {
     final AppCubit cubit = AppCubit(
-      sl<GetAppearanceSettingsUseCase>(),
-      sl<SaveAppearanceSettingsUseCase>(),
-      sl<GetLocaleSettingsUseCase>(),
-      sl<SaveLocaleSettingsUseCase>(),
+      sl<AppearanceGetPreferenceUseCase>(),
+      sl<AppearanceSavePreferenceUseCase>(),
+      sl<AppearanceObservePreferenceChangeUseCase>(),
+      sl<LocaleGetPreferenceUseCase>(),
+      sl<LocaleSavePreferenceUseCase>(),
+      sl<LocaleObservePreferenceChangeUseCase>(),
     );
     await cubit.init();
     return cubit;

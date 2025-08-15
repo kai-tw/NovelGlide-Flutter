@@ -1,10 +1,10 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../domain/entities/preference_keys.dart';
-import '../../domain/repositories/preference_repository.dart';
+import 'preference_local_data_source.dart';
 
-class PreferenceRepositoryImpl implements PreferenceRepository {
-  PreferenceRepositoryImpl(this._prefs);
+class PreferenceLocalDataSourceImpl implements PreferenceLocalDataSource {
+  PreferenceLocalDataSourceImpl(this._prefs);
 
   final SharedPreferences _prefs;
 

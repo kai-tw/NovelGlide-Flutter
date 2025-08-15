@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-import 'app_default_theme.dart';
-import 'app_theme.dart';
+import '../../../appearance/domain/entities/app_default_theme.dart';
+import '../../../appearance/domain/entities/app_theme.dart';
 
 enum AppThemeMode { system, light, dark }
 
-class AppearanceSettings extends Equatable {
-  const AppearanceSettings({
+class AppearancePreferenceData extends Equatable {
+  const AppearancePreferenceData({
     this.themeMode = AppThemeMode.system,
     this.theme = const AppDefaultTheme(),
   });

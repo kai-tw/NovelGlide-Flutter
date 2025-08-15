@@ -1,21 +1,18 @@
-import '../entities/preference_keys.dart';
+import '../entities/appearance_preference_data.dart';
+import '../entities/locale_preference_data.dart';
+import '../entities/tts_preference_data.dart';
 
-abstract class PreferenceRepository {
-  Future<int?> tryGetInt(PreferenceKeys key);
+abstract class PreferenceRepository<T> {
+  Stream<T> get onChangedStream;
 
-  Future<double?> tryGetDouble(PreferenceKeys key);
+  Future<T> getPreference();
 
-  Future<bool?> tryGetBool(PreferenceKeys key);
+  Future<void> savePreference(T data);
 
-  Future<String?> tryGetString(PreferenceKeys key);
-
-  Future<void> setInt(PreferenceKeys key, int value);
-
-  Future<void> setDouble(PreferenceKeys key, double value);
-
-  Future<void> setBool(PreferenceKeys key, bool value);
-
-  Future<void> setString(PreferenceKeys key, String value);
-
-  Future<void> remove(PreferenceKeys key);
+  Future<void> resetPreference();
 }
+
+typedef AppearancePreferenceRepository
+    = PreferenceRepository<AppearancePreferenceData>;
+typedef LocalePreferenceRepository = PreferenceRepository<LocalePreferenceData>;
+typedef TtsPreferenceRepository = PreferenceRepository<TtsPreferenceData>;

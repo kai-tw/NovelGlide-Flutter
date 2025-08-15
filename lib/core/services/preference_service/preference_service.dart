@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../enum/sort_order_code.dart';
@@ -13,7 +12,6 @@ part 'data/keys/backup_preference_key.dart';
 part 'data/keys/reader_preference_key.dart';
 part 'data/keys/shared_list_preference_key.dart';
 part 'data/model/backup_preference_data.dart';
-part 'data/model/locale_preference_data.dart';
 part 'data/repository/backup_preference.dart';
 part 'data/repository/bookmark_list_preference.dart';
 part 'data/repository/bookshelf_preference.dart';
