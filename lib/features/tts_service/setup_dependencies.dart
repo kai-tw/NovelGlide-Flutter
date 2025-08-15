@@ -1,8 +1,8 @@
 import '../../main.dart';
 import '../preference/domain/repositories/preference_repository.dart';
+import '../preference/domain/use_cases/preference_get_use_cases.dart';
 import 'data/repositories/tts_engine_impl.dart';
 import 'domain/repositories/tts_engine.dart';
-import 'domain/use_cases/tts_get_preference_use_case.dart';
 import 'domain/use_cases/tts_get_voice_list_use_case.dart';
 import 'domain/use_cases/tts_observe_state_changed_use_case.dart';
 import 'domain/use_cases/tts_pause_use_case.dart';

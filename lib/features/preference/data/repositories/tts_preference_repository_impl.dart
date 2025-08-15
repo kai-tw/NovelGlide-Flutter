@@ -14,7 +14,7 @@ class TtsPreferenceRepositoryImpl implements TtsPreferenceRepository {
   final PreferenceLocalDataSource _localDataSource;
 
   @override
-  Stream<TtsPreferenceData> get onChangedStream => throw NoSuchMethodError;
+  Stream<TtsPreferenceData> get onChangeStream => throw NoSuchMethodError;
 
   @override
   Future<TtsPreferenceData> getPreference() async {

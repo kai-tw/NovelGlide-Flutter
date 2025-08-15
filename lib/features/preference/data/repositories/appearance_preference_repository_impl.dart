@@ -33,7 +33,7 @@ class AppearancePreferenceRepositoryImpl
   }
 
   @override
-  Stream<AppearancePreferenceData> get onChangedStream =>
+  Stream<AppearancePreferenceData> get onChangeStream =>
       throw UnimplementedError();
 
   @override

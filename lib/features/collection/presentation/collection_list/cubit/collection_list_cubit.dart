@@ -6,6 +6,7 @@ import '../../../../../core/services/preference_service/preference_service.dart'
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../../../features/shared_components/shared_list/shared_list.dart';
+import '../../../../preference/domain/entities/shared_list_preference_data.dart';
 import '../../../domain/entities/collection_data.dart';
 import '../../../domain/use_cases/collection_delete_data_use_case.dart';
 import '../../../domain/use_cases/collection_get_list_use_case.dart';
@@ -54,7 +55,7 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
     }
 
     // Load preferences.
-    final SharedListData preference =
+    final SharedListPreferenceData preference =
         await PreferenceService.collectionList.load();
 
     // Load collection list.
@@ -95,7 +96,7 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
 
   @override
   void savePreference() {
-    PreferenceService.collectionList.save(SharedListData(
+    PreferenceService.collectionList.save(SharedListPreferenceData(
       sortOrder: state.sortOrder,
       isAscending: state.isAscending,
       listType: state.listType,
@@ -104,7 +105,7 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
 
   @override
   Future<void> refreshPreference() async {
-    final SharedListData preference =
+    final SharedListPreferenceData preference =
         await PreferenceService.collectionList.load();
     emit(state.copyWith(
       sortOrder: preference.sortOrder,

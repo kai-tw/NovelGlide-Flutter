@@ -40,7 +40,7 @@ class LocalePreferenceRepositoryImpl implements LocalePreferenceRepository {
   }
 
   @override
-  Stream<LocalePreferenceData> get onChangedStream =>
+  Stream<LocalePreferenceData> get onChangeStream =>
       _onChangedController.stream;
 
   @override

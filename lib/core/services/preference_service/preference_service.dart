@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../enum/sort_order_code.dart';
+import '../../../features/preference/domain/entities/shared_list_preference_data.dart';
 import '../../../features/reader/domain/entities/reader_page_num_type.dart';
 import '../../../features/shared_components/shared_list/shared_list.dart';
 import 'data/model/reader_preference_data.dart';

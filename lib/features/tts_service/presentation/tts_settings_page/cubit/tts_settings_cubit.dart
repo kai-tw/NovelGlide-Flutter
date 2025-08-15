@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../preference/domain/use_cases/preference_get_use_cases.dart';
 import '../../../domain/entities/tts_state_code.dart';
 import '../../../domain/entities/tts_voice_data.dart';
-import '../../../domain/use_cases/tts_get_preference_use_case.dart';
 import '../../../domain/use_cases/tts_get_voice_list_use_case.dart';
 import '../../../domain/use_cases/tts_observe_state_changed_use_case.dart';
 import '../../../domain/use_cases/tts_pause_use_case.dart';

@@ -10,7 +10,6 @@ import '../../../enum/loading_state_code.dart';
 import '../../../enum/sort_order_code.dart';
 import '../../../generated/i18n/app_localizations.dart';
 
-part 'data/model/shared_list_data.dart';
 part 'presentation/button/shared_list_delete_button.dart';
 part 'presentation/button/shared_list_done_button.dart';
 part 'presentation/button/shared_list_select_all_button.dart';

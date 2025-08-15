@@ -3,6 +3,7 @@ import 'package:collection/collection.dart';
 import '../../../../../core/services/preference_service/preference_service.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
+import '../../../../preference/domain/entities/shared_list_preference_data.dart';
 import '../../../../shared_components/shared_list/shared_list.dart';
 import '../../../domain/entities/bookmark_data.dart';
 import '../../../domain/use_cases/bookmark_delete_data_use_case.dart';
@@ -53,7 +54,7 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
     }
 
     // Load preferences.
-    final SharedListData preference =
+    final SharedListPreferenceData preference =
         await PreferenceService.bookmarkList.load();
 
     // Load bookmark list.
@@ -100,7 +101,7 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
 
   @override
   void savePreference() {
-    PreferenceService.bookmarkList.save(SharedListData(
+    PreferenceService.bookmarkList.save(SharedListPreferenceData(
       sortOrder: state.sortOrder,
       isAscending: state.isAscending,
       listType: state.listType,
@@ -109,7 +110,7 @@ class BookmarkListCubit extends SharedListCubit<BookmarkData> {
 
   @override
   Future<void> refreshPreference() async {
-    final SharedListData preference =
+    final SharedListPreferenceData preference =
         await PreferenceService.bookmarkList.load();
     emit(state.copyWith(
       sortOrder: preference.sortOrder,

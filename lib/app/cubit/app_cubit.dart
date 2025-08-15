@@ -4,15 +4,14 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../features/appearance/domain/entities/app_theme.dart';
-import '../../features/appearance/domain/use_cases/appearance_get_preference_use_case.dart';
 import '../../features/appearance/domain/use_cases/appearance_observe_preference_change_use_case.dart';
 import '../../features/appearance/domain/use_cases/appearance_save_preference_use_case.dart';
 import '../../features/locale_system/domain/entities/app_locale.dart';
-import '../../features/locale_system/domain/use_cases/locale_get_preference_use_case.dart';
 import '../../features/locale_system/domain/use_cases/locale_observe_preference_change_use_case.dart';
 import '../../features/locale_system/domain/use_cases/locale_save_preference_use_case.dart';
 import '../../features/preference/domain/entities/appearance_preference_data.dart';
 import '../../features/preference/domain/entities/locale_preference_data.dart';
+import '../../features/preference/domain/use_cases/preference_get_use_cases.dart';
 
 part 'app_state.dart';
 

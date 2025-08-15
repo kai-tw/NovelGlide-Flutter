@@ -6,6 +6,9 @@ import '../../../../../core/services/preference_service/preference_service.dart'
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../../../features/shared_components/shared_list/shared_list.dart';
+import '../../../../preference/domain/entities/bookshelf_preference_data.dart';
+import '../../../../preference/domain/entities/shared_list_preference_data.dart';
+import '../../../../preference/domain/use_cases/preference_get_use_cases.dart';
 import '../../../domain/entities/book.dart';
 import '../../../domain/entities/book_cover.dart';
 import '../../../domain/use_cases/book_delete_use_case.dart';
@@ -23,12 +26,14 @@ class BookshelfCubit extends SharedListCubit<Book> {
     BookObserveChangeUseCase observeBookChangeUseCase,
     BookExistsUseCase bookExistsUseCase,
     BookGetCoverUseCase bookGetCoverUseCase,
+    BookshelfGetPreferenceUseCase bookshelfGetPreferenceUseCase,
   ) {
     final BookshelfCubit cubit = BookshelfCubit._(
       getBookListUseCase,
       deleteBookUseCase,
       bookExistsUseCase,
       bookGetCoverUseCase,
+      bookshelfGetPreferenceUseCase,
     );
 
     // Refresh at first.
@@ -50,13 +55,17 @@ class BookshelfCubit extends SharedListCubit<Book> {
     this._deleteBookUseCase,
     this._bookExistsUseCase,
     this._bookGetCoverUseCase,
+    this._bookshelfGetPreferenceUseCase,
   ) : super(const BookshelfState());
 
-  /// Use cases
+  /// Book management use cases
   final BookGetListUseCase _getBookListUseCase;
   final BookDeleteUseCase _deleteBookUseCase;
   final BookExistsUseCase _bookExistsUseCase;
   final BookGetCoverUseCase _bookGetCoverUseCase;
+
+  /// Bookshelf preferences use cases
+  final BookshelfGetPreferenceUseCase _bookshelfGetPreferenceUseCase;
 
   /// Stream subscriptions
   StreamSubscription<Book>? _listStreamSubscription;
@@ -68,7 +77,8 @@ class BookshelfCubit extends SharedListCubit<Book> {
     }
 
     // Load preferences.
-    final SharedListData preference = await PreferenceService.bookshelf.load();
+    final BookshelfPreferenceData preference =
+        await _bookshelfGetPreferenceUseCase();
     emit(state.copyWith());
 
     final List<Book> list = <Book>[];
@@ -132,7 +142,7 @@ class BookshelfCubit extends SharedListCubit<Book> {
 
   @override
   void savePreference() {
-    PreferenceService.bookshelf.save(SharedListData(
+    PreferenceService.bookshelf.save(SharedListPreferenceData(
       sortOrder: state.sortOrder,
       isAscending: state.isAscending,
       listType: state.listType,
@@ -161,7 +171,8 @@ class BookshelfCubit extends SharedListCubit<Book> {
 
   @override
   Future<void> refreshPreference() async {
-    final SharedListData preference = await PreferenceService.bookshelf.load();
+    final BookshelfPreferenceData preference =
+        await _bookshelfGetPreferenceUseCase();
     emit(state.copyWith(
       sortOrder: preference.sortOrder,
       isAscending: preference.isAscending,

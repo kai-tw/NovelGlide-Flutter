@@ -10,6 +10,6 @@ class AppearanceObservePreferenceChangeUseCase
 
   @override
   Stream<AppearancePreferenceData> call([void parameter]) {
-    return _repository.onChangedStream;
+    return _repository.onChangeStream;
   }
 }

@@ -7,6 +7,8 @@ import '../bookmark/domain/use_cases/bookmark_observe_change_use_case.dart';
 import '../bookmark/domain/use_cases/bookmark_reset_use_case.dart';
 import '../collection/domain/use_cases/collection_delete_all_books_use_case.dart';
 import '../pick_file/domain/repositories/pick_file_repository.dart';
+import '../preference/domain/repositories/preference_repository.dart';
+import '../preference/domain/use_cases/preference_get_use_cases.dart';
 import '../reader/domain/use_cases/reader_clear_location_cache_use_case.dart';
 import '../reader/domain/use_cases/reader_delete_location_cache_use_case.dart';
 import 'data/data_sources/book_local_data_source.dart';
@@ -33,21 +35,21 @@ import 'presentation/bookshelf/cubit/bookshelf_cubit.dart';
 import 'presentation/table_of_contents_page/cubit/toc_cubit.dart';
 
 void setupBookDependencies() {
-  // Register data source
+  /// Register data source
   sl.registerLazySingleton<BookLocalDataSource>(() => EpubDataSource(
         sl<AppPathProvider>(),
         sl<FileSystemRepository>(),
         sl<MimeRepository>(),
       ));
 
-  // Register repositories
+  /// Register repositories
   sl.registerLazySingleton<BookRepository>(() => BookRepositoryImpl(
         sl<BookLocalDataSource>(),
         sl<FileSystemRepository>(),
         sl<PickFileRepository>(),
       ));
 
-  // Register use cases
+  /// Register book management use cases
   sl.registerFactory<BookAddUseCase>(
       () => BookAddUseCase(sl<BookRepository>()));
   sl.registerFactory<BookExistsUseCase>(
@@ -85,13 +87,22 @@ void setupBookDependencies() {
         sl<ReaderClearLocationCacheUseCase>(),
       ));
 
-  // Cubit factories
+  /// Register bookshelf preference use cases
+  sl.registerFactory<BookshelfGetPreferenceUseCase>(
+      () => BookshelfGetPreferenceUseCase(
+            sl<BookshelfPreferenceRepository>(),
+          ));
+
+  /// Cubit factories
   sl.registerFactory<BookshelfCubit>(() => BookshelfCubit(
+        // Book managements use cases
         sl<BookGetListUseCase>(),
         sl<BookDeleteUseCase>(),
         sl<BookObserveChangeUseCase>(),
         sl<BookExistsUseCase>(),
         sl<BookGetCoverUseCase>(),
+        // Bookshelf preferences use cases
+        sl<BookshelfGetPreferenceUseCase>(),
       ));
   sl.registerFactory<BookAddCubit>(() => BookAddCubit(
         sl<BookAddUseCase>(),

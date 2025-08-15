@@ -1,6 +1,7 @@
 part of '../../preference_service.dart';
 
-class SharedListPreference extends PreferenceRepository<SharedListData> {
+class SharedListPreference
+    extends PreferenceRepository<SharedListPreferenceData> {
   SharedListPreference({
     required this.sortOrderKey,
     required this.isAscendingKey,
@@ -22,8 +23,8 @@ class SharedListPreference extends PreferenceRepository<SharedListData> {
 
   /// Lazy load preferences.
   @override
-  Future<SharedListData> load() async {
-    return SharedListData(
+  Future<SharedListPreferenceData> load() async {
+    return SharedListPreferenceData(
       sortOrder: SortOrderCode
           .values[await tryGetInt(sortOrderKey) ?? defaultSortOrder.index],
       isAscending: await tryGetBool(isAscendingKey) ?? defaultIsAscending,
@@ -46,7 +47,7 @@ class SharedListPreference extends PreferenceRepository<SharedListData> {
   }
 
   @override
-  Future<void> save(SharedListData data) async {
+  Future<void> save(SharedListPreferenceData data) async {
     await Future.wait(<Future<void>>[
       setInt(sortOrderKey, data.sortOrder.index),
       setBool(isAscendingKey, data.isAscending),

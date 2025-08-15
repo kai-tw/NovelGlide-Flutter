@@ -10,6 +10,6 @@ class LocaleObservePreferenceChangeUseCase
 
   @override
   Stream<LocalePreferenceData> call([void parameter]) {
-    return _repository.onChangedStream;
+    return _repository.onChangeStream;
   }
 }

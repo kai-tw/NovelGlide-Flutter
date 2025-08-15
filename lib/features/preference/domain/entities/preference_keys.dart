@@ -10,5 +10,7 @@ enum PreferenceKeys {
   ttsVoiceData,
 
   /// Bookshelf preferences
-  bookshelf
+  bookshelfSortOrder,
+  bookshelfIsAscending,
+  bookshelfListType,
 }
