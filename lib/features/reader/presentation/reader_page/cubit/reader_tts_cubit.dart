@@ -73,8 +73,6 @@ class ReaderTtsCubit extends Cubit<ReaderTtsState> {
   }
 
   void _onTtsStateChanged(TtsStateCode code) {
-    print(code);
-
     switch (code) {
       case TtsStateCode.completed:
         if (isSpeakingEnd) {

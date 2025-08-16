@@ -1,5 +1,7 @@
 import '../../../../core/domain/use_cases/use_case.dart';
+import '../entities/appearance_preference_data.dart';
 import '../entities/bookshelf_preference_data.dart';
+import '../entities/locale_preference_data.dart';
 import '../repositories/preference_repository.dart';
 
 class PreferenceSaveUseCase<T, U extends PreferenceRepository<T>>
@@ -14,6 +16,14 @@ class PreferenceSaveUseCase<T, U extends PreferenceRepository<T>>
   }
 }
 
+/// Appearance save preference use case
+typedef AppearanceSavePreferenceUseCase = PreferenceSaveUseCase<
+    AppearancePreferenceData, AppearancePreferenceRepository>;
+
 /// Bookshelf save preference use case
 typedef BookshelfSavePreferenceUseCase = PreferenceSaveUseCase<
     BookshelfPreferenceData, BookshelfPreferenceRepository>;
+
+/// Locale save preference use case
+typedef LocaleSavePreferenceUseCase
+    = PreferenceSaveUseCase<LocalePreferenceData, LocalePreferenceRepository>;
