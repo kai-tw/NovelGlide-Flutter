@@ -2,6 +2,11 @@ import '../../core/file_system/domain/repositories/json_repository.dart';
 import '../../core/path_provider/domain/repositories/json_path_provider.dart';
 import '../../main.dart';
 import '../books/domain/repositories/book_repository.dart';
+import '../preference/domain/repositories/preference_repository.dart';
+import '../preference/domain/use_cases/preference_get_use_cases.dart';
+import '../preference/domain/use_cases/preference_observe_change_use_case.dart';
+import '../preference/domain/use_cases/preference_reset_use_case.dart';
+import '../preference/domain/use_cases/preference_save_use_case.dart';
 import 'data/data_sources/bookmark_local_json_data_source.dart';
 import 'data/data_sources/bookmark_local_json_data_source_impl.dart';
 import 'data/repositories/bookmark_repository_impl.dart';
@@ -28,7 +33,7 @@ void setupBookmarkDependencies() {
         sl<BookRepository>(),
       ));
 
-  // Register use cases
+  // Register bookmark use cases
   sl.registerFactory<BookmarkDeleteDataUseCase>(() => BookmarkDeleteDataUseCase(
         sl<BookmarkRepository>(),
       ));
@@ -49,10 +54,35 @@ void setupBookmarkDependencies() {
         sl<BookmarkRepository>(),
       ));
 
+  // Register bookmark list use cases
+  sl.registerFactory<BookmarkListGetPreferenceUseCase>(
+    () => BookmarkListGetPreferenceUseCase(
+      sl<BookmarkListPreferenceRepository>(),
+    ),
+  );
+  sl.registerFactory<BookmarkListSavePreferenceUseCase>(
+    () => BookmarkListSavePreferenceUseCase(
+      sl<BookmarkListPreferenceRepository>(),
+    ),
+  );
+  sl.registerFactory<BookmarkListResetPreferenceUseCase>(
+    () => BookmarkListResetPreferenceUseCase(
+      sl<BookmarkListPreferenceRepository>(),
+    ),
+  );
+  sl.registerFactory<BookmarkListObserveChangeUseCase>(
+    () => BookmarkListObserveChangeUseCase(
+      sl<BookmarkListPreferenceRepository>(),
+    ),
+  );
+
   // Register cubits
   sl.registerFactory<BookmarkListCubit>(() => BookmarkListCubit(
         sl<BookmarkGetListUseCase>(),
         sl<BookmarkDeleteDataUseCase>(),
         sl<BookmarkObserveChangeUseCase>(),
+        sl<BookmarkListGetPreferenceUseCase>(),
+        sl<BookmarkListSavePreferenceUseCase>(),
+        sl<BookmarkListObserveChangeUseCase>(),
       ));
 }

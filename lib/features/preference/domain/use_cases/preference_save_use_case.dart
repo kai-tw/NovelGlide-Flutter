@@ -1,5 +1,6 @@
 import '../../../../core/domain/use_cases/use_case.dart';
 import '../entities/appearance_preference_data.dart';
+import '../entities/bookmark_list_preference_data.dart';
 import '../entities/bookshelf_preference_data.dart';
 import '../entities/locale_preference_data.dart';
 import '../repositories/preference_repository.dart';
@@ -23,6 +24,10 @@ typedef AppearanceSavePreferenceUseCase = PreferenceSaveUseCase<
 /// Bookshelf save preference use case
 typedef BookshelfSavePreferenceUseCase = PreferenceSaveUseCase<
     BookshelfPreferenceData, BookshelfPreferenceRepository>;
+
+/// Bookmark List save preference use case
+typedef BookmarkListSavePreferenceUseCase = PreferenceSaveUseCase<
+    BookmarkListPreferenceData, BookmarkListPreferenceRepository>;
 
 /// Locale save preference use case
 typedef LocaleSavePreferenceUseCase

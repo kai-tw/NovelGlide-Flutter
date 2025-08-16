@@ -1,5 +1,6 @@
 import '../../../../core/domain/use_cases/use_case.dart';
 import '../entities/appearance_preference_data.dart';
+import '../entities/bookmark_list_preference_data.dart';
 import '../entities/bookshelf_preference_data.dart';
 import '../entities/locale_preference_data.dart';
 import '../entities/tts_preference_data.dart';
@@ -21,6 +22,14 @@ class PreferenceGetUseCase<T, U extends PreferenceRepository<T>>
 typedef AppearanceGetPreferenceUseCase = PreferenceGetUseCase<
     AppearancePreferenceData, AppearancePreferenceRepository>;
 
+/// Bookshelf get preference use case
+typedef BookshelfGetPreferenceUseCase = PreferenceGetUseCase<
+    BookshelfPreferenceData, BookshelfPreferenceRepository>;
+
+/// Bookmark List get preference use case
+typedef BookmarkListGetPreferenceUseCase = PreferenceGetUseCase<
+    BookmarkListPreferenceData, BookmarkListPreferenceRepository>;
+
 /// Locale get preference use case
 typedef LocaleGetPreferenceUseCase
     = PreferenceGetUseCase<LocalePreferenceData, LocalePreferenceRepository>;
@@ -28,7 +37,3 @@ typedef LocaleGetPreferenceUseCase
 /// TTS get preference use case
 typedef TtsGetPreferenceUseCase
     = PreferenceGetUseCase<TtsPreferenceData, TtsPreferenceRepository>;
-
-/// Bookshelf get preference use case
-typedef BookshelfGetPreferenceUseCase = PreferenceGetUseCase<
-    BookshelfPreferenceData, BookshelfPreferenceRepository>;

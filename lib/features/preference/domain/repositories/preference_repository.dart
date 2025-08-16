@@ -1,4 +1,5 @@
 import '../entities/appearance_preference_data.dart';
+import '../entities/bookmark_list_preference_data.dart';
 import '../entities/bookshelf_preference_data.dart';
 import '../entities/locale_preference_data.dart';
 import '../entities/shared_list_preference_data.dart';
@@ -32,3 +33,7 @@ typedef SharedListPreferenceRepository<T extends SharedListPreferenceData>
 /// Bookshelf preference repository.
 typedef BookshelfPreferenceRepository
     = SharedListPreferenceRepository<BookshelfPreferenceData>;
+
+/// Bookmark List preference repository.
+typedef BookmarkListPreferenceRepository
+    = SharedListPreferenceRepository<BookmarkListPreferenceData>;

@@ -32,7 +32,7 @@ class SettingsPagePreferenceCard extends StatelessWidget {
             deleteLabel: appLocalizations.generalReset,
           ),
           SettingsPageListTile(
-            onAccept: PreferenceService.bookmarkList.reset,
+            onAccept: sl<BookmarkListResetPreferenceUseCase>(),
             iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetBookmarkList,
             deleteLabel: appLocalizations.generalReset,
