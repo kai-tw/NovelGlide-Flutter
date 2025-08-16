@@ -9,6 +9,9 @@ import '../collection/domain/use_cases/collection_delete_all_books_use_case.dart
 import '../pick_file/domain/repositories/pick_file_repository.dart';
 import '../preference/domain/repositories/preference_repository.dart';
 import '../preference/domain/use_cases/preference_get_use_cases.dart';
+import '../preference/domain/use_cases/preference_observe_change_use_case.dart';
+import '../preference/domain/use_cases/preference_reset_use_case.dart';
+import '../preference/domain/use_cases/preference_save_use_case.dart';
 import '../reader/domain/use_cases/reader_clear_location_cache_use_case.dart';
 import '../reader/domain/use_cases/reader_delete_location_cache_use_case.dart';
 import 'data/data_sources/book_local_data_source.dart';
@@ -92,6 +95,18 @@ void setupBookDependencies() {
       () => BookshelfGetPreferenceUseCase(
             sl<BookshelfPreferenceRepository>(),
           ));
+  sl.registerFactory<BookshelfSavePreferenceUseCase>(
+      () => BookshelfSavePreferenceUseCase(
+            sl<BookshelfPreferenceRepository>(),
+          ));
+  sl.registerFactory<BookshelfResetPreferenceUseCase>(
+      () => BookshelfResetPreferenceUseCase(
+            sl<BookshelfPreferenceRepository>(),
+          ));
+  sl.registerFactory<BookshelfObserveChangeUseCase>(
+      () => BookshelfObserveChangeUseCase(
+            sl<BookshelfPreferenceRepository>(),
+          ));
 
   /// Cubit factories
   sl.registerFactory<BookshelfCubit>(() => BookshelfCubit(
@@ -103,6 +118,8 @@ void setupBookDependencies() {
         sl<BookGetCoverUseCase>(),
         // Bookshelf preferences use cases
         sl<BookshelfGetPreferenceUseCase>(),
+        sl<BookshelfSavePreferenceUseCase>(),
+        sl<BookshelfObserveChangeUseCase>(),
       ));
   sl.registerFactory<BookAddCubit>(() => BookAddCubit(
         sl<BookAddUseCase>(),

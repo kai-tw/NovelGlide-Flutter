@@ -14,13 +14,21 @@ abstract class PreferenceRepository<T> {
   Future<void> resetPreference();
 }
 
+/// Appearance preference repository.
 typedef AppearancePreferenceRepository
     = PreferenceRepository<AppearancePreferenceData>;
+
+/// Locale preference repository.
 typedef LocalePreferenceRepository = PreferenceRepository<LocalePreferenceData>;
+
+/// TTS preference repository.
 typedef TtsPreferenceRepository = PreferenceRepository<TtsPreferenceData>;
 
-/// SharedList repositories
+/// ========== SharedList repositories ==========
+/// SharedList preference repository contrast.
 typedef SharedListPreferenceRepository<T extends SharedListPreferenceData>
     = PreferenceRepository<T>;
+
+/// Bookshelf preference repository.
 typedef BookshelfPreferenceRepository
     = SharedListPreferenceRepository<BookshelfPreferenceData>;

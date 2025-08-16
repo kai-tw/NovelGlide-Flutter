@@ -15,7 +15,6 @@ part 'data/keys/shared_list_preference_key.dart';
 part 'data/model/backup_preference_data.dart';
 part 'data/repository/backup_preference.dart';
 part 'data/repository/bookmark_list_preference.dart';
-part 'data/repository/bookshelf_preference.dart';
 part 'data/repository/collection_list_preference.dart';
 part 'data/repository/preference_repository.dart';
 part 'data/repository/reader_preference.dart';
@@ -26,7 +25,6 @@ class PreferenceService {
 
   static final BackupPreference backup = BackupPreference();
   static BookmarkListPreference bookmarkList = BookmarkListPreference();
-  static final BookshelfPreference bookshelf = BookshelfPreference();
   static CollectionListPreference collectionList = CollectionListPreference();
   static final ReaderPreference reader = ReaderPreference();
 }

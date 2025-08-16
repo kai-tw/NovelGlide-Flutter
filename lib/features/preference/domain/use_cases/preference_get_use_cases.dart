@@ -17,12 +17,18 @@ class PreferenceGetUseCase<T, U extends PreferenceRepository<T>>
   }
 }
 
-/// Use cases
+/// Appearance get preference use case
 typedef AppearanceGetPreferenceUseCase = PreferenceGetUseCase<
     AppearancePreferenceData, AppearancePreferenceRepository>;
+
+/// Locale get preference use case
 typedef LocaleGetPreferenceUseCase
     = PreferenceGetUseCase<LocalePreferenceData, LocalePreferenceRepository>;
+
+/// TTS get preference use case
 typedef TtsGetPreferenceUseCase
     = PreferenceGetUseCase<TtsPreferenceData, TtsPreferenceRepository>;
+
+/// Bookshelf get preference use case
 typedef BookshelfGetPreferenceUseCase = PreferenceGetUseCase<
     BookshelfPreferenceData, BookshelfPreferenceRepository>;

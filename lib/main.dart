@@ -31,14 +31,14 @@ void main() async {
 
   // Asynchronous errors
   PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
-    LogSystem.fatal('Asynchronous Error', error: error, stackTrace: stack);
+    LogSystem.error('Asynchronous Error', error: error, stackTrace: stack);
     return true;
   };
 
   // Errors outside of Flutter
   Isolate.current.addErrorListener(RawReceivePort((List<dynamic> pair) async {
     final List<dynamic> errorAndStacktrace = pair;
-    LogSystem.fatal(
+    LogSystem.error(
       'Errors outside of Flutter',
       error: errorAndStacktrace.first,
       stackTrace: errorAndStacktrace.last,
