@@ -11,6 +11,10 @@ import '../bookmark/domain/repositories/bookmark_repository.dart';
 import '../books/domain/repositories/book_repository.dart';
 import '../cloud/domain/repositories/cloud_repository.dart';
 import '../collection/domain/repositories/collection_repository.dart';
+import '../preference/domain/repositories/preference_repository.dart';
+import '../preference/domain/use_cases/preference_get_use_cases.dart';
+import '../preference/domain/use_cases/preference_observe_change_use_case.dart';
+import '../preference/domain/use_cases/preference_save_use_case.dart';
 import 'data/repositories/book_backup_repository_impl.dart';
 import 'data/repositories/bookmark_backup_repository_impl.dart';
 import 'data/repositories/collection_backup_repository_impl.dart';
@@ -37,117 +41,161 @@ import 'presentation/process_dialog/cubit/item_cubits/backup_service_process_lib
 
 void setupBackupDependencies() {
   // Register repositories
-  sl.registerLazySingleton<BookBackupRepository>(() => BookBackupRepositoryImpl(
-        sl<AppPathProvider>(),
-        sl<FileSystemRepository>(),
-        sl<BookRepository>(),
-        sl<CloudRepository>(),
-      ));
+  sl.registerLazySingleton<BookBackupRepository>(
+    () => BookBackupRepositoryImpl(
+      sl<AppPathProvider>(),
+      sl<FileSystemRepository>(),
+      sl<BookRepository>(),
+      sl<CloudRepository>(),
+    ),
+  );
   sl.registerLazySingleton<BookmarkBackupRepository>(
-      () => BookmarkBackupRepositoryImpl(
-            sl<JsonPathProvider>(),
-            sl<FileSystemRepository>(),
-            sl<CloudRepository>(),
-          ));
+    () => BookmarkBackupRepositoryImpl(
+      sl<JsonPathProvider>(),
+      sl<FileSystemRepository>(),
+      sl<CloudRepository>(),
+    ),
+  );
   sl.registerLazySingleton<CollectionBackupRepository>(
-      () => CollectionBackupRepositoryImpl(
-            sl<JsonPathProvider>(),
-            sl<FileSystemRepository>(),
-            sl<CloudRepository>(),
-          ));
+    () => CollectionBackupRepositoryImpl(
+      sl<JsonPathProvider>(),
+      sl<FileSystemRepository>(),
+      sl<CloudRepository>(),
+    ),
+  );
 
   // Register use cases
-  sl.registerFactory<BackupBookCreateUseCase>(() => BackupBookCreateUseCase(
-        sl<FileSystemRepository>(),
-        sl<TempRepository>(),
-        sl<BookBackupRepository>(),
-      ));
-  sl.registerFactory<BackupBookRestoreUseCase>(() => BackupBookRestoreUseCase(
-        sl<FileSystemRepository>(),
-        sl<TempRepository>(),
-        sl<BookBackupRepository>(),
-      ));
-  sl.registerFactory<BackupBookDeleteUseCase>(() => BackupBookDeleteUseCase(
-        sl<BookBackupRepository>(),
-      ));
+  sl.registerFactory<BackupBookCreateUseCase>(
+    () => BackupBookCreateUseCase(
+      sl<FileSystemRepository>(),
+      sl<TempRepository>(),
+      sl<BookBackupRepository>(),
+    ),
+  );
+  sl.registerFactory<BackupBookRestoreUseCase>(
+    () => BackupBookRestoreUseCase(
+      sl<FileSystemRepository>(),
+      sl<TempRepository>(),
+      sl<BookBackupRepository>(),
+    ),
+  );
+  sl.registerFactory<BackupBookDeleteUseCase>(
+    () => BackupBookDeleteUseCase(
+      sl<BookBackupRepository>(),
+    ),
+  );
   sl.registerFactory<BackupBookmarkCreateUseCase>(
-      () => BackupBookmarkCreateUseCase(
-            sl<BookmarkBackupRepository>(),
-          ));
+    () => BackupBookmarkCreateUseCase(
+      sl<BookmarkBackupRepository>(),
+    ),
+  );
   sl.registerFactory<BackupBookmarkRestoreUseCase>(
-      () => BackupBookmarkRestoreUseCase(
-            sl<BookmarkBackupRepository>(),
-            sl<FileSystemRepository>(),
-            sl<JsonRepository>(),
-            sl<TempRepository>(),
-            sl<BookmarkRepository>(),
-          ));
+    () => BackupBookmarkRestoreUseCase(
+      sl<BookmarkBackupRepository>(),
+      sl<FileSystemRepository>(),
+      sl<JsonRepository>(),
+      sl<TempRepository>(),
+      sl<BookmarkRepository>(),
+    ),
+  );
   sl.registerFactory<BackupBookmarkDeleteUseCase>(
-      () => BackupBookmarkDeleteUseCase(
-            sl<BookmarkBackupRepository>(),
-          ));
+    () => BackupBookmarkDeleteUseCase(
+      sl<BookmarkBackupRepository>(),
+    ),
+  );
   sl.registerFactory<BackupCollectionCreateUseCase>(
-      () => BackupCollectionCreateUseCase(
-            sl<CollectionBackupRepository>(),
-          ));
+    () => BackupCollectionCreateUseCase(
+      sl<CollectionBackupRepository>(),
+    ),
+  );
   sl.registerFactory<BackupCollectionRestoreUseCase>(
-      () => BackupCollectionRestoreUseCase(
-            sl<CollectionBackupRepository>(),
-            sl<FileSystemRepository>(),
-            sl<JsonRepository>(),
-            sl<TempRepository>(),
-            sl<CollectionRepository>(),
-          ));
+    () => BackupCollectionRestoreUseCase(
+      sl<CollectionBackupRepository>(),
+      sl<FileSystemRepository>(),
+      sl<JsonRepository>(),
+      sl<TempRepository>(),
+      sl<CollectionRepository>(),
+    ),
+  );
   sl.registerFactory<BackupCollectionDeleteUseCase>(
-      () => BackupCollectionDeleteUseCase(
-            sl<CollectionBackupRepository>(),
-          ));
+    () => BackupCollectionDeleteUseCase(
+      sl<CollectionBackupRepository>(),
+    ),
+  );
   sl.registerFactory<BackupGetLastBackupTimeUseCase>(
-      () => BackupGetLastBackupTimeUseCase(
-            sl<BookBackupRepository>(),
-            sl<BookmarkBackupRepository>(),
-            sl<CollectionBackupRepository>(),
-          ));
+    () => BackupGetLastBackupTimeUseCase(
+      sl<BookBackupRepository>(),
+      sl<BookmarkBackupRepository>(),
+      sl<CollectionBackupRepository>(),
+    ),
+  );
   sl.registerFactory<BackupGetBookBackupExistsUseCase>(
-      () => BackupGetBookBackupExistsUseCase(
-            sl<BookBackupRepository>(),
-          ));
+    () => BackupGetBookBackupExistsUseCase(
+      sl<BookBackupRepository>(),
+    ),
+  );
   sl.registerFactory<BackupGetBookmarkBackupExistsUseCase>(
-      () => BackupGetBookmarkBackupExistsUseCase(
-            sl<BookmarkBackupRepository>(),
-          ));
+    () => BackupGetBookmarkBackupExistsUseCase(
+      sl<BookmarkBackupRepository>(),
+    ),
+  );
   sl.registerFactory<BackupGetCollectionBackupExistsUseCase>(
-      () => BackupGetCollectionBackupExistsUseCase(
-            sl<CollectionBackupRepository>(),
-          ));
+    () => BackupGetCollectionBackupExistsUseCase(
+      sl<CollectionBackupRepository>(),
+    ),
+  );
+
+  // Register preferences use cases
+  sl.registerFactory<BackupGetPreferenceUseCase>(
+    () => BackupGetPreferenceUseCase(
+      sl<BackupPreferenceRepository>(),
+    ),
+  );
+  sl.registerFactory<BackupSavePreferenceUseCase>(
+    () => BackupSavePreferenceUseCase(
+      sl<BackupPreferenceRepository>(),
+    ),
+  );
+  sl.registerFactory<BackupObservePreferenceChangeUseCase>(
+    () => BackupObservePreferenceChangeUseCase(
+      sl<BackupPreferenceRepository>(),
+    ),
+  );
 
   // Register cubits
   sl.registerFactory<BackupServiceProcessLibraryCubit>(
-      () => BackupServiceProcessLibraryCubit(
-            sl<BackupBookCreateUseCase>(),
-            sl<BackupBookRestoreUseCase>(),
-            sl<BackupBookDeleteUseCase>(),
-          ));
+    () => BackupServiceProcessLibraryCubit(
+      sl<BackupBookCreateUseCase>(),
+      sl<BackupBookRestoreUseCase>(),
+      sl<BackupBookDeleteUseCase>(),
+    ),
+  );
   sl.registerFactory<BackupServiceProcessBookmarkCubit>(
-      () => BackupServiceProcessBookmarkCubit(
-            sl<BackupBookmarkCreateUseCase>(),
-            sl<BackupBookmarkRestoreUseCase>(),
-            sl<BackupBookmarkDeleteUseCase>(),
-          ));
+    () => BackupServiceProcessBookmarkCubit(
+      sl<BackupBookmarkCreateUseCase>(),
+      sl<BackupBookmarkRestoreUseCase>(),
+      sl<BackupBookmarkDeleteUseCase>(),
+    ),
+  );
   sl.registerFactory<BackupServiceProcessCollectionCubit>(
-      () => BackupServiceProcessCollectionCubit(
-            sl<BackupCollectionCreateUseCase>(),
-            sl<BackupCollectionRestoreUseCase>(),
-            sl<BackupCollectionDeleteUseCase>(),
-          ));
+    () => BackupServiceProcessCollectionCubit(
+      sl<BackupCollectionCreateUseCase>(),
+      sl<BackupCollectionRestoreUseCase>(),
+      sl<BackupCollectionDeleteUseCase>(),
+    ),
+  );
   sl.registerFactory<BackupServiceGoogleDriveCubit>(
-      () => BackupServiceGoogleDriveCubit(
-            sl<BackupGetBookBackupExistsUseCase>(),
-            sl<BackupGetBookmarkBackupExistsUseCase>(),
-            sl<BackupGetCollectionBackupExistsUseCase>(),
-            sl<BackupGetLastBackupTimeUseCase>(),
-            sl<AuthIsSignInUseCase>(),
-            sl<AuthSignInUseCase>(),
-            sl<AuthSignOutUseCase>(),
-          ));
+    () => BackupServiceGoogleDriveCubit(
+      sl<BackupGetBookBackupExistsUseCase>(),
+      sl<BackupGetBookmarkBackupExistsUseCase>(),
+      sl<BackupGetCollectionBackupExistsUseCase>(),
+      sl<BackupGetLastBackupTimeUseCase>(),
+      sl<AuthIsSignInUseCase>(),
+      sl<AuthSignInUseCase>(),
+      sl<AuthSignOutUseCase>(),
+      sl<BackupGetPreferenceUseCase>(),
+      sl<BackupSavePreferenceUseCase>(),
+      sl<BackupObservePreferenceChangeUseCase>(),
+    ),
+  );
 }

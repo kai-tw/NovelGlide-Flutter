@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "569892023598-3f66kvn79v8f8cc5nqtb5tq10p0g0tj7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kai_wu.novelglide",
+            "certificate_hash": "c7d6104e974e9bdb19ac6f2edc138aeabddec7d1"
+          }
+        },
+        {
           "client_id": "569892023598-5rnntoehoskm05rdev8obri1ufl52qgb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

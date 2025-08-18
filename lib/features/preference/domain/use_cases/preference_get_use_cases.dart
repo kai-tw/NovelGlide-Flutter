@@ -1,5 +1,6 @@
 import '../../../../core/domain/use_cases/use_case.dart';
 import '../entities/appearance_preference_data.dart';
+import '../entities/backup_preference_data.dart';
 import '../entities/bookmark_list_preference_data.dart';
 import '../entities/bookshelf_preference_data.dart';
 import '../entities/collection_list_preference_data.dart';
@@ -22,6 +23,10 @@ class PreferenceGetUseCase<T, U extends PreferenceRepository<T>>
 /// Appearance get preference use case
 typedef AppearanceGetPreferenceUseCase = PreferenceGetUseCase<
     AppearancePreferenceData, AppearancePreferenceRepository>;
+
+/// Backup get preference use case
+typedef BackupGetPreferenceUseCase
+    = PreferenceGetUseCase<BackupPreferenceData, BackupPreferenceRepository>;
 
 /// Bookshelf get preference use case
 typedef BookshelfGetPreferenceUseCase = PreferenceGetUseCase<

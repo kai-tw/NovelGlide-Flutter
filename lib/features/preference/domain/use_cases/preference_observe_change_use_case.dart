@@ -1,5 +1,6 @@
 import '../../../../core/domain/use_cases/use_case.dart';
 import '../entities/appearance_preference_data.dart';
+import '../entities/backup_preference_data.dart';
 import '../entities/bookmark_list_preference_data.dart';
 import '../entities/bookshelf_preference_data.dart';
 import '../entities/collection_list_preference_data.dart';
@@ -22,6 +23,10 @@ class PreferenceObserveChangeUseCase<T, U extends PreferenceRepository<T>>
 typedef AppearanceObservePreferenceChangeUseCase
     = PreferenceObserveChangeUseCase<AppearancePreferenceData,
         AppearancePreferenceRepository>;
+
+/// Backup observe change use case.
+typedef BackupObservePreferenceChangeUseCase = PreferenceObserveChangeUseCase<
+    BackupPreferenceData, BackupPreferenceRepository>;
 
 /// Bookshelf observe change use case.
 typedef BookshelfObserveChangeUseCase = PreferenceObserveChangeUseCase<

@@ -13,7 +13,7 @@ abstract class CloudDriveApi {
   Future<void> deleteFile(String fileId);
 
   Stream<Uint8List> downloadFile(
-    String fileId, {
+    CloudFile cloudFile, {
     void Function(double progress)? onDownload,
   });
 }

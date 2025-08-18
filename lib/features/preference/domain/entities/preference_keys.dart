@@ -14,13 +14,16 @@ enum PreferenceKeys {
   bookshelfIsAscending,
   bookshelfListType,
 
-  /// Bookmark List preference
+  /// Bookmark List preferences
   bookmarkListSortOrder,
   bookmarkListIsAscending,
   bookmarkListListType,
 
-  /// Collection List preference
+  /// Collection List preferences
   collectionListSortOrder,
   collectionListIsAscending,
   collectionListListType,
+
+  /// Backup preferences
+  backupIsGoogleDriveEnabled,
 }

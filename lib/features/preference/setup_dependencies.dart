@@ -4,6 +4,7 @@ import '../../main.dart';
 import 'data/data_sources/preference_local_data_source.dart';
 import 'data/data_sources/preference_local_data_source_impl.dart';
 import 'data/repositories/appearance_preference_repository_impl.dart';
+import 'data/repositories/backup_preference_repository_impl.dart';
 import 'data/repositories/bookmark_list_preference_repository_impl.dart';
 import 'data/repositories/bookshelf_preference_repository_impl.dart';
 import 'data/repositories/collection_list_preference_repository_impl.dart';
@@ -19,22 +20,38 @@ void setupPreferenceDependencies(SharedPreferences prefs) {
 
   // Register repositories
   sl.registerLazySingleton<AppearancePreferenceRepository>(
-    () => AppearancePreferenceRepositoryImpl(sl<PreferenceLocalDataSource>()),
+    () => AppearancePreferenceRepositoryImpl(
+      sl<PreferenceLocalDataSource>(),
+    ),
   );
-  sl.registerLazySingleton<LocalePreferenceRepository>(
-    () => LocalePreferenceRepositoryImpl(sl<PreferenceLocalDataSource>()),
-  );
-  sl.registerLazySingleton<TtsPreferenceRepository>(
-    () => TtsPreferenceRepositoryImpl(sl<PreferenceLocalDataSource>()),
+  sl.registerLazySingleton<BackupPreferenceRepository>(
+    () => BackupPreferenceRepositoryImpl(
+      sl<PreferenceLocalDataSource>(),
+    ),
   );
   sl.registerLazySingleton<BookshelfPreferenceRepository>(
-    () => BookshelfPreferenceRepositoryImpl(sl<PreferenceLocalDataSource>()),
+    () => BookshelfPreferenceRepositoryImpl(
+      sl<PreferenceLocalDataSource>(),
+    ),
   );
   sl.registerLazySingleton<BookmarkListPreferenceRepository>(
-    () => BookmarkListPreferenceRepositoryImpl(sl<PreferenceLocalDataSource>()),
+    () => BookmarkListPreferenceRepositoryImpl(
+      sl<PreferenceLocalDataSource>(),
+    ),
   );
   sl.registerLazySingleton<CollectionListPreferenceRepository>(
-    () =>
-        CollectionListPreferenceRepositoryImpl(sl<PreferenceLocalDataSource>()),
+    () => CollectionListPreferenceRepositoryImpl(
+      sl<PreferenceLocalDataSource>(),
+    ),
+  );
+  sl.registerLazySingleton<LocalePreferenceRepository>(
+    () => LocalePreferenceRepositoryImpl(
+      sl<PreferenceLocalDataSource>(),
+    ),
+  );
+  sl.registerLazySingleton<TtsPreferenceRepository>(
+    () => TtsPreferenceRepositoryImpl(
+      sl<PreferenceLocalDataSource>(),
+    ),
   );
 }

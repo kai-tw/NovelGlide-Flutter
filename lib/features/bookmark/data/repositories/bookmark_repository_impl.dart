@@ -31,12 +31,14 @@ class BookmarkRepositoryImpl extends BookmarkRepository {
   Future<List<BookmarkData>> getList() async {
     final List<BookmarkData> list = await _localJsonDataSource.getList();
     final Set<BookmarkData> deleted = <BookmarkData>{};
+    final List<BookmarkData> retList = <BookmarkData>[];
 
     // Filter the book doesn't exist
     for (BookmarkData data in list) {
-      if (!await _bookRepository.exists(data.bookIdentifier)) {
+      if (await _bookRepository.exists(data.bookIdentifier)) {
+        retList.add(data);
+      } else {
         deleted.add(data);
-        list.remove(data);
       }
     }
 

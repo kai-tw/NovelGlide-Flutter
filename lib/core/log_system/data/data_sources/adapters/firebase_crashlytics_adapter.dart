@@ -7,7 +7,7 @@ class FirebaseCrashlyticsAdapter extends LogDataSource {
   FirebaseCrashlyticsAdapter(this._instance);
 
   final FirebaseCrashlytics _instance;
-  final bool _enableLogging = kDebugMode;
+  final bool _enableLogging = kReleaseMode;
 
   @override
   Future<void> error(

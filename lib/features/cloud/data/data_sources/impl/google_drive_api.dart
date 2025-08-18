@@ -44,7 +44,7 @@ class GoogleDriveApi implements CloudDriveApi {
 
   @override
   Stream<Uint8List> downloadFile(
-    String fileId, {
+    CloudFile cloudFile, {
     void Function(double progress)? onDownload,
   }) {
     // Create stream controller
@@ -52,29 +52,22 @@ class GoogleDriveApi implements CloudDriveApi {
         StreamController<Uint8List>();
 
     // Start runner
-    _downloadFileRunner(fileId, onDownload, streamController);
+    _downloadFileRunner(cloudFile, onDownload, streamController);
 
     // Return the stream
     return streamController.stream;
   }
 
   Future<void> _downloadFileRunner(
-    String fileId,
+    CloudFile cloudFile,
     void Function(double progress)? onDownload,
     StreamController<Uint8List> streamController,
   ) async {
-    final CloudFile? file = await getFile(fileId);
-
-    if (file == null) {
-      LogSystem.error('Try to download the file that does not exist.');
-      return;
-    }
-
-    final int fileSize = file.length;
+    final int fileSize = cloudFile.length;
 
     // Get the media of file
     final Media media = await (await _files).get(
-      fileId,
+      cloudFile.identifier,
       downloadOptions: DownloadOptions.fullMedia,
     ) as Media;
     int transferredByteCount = 0;
@@ -113,7 +106,7 @@ class GoogleDriveApi implements CloudDriveApi {
       // File exists. Get the metadata of this file.
       final File metadata = await (await _files).get(
         fileId,
-        $fields: 'files(name,createdTime,id,mimeType,modifiedTime)',
+        $fields: 'id, name, mimeType, createdTime, modifiedTime, size',
       ) as File;
       return CloudFile(
         identifier: metadata.id ?? fileId,
@@ -159,13 +152,13 @@ class GoogleDriveApi implements CloudDriveApi {
     // Create the metadata of the file.
     final File metadata = File();
     metadata.name = basename(path);
-    metadata.parents = <String>[_appDataFolder];
     metadata.mimeType = await _mimeRepository.lookupAll(path);
 
     final Media media = Media(stream, fileLength);
 
     if (fileId == null) {
       // File does not exist. Create it.
+      metadata.parents = <String>[_appDataFolder];
       await (await _files).create(metadata, uploadMedia: media);
     } else {
       // File exists. Update it.

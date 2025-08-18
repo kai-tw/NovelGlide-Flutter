@@ -1,4 +1,5 @@
 import '../entities/appearance_preference_data.dart';
+import '../entities/backup_preference_data.dart';
 import '../entities/bookmark_list_preference_data.dart';
 import '../entities/bookshelf_preference_data.dart';
 import '../entities/collection_list_preference_data.dart';
@@ -26,7 +27,10 @@ typedef LocalePreferenceRepository = PreferenceRepository<LocalePreferenceData>;
 /// TTS preference repository.
 typedef TtsPreferenceRepository = PreferenceRepository<TtsPreferenceData>;
 
-/// ========== SharedList repositories ==========
+/// Backup preference repository.
+typedef BackupPreferenceRepository = PreferenceRepository<BackupPreferenceData>;
+
+/// ========== Start of SharedList repositories ==========
 /// SharedList preference repository contrast.
 typedef SharedListPreferenceRepository<T extends SharedListPreferenceData>
     = PreferenceRepository<T>;
@@ -42,3 +46,5 @@ typedef BookmarkListPreferenceRepository
 /// Collection List preference repository
 typedef CollectionListPreferenceRepository
     = SharedListPreferenceRepository<CollectionListPreferenceData>;
+
+/// ========== End of SharedList repositories ==========

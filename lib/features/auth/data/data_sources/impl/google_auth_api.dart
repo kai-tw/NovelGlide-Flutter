@@ -40,8 +40,8 @@ class GoogleAuthApi implements AuthApi {
 
     LogSystem.info('GoogleAuthService.getClient: Start.');
 
-    final Map<String, String>? header =
-        await _currentUser?.authorizationClient.authorizationHeaders(scopes);
+    final Map<String, String>? header = await _currentUser?.authorizationClient
+        .authorizationHeaders(scopes, promptIfNecessary: true);
 
     // Cannot get the header
     if (header == null) {

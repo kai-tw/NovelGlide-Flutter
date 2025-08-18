@@ -16,11 +16,11 @@ class CloudRepositoryImpl implements CloudRepository {
   @override
   Stream<Uint8List> downloadFile(
     CloudProviders providers,
-    String fileId, {
+    CloudFile cloudFile, {
     void Function(double progress)? onDownload,
   }) {
     final CloudDriveApi cloudDriveApi = sl<CloudDriveApi>(param1: providers);
-    return cloudDriveApi.downloadFile(fileId, onDownload: onDownload);
+    return cloudDriveApi.downloadFile(cloudFile, onDownload: onDownload);
   }
 
   @override

@@ -113,7 +113,7 @@ class BookBackupRepositoryImpl implements BookBackupRepository {
       // Create the stream of the file.
       final Stream<Uint8List> cloudFileStream = _cloudRepository.downloadFile(
         _cloudProvider,
-        file.identifier,
+        file,
         onDownload: onDownload,
       );
 

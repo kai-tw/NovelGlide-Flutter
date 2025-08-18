@@ -16,7 +16,7 @@ abstract class CloudRepository {
 
   Stream<Uint8List> downloadFile(
     CloudProviders providers,
-    String fileId, {
+    CloudFile cloudFile, {
     void Function(double progress)? onDownload,
   });
 }
