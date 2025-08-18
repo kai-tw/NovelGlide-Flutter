@@ -2,6 +2,11 @@ import '../../core/file_system/domain/repositories/json_repository.dart';
 import '../../core/path_provider/domain/repositories/json_path_provider.dart';
 import '../../main.dart';
 import '../books/domain/use_cases/book_get_list_by_identifiers_use_case.dart';
+import '../preference/domain/repositories/preference_repository.dart';
+import '../preference/domain/use_cases/preference_get_use_cases.dart';
+import '../preference/domain/use_cases/preference_observe_change_use_case.dart';
+import '../preference/domain/use_cases/preference_reset_use_case.dart';
+import '../preference/domain/use_cases/preference_save_use_case.dart';
 import 'data/data_sources/collection_local_json_data_source.dart';
 import 'data/data_sources/collection_local_json_data_source_impl.dart';
 import 'data/repositories/collection_repository_impl.dart';
@@ -49,6 +54,20 @@ void setupCollectionDependencies() {
   sl.registerFactory<CollectionUpdateDataUseCase>(
       () => CollectionUpdateDataUseCase(sl<CollectionRepository>()));
 
+  // Register preference use cases
+  sl.registerFactory<CollectionListGetPreferenceUseCase>(() =>
+      CollectionListGetPreferenceUseCase(
+          sl<CollectionListPreferenceRepository>()));
+  sl.registerFactory<CollectionListSavePreferenceUseCase>(() =>
+      CollectionListSavePreferenceUseCase(
+          sl<CollectionListPreferenceRepository>()));
+  sl.registerFactory<CollectionListObserveChangeUseCase>(() =>
+      CollectionListObserveChangeUseCase(
+          sl<CollectionListPreferenceRepository>()));
+  sl.registerFactory<CollectionListResetPreferenceUseCase>(() =>
+      CollectionListResetPreferenceUseCase(
+          sl<CollectionListPreferenceRepository>()));
+
   // Cubit factories
   sl.registerFactory<CollectionViewerCubit>(() => CollectionViewerCubit(
         sl<BookGetListByIdentifiersUseCase>(),
@@ -59,6 +78,9 @@ void setupCollectionDependencies() {
         sl<CollectionDeleteDataUseCase>(),
         sl<CollectionGetListUseCase>(),
         sl<CollectionObserveChangeUseCase>(),
+        sl<CollectionListGetPreferenceUseCase>(),
+        sl<CollectionListSavePreferenceUseCase>(),
+        sl<CollectionListObserveChangeUseCase>(),
       ));
   sl.registerFactory<CollectionAddBookCubit>(() => CollectionAddBookCubit(
         sl<CollectionGetListUseCase>(),

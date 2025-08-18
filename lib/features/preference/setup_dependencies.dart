@@ -6,6 +6,7 @@ import 'data/data_sources/preference_local_data_source_impl.dart';
 import 'data/repositories/appearance_preference_repository_impl.dart';
 import 'data/repositories/bookmark_list_preference_repository_impl.dart';
 import 'data/repositories/bookshelf_preference_repository_impl.dart';
+import 'data/repositories/collection_list_preference_repository_impl.dart';
 import 'data/repositories/locale_preference_repository_impl.dart';
 import 'data/repositories/tts_preference_repository_impl.dart';
 import 'domain/repositories/preference_repository.dart';
@@ -31,5 +32,9 @@ void setupPreferenceDependencies(SharedPreferences prefs) {
   );
   sl.registerLazySingleton<BookmarkListPreferenceRepository>(
     () => BookmarkListPreferenceRepositoryImpl(sl<PreferenceLocalDataSource>()),
+  );
+  sl.registerLazySingleton<CollectionListPreferenceRepository>(
+    () =>
+        CollectionListPreferenceRepositoryImpl(sl<PreferenceLocalDataSource>()),
   );
 }

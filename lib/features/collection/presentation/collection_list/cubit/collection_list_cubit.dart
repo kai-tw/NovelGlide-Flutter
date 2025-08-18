@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 
-import '../../../../../core/services/preference_service/preference_service.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../../enum/sort_order_code.dart';
 import '../../../../../features/shared_components/shared_list/shared_list.dart';
-import '../../../../preference/domain/entities/shared_list_preference_data.dart';
+import '../../../../preference/domain/entities/collection_list_preference_data.dart';
+import '../../../../preference/domain/use_cases/preference_get_use_cases.dart';
+import '../../../../preference/domain/use_cases/preference_observe_change_use_case.dart';
+import '../../../../preference/domain/use_cases/preference_save_use_case.dart';
 import '../../../domain/entities/collection_data.dart';
 import '../../../domain/use_cases/collection_delete_data_use_case.dart';
 import '../../../domain/use_cases/collection_get_list_use_case.dart';
@@ -19,10 +21,15 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
     CollectionDeleteDataUseCase deleteCollectionDataUseCase,
     CollectionGetListUseCase getCollectionListUseCase,
     CollectionObserveChangeUseCase observeCollectionChangeUseCase,
+    CollectionListGetPreferenceUseCase getPreferenceUseCase,
+    CollectionListSavePreferenceUseCase savePreferenceUseCase,
+    CollectionListObserveChangeUseCase observePreferenceUseCase,
   ) {
     final CollectionListCubit cubit = CollectionListCubit._(
       deleteCollectionDataUseCase,
       getCollectionListUseCase,
+      getPreferenceUseCase,
+      savePreferenceUseCase,
     );
 
     // Refresh at first.
@@ -33,9 +40,8 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
         observeCollectionChangeUseCase().listen((_) => cubit.refresh());
 
     // Listen to collection list preference changes.
-    cubit.onPreferenceChangedSubscription = PreferenceService
-        .collectionList.onChangedController.stream
-        .listen((_) => cubit.refreshPreference());
+    cubit.onPreferenceChangedSubscription =
+        observePreferenceUseCase().listen((_) => cubit.refreshPreference());
 
     return cubit;
   }
@@ -43,10 +49,17 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
   CollectionListCubit._(
     this._deleteCollectionDataUseCase,
     this._getCollectionListUseCase,
+    this._getPreferenceUseCase,
+    this._savePreferenceUseCase,
   ) : super(const CollectionListState());
 
+  // Collection use cases
   final CollectionDeleteDataUseCase _deleteCollectionDataUseCase;
   final CollectionGetListUseCase _getCollectionListUseCase;
+
+  // Preferences use cases
+  final CollectionListGetPreferenceUseCase _getPreferenceUseCase;
+  final CollectionListSavePreferenceUseCase _savePreferenceUseCase;
 
   @override
   Future<void> refresh() async {
@@ -55,8 +68,8 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
     }
 
     // Load preferences.
-    final SharedListPreferenceData preference =
-        await PreferenceService.collectionList.load();
+    final CollectionListPreferenceData preference =
+        await _getPreferenceUseCase();
 
     // Load collection list.
     emit(CollectionListState(
@@ -96,7 +109,7 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
 
   @override
   void savePreference() {
-    PreferenceService.collectionList.save(SharedListPreferenceData(
+    _savePreferenceUseCase(CollectionListPreferenceData(
       sortOrder: state.sortOrder,
       isAscending: state.isAscending,
       listType: state.listType,
@@ -105,8 +118,8 @@ class CollectionListCubit extends SharedListCubit<CollectionData> {
 
   @override
   Future<void> refreshPreference() async {
-    final SharedListPreferenceData preference =
-        await PreferenceService.collectionList.load();
+    final CollectionListPreferenceData preference =
+        await _getPreferenceUseCase();
     emit(state.copyWith(
       sortOrder: preference.sortOrder,
       isAscending: preference.isAscending,

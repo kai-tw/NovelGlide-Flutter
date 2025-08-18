@@ -26,7 +26,7 @@ class SettingsPagePreferenceCard extends StatelessWidget {
             deleteLabel: appLocalizations.generalReset,
           ),
           SettingsPageListTile(
-            onAccept: PreferenceService.collectionList.reset,
+            onAccept: sl<CollectionListResetPreferenceUseCase>(),
             iconData: Icons.refresh_rounded,
             title: appLocalizations.resetPageResetCollectionList,
             deleteLabel: appLocalizations.generalReset,

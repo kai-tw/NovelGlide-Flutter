@@ -37,8 +37,8 @@ class BookmarkLocalJsonDataSourceImpl extends BookmarkLocalJsonDataSource
     // Load the data
     final Map<String, dynamic> json = await _loadData();
 
-    if (json.containsKey(identifier)) {
-      return decodeBookmarkJson(json);
+    if (json.containsKey(identifier) && json[identifier] != null) {
+      return decodeBookmarkJson(json[identifier]);
     }
 
     return null;

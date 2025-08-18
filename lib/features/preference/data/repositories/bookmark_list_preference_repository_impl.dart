@@ -22,11 +22,11 @@ class BookmarkListPreferenceRepositoryImpl
   }
 
   @override
-  PreferenceKeys get isAscendingKey => PreferenceKeys.bookshelfIsAscending;
+  PreferenceKeys get isAscendingKey => PreferenceKeys.bookmarkListIsAscending;
 
   @override
-  PreferenceKeys get listTypeKey => PreferenceKeys.bookshelfListType;
+  PreferenceKeys get listTypeKey => PreferenceKeys.bookmarkListListType;
 
   @override
-  PreferenceKeys get sortOrderKey => PreferenceKeys.bookshelfSortOrder;
+  PreferenceKeys get sortOrderKey => PreferenceKeys.bookmarkListSortOrder;
 }

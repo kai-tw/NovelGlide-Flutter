@@ -13,4 +13,14 @@ enum PreferenceKeys {
   bookshelfSortOrder,
   bookshelfIsAscending,
   bookshelfListType,
+
+  /// Bookmark List preference
+  bookmarkListSortOrder,
+  bookmarkListIsAscending,
+  bookmarkListListType,
+
+  /// Collection List preference
+  collectionListSortOrder,
+  collectionListIsAscending,
+  collectionListListType,
 }

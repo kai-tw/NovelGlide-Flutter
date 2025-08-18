@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../../appearance/domain/entities/app_default_theme.dart';
 import '../../domain/entities/appearance_preference_data.dart';
 import '../../domain/entities/preference_keys.dart';
@@ -11,6 +13,10 @@ class AppearancePreferenceRepositoryImpl
   );
 
   final PreferenceLocalDataSource _preferenceRepository;
+
+  /// Stream controller
+  final StreamController<AppearancePreferenceData> _streamController =
+      StreamController<AppearancePreferenceData>.broadcast();
 
   @override
   Future<AppearancePreferenceData> getPreference() async {
@@ -28,13 +34,14 @@ class AppearancePreferenceRepositoryImpl
 
   @override
   Future<void> savePreference(AppearancePreferenceData settings) async {
-    return _preferenceRepository.setInt(
+    await _preferenceRepository.setInt(
         PreferenceKeys.appThemeMode, settings.themeMode.index);
+    _streamController.add(settings);
   }
 
   @override
   Stream<AppearancePreferenceData> get onChangeStream =>
-      throw UnimplementedError();
+      _streamController.stream;
 
   @override
   Future<void> resetPreference() async {}
