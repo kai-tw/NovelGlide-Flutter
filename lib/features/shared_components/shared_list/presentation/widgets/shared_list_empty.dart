@@ -16,8 +16,7 @@ class SharedListEmpty extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(bottom: 16.0),
-              child: Text(
-                EmoticonCollection.getRandomShock(),
+              child: RandomShockEmoticonText(
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ),

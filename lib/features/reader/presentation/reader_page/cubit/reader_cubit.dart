@@ -5,14 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../../../../../core/services/preference_service/data/model/reader_preference_data.dart';
-import '../../../../../core/services/preference_service/preference_service.dart';
 import '../../../../bookmark/domain/entities/bookmark_data.dart';
 import '../../../../bookmark/domain/use_cases/bookmark_get_data_use_case.dart';
 import '../../../../bookmark/domain/use_cases/bookmark_update_data_use_case.dart';
 import '../../../../books/domain/entities/book.dart';
 import '../../../../books/domain/use_cases/book_get_use_case.dart';
 import '../../../../books/domain/use_cases/book_read_bytes_use_case.dart';
+import '../../../../preference/domain/entities/reader_preference_data.dart';
+import '../../../../preference/domain/use_cases/preference_get_use_cases.dart';
+import '../../../../preference/domain/use_cases/preference_observe_change_use_case.dart';
+import '../../../../preference/domain/use_cases/preference_reset_use_case.dart';
+import '../../../../preference/domain/use_cases/preference_save_use_case.dart';
 import '../../../../tts_service/domain/use_cases/tts_observe_state_changed_use_case.dart';
 import '../../../../tts_service/domain/use_cases/tts_pause_use_case.dart';
 import '../../../../tts_service/domain/use_cases/tts_reload_preference_use_case.dart';
@@ -74,6 +77,11 @@ class ReaderCubit extends Cubit<ReaderState> {
     // Bookmark use cases
     BookmarkGetDataUseCase bookmarkGetDataUseCase,
     BookmarkUpdateDataUseCase bookmarkUpdateDataUseCase,
+    // Reader preference use cases.
+    ReaderGetPreferenceUseCase getPreferenceUseCase,
+    ReaderSavePreferenceUseCase savePreferenceUseCase,
+    ReaderObservePreferenceChangeUseCase observePreferenceChangeUseCase,
+    ReaderResetPreferenceUseCase resetPreferenceUseCase,
     // TTS use cases
     TtsReloadPreferenceUseCase ttsReloadPreferenceUseCase,
     TtsObserveStateChangedUseCase ttsObserveStateChangedUseCase,
@@ -121,6 +129,10 @@ class ReaderCubit extends Cubit<ReaderState> {
       // Bookmark use cases
       bookmarkGetDataUseCase,
       bookmarkUpdateDataUseCase,
+      // Reader preference use cases
+      getPreferenceUseCase,
+      savePreferenceUseCase,
+      resetPreferenceUseCase,
       // Dependencies
       webViewController,
       webViewRepository,
@@ -149,6 +161,10 @@ class ReaderCubit extends Cubit<ReaderState> {
       ),
     );
 
+    // Stream listeners
+    cubit._preferenceSubscription =
+        observePreferenceChangeUseCase().listen(cubit._refreshPreference);
+
     return cubit;
   }
 
@@ -174,6 +190,10 @@ class ReaderCubit extends Cubit<ReaderState> {
     // Bookmark use cases
     this._bookmarkGetDataUseCase,
     this._bookmarkUpdateDataUseCase,
+    // Reader preference use cases
+    this._getPreferenceUseCase,
+    this._savePreferenceUseCase,
+    this._resetPreferenceUseCase,
     // Dependencies
     this.webViewController,
     this._webViewRepository,
@@ -232,6 +252,14 @@ class ReaderCubit extends Cubit<ReaderState> {
   final BookmarkGetDataUseCase _bookmarkGetDataUseCase;
   final BookmarkUpdateDataUseCase _bookmarkUpdateDataUseCase;
 
+  /// Reader preference use cases
+  final ReaderGetPreferenceUseCase _getPreferenceUseCase;
+  final ReaderSavePreferenceUseCase _savePreferenceUseCase;
+  final ReaderResetPreferenceUseCase _resetPreferenceUseCase;
+
+  /// Preference Stream Subscription
+  late final StreamSubscription<ReaderPreferenceData> _preferenceSubscription;
+
   /// Initialize from widgets.
   Future<void> initAsync({
     required String bookIdentifier,
@@ -256,8 +284,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     await Future.wait<void>(<Future<void>>[
       _bookGetUseCase(bookIdentifier)
           .then((Book value) => this.bookData = value),
-      PreferenceService.reader
-          .load()
+      _getPreferenceUseCase()
           .then((ReaderPreferenceData value) => readerSettingsData = value),
       _bookmarkGetDataUseCase(bookIdentifier)
           .then((BookmarkData? data) => bookmarkData = data),
@@ -324,7 +351,6 @@ class ReaderCubit extends Cubit<ReaderState> {
         fontSize: value,
       ),
     ));
-    sendThemeData();
   }
 
   set lineHeight(double value) {
@@ -333,7 +359,6 @@ class ReaderCubit extends Cubit<ReaderState> {
         lineHeight: value,
       ),
     ));
-    sendThemeData();
   }
 
   set isAutoSaving(bool value) {
@@ -364,12 +389,15 @@ class ReaderCubit extends Cubit<ReaderState> {
     ));
   }
 
-  void saveSettings() => PreferenceService.reader.save(state.readerPreference);
+  void savePreference() => _savePreferenceUseCase(state.readerPreference);
 
-  Future<void> resetSettings() async {
-    await PreferenceService.reader.reset();
+  Future<void> resetPreference() async {
+    await _resetPreferenceUseCase();
+  }
+
+  Future<void> _refreshPreference(ReaderPreferenceData data) async {
     emit(state.copyWith(
-      readerPreference: await PreferenceService.reader.load(),
+      readerPreference: data,
     ));
     sendThemeData();
   }
@@ -463,6 +491,7 @@ class ReaderCubit extends Cubit<ReaderState> {
   @override
   Future<void> close() async {
     _lifecycle.dispose();
+    await _preferenceSubscription.cancel();
     await _saveLocationStreamSubscription.cancel();
     await _loadDoneStreamSubscription.cancel();
     await _setStateStreamSubscription.cancel();

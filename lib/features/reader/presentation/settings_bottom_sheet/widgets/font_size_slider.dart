@@ -36,7 +36,7 @@ class _FontSizeSlider extends StatelessWidget {
           },
           onChangeEnd: (double value) {
             cubit.fontSize = value;
-            cubit.saveSettings();
+            cubit.savePreference();
           },
         );
       },

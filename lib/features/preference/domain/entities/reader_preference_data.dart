@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../../features/reader/domain/entities/reader_page_num_type.dart';
+import '../../../reader/domain/entities/reader_page_num_type.dart';
 
 /// Represents the settings for a reader, including font size, line height, and other preferences.
 class ReaderPreferenceData extends Equatable {

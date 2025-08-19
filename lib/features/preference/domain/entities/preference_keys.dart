@@ -26,4 +26,11 @@ enum PreferenceKeys {
 
   /// Backup preferences
   backupIsGoogleDriveEnabled,
+
+  /// Reader preferences
+  readerFontSize,
+  readerLineHeight,
+  readerAutoSaving,
+  readerSmoothScroll,
+  readerPageNumType,
 }

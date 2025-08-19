@@ -5,6 +5,7 @@ import '../entities/bookmark_list_preference_data.dart';
 import '../entities/bookshelf_preference_data.dart';
 import '../entities/collection_list_preference_data.dart';
 import '../entities/locale_preference_data.dart';
+import '../entities/reader_preference_data.dart';
 import '../entities/tts_preference_data.dart';
 import '../repositories/preference_repository.dart';
 
@@ -43,6 +44,10 @@ typedef CollectionListGetPreferenceUseCase = PreferenceGetUseCase<
 /// Locale get preference use case
 typedef LocaleGetPreferenceUseCase
     = PreferenceGetUseCase<LocalePreferenceData, LocalePreferenceRepository>;
+
+/// Reader get preference use case
+typedef ReaderGetPreferenceUseCase
+    = PreferenceGetUseCase<ReaderPreferenceData, ReaderPreferenceRepository>;
 
 /// TTS get preference use case
 typedef TtsGetPreferenceUseCase

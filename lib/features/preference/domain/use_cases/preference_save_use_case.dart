@@ -5,6 +5,7 @@ import '../entities/bookmark_list_preference_data.dart';
 import '../entities/bookshelf_preference_data.dart';
 import '../entities/collection_list_preference_data.dart';
 import '../entities/locale_preference_data.dart';
+import '../entities/reader_preference_data.dart';
 import '../repositories/preference_repository.dart';
 
 class PreferenceSaveUseCase<T, U extends PreferenceRepository<T>>
@@ -42,3 +43,7 @@ typedef CollectionListSavePreferenceUseCase = PreferenceSaveUseCase<
 /// Locale save preference use case
 typedef LocaleSavePreferenceUseCase
     = PreferenceSaveUseCase<LocalePreferenceData, LocalePreferenceRepository>;
+
+/// Reader save preference use case
+typedef ReaderSavePreferenceUseCase
+    = PreferenceSaveUseCase<ReaderPreferenceData, ReaderPreferenceRepository>;

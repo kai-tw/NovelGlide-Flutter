@@ -18,7 +18,7 @@ class _SmoothScrollSwitch extends StatelessWidget {
           value: state.readerPreference.isSmoothScroll,
           onChanged: (bool value) {
             cubit.isSmoothScroll = value;
-            cubit.saveSettings();
+            cubit.savePreference();
           },
         );
       },

@@ -2,6 +2,7 @@ import '../../../../core/domain/use_cases/use_case.dart';
 import '../entities/bookmark_list_preference_data.dart';
 import '../entities/bookshelf_preference_data.dart';
 import '../entities/collection_list_preference_data.dart';
+import '../entities/reader_preference_data.dart';
 import '../repositories/preference_repository.dart';
 
 class PreferenceResetUseCase<T, U extends PreferenceRepository<T>>
@@ -27,3 +28,7 @@ typedef BookmarkListResetPreferenceUseCase = PreferenceResetUseCase<
 /// Collection List reset preference use case
 typedef CollectionListResetPreferenceUseCase = PreferenceResetUseCase<
     CollectionListPreferenceData, CollectionListPreferenceRepository>;
+
+/// Reader reset preference use case.
+typedef ReaderResetPreferenceUseCase
+    = PreferenceResetUseCase<ReaderPreferenceData, ReaderPreferenceRepository>;
