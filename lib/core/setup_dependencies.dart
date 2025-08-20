@@ -4,7 +4,7 @@ import '../app/cubit/app_cubit.dart';
 import '../features/advertisement/setup_dependencies.dart';
 import '../features/appearance/setup_dependencies.dart';
 import '../features/auth/setup_dependencies.dart';
-import '../features/backup_service/setup_dependencies.dart';
+import '../features/backup/setup_dependencies.dart';
 import '../features/bookmark/setup_dependencies.dart';
 import '../features/books/setup_dependencies.dart';
 import '../features/cloud/setup_dependencies.dart';

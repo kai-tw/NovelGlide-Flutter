@@ -6,7 +6,7 @@ import '../../../app/widgets/app_version_widget.dart';
 import '../../../enum/window_size.dart';
 import '../../../generated/i18n/app_localizations.dart';
 import '../../appearance/presentation/appearance_settings_page/appearance_settings_page.dart';
-import '../../backup_service/presentation/backup_service_page.dart';
+import '../../backup/presentation/backup_service_page.dart';
 import '../../developer_page/developer_page.dart';
 import '../../feedback/presentation/feedback_page.dart';
 import '../../locale_system/presentation/locale_settings_page/locale_settings_page.dart';
