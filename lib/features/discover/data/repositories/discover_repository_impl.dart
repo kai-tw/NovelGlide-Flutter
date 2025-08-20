@@ -1,5 +1,3 @@
-import 'package:novel_glide/features/discover/data/models/catalog_feed_model.dart';
-
 import '../../domain/entities/catalog_feed.dart';
 import '../../domain/repositories/discover_repository.dart';
 import '../data_sources/discover_data_source.dart';
@@ -12,14 +10,11 @@ class DiscoverRepositoryImpl implements DiscoverRepository {
 
   @override
   Future<CatalogFeed> browseCatalog(String url) async {
-    final CatalogFeedModel feedModel = await _dataSource.getCatalogFeed(url);
-    return feedModel.toEntity();
+    return await _dataSource.getCatalogFeed(url);
   }
 
   @override
   Future<CatalogFeed> searchCatalog(String url, String query) async {
-    final CatalogFeedModel feedModel =
-        await _dataSource.searchCatalogFeed(url, query);
-    return feedModel.toEntity();
+    return _dataSource.searchCatalogFeed(url, query);
   }
 }

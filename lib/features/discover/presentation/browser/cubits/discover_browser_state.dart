@@ -3,18 +3,18 @@ import 'package:equatable/equatable.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../domain/entities/catalog_feed.dart';
 
-class DiscoverCatalogViewerState extends Equatable {
-  const DiscoverCatalogViewerState({
+class DiscoverBrowserState extends Equatable {
+  const DiscoverBrowserState({
     this.code = LoadingStateCode.initial,
-    this.feed,
+    this.catalogFeed,
   });
 
   final LoadingStateCode code;
-  final CatalogFeed? feed;
+  final CatalogFeed? catalogFeed;
 
   @override
   List<Object?> get props => <Object?>[
         code,
-        feed,
+        catalogFeed,
       ];
 }

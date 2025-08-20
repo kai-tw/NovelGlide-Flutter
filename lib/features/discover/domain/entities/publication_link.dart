@@ -1,17 +1,19 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/mime_resolver/domain/entities/mime_type.dart';
+
 /// Represents a link to a related resource, such as a download or cover image.
 class PublicationLink extends Equatable {
   const PublicationLink({
-    required this.href,
-    required this.rel,
-    required this.type,
+    this.href,
+    this.rel,
+    this.type,
     this.title,
   });
 
-  final String href;
-  final String rel;
-  final String type;
+  final Uri? href;
+  final String? rel;
+  final MimeType? type;
   final String? title;
 
   @override

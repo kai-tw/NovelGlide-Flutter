@@ -1,18 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../main.dart';
-import 'cubits/discover_catalog_viewer_cubit.dart';
-import 'discover_catalog_viewer_scaffold.dart';
+import '../../../locale_system/locale_utils.dart';
+import '../../domain/entities/catalog_feed.dart';
+import '../entry_widget/discover_entry_widget.dart';
 
-class CatalogViewer extends StatelessWidget {
-  const CatalogViewer({super.key});
+class DiscoverCatalogViewer extends StatelessWidget {
+  const DiscoverCatalogViewer({
+    super.key,
+    required this.feed,
+    this.onVisit,
+  });
+
+  final CatalogFeed feed;
+  final Future<void> Function(Uri uri)? onVisit;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<DiscoverCatalogViewerCubit>(
-      create: (_) => sl<DiscoverCatalogViewerCubit>(),
-      child: const DiscoverCatalogViewerScaffold(),
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverToBoxAdapter(
+          child: ListTile(
+            leading: const Icon(Icons.local_library_rounded),
+            title: Text(
+              feed.title ?? '',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w900,
+                  ),
+            ),
+            subtitle: Text(
+              LocaleUtils.dateTimeOf(context, feed.updated) ?? '',
+            ),
+          ),
+        ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
+              return DiscoverEntryWidget(
+                entry: feed.entries[index],
+                onVisit: onVisit,
+              );
+            },
+            childCount: feed.entries.length,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -6,19 +6,19 @@ import 'publication_link.dart';
 /// Represents a single publication or item within a catalog feed.
 class PublicationEntry extends Equatable {
   const PublicationEntry({
-    required this.id,
-    required this.title,
-    required this.updated,
-    required this.authors,
-    required this.links,
+    this.id,
+    this.title,
+    this.updated,
+    this.authors = const <PublicationAuthor>[],
+    this.links = const <PublicationLink>[],
     this.summary,
     this.publishedDate,
     this.publisher,
   });
 
-  final String id;
-  final String title;
-  final DateTime updated;
+  final String? id;
+  final String? title;
+  final DateTime? updated;
   final String? summary;
   final DateTime? publishedDate;
   final String? publisher;

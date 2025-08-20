@@ -9,6 +9,7 @@ import '../features/bookmark/setup_dependencies.dart';
 import '../features/books/setup_dependencies.dart';
 import '../features/cloud/setup_dependencies.dart';
 import '../features/collection/setup_dependencies.dart';
+import '../features/discover/setup_dependencies.dart';
 import '../features/locale_system/setup_dependencies.dart';
 import '../features/pick_file/setup_dependencies.dart';
 import '../features/preference/domain/use_cases/preference_get_use_cases.dart';
@@ -40,6 +41,7 @@ Future<void> setupDependencies() async {
   setupBookmarkDependencies();
   setupCollectionDependencies();
   setupCloudDependencies();
+  setupDiscoverDependencies();
   setupLocaleDependencies();
   setupLogDependencies();
   setupMimeResolverDependencies();

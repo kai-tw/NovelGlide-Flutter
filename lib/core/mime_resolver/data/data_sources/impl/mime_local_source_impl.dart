@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:mime/mime.dart';
 
 import '../../../../file_system/domain/repositories/file_system_repository.dart';
+import '../../../domain/entities/mime_type.dart';
 import '../mime_local_source.dart';
 
 class MimeLocalSourceImpl implements MimeLocalSource {
@@ -12,9 +13,19 @@ class MimeLocalSourceImpl implements MimeLocalSource {
     final MimeTypeResolver resolver = MimeTypeResolver();
 
     // Setup magic numbers
-    resolver
-        .addMagicNumber(<int>[0x50, 0x4B, 0x03, 0x04], 'application/epub+zip');
-    resolver.addMagicNumber(<int>[0x50, 0x4B, 0x03, 0x04], 'application/zip');
+    final Map<MimeType, List<int>> magicNumberMap = <MimeType, List<int>>{
+      MimeType.epub: <int>[0x50, 0x4B, 0x03, 0x04],
+      MimeType.zip: <int>[0x50, 0x4B, 0x03, 0x04],
+    };
+
+    for (MapEntry<MimeType, List<int>> entry in magicNumberMap.entries) {
+      final MimeType type = entry.key;
+      final List<int> magicNumber = entry.value;
+
+      for (String typeString in type.tagList) {
+        resolver.addMagicNumber(magicNumber, typeString);
+      }
+    }
 
     return MimeLocalSourceImpl._(
       resolver,

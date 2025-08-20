@@ -5,7 +5,9 @@ import 'data/data_sources/discover_data_source.dart';
 import 'data/data_sources/opds_data_source_impl.dart';
 import 'data/repositories/discover_repository_impl.dart';
 import 'domain/repositories/discover_repository.dart';
-import 'presentation/catalog_viewer/cubits/discover_catalog_viewer_cubit.dart';
+import 'domain/use_cases/discover_browse_catalog_use_case.dart';
+import 'domain/use_cases/discover_search_catalog_use_case.dart';
+import 'presentation/browser/cubits/discover_browser_cubit.dart';
 
 void setupDiscoverDependencies() {
   // Register external dependencies
@@ -18,11 +20,19 @@ void setupDiscoverDependencies() {
 
   // Register repositories
   sl.registerLazySingleton<DiscoverRepository>(
-    () => DiscoverRepositoryImpl(sl()),
+    () => DiscoverRepositoryImpl(sl<DiscoverDataSource>()),
+  );
+
+  // Register use cases
+  sl.registerFactory<DiscoverBrowseCatalogUseCase>(
+    () => DiscoverBrowseCatalogUseCase(sl<DiscoverRepository>()),
+  );
+  sl.registerFactory<DiscoverSearchCatalogUseCase>(
+    () => DiscoverSearchCatalogUseCase(sl<DiscoverRepository>()),
   );
 
   // Register cubits
-  sl.registerFactory<DiscoverCatalogViewerCubit>(
-    () => DiscoverCatalogViewerCubit(sl()),
+  sl.registerFactory<DiscoverBrowserCubit>(
+    () => DiscoverBrowserCubit(sl<DiscoverBrowseCatalogUseCase>()),
   );
 }

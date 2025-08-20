@@ -2,10 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:rss_dart/dart_rss.dart';
 import 'package:xml/xml.dart';
 
-import '../models/catalog_feed_model.dart';
-import '../models/publication_entry_model.dart';
+import '../../../../core/mime_resolver/domain/entities/mime_type.dart';
+import '../../domain/entities/catalog_feed.dart';
+import '../../domain/entities/publication_author.dart';
+import '../../domain/entities/publication_entry.dart';
+import '../../domain/entities/publication_link.dart';
 import 'discover_data_source.dart';
 
 /// A concrete implementation of DiscoverDataSource for OPDS feeds.
@@ -16,21 +20,32 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
 
   /// Fetches an OPDS catalog feed from a given URL and parses it.
   @override
-  Future<CatalogFeedModel> getCatalogFeed(String url) async {
-    final http.Response response = await _httpClient.get(Uri.parse(url));
+  Future<CatalogFeed> getCatalogFeed(String url) async {
+    final Uri uri = Uri.parse(url);
+    final http.Response response = await _httpClient.get(uri);
 
     if (response.statusCode == 200) {
-      final XmlDocument document =
-          XmlDocument.parse(utf8.decode(response.bodyBytes));
-      return _parseFeed(document);
+      try {
+        final AtomFeed feed = AtomFeed.parse(response.body);
+
+        return CatalogFeed(
+          id: feed.id,
+          title: feed.title,
+          updated: _parseDateTime(feed.updated),
+          links: feed.links.map(_parseLink).toList(),
+          entries: feed.items.map(_parseEntry).toList(),
+        );
+      } catch (e, s) {
+        throw Exception('Failed to parse the atom feed.');
+      }
     } else {
-      throw Exception('Failed to load OPDS feed');
+      throw Exception('Failed to load OPDS feed (${response.statusCode})');
     }
   }
 
   /// Searches an OPDS catalog using a query.
   @override
-  Future<CatalogFeedModel> searchCatalogFeed(String url, String query) async {
+  Future<CatalogFeed> searchCatalogFeed(String url, String query) async {
     final Uri searchUrl =
         Uri.parse(url).replace(queryParameters: <String, dynamic>{'q': query});
     final http.Response response = await _httpClient.get(searchUrl);
@@ -38,59 +53,46 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
     if (response.statusCode == 200) {
       final XmlDocument document =
           XmlDocument.parse(utf8.decode(response.bodyBytes));
-      return _parseFeed(document);
+      return CatalogFeed(
+        id: '',
+        title: '',
+        updated: DateTime.now(),
+        links: [],
+        entries: [],
+      );
     } else {
       throw Exception('Failed to search OPDS feed');
     }
   }
 
-  /// Parses the XML document into a CatalogFeedModel.
-  CatalogFeedModel _parseFeed(XmlDocument document) {
-    final XmlElement root = document.rootElement;
-    final List<PublicationEntryModel> entries =
-        root.findAllElements('entry').map(_parseEntry).toList();
-    final List<Map<String, String?>> links =
-        root.findAllElements('link').map(_parseLink).toList();
+  /// ========== Parsers ==========
 
-    return CatalogFeedModel(
-      id: root.findElements('id').first.innerText,
-      title: root.findElements('title').first.innerText,
-      updated: root.findElements('updated').first.innerText,
-      links: links,
-      entries: entries,
+  DateTime? _parseDateTime(String? value) {
+    return value == null ? null : DateTime.parse(value);
+  }
+
+  PublicationLink _parseLink(AtomLink link) {
+    return PublicationLink(
+      href: link.href == null ? null : Uri.tryParse(link.href!),
+      rel: link.rel,
+      type: link.type == null ? null : MimeType.fromString(link.type!),
     );
   }
 
-  /// Parses a single XML entry element into a PublicationEntryModel.
-  PublicationEntryModel _parseEntry(XmlElement element) {
-    final List<Map<String, String>> authors = element
-        .findAllElements('author')
-        .map((XmlElement e) =>
-            <String, String>{'name': e.findElements('name').first.innerText})
-        .toList();
-    final List<Map<String, String?>> links =
-        element.findAllElements('link').map(_parseLink).toList();
-
-    return PublicationEntryModel(
-      id: element.findElements('id').first.innerText,
-      title: element.findElements('title').first.innerText,
-      updated: element.findElements('updated').first.innerText,
-      summary: element.findAllElements('summary').firstOrNull?.innerText,
-      publishedDate:
-          element.findAllElements('published').firstOrNull?.innerText,
-      publisher: element.findAllElements('publisher').firstOrNull?.innerText,
-      authors: authors,
-      links: links,
+  PublicationEntry _parseEntry(AtomItem item) {
+    return PublicationEntry(
+      id: item.id,
+      title: item.title,
+      updated: _parseDateTime(item.updated),
+      summary: item.content,
+      authors: item.authors.map(_parseAuthor).toList(),
+      links: item.links.map(_parseLink).toList(),
     );
   }
 
-  /// Parses a single XML link element into a map.
-  Map<String, String?> _parseLink(XmlElement element) {
-    return <String, String?>{
-      'href': element.getAttribute('href'),
-      'rel': element.getAttribute('rel'),
-      'type': element.getAttribute('type'),
-      'title': element.getAttribute('title'),
-    };
+  PublicationAuthor _parseAuthor(AtomPerson person) {
+    return PublicationAuthor(
+      name: person.name,
+    );
   }
 }
