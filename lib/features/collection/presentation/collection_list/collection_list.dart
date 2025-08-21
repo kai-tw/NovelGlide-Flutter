@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../enum/loading_state_code.dart';
 import '../../../../enum/window_size.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../../shared_components/common_loading.dart';
+import '../../../shared_components/common_error_widgets/common_error_sliver_widget.dart';
+import '../../../shared_components/common_loading_widgets/common_loading_sliver_widget.dart';
 import '../../../shared_components/shared_list/shared_list.dart';
 import 'cubit/collection_list_cubit.dart';
 import 'widgets/collection_list_item.dart';
@@ -35,6 +36,10 @@ class CollectionList extends StatelessWidget {
       case LoadingStateCode.backgroundLoading:
         // Loading...
         return const CommonSliverLoading();
+
+      case LoadingStateCode.error:
+        // Error
+        return const CommonErrorSliverWidget();
 
       case LoadingStateCode.loaded:
         if (state.dataList.isEmpty) {

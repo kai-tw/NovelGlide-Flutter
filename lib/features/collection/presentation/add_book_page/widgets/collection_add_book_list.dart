@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../enum/loading_state_code.dart';
-import '../../../../shared_components/common_loading.dart';
+import '../../../../shared_components/common_error_widgets/common_error_widget.dart';
+import '../../../../shared_components/common_loading_widgets/common_loading_widget.dart';
 import '../../../../shared_components/shared_list/shared_list.dart';
 import '../../../domain/entities/collection_data.dart';
 import '../cubit/collection_add_book_cubit.dart';
@@ -30,7 +31,11 @@ class CollectionAddBookList extends StatelessWidget {
       case LoadingStateCode.loading:
       case LoadingStateCode.backgroundLoading:
         // Loading...
-        return const CommonLoading();
+        return const CommonLoadingWidget();
+
+      case LoadingStateCode.error:
+        // Error
+        return const CommonErrorWidget();
 
       case LoadingStateCode.loaded:
         if (state.collectionList.isEmpty) {

@@ -35,7 +35,7 @@ class ReaderLoadingWidget extends StatelessWidget {
             color: Theme.of(context).colorScheme.surface,
           ),
           child: Center(
-            child: CommonLoading(title: title),
+            child: CommonLoadingWidget(title: title),
           ),
         );
       },

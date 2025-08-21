@@ -48,10 +48,20 @@ class _DialogCard extends StatelessWidget {
           onTap: () => showDialog(
             context: context,
             builder: (BuildContext context) => const CommonErrorDialog(
+              title: 'Error Dialog',
               content: 'Error Dialog',
             ),
           ),
           title: const Text('Error Dialog'),
+        ),
+        ListTile(
+          onTap: () => showDialog(
+            context: context,
+            builder: (BuildContext context) => const AlertDialog(
+              content: CommonErrorWidget(),
+            ),
+          ),
+          title: const Text('Error Widget'),
         ),
       ],
     );

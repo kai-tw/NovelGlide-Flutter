@@ -35,7 +35,7 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
           links: feed.links.map(_parseLink).toList(),
           entries: feed.items.map(_parseEntry).toList(),
         );
-      } catch (e, s) {
+      } catch (e) {
         throw Exception('Failed to parse the atom feed.');
       }
     } else {

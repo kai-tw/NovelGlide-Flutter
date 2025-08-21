@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../generated/i18n/app_localizations.dart';
-import '../../../../shared_components/common_error_dialog.dart';
+import '../../../../shared_components/common_error_widgets/common_error_dialog.dart';
 import '../../../domain/entities/book.dart';
 import '../../../domain/entities/book_cover.dart';
 import '../../book_cover/book_cover_builder.dart';

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../features/shared_components/common_delete_dialog.dart';
-import '../../features/shared_components/common_loading.dart';
 import '../../features/shared_components/common_success_dialog.dart';
 import '../../generated/i18n/app_localizations.dart';
 import '../../main.dart';
@@ -14,6 +13,7 @@ import '../preference/domain/use_cases/preference_reset_use_case.dart';
 import '../reader/domain/use_cases/reader_clear_location_cache_use_case.dart';
 import '../settings_page/presentation/widgets/settings_card.dart';
 import '../settings_page/presentation/widgets/settings_list_tile.dart';
+import '../shared_components/common_loading_widgets/common_loading_dialog.dart';
 
 part 'presentation/reset_page.dart';
 part 'presentation/reset_service_settings_list_tile.dart';

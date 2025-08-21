@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import '../../core/path_provider/domain/repositories/app_path_provider.dart';
 import '../../enum/window_size.dart';
 import '../../features/shared_components/common_delete_dialog.dart';
-import '../../features/shared_components/common_error_dialog.dart';
-import '../../features/shared_components/common_loading.dart';
 import '../../features/shared_components/common_success_dialog.dart';
 import '../../main.dart';
 import '../shared_components/animation_widgets/simple_fade_switcher.dart';
+import '../shared_components/common_error_widgets/common_error_dialog.dart';
+import '../shared_components/common_error_widgets/common_error_widget.dart';
+import '../shared_components/common_loading_widgets/common_loading_dialog.dart';
 
 part 'cards/card_template.dart';
 part 'cards/device_info_card.dart';

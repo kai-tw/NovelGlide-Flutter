@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../enum/loading_state_code.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../../shared_components/common_loading.dart';
+import '../../../shared_components/common_error_widgets/common_error_sliver_widget.dart';
+import '../../../shared_components/common_loading_widgets/common_loading_sliver_widget.dart';
 import '../../../shared_components/shared_list/shared_list.dart';
 import 'cubit/bookshelf_cubit.dart';
 import 'widgets/bookshelf_list_item.dart';
@@ -28,6 +29,10 @@ class Bookshelf extends StatelessWidget {
           case LoadingStateCode.loading:
             // Loading...
             return const CommonSliverLoading();
+
+          case LoadingStateCode.error:
+            // Error
+            return const CommonErrorSliverWidget();
 
           case LoadingStateCode.backgroundLoading:
           case LoadingStateCode.loaded:

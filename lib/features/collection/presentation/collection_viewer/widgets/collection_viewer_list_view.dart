@@ -16,7 +16,11 @@ class CollectionViewerListView extends StatelessWidget {
         switch (state.code) {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
-            return const CommonLoading();
+            return const CommonLoadingWidget();
+
+          case LoadingStateCode.error:
+            // Error
+            return const CommonErrorWidget();
 
           case LoadingStateCode.backgroundLoading:
           case LoadingStateCode.loaded:

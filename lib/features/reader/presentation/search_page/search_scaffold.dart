@@ -4,8 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../enum/loading_state_code.dart';
 import '../../../../enum/window_size.dart';
-import '../../../../features/shared_components/common_loading.dart';
 import '../../../../generated/i18n/app_localizations.dart';
+import '../../../shared_components/common_error_widgets/common_error_widget.dart';
+import '../../../shared_components/common_loading_widgets/common_loading_widget.dart';
 import '../../domain/entities/reader_search_result_data.dart';
 import 'cubit/reader_search_cubit.dart';
 
