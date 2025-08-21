@@ -42,7 +42,11 @@ class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
         stackTrace: s,
       );
 
-      // TODO(kai): show errors.
+      if (!isClosed) {
+        emit(const DiscoverBrowserState(
+          code: LoadingStateCode.error,
+        ));
+      }
     }
   }
 

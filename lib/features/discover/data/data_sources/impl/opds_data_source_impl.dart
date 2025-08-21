@@ -5,12 +5,12 @@ import 'package:http/http.dart' as http;
 import 'package:rss_dart/dart_rss.dart';
 import 'package:xml/xml.dart';
 
-import '../../../../core/mime_resolver/domain/entities/mime_type.dart';
-import '../../domain/entities/catalog_feed.dart';
-import '../../domain/entities/publication_author.dart';
-import '../../domain/entities/publication_entry.dart';
-import '../../domain/entities/publication_link.dart';
-import 'discover_data_source.dart';
+import '../../../../../core/mime_resolver/domain/entities/mime_type.dart';
+import '../../../domain/entities/catalog_feed.dart';
+import '../../../domain/entities/publication_author.dart';
+import '../../../domain/entities/publication_entry.dart';
+import '../../../domain/entities/publication_link.dart';
+import '../discover_data_source.dart';
 
 /// A concrete implementation of DiscoverDataSource for OPDS feeds.
 class OpdsDataSourceImpl implements DiscoverDataSource {

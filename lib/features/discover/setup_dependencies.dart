@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 
 import '../../main.dart';
 import 'data/data_sources/discover_data_source.dart';
-import 'data/data_sources/opds_data_source_impl.dart';
+import 'data/data_sources/impl/opds_data_source_impl.dart';
 import 'data/repositories/discover_repository_impl.dart';
 import 'domain/repositories/discover_repository.dart';
 import 'domain/use_cases/discover_browse_catalog_use_case.dart';
