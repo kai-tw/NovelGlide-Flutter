@@ -9,7 +9,37 @@ class DiscoverFavoriteRepositoryImpl implements DiscoverFavoriteRepository {
   final DiscoverFavoriteDataSource _dataSource;
 
   @override
-  Future<List<DiscoverFavoriteCatalogData>> getFavoriteList() {
-    return _dataSource.getFavoriteList();
+  Future<List<String>> getList() {
+    return _dataSource.getList();
+  }
+
+  @override
+  Future<void> saveList(List<String> list) {
+    return _dataSource.saveList(list);
+  }
+
+  @override
+  Future<void> createData(DiscoverFavoriteCatalogData data) {
+    return _dataSource.createData(data);
+  }
+
+  @override
+  Future<DiscoverFavoriteCatalogData?> readData(String identifier) {
+    return _dataSource.readData(identifier);
+  }
+
+  @override
+  Future<void> updateData(DiscoverFavoriteCatalogData data) {
+    return _dataSource.updateData(data);
+  }
+
+  @override
+  Future<void> deleteData(String identifier) {
+    return _dataSource.deleteData(identifier);
+  }
+
+  @override
+  Future<bool> existsData(String identifier) {
+    return _dataSource.existsData(identifier);
   }
 }
