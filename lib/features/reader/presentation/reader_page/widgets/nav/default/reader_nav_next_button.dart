@@ -25,7 +25,7 @@ class ReaderNavNextButton extends StatelessWidget {
                 state.code.isLoaded && ttsState.ttsState.isIdle;
             return IconButton(
               icon: const Icon(Icons.arrow_forward_ios_rounded),
-              tooltip: appLocalizations.readerNextPage,
+              tooltip: appLocalizations.generalNextPage,
               onPressed: isEnabled ? cubit.nextPage : null,
             );
           },

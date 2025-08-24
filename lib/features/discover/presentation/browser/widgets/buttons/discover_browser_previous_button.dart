@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../generated/i18n/app_localizations.dart';
 import '../../cubits/discover_browser_cubit.dart';
 import '../../cubits/discover_browser_state.dart';
 
@@ -9,6 +10,7 @@ class DiscoverBrowserPreviousButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final DiscoverBrowserCubit cubit =
         BlocProvider.of<DiscoverBrowserCubit>(context);
 
@@ -23,6 +25,7 @@ class DiscoverBrowserPreviousButton extends StatelessWidget {
               ? null
               : cubit.previousCatalog,
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          tooltip: appLocalizations.generalPreviousPage,
         );
       },
     );

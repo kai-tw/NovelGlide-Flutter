@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../generated/i18n/app_localizations.dart';
 import '../../cubits/discover_browser_cubit.dart';
 import '../../cubits/discover_browser_state.dart';
 
@@ -9,6 +10,7 @@ class DiscoverBrowserHomeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final DiscoverBrowserCubit cubit =
         BlocProvider.of<DiscoverBrowserCubit>(context);
 
@@ -22,6 +24,7 @@ class DiscoverBrowserHomeButton extends StatelessWidget {
               ? null
               : cubit.goHome,
           icon: const Icon(Icons.home_rounded),
+          tooltip: appLocalizations.generalHomepage,
         );
       },
     );
