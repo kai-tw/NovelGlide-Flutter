@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/mime_resolver/domain/entities/mime_type.dart';
+import '../../../books/domain/entities/book_cover.dart';
+import '../../../books/presentation/book_cover/shared_book_cover_widget.dart';
 import '../../../locale_system/locale_utils.dart';
 import '../../domain/entities/publication_author.dart';
 import '../../domain/entities/publication_entry.dart';
+import '../../domain/entities/publication_link.dart';
 import '../link_widget/discover_link_widget.dart';
 
 class DiscoverEntryWidget extends StatelessWidget {
@@ -10,10 +14,12 @@ class DiscoverEntryWidget extends StatelessWidget {
     super.key,
     required this.entry,
     this.onVisit,
+    this.onDowload,
   });
 
   final PublicationEntry entry;
   final Future<void> Function(Uri uri)? onVisit;
+  final Future<void> Function(Uri uri)? onDowload;
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +27,26 @@ class DiscoverEntryWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget?>[
-            _buildCardIcon(context),
-            _buildTitle(context),
-            _buildAuthors(context),
-            _buildSummary(context),
-            _buildPublishedDate(context),
-            _buildPublisher(context),
+            Row(
+              children: <Widget?>[
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget?>[
+                      _buildCardIcon(context),
+                      _buildTitle(context),
+                      _buildAuthors(context),
+                      _buildSummary(context),
+                      _buildPublishedDate(context),
+                      _buildPublisher(context),
+                    ].whereType<Widget>().toList(),
+                  ),
+                ),
+                _buildCover(context),
+              ].whereType<Widget>().toList(),
+            ),
             _buildLinkWidget(context),
           ].whereType<Widget>().toList(),
         ),
@@ -77,12 +95,12 @@ class DiscoverEntryWidget extends StatelessWidget {
   }
 
   Widget? _buildSummary(BuildContext context) {
-    if (entry.summary == null) {
+    if (entry.content == null || entry.content!.isEmpty) {
       return null;
     } else {
       return Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
-        child: Text(entry.summary!),
+        child: Text(entry.content!),
       );
     }
   }
@@ -120,12 +138,56 @@ class DiscoverEntryWidget extends StatelessWidget {
   }
 
   Widget? _buildLinkWidget(BuildContext context) {
-    if (entry.links.firstOrNull == null) {
+    final Iterable<PublicationLink> supportedLinks = entry.links.where(
+        (PublicationLink link) =>
+            link.type == MimeType.atomFeed || link.type == MimeType.epub);
+    if (supportedLinks.isEmpty) {
       return null;
     } else {
-      return DiscoverLinkWidget(
-        link: entry.links.firstOrNull!,
-        onVisit: onVisit,
+      return OverflowBar(
+        alignment: MainAxisAlignment.center,
+        children: supportedLinks
+            .map((PublicationLink link) => DiscoverLinkWidget(
+                  link: link,
+                  onVisit: onVisit,
+                  onDownload: onDowload,
+                ))
+            .toList(),
+      );
+    }
+  }
+
+  Widget? _buildCover(BuildContext context) {
+    final List<PublicationLink> priorityList = <PublicationLink>[];
+
+    // Make sure the cover is prioritized over the thumbnail.
+    int coverIndex = 0;
+    for (final PublicationLink link in entry.links) {
+      switch (link.rel) {
+        case PublicationLinkRelationship.cover:
+          priorityList.insert(coverIndex++, link);
+          break;
+        case PublicationLinkRelationship.thumbnail:
+          priorityList.add(link);
+          break;
+        default:
+      }
+    }
+
+    if (priorityList.isEmpty) {
+      return null;
+    } else {
+      final PublicationLink cover = priorityList.first;
+      return Expanded(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: SharedBookCoverWidget(
+            coverData: BookCover(
+              identifier: cover.href.toString(),
+              url: cover.href,
+            ),
+          ),
+        ),
       );
     }
   }

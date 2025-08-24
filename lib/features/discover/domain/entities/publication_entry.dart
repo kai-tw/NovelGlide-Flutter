@@ -9,17 +9,19 @@ class PublicationEntry extends Equatable {
     this.id,
     this.title,
     this.updated,
-    this.authors = const <PublicationAuthor>[],
-    this.links = const <PublicationLink>[],
     this.summary,
+    this.content,
     this.publishedDate,
     this.publisher,
+    this.authors = const <PublicationAuthor>[],
+    this.links = const <PublicationLink>[],
   });
 
   final String? id;
   final String? title;
   final DateTime? updated;
   final String? summary;
+  final String? content;
   final DateTime? publishedDate;
   final String? publisher;
   final List<PublicationAuthor> authors;
@@ -31,6 +33,7 @@ class PublicationEntry extends Equatable {
         title,
         updated,
         summary,
+        content,
         publishedDate,
         publisher,
         authors,

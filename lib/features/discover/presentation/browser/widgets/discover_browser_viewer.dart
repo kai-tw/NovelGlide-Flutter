@@ -44,7 +44,8 @@ class DiscoverBrowserViewer extends StatelessWidget {
             } else {
               return DiscoverCatalogViewer(
                 feed: state.catalogFeed!,
-                onVisit: (Uri uri) => cubit.browseCatalog(uri),
+                onVisit: cubit.browseCatalog,
+                onDowload: cubit.downloadBook,
               );
             }
         }

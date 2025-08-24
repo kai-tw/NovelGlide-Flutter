@@ -43,9 +43,19 @@ class BookCoverWidget extends StatelessWidget {
     }
 
     // Url are not empty
-    if (coverData.url != null && coverData.hasSize) {
+    if (coverData.url != null) {
       // Load the network image
-      // TODO(kai): Implementation.
+      return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          return Image.network(
+            coverData.url!.toString(),
+            width: constraints.maxWidth,
+            height: constraints.maxHeight,
+            fit: fit,
+            semanticLabel: appLocalizations.generalBookCover,
+          );
+        },
+      );
     }
 
     // There is not an image. Use the image in the asset.

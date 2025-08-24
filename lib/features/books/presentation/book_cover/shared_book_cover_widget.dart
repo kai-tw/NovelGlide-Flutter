@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../domain/entities/book_cover.dart';
-import '../../book_cover/book_cover_widget.dart';
+import '../../domain/entities/book_cover.dart';
+import 'book_cover_widget.dart';
 
-class BookshelfCoverWidget extends StatelessWidget {
-  const BookshelfCoverWidget({
+class SharedBookCoverWidget extends StatelessWidget {
+  const SharedBookCoverWidget({
     super.key,
     required this.coverData,
     this.borderRadius,

@@ -50,6 +50,11 @@ class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
     }
   }
 
+  Future<void> downloadBook(Uri uri) async {
+    // TODO(kai): Implement download book
+    LogSystem.info('Download book: $uri');
+  }
+
   @override
   Future<void> close() {
     textEditingController.dispose();

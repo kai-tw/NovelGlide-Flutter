@@ -8,10 +8,12 @@ class DiscoverLinkWidget extends StatelessWidget {
     super.key,
     required this.link,
     this.onVisit,
+    this.onDownload,
   });
 
   final PublicationLink link;
   final Future<void> Function(Uri uri)? onVisit;
+  final Future<void> Function(Uri uri)? onDownload;
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +22,19 @@ class DiscoverLinkWidget extends StatelessWidget {
           ? null
           : switch (link.type) {
               MimeType.atomFeed => () => onVisit?.call(link.href!),
+              MimeType.epub => () => onDownload?.call(link.href!),
               _ => null,
             },
       icon: switch (link.type) {
         MimeType.atomFeed => const Icon(Icons.link_rounded),
+        MimeType.epub => const Icon(Icons.download_rounded),
         _ => const Icon(Icons.question_mark_rounded),
       },
-      label: const Text('View'),
+      label: Text(switch (link.type) {
+        MimeType.atomFeed => 'View',
+        MimeType.epub => 'Download',
+        _ => 'Unknown link',
+      }),
     );
   }
 }

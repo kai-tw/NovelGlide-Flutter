@@ -9,10 +9,12 @@ class DiscoverCatalogViewer extends StatelessWidget {
     super.key,
     required this.feed,
     this.onVisit,
+    this.onDowload,
   });
 
   final CatalogFeed feed;
   final Future<void> Function(Uri uri)? onVisit;
+  final Future<void> Function(Uri uri)? onDowload;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class DiscoverCatalogViewer extends StatelessWidget {
               return DiscoverEntryWidget(
                 entry: feed.entries[index],
                 onVisit: onVisit,
+                onDowload: onDowload,
               );
             },
             childCount: feed.entries.length,

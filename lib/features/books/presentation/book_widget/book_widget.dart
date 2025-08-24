@@ -5,7 +5,7 @@ import '../../../shared_components/adaptive_lines_text.dart';
 import '../../../shared_components/shared_list/shared_list.dart';
 import '../../domain/entities/book.dart';
 import '../../domain/entities/book_cover.dart';
-import '../bookshelf/widgets/bookshelf_cover_widget.dart';
+import '../book_cover/shared_book_cover_widget.dart';
 
 class BookWidget extends StatelessWidget {
   const BookWidget({
@@ -45,7 +45,7 @@ class BookWidget extends StatelessWidget {
           isSelecting: isSelecting,
           isSelected: isSelected,
           onChanged: onChanged,
-          cover: BookshelfCoverWidget(
+          cover: SharedBookCoverWidget(
             coverData: coverData,
             borderRadius: BorderRadius.circular(16.0),
           ),
@@ -60,7 +60,7 @@ class BookWidget extends StatelessWidget {
           onChanged: onChanged,
           leading: Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 4.0, 8.0, 4.0),
-            child: BookshelfCoverWidget(
+            child: SharedBookCoverWidget(
               coverData: coverData,
               borderRadius: BorderRadius.circular(4.0),
             ),

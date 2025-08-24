@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:rss_dart/dart_rss.dart';
 import 'package:xml/xml.dart';
 
+import '../../../../../core/log_system/log_system.dart';
 import '../../../../../core/mime_resolver/domain/entities/mime_type.dart';
 import '../../../domain/entities/catalog_feed.dart';
 import '../../../domain/entities/publication_author.dart';
@@ -25,19 +27,15 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
     final http.Response response = await _httpClient.get(uri);
 
     if (response.statusCode == 200) {
-      try {
-        final AtomFeed feed = AtomFeed.parse(response.body);
+      final AtomFeed feed = AtomFeed.parse(response.body);
 
-        return CatalogFeed(
-          id: feed.id,
-          title: feed.title,
-          updated: _parseDateTime(feed.updated),
-          links: feed.links.map(_parseLink).toList(),
-          entries: feed.items.map(_parseEntry).toList(),
-        );
-      } catch (e) {
-        throw Exception('Failed to parse the atom feed.');
-      }
+      return CatalogFeed(
+        id: feed.id?.trim(),
+        title: feed.title?.trim(),
+        updated: _parseDateTime(feed.updated),
+        links: feed.links.map(_parseLink).toList(),
+        entries: feed.items.map(_parseEntry).toList(),
+      );
     } else {
       throw Exception('Failed to load OPDS feed (${response.statusCode})');
     }
@@ -68,23 +66,54 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
   /// ========== Parsers ==========
 
   DateTime? _parseDateTime(String? value) {
-    return value == null ? null : DateTime.parse(value);
+    if (value == null) {
+      return null;
+    }
+
+    try {
+      return DateTime.parse(value);
+    } catch (_) {
+      // Failed to parse by default. Try some known formats.
+    }
+
+    final List<String> formatPattern = <String>[
+      'EEE, dd MMM yyyy HH:mm:ss Z',
+    ];
+
+    for (final String pattern in formatPattern) {
+      try {
+        return DateFormat(pattern).parse(value);
+      } catch (_) {}
+    }
+
+    LogSystem.error('Failed to parse date time: $value');
+    return null;
   }
 
   PublicationLink _parseLink(AtomLink link) {
+    final Uri? href = link.href == null ? null : Uri.tryParse(link.href!);
+    final String? rel = link.rel?.trim();
+    final MimeType? mimeType =
+        link.type == null ? null : MimeType.fromString(link.type!);
     return PublicationLink(
-      href: link.href == null ? null : Uri.tryParse(link.href!),
-      rel: link.rel,
-      type: link.type == null ? null : MimeType.fromString(link.type!),
+      href: href,
+      rel: switch (rel) {
+        'http://opds-spec.org/thumbnail' =>
+          PublicationLinkRelationship.thumbnail,
+        'http://opds-spec.org/cover' => PublicationLinkRelationship.cover,
+        _ => null,
+      },
+      type: mimeType,
     );
   }
 
   PublicationEntry _parseEntry(AtomItem item) {
     return PublicationEntry(
-      id: item.id,
-      title: item.title,
+      id: item.id?.trim(),
+      title: item.title?.trim(),
       updated: _parseDateTime(item.updated),
-      summary: item.content,
+      summary: item.summary,
+      content: item.content?.trim(),
       authors: item.authors.map(_parseAuthor).toList(),
       links: item.links.map(_parseLink).toList(),
     );
@@ -92,7 +121,7 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
 
   PublicationAuthor _parseAuthor(AtomPerson person) {
     return PublicationAuthor(
-      name: person.name,
+      name: person.name?.trim(),
     );
   }
 }

@@ -14,7 +14,7 @@ class BookCover extends Equatable {
   final String identifier;
   final double? width;
   final double? height;
-  final String? url;
+  final Uri? url;
   final Uint8List? bytes;
 
   bool get hasSize => width != null && height != null;
