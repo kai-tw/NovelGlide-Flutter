@@ -121,7 +121,7 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
 
   PublicationAuthor _parseAuthor(AtomPerson person) {
     return PublicationAuthor(
-      name: person.name?.trim(),
+      name: person.name?.isNotEmpty == true ? person.name?.trim() : null,
     );
   }
 }

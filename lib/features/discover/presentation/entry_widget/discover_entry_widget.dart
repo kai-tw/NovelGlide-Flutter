@@ -14,28 +14,32 @@ class DiscoverEntryWidget extends StatelessWidget {
     super.key,
     required this.entry,
     this.onVisit,
-    this.onDowload,
+    this.onDownload,
   });
 
   final PublicationEntry entry;
   final Future<void> Function(Uri uri)? onVisit;
-  final Future<void> Function(Uri uri)? onDowload;
+  final Future<void> Function(Uri uri)? onDownload;
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsets.symmetric(
+        vertical: 8.0,
+        horizontal: 16.0,
+      ),
       child: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: <Widget?>[
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget?>[
                 Expanded(
                   flex: 2,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget?>[
-                      _buildCardIcon(context),
                       _buildTitle(context),
                       _buildAuthors(context),
                       _buildSummary(context),
@@ -44,20 +48,13 @@ class DiscoverEntryWidget extends StatelessWidget {
                     ].whereType<Widget>().toList(),
                   ),
                 ),
-                _buildCover(context),
+                _buildThumbnail(context),
               ].whereType<Widget>().toList(),
             ),
             _buildLinkWidget(context),
           ].whereType<Widget>().toList(),
         ),
       ),
-    );
-  }
-
-  Widget? _buildCardIcon(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(bottom: 16.0),
-      child: Icon(Icons.feed, size: 36.0),
     );
   }
 
@@ -69,7 +66,7 @@ class DiscoverEntryWidget extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 8.0),
         child: Text(
           entry.title!,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
         ),
@@ -146,18 +143,19 @@ class DiscoverEntryWidget extends StatelessWidget {
     } else {
       return OverflowBar(
         alignment: MainAxisAlignment.center,
+        spacing: 8.0,
         children: supportedLinks
             .map((PublicationLink link) => DiscoverLinkWidget(
                   link: link,
                   onVisit: onVisit,
-                  onDownload: onDowload,
+                  onDownload: onDownload,
                 ))
             .toList(),
       );
     }
   }
 
-  Widget? _buildCover(BuildContext context) {
+  Widget? _buildThumbnail(BuildContext context) {
     final List<PublicationLink> priorityList = <PublicationLink>[];
 
     // Make sure the cover is prioritized over the thumbnail.
@@ -175,7 +173,10 @@ class DiscoverEntryWidget extends StatelessWidget {
     }
 
     if (priorityList.isEmpty) {
-      return null;
+      return const Padding(
+        padding: EdgeInsets.only(left: 16.0),
+        child: Icon(Icons.feed, size: 48.0),
+      );
     } else {
       final PublicationLink cover = priorityList.first;
       return Expanded(

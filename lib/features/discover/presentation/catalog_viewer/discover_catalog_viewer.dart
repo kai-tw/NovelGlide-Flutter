@@ -22,6 +22,12 @@ class DiscoverCatalogViewer extends StatelessWidget {
       slivers: <Widget>[
         SliverToBoxAdapter(
           child: ListTile(
+            contentPadding: const EdgeInsets.fromLTRB(
+              16.0,
+              24.0,
+              16.0,
+              0.0,
+            ),
             leading: const Icon(Icons.local_library_rounded),
             title: Text(
               feed.title ?? '',
@@ -40,7 +46,7 @@ class DiscoverCatalogViewer extends StatelessWidget {
               return DiscoverEntryWidget(
                 entry: feed.entries[index],
                 onVisit: onVisit,
-                onDowload: onDowload,
+                onDownload: onDowload,
               );
             },
             childCount: feed.entries.length,
