@@ -27,15 +27,16 @@ class ReaderSearchRepositoryImpl implements ReaderSearchRepository {
   void _onMessageReceived(ReaderWebMessageDto message) {
     switch (message.route) {
       case 'setSearchResultList':
-        assert(message.data is List<Map<String, dynamic>>);
-        final List<Map<String, dynamic>> rawList =
-            message.data as List<Map<String, dynamic>>;
-        _listController.add(rawList
-            .map((Map<String, dynamic> e) => ReaderSearchResultData(
-                  cfi: e['cfi'],
-                  excerpt: e['excerpt'],
-                ))
-            .toList());
+        assert(message.data is Map<String, dynamic>);
+        _listController.add(
+          (message.data['searchResultList'] as List<dynamic>)
+              .map<ReaderSearchResultData>(
+                  (dynamic e) => ReaderSearchResultData(
+                        cfi: e['cfi'],
+                        excerpt: e['excerpt'],
+                      ))
+              .toList(),
+        );
         break;
     }
   }

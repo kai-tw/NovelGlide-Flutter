@@ -7,6 +7,7 @@ import '../../../../enum/window_size.dart';
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../shared_components/common_error_widgets/common_error_widget.dart';
 import '../../../shared_components/common_loading_widgets/common_loading_widget.dart';
+import '../../../shared_components/shared_bottom_container.dart';
 import '../../domain/entities/reader_search_result_data.dart';
 import 'cubit/reader_search_cubit.dart';
 
@@ -28,32 +29,22 @@ class SearchScaffold extends StatelessWidget {
       body: Center(
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: WindowSize.compact.maxWidth),
-          child: Column(
+          child: const Column(
             children: <Widget>[
-              const Expanded(
+              Expanded(
                 child: _SearchResultList(),
               ),
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(24.0),
-                    topRight: Radius.circular(24.0),
-                  ),
-                ),
-                child: const SafeArea(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(16.0, 8.0, 0.0, 8.0),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: _SearchField(),
-                        ),
-                        _SearchRangeSelector(),
-                        _SearchSubmitButton(),
-                      ],
-                    ),
+              SharedBottomContainer(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 8.0, 0.0, 8.0),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: _SearchField(),
+                      ),
+                      _SearchRangeSelector(),
+                      _SearchSubmitButton(),
+                    ],
                   ),
                 ),
               ),

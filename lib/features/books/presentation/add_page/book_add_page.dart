@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../../main.dart';
+import '../../../shared_components/shared_bottom_container.dart';
 import 'cubit/book_add_cubit.dart';
 import 'widgets/book_add_action_bar.dart';
 import 'widgets/book_add_file_list.dart';
@@ -21,23 +22,13 @@ class BookAddPage extends StatelessWidget {
           title: Text(appLocalizations.addBookTitle),
         ),
         body: const BookAddFileList(),
-        bottomNavigationBar: Container(
-          padding: const EdgeInsets.all(16.0),
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(24.0),
-              topRight: Radius.circular(24.0),
-            ),
-            color: Theme.of(context).colorScheme.surfaceContainer,
-          ),
-          child: const SafeArea(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                BookAddHelperText(),
-                BookAddActionBar(),
-              ],
-            ),
+        bottomNavigationBar: const SharedBottomContainer(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              BookAddHelperText(),
+              BookAddActionBar(),
+            ],
           ),
         ),
       ),
