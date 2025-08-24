@@ -5,8 +5,8 @@ import 'buttons/discover_browser_next_button.dart';
 import 'buttons/discover_browser_previous_button.dart';
 import 'discover_browser_url_bar.dart';
 
-class DiscoverBrowserControlBar extends StatelessWidget {
-  const DiscoverBrowserControlBar({super.key});
+class DiscoverBrowserNavigationBar extends StatelessWidget {
+  const DiscoverBrowserNavigationBar({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/discover_browser_control_bar.dart';
+import 'widgets/discover_browser_navigation_bar.dart';
 import 'widgets/discover_browser_title.dart';
 import 'widgets/discover_browser_viewer.dart';
 
@@ -18,7 +18,7 @@ class DiscoverBrowserScaffold extends StatelessWidget {
           Expanded(
             child: DiscoverBrowserViewer(),
           ),
-          DiscoverBrowserControlBar(),
+          DiscoverBrowserNavigationBar(),
         ],
       ),
     );
