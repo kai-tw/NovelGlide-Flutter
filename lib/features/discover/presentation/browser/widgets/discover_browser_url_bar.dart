@@ -11,18 +11,16 @@ class DiscoverBrowserUrlBar extends StatelessWidget {
     final DiscoverBrowserCubit cubit =
         BlocProvider.of<DiscoverBrowserCubit>(context);
 
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: TextField(
-            controller: cubit.textEditingController,
-          ),
-        ),
-        IconButton(
+    return TextField(
+      controller: cubit.textEditingController,
+      decoration: InputDecoration(
+        hintText: 'Url',
+        suffixIcon: IconButton(
           onPressed: cubit.browseCatalog,
           icon: const Icon(Icons.search_rounded),
         ),
-      ],
+      ),
+      onSubmitted: (_) => cubit.browseCatalog(),
     );
   }
 }

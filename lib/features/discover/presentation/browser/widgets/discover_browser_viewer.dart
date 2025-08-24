@@ -37,10 +37,7 @@ class DiscoverBrowserViewer extends StatelessWidget {
 
           case LoadingStateCode.loaded:
             if (state.catalogFeed == null) {
-              // Something went wrong
-              return const Center(
-                child: Text('Something went wrong'),
-              );
+              return const CommonErrorWidget();
             } else {
               return DiscoverCatalogViewer(
                 feed: state.catalogFeed!,

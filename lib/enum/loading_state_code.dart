@@ -5,6 +5,7 @@ enum LoadingStateCode {
   loaded,
   error;
 
+  bool get isInitial => this == LoadingStateCode.initial;
   bool get isLoading => this == LoadingStateCode.loading;
   bool get isBackgroundLoading => this == LoadingStateCode.backgroundLoading;
   bool get isLoaded => this == LoadingStateCode.loaded;

@@ -9,8 +9,8 @@ class DiscoverRepositoryImpl implements DiscoverRepository {
   final DiscoverDataSource _dataSource;
 
   @override
-  Future<CatalogFeed> browseCatalog(String url) async {
-    return await _dataSource.getCatalogFeed(url);
+  Future<CatalogFeed> browseCatalog(Uri uri) async {
+    return await _dataSource.getCatalogFeed(uri);
   }
 
   @override

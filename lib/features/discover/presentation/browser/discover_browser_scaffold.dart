@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/discover_browser_url_bar.dart';
+import 'widgets/discover_browser_control_bar.dart';
+import 'widgets/discover_browser_title.dart';
 import 'widgets/discover_browser_viewer.dart';
 
 class DiscoverBrowserScaffold extends StatelessWidget {
@@ -10,14 +11,14 @@ class DiscoverBrowserScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Discover'),
+        title: const DiscoverBrowserTitle(),
       ),
       body: const Column(
         children: <Widget>[
-          DiscoverBrowserUrlBar(),
           Expanded(
             child: DiscoverBrowserViewer(),
           ),
+          DiscoverBrowserControlBar(),
         ],
       ),
     );

@@ -5,7 +5,7 @@ import '../entities/catalog_feed.dart';
 /// This defines the high-level operations for discovering and searching content.
 abstract class DiscoverRepository {
   /// Fetches a catalog feed from a given URL.
-  Future<CatalogFeed> browseCatalog(String url);
+  Future<CatalogFeed> browseCatalog(Uri uri);
 
   /// Searches a catalog for publications.
   Future<CatalogFeed> searchCatalog(String url, String query);

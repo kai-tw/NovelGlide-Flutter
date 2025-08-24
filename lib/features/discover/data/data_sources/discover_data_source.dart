@@ -4,8 +4,8 @@ import '../../domain/entities/catalog_feed.dart';
 ///
 /// It defines how to fetch and parse data from a remote source.
 abstract class DiscoverDataSource {
-  /// Fetches and parses an OPDS catalog feed from a URL.
-  Future<CatalogFeed> getCatalogFeed(String url);
+  /// Fetches and parses an catalog feed from a URL.
+  Future<CatalogFeed> getCatalogFeed(Uri uri);
 
   /// Searches a catalog for publications using a query.
   Future<CatalogFeed> searchCatalogFeed(String url, String query);

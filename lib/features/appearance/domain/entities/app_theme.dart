@@ -12,9 +12,9 @@ abstract class AppTheme {
     // Configures the [InputDecoration] theme based on the [ColorScheme]
     final InputDecorationTheme inputDecorationTheme = InputDecorationTheme(
       labelStyle: const TextStyle(fontSize: 16),
-      contentPadding: const EdgeInsets.all(24.0),
+      contentPadding: const EdgeInsets.all(16.0),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16.0),
       ),
     );
 

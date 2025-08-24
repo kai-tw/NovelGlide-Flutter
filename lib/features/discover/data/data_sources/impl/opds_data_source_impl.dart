@@ -22,8 +22,7 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
 
   /// Fetches an OPDS catalog feed from a given URL and parses it.
   @override
-  Future<CatalogFeed> getCatalogFeed(String url) async {
-    final Uri uri = Uri.parse(url);
+  Future<CatalogFeed> getCatalogFeed(Uri uri) async {
     final http.Response response = await _httpClient.get(uri);
 
     if (response.statusCode == 200) {
