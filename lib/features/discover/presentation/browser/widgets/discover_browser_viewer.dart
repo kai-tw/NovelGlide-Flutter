@@ -5,6 +5,7 @@ import '../../../../../enum/loading_state_code.dart';
 import '../../../../shared_components/common_error_widgets/common_error_widget.dart';
 import '../../../../shared_components/common_loading_widgets/common_loading_widget.dart';
 import '../../catalog_viewer/discover_catalog_viewer.dart';
+import '../../favorite_list/discover_favorite_list.dart';
 import '../cubits/discover_browser_cubit.dart';
 import '../cubits/discover_browser_state.dart';
 
@@ -23,9 +24,7 @@ class DiscoverBrowserViewer extends StatelessWidget {
       builder: (BuildContext context, DiscoverBrowserState state) {
         switch (state.code) {
           case LoadingStateCode.initial:
-            return const Center(
-              child: Text('Type url'),
-            );
+            return const DiscoverFavoriteList();
 
           case LoadingStateCode.backgroundLoading:
           case LoadingStateCode.loading:

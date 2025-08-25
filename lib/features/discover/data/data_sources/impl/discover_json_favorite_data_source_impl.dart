@@ -27,7 +27,7 @@ class DiscoverJsonFavoriteDataSourceImpl implements DiscoverFavoriteDataSource {
         DiscoverFavoriteJsonModel.fromJson(jsonValue);
 
     // Map the list json into the entity.
-    return model.identifierList;
+    return List<String>.from(model.identifierList);
   }
 
   @override
@@ -42,16 +42,18 @@ class DiscoverJsonFavoriteDataSourceImpl implements DiscoverFavoriteDataSource {
     final DiscoverFavoriteJsonModel model =
         DiscoverFavoriteJsonModel.fromJson(jsonValue);
 
+    final List<String> identifierList = List<String>.from(model.identifierList);
+
     // Clear the list
-    model.identifierList.clear();
+    identifierList.clear();
 
     // Convert data into JSON
-    model.identifierList.addAll(list);
+    identifierList.addAll(list);
 
     // Write file
     await _jsonRepository.writeJson(
       path: jsonPath,
-      data: model.toJson(),
+      data: model.copyWith(identifierList: identifierList).toJson(),
     );
   }
 
@@ -94,16 +96,16 @@ class DiscoverJsonFavoriteDataSourceImpl implements DiscoverFavoriteDataSource {
     if (model.dataMap.containsKey(identifier)) {
       // Data exists in the file.
       model.dataMap.remove(identifier);
-
-      // If it exists in the list, also remove it.
-      model.identifierList.remove(identifier);
-
-      // Write to file
-      await _jsonRepository.writeJson(
-        path: jsonPath,
-        data: model.toJson(),
-      );
     }
+
+    // If it exists in the list, also remove it.
+    model.identifierList.remove(identifier);
+
+    // Write to file
+    await _jsonRepository.writeJson(
+      path: jsonPath,
+      data: model.toJson(),
+    );
   }
 
   @override

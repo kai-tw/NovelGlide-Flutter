@@ -11,7 +11,8 @@ class CommonErrorSliverWidget extends CommonErrorWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
+    return SliverFillRemaining(
+      hasScrollBody: false,
       child: super.build(context),
     );
   }

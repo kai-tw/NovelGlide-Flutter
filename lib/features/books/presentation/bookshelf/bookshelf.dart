@@ -28,7 +28,7 @@ class Bookshelf extends StatelessWidget {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
             // Loading...
-            return const CommonSliverLoading();
+            return const CommonLoadingSliverWidget();
 
           case LoadingStateCode.error:
             // Error

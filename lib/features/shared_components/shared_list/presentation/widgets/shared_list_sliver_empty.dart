@@ -1,14 +1,13 @@
 part of '../../shared_list.dart';
 
-class SharedListSliverEmpty extends StatelessWidget {
-  const SharedListSliverEmpty({super.key, this.title});
-
-  final String? title;
+class SharedListSliverEmpty extends SharedListEmpty {
+  const SharedListSliverEmpty({super.key, super.title});
 
   @override
   Widget build(BuildContext context) {
     return SliverFillRemaining(
-      child: SharedListEmpty(title: title),
+      hasScrollBody: false,
+      child: super.build(context),
     );
   }
 }

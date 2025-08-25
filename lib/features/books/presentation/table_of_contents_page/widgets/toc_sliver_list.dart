@@ -29,7 +29,7 @@ class TocSliverList extends StatelessWidget {
           case LoadingStateCode.initial:
           case LoadingStateCode.loading:
           case LoadingStateCode.backgroundLoading:
-            return const CommonSliverLoading();
+            return const CommonLoadingSliverWidget();
 
           case LoadingStateCode.error:
             // Error

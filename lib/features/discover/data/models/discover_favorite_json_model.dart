@@ -5,20 +5,20 @@ import '../../domain/entities/discover_favorite_catalog_data.dart';
 class DiscoverFavoriteJsonModel extends Equatable {
   const DiscoverFavoriteJsonModel({
     this.version = 1,
-    required this.identifierList,
-    required this.dataMap,
+    this.identifierList = const <String>[],
+    this.dataMap = const <String, DiscoverFavoriteCatalogData>{},
   });
 
   factory DiscoverFavoriteJsonModel.fromJson(Map<String, dynamic> json) {
-    return DiscoverFavoriteJsonModel(
-      version: json['version'],
-      identifierList: json['identifierList'],
-      dataMap: (json['dataMap'] as Map<String, dynamic>)
-          .map((String k, j) => MapEntry<String, DiscoverFavoriteCatalogData>(
+    return const DiscoverFavoriteJsonModel().copyWith(
+      version: int.tryParse(json['version'].toString()),
+      identifierList: json['identifierList']?.whereType<String>().toList(),
+      dataMap: (json['dataMap'] as Map<String, dynamic>?)
+          ?.map((String k, j) => MapEntry<String, DiscoverFavoriteCatalogData>(
               k,
               DiscoverFavoriteCatalogData(
-                identifier: j['identifier'],
-                name: j['name'],
+                identifier: j['identifier'].toString(),
+                name: j['name'].toString(),
                 uri: Uri.parse(j['uri']),
               ))),
     );
@@ -49,5 +49,17 @@ class DiscoverFavoriteJsonModel extends Equatable {
             },
           )),
     };
+  }
+
+  DiscoverFavoriteJsonModel copyWith({
+    int? version,
+    List<String>? identifierList,
+    Map<String, DiscoverFavoriteCatalogData>? dataMap,
+  }) {
+    return DiscoverFavoriteJsonModel(
+      version: version ?? this.version,
+      identifierList: identifierList ?? this.identifierList,
+      dataMap: dataMap ?? this.dataMap,
+    );
   }
 }

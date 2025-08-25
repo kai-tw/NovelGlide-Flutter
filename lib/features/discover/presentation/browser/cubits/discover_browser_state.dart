@@ -10,6 +10,7 @@ class DiscoverBrowserState extends Equatable {
     this.currentUri,
     this.historyStack = const <Uri>[],
     this.restoreStack = const <Uri>[],
+    this.favoriteIdentifier,
   });
 
   final LoadingStateCode code;
@@ -17,6 +18,7 @@ class DiscoverBrowserState extends Equatable {
   final Uri? currentUri;
   final List<Uri> historyStack;
   final List<Uri> restoreStack;
+  final String? favoriteIdentifier;
 
   @override
   List<Object?> get props => <Object?>[
@@ -25,6 +27,7 @@ class DiscoverBrowserState extends Equatable {
         currentUri,
         historyStack,
         restoreStack,
+        favoriteIdentifier,
       ];
 
   DiscoverBrowserState copyWith({
@@ -40,6 +43,19 @@ class DiscoverBrowserState extends Equatable {
       currentUri: currentUri ?? this.currentUri,
       historyStack: historyStack ?? this.historyStack,
       restoreStack: restoreStack ?? this.restoreStack,
+      favoriteIdentifier: favoriteIdentifier,
+    );
+  }
+
+  // Copy favorite identifier because it may be null.
+  DiscoverBrowserState copyWithFavoriteIdentifier(String? favoriteIdentifier) {
+    return DiscoverBrowserState(
+      code: code,
+      catalogFeed: catalogFeed,
+      currentUri: currentUri,
+      historyStack: historyStack,
+      restoreStack: restoreStack,
+      favoriteIdentifier: favoriteIdentifier,
     );
   }
 }

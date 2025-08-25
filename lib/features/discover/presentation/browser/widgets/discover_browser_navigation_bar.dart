@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../shared_components/shared_bottom_container.dart';
+import 'buttons/discover_browser_favorite_button.dart';
 import 'buttons/discover_browser_home_button.dart';
 import 'buttons/discover_browser_next_button.dart';
 import 'buttons/discover_browser_previous_button.dart';
@@ -23,6 +24,7 @@ class DiscoverBrowserNavigationBar extends StatelessWidget {
                 DiscoverBrowserPreviousButton(),
                 DiscoverBrowserNextButton(),
                 DiscoverBrowserHomeButton(),
+                DiscoverBrowserFavoriteButton(),
               ],
             ),
           ),

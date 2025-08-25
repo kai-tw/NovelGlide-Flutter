@@ -1,8 +1,9 @@
 import '../../../../core/domain/use_cases/use_case.dart';
 import '../repositories/discover_favorite_repository.dart';
 
-class DiscoverDeleteFavoriteDataUseCase extends UseCase<Future<void>, String> {
-  DiscoverDeleteFavoriteDataUseCase(this._repository);
+class DiscoverRemoveFromFavoriteListUseCase
+    extends UseCase<Future<void>, String> {
+  DiscoverRemoveFromFavoriteListUseCase(this._repository);
 
   final DiscoverFavoriteRepository _repository;
 

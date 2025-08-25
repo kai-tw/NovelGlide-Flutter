@@ -4,16 +4,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/log_system/log_system.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../domain/entities/catalog_feed.dart';
+import '../../../domain/use_cases/discover_add_to_favorite_list_use_case.dart';
 import '../../../domain/use_cases/discover_browse_catalog_use_case.dart';
+import '../../../domain/use_cases/discover_get_favorite_identifier_by_uri_use_case.dart';
+import '../../../domain/use_cases/discover_remove_from_favorite_list_use_case.dart';
 import 'discover_browser_state.dart';
 
 class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
   DiscoverBrowserCubit(
     this._browseCatalogUseCase,
+    this._getFavoriteIdentifierByUriUseCase,
+    this._removeFromFavoriteListUseCase,
+    this._addToFavoriteListUseCase,
   ) : super(const DiscoverBrowserState());
 
-  /// Use cases
+  /// Browser use cases
   final DiscoverBrowseCatalogUseCase _browseCatalogUseCase;
+
+  /// Favorite use cases
+  final DiscoverGetFavoriteIdentifierByUriUseCase
+      _getFavoriteIdentifierByUriUseCase;
+  final DiscoverRemoveFromFavoriteListUseCase _removeFromFavoriteListUseCase;
+  final DiscoverAddToFavoriteListUseCase _addToFavoriteListUseCase;
 
   /// Controllers
   final TextEditingController textEditingController = TextEditingController();
@@ -28,35 +40,45 @@ class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
     final Uri? previousUri = state.currentUri;
     await _loadFeed(requestedUri);
 
-    // Emit current uri
-    emit(state.copyWith(
-      currentUri: requestedUri,
-      restoreStack: const <Uri>[],
-    ));
-
-    if (previousUri != null) {
-      // Add the requested URI to the history stack and clear the restore stack
+    if (!isClosed) {
+      // Emit current uri
       emit(state.copyWith(
-        historyStack: <Uri>[...state.historyStack, previousUri],
+        currentUri: requestedUri,
+        restoreStack: const <Uri>[],
       ));
+
+      if (previousUri != null) {
+        // Add the requested URI to the history stack and clear the restore stack
+        emit(state.copyWith(
+          historyStack: <Uri>[...state.historyStack, previousUri],
+        ));
+      }
     }
   }
 
   Future<void> _loadFeed(Uri uri) async {
     textEditingController.text = uri.toString();
 
-    emit(state.copyWith(
-      code: LoadingStateCode.loading,
-    ));
+    if (!isClosed) {
+      emit(state.copyWith(
+        code: LoadingStateCode.loading,
+      ));
+    }
 
     try {
+      final String? favoriteIdentifier =
+          await _getFavoriteIdentifierByUriUseCase(uri);
       final CatalogFeed feed = await _browseCatalogUseCase(uri);
 
       if (!isClosed) {
-        emit(state.copyWith(
-          code: LoadingStateCode.loaded,
-          catalogFeed: feed,
-        ));
+        final DiscoverBrowserState newState = state
+            .copyWith(
+              code: LoadingStateCode.loaded,
+              catalogFeed: feed,
+            )
+            .copyWithFavoriteIdentifier(favoriteIdentifier);
+
+        emit(newState);
       }
     } catch (e, s) {
       LogSystem.error(
@@ -130,6 +152,37 @@ class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
 
   Future<void> goHome() async {
     emit(const DiscoverBrowserState());
+  }
+
+  Future<void> addToFavoriteList({String? name}) async {
+    if (state.currentUri == null) {
+      return;
+    }
+    await _addToFavoriteListUseCase(DiscoverAddToFavoriteListUseCaseParam(
+      name: name ?? state.catalogFeed?.title ?? '',
+      uri: state.currentUri!,
+    ));
+
+    if (!isClosed) {
+      emit(state.copyWithFavoriteIdentifier(
+        await _getFavoriteIdentifierByUriUseCase(
+          state.currentUri!,
+        ),
+      ));
+    }
+  }
+
+  Future<void> removeFromFavoriteList([String? identifier]) async {
+    final String? identifierToPass = identifier ?? state.favoriteIdentifier;
+    if (identifierToPass == null) {
+      return;
+    }
+
+    await _removeFromFavoriteListUseCase(identifierToPass);
+
+    if (!isClosed) {
+      emit(state.copyWithFavoriteIdentifier(null));
+    }
   }
 
   @override

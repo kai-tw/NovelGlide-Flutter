@@ -31,7 +31,7 @@ class BookmarkList extends StatelessWidget {
           case LoadingStateCode.loading:
           case LoadingStateCode.backgroundLoading:
             // Loading
-            return const CommonSliverLoading();
+            return const CommonLoadingSliverWidget();
 
           case LoadingStateCode.error:
             // Error
