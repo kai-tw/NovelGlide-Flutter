@@ -69,14 +69,18 @@ class DiscoverJsonFavoriteDataSourceImpl implements DiscoverFavoriteDataSource {
     final DiscoverFavoriteJsonModel model =
         DiscoverFavoriteJsonModel.fromJson(jsonValue);
 
-    if (!model.dataMap.containsKey(data.identifier)) {
+    // Copy for modification.
+    final Map<String, DiscoverFavoriteCatalogData> dataMap =
+        Map<String, DiscoverFavoriteCatalogData>.from(model.dataMap);
+
+    if (!dataMap.containsKey(data.identifier)) {
       // Data does not exist in the file.
-      model.dataMap[data.identifier] = data;
+      dataMap[data.identifier] = data;
 
       // Write to file
       await _jsonRepository.writeJson(
         path: jsonPath,
-        data: model.toJson(),
+        data: model.copyWith(dataMap: dataMap).toJson(),
       );
     }
   }

@@ -13,14 +13,15 @@ class DiscoverFavoriteJsonModel extends Equatable {
     return const DiscoverFavoriteJsonModel().copyWith(
       version: int.tryParse(json['version'].toString()),
       identifierList: json['identifierList']?.whereType<String>().toList(),
-      dataMap: (json['dataMap'] as Map<String, dynamic>?)
-          ?.map((String k, j) => MapEntry<String, DiscoverFavoriteCatalogData>(
-              k,
-              DiscoverFavoriteCatalogData(
-                identifier: j['identifier'].toString(),
-                name: j['name'].toString(),
-                uri: Uri.parse(j['uri']),
-              ))),
+      dataMap: (json['dataMap'] as Map<String, dynamic>?)?.map(
+          (String k, dynamic j) =>
+              MapEntry<String, DiscoverFavoriteCatalogData>(
+                  k,
+                  DiscoverFavoriteCatalogData(
+                    identifier: j['identifier'].toString(),
+                    name: j['name'].toString(),
+                    uri: Uri.parse(j['uri']),
+                  ))),
     );
   }
 

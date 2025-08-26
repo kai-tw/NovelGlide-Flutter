@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:novel_glide/features/discover/domain/entities/discover_favorite_catalog_data.dart';
 
 import '../../domain/repositories/discover_favorite_repository.dart';
@@ -8,19 +10,32 @@ class DiscoverFavoriteRepositoryImpl implements DiscoverFavoriteRepository {
 
   final DiscoverFavoriteDataSource _dataSource;
 
+  /// Stream controller
+  final StreamController<void> _onChangeController =
+      StreamController<void>.broadcast();
+
+  @override
+  Stream<void> get onChangeStream => _onChangeController.stream;
+
   @override
   Future<List<String>> getList() {
     return _dataSource.getList();
   }
 
   @override
-  Future<void> saveList(List<String> list) {
-    return _dataSource.saveList(list);
+  Future<void> saveList(List<String> list) async {
+    await _dataSource.saveList(list);
+
+    // Send a notification
+    _onChangeController.add(null);
   }
 
   @override
-  Future<void> createData(DiscoverFavoriteCatalogData data) {
-    return _dataSource.createData(data);
+  Future<void> createData(DiscoverFavoriteCatalogData data) async {
+    await _dataSource.createData(data);
+
+    // Send a notification
+    _onChangeController.add(null);
   }
 
   @override
@@ -29,13 +44,19 @@ class DiscoverFavoriteRepositoryImpl implements DiscoverFavoriteRepository {
   }
 
   @override
-  Future<void> updateData(DiscoverFavoriteCatalogData data) {
-    return _dataSource.updateData(data);
+  Future<void> updateData(DiscoverFavoriteCatalogData data) async {
+    await _dataSource.updateData(data);
+
+    // Send a notification
+    _onChangeController.add(null);
   }
 
   @override
-  Future<void> deleteData(String identifier) {
-    return _dataSource.deleteData(identifier);
+  Future<void> deleteData(String identifier) async {
+    await _dataSource.deleteData(identifier);
+
+    // Send a notification
+    _onChangeController.add(null);
   }
 
   @override

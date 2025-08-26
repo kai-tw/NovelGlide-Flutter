@@ -13,10 +13,12 @@ import 'data/repositories/reader_preference_repository_impl.dart';
 import 'data/repositories/tts_preference_repository_impl.dart';
 import 'domain/repositories/preference_repository.dart';
 
-void setupPreferenceDependencies(SharedPreferences prefs) {
+void setupPreferenceDependencies() {
   // Register data sources
   sl.registerLazySingleton<PreferenceLocalDataSource>(
-    () => PreferenceLocalDataSourceImpl(prefs),
+    () => PreferenceLocalDataSourceImpl(
+      sl<SharedPreferences>(),
+    ),
   );
 
   // Register repositories

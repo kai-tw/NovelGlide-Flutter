@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:rss_dart/dart_rss.dart';
-import 'package:xml/xml.dart';
 
 import '../../../../../core/log_system/log_system.dart';
 import '../../../../../core/mime_resolver/domain/entities/mime_type.dart';
@@ -43,23 +41,7 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
   /// Searches an OPDS catalog using a query.
   @override
   Future<CatalogFeed> searchCatalogFeed(String url, String query) async {
-    final Uri searchUrl =
-        Uri.parse(url).replace(queryParameters: <String, dynamic>{'q': query});
-    final http.Response response = await _httpClient.get(searchUrl);
-
-    if (response.statusCode == 200) {
-      final XmlDocument document =
-          XmlDocument.parse(utf8.decode(response.bodyBytes));
-      return CatalogFeed(
-        id: '',
-        title: '',
-        updated: DateTime.now(),
-        links: [],
-        entries: [],
-      );
-    } else {
-      throw Exception('Failed to search OPDS feed');
-    }
+    throw UnimplementedError();
   }
 
   /// ========== Parsers ==========

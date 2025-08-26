@@ -19,7 +19,6 @@ void main() async {
 
   // Setup dependencies
   await setupDependencies();
-  sl.allReadySync();
 
   // Firebase initializations
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

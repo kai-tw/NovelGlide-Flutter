@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../domain/entities/catalog_feed.dart';
 import '../../domain/repositories/discover_repository.dart';
 import '../data_sources/discover_data_source.dart';
@@ -9,12 +11,12 @@ class DiscoverRepositoryImpl implements DiscoverRepository {
   final DiscoverDataSource _dataSource;
 
   @override
-  Future<CatalogFeed> browseCatalog(Uri uri) async {
-    return await _dataSource.getCatalogFeed(uri);
+  Future<CatalogFeed> browseCatalog(Uri uri) {
+    return _dataSource.getCatalogFeed(uri);
   }
 
   @override
-  Future<CatalogFeed> searchCatalog(String url, String query) async {
+  Future<CatalogFeed> searchCatalog(String url, String query) {
     return _dataSource.searchCatalogFeed(url, query);
   }
 }

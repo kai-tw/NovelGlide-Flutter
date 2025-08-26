@@ -1,6 +1,9 @@
 import '../entities/discover_favorite_catalog_data.dart';
 
 abstract class DiscoverFavoriteRepository {
+  /// Send a changing notification to listeners
+  Stream<void> get onChangeStream;
+
   Future<List<String>> getList();
 
   Future<void> saveList(List<String> list);

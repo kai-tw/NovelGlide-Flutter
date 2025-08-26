@@ -25,14 +25,37 @@ import 'mime_resolver/setup_dependencies.dart';
 import 'path_provider/setup_dependencies.dart';
 
 Future<void> setupDependencies() async {
-  // Shared instances
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  // Setup external dependencies
+  _setupExternalDependencies();
+
+  // Wait for asynchronous initialization done.
+  await sl.allReady();
 
   // Setup the core function
-  setupPathProviderDependencies();
-  setupFileSystemDependencies();
+  _setupCoreDependencies();
 
   // Dependencies injection for all features
+  _setupSystemsDependencies();
+
+  // Dependencies injection for app
+  _setupAppDependencies();
+
+  // Wait for all asynchronous initialization done.
+  await sl.allReady();
+}
+
+void _setupExternalDependencies() {
+  sl.registerSingletonAsync<SharedPreferences>(
+    () => SharedPreferences.getInstance(),
+  );
+}
+
+void _setupCoreDependencies() {
+  setupPathProviderDependencies();
+  setupFileSystemDependencies();
+}
+
+void _setupSystemsDependencies() {
   setupAdDependencies();
   setupAppearanceDependencies();
   setupAuthDependencies();
@@ -46,11 +69,12 @@ Future<void> setupDependencies() async {
   setupLogDependencies();
   setupMimeResolverDependencies();
   setupPickFileDependencies();
-  setupPreferenceDependencies(prefs);
+  setupPreferenceDependencies();
   setupReaderDependencies();
   setupTtsDependencies();
+}
 
-  // Dependencies injection for app
+void _setupAppDependencies() {
   sl.registerSingletonAsync<AppCubit>(() async {
     final AppCubit cubit = AppCubit(
       sl<AppearanceGetPreferenceUseCase>(),
