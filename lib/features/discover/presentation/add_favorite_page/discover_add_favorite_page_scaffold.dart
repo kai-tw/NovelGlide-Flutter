@@ -1,0 +1,25 @@
+import 'package:flutter/material.dart';
+
+import '../../../../generated/i18n/app_localizations.dart';
+import 'widgets/discover_add_favorite_page_form.dart';
+
+class DiscoverAddFavoritePageScaffold extends StatelessWidget {
+  const DiscoverAddFavoritePageScaffold({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(appLocalizations.discoverAddFavorite),
+      ),
+      body: const SafeArea(
+        child: Scrollbar(
+          child: SingleChildScrollView(
+            child: DiscoverAddFavoritePageForm(),
+          ),
+        ),
+      ),
+    );
+  }
+}

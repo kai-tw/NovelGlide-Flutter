@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../enum/loading_state_code.dart';
+import '../../../../generated/i18n/app_localizations.dart';
 import '../../../../main.dart';
 import '../../../shared_components/common_error_widgets/common_error_sliver_widget.dart';
 import '../../../shared_components/common_loading_widgets/common_loading_sliver_widget.dart';
 import '../../../shared_components/shared_list/shared_list.dart';
+import '../add_favorite_page/discover_add_favorite_page.dart';
 import 'cubit/discover_favorite_list_cubit.dart';
 import 'cubit/discover_favorite_list_state.dart';
 import 'discover_favorite_list_item.dart';
@@ -30,6 +32,7 @@ class DiscoverFavoriteList extends StatelessWidget {
     BuildContext context,
     DiscoverFavoriteListState state,
   ) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final DiscoverFavoriteListCubit cubit =
         BlocProvider.of<DiscoverFavoriteListCubit>(context);
     return Scrollbar(
@@ -42,7 +45,7 @@ class DiscoverFavoriteList extends StatelessWidget {
               child: ListTile(
                 leading: const Icon(Icons.favorite_rounded),
                 title: Text(
-                  'Favorites',
+                  appLocalizations.discoverFavorites,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
@@ -58,7 +61,19 @@ class DiscoverFavoriteList extends StatelessWidget {
               LoadingStateCode.loaded => state.catalogList.isEmpty
                   ? const SharedListSliverEmpty()
                   : _buildList(context, state),
-            }
+            },
+
+            // Add Favorite button
+            SliverToBoxAdapter(
+              child: ListTile(
+                leading: const Icon(Icons.add_rounded),
+                title: Text(appLocalizations.discoverAddFavorite),
+                onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(
+                  builder: (BuildContext context) =>
+                      const DiscoverAddFavoritePage(),
+                )),
+              ),
+            ),
           ],
         ),
       ),

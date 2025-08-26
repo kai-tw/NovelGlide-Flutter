@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../generated/i18n/app_localizations.dart';
 import '../../cubits/discover_browser_cubit.dart';
 import '../../cubits/discover_browser_state.dart';
 
@@ -9,6 +10,7 @@ class DiscoverBrowserFavoriteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final DiscoverBrowserCubit cubit =
         BlocProvider.of<DiscoverBrowserCubit>(context);
     return BlocBuilder<DiscoverBrowserCubit, DiscoverBrowserState>(
@@ -17,20 +19,21 @@ class DiscoverBrowserFavoriteButton extends StatelessWidget {
               previous.code != current.code ||
               previous.favoriteIdentifier != current.favoriteIdentifier,
       builder: (BuildContext context, DiscoverBrowserState state) {
+        final bool isFavorite = state.favoriteIdentifier != null;
         return IconButton(
           icon: const Icon(Icons.favorite_rounded),
-          color: state.favoriteIdentifier == null
-              ? null
-              : Theme.of(context).colorScheme.error,
-          tooltip: 'Favorite',
+          color: isFavorite ? Theme.of(context).colorScheme.error : null,
+          tooltip: isFavorite
+              ? appLocalizations.discoverRemoveFromFavorites
+              : appLocalizations.discoverAddToFavorites,
           onPressed: state.code.isLoaded
               ? () {
-                  if (state.favoriteIdentifier == null) {
-                    // Add to favorite list
-                    cubit.addToFavoriteList();
-                  } else {
+                  if (isFavorite) {
                     // Remove from favorite list
                     cubit.removeFromFavoriteList();
+                  } else {
+                    // Add to favorite list
+                    cubit.addToFavoriteList();
                   }
                 }
               : null,
