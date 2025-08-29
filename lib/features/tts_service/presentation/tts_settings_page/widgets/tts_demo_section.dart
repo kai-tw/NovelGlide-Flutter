@@ -24,9 +24,9 @@ class TtsDemoSection extends StatelessWidget {
               return TextField(
                 controller: cubit.controller,
                 decoration: InputDecoration(
-                  labelText: appLocalizations.ttsSettingsTypeHere,
+                  labelText: appLocalizations.ttsSettingsInputHint,
                   errorText: state.isTextEmpty
-                      ? appLocalizations.ttsSettingsTypeSomeWords
+                      ? appLocalizations.ttsSettingsInputHint
                       : null,
                 ),
               );

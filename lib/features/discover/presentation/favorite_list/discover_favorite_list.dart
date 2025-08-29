@@ -64,7 +64,7 @@ class DiscoverFavoriteList extends StatelessWidget {
             SliverToBoxAdapter(
               child: ListTile(
                 leading: const Icon(Icons.add_rounded),
-                title: Text(appLocalizations.discoverAddFavorite),
+                title: Text(appLocalizations.discoverAddToFavorites),
                 onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(
                   builder: (BuildContext context) =>
                       const DiscoverAddFavoritePage(),

@@ -7,7 +7,7 @@ class NotEmptyValidator {
 
   String? validate(String? value, {String? errorMessage}) {
     if (value == null || value.isEmpty) {
-      return errorMessage ?? 'It cannot be empty.';
+      return errorMessage ?? _appLocalizations.validatorRequiredField;
     }
 
     return null;

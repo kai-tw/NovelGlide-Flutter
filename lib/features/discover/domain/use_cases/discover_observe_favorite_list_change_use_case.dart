@@ -9,6 +9,6 @@ class DiscoverObserveFavoriteListChangeUseCase
 
   @override
   Stream<void> call([void parameter]) {
-    return _repository.onChangeStream;
+    return _repository.onListChangeStream;
   }
 }

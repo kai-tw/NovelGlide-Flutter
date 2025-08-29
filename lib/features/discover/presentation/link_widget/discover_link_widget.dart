@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/mime_resolver/domain/entities/mime_type.dart';
+import '../../../../generated/i18n/app_localizations.dart';
 import '../../domain/entities/publication_link.dart';
 
 class DiscoverLinkWidget extends StatelessWidget {
@@ -17,6 +18,7 @@ class DiscoverLinkWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return TextButton.icon(
       onPressed: link.href == null
           ? null
@@ -31,9 +33,9 @@ class DiscoverLinkWidget extends StatelessWidget {
         _ => const Icon(Icons.question_mark_rounded),
       },
       label: Text(switch (link.type) {
-        MimeType.atomFeed => 'View',
-        MimeType.epub => 'Download',
-        _ => 'Unknown link',
+        MimeType.atomFeed => appLocalizations.discoverBrowserViewIt,
+        MimeType.epub => appLocalizations.discoverBrowserDownloadIt,
+        _ => appLocalizations.discoverBrowserUnknownLink,
       }),
     );
   }

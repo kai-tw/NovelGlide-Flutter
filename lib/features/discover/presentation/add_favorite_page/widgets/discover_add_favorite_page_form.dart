@@ -28,7 +28,7 @@ class DiscoverAddFavoritePageForm extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 16.0),
               child: Text(
-                appLocalizations.discoverAddFavorite,
+                appLocalizations.discoverAddToFavorites,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
@@ -51,6 +51,7 @@ class DiscoverAddFavoritePageForm extends StatelessWidget {
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.singleLineFormatter,
                 ],
+                onChanged: cubit.setName,
                 onSaved: cubit.setName,
               ),
             ),
@@ -64,6 +65,7 @@ class DiscoverAddFavoritePageForm extends StatelessWidget {
               inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.singleLineFormatter,
               ],
+              onChanged: cubit.setUrl,
               onSaved: cubit.setUrl,
             ),
           ],

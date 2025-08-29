@@ -11,11 +11,11 @@ class DiscoverFavoriteRepositoryImpl implements DiscoverFavoriteRepository {
   final DiscoverFavoriteDataSource _dataSource;
 
   /// Stream controller
-  final StreamController<void> _onChangeController =
+  final StreamController<void> _onListChangeController =
       StreamController<void>.broadcast();
 
   @override
-  Stream<void> get onChangeStream => _onChangeController.stream;
+  Stream<void> get onListChangeStream => _onListChangeController.stream;
 
   @override
   Future<List<String>> getList() {
@@ -27,15 +27,12 @@ class DiscoverFavoriteRepositoryImpl implements DiscoverFavoriteRepository {
     await _dataSource.saveList(list);
 
     // Send a notification
-    _onChangeController.add(null);
+    _onListChangeController.add(null);
   }
 
   @override
   Future<void> createData(DiscoverFavoriteCatalogData data) async {
     await _dataSource.createData(data);
-
-    // Send a notification
-    _onChangeController.add(null);
   }
 
   @override
@@ -48,7 +45,7 @@ class DiscoverFavoriteRepositoryImpl implements DiscoverFavoriteRepository {
     await _dataSource.updateData(data);
 
     // Send a notification
-    _onChangeController.add(null);
+    _onListChangeController.add(null);
   }
 
   @override
@@ -56,7 +53,7 @@ class DiscoverFavoriteRepositoryImpl implements DiscoverFavoriteRepository {
     await _dataSource.deleteData(identifier);
 
     // Send a notification
-    _onChangeController.add(null);
+    _onListChangeController.add(null);
   }
 
   @override

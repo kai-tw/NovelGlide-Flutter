@@ -17,23 +17,27 @@ class DiscoverAddFavoritePageCubit extends Cubit<DiscoverAddFavoritePageState> {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  void setName(String? name) => emit(state.copyWithName(name));
+  void setName(String? name) =>
+      emit(state.copyWithName(name?.isNotEmpty == true ? name : null));
 
   void setUrl(String? url) => emit(state.copyWithUrl(
-        url == null ? null : _parseHttpsUseCase(url),
+        url?.isNotEmpty == true ? _parseHttpsUseCase(url!) : null,
       ));
 
-  Future<void> submit() async {
+  Future<bool> submit() async {
     if (formKey.currentState?.validate() ?? false) {
       // Save
       formKey.currentState?.save();
 
       if (state.isValid) {
-        _addToFavoriteListUseCase(DiscoverAddToFavoriteListUseCaseParam(
+        await _addToFavoriteListUseCase(DiscoverAddToFavoriteListUseCaseParam(
           name: state.name!,
           uri: state.uri!,
         ));
+        return true;
       }
     }
+
+    return false;
   }
 }

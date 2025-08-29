@@ -33,7 +33,7 @@ class DiscoverAddToFavoriteListUseCase
     }
 
     // Create data
-    _repository.createData(DiscoverFavoriteCatalogData(
+    await _repository.createData(DiscoverFavoriteCatalogData(
       identifier: identifier,
       name: parameter.name,
       uri: parameter.uri,

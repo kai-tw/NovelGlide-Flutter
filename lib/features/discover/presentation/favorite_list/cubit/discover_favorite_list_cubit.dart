@@ -33,9 +33,11 @@ class DiscoverFavoriteListCubit extends Cubit<DiscoverFavoriteListState> {
   late final StreamSubscription<void> _onChangeSubscription;
 
   Future<void> getFavoriteList() async {
-    emit(state.copyWith(code: LoadingStateCode.loading));
+    emit(const DiscoverFavoriteListState(code: LoadingStateCode.loading));
+
     final List<DiscoverFavoriteCatalogData> catalogList =
         await _getFavoriteListUseCase();
+
     emit(state.copyWith(
       code: LoadingStateCode.loaded,
       catalogList: catalogList,

@@ -10,13 +10,11 @@ class UrlValidator {
 
   String? validateLoosely(String? value) {
     if (value == null || value.isEmpty) {
-      // return _appLocalizations.pleaseEnterUrl;
-      return 'Please enter the URL';
+      return _appLocalizations.validatorPleaseEnterUrl;
     }
 
     if (!_looseRegExp.hasMatch(value)) {
-      // return _appLocalizations.pleaseEnterValidUrl;
-      return 'Invalid URL';
+      return _appLocalizations.validatorPleaseEnterValidUrl;
     }
 
     return null;
