@@ -12,8 +12,6 @@ class DiscoverAddFavoritePageActionBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final DiscoverAddFavoritePageCubit cubit =
-        BlocProvider.of<DiscoverAddFavoritePageCubit>(context);
 
     return OverflowBar(
       alignment: MainAxisAlignment.spaceEvenly,

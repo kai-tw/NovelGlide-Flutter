@@ -7,6 +7,7 @@ import 'package:novel_glide/generated/i18n/app_localizations.dart';
 // UrlValidator is currently using, allowing the tests to pass.
 class MockLocalizations implements AppLocalizations {
   String get pleaseEnterUrl => 'Please enter the URL';
+
   String get pleaseEnterValidUrl => 'Invalid URL';
 
   @override
@@ -45,7 +46,7 @@ void main() {
     });
 
     test('should return the correct hardcoded error for a null value', () {
-      final result = validator.validateLoosely(null);
+      final String? result = validator.validateLoosely(null);
       expect(result, mockLocalizations.pleaseEnterUrl);
     });
   });
