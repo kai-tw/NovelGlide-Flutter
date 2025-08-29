@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../generated/i18n/app_localizations.dart';
+import '../../../shared_components/shared_bottom_container.dart';
+import 'widgets/discover_add_favorite_page_action_bar.dart';
 import 'widgets/discover_add_favorite_page_form.dart';
 
 class DiscoverAddFavoritePageScaffold extends StatelessWidget {
@@ -19,6 +21,9 @@ class DiscoverAddFavoritePageScaffold extends StatelessWidget {
             child: DiscoverAddFavoritePageForm(),
           ),
         ),
+      ),
+      bottomNavigationBar: const SharedBottomContainer(
+        child: DiscoverAddFavoritePageActionBar(),
       ),
     );
   }

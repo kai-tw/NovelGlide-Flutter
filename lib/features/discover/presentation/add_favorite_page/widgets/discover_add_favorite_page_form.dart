@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/services/text_formatter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/input_validators/not_empty_validator.dart';
+import '../../../../../core/input_validators/url_validator.dart';
 import '../../../../../generated/i18n/app_localizations.dart';
+import '../cubits/discover_add_favorite_page_cubit.dart';
 
 class DiscoverAddFavoritePageForm extends StatelessWidget {
   const DiscoverAddFavoritePageForm({super.key});
@@ -8,7 +13,14 @@ class DiscoverAddFavoritePageForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final DiscoverAddFavoritePageCubit cubit =
+        BlocProvider.of<DiscoverAddFavoritePageCubit>(context);
+    final NotEmptyValidator notEmptyValidator =
+        NotEmptyValidator(appLocalizations);
+    final UrlValidator urlValidator = UrlValidator(appLocalizations);
+
     return Form(
+      key: cubit.formKey,
       child: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -35,6 +47,11 @@ class DiscoverAddFavoritePageForm extends StatelessWidget {
                   helperText:
                       appLocalizations.discoverAddFavoriteNameHelperText,
                 ),
+                validator: notEmptyValidator.validate,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.singleLineFormatter,
+                ],
+                onSaved: cubit.setName,
               ),
             ),
             TextFormField(
@@ -42,6 +59,12 @@ class DiscoverAddFavoritePageForm extends StatelessWidget {
                 labelText: appLocalizations.discoverAddFavoriteUrlLabelText,
                 helperText: appLocalizations.discoverAddFavoriteUrlHelperText,
               ),
+              validator: urlValidator.validateLoosely,
+              keyboardType: TextInputType.url,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.singleLineFormatter,
+              ],
+              onSaved: cubit.setUrl,
             ),
           ],
         ),

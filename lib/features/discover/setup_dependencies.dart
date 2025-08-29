@@ -1,4 +1,5 @@
 import '../../core/file_system/domain/repositories/json_repository.dart';
+import '../../core/parser_system/domain/use_cases/uri_parser_parse_https_use_case.dart';
 import '../../core/path_provider/domain/repositories/json_path_provider.dart';
 import '../../main.dart';
 import 'data/data_sources/discover_data_source.dart';
@@ -91,6 +92,7 @@ void setupDiscoverDependencies() {
       sl<DiscoverGetFavoriteIdentifierByUriUseCase>(),
       sl<DiscoverRemoveFromFavoriteListUseCase>(),
       sl<DiscoverAddToFavoriteListUseCase>(),
+      sl<UriParserParseHttpsUseCase>(),
     ),
   );
   sl.registerFactory<DiscoverFavoriteListCubit>(
@@ -100,6 +102,9 @@ void setupDiscoverDependencies() {
     ),
   );
   sl.registerFactory<DiscoverAddFavoritePageCubit>(
-    () => DiscoverAddFavoritePageCubit(),
+    () => DiscoverAddFavoritePageCubit(
+      sl<DiscoverAddToFavoriteListUseCase>(),
+      sl<UriParserParseHttpsUseCase>(),
+    ),
   );
 }

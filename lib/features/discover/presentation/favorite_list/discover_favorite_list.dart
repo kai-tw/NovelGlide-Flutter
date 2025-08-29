@@ -6,7 +6,6 @@ import '../../../../generated/i18n/app_localizations.dart';
 import '../../../../main.dart';
 import '../../../shared_components/common_error_widgets/common_error_sliver_widget.dart';
 import '../../../shared_components/common_loading_widgets/common_loading_sliver_widget.dart';
-import '../../../shared_components/shared_list/shared_list.dart';
 import '../add_favorite_page/discover_add_favorite_page.dart';
 import 'cubit/discover_favorite_list_cubit.dart';
 import 'cubit/discover_favorite_list_state.dart';
@@ -58,9 +57,7 @@ class DiscoverFavoriteList extends StatelessWidget {
               LoadingStateCode.backgroundLoading =>
                 const CommonLoadingSliverWidget(),
               LoadingStateCode.error => const CommonErrorSliverWidget(),
-              LoadingStateCode.loaded => state.catalogList.isEmpty
-                  ? const SharedListSliverEmpty()
-                  : _buildList(context, state),
+              LoadingStateCode.loaded => _buildList(context, state),
             },
 
             // Add Favorite button

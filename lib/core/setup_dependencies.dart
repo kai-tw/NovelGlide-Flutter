@@ -22,6 +22,7 @@ import '../main.dart';
 import 'file_system/setup_dependencies.dart';
 import 'log_system/setup_dependencies.dart';
 import 'mime_resolver/setup_dependencies.dart';
+import 'parser_system/setup_dependencies.dart';
 import 'path_provider/setup_dependencies.dart';
 
 Future<void> setupDependencies() async {
@@ -68,6 +69,7 @@ void _setupSystemsDependencies() {
   setupLocaleDependencies();
   setupLogDependencies();
   setupMimeResolverDependencies();
+  setupParserDependencies();
   setupPickFileDependencies();
   setupPreferenceDependencies();
   setupReaderDependencies();

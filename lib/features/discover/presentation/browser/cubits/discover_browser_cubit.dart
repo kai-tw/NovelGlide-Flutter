@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/log_system/log_system.dart';
+import '../../../../../core/parser_system/domain/use_cases/uri_parser_parse_https_use_case.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../domain/entities/catalog_feed.dart';
 import '../../../domain/use_cases/discover_add_to_favorite_list_use_case.dart';
@@ -16,6 +17,7 @@ class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
     this._getFavoriteIdentifierByUriUseCase,
     this._removeFromFavoriteListUseCase,
     this._addToFavoriteListUseCase,
+    this._parseHttpsUseCase,
   ) : super(const DiscoverBrowserState());
 
   /// Browser use cases
@@ -27,11 +29,15 @@ class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
   final DiscoverRemoveFromFavoriteListUseCase _removeFromFavoriteListUseCase;
   final DiscoverAddToFavoriteListUseCase _addToFavoriteListUseCase;
 
+  /// Use cases
+  final UriParserParseHttpsUseCase _parseHttpsUseCase;
+
   /// Controllers
   final TextEditingController textEditingController = TextEditingController();
 
   Future<void> browseCatalog([Uri? uri]) async {
-    final Uri? requestedUri = uri ?? _parseUri(textEditingController.text);
+    final Uri? requestedUri =
+        uri ?? _parseHttpsUseCase(textEditingController.text);
 
     if (requestedUri == null || requestedUri.toString().isEmpty) {
       return;
@@ -183,24 +189,5 @@ class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
     if (!isClosed) {
       emit(state.copyWithFavoriteIdentifier(null));
     }
-  }
-
-  @override
-  Future<void> close() {
-    textEditingController.dispose();
-    return super.close();
-  }
-
-  Uri? _parseUri(String input) {
-    Uri? uri;
-
-    // Protocol check.
-    if (!input.contains('://')) {
-      uri ??= Uri.tryParse('https://$input');
-    }
-
-    uri ??= Uri.tryParse(input);
-
-    return uri;
   }
 }
