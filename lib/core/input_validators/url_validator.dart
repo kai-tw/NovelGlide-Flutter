@@ -1,4 +1,5 @@
 import '../../generated/i18n/app_localizations.dart';
+import 'not_empty_validator.dart';
 
 class UrlValidator {
   UrlValidator(this._appLocalizations);
@@ -9,11 +10,15 @@ class UrlValidator {
   final AppLocalizations _appLocalizations;
 
   String? validateLoosely(String? value) {
-    if (value == null || value.isEmpty) {
-      return _appLocalizations.validatorPleaseEnterUrl;
+    final NotEmptyValidator notEmptyValidator =
+        NotEmptyValidator(_appLocalizations);
+
+    final String? notEmptyResult = notEmptyValidator.validate(value);
+    if (notEmptyResult != null) {
+      return notEmptyResult;
     }
 
-    if (!_looseRegExp.hasMatch(value)) {
+    if (!_looseRegExp.hasMatch(value!)) {
       return _appLocalizations.validatorPleaseEnterValidUrl;
     }
 
