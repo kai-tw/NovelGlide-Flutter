@@ -2,6 +2,8 @@ import '../../core/file_system/domain/repositories/json_repository.dart';
 import '../../core/parser_system/domain/use_cases/uri_parser_parse_https_use_case.dart';
 import '../../core/path_provider/domain/repositories/json_path_provider.dart';
 import '../../main.dart';
+import '../books/domain/use_cases/book_add_use_case.dart';
+import '../download_manager/domain/use_cases/downloader_download_file_use_case.dart';
 import 'data/data_sources/discover_data_source.dart';
 import 'data/data_sources/discover_favorite_data_source.dart';
 import 'data/data_sources/impl/discover_json_favorite_data_source_impl.dart';
@@ -93,6 +95,8 @@ void setupDiscoverDependencies() {
       sl<DiscoverRemoveFromFavoriteListUseCase>(),
       sl<DiscoverAddToFavoriteListUseCase>(),
       sl<UriParserParseHttpsUseCase>(),
+      sl<DownloaderDownloadFileUseCase>(),
+      sl<BookAddUseCase>(),
     ),
   );
   sl.registerFactory<DiscoverFavoriteListCubit>(

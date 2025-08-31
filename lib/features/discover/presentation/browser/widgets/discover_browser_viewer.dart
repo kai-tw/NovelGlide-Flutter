@@ -41,7 +41,14 @@ class DiscoverBrowserViewer extends StatelessWidget {
               return DiscoverCatalogViewer(
                 feed: state.catalogFeed!,
                 onVisit: cubit.browseCatalog,
-                onDowload: cubit.downloadBook,
+                onDowload: (Uri uri) async {
+                  cubit.downloadBook(uri);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('This book is added to download manager'),
+                    ),
+                  );
+                },
               );
             }
         }

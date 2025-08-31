@@ -1,3 +1,5 @@
+import '../entities/mime_type.dart';
+
 abstract class MimeRepository {
-  Future<String?> lookupAll(String path);
+  Future<MimeType?> lookupAll(String path);
 }

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:rss_dart/dart_rss.dart';
 
@@ -16,15 +16,15 @@ import '../discover_data_source.dart';
 class OpdsDataSourceImpl implements DiscoverDataSource {
   OpdsDataSourceImpl();
 
-  final http.Client _httpClient = http.Client();
+  final Dio _dio = Dio();
 
   /// Fetches an OPDS catalog feed from a given URL and parses it.
   @override
   Future<CatalogFeed> getCatalogFeed(Uri uri) async {
-    final http.Response response = await _httpClient.get(uri);
+    final Response<String> response = await _dio.get(uri.toString());
 
-    if (response.statusCode == 200) {
-      final AtomFeed feed = AtomFeed.parse(response.body);
+    if (response.statusCode == 200 && response.data?.isNotEmpty == true) {
+      final AtomFeed feed = AtomFeed.parse(response.data!);
 
       return CatalogFeed(
         id: feed.id?.trim(),
@@ -47,7 +47,7 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
   /// ========== Parsers ==========
 
   DateTime? _parseDateTime(String? value) {
-    if (value == null) {
+    if (value == null || value.isEmpty) {
       return null;
     }
 

@@ -29,25 +29,29 @@ class Advertisement extends StatelessWidget {
             ),
           child: BlocBuilder<AdvertisementCubit, AdvertisementState>(
             builder: (BuildContext context, AdvertisementState state) {
-              if (state.adMobBannerAd == null) {
-                return Container(
-                  margin: const EdgeInsets.all(4.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.0),
-                    color: Theme.of(context).colorScheme.surfaceContainer,
-                  ),
-                  width: constraints.maxWidth,
-                  height: height,
-                );
+              if (state.isEnabled) {
+                if (state.adMobBannerAd == null) {
+                  return Container(
+                    margin: const EdgeInsets.all(4.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      color: Theme.of(context).colorScheme.surfaceContainer,
+                    ),
+                    width: constraints.maxWidth,
+                    height: height,
+                  );
+                } else {
+                  return Container(
+                    margin: const EdgeInsets.all(4.0),
+                    width: constraints.maxWidth,
+                    height: state.adMobBannerAd!.size.height.toDouble(),
+                    child: Center(
+                      child: AdWidget(ad: state.adMobBannerAd!),
+                    ),
+                  );
+                }
               } else {
-                return Container(
-                  margin: const EdgeInsets.all(4.0),
-                  width: constraints.maxWidth,
-                  height: state.adMobBannerAd!.size.height.toDouble(),
-                  child: Center(
-                    child: AdWidget(ad: state.adMobBannerAd!),
-                  ),
-                );
+                return const SizedBox.shrink();
               }
             },
           ),

@@ -16,9 +16,17 @@ class FirebaseAnalyticsAdapter extends LogDataSource {
   }
 
   @override
+  Future<void> warn(String message) {
+    return _analytics.logEvent(
+      name: 'warning_log',
+      parameters: <String, Object>{'message': message},
+    );
+  }
+
+  @override
   Future<void> error(String message, {Object? error, StackTrace? stackTrace}) {
     return _analytics.logEvent(
-      name: 'app_error',
+      name: 'error_log',
       parameters: <String, Object>{
         'message': message,
         'error_type': error?.runtimeType.toString() ?? 'RuntimeType is null',

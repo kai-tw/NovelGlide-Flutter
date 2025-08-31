@@ -9,8 +9,6 @@ import '../entities/book_pick_file_data.dart';
 abstract class BookRepository {
   List<String> get allowedExtensions;
 
-  List<String> get allowedMimeTypes;
-
   StreamController<void> get onChangedController;
 
   Future<void> addBooks(Set<String> externalPathSet);

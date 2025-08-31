@@ -9,6 +9,8 @@ import 'package:image/image.dart';
 import 'package:path/path.dart';
 
 import '../../../../../core/file_system/domain/repositories/file_system_repository.dart';
+import '../../../../../core/log_system/log_system.dart';
+import '../../../../../core/mime_resolver/domain/entities/mime_type.dart';
 import '../../../../../core/mime_resolver/domain/repositories/mime_repository.dart';
 import '../../../../../core/path_provider/domain/repositories/app_path_provider.dart';
 import '../../../domain/entities/book.dart';
@@ -30,16 +32,48 @@ class EpubDataSource extends BookLocalDataSource {
   final Map<String, BookCover> _coverBytesCache = <String, BookCover>{};
 
   @override
-  final List<String> allowedExtensions = <String>['epub'];
+  List<String> get allowedExtensions {
+    final List<String> extensions = <String>[];
+
+    for (MimeType type in allowedMimeTypes) {
+      extensions.addAll(type.extensionList);
+    }
+
+    return extensions;
+  }
+
   @override
-  final List<String> allowedMimeTypes = <String>['application/epub+zip'];
+  List<MimeType> get allowedMimeTypes => <MimeType>[MimeType.epub];
 
   @override
   Future<void> addBooks(Set<String> externalPathSet) async {
     final String libraryPath = await _pathProvider.libraryPath;
 
     for (String path in externalPathSet) {
-      final String destination = join(libraryPath, basename(path));
+      final MimeType? mimeType = await _mimeRepository.lookupAll(path);
+      if (mimeType == null || !allowedMimeTypes.contains(mimeType)) {
+        LogSystem.warn(
+            '<EpubDataSource.addBooks> Invalid mime type of this file: $path');
+        continue;
+      }
+
+      final String fileName = basenameWithoutExtension(path);
+      String ext = extension(path);
+      ext = ext.isEmpty ? '' : ext.substring(1);
+
+      if (!allowedExtensions.contains(ext)) {
+        // Invalid extension of this file. Change its extension.
+        ext = mimeType.extensionList.first;
+      }
+
+      // Duplication check.
+      final String identifier = '$fileName.$ext';
+      if (await exists(identifier)) {
+        // Already exists. Skip.
+        continue;
+      }
+
+      final String destination = join(libraryPath, identifier);
       _fileSystemRepository.copyFile(path, destination);
     }
   }
@@ -143,8 +177,18 @@ class EpubDataSource extends BookLocalDataSource {
 
   @override
   Future<bool> isFileValid(String path) async {
-    return allowedExtensions.contains(extension(path).substring(1)) &&
-        allowedMimeTypes.contains(await _mimeRepository.lookupAll(path));
+    final MimeType? mimeType = await _mimeRepository.lookupAll(path);
+    if (mimeType == null) {
+      // MimeType is not found.
+      return false;
+    }
+
+    // Get the extension of the file.
+    String ext = extension(path);
+    ext = ext.isEmpty ? '' : ext.substring(1);
+
+    // Check the extension is in the list.
+    return mimeType.extensionList.contains(ext);
   }
 
   /// Loads an EpubBook asynchronously, potentially a heavy operation.

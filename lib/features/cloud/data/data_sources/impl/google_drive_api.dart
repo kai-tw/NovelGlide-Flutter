@@ -152,7 +152,8 @@ class GoogleDriveApi implements CloudDriveApi {
     // Create the metadata of the file.
     final File metadata = File();
     metadata.name = basename(path);
-    metadata.mimeType = await _mimeRepository.lookupAll(path);
+    metadata.mimeType =
+        (await _mimeRepository.lookupAll(path))?.tagList.firstOrNull;
 
     final Media media = Media(stream, fileLength);
 

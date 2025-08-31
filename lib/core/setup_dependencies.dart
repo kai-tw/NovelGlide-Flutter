@@ -10,6 +10,7 @@ import '../features/books/setup_dependencies.dart';
 import '../features/cloud/setup_dependencies.dart';
 import '../features/collection/setup_dependencies.dart';
 import '../features/discover/setup_dependencies.dart';
+import '../features/download_manager/setup_dependencies.dart';
 import '../features/locale_system/setup_dependencies.dart';
 import '../features/pick_file/setup_dependencies.dart';
 import '../features/preference/domain/use_cases/preference_get_use_cases.dart';
@@ -66,6 +67,7 @@ void _setupSystemsDependencies() {
   setupCollectionDependencies();
   setupCloudDependencies();
   setupDiscoverDependencies();
+  setupDownloaderDependencies();
   setupLocaleDependencies();
   setupLogDependencies();
   setupMimeResolverDependencies();

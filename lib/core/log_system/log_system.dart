@@ -6,12 +6,14 @@ class LogSystem {
 
   final LogRepository _repository;
 
-  void _info(dynamic message) => _repository.info(message);
+  void _info(String message) => _repository.info(message);
 
-  void _error(dynamic message, {Object? error, StackTrace? stackTrace}) =>
+  void _warn(String message) => _repository.warn(message);
+
+  void _error(String message, {Object? error, StackTrace? stackTrace}) =>
       _repository.error(message, error: error, stackTrace: stackTrace);
 
-  void _fatal(dynamic message, {Object? error, StackTrace? stackTrace}) =>
+  void _fatal(String message, {Object? error, StackTrace? stackTrace}) =>
       _repository.fatal(message, error: error, stackTrace: stackTrace);
 
   void _event(String name, {Map<String, Object>? parameters}) =>
@@ -19,12 +21,14 @@ class LogSystem {
 
   /// Static members
 
-  static void info(dynamic message) => sl<LogSystem>()._info(message);
+  static void info(String message) => sl<LogSystem>()._info(message);
 
-  static void error(dynamic message, {Object? error, StackTrace? stackTrace}) =>
+  static void warn(String message) => sl<LogSystem>()._warn(message);
+
+  static void error(String message, {Object? error, StackTrace? stackTrace}) =>
       sl<LogSystem>()._error(message, error: error, stackTrace: stackTrace);
 
-  static void fatal(dynamic message, {Object? error, StackTrace? stackTrace}) =>
+  static void fatal(String message, {Object? error, StackTrace? stackTrace}) =>
       sl<LogSystem>()._fatal(message, error: error, stackTrace: stackTrace);
 
   static void event(String name, {Map<String, Object>? parameters}) =>

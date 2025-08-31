@@ -1,3 +1,4 @@
+import '../../domain/entities/mime_type.dart';
 import '../../domain/repositories/mime_repository.dart';
 import '../data_sources/mime_local_source.dart';
 
@@ -7,7 +8,8 @@ class MimeRepositoryImpl implements MimeRepository {
   final MimeLocalSource _localSource;
 
   @override
-  Future<String?> lookupAll(String path) {
-    return _localSource.lookupAll(path);
+  Future<MimeType?> lookupAll(String path) async {
+    final String? tag = await _localSource.lookupAll(path);
+    return tag == null ? null : MimeType.fromString(tag);
   }
 }

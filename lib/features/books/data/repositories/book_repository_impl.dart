@@ -32,9 +32,6 @@ class BookRepositoryImpl implements BookRepository {
   List<String> get allowedExtensions => _epubDataSource.allowedExtensions;
 
   @override
-  List<String> get allowedMimeTypes => _epubDataSource.allowedMimeTypes;
-
-  @override
   StreamController<void> get onChangedController => _onChangedController;
 
   @override

@@ -15,6 +15,24 @@ class LogRepositoryImpl extends LogRepository {
   final FirebaseAnalyticsAdapter _firebaseAnalyticsAdapter;
 
   @override
+  Future<void> info(String message) {
+    return Future.wait(<Future<void>>[
+      _loggerAdapter.info(message),
+      _firebaseCrashlyticsAdapter.info(message),
+      _firebaseAnalyticsAdapter.info(message),
+    ]);
+  }
+
+  @override
+  Future<void> warn(String message) {
+    return Future.wait(<Future<void>>[
+      _loggerAdapter.warn(message),
+      _firebaseCrashlyticsAdapter.warn(message),
+      _firebaseAnalyticsAdapter.warn(message),
+    ]);
+  }
+
+  @override
   Future<void> error(String message, {Object? error, StackTrace? stackTrace}) {
     return Future.wait(<Future<void>>[
       _loggerAdapter.error(message, error: error, stackTrace: stackTrace),
@@ -33,15 +51,6 @@ class LogRepositoryImpl extends LogRepository {
           error: error, stackTrace: stackTrace),
       _firebaseAnalyticsAdapter.fatal(message,
           error: error, stackTrace: stackTrace),
-    ]);
-  }
-
-  @override
-  Future<void> info(String message) {
-    return Future.wait(<Future<void>>[
-      _loggerAdapter.info(message),
-      _firebaseCrashlyticsAdapter.info(message),
-      _firebaseAnalyticsAdapter.info(message),
     ]);
   }
 

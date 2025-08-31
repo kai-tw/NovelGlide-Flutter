@@ -7,16 +7,29 @@ import '../../domain/use_cases/ad_load_banner_ad_use_case.dart';
 import 'advertisement_state.dart';
 
 class AdvertisementCubit extends Cubit<AdvertisementState> {
-  AdvertisementCubit(
+  factory AdvertisementCubit(AdLoadBannerAdUseCase loadBannerAdUseCase,
+      AdCheckEnabledUseCase checkEnabledUseCase) {
+    final AdvertisementCubit instance = AdvertisementCubit._(
+      loadBannerAdUseCase,
+      checkEnabledUseCase,
+      AdvertisementState(
+        isEnabled: checkEnabledUseCase(),
+      ),
+    );
+    return instance;
+  }
+
+  AdvertisementCubit._(
     this._loadBannerAdUseCase,
     this._checkEnabledUseCase,
-  ) : super(const AdvertisementState());
+    super.initialState,
+  );
 
   final AdLoadBannerAdUseCase _loadBannerAdUseCase;
   final AdCheckEnabledUseCase _checkEnabledUseCase;
 
   Future<void> loadAd(AdUnitId unitId, int width) async {
-    if (!_checkEnabledUseCase()) {
+    if (!isAdEnabled) {
       // Ad is not enabled.
       return;
     }
@@ -26,10 +39,12 @@ class AdvertisementCubit extends Cubit<AdvertisementState> {
       width: width,
     ));
 
-    emit(AdvertisementState(
+    emit(state.copyWith(
       adMobBannerAd: data.adMobBannerAd,
     ));
   }
+
+  bool get isAdEnabled => _checkEnabledUseCase();
 
   @override
   Future<void> close() async {

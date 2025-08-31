@@ -10,6 +10,20 @@ class FirebaseCrashlyticsAdapter extends LogDataSource {
   final bool _enableLogging = kReleaseMode;
 
   @override
+  Future<void> info(String message) async {
+    if (_enableLogging) {
+      return _instance.log('Info: $message');
+    }
+  }
+
+  @override
+  Future<void> warn(String message) async {
+    if (_enableLogging) {
+      return _instance.log('Warning: $message');
+    }
+  }
+
+  @override
   Future<void> error(
     String message, {
     Object? error,
@@ -38,13 +52,6 @@ class FirebaseCrashlyticsAdapter extends LogDataSource {
         reason: message,
         fatal: true,
       );
-    }
-  }
-
-  @override
-  Future<void> info(String message) async {
-    if (_enableLogging) {
-      return _instance.log('Info: $message');
     }
   }
 

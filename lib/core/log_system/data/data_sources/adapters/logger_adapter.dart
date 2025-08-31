@@ -8,6 +8,16 @@ class LoggerAdapter extends LogDataSource {
   final Logger _logger;
 
   @override
+  Future<void> info(String message) async {
+    return _logger.i(message);
+  }
+
+  @override
+  Future<void> warn(String message) async {
+    return _logger.w(message);
+  }
+
+  @override
   Future<void> error(
     String message, {
     Object? error,
@@ -27,11 +37,6 @@ class LoggerAdapter extends LogDataSource {
       error: error,
       stackTrace: stackTrace,
     );
-  }
-
-  @override
-  Future<void> info(String message) async {
-    return _logger.i(message);
   }
 
   @override

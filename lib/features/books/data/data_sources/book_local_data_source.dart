@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import '../../../../core/mime_resolver/domain/entities/mime_type.dart';
 import '../../domain/entities/book.dart';
 import '../../domain/entities/book_chapter.dart';
 import '../../domain/entities/book_cover.dart';
@@ -7,8 +8,8 @@ import '../../domain/entities/book_cover.dart';
 abstract class BookLocalDataSource {
   BookLocalDataSource();
 
-  abstract final List<String> allowedExtensions;
-  abstract final List<String> allowedMimeTypes;
+  List<String> get allowedExtensions;
+  List<MimeType> get allowedMimeTypes;
 
   Future<void> addBooks(Set<String> externalPathSet);
 
