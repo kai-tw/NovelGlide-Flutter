@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../../enum/loading_state_code.dart';
 
-class DownloadManagerState extends Equatable {
-  const DownloadManagerState({
+class DownloadManagerTaskListState extends Equatable {
+  const DownloadManagerTaskListState({
     this.code = LoadingStateCode.initial,
     this.identifierList = const <String>[],
   });

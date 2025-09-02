@@ -4,14 +4,14 @@ import 'downloader_task_state.dart';
 
 class DownloaderTask extends Equatable {
   const DownloaderTask({
-    required this.state,
+    required this.stateCode,
     required this.uri,
     required this.savePath,
     required this.onDownloadStream,
     required this.isManaged,
   });
 
-  final DownloaderTaskState state;
+  final DownloaderTaskState stateCode;
   final Uri uri;
   final String savePath;
   final Stream<double> onDownloadStream;
@@ -20,7 +20,7 @@ class DownloaderTask extends Equatable {
 
   @override
   List<Object?> get props => <Object?>[
-        state,
+        stateCode,
         uri,
         savePath,
         onDownloadStream,
@@ -28,14 +28,14 @@ class DownloaderTask extends Equatable {
       ];
 
   DownloaderTask copyWith({
-    DownloaderTaskState? state,
+    DownloaderTaskState? stateCode,
     Uri? uri,
     String? savePath,
     Stream<double>? onDownloadStream,
     bool? isManaged,
   }) {
     return DownloaderTask(
-      state: state ?? this.state,
+      stateCode: stateCode ?? this.stateCode,
       uri: uri ?? this.uri,
       savePath: savePath ?? this.savePath,
       onDownloadStream: onDownloadStream ?? this.onDownloadStream,

@@ -5,6 +5,7 @@ import 'package:path/path.dart';
 
 import '../../../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../../../core/file_system/domain/repositories/temp_repository.dart';
+import '../../../../core/log_system/log_system.dart';
 import '../../../../core/utils/random_extension.dart';
 import '../../domain/entities/downloader_task.dart';
 import '../../domain/entities/downloader_task_state.dart';
@@ -25,6 +26,12 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
 
   final Map<String, DownloaderTask> _tasks = <String, DownloaderTask>{};
 
+  final StreamController<void> _onListChangeController =
+      StreamController<void>.broadcast();
+
+  @override
+  Stream<void> get onListChangeStream => _onListChangeController.stream;
+
   @override
   Future<List<String>> getTaskList() async {
     return _tasks.keys.toList();
@@ -37,11 +44,6 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
 
   @override
   Future<String> downloadFile(Uri uri) async {
-    final String tempDirectoryPath = await _tempRepository.getDirectoryPath();
-    final String savePath = join(tempDirectoryPath, uri.pathSegments.last);
-    final StreamController<double> progressController =
-        StreamController<double>.broadcast();
-
     // Create a random identifier
     final Random random = Random();
     String identifier;
@@ -50,38 +52,61 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
       identifier = random.nextString(10);
     } while (_tasks.containsKey(identifier));
 
-    // Add task to memory.
-    _tasks[identifier] = DownloaderTask(
-      state: DownloaderTaskState.downloading,
-      uri: uri,
-      savePath: savePath,
-      onDownloadStream: progressController.stream,
-      isManaged: true,
-    );
+    try {
+      final String tempDirectoryPath = await _tempRepository.getDirectoryPath();
+      final StreamController<double> progressController =
+          StreamController<double>.broadcast();
 
-    // Download the file.
-    _source.downloadFile(identifier, uri, savePath, (double progress) {
-      progressController.add(progress);
-    }).then((_) {
-      // Download file completed.
-      progressController.close();
+      // Add task to memory.
+      final DownloaderTask task = _tasks[identifier] = DownloaderTask(
+        stateCode: DownloaderTaskState.downloading,
+        uri: uri,
+        savePath:
+            join(tempDirectoryPath, uri.pathSegments.lastOrNull ?? identifier),
+        onDownloadStream: progressController.stream,
+        isManaged: true,
+      );
+
+      // Notify a new task was created.
+      _onListChangeController.add(null);
+
+      // Download the file.
+      _source.downloadFile(identifier, task.uri, task.savePath,
+          (double progress) {
+        progressController.add(progress);
+      }).then((_) {
+        // Download file completed.
+        progressController.close();
+
+        if (_tasks.containsKey(identifier)) {
+          _tasks[identifier] = _tasks[identifier]!.copyWith(
+            stateCode: DownloaderTaskState.success,
+          );
+        }
+      }).catchError((dynamic error) {
+        // Download file failed.
+        progressController.addError(error);
+        progressController.close();
+
+        if (_tasks.containsKey(identifier)) {
+          _tasks[identifier] = _tasks[identifier]!.copyWith(
+            stateCode: DownloaderTaskState.error,
+          );
+        }
+      });
+    } catch (e, s) {
+      LogSystem.error(
+        'An error occurred during the download task creation.',
+        error: e,
+        stackTrace: s,
+      );
 
       if (_tasks.containsKey(identifier)) {
         _tasks[identifier] = _tasks[identifier]!.copyWith(
-          state: DownloaderTaskState.success,
+          stateCode: DownloaderTaskState.error,
         );
       }
-    }).catchError((dynamic error) {
-      // Download file failed.
-      progressController.addError(error);
-      progressController.close();
-
-      if (_tasks.containsKey(identifier)) {
-        _tasks[identifier] = _tasks[identifier]!.copyWith(
-          state: DownloaderTaskState.error,
-        );
-      }
-    });
+    }
 
     return identifier;
   }
@@ -92,7 +117,7 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
     if (task != null) {
       _tasks.remove(identifier);
 
-      if (task.state == DownloaderTaskState.downloading) {
+      if (task.stateCode == DownloaderTaskState.downloading) {
         await _source.cancelDownload(identifier);
       }
 
@@ -100,6 +125,9 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
       if (await _fileSystemRepository.existsFile(task.savePath)) {
         await _fileSystemRepository.deleteFile(task.savePath);
       }
+
+      // Notify a task was removed
+      _onListChangeController.add(null);
     }
   }
 
@@ -107,6 +135,9 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
   Future<void> clearTasks() async {
     for (final String identifier in _tasks.keys) {
       await removeTask(identifier);
+
+      // Notify all tasks was cleared
+      _onListChangeController.add(null);
     }
   }
 }

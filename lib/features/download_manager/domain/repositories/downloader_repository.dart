@@ -1,6 +1,8 @@
 import '../entities/downloader_task.dart';
 
 abstract class DownloaderRepository {
+  Stream<void> get onListChangeStream;
+
   Future<List<String>> getTaskList();
 
   Future<DownloaderTask?> getTaskByIdentifier(String identifier);

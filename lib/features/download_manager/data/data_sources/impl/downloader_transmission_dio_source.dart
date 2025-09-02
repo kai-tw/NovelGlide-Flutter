@@ -21,7 +21,7 @@ class DownloaderTransmissionDioSource implements DownloaderTransmissionSource {
       cancelToken: _tokenMap[identifier],
       onReceiveProgress: (int received, int total) {
         if (total != -1) {
-          onDownload((received / total * 100).clamp(0, 100));
+          onDownload((received / total).clamp(0, 1));
         }
       },
     );

@@ -10,7 +10,7 @@ import '../../appearance/presentation/appearance_settings_page/appearance_settin
 import '../../backup/presentation/backup_service_page.dart';
 import '../../developer_page/developer_page.dart';
 import '../../discover/presentation/browser/discover_browser.dart';
-import '../../download_manager/presentation/downloader_list/download_manager.dart';
+import '../../download_manager/presentation/download_manager/download_manager.dart';
 import '../../feedback/presentation/feedback_page.dart';
 import '../../locale_system/presentation/locale_settings_page/locale_settings_page.dart';
 import '../../reset_services/reset_service.dart';
