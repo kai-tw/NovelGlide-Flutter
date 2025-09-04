@@ -13,9 +13,9 @@ class DownloadManagerTaskListItemTitle extends StatelessWidget {
         DownloadManagerTaskListItemState>(
       buildWhen: (DownloadManagerTaskListItemState previous,
               DownloadManagerTaskListItemState current) =>
-          previous.fileName != current.fileName,
+          previous.taskName != current.taskName,
       builder: (BuildContext context, DownloadManagerTaskListItemState state) {
-        return Text(state.fileName);
+        return Text(state.taskName);
       },
     );
   }

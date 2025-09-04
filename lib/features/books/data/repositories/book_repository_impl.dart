@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:path/path.dart';
 
 import '../../../../core/file_system/domain/repositories/file_system_repository.dart';
+import '../../../../core/mime_resolver/domain/entities/mime_type.dart';
+import '../../../../core/mime_resolver/domain/repositories/mime_repository.dart';
 import '../../../../core/utils/file_utils.dart';
 import '../../../pick_file/domain/repositories/pick_file_repository.dart';
 import '../../domain/entities/book.dart';
@@ -18,12 +20,14 @@ class BookRepositoryImpl implements BookRepository {
     this._epubDataSource,
     this._fileSystemRepository,
     this._pickFileRepository,
+    this._mimeRepository,
   );
 
   final BookLocalDataSource _epubDataSource;
 
   final FileSystemRepository _fileSystemRepository;
   final PickFileRepository _pickFileRepository;
+  final MimeRepository _mimeRepository;
 
   final StreamController<void> _onChangedController =
       StreamController<void>.broadcast();
@@ -36,15 +40,35 @@ class BookRepositoryImpl implements BookRepository {
 
   @override
   Future<void> addBooks(Set<String> externalPathSet) async {
-    await _epubDataSource.addBooks(externalPathSet);
+    final Map<MimeType, Set<String>> mimeTypeSetMap = <MimeType, Set<String>>{};
+
+    for (String path in externalPathSet) {
+      final MimeType? mimeType = await _mimeRepository.lookupAll(path);
+      if (mimeType == null) {
+        continue;
+      }
+      mimeTypeSetMap[mimeType] ??= <String>{};
+      mimeTypeSetMap[mimeType]?.add(path);
+    }
+
+    for (MimeType mimeType in mimeTypeSetMap.keys) {
+      if (_epubDataSource.allowedMimeTypes.contains(mimeType)) {
+        await _epubDataSource.addBooks(mimeTypeSetMap[mimeType]!);
+        continue;
+      }
+    }
 
     // Send a notification
     onChangedController.add(null);
   }
 
   @override
-  Future<bool> delete(String identifier) async {
-    final bool result = await _epubDataSource.delete(identifier);
+  Future<bool> delete(Set<String> identifierSet) async {
+    bool result = true;
+
+    for (String identifier in identifierSet) {
+      result &= await _epubDataSource.delete(identifier);
+    }
 
     // Send a notification.
     onChangedController.add(null);

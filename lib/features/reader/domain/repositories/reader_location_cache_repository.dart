@@ -3,7 +3,7 @@ abstract class ReaderLocationCacheRepository {
 
   Future<String?> get(String bookIdentifier);
 
-  Future<void> delete(String bookIdentifier);
+  Future<void> delete(Set<String> bookIdentifierSet);
 
   Future<void> clear();
 }

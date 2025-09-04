@@ -1,12 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/log_system/log_system.dart';
 import '../../../../../core/parser_system/domain/use_cases/uri_parser_parse_https_use_case.dart';
 import '../../../../../enum/loading_state_code.dart';
-import '../../../../books/domain/use_cases/book_add_use_case.dart';
-import '../../../../download_manager/domain/entities/downloader_task.dart';
-import '../../../../download_manager/domain/use_cases/downloader_download_file_use_case.dart';
+import '../../../../books/domain/use_cases/book_download_and_add_use_case.dart';
 import '../../../domain/entities/catalog_feed.dart';
 import '../../../domain/use_cases/discover_add_to_favorite_list_use_case.dart';
 import '../../../domain/use_cases/discover_browse_catalog_use_case.dart';
@@ -21,8 +21,7 @@ class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
     this._removeFromFavoriteListUseCase,
     this._addToFavoriteListUseCase,
     this._parseHttpsUseCase,
-    this._downloadFileUseCase,
-    this._addBookUseCase,
+    this._bookDownloadAndAddUseCase,
   ) : super(const DiscoverBrowserState());
 
   /// Browser use cases
@@ -36,8 +35,7 @@ class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
 
   /// Use cases
   final UriParserParseHttpsUseCase _parseHttpsUseCase;
-  final DownloaderDownloadFileUseCase _downloadFileUseCase;
-  final BookAddUseCase _addBookUseCase;
+  final BookDownloadAndAddUseCase _bookDownloadAndAddUseCase;
 
   /// Controllers
   final TextEditingController textEditingController = TextEditingController();
@@ -60,7 +58,7 @@ class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
         restoreStack: const <Uri>[],
       ));
 
-      if (previousUri != null) {
+      if (previousUri != null && previousUri != requestedUri) {
         // Add the requested URI to the history stack and clear the restore stack
         emit(state.copyWith(
           historyStack: <Uri>[...state.historyStack, previousUri],
@@ -109,12 +107,9 @@ class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
   }
 
   Future<void> downloadBook(Uri uri) async {
-    await _downloadFileUseCase(DownloaderDownloadFileUseCaseParam(
+    return _bookDownloadAndAddUseCase(BookDownloadAndAddUseCaseParam(
       uri: uri,
-      onSuccess: (DownloaderTask task) async {
-        // Add to bookshelf
-        await _addBookUseCase(<String>{task.savePath});
-      },
+      name: state.catalogFeed?.title ?? '',
     ));
   }
 

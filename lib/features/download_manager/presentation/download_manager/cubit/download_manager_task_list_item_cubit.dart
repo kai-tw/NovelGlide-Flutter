@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
 
 import '../../../domain/entities/downloader_task.dart';
 import '../../../domain/entities/downloader_task_state.dart';
+import '../../../domain/use_cases/downloader_cancel_task_use_case.dart';
 import '../../../domain/use_cases/downloader_get_task_by_identifier_use_case.dart';
 import '../../../domain/use_cases/downloader_remove_task_use_case.dart';
 import 'download_manager_task_list_item_state.dart';
@@ -14,10 +14,12 @@ class DownloadManagerTaskListItemCubit
   DownloadManagerTaskListItemCubit(
     this._getTaskByIdentifierUseCase,
     this._removeTaskUseCase,
+    this._cancelTaskUseCase,
   ) : super(const DownloadManagerTaskListItemState());
 
   final DownloaderGetTaskByIdentifierUseCase _getTaskByIdentifierUseCase;
   final DownloaderRemoveTaskUseCase _removeTaskUseCase;
+  final DownloaderCancelTaskUseCase _cancelTaskUseCase;
 
   late final String _identifier;
   StreamSubscription<double>? _progressSubscription;
@@ -34,7 +36,7 @@ class DownloadManagerTaskListItemCubit
     } else {
       emit(state.copyWith(
         stateCode: task.stateCode,
-        fileName: basename(task.savePath),
+        taskName: task.name,
         startTime: task.startTime,
       ));
 
@@ -59,6 +61,10 @@ class DownloadManagerTaskListItemCubit
   }
 
   Future<void> cancelTask() async {
+    await _cancelTaskUseCase(_identifier);
+  }
+
+  Future<void> removeTask() async {
     await _removeTaskUseCase(_identifier);
   }
 

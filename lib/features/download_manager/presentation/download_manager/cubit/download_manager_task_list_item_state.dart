@@ -5,33 +5,33 @@ import '../../../domain/entities/downloader_task_state.dart';
 class DownloadManagerTaskListItemState extends Equatable {
   const DownloadManagerTaskListItemState({
     this.stateCode = DownloaderTaskState.initial,
-    this.fileName = '',
+    this.taskName = '',
     this.progress,
     this.startTime,
   });
 
   final DownloaderTaskState stateCode;
-  final String fileName;
+  final String taskName;
   final double? progress;
   final DateTime? startTime;
 
   @override
   List<Object?> get props => <Object?>[
         stateCode,
-        fileName,
+        taskName,
         progress,
         startTime,
       ];
 
   DownloadManagerTaskListItemState copyWith({
     DownloaderTaskState? stateCode,
-    String? fileName,
+    String? taskName,
     double? progress,
     DateTime? startTime,
   }) {
     return DownloadManagerTaskListItemState(
       stateCode: stateCode ?? this.stateCode,
-      fileName: fileName ?? this.fileName,
+      taskName: taskName ?? this.taskName,
       progress: progress ?? this.progress,
       startTime: startTime ?? this.startTime,
     );

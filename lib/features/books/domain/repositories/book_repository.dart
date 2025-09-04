@@ -15,7 +15,7 @@ abstract class BookRepository {
 
   Future<bool> exists(String identifier);
 
-  Future<bool> delete(String identifier);
+  Future<bool> delete(Set<String> identifierSet);
 
   Future<Book> getBook(String identifier);
 

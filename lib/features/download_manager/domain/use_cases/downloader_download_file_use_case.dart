@@ -7,11 +7,13 @@ import '../repositories/downloader_repository.dart';
 class DownloaderDownloadFileUseCaseParam {
   DownloaderDownloadFileUseCaseParam({
     required this.uri,
+    required this.name,
     required this.onSuccess,
     this.onError,
   });
 
   final Uri uri;
+  final String name;
   final Future<void> Function(DownloaderTask) onSuccess;
   final Future<void> Function()? onError;
 }
@@ -24,7 +26,10 @@ class DownloaderDownloadFileUseCase
 
   @override
   Future<void> call(DownloaderDownloadFileUseCaseParam parameter) async {
-    final String identifier = await _repository.downloadFile(parameter.uri);
+    final String identifier = await _repository.downloadFile(
+      uri: parameter.uri,
+      name: parameter.name,
+    );
     final DownloaderTask? task =
         await _repository.getTaskByIdentifier(identifier);
 

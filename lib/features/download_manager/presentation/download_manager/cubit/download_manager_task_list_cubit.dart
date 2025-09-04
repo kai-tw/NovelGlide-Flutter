@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../enum/loading_state_code.dart';
-import '../../../domain/entities/downloader_task.dart';
 import '../../../domain/use_cases/downloader_clear_tasks_use_case.dart';
 import '../../../domain/use_cases/downloader_download_file_use_case.dart';
 import '../../../domain/use_cases/downloader_get_task_list_use_case.dart';
@@ -74,13 +73,6 @@ class DownloadManagerTaskListCubit extends Cubit<DownloadManagerTaskListState> {
       code: LoadingStateCode.loading,
     ));
     await _clearTasksUseCase();
-  }
-
-  Future<void> createMockTask() async {
-    _downloadFileUseCase(DownloaderDownloadFileUseCaseParam(
-      uri: Uri.parse('https://www.example.com/'),
-      onSuccess: (DownloaderTask task) async {},
-    ));
   }
 
   @override

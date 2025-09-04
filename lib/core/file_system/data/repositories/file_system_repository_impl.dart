@@ -139,4 +139,13 @@ class FileSystemRepositoryImpl implements FileSystemRepository {
     }
     return file.length();
   }
+
+  @override
+  Future<DateTime> getModifiedDate(String path) async {
+    final File file = File(path);
+    if (!await file.exists()) {
+      throw FileSystemException('File not found', path);
+    }
+    return file.lastModified();
+  }
 }

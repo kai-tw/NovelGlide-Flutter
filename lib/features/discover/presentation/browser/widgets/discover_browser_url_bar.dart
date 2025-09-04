@@ -16,6 +16,7 @@ class DiscoverBrowserUrlBar extends StatelessWidget {
     return TextField(
       controller: cubit.textEditingController,
       decoration: InputDecoration(
+        labelText: appLocalizations.generalUrl,
         hintText: appLocalizations.discoverBrowserTypeUrl,
         suffixIcon: IconButton(
           onPressed: cubit.browseCatalog,

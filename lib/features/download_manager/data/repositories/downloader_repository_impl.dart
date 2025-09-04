@@ -43,7 +43,10 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
   }
 
   @override
-  Future<String> downloadFile(Uri uri) async {
+  Future<String> downloadFile({
+    required Uri uri,
+    required String name,
+  }) async {
     // Create a random identifier
     final Random random = Random();
     String identifier;
@@ -60,6 +63,7 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
       // Add task to memory.
       final DownloaderTask task = _tasks[identifier] = DownloaderTask(
         stateCode: DownloaderTaskState.downloading,
+        name: name,
         uri: uri,
         savePath:
             join(tempDirectoryPath, uri.pathSegments.lastOrNull ?? identifier),
@@ -72,10 +76,14 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
       _onListChangeController.add(null);
 
       // Download the file.
-      _source.downloadFile(identifier, task.uri, task.savePath,
-          (double progress) {
-        progressController.add(progress);
-      }).then((_) {
+      _source.downloadFile(
+        identifier,
+        task.uri,
+        task.savePath,
+        (double progress) {
+          progressController.add(progress);
+        },
+      ).then((_) {
         // Download file completed.
         progressController.close();
 
@@ -116,32 +124,58 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
   Future<void> removeTask(String identifier) async {
     final DownloaderTask? task = _tasks[identifier];
     if (task != null) {
-      _tasks.remove(identifier);
+      await cancelTask(identifier);
 
-      _cancelTask(identifier, task);
+      // Remove from memory.
+      _tasks.remove(identifier);
 
       // Notify a task was removed
       _onListChangeController.add(null);
     }
   }
 
-  Future<void> _cancelTask(String identifier, DownloaderTask task) async {
-    if (task.stateCode == DownloaderTaskState.downloading) {
-      await _source.cancelDownload(identifier);
-    }
+  @override
+  Future<void> cancelTask(String identifier) async {
+    final DownloaderTask? task = _tasks[identifier];
+    if (task != null) {
+      if (task.stateCode == DownloaderTaskState.downloading) {
+        await _source.cancelDownload(identifier);
 
-    // Delete the file if it exists.
-    if (await _fileSystemRepository.existsFile(task.savePath)) {
-      await _fileSystemRepository.deleteFile(task.savePath);
+        _tasks[identifier] = task.copyWith(
+          stateCode: DownloaderTaskState.canceled,
+        );
+      }
+
+      // Delete the file if it exists.
+      if (await _fileSystemRepository.existsFile(task.savePath)) {
+        await _fileSystemRepository.deleteFile(task.savePath);
+      }
     }
   }
 
   @override
   Future<void> clearTasks() async {
-    while (_tasks.isNotEmpty) {
-      final String identifier = _tasks.keys.first;
-      await _cancelTask(identifier, _tasks[identifier]!);
-      _tasks.remove(identifier);
+    if (_tasks.isEmpty) {
+      return;
+    }
+
+    int i = 0;
+    while (i < _tasks.length) {
+      final String identifier = _tasks.keys.elementAt(i);
+      final DownloaderTask task = _tasks[identifier]!;
+
+      switch (task.stateCode) {
+        // Only clear all successful tasks.
+        case DownloaderTaskState.success:
+          await cancelTask(identifier);
+
+          // Remove from memory.
+          _tasks.remove(identifier);
+          break;
+
+        default:
+          i++;
+      }
     }
 
     // Notify all tasks was cleared

@@ -27,9 +27,11 @@ class ReaderLocationCacheRepositoryImpl extends ReaderLocationCacheRepository {
   }
 
   @override
-  Future<void> delete(String bookIdentifier) async {
-    final String path = await _getTmpPathByIdentifier(bookIdentifier);
-    await _fileSystemRepository.deleteFile(path);
+  Future<void> delete(Set<String> bookIdentifierSet) async {
+    for (String bookIdentifier in bookIdentifierSet) {
+      final String path = await _getTmpPathByIdentifier(bookIdentifier);
+      await _fileSystemRepository.deleteFile(path);
+    }
   }
 
   @override

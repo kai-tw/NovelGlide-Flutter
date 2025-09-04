@@ -7,7 +7,12 @@ abstract class DownloaderRepository {
 
   Future<DownloaderTask?> getTaskByIdentifier(String identifier);
 
-  Future<String> downloadFile(Uri uri);
+  Future<String> downloadFile({
+    required Uri uri,
+    required String name,
+  });
+
+  Future<void> cancelTask(String identifier);
 
   Future<void> removeTask(String identifier);
 

@@ -28,11 +28,6 @@ class DownloadManagerScaffold extends StatelessWidget {
               icon: const Icon(Icons.cleaning_services_rounded),
               label: const Text('Clear'),
             ),
-            TextButton.icon(
-              onPressed: cubit.createMockTask,
-              icon: const Icon(Icons.add_rounded),
-              label: const Text('Mock DL'),
-            ),
           ],
         ),
       ),

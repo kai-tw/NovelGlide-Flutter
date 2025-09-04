@@ -9,50 +9,52 @@ class DiscoverCatalogViewer extends StatelessWidget {
     super.key,
     required this.feed,
     this.onVisit,
-    this.onDowload,
+    this.onDownload,
   });
 
   final CatalogFeed feed;
   final Future<void> Function(Uri uri)? onVisit;
-  final Future<void> Function(Uri uri)? onDowload;
+  final Future<void> Function(Uri uri)? onDownload;
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverToBoxAdapter(
-          child: ListTile(
-            contentPadding: const EdgeInsets.fromLTRB(
-              16.0,
-              24.0,
-              16.0,
-              0.0,
-            ),
-            leading: const Icon(Icons.local_library_rounded),
-            title: Text(
-              feed.title ?? '',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w900,
-                  ),
-            ),
-            subtitle: Text(
-              LocaleUtils.dateTimeOf(context, feed.updated) ?? '',
+    return Scrollbar(
+      child: CustomScrollView(
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+            child: ListTile(
+              contentPadding: const EdgeInsets.fromLTRB(
+                16.0,
+                24.0,
+                16.0,
+                0.0,
+              ),
+              leading: const Icon(Icons.local_library_rounded),
+              title: Text(
+                feed.title ?? '',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
+              ),
+              subtitle: Text(
+                LocaleUtils.dateTimeOf(context, feed.updated) ?? '',
+              ),
             ),
           ),
-        ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              return DiscoverEntryWidget(
-                entry: feed.entries[index],
-                onVisit: onVisit,
-                onDownload: onDowload,
-              );
-            },
-            childCount: feed.entries.length,
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return DiscoverEntryWidget(
+                  entry: feed.entries[index],
+                  onVisit: onVisit,
+                  onDownload: onDownload,
+                );
+              },
+              childCount: feed.entries.length,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

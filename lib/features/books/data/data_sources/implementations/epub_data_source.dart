@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:epubx/epubx.dart' as epub;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart';
+import 'package:novel_glide/core/utils/random_extension.dart';
 import 'package:path/path.dart';
 
 import '../../../../../core/file_system/domain/repositories/file_system_repository.dart';
@@ -67,10 +69,11 @@ class EpubDataSource extends BookLocalDataSource {
       }
 
       // Duplication check.
-      final String identifier = '$fileName.$ext';
-      if (await exists(identifier)) {
-        // Already exists. Skip.
-        continue;
+      String identifier = '$fileName.$ext';
+      final Random random = Random();
+      while (await exists(identifier)) {
+        // Already exists. Skip. Give a random name.
+        identifier = '${random.nextString(10)}.$ext';
       }
 
       final String destination = join(libraryPath, identifier);
@@ -80,34 +83,33 @@ class EpubDataSource extends BookLocalDataSource {
 
   @override
   Future<bool> delete(String identifier) async {
-    final File file = File(identifier);
-    if (file.existsSync()) {
-      file.deleteSync();
+    final String libraryPath = await _pathProvider.libraryPath;
+    final String destination = join(libraryPath, identifier);
+    if (await _fileSystemRepository.existsFile(destination)) {
+      await _fileSystemRepository.deleteFile(destination);
     }
 
-    return !file.existsSync();
+    return !await _fileSystemRepository.existsFile(destination);
   }
 
   @override
   Future<void> deleteAllBooks() async {
     final String libraryPath = await _pathProvider.libraryPath;
-    final Directory directory = Directory(libraryPath);
-    directory.deleteSync(recursive: true);
-    directory.createSync(recursive: true);
+    await _fileSystemRepository.deleteDirectory(libraryPath);
+    await _fileSystemRepository.createDirectory(libraryPath);
   }
 
   @override
   Future<bool> exists(String identifier) async {
     final String libraryPath = await _pathProvider.libraryPath;
-    final String destination = join(libraryPath, basename(identifier));
-    return File(destination).existsSync();
+    final String destination = join(libraryPath, identifier);
+    return _fileSystemRepository.existsFile(destination);
   }
 
   @override
   Future<Book> getBook(String identifier) async {
     final String libraryPath = await _pathProvider.libraryPath;
     final String absolutePath = absolute(libraryPath, identifier);
-    final File epubFile = File(absolutePath);
     final epub.EpubBook epubBook = await _loadEpubBook(absolutePath);
     final epub.Image? coverImage = _findCoverImage(epubBook);
 
@@ -123,7 +125,7 @@ class EpubDataSource extends BookLocalDataSource {
     return Book(
       identifier: bookIdentifier,
       title: epubBook.Title ?? '',
-      modifiedDate: epubFile.statSync().modified,
+      modifiedDate: await _fileSystemRepository.getModifiedDate(absolutePath),
       coverIdentifier: bookIdentifier,
     );
   }

@@ -119,17 +119,13 @@ class BookshelfCubit extends SharedListCubit<Book> {
   }
 
   Future<bool> deleteSelectedBooks() async {
-    final List<Book> newList = List<Book>.from(state.dataList);
-    for (Book bookData in state.selectedSet) {
-      await _deleteBookUseCase(bookData.identifier);
-      newList.remove(bookData);
-    }
-    emit(state.copyWith(dataList: newList));
-    return true;
+    return await _deleteBookUseCase(
+        state.selectedSet.map((Book book) => book.identifier).toSet());
   }
 
   Future<bool> deleteBook(Book bookData) async {
-    final bool isSuccess = await _deleteBookUseCase(bookData.identifier);
+    final bool isSuccess =
+        await _deleteBookUseCase(<String>{bookData.identifier});
 
     final List<Book> newList = List<Book>.from(state.dataList);
     newList.remove(bookData);

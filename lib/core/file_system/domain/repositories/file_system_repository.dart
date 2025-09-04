@@ -29,4 +29,6 @@ abstract class FileSystemRepository {
   Stream<FileSystemEntity> listDirectory(String path);
 
   Future<int> getFileSize(String path);
+
+  Future<DateTime> getModifiedDate(String path);
 }

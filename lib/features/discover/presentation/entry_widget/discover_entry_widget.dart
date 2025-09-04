@@ -75,17 +75,17 @@ class DiscoverEntryWidget extends StatelessWidget {
   }
 
   Widget? _buildAuthors(BuildContext context) {
-    if (entry.authors.isEmpty) {
+    final List<String> authorName = entry.authors
+        .map((PublicationAuthor author) => author.name)
+        .whereType<String>()
+        .toList();
+    if (authorName.isEmpty) {
       return null;
     } else {
       return ListTile(
         contentPadding: EdgeInsets.zero,
         leading: const Icon(Icons.person),
-        title: Text(
-          entry.authors
-              .map((PublicationAuthor author) => author.name)
-              .join(', '),
-        ),
+        title: Text(authorName.join(', ')),
         titleTextStyle: Theme.of(context).textTheme.bodyMedium,
       );
     }

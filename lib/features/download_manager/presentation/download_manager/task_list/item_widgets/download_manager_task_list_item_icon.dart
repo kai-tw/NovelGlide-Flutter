@@ -18,14 +18,18 @@ class DownloaderManagerTaskListItemIcon extends StatelessWidget {
       builder: (BuildContext context, DownloadManagerTaskListItemState state) {
         return Icon(
           switch (state.stateCode) {
-            DownloaderTaskState.initial => Icons.pending_actions_rounded,
+            DownloaderTaskState.initial => Icons.download_rounded,
+            DownloaderTaskState.pending => Icons.pending_actions_rounded,
             DownloaderTaskState.downloading => Icons.downloading_rounded,
-            DownloaderTaskState.success => Icons.check_rounded,
+            DownloaderTaskState.canceled => Icons.cancel_outlined,
+            DownloaderTaskState.success => Icons.download_done_rounded,
             DownloaderTaskState.error => Icons.error_outline_rounded,
           },
           color: switch (state.stateCode) {
             DownloaderTaskState.initial => null,
+            DownloaderTaskState.pending => null,
             DownloaderTaskState.downloading => null,
+            DownloaderTaskState.canceled => Theme.of(context).colorScheme.error,
             DownloaderTaskState.success =>
               Theme.of(context).colorScheme.primary,
             DownloaderTaskState.error => Theme.of(context).colorScheme.error,

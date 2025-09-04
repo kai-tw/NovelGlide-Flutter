@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../main.dart';
 import '../cubit/download_manager_task_list_item_cubit.dart';
+import 'item_widgets/download_manager_task_list_item_action_button.dart';
 import 'item_widgets/download_manager_task_list_item_icon.dart';
-import 'item_widgets/download_manager_task_list_item_progress_bar.dart';
 import 'item_widgets/download_manager_task_list_item_title.dart';
 
 class DownloadManagerTaskListItem extends StatelessWidget {
@@ -22,7 +22,7 @@ class DownloadManagerTaskListItem extends StatelessWidget {
       child: const ListTile(
         leading: DownloaderManagerTaskListItemIcon(),
         title: DownloadManagerTaskListItemTitle(),
-        trailing: DownloadManagerTaskListItemProgressBar(),
+        trailing: DownloadManagerTaskListItemActionButton(),
       ),
     );
   }

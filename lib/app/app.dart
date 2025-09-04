@@ -1,3 +1,4 @@
+import 'package:accessibility_tools/accessibility_tools.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,8 +37,8 @@ class App extends StatelessWidget {
                     LocaleUtils.convertAppLocaleToLocale(appLocale))
                 .toList(),
             home: const Homepage(),
-            // builder: (BuildContext context, Widget? child) =>
-            //     AccessibilityTools(child: child),
+            builder: (BuildContext context, Widget? child) =>
+                AccessibilityTools(child: child),
             debugShowCheckedModeBanner: false,
           );
         },

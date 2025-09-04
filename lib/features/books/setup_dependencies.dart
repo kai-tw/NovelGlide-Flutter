@@ -6,6 +6,7 @@ import '../bookmark/domain/use_cases/bookmark_get_data_use_case.dart';
 import '../bookmark/domain/use_cases/bookmark_observe_change_use_case.dart';
 import '../bookmark/domain/use_cases/bookmark_reset_use_case.dart';
 import '../collection/domain/use_cases/collection_delete_all_books_use_case.dart';
+import '../download_manager/domain/use_cases/downloader_download_file_use_case.dart';
 import '../pick_file/domain/repositories/pick_file_repository.dart';
 import '../preference/domain/repositories/preference_repository.dart';
 import '../preference/domain/use_cases/preference_get_use_cases.dart';
@@ -21,6 +22,7 @@ import 'domain/repositories/book_repository.dart';
 import 'domain/use_cases/book_add_use_case.dart';
 import 'domain/use_cases/book_clear_temporary_picked_files_use_case.dart';
 import 'domain/use_cases/book_delete_use_case.dart';
+import 'domain/use_cases/book_download_and_add_use_case.dart';
 import 'domain/use_cases/book_exists_use_case.dart';
 import 'domain/use_cases/book_get_allowed_extensions_use_case.dart';
 import 'domain/use_cases/book_get_chapter_list_use_case.dart';
@@ -39,97 +41,161 @@ import 'presentation/table_of_contents_page/cubit/toc_cubit.dart';
 
 void setupBookDependencies() {
   /// Register data source
-  sl.registerLazySingleton<BookLocalDataSource>(() => EpubDataSource(
-        sl<AppPathProvider>(),
-        sl<FileSystemRepository>(),
-        sl<MimeRepository>(),
-      ));
+  sl.registerLazySingleton<BookLocalDataSource>(
+    () => EpubDataSource(
+      sl<AppPathProvider>(),
+      sl<FileSystemRepository>(),
+      sl<MimeRepository>(),
+    ),
+  );
 
   /// Register repositories
-  sl.registerLazySingleton<BookRepository>(() => BookRepositoryImpl(
-        sl<BookLocalDataSource>(),
-        sl<FileSystemRepository>(),
-        sl<PickFileRepository>(),
-      ));
+  sl.registerLazySingleton<BookRepository>(
+    () => BookRepositoryImpl(
+      sl<BookLocalDataSource>(),
+      sl<FileSystemRepository>(),
+      sl<PickFileRepository>(),
+      sl<MimeRepository>(),
+    ),
+  );
 
   /// Register book management use cases
   sl.registerFactory<BookAddUseCase>(
-      () => BookAddUseCase(sl<BookRepository>()));
+    () => BookAddUseCase(
+      sl<BookRepository>(),
+    ),
+  );
   sl.registerFactory<BookExistsUseCase>(
-      () => BookExistsUseCase(sl<BookRepository>()));
+    () => BookExistsUseCase(
+      sl<BookRepository>(),
+    ),
+  );
   sl.registerFactory<BookReadBytesUseCase>(
-      () => BookReadBytesUseCase(sl<BookRepository>()));
+    () => BookReadBytesUseCase(
+      sl<BookRepository>(),
+    ),
+  );
   sl.registerFactory<BookClearTemporaryPickedFilesUseCase>(
-      () => BookClearTemporaryPickedFilesUseCase(sl<BookRepository>()));
-  sl.registerFactory<BookDeleteUseCase>(() => BookDeleteUseCase(
-        sl<BookRepository>(),
-        sl<ReaderDeleteLocationCacheUseCase>(),
-      ));
+    () => BookClearTemporaryPickedFilesUseCase(
+      sl<BookRepository>(),
+    ),
+  );
+  sl.registerFactory<BookDeleteUseCase>(
+    () => BookDeleteUseCase(
+      sl<BookRepository>(),
+      sl<ReaderDeleteLocationCacheUseCase>(),
+    ),
+  );
   sl.registerFactory<BookGetAllowedExtensionsUseCase>(
-      () => BookGetAllowedExtensionsUseCase(sl<BookRepository>()));
+    () => BookGetAllowedExtensionsUseCase(
+      sl<BookRepository>(),
+    ),
+  );
   sl.registerFactory<BookGetListByIdentifiersUseCase>(
-      () => BookGetListByIdentifiersUseCase(sl<BookRepository>()));
+    () => BookGetListByIdentifiersUseCase(
+      sl<BookRepository>(),
+    ),
+  );
   sl.registerFactory<BookGetListUseCase>(
-      () => BookGetListUseCase(sl<BookRepository>()));
+    () => BookGetListUseCase(
+      sl<BookRepository>(),
+    ),
+  );
   sl.registerFactory<BookGetUseCase>(
-      () => BookGetUseCase(sl<BookRepository>()));
+    () => BookGetUseCase(
+      sl<BookRepository>(),
+    ),
+  );
   sl.registerFactory<BookIsFileValidUseCase>(
-      () => BookIsFileValidUseCase(sl<BookRepository>()));
+    () => BookIsFileValidUseCase(
+      sl<BookRepository>(),
+    ),
+  );
   sl.registerFactory<BookObserveChangeUseCase>(
-      () => BookObserveChangeUseCase(sl<BookRepository>()));
+    () => BookObserveChangeUseCase(
+      sl<BookRepository>(),
+    ),
+  );
   sl.registerFactory<BookPickUseCase>(
-      () => BookPickUseCase(sl<BookRepository>()));
+    () => BookPickUseCase(
+      sl<BookRepository>(),
+    ),
+  );
   sl.registerFactory<BookGetCoverUseCase>(
-      () => BookGetCoverUseCase(sl<BookRepository>()));
+    () => BookGetCoverUseCase(
+      sl<BookRepository>(),
+    ),
+  );
   sl.registerFactory<BookGetChapterListUseCase>(
-      () => BookGetChapterListUseCase(sl<BookRepository>()));
-  sl.registerFactory<BookResetUseCase>(() => BookResetUseCase(
-        sl<BookRepository>(),
-        sl<BookmarkResetUseCase>(),
-        sl<CollectionDeleteAllBooksUseCase>(),
-        sl<ReaderClearLocationCacheUseCase>(),
-      ));
+    () => BookGetChapterListUseCase(
+      sl<BookRepository>(),
+    ),
+  );
+  sl.registerFactory<BookResetUseCase>(
+    () => BookResetUseCase(
+      sl<BookRepository>(),
+      sl<BookmarkResetUseCase>(),
+      sl<CollectionDeleteAllBooksUseCase>(),
+      sl<ReaderClearLocationCacheUseCase>(),
+    ),
+  );
+  sl.registerFactory<BookDownloadAndAddUseCase>(
+    () => BookDownloadAndAddUseCase(
+      sl<DownloaderDownloadFileUseCase>(),
+      sl<BookAddUseCase>(),
+    ),
+  );
 
   /// Register bookshelf preference use cases
   sl.registerFactory<BookshelfGetPreferenceUseCase>(
-      () => BookshelfGetPreferenceUseCase(
-            sl<BookshelfPreferenceRepository>(),
-          ));
+    () => BookshelfGetPreferenceUseCase(
+      sl<BookshelfPreferenceRepository>(),
+    ),
+  );
   sl.registerFactory<BookshelfSavePreferenceUseCase>(
-      () => BookshelfSavePreferenceUseCase(
-            sl<BookshelfPreferenceRepository>(),
-          ));
+    () => BookshelfSavePreferenceUseCase(
+      sl<BookshelfPreferenceRepository>(),
+    ),
+  );
   sl.registerFactory<BookshelfResetPreferenceUseCase>(
-      () => BookshelfResetPreferenceUseCase(
-            sl<BookshelfPreferenceRepository>(),
-          ));
+    () => BookshelfResetPreferenceUseCase(
+      sl<BookshelfPreferenceRepository>(),
+    ),
+  );
   sl.registerFactory<BookshelfObserveChangeUseCase>(
-      () => BookshelfObserveChangeUseCase(
-            sl<BookshelfPreferenceRepository>(),
-          ));
+    () => BookshelfObserveChangeUseCase(
+      sl<BookshelfPreferenceRepository>(),
+    ),
+  );
 
   /// Cubit factories
-  sl.registerFactory<BookshelfCubit>(() => BookshelfCubit(
-        // Book managements use cases
-        sl<BookGetListUseCase>(),
-        sl<BookDeleteUseCase>(),
-        sl<BookObserveChangeUseCase>(),
-        sl<BookExistsUseCase>(),
-        sl<BookGetCoverUseCase>(),
-        // Bookshelf preferences use cases
-        sl<BookshelfGetPreferenceUseCase>(),
-        sl<BookshelfSavePreferenceUseCase>(),
-        sl<BookshelfObserveChangeUseCase>(),
-      ));
-  sl.registerFactory<BookAddCubit>(() => BookAddCubit(
-        sl<BookAddUseCase>(),
-        sl<BookClearTemporaryPickedFilesUseCase>(),
-        sl<BookGetAllowedExtensionsUseCase>(),
-        sl<BookPickUseCase>(),
-      ));
-  sl.registerFactory<TocCubit>(() => TocCubit(
-        sl<BookGetChapterListUseCase>(),
-        sl<BookmarkGetDataUseCase>(),
-        sl<BookmarkObserveChangeUseCase>(),
-      ));
+  sl.registerFactory<BookshelfCubit>(
+    () => BookshelfCubit(
+      // Book managements use cases
+      sl<BookGetListUseCase>(),
+      sl<BookDeleteUseCase>(),
+      sl<BookObserveChangeUseCase>(),
+      sl<BookExistsUseCase>(),
+      sl<BookGetCoverUseCase>(),
+      // Bookshelf preferences use cases
+      sl<BookshelfGetPreferenceUseCase>(),
+      sl<BookshelfSavePreferenceUseCase>(),
+      sl<BookshelfObserveChangeUseCase>(),
+    ),
+  );
+  sl.registerFactory<BookAddCubit>(
+    () => BookAddCubit(
+      sl<BookAddUseCase>(),
+      sl<BookClearTemporaryPickedFilesUseCase>(),
+      sl<BookGetAllowedExtensionsUseCase>(),
+      sl<BookPickUseCase>(),
+    ),
+  );
+  sl.registerFactory<TocCubit>(
+    () => TocCubit(
+      sl<BookGetChapterListUseCase>(),
+      sl<BookmarkGetDataUseCase>(),
+      sl<BookmarkObserveChangeUseCase>(),
+    ),
+  );
 }
