@@ -12,7 +12,7 @@ class MockDownloaderTransmissionSource implements DownloaderTransmissionSource {
   ) async {
     if (!_runningSet.contains(identifier)) {
       _runningSet.add(identifier);
-      for (int i = 0; i < 101; i++) {
+      for (int i = 0; i < 101; i += 10) {
         await Future<void>.delayed(const Duration(milliseconds: 500));
         onDownload(i / 100);
 

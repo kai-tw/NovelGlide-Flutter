@@ -76,6 +76,7 @@ void setupDownloaderDependencies() {
   sl.registerFactory<DownloadManagerTaskListItemCubit>(
     () => DownloadManagerTaskListItemCubit(
       sl<DownloaderGetTaskByIdentifierUseCase>(),
+      sl<DownloaderRemoveTaskUseCase>(),
     ),
   );
 }

@@ -64,6 +64,7 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
         savePath:
             join(tempDirectoryPath, uri.pathSegments.lastOrNull ?? identifier),
         onDownloadStream: progressController.stream,
+        startTime: DateTime.now(),
         isManaged: true,
       );
 
@@ -117,27 +118,33 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
     if (task != null) {
       _tasks.remove(identifier);
 
-      if (task.stateCode == DownloaderTaskState.downloading) {
-        await _source.cancelDownload(identifier);
-      }
-
-      // Delete the file if it exists.
-      if (await _fileSystemRepository.existsFile(task.savePath)) {
-        await _fileSystemRepository.deleteFile(task.savePath);
-      }
+      _cancelTask(identifier, task);
 
       // Notify a task was removed
       _onListChangeController.add(null);
     }
   }
 
+  Future<void> _cancelTask(String identifier, DownloaderTask task) async {
+    if (task.stateCode == DownloaderTaskState.downloading) {
+      await _source.cancelDownload(identifier);
+    }
+
+    // Delete the file if it exists.
+    if (await _fileSystemRepository.existsFile(task.savePath)) {
+      await _fileSystemRepository.deleteFile(task.savePath);
+    }
+  }
+
   @override
   Future<void> clearTasks() async {
-    for (final String identifier in _tasks.keys) {
-      await removeTask(identifier);
-
-      // Notify all tasks was cleared
-      _onListChangeController.add(null);
+    while (_tasks.isNotEmpty) {
+      final String identifier = _tasks.keys.first;
+      await _cancelTask(identifier, _tasks[identifier]!);
+      _tasks.remove(identifier);
     }
+
+    // Notify all tasks was cleared
+    _onListChangeController.add(null);
   }
 }

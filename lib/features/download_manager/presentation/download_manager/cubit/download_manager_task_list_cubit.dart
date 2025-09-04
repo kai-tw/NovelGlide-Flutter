@@ -42,16 +42,20 @@ class DownloadManagerTaskListCubit extends Cubit<DownloadManagerTaskListState> {
 
   late final StreamSubscription<void> _onListChangeSubscription;
 
+  bool _isGettingTaskList = false;
+
   Future<void> getTaskList() async {
-    if (state.code.isLoading || state.code.isBackgroundLoading) {
+    if (_isGettingTaskList) {
       return;
     }
 
+    _isGettingTaskList = true;
     emit(const DownloadManagerTaskListState(
       code: LoadingStateCode.loading,
     ));
 
     final List<String> identifierList = await _getTaskListUseCase();
+    _isGettingTaskList = false;
 
     if (!isClosed) {
       emit(DownloadManagerTaskListState(
@@ -70,10 +74,9 @@ class DownloadManagerTaskListCubit extends Cubit<DownloadManagerTaskListState> {
       code: LoadingStateCode.loading,
     ));
     await _clearTasksUseCase();
-    await getTaskList();
   }
 
-  Future<void> createTask() async {
+  Future<void> createMockTask() async {
     _downloadFileUseCase(DownloaderDownloadFileUseCaseParam(
       uri: Uri.parse('https://www.example.com/'),
       onSuccess: (DownloaderTask task) async {},

@@ -29,7 +29,7 @@ class DownloadManagerScaffold extends StatelessWidget {
               label: const Text('Clear'),
             ),
             TextButton.icon(
-              onPressed: cubit.createTask,
+              onPressed: cubit.createMockTask,
               icon: const Icon(Icons.add_rounded),
               label: const Text('Mock DL'),
             ),

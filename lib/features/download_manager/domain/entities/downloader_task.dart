@@ -8,6 +8,7 @@ class DownloaderTask extends Equatable {
     required this.uri,
     required this.savePath,
     required this.onDownloadStream,
+    required this.startTime,
     required this.isManaged,
   });
 
@@ -15,6 +16,7 @@ class DownloaderTask extends Equatable {
   final Uri uri;
   final String savePath;
   final Stream<double> onDownloadStream;
+  final DateTime startTime;
   // Is this task managed by app.
   final bool isManaged;
 
@@ -24,6 +26,7 @@ class DownloaderTask extends Equatable {
         uri,
         savePath,
         onDownloadStream,
+        startTime,
         isManaged,
       ];
 
@@ -32,6 +35,7 @@ class DownloaderTask extends Equatable {
     Uri? uri,
     String? savePath,
     Stream<double>? onDownloadStream,
+    DateTime? startTime,
     bool? isManaged,
   }) {
     return DownloaderTask(
@@ -39,6 +43,7 @@ class DownloaderTask extends Equatable {
       uri: uri ?? this.uri,
       savePath: savePath ?? this.savePath,
       onDownloadStream: onDownloadStream ?? this.onDownloadStream,
+      startTime: startTime ?? this.startTime,
       isManaged: isManaged ?? this.isManaged,
     );
   }
