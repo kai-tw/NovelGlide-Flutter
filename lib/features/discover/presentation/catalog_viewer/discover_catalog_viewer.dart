@@ -20,6 +20,7 @@ class DiscoverCatalogViewer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scrollbar(
       child: CustomScrollView(
+        clipBehavior: Clip.none,
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: ListTile(

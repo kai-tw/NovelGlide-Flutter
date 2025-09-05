@@ -6,34 +6,69 @@ import '../../../collection/presentation/collection_list/collection_list_scroll_
 import '../book_list/book_list_scroll_view.dart';
 import 'cubit/bookshelf_cubit.dart';
 
-class Bookshelf extends StatelessWidget {
+class Bookshelf extends StatefulWidget {
   const Bookshelf({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
-    return DefaultTabController(
+  State<Bookshelf> createState() => _BookshelfState();
+}
+
+class _BookshelfState extends State<Bookshelf>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  AppLocalizations get appLocalizations => AppLocalizations.of(context)!;
+
+  BookshelfCubit get cubit => BlocProvider.of<BookshelfCubit>(context);
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(
       length: 2,
-      child: Column(
-        children: <Widget>[
-          TabBar(
-            onTap: cubit.switchTab,
-            tabs: <Widget>[
-              Tab(text: 'All Books'),
-              Tab(text: appLocalizations.generalCollection(2)),
+      vsync: this,
+      initialIndex: cubit.state.tabIndex,
+    );
+
+    // Listen to tab changes and update the state accordingly.
+    _tabController.addListener(() {
+      cubit.switchTab(_tabController.index);
+    });
+
+    // Listen to animation changes and update the state accordingly.
+    _tabController.animation?.addListener(() {
+      cubit.setTabRunning(
+          _tabController.animation?.value != _tabController.index);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        TabBar(
+          controller: _tabController,
+          tabs: <Widget>[
+            Tab(text: 'All Books'),
+            Tab(text: appLocalizations.generalCollection(2)),
+          ],
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: _tabController,
+            children: const <Widget>[
+              BookListScrollView(),
+              CollectionListScrollView(),
             ],
           ),
-          const Expanded(
-            child: TabBarView(
-              children: <Widget>[
-                BookListScrollView(),
-                CollectionListScrollView(),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 }

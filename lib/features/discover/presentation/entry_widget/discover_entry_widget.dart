@@ -23,37 +23,39 @@ class DiscoverEntryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
       margin: const EdgeInsets.symmetric(
         vertical: 8.0,
         horizontal: 16.0,
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          children: <Widget?>[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget?>[
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget?>[
-                      _buildTitle(context),
-                      _buildAuthors(context),
-                      _buildSummary(context),
-                      _buildPublishedDate(context),
-                      _buildPublisher(context),
-                    ].whereType<Widget>().toList(),
-                  ),
+      padding: const EdgeInsets.all(20.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(24.0),
+      ),
+      child: Column(
+        children: <Widget?>[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget?>[
+              Expanded(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget?>[
+                    _buildTitle(context),
+                    _buildAuthors(context),
+                    _buildSummary(context),
+                    _buildPublishedDate(context),
+                    _buildPublisher(context),
+                  ].whereType<Widget>().toList(),
                 ),
-                _buildThumbnail(context),
-              ].whereType<Widget>().toList(),
-            ),
-            _buildLinkWidget(context),
-          ].whereType<Widget>().toList(),
-        ),
+              ),
+              _buildThumbnail(context),
+            ].whereType<Widget>().toList(),
+          ),
+          _buildLinkWidget(context),
+        ].whereType<Widget>().toList(),
       ),
     );
   }

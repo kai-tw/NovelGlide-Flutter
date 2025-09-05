@@ -13,15 +13,20 @@ class BookshelfFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<BookshelfCubit, BookshelfState>(
       buildWhen: (BookshelfState previous, BookshelfState current) =>
-          previous.tabIndex != current.tabIndex,
+          previous.tabIndex != current.tabIndex ||
+          previous.isTabRunning != current.isTabRunning,
       builder: (BuildContext context, BookshelfState state) {
         if (state.tabIndex == 1) {
           // Collection Floating Action Button
-          return const CollectionListFloatingActionButton();
+          return CollectionListFloatingActionButton(
+            enabled: !state.isTabRunning,
+          );
         }
 
         // BookList Floating Action Button
-        return const BookListFloatingActionButton();
+        return BookListFloatingActionButton(
+          enabled: !state.isTabRunning,
+        );
       },
     );
   }

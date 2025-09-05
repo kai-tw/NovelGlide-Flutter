@@ -6,8 +6,14 @@ class BookshelfCubit extends Cubit<BookshelfState> {
   BookshelfCubit() : super(const BookshelfState());
 
   void switchTab(int index) {
-    emit(BookshelfState(
+    emit(state.copyWith(
       tabIndex: index,
+    ));
+  }
+
+  void setTabRunning(bool isRunning) {
+    emit(state.copyWith(
+      isTabRunning: isRunning,
     ));
   }
 }
