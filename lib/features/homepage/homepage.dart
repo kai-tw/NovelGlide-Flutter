@@ -43,6 +43,8 @@ class Homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final WindowSize windowClass = WindowSize.of(context);
+
     return MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
         BlocProvider<HomepageCubit>(create: (_) => HomepageCubit()),
@@ -51,26 +53,10 @@ class Homepage extends StatelessWidget {
             create: (_) => sl<CollectionListCubit>()),
         BlocProvider<BookmarkListCubit>(create: (_) => sl<BookmarkListCubit>()),
       ],
-      child: const _Scaffold(),
+      child: switch (windowClass) {
+        WindowSize.compact => const HomepageCompactView(),
+        _ => const HomepageMediumView(),
+      },
     );
-  }
-}
-
-class _Scaffold extends StatelessWidget {
-  const _Scaffold();
-
-  @override
-  Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.sizeOf(context).width;
-    final WindowSize windowClass = WindowSize.fromWidth(screenWidth);
-
-    /// Display the homepage based on the window size
-    switch (windowClass) {
-      case WindowSize.compact:
-        return const HomepageCompactView();
-
-      default:
-        return const HomepageMediumView();
-    }
   }
 }
