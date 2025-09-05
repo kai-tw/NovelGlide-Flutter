@@ -49,7 +49,7 @@ class HomepageNavigationBar extends StatelessWidget {
               selectedIcon: DiscoverBrowserIcon(
                 color: colorScheme.onSurface,
               ),
-              label: appLocalizations.generalCollection(2),
+              label: appLocalizations.generalDiscover,
               enabled: !state.navItem.isDiscovery && state.isEnabled,
             ),
             NavigationDestination(
