@@ -41,14 +41,7 @@ class SharedListGridItem extends StatelessWidget {
         Positioned(
           top: 0.0,
           left: 0.0,
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
-            },
+          child: SimpleFadeSwitcher(
             child: _buildCheckbox(context),
           ),
         ),

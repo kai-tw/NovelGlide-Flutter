@@ -39,7 +39,7 @@ class BookList extends StatelessWidget {
             if (state.dataList.isEmpty) {
               // No books.
               return SharedListSliverEmpty(
-                title: appLocalizations.bookshelfNoBook,
+                title: appLocalizations.noBook,
               );
             } else {
               // Show books.

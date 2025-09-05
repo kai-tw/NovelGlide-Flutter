@@ -42,9 +42,9 @@ class DownloadManagerTaskListItemActionButton extends StatelessWidget {
                     Positioned.fill(
                       child: CircularProgressIndicator(
                         value: state.progress,
-                        semanticsLabel: 'Downloading',
+                        semanticsLabel: appLocalizations.generalDownloading,
                         semanticsValue: state.progress == null
-                            ? 'Loading'
+                            ? appLocalizations.generalLoading
                             : '${state.progress! * 100}%',
                       ),
                     ),
@@ -66,7 +66,7 @@ class DownloadManagerTaskListItemActionButton extends StatelessWidget {
             return IconButton(
               onPressed: cubit.removeTask,
               icon: const Icon(Icons.delete_rounded),
-              tooltip: 'Clear',
+              tooltip: appLocalizations.generalDelete,
             );
 
           default:

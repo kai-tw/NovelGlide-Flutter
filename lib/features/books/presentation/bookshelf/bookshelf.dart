@@ -49,7 +49,7 @@ class _BookshelfState extends State<Bookshelf>
         TabBar(
           controller: _tabController,
           tabs: <Widget>[
-            Tab(text: 'All Books'),
+            Tab(text: appLocalizations.allBooks),
             Tab(text: appLocalizations.generalCollection(2)),
           ],
         ),

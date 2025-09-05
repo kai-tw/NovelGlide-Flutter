@@ -25,7 +25,7 @@ class BookAddFileList extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     if (state.fileSet.isEmpty) {
       return Center(
-        child: Text(appLocalizations.addBookEmpty),
+        child: Text(appLocalizations.noFileSelected),
       );
     } else {
       return ListView.builder(

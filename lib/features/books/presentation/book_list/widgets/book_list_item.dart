@@ -31,8 +31,8 @@ class BookListItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(24.0),
       child: Semantics(
         label: appLocalizations.generalBook,
-        onTapHint: appLocalizations.bookshelfOpenBook,
-        onLongPressHint: appLocalizations.bookshelfDragToDelete,
+        onTapHint: appLocalizations.tapToOpenBook,
+        onLongPressHint: appLocalizations.dragToDeleteBook,
         child: BlocBuilder<BookListCubit, BookListState>(
           buildWhen: (BookListState previous, BookListState current) =>
               previous.code != current.code ||
@@ -80,7 +80,7 @@ class BookListItem extends StatelessWidget {
         showDialog(
           context: context,
           builder: (BuildContext context) => CommonErrorDialog(
-            content: appLocalizations.bookshelfBookNotExist,
+            content: appLocalizations.bookNotExists,
           ),
         ).then((_) => cubit.refresh());
       }

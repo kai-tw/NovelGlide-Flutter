@@ -22,14 +22,7 @@ class SharedListDoneButton<T extends SharedListCubit<dynamic>>
           );
         }
 
-        return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return FadeTransition(
-              opacity: animation,
-              child: child,
-            );
-          },
+        return SimpleFadeSwitcher(
           child: child,
         );
       },

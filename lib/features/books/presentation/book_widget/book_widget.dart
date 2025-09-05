@@ -50,7 +50,7 @@ class BookWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(16.0),
           ),
           title: AdaptiveLinesText(bookData.title),
-          semanticLabel: appLocalizations.bookshelfSelectBook,
+          semanticLabel: appLocalizations.tapToSelectBook,
         );
 
       case SharedListType.list:

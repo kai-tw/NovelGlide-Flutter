@@ -19,7 +19,7 @@ class BookAddPage extends StatelessWidget {
       create: (_) => sl<BookAddCubit>(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(appLocalizations.addBookTitle),
+          title: Text(appLocalizations.addBooks),
         ),
         body: const BookAddFileList(),
         bottomNavigationBar: const SharedBottomContainer(

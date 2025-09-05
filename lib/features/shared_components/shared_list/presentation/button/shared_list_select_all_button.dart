@@ -6,6 +6,7 @@ class SharedListSelectAllButton<T extends SharedListCubit<dynamic>>
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final T cubit = BlocProvider.of<T>(context);
     return BlocBuilder<T, SharedListState<dynamic>>(
       buildWhen: (SharedListState<dynamic> previous,
@@ -17,8 +18,6 @@ class SharedListSelectAllButton<T extends SharedListCubit<dynamic>>
         Widget? child;
 
         if (state.isSelecting) {
-          final AppLocalizations appLocalizations =
-              AppLocalizations.of(context)!;
           if (state.dataList.isNotEmpty) {
             child = TextButton(
               onPressed:
@@ -35,14 +34,7 @@ class SharedListSelectAllButton<T extends SharedListCubit<dynamic>>
           }
         }
 
-        return AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return FadeTransition(
-              opacity: animation,
-              child: child,
-            );
-          },
+        return SimpleFadeSwitcher(
           child: child,
         );
       },

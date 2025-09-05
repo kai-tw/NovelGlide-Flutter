@@ -39,8 +39,8 @@ class BookListAppBarMoreButton extends StatelessWidget {
         entries,
         SharedList.buildSortMenu(
           titleList: <String>[
-            appLocalizations.bookshelfSortName,
-            appLocalizations.bookshelfSortLastModified,
+            appLocalizations.bookName,
+            appLocalizations.dateAdded,
           ],
           sortOrderList: <SortOrderCode>[
             SortOrderCode.name,

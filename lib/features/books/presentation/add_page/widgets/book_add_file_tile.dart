@@ -20,7 +20,7 @@ class BookAddFileTile extends StatelessWidget {
 
     // Check if the file is duplicated
     if (data.existsInLibrary) {
-      subtitle = appLocalizations.addBookDuplicated;
+      subtitle = appLocalizations.bookExists;
     }
 
     // Check if the file is invalid

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../generated/i18n/app_localizations.dart';
 import '../../../../../download_manager/presentation/download_manager/download_manager.dart';
 
 class DiscoverBrowserToDownloadManagerButton extends StatelessWidget {
@@ -7,6 +8,7 @@ class DiscoverBrowserToDownloadManagerButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return IconButton(
       onPressed: () {
         Navigator.of(context).push(
@@ -16,7 +18,7 @@ class DiscoverBrowserToDownloadManagerButton extends StatelessWidget {
         );
       },
       icon: const Icon(Icons.download_rounded),
-      tooltip: 'Downloads',
+      tooltip: appLocalizations.generalDownload(2),
     );
   }
 }
