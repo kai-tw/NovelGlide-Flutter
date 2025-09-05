@@ -3,12 +3,12 @@ part of 'homepage.dart';
 class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomepageAppBar({
     super.key,
-    required this.iconData,
+    required this.leading,
     required this.title,
     this.actions,
   });
 
-  final IconData iconData;
+  final Widget leading;
   final String title;
   final List<Widget>? actions;
 
@@ -20,7 +20,7 @@ class HomepageAppBar extends StatelessWidget implements PreferredSizeWidget {
     final WindowSize windowClass = WindowSize.of(context);
 
     return AppBar(
-      leading: Icon(iconData),
+      leading: leading,
       leadingWidth: windowClass == WindowSize.compact ? null : 100.0,
       title: Text(title),
       actions: actions,

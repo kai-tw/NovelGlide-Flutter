@@ -13,6 +13,7 @@ class DiscoverBrowserNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SharedBottomContainer(
+      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Column(
         children: <Widget>[
           DiscoverBrowserUrlBar(),

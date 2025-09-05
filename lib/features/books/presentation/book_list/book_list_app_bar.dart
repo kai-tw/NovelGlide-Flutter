@@ -17,7 +17,7 @@ class BookListAppBar extends StatelessWidget implements PreferredSizeWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return HomepageAppBar(
-      iconData: Icons.shelves,
+      leading: const Icon(Icons.shelves),
       title: appLocalizations.generalBookshelf,
       actions: const <Widget>[
         SharedListSelectAllButton<BookListCubit>(),

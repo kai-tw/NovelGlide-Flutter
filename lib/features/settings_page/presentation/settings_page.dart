@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,8 +8,6 @@ import '../../../generated/i18n/app_localizations.dart';
 import '../../appearance/presentation/appearance_settings_page/appearance_settings_page.dart';
 import '../../backup/presentation/backup_service_page.dart';
 import '../../developer_page/developer_page.dart';
-import '../../discover/presentation/browser/discover_browser.dart';
-import '../../download_manager/presentation/download_manager/download_manager.dart';
 import '../../feedback/presentation/feedback_page.dart';
 import '../../locale_system/presentation/locale_settings_page/locale_settings_page.dart';
 import '../../reset_services/reset_service.dart';
@@ -109,32 +106,6 @@ class SettingsPage extends StatelessWidget {
                       ),
                       iconData: Icons.code_rounded,
                       title: 'Developer Page',
-                    )
-                  : null,
-
-              // Discover
-              kDebugMode
-                  ? SettingsListTile(
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const DiscoverBrowser(),
-                        ),
-                      ),
-                      iconData: CupertinoIcons.compass,
-                      title: appLocalizations.generalDiscover,
-                    )
-                  : null,
-
-              // Download Manager
-              kDebugMode
-                  ? SettingsListTile(
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => const DownloadManager(),
-                        ),
-                      ),
-                      iconData: Icons.download_rounded,
-                      title: 'Download Manager',
                     )
                   : null,
 

@@ -7,8 +7,8 @@ class HomepageCompactView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      appBar: const _AppBar(),
-      body: const _ScaffoldBody(),
+      appBar: const HomepageAppBarBuilder(),
+      body: const HomepageScaffoldBody(),
       bottomNavigationBar: SafeArea(
         child: Container(
           height: 64.0,
@@ -25,10 +25,10 @@ class HomepageCompactView extends StatelessWidget {
             ],
           ),
           clipBehavior: Clip.hardEdge,
-          child: const _NavigationBar(),
+          child: const HomepageNavigationBar(),
         ),
       ),
-      floatingActionButton: const _FloatingActionWidget(),
+      floatingActionButton: const HomepageFloatingActionWidget(),
     );
   }
 }

@@ -1,8 +1,12 @@
-part of '../homepage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class _DeleteDragTarget<M extends Cubit<SharedListState<T>>, T extends Object>
-    extends StatelessWidget {
-  const _DeleteDragTarget();
+import '../../../common_delete_drag_target.dart';
+import '../../shared_list.dart';
+
+class SharedListDeleteDragTarget<M extends Cubit<SharedListState<T>>,
+    T extends Object> extends StatelessWidget {
+  const SharedListDeleteDragTarget({super.key});
 
   @override
   Widget build(BuildContext context) {

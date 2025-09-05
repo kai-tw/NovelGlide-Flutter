@@ -18,7 +18,7 @@ class CollectionListAppBar extends StatelessWidget
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return HomepageAppBar(
-      iconData: Icons.collections_bookmark_rounded,
+      leading: const Icon(Icons.collections_bookmark_rounded),
       title: appLocalizations.generalCollection(2),
       actions: const <Widget>[
         SharedListSelectAllButton<CollectionListCubit>(),

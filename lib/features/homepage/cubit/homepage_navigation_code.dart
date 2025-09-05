@@ -2,7 +2,7 @@ part of 'homepage_cubit.dart';
 
 enum HomepageNavigationItem {
   bookshelf,
-  collection,
+  discovery,
   bookmark,
   settings;
 
@@ -13,7 +13,7 @@ enum HomepageNavigationItem {
 
   bool get isBookshelf => this == HomepageNavigationItem.bookshelf;
 
-  bool get isCollection => this == HomepageNavigationItem.collection;
+  bool get isDiscovery => this == HomepageNavigationItem.discovery;
 
   bool get isBookmark => this == HomepageNavigationItem.bookmark;
 

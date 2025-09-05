@@ -1,7 +1,15 @@
-part of '../homepage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class _NavigationRail extends StatelessWidget {
-  const _NavigationRail();
+import '../../../generated/i18n/app_localizations.dart';
+import '../../bookmark/presentation/bookmark_list/cubit/bookmark_list_cubit.dart';
+import '../../books/presentation/book_list/cubit/bookshelf_cubit.dart';
+import '../../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
+import '../../discover/presentation/browser/discover_browser_icon.dart';
+import '../cubit/homepage_cubit.dart';
+
+class HomepageNavigationRail extends StatelessWidget {
+  const HomepageNavigationRail({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,14 +61,14 @@ class _NavigationRail extends StatelessWidget {
         ),
         NavigationRailDestination(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
-          icon: Icon(
-            Icons.collections_bookmark_outlined,
+          icon: DiscoverBrowserIcon.outlined(
             color: colorScheme.onSurface.withValues(alpha: 0.64),
           ),
-          selectedIcon: Icon(Icons.collections_bookmark_rounded,
-              color: colorScheme.onSurface),
-          label: Text(appLocalizations.generalCollection(2)),
-          disabled: state.navItem.isCollection && state.isEnabled,
+          selectedIcon: DiscoverBrowserIcon(
+            color: colorScheme.onSurface,
+          ),
+          label: Text(appLocalizations.generalDiscover),
+          disabled: state.navItem.isDiscovery && state.isEnabled,
         ),
         NavigationRailDestination(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -68,8 +76,10 @@ class _NavigationRail extends StatelessWidget {
             Icons.bookmarks_outlined,
             color: colorScheme.onSurface.withValues(alpha: 0.64),
           ),
-          selectedIcon:
-              Icon(Icons.bookmarks_rounded, color: colorScheme.onSurface),
+          selectedIcon: Icon(
+            Icons.bookmarks_rounded,
+            color: colorScheme.onSurface,
+          ),
           label: Text(appLocalizations.generalBookmark(2)),
           disabled: state.navItem.isBookmark && state.isEnabled,
         ),
@@ -79,8 +89,10 @@ class _NavigationRail extends StatelessWidget {
             Icons.settings_outlined,
             color: colorScheme.onSurface.withValues(alpha: 0.64),
           ),
-          selectedIcon:
-              Icon(Icons.settings_rounded, color: colorScheme.onSurface),
+          selectedIcon: Icon(
+            Icons.settings_rounded,
+            color: colorScheme.onSurface,
+          ),
           label: Text(appLocalizations.generalSettings),
           disabled: state.navItem.isSettings && state.isEnabled,
         ),
@@ -93,7 +105,7 @@ class _NavigationRail extends StatelessWidget {
           case HomepageNavigationItem.bookmark:
             bookmarkListCubit.unfocused();
             break;
-          case HomepageNavigationItem.collection:
+          case HomepageNavigationItem.discovery:
             collectionListCubit.unfocused();
             break;
           default:

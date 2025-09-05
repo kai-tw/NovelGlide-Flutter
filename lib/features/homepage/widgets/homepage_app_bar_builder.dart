@@ -1,7 +1,15 @@
-part of '../homepage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class _AppBar extends StatelessWidget implements PreferredSizeWidget {
-  const _AppBar();
+import '../../bookmark/presentation/bookmark_list/bookmark_list_app_bar.dart';
+import '../../books/presentation/bookshelf/bookshelf_app_bar.dart';
+import '../../discover/presentation/browser/discover_app_bar.dart';
+import '../../settings_page/presentation/settings_app_bar.dart';
+import '../cubit/homepage_cubit.dart';
+
+class HomepageAppBarBuilder extends StatelessWidget
+    implements PreferredSizeWidget {
+  const HomepageAppBarBuilder({super.key});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -16,8 +24,8 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
           case HomepageNavigationItem.bookshelf:
             return const BookshelfAppBar();
 
-          case HomepageNavigationItem.collection:
-            return AppBar();
+          case HomepageNavigationItem.discovery:
+            return const DiscoverAppBar();
 
           case HomepageNavigationItem.bookmark:
             return const BookmarkListAppBar();

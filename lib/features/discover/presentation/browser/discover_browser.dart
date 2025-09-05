@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../main.dart';
-import 'cubits/discover_browser_cubit.dart';
-import 'discover_browser_scaffold.dart';
+import 'widgets/discover_browser_navigation_bar.dart';
+import 'widgets/discover_browser_viewer.dart';
 
 class DiscoverBrowser extends StatelessWidget {
   const DiscoverBrowser({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<DiscoverBrowserCubit>(
-      create: (_) => sl<DiscoverBrowserCubit>(),
-      child: const DiscoverBrowserScaffold(),
+    return const Column(
+      children: <Widget>[
+        Expanded(
+          child: DiscoverBrowserViewer(),
+        ),
+        DiscoverBrowserNavigationBar(),
+      ],
     );
   }
 }

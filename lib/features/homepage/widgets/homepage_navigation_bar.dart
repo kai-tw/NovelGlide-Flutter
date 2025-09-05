@@ -1,7 +1,15 @@
-part of '../homepage.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class _NavigationBar extends StatelessWidget {
-  const _NavigationBar();
+import '../../../generated/i18n/app_localizations.dart';
+import '../../bookmark/presentation/bookmark_list/cubit/bookmark_list_cubit.dart';
+import '../../books/presentation/book_list/cubit/bookshelf_cubit.dart';
+import '../../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
+import '../../discover/presentation/browser/discover_browser_icon.dart';
+import '../cubit/homepage_cubit.dart';
+
+class HomepageNavigationBar extends StatelessWidget {
+  const HomepageNavigationBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +43,14 @@ class _NavigationBar extends StatelessWidget {
               enabled: !state.navItem.isBookshelf && state.isEnabled,
             ),
             NavigationDestination(
-              icon: Icon(
-                Icons.collections_bookmark_outlined,
+              icon: DiscoverBrowserIcon.outlined(
                 color: colorScheme.onSurface.withValues(alpha: 0.64),
               ),
-              selectedIcon: Icon(Icons.collections_bookmark_rounded,
-                  color: colorScheme.onSurface),
+              selectedIcon: DiscoverBrowserIcon(
+                color: colorScheme.onSurface,
+              ),
               label: appLocalizations.generalCollection(2),
-              enabled: !state.navItem.isCollection && state.isEnabled,
+              enabled: !state.navItem.isDiscovery && state.isEnabled,
             ),
             NavigationDestination(
               icon: Icon(
@@ -59,8 +67,10 @@ class _NavigationBar extends StatelessWidget {
                 Icons.settings_outlined,
                 color: colorScheme.onSurface.withValues(alpha: 0.64),
               ),
-              selectedIcon:
-                  Icon(Icons.settings_rounded, color: colorScheme.onSurface),
+              selectedIcon: Icon(
+                Icons.settings_rounded,
+                color: colorScheme.onSurface,
+              ),
               label: appLocalizations.generalSettings,
               enabled: !state.navItem.isSettings && state.isEnabled,
             ),
@@ -73,7 +83,7 @@ class _NavigationBar extends StatelessWidget {
               case HomepageNavigationItem.bookmark:
                 bookmarkListCubit.unfocused();
                 break;
-              case HomepageNavigationItem.collection:
+              case HomepageNavigationItem.discovery:
                 collectionListCubit.unfocused();
                 break;
               default:
