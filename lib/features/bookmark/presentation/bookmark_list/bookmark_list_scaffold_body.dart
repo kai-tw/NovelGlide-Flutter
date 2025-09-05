@@ -18,7 +18,7 @@ class BookmarkListScaffoldBody extends StatelessWidget {
         /// Ad goes here
         Expanded(
           child: PageStorage(
-            bucket: homepageCubit.bookmarkBucket,
+            bucket: homepageCubit.bookmarkListBucket,
             child: RefreshIndicator(
               onRefresh: cubit.refresh,
               notificationPredicate: (_) => cubit.state.canRefresh,

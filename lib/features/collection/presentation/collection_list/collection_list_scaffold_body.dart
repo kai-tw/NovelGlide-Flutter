@@ -18,7 +18,7 @@ class CollectionListScaffoldBody extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: PageStorage(
-            bucket: homepageCubit.collectionBucket,
+            bucket: homepageCubit.collectionListBucket,
             child: RefreshIndicator(
               onRefresh: cubit.refresh,
               notificationPredicate: (_) => cubit.state.canRefresh,

@@ -32,7 +32,7 @@ class _FloatingActionWidget extends StatelessWidget {
                         left: kFloatingActionButtonMargin,
                         right: kFloatingActionButtonMargin,
                       ),
-                      child: _DeleteDragTarget<BookshelfCubit, Book>(),
+                      child: _DeleteDragTarget<BookListCubit, Book>(),
                     );
 
                   case HomepageNavigationItem.collection:

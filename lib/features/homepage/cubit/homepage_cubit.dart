@@ -7,9 +7,9 @@ part 'homepage_state.dart';
 
 class HomepageCubit extends Cubit<HomepageState> {
   HomepageCubit() : super(const HomepageState());
-  final PageStorageBucket bookshelfBucket = PageStorageBucket();
-  final PageStorageBucket collectionBucket = PageStorageBucket();
-  final PageStorageBucket bookmarkBucket = PageStorageBucket();
+  final PageStorageBucket bookListBucket = PageStorageBucket();
+  final PageStorageBucket collectionListBucket = PageStorageBucket();
+  final PageStorageBucket bookmarkListBucket = PageStorageBucket();
 
   set item(HomepageNavigationItem item) {
     emit(state.copyWith(navItem: item));

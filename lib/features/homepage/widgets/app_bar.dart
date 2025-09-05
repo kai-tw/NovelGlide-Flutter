@@ -14,7 +14,7 @@ class _AppBar extends StatelessWidget implements PreferredSizeWidget {
       builder: (BuildContext context, HomepageState state) {
         switch (state.navItem) {
           case HomepageNavigationItem.bookshelf:
-            return const BookshelfAppBar();
+            return const BookListAppBar();
 
           case HomepageNavigationItem.collection:
             return const CollectionListAppBar();

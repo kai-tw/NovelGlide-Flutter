@@ -4,10 +4,10 @@ import '../../../../generated/i18n/app_localizations.dart';
 import '../../../homepage/homepage.dart';
 import '../../../shared_components/shared_list/shared_list.dart';
 import 'cubit/bookshelf_cubit.dart';
-import 'widgets/bookshelf_app_bar_more_button.dart';
+import 'widgets/book_list_app_bar_more_button.dart';
 
-class BookshelfAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const BookshelfAppBar({super.key});
+class BookListAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const BookListAppBar({super.key});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -20,9 +20,9 @@ class BookshelfAppBar extends StatelessWidget implements PreferredSizeWidget {
       iconData: Icons.shelves,
       title: appLocalizations.generalBookshelf,
       actions: const <Widget>[
-        SharedListSelectAllButton<BookshelfCubit>(),
-        SharedListDoneButton<BookshelfCubit>(),
-        BookshelfAppBarMoreButton(),
+        SharedListSelectAllButton<BookListCubit>(),
+        SharedListDoneButton<BookListCubit>(),
+        BookListAppBarMoreButton(),
       ],
     );
   }

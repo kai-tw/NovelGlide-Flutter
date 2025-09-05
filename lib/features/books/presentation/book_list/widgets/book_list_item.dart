@@ -8,10 +8,10 @@ import '../../../domain/entities/book_cover.dart';
 import '../../book_cover/book_cover_builder.dart';
 import '../../table_of_contents_page/table_of_contents.dart';
 import '../cubit/bookshelf_cubit.dart';
-import 'bookshelf_draggable_book.dart';
+import 'book_list_draggable_book.dart';
 
-class BookshelfSliverListItem extends StatelessWidget {
-  const BookshelfSliverListItem({super.key, required this.bookData});
+class BookListItem extends StatelessWidget {
+  const BookListItem({super.key, required this.bookData});
 
   final Book bookData;
 
@@ -25,7 +25,7 @@ class BookshelfSliverListItem extends StatelessWidget {
 
   Widget _buildItem(BuildContext context, BookCover coverData) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
+    final BookListCubit cubit = BlocProvider.of<BookListCubit>(context);
     return InkWell(
       onTap: () => _onTap(context, coverData),
       borderRadius: BorderRadius.circular(24.0),
@@ -33,16 +33,16 @@ class BookshelfSliverListItem extends StatelessWidget {
         label: appLocalizations.generalBook,
         onTapHint: appLocalizations.bookshelfOpenBook,
         onLongPressHint: appLocalizations.bookshelfDragToDelete,
-        child: BlocBuilder<BookshelfCubit, BookshelfState>(
-          buildWhen: (BookshelfState previous, BookshelfState current) =>
+        child: BlocBuilder<BookListCubit, BookListState>(
+          buildWhen: (BookListState previous, BookListState current) =>
               previous.code != current.code ||
               previous.isSelecting != current.isSelecting ||
               previous.isDragging != current.isDragging ||
               previous.selectedSet.contains(bookData) !=
                   current.selectedSet.contains(bookData) ||
               previous.listType != current.listType,
-          builder: (BuildContext context, BookshelfState state) {
-            return BookshelfDraggableBook(
+          builder: (BuildContext context, BookListState state) {
+            return BookListDraggableBook(
               bookData: bookData,
               coverData: coverData,
               listType: state.listType,
@@ -61,7 +61,7 @@ class BookshelfSliverListItem extends StatelessWidget {
 
   Future<void> _onTap(BuildContext context, BookCover coverData) async {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
+    final BookListCubit cubit = BlocProvider.of<BookListCubit>(context);
 
     final bool isExists = await cubit.bookExists(bookData);
 

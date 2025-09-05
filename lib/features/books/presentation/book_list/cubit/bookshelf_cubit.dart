@@ -17,10 +17,10 @@ import '../../../domain/use_cases/book_get_cover_use_case.dart';
 import '../../../domain/use_cases/book_get_list_use_case.dart';
 import '../../../domain/use_cases/book_observe_change_use_case.dart';
 
-typedef BookshelfState = SharedListState<Book>;
+typedef BookListState = SharedListState<Book>;
 
-class BookshelfCubit extends SharedListCubit<Book> {
-  factory BookshelfCubit(
+class BookListCubit extends SharedListCubit<Book> {
+  factory BookListCubit(
     BookGetListUseCase getBookListUseCase,
     BookDeleteUseCase deleteBookUseCase,
     BookObserveChangeUseCase observeBookChangeUseCase,
@@ -30,7 +30,7 @@ class BookshelfCubit extends SharedListCubit<Book> {
     BookshelfSavePreferenceUseCase bookshelfSavePreferenceUseCase,
     BookshelfObserveChangeUseCase bookshelfObserveChangeUseCase,
   ) {
-    final BookshelfCubit cubit = BookshelfCubit._(
+    final BookListCubit cubit = BookListCubit._(
       getBookListUseCase,
       deleteBookUseCase,
       bookExistsUseCase,
@@ -52,14 +52,14 @@ class BookshelfCubit extends SharedListCubit<Book> {
     return cubit;
   }
 
-  BookshelfCubit._(
+  BookListCubit._(
     this._getBookListUseCase,
     this._deleteBookUseCase,
     this._bookExistsUseCase,
     this._bookGetCoverUseCase,
     this._getPreferenceUseCase,
     this._savePreferenceUseCase,
-  ) : super(const BookshelfState());
+  ) : super(const BookListState());
 
   /// Book management use cases
   final BookGetListUseCase _getBookListUseCase;
@@ -86,7 +86,7 @@ class BookshelfCubit extends SharedListCubit<Book> {
 
     final List<Book> list = <Book>[];
 
-    emit(BookshelfState(
+    emit(BookListState(
       code: LoadingStateCode.loading,
       dataList: list,
       sortOrder: preference.sortOrder,

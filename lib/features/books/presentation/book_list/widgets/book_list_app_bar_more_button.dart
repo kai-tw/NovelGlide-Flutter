@@ -9,8 +9,8 @@ import '../../../../shared_components/common_delete_dialog.dart';
 import '../../../../shared_components/shared_list/shared_list.dart';
 import '../cubit/bookshelf_cubit.dart';
 
-class BookshelfAppBarMoreButton extends StatelessWidget {
-  const BookshelfAppBarMoreButton({super.key});
+class BookListAppBarMoreButton extends StatelessWidget {
+  const BookListAppBarMoreButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class BookshelfAppBarMoreButton extends StatelessWidget {
 
   List<PopupMenuEntry<void>> _itemBuilder(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
+    final BookListCubit cubit = BlocProvider.of<BookListCubit>(context);
     final List<PopupMenuEntry<void>> entries = <PopupMenuEntry<void>>[];
 
     // Selecting mode button

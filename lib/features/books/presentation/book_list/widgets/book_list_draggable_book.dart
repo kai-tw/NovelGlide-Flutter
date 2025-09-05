@@ -11,8 +11,8 @@ import '../../../domain/entities/book_cover.dart';
 import '../../book_widget/book_widget.dart';
 import '../cubit/bookshelf_cubit.dart';
 
-class BookshelfDraggableBook extends StatelessWidget {
-  const BookshelfDraggableBook({
+class BookListDraggableBook extends StatelessWidget {
+  const BookListDraggableBook({
     super.key,
     required this.bookData,
     required this.coverData,
@@ -34,7 +34,7 @@ class BookshelfDraggableBook extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
-    final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
+    final BookListCubit cubit = BlocProvider.of<BookListCubit>(context);
     final HomepageCubit homepageCubit = BlocProvider.of<HomepageCubit>(context);
 
     return LayoutBuilder(

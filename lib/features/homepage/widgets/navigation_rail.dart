@@ -13,7 +13,8 @@ class _NavigationRail extends StatelessWidget {
             child: IntrinsicHeight(
               child: BlocBuilder<HomepageCubit, HomepageState>(
                 buildWhen: (HomepageState previous, HomepageState current) =>
-                    previous.navItem != current.navItem || previous.isEnabled != current.isEnabled,
+                    previous.navItem != current.navItem ||
+                    previous.isEnabled != current.isEnabled,
                 builder: _railBuilder,
               ),
             ),
@@ -26,9 +27,12 @@ class _NavigationRail extends StatelessWidget {
   Widget _railBuilder(BuildContext context, HomepageState state) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final HomepageCubit cubit = BlocProvider.of<HomepageCubit>(context);
-    final BookshelfCubit bookshelfCubit = BlocProvider.of<BookshelfCubit>(context);
-    final BookmarkListCubit bookmarkListCubit = BlocProvider.of<BookmarkListCubit>(context);
-    final CollectionListCubit collectionListCubit = BlocProvider.of<CollectionListCubit>(context);
+    final BookListCubit bookshelfCubit =
+        BlocProvider.of<BookListCubit>(context);
+    final BookmarkListCubit bookmarkListCubit =
+        BlocProvider.of<BookmarkListCubit>(context);
+    final CollectionListCubit collectionListCubit =
+        BlocProvider.of<CollectionListCubit>(context);
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
     return NavigationRail(
@@ -53,7 +57,8 @@ class _NavigationRail extends StatelessWidget {
             Icons.collections_bookmark_outlined,
             color: colorScheme.onSurface.withValues(alpha: 0.64),
           ),
-          selectedIcon: Icon(Icons.collections_bookmark_rounded, color: colorScheme.onSurface),
+          selectedIcon: Icon(Icons.collections_bookmark_rounded,
+              color: colorScheme.onSurface),
           label: Text(appLocalizations.generalCollection(2)),
           disabled: state.navItem.isCollection && state.isEnabled,
         ),
@@ -63,7 +68,8 @@ class _NavigationRail extends StatelessWidget {
             Icons.bookmarks_outlined,
             color: colorScheme.onSurface.withValues(alpha: 0.64),
           ),
-          selectedIcon: Icon(Icons.bookmarks_rounded, color: colorScheme.onSurface),
+          selectedIcon:
+              Icon(Icons.bookmarks_rounded, color: colorScheme.onSurface),
           label: Text(appLocalizations.generalBookmark(2)),
           disabled: state.navItem.isBookmark && state.isEnabled,
         ),
@@ -73,7 +79,8 @@ class _NavigationRail extends StatelessWidget {
             Icons.settings_outlined,
             color: colorScheme.onSurface.withValues(alpha: 0.64),
           ),
-          selectedIcon: Icon(Icons.settings_rounded, color: colorScheme.onSurface),
+          selectedIcon:
+              Icon(Icons.settings_rounded, color: colorScheme.onSurface),
           label: Text(appLocalizations.generalSettings),
           disabled: state.navItem.isSettings && state.isEnabled,
         ),

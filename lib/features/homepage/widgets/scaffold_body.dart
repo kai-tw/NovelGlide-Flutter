@@ -18,7 +18,7 @@ class _ScaffoldBody extends StatelessWidget {
               builder: (BuildContext context, HomepageState state) {
                 switch (state.navItem) {
                   case HomepageNavigationItem.bookshelf:
-                    return const BookshelfScaffoldBody();
+                    return const BookListScrollView();
 
                   case HomepageNavigationItem.collection:
                     return const CollectionListScaffoldBody();
