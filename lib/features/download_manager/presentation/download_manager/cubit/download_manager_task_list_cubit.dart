@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../enum/loading_state_code.dart';
 import '../../../domain/use_cases/downloader_clear_tasks_use_case.dart';
-import '../../../domain/use_cases/downloader_download_file_use_case.dart';
 import '../../../domain/use_cases/downloader_get_task_list_use_case.dart';
 import '../../../domain/use_cases/downloader_observe_task_list_change_use_case.dart';
 import 'download_manager_task_list_state.dart';
@@ -13,13 +12,11 @@ class DownloadManagerTaskListCubit extends Cubit<DownloadManagerTaskListState> {
   factory DownloadManagerTaskListCubit(
     DownloaderGetTaskListUseCase getTaskListUseCase,
     DownloaderClearTasksUseCase clearTasksUseCase,
-    DownloaderDownloadFileUseCase downloadFileUseCase,
     DownloaderObserveTaskListChangeUseCase observeTaskListChangeUseCase,
   ) {
     final DownloadManagerTaskListCubit cubit = DownloadManagerTaskListCubit._(
       getTaskListUseCase,
       clearTasksUseCase,
-      downloadFileUseCase,
     );
 
     cubit._onListChangeSubscription =
@@ -31,13 +28,11 @@ class DownloadManagerTaskListCubit extends Cubit<DownloadManagerTaskListState> {
   DownloadManagerTaskListCubit._(
     this._getTaskListUseCase,
     this._clearTasksUseCase,
-    this._downloadFileUseCase,
   ) : super(const DownloadManagerTaskListState());
 
   /// Use cases
   final DownloaderGetTaskListUseCase _getTaskListUseCase;
   final DownloaderClearTasksUseCase _clearTasksUseCase;
-  final DownloaderDownloadFileUseCase _downloadFileUseCase;
 
   late final StreamSubscription<void> _onListChangeSubscription;
 

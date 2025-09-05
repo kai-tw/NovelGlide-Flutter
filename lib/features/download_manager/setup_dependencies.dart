@@ -72,7 +72,6 @@ void setupDownloaderDependencies() {
     () => DownloadManagerTaskListCubit(
       sl<DownloaderGetTaskListUseCase>(),
       sl<DownloaderClearTasksUseCase>(),
-      sl<DownloaderDownloadFileUseCase>(),
       sl<DownloaderObserveTaskListChangeUseCase>(),
     ),
   );
