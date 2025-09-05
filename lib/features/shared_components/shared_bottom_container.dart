@@ -18,7 +18,7 @@ class SharedBottomContainer extends StatelessWidget {
       margin: margin ?? const EdgeInsets.all(8.0),
       padding: padding ?? const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHigh,
+        color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: const BorderRadius.all(Radius.circular(24.0)),
       ),
       child: SafeArea(
