@@ -12,24 +12,26 @@ class DiscoverBrowserNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SharedBottomContainer(
-      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: Column(
-        children: <Widget>[
-          DiscoverBrowserUrlBar(),
-          Padding(
-            padding: EdgeInsets.only(top: 12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                DiscoverBrowserPreviousButton(),
-                DiscoverBrowserNextButton(),
-                DiscoverBrowserHomeButton(),
-                DiscoverBrowserFavoriteButton(),
-              ],
+    return const SafeArea(
+      child: SharedBottomContainer(
+        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(bottom: 12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  DiscoverBrowserPreviousButton(),
+                  DiscoverBrowserNextButton(),
+                  DiscoverBrowserHomeButton(),
+                  DiscoverBrowserFavoriteButton(),
+                ],
+              ),
             ),
-          ),
-        ],
+            DiscoverBrowserUrlBar(),
+          ],
+        ),
       ),
     );
   }

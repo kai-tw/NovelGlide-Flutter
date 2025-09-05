@@ -14,35 +14,33 @@ class HomepageScaffoldBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: <Widget>[
-          const Advertisement(
-            unitId: AdUnitId.homepage,
+    return Column(
+      children: <Widget>[
+        const Advertisement(
+          unitId: AdUnitId.homepage,
+        ),
+        Expanded(
+          child: BlocBuilder<HomepageCubit, HomepageState>(
+            buildWhen: (HomepageState previous, HomepageState current) =>
+                previous.navItem != current.navItem,
+            builder: (BuildContext context, HomepageState state) {
+              switch (state.navItem) {
+                case HomepageNavigationItem.bookshelf:
+                  return const Bookshelf();
+
+                case HomepageNavigationItem.discovery:
+                  return const DiscoverBrowser();
+
+                case HomepageNavigationItem.bookmark:
+                  return const BookmarkListScaffoldBody();
+
+                case HomepageNavigationItem.settings:
+                  return const SettingsPage();
+              }
+            },
           ),
-          Expanded(
-            child: BlocBuilder<HomepageCubit, HomepageState>(
-              buildWhen: (HomepageState previous, HomepageState current) =>
-                  previous.navItem != current.navItem,
-              builder: (BuildContext context, HomepageState state) {
-                switch (state.navItem) {
-                  case HomepageNavigationItem.bookshelf:
-                    return const Bookshelf();
-
-                  case HomepageNavigationItem.discovery:
-                    return const DiscoverBrowser();
-
-                  case HomepageNavigationItem.bookmark:
-                    return const BookmarkListScaffoldBody();
-
-                  case HomepageNavigationItem.settings:
-                    return const SettingsPage();
-                }
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
