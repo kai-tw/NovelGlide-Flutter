@@ -5,8 +5,8 @@ import '../../../homepage/cubit/homepage_cubit.dart';
 import 'collection_list.dart';
 import 'cubit/collection_list_cubit.dart';
 
-class CollectionListScaffoldBody extends StatelessWidget {
-  const CollectionListScaffoldBody({super.key});
+class CollectionListScrollView extends StatelessWidget {
+  const CollectionListScrollView({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -14,13 +14,12 @@ import '../bookmark/presentation/bookmark_list/bookmark_list_scaffold_body.dart'
 import '../bookmark/presentation/bookmark_list/cubit/bookmark_list_cubit.dart';
 import '../books/domain/entities/book.dart';
 import '../books/presentation/add_page/book_add_page.dart';
-import '../books/presentation/book_list/book_list_app_bar.dart';
-import '../books/presentation/book_list/book_list_scroll_view.dart';
 import '../books/presentation/book_list/cubit/bookshelf_cubit.dart';
+import '../books/presentation/bookshelf/bookshelf.dart';
+import '../books/presentation/bookshelf/bookshelf_app_bar.dart';
+import '../books/presentation/bookshelf/cubit/bookshelf_cubit.dart';
 import '../collection/domain/entities/collection_data.dart';
 import '../collection/presentation/add_dialog/collection_add_dialog.dart';
-import '../collection/presentation/collection_list/collection_list_app_bar.dart';
-import '../collection/presentation/collection_list/collection_list_scaffold_body.dart';
 import '../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
 import '../settings_page/presentation/settings_app_bar.dart';
 import '../settings_page/presentation/settings_page.dart';
@@ -47,11 +46,21 @@ class Homepage extends StatelessWidget {
 
     return MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
-        BlocProvider<HomepageCubit>(create: (_) => HomepageCubit()),
-        BlocProvider<BookListCubit>(create: (_) => sl<BookListCubit>()),
+        BlocProvider<HomepageCubit>(
+          create: (_) => HomepageCubit(),
+        ),
+        BlocProvider<BookshelfCubit>(
+          create: (_) => BookshelfCubit(),
+        ),
+        BlocProvider<BookListCubit>(
+          create: (_) => sl<BookListCubit>(),
+        ),
         BlocProvider<CollectionListCubit>(
-            create: (_) => sl<CollectionListCubit>()),
-        BlocProvider<BookmarkListCubit>(create: (_) => sl<BookmarkListCubit>()),
+          create: (_) => sl<CollectionListCubit>(),
+        ),
+        BlocProvider<BookmarkListCubit>(
+          create: (_) => sl<BookmarkListCubit>(),
+        ),
       ],
       child: switch (windowClass) {
         WindowSize.compact => const HomepageCompactView(),
