@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:intl/intl.dart';
 import 'package:rss_dart/dart_rss.dart';
 
-import '../../../../../core/log_system/log_system.dart';
 import '../../../../../core/mime_resolver/domain/entities/mime_type.dart';
+import '../../../../../core/parser_system/domain/repository/datetime_parser.dart';
+import '../../../../../core/parser_system/domain/repository/uri_parser.dart';
 import '../../../domain/entities/catalog_feed.dart';
 import '../../../domain/entities/publication_author.dart';
 import '../../../domain/entities/publication_entry.dart';
@@ -14,9 +14,14 @@ import '../discover_data_source.dart';
 
 /// A concrete implementation of DiscoverDataSource for OPDS feeds.
 class OpdsDataSourceImpl implements DiscoverDataSource {
-  OpdsDataSourceImpl();
+  OpdsDataSourceImpl(
+    this._dateTimeParser,
+    this._uriParser,
+  );
 
   final Dio _dio = Dio();
+  final DateTimeParser _dateTimeParser;
+  final UriParser _uriParser;
 
   /// Fetches an OPDS catalog feed from a given URL and parses it.
   @override
@@ -29,7 +34,7 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
       return CatalogFeed(
         id: feed.id?.trim(),
         title: feed.title?.trim(),
-        updated: _parseDateTime(feed.updated),
+        updated: _dateTimeParser.tryParse(feed.updated),
         links: feed.links.map(_parseLink).toList(),
         entries: feed.items.map(_parseEntry).toList(),
       );
@@ -46,36 +51,13 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
 
   /// ========== Parsers ==========
 
-  DateTime? _parseDateTime(String? value) {
-    if (value == null || value.isEmpty) {
-      return null;
-    }
-
-    try {
-      return DateTime.parse(value);
-    } catch (_) {
-      // Failed to parse by default. Try some known formats.
-    }
-
-    final List<String> formatPattern = <String>[
-      'EEE, dd MMM yyyy HH:mm:ss Z',
-    ];
-
-    for (final String pattern in formatPattern) {
-      try {
-        return DateFormat(pattern).parse(value);
-      } catch (_) {}
-    }
-
-    LogSystem.error('Failed to parse date time: $value');
-    return null;
-  }
-
   PublicationLink _parseLink(AtomLink link) {
     final Uri? href = link.href == null ? null : Uri.tryParse(link.href!);
     final String? rel = link.rel?.trim();
+    final List<String>? typeList = link.type?.split(';');
+    final String? mimeString = typeList?.first.trim();
     final MimeType? mimeType =
-        link.type == null ? null : MimeType.fromString(link.type!);
+        mimeString == null ? null : MimeType.fromString(mimeString);
     return PublicationLink(
       href: href,
       rel: switch (rel) {
@@ -85,6 +67,7 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
         _ => null,
       },
       type: mimeType,
+      title: link.title,
     );
   }
 
@@ -92,7 +75,7 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
     return PublicationEntry(
       id: item.id?.trim(),
       title: item.title?.trim(),
-      updated: _parseDateTime(item.updated),
+      updated: _dateTimeParser.tryParse(item.updated),
       summary: item.summary,
       content: item.content?.trim(),
       authors: item.authors.map(_parseAuthor).toList(),
@@ -103,6 +86,9 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
   PublicationAuthor _parseAuthor(AtomPerson person) {
     return PublicationAuthor(
       name: person.name?.trim().isNotEmpty == true ? person.name?.trim() : null,
+      uri: person.uri?.trim().isNotEmpty == true
+          ? _uriParser.parseHttps(person.uri!)
+          : null,
     );
   }
 }

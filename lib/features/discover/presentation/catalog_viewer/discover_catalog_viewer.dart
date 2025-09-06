@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../locale_system/locale_utils.dart';
 import '../../domain/entities/catalog_feed.dart';
-import '../entry_widget/discover_entry_widget.dart';
+import 'widgets/discover_entry_widget.dart';
 
 class DiscoverCatalogViewer extends StatelessWidget {
   const DiscoverCatalogViewer({
@@ -14,7 +14,7 @@ class DiscoverCatalogViewer extends StatelessWidget {
 
   final CatalogFeed feed;
   final Future<void> Function(Uri uri)? onVisit;
-  final Future<void> Function(Uri uri)? onDownload;
+  final Future<void> Function(Uri uri, String? entryTitle)? onDownload;
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +33,13 @@ class DiscoverCatalogViewer extends StatelessWidget {
               leading: const Icon(Icons.local_library_rounded),
               title: Text(
                 feed.title ?? '',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w900,
-                    ),
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(
+                  fontWeight: FontWeight.w900,
+                ),
               ),
               subtitle: Text(
                 LocaleUtils.dateTimeOf(context, feed.updated) ?? '',
@@ -44,7 +48,7 @@ class DiscoverCatalogViewer extends StatelessWidget {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
+                  (BuildContext context, int index) {
                 return DiscoverEntryWidget(
                   entry: feed.entries[index],
                   onVisit: onVisit,

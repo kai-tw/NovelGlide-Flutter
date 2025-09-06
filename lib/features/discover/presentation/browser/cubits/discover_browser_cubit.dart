@@ -106,10 +106,10 @@ class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
     }
   }
 
-  Future<void> downloadBook(Uri uri) async {
+  Future<void> downloadBook(Uri uri, String? entryTitle) async {
     return _bookDownloadAndAddUseCase(BookDownloadAndAddUseCaseParam(
       uri: uri,
-      name: state.catalogFeed?.title ?? '',
+      name: entryTitle ?? state.catalogFeed?.title ?? '',
     ));
   }
 

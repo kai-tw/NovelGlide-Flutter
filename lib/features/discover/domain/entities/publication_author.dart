@@ -4,10 +4,15 @@ import 'package:equatable/equatable.dart';
 class PublicationAuthor extends Equatable {
   const PublicationAuthor({
     this.name,
+    this.uri,
   });
 
   final String? name;
+  final Uri? uri;
 
   @override
-  List<Object?> get props => <Object?>[name];
+  List<Object?> get props => <Object?>[
+        name,
+        uri,
+      ];
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/mime_resolver/domain/entities/mime_type.dart';
-import '../../../books/domain/entities/book_cover.dart';
-import '../../../books/presentation/book_cover/shared_book_cover_widget.dart';
-import '../../../locale_system/locale_utils.dart';
-import '../../domain/entities/publication_author.dart';
-import '../../domain/entities/publication_entry.dart';
-import '../../domain/entities/publication_link.dart';
-import '../link_widget/discover_link_widget.dart';
+import '../../../../books/domain/entities/book_cover.dart';
+import '../../../../books/presentation/book_cover/shared_book_cover_widget.dart';
+import '../../../../locale_system/locale_utils.dart';
+import '../../../domain/entities/publication_author.dart';
+import '../../../domain/entities/publication_entry.dart';
+import '../../../domain/entities/publication_link.dart';
+import 'discover_author_widget.dart';
+import 'discover_link_widget.dart';
 
 class DiscoverEntryWidget extends StatelessWidget {
   const DiscoverEntryWidget({
@@ -19,7 +19,7 @@ class DiscoverEntryWidget extends StatelessWidget {
 
   final PublicationEntry entry;
   final Future<void> Function(Uri uri)? onVisit;
-  final Future<void> Function(Uri uri)? onDownload;
+  final Future<void> Function(Uri uri, String? entryTitle)? onDownload;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +45,10 @@ class DiscoverEntryWidget extends StatelessWidget {
                   children: <Widget?>[
                     _buildTitle(context),
                     _buildAuthors(context),
+                    const Padding(
+                      padding: EdgeInsets.only(bottom: 16.0),
+                      child: Divider(),
+                    ),
                     _buildSummary(context),
                     _buildPublishedDate(context),
                     _buildPublisher(context),
@@ -77,18 +81,20 @@ class DiscoverEntryWidget extends StatelessWidget {
   }
 
   Widget? _buildAuthors(BuildContext context) {
-    final List<String> authorName = entry.authors
-        .map((PublicationAuthor author) => author.name)
-        .whereType<String>()
+    final List<PublicationAuthor> authorName = entry.authors
+        .where((PublicationAuthor author) =>
+            author.name?.trim().isNotEmpty == true)
         .toList();
     if (authorName.isEmpty) {
       return null;
     } else {
-      return ListTile(
-        contentPadding: EdgeInsets.zero,
-        leading: const Icon(Icons.person),
-        title: Text(authorName.join(', ')),
-        titleTextStyle: Theme.of(context).textTheme.bodyMedium,
+      return OverflowBar(
+        children: authorName
+            .map((PublicationAuthor author) => DiscoverAuthorWidget(
+                  author: author,
+                  onVisit: onVisit,
+                ))
+            .toList(),
       );
     }
   }
@@ -137,9 +143,8 @@ class DiscoverEntryWidget extends StatelessWidget {
   }
 
   Widget? _buildLinkWidget(BuildContext context) {
-    final Iterable<PublicationLink> supportedLinks = entry.links.where(
-        (PublicationLink link) =>
-            link.type == MimeType.atomFeed || link.type == MimeType.epub);
+    final Iterable<PublicationLink> supportedLinks =
+        entry.links.where((PublicationLink link) => link.type != null);
     if (supportedLinks.isEmpty) {
       return null;
     } else {
@@ -147,11 +152,14 @@ class DiscoverEntryWidget extends StatelessWidget {
         alignment: MainAxisAlignment.center,
         spacing: 8.0,
         children: supportedLinks
-            .map((PublicationLink link) => DiscoverLinkWidget(
-                  link: link,
-                  onVisit: onVisit,
-                  onDownload: onDownload,
-                ))
+            .map(
+              (PublicationLink link) => DiscoverLinkWidget(
+                link: link,
+                onVisit: onVisit,
+                onDownload: (Uri uri) async =>
+                    onDownload?.call(uri, entry.title),
+              ),
+            )
             .toList(),
       );
     }

@@ -8,6 +8,18 @@ enum MimeType {
     <String>['application/atom+xml'],
     <String>[],
   ),
+  pdf(
+    <String>['application/pdf'],
+    <String>['pdf'],
+  ),
+  jpg(
+    <String>['image/jpeg'],
+    <String>['jpg'],
+  ),
+  png(
+    <String>['image/png'],
+    <String>['png'],
+  ),
   unknown(
     <String>[],
     <String>[],

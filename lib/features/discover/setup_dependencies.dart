@@ -1,4 +1,6 @@
 import '../../core/file_system/domain/repositories/json_repository.dart';
+import '../../core/parser_system/domain/repository/datetime_parser.dart';
+import '../../core/parser_system/domain/repository/uri_parser.dart';
 import '../../core/parser_system/domain/use_cases/uri_parser_parse_https_use_case.dart';
 import '../../core/path_provider/domain/repositories/json_path_provider.dart';
 import '../../main.dart';
@@ -26,7 +28,10 @@ import 'presentation/favorite_list/cubit/discover_favorite_list_cubit.dart';
 void setupDiscoverDependencies() {
   // Register data sources
   sl.registerLazySingleton<DiscoverDataSource>(
-    () => OpdsDataSourceImpl(),
+    () => OpdsDataSourceImpl(
+      sl<DateTimeParser>(),
+      sl<UriParser>(),
+    ),
   );
   sl.registerLazySingleton<DiscoverFavoriteDataSource>(
     () => DiscoverJsonFavoriteDataSourceImpl(
