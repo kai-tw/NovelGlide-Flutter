@@ -12,10 +12,17 @@ class DiscoverBrowserNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    return SafeArea(
       child: SharedBottomContainer(
-        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        child: Column(
+        margin: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Theme.of(context).colorScheme.shadow.withAlpha(50),
+            blurRadius: 16.0,
+            offset: const Offset(0.0, 8.0),
+          ),
+        ],
+        child: const Column(
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(bottom: 12.0),

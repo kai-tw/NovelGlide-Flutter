@@ -6,7 +6,4 @@ import '../entities/catalog_feed.dart';
 abstract class DiscoverRepository {
   /// Fetches a catalog feed from a given URL.
   Future<CatalogFeed> browseCatalog(Uri uri);
-
-  /// Searches a catalog for publications.
-  Future<CatalogFeed> searchCatalog(String url, String query);
 }

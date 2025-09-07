@@ -43,12 +43,6 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
     }
   }
 
-  /// Searches an OPDS catalog using a query.
-  @override
-  Future<CatalogFeed> searchCatalogFeed(String url, String query) async {
-    throw UnimplementedError();
-  }
-
   /// ========== Parsers ==========
 
   PublicationLink _parseLink(AtomLink link) {
@@ -63,7 +57,10 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
       rel: switch (rel) {
         'http://opds-spec.org/thumbnail' =>
           PublicationLinkRelationship.thumbnail,
+        'http://opds-spec.org/image/thumbnail' =>
+          PublicationLinkRelationship.thumbnail,
         'http://opds-spec.org/cover' => PublicationLinkRelationship.cover,
+        'http://opds-spec.org/image' => PublicationLinkRelationship.cover,
         _ => null,
       },
       type: mimeType,

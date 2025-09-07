@@ -5,11 +5,13 @@ class SharedBottomContainer extends StatelessWidget {
     super.key,
     this.margin,
     this.padding,
+    this.boxShadow,
     required this.child,
   });
 
   final EdgeInsets? margin;
   final EdgeInsets? padding;
+  final List<BoxShadow>? boxShadow;
   final Widget child;
 
   @override
@@ -20,6 +22,7 @@ class SharedBottomContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+        boxShadow: boxShadow,
       ),
       child: SafeArea(
         child: child,

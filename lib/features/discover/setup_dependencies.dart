@@ -19,7 +19,6 @@ import 'domain/use_cases/discover_get_favorite_identifier_by_uri_use_case.dart';
 import 'domain/use_cases/discover_get_favorite_list_use_case.dart';
 import 'domain/use_cases/discover_observe_favorite_list_change_use_case.dart';
 import 'domain/use_cases/discover_remove_from_favorite_list_use_case.dart';
-import 'domain/use_cases/discover_search_catalog_use_case.dart';
 import 'presentation/add_favorite_page/cubits/discover_add_favorite_page_cubit.dart';
 import 'presentation/browser/cubits/discover_browser_cubit.dart';
 import 'presentation/favorite_list/cubit/discover_favorite_list_cubit.dart';
@@ -55,11 +54,6 @@ void setupDiscoverDependencies() {
   // Register browser use cases
   sl.registerFactory<DiscoverBrowseCatalogUseCase>(
     () => DiscoverBrowseCatalogUseCase(
-      sl<DiscoverRepository>(),
-    ),
-  );
-  sl.registerFactory<DiscoverSearchCatalogUseCase>(
-    () => DiscoverSearchCatalogUseCase(
       sl<DiscoverRepository>(),
     ),
   );

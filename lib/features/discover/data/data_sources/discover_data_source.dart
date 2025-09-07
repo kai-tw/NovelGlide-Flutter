@@ -6,7 +6,4 @@ import '../../domain/entities/catalog_feed.dart';
 abstract class DiscoverDataSource {
   /// Fetches and parses an catalog feed from a URL.
   Future<CatalogFeed> getCatalogFeed(Uri uri);
-
-  /// Searches a catalog for publications using a query.
-  Future<CatalogFeed> searchCatalogFeed(String url, String query);
 }

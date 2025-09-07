@@ -56,9 +56,9 @@ class DiscoverLinkWidget extends StatelessWidget {
 
     switch (link.rel) {
       case PublicationLinkRelationship.thumbnail:
-        return 'Thumbnail image';
+        return appLocalizations.generalThumbnail;
       case PublicationLinkRelationship.cover:
-        return 'Cover image';
+        return appLocalizations.generalBookCover;
       default:
     }
 
