@@ -11,7 +11,7 @@ class HomepageCompactView extends StatelessWidget {
       body: const HomepageScaffoldBody(),
       bottomNavigationBar: SafeArea(
         child: Container(
-          height: 64.0,
+          height: 80.0,
           margin: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 8.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(36.0),

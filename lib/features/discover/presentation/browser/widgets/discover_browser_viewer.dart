@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../enum/loading_state_code.dart';
+import '../../../../../generated/i18n/app_localizations.dart';
 import '../../../../shared_components/common_error_widgets/common_error_widget.dart';
 import '../../../../shared_components/common_loading_widgets/common_loading_widget.dart';
 import '../../catalog_viewer/discover_catalog_viewer.dart';
@@ -53,9 +54,10 @@ class DiscoverBrowserViewer extends StatelessWidget {
   }
 
   void _showAddToDownloaderSnackBar(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('This book is added to download manager'),
+      SnackBar(
+        content: Text(appLocalizations.discoverBookAddedToDownloads),
       ),
     );
   }

@@ -14,9 +14,9 @@ class DiscoverAddFavoritePageForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final DiscoverAddFavoritePageCubit cubit =
-        BlocProvider.of<DiscoverAddFavoritePageCubit>(context);
+    BlocProvider.of<DiscoverAddFavoritePageCubit>(context);
     final NotEmptyValidator notEmptyValidator =
-        NotEmptyValidator(appLocalizations);
+    NotEmptyValidator(appLocalizations);
     final UrlValidator urlValidator = UrlValidator(appLocalizations);
 
     return Form(
@@ -29,14 +29,20 @@ class DiscoverAddFavoritePageForm extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 16.0),
               child: Text(
                 appLocalizations.discoverAddToFavorites,
-                style: Theme.of(context).textTheme.headlineMedium,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headlineMedium,
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 48.0),
               child: Text(
                 appLocalizations.discoverAddFavoriteSubtitle,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyMedium,
               ),
             ),
             Padding(
@@ -45,7 +51,7 @@ class DiscoverAddFavoritePageForm extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: appLocalizations.generalName,
                   helperText:
-                      appLocalizations.discoverAddFavoriteNameHelperText,
+                  appLocalizations.discoverAddFavoriteNameHelperText,
                 ),
                 validator: notEmptyValidator.validate,
                 inputFormatters: <TextInputFormatter>[
@@ -57,7 +63,7 @@ class DiscoverAddFavoritePageForm extends StatelessWidget {
             ),
             TextFormField(
               decoration: InputDecoration(
-                labelText: appLocalizations.discoverAddFavoriteUrlLabelText,
+                labelText: appLocalizations.generalUrl,
                 helperText: appLocalizations.discoverAddFavoriteUrlHelperText,
               ),
               validator: urlValidator.validateLoosely,

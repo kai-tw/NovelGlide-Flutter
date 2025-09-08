@@ -23,6 +23,9 @@ class HomepageNavigationBar extends StatelessWidget {
         BlocProvider.of<CollectionListCubit>(context);
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
+    final Color unselectedColor = colorScheme.onSurface.withAlpha(160);
+    final Color selectedColor = colorScheme.onSurface;
+
     return BlocBuilder<HomepageCubit, HomepageState>(
       buildWhen: (HomepageState previous, HomepageState current) =>
           previous.navItem != current.navItem ||
@@ -31,12 +34,23 @@ class HomepageNavigationBar extends StatelessWidget {
         return NavigationBar(
           selectedIndex: HomepageNavigationItem.values.indexOf(state.navItem),
           indicatorColor: Colors.transparent,
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+          labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>(
+            (Set<WidgetState> states) {
+              return states.contains(WidgetState.disabled)
+                  ? TextStyle(
+                      color: selectedColor,
+                    )
+                  : TextStyle(
+                      color: unselectedColor,
+                    );
+            },
+          ),
           destinations: <Widget>[
             NavigationDestination(
               icon: Icon(
                 Icons.shelves,
-                color: colorScheme.onSurface.withValues(alpha: 0.64),
+                color: unselectedColor,
               ),
               selectedIcon: Icon(Icons.shelves, color: colorScheme.onSurface),
               label: appLocalizations.generalBookshelf,
@@ -44,7 +58,7 @@ class HomepageNavigationBar extends StatelessWidget {
             ),
             NavigationDestination(
               icon: DiscoverBrowserIcon.outlined(
-                color: colorScheme.onSurface.withValues(alpha: 0.64),
+                color: unselectedColor,
               ),
               selectedIcon: DiscoverBrowserIcon(
                 color: colorScheme.onSurface,
@@ -55,7 +69,7 @@ class HomepageNavigationBar extends StatelessWidget {
             NavigationDestination(
               icon: Icon(
                 Icons.bookmarks_outlined,
-                color: colorScheme.onSurface.withValues(alpha: 0.64),
+                color: unselectedColor,
               ),
               selectedIcon:
                   Icon(Icons.bookmarks_rounded, color: colorScheme.onSurface),
@@ -65,7 +79,7 @@ class HomepageNavigationBar extends StatelessWidget {
             NavigationDestination(
               icon: Icon(
                 Icons.settings_outlined,
-                color: colorScheme.onSurface.withValues(alpha: 0.64),
+                color: unselectedColor,
               ),
               selectedIcon: Icon(
                 Icons.settings_rounded,
