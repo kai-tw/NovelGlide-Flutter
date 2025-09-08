@@ -21,10 +21,12 @@ import '../features/reader/setup_dependencies.dart';
 import '../features/tts_service/setup_dependencies.dart';
 import '../main.dart';
 import 'file_system/setup_dependencies.dart';
+import 'lifecycle/setup_dependencies.dart';
 import 'log_system/setup_dependencies.dart';
 import 'mime_resolver/setup_dependencies.dart';
 import 'parser_system/setup_dependencies.dart';
 import 'path_provider/setup_dependencies.dart';
+import 'web_server/setup_dependencies.dart';
 
 Future<void> setupDependencies() async {
   // Setup external dependencies
@@ -68,6 +70,7 @@ void _setupSystemsDependencies() {
   setupCloudDependencies();
   setupDiscoverDependencies();
   setupDownloaderDependencies();
+  setupLifecycleDependencies();
   setupLocaleDependencies();
   setupLogDependencies();
   setupMimeResolverDependencies();
@@ -76,6 +79,7 @@ void _setupSystemsDependencies() {
   setupPreferenceDependencies();
   setupReaderDependencies();
   setupTtsDependencies();
+  setupWebServerDependencies();
 }
 
 void _setupAppDependencies() {

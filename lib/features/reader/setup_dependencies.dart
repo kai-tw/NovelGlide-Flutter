@@ -1,5 +1,7 @@
 import '../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../core/path_provider/domain/repositories/app_path_provider.dart';
+import '../../core/web_server/domain/use_cases/web_server_start_use_case.dart';
+import '../../core/web_server/domain/use_cases/web_server_stop_use_case.dart';
 import '../../main.dart';
 import '../bookmark/domain/use_cases/bookmark_get_data_use_case.dart';
 import '../bookmark/domain/use_cases/bookmark_update_data_use_case.dart';
@@ -17,10 +19,14 @@ import '../tts_service/domain/use_cases/tts_resume_use_case.dart';
 import '../tts_service/domain/use_cases/tts_speak_use_case.dart';
 import '../tts_service/domain/use_cases/tts_stop_use_case.dart';
 import 'data/repositories/reader_location_cache_repository_impl.dart';
+import 'data/repositories/reader_server_repository_impl.dart';
 import 'domain/repositories/reader_location_cache_repository.dart';
+import 'domain/repositories/reader_server_repository.dart';
 import 'domain/use_cases/reader_clear_location_cache_use_case.dart';
 import 'domain/use_cases/reader_delete_location_cache_use_case.dart';
 import 'domain/use_cases/reader_get_location_cache_use_case.dart';
+import 'domain/use_cases/reader_start_reader_server_use_case.dart';
+import 'domain/use_cases/reader_stop_reader_server_use_case.dart';
 import 'domain/use_cases/reader_store_location_cache_use_case.dart';
 import 'presentation/reader_page/cubit/reader_cubit.dart';
 
@@ -30,6 +36,15 @@ void setupReaderDependencies() {
     () => ReaderLocationCacheRepositoryImpl(
       sl<AppPathProvider>(),
       sl<FileSystemRepository>(),
+    ),
+  );
+
+  // Register Reader repositories for cubit only
+  sl.registerFactory<ReaderServerRepository>(
+    () => ReaderServerRepositoryImpl(
+      sl<BookReadBytesUseCase>(),
+      sl<WebServerStartUseCase>(),
+      sl<WebServerStopUseCase>(),
     ),
   );
 
@@ -77,11 +92,25 @@ void setupReaderDependencies() {
     ),
   );
 
+  // Register Reader server use cases.
+  sl.registerFactory<ReaderStartReaderServerUseCase>(
+    () => ReaderStartReaderServerUseCase(
+      sl<ReaderServerRepository>(),
+    ),
+  );
+  sl.registerFactory<ReaderStopReaderServerUseCase>(
+    () => ReaderStopReaderServerUseCase(
+      sl<ReaderServerRepository>(),
+    ),
+  );
+
   // Register factories
   sl.registerFactory<ReaderCubit>(
     () => ReaderCubit(
+      // Server use cases
+      sl<ReaderStartReaderServerUseCase>(),
+      sl<ReaderStopReaderServerUseCase>(),
       // Book use cases
-      sl<BookReadBytesUseCase>(),
       sl<BookGetUseCase>(),
       // Location cache use cases
       sl<ReaderStoreLocationCacheUseCase>(),

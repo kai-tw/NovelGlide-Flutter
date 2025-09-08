@@ -1,81 +1,88 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:shelf/shelf.dart';
-import 'package:shelf/shelf_io.dart' as shelf_io;
 
-import '../../../../core/log_system/log_system.dart';
+import '../../../../core/web_server/domain/entities/web_server_request.dart';
+import '../../../../core/web_server/domain/entities/web_server_response.dart';
+import '../../../../core/web_server/domain/use_cases/web_server_start_use_case.dart';
+import '../../../../core/web_server/domain/use_cases/web_server_stop_use_case.dart';
 import '../../../books/domain/use_cases/book_read_bytes_use_case.dart';
 import '../../domain/repositories/reader_server_repository.dart';
 
 class ReaderServerRepositoryImpl implements ReaderServerRepository {
-  ReaderServerRepositoryImpl(this._bookReadBytesUseCase);
+  ReaderServerRepositoryImpl(
+    this._bookReadBytesUseCase,
+    this._startUseCase,
+    this._stopUseCase,
+  );
 
-  final Uri _uri = Uri.http('localhost:8080');
+  final int _serverPort = 8080;
 
   late String _bookIdentifier;
-  HttpServer? _server;
 
   final BookReadBytesUseCase _bookReadBytesUseCase;
+  final WebServerStartUseCase _startUseCase;
+  final WebServerStopUseCase _stopUseCase;
 
   @override
   Future<Uri> start(String bookFilePath) async {
     _bookIdentifier = bookFilePath;
-    final Handler handler =
-        const Pipeline().addMiddleware(logRequests()).addHandler(_echoRequest);
-    _server = await shelf_io.serve(handler, _uri.host, _uri.port);
-    _server?.autoCompress = true;
-    LogSystem.info('Reader: Server started on ${_uri.host}:${_uri.port}.');
+    _startUseCase(WebServerStartUseCaseParam(
+      port: _serverPort,
+      routes: <String, Future<WebServerResponse> Function(WebServerRequest)>{
+        '': _sendIndexHtml,
+        'index.html': _sendIndexHtml,
+        'index.js': _sendIndexJs,
+        'main.css': _sendMainCss,
+        'book.epub': _sendBookEpub,
+      },
+    ));
 
-    return _uri;
+    return Uri.http('localhost:$_serverPort');
   }
 
-  Future<Response> _echoRequest(Request request) async {
-    switch (request.url.path) {
-      case '':
-      case 'index.html':
-        return Response.ok(
-          await rootBundle.loadString('assets/renderer/index.html'),
-          headers: <String, Object>{
-            HttpHeaders.contentTypeHeader: 'text/html; charset=utf-8'
-          },
-        );
+  /// Send the content of the index.html file.
+  Future<WebServerResponse> _sendIndexHtml(WebServerRequest request) async {
+    return WebServerResponse(
+      body: await rootBundle.loadString('assets/renderer/index.html'),
+      headers: const <String, Object>{
+        HttpHeaders.contentTypeHeader: 'text/html; charset=utf-8'
+      },
+    );
+  }
 
-      case 'index.js':
-        return Response.ok(
-          await rootBundle.loadString('assets/renderer/index.js'),
-          headers: <String, Object>{
-            HttpHeaders.contentTypeHeader: 'text/javascript; charset=utf-8'
-          },
-        );
+  /// Send the content of the index.js file.
+  Future<WebServerResponse> _sendIndexJs(WebServerRequest request) async {
+    return WebServerResponse(
+      body: await rootBundle.loadString('assets/renderer/index.js'),
+      headers: const <String, Object>{
+        HttpHeaders.contentTypeHeader: 'text/javascript; charset=utf-8'
+      },
+    );
+  }
 
-      case 'main.css':
-        return Response.ok(
-          await rootBundle.loadString('assets/renderer/main.css'),
-          headers: <String, Object>{
-            HttpHeaders.contentTypeHeader: 'text/css; charset=utf-8'
-          },
-        );
+  /// Send the content of the main.css file.
+  Future<WebServerResponse> _sendMainCss(WebServerRequest request) async {
+    return WebServerResponse(
+      body: await rootBundle.loadString('assets/renderer/main.css'),
+      headers: const <String, Object>{
+        HttpHeaders.contentTypeHeader: 'text/css; charset=utf-8'
+      },
+    );
+  }
 
-      case 'book.epub':
-        return Response.ok(
-          await _bookReadBytesUseCase(_bookIdentifier),
-          headers: <String, Object>{
-            HttpHeaders.contentTypeHeader: 'application/epub+zip'
-          },
-        );
-
-      default:
-        return Response.notFound('Not found');
-    }
+  /// Send the content of the book.epub file.
+  Future<WebServerResponse> _sendBookEpub(WebServerRequest request) async {
+    return WebServerResponse(
+      body: await _bookReadBytesUseCase(_bookIdentifier),
+      headers: const <String, Object>{
+        HttpHeaders.contentTypeHeader: 'application/epub+zip'
+      },
+    );
   }
 
   @override
   Future<void> stop() async {
-    if (_server != null) {
-      await _server!.close();
-      _server = null;
-      LogSystem.info('Reader: Server stopped.');
-    }
+    _stopUseCase(_serverPort);
   }
 }

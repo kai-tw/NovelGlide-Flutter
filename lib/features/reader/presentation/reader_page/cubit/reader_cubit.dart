@@ -10,7 +10,6 @@ import '../../../../bookmark/domain/use_cases/bookmark_get_data_use_case.dart';
 import '../../../../bookmark/domain/use_cases/bookmark_update_data_use_case.dart';
 import '../../../../books/domain/entities/book.dart';
 import '../../../../books/domain/use_cases/book_get_use_case.dart';
-import '../../../../books/domain/use_cases/book_read_bytes_use_case.dart';
 import '../../../../preference/domain/entities/reader_preference_data.dart';
 import '../../../../preference/domain/use_cases/preference_get_use_cases.dart';
 import '../../../../preference/domain/use_cases/preference_observe_change_use_case.dart';
@@ -24,7 +23,6 @@ import '../../../../tts_service/domain/use_cases/tts_speak_use_case.dart';
 import '../../../../tts_service/domain/use_cases/tts_stop_use_case.dart';
 import '../../../data/data_transfer_objects/reader_web_message_dto.dart';
 import '../../../data/repositories/reader_search_repository_impl.dart';
-import '../../../data/repositories/reader_server_repository_impl.dart';
 import '../../../data/repositories/reader_tts_repository_impl.dart';
 import '../../../data/repositories/reader_web_view_repository_impl.dart';
 import '../../../domain/entities/reader_destination_type.dart';
@@ -32,7 +30,6 @@ import '../../../domain/entities/reader_navigation_state_code.dart';
 import '../../../domain/entities/reader_page_num_type.dart';
 import '../../../domain/entities/reader_set_state_data.dart';
 import '../../../domain/repositories/reader_search_repository.dart';
-import '../../../domain/repositories/reader_server_repository.dart';
 import '../../../domain/repositories/reader_tts_repository.dart';
 import '../../../domain/repositories/reader_web_view_repository.dart';
 import '../../../domain/use_cases/reader_get_location_cache_use_case.dart';
@@ -68,8 +65,10 @@ part 'reader_web_view_handler.dart';
 
 class ReaderCubit extends Cubit<ReaderState> {
   factory ReaderCubit(
+    // Server use cases
+    ReaderStartReaderServerUseCase startReaderServerUseCase,
+    ReaderStopReaderServerUseCase stopReaderServerUseCase,
     // Book use cases
-    BookReadBytesUseCase bookReadBytesUseCase,
     BookGetUseCase bookGetUseCase,
     // Location cache use cases
     ReaderStoreLocationCacheUseCase storeLocationCacheUseCase,
@@ -90,10 +89,6 @@ class ReaderCubit extends Cubit<ReaderState> {
     TtsPauseUseCase ttsPauseUseCase,
     TtsResumeUseCase ttsResumeUseCase,
   ) {
-    // Setup server dependencies
-    final ReaderServerRepository serverRepository =
-        ReaderServerRepositoryImpl(bookReadBytesUseCase);
-
     // Setup webview dependencies
     final WebViewController webViewController = WebViewController();
     final ReaderWebViewRepository webViewRepository =
@@ -109,8 +104,8 @@ class ReaderCubit extends Cubit<ReaderState> {
 
     final ReaderCubit cubit = ReaderCubit._(
       // Server use cases
-      ReaderStartReaderServerUseCase(serverRepository),
-      ReaderStopReaderServerUseCase(serverRepository),
+      startReaderServerUseCase,
+      stopReaderServerUseCase,
       // Communication use cases
       ReaderObserveSaveLocationUseCase(webViewRepository),
       ReaderObserveSetStateUseCase(webViewRepository),
@@ -212,8 +207,6 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   late final ReaderGestureHandler gestureHandler =
       ReaderGestureHandler(onSwipeLeft: previousPage, onSwipeRight: nextPage);
-  late final AppLifecycleListener _lifecycle =
-      AppLifecycleListener(onStateChange: _onLifecycleChanged);
 
   /// Dependencies
   final WebViewController webViewController;
@@ -434,19 +427,6 @@ class ReaderCubit extends Cubit<ReaderState> {
   }
 
   /// *************************************************************************
-  /// Lifecycle
-  /// *************************************************************************
-
-  void _onLifecycleChanged(AppLifecycleState state) {
-    switch (state) {
-      case AppLifecycleState.detached:
-        _stopReaderServerUseCase();
-        break;
-      default:
-    }
-  }
-
-  /// *************************************************************************
   /// Communication
   /// *************************************************************************
 
@@ -490,7 +470,6 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   @override
   Future<void> close() async {
-    _lifecycle.dispose();
     await _preferenceSubscription.cancel();
     await _saveLocationStreamSubscription.cancel();
     await _loadDoneStreamSubscription.cancel();

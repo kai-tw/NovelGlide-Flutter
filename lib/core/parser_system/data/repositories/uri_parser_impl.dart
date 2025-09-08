@@ -2,11 +2,13 @@ import '../../domain/repository/uri_parser.dart';
 
 class UriParserImpl implements UriParser {
   String _concatProtocol(String input, String protocol) {
-    if (!input.contains('://')) {
+    if (!_hasProtocol(input)) {
       return '$protocol://$input';
     }
     return input;
   }
+
+  bool _hasProtocol(String input) => input.contains('://');
 
   @override
   Uri? parseHttps(String input) {
