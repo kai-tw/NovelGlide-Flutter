@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../enum/window_size.dart';
 import '../../../../shared_components/shared_bottom_container.dart';
 import 'buttons/discover_browser_favorite_button.dart';
 import 'buttons/discover_browser_home_button.dart';
@@ -14,7 +15,11 @@ class DiscoverBrowserNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: SharedBottomContainer(
-        margin: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+        margin: const EdgeInsets.only(
+          left: 16.0,
+          right: 16.0,
+          bottom: 12.0,
+        ),
         boxShadow: <BoxShadow>[
           BoxShadow(
             color: Theme.of(context).colorScheme.shadow.withAlpha(50),
@@ -22,11 +27,13 @@ class DiscoverBrowserNavigationBar extends StatelessWidget {
             offset: const Offset(0.0, 8.0),
           ),
         ],
-        child: const Column(
+        child: Column(
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(bottom: 12.0),
-              child: Row(
+            Container(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              constraints:
+                  BoxConstraints(maxWidth: WindowSize.compact.maxWidth),
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   DiscoverBrowserPreviousButton(),
@@ -36,7 +43,7 @@ class DiscoverBrowserNavigationBar extends StatelessWidget {
                 ],
               ),
             ),
-            DiscoverBrowserUrlBar(),
+            const DiscoverBrowserUrlBar(),
           ],
         ),
       ),

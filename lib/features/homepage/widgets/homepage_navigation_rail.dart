@@ -43,57 +43,85 @@ class HomepageNavigationRail extends StatelessWidget {
         BlocProvider.of<CollectionListCubit>(context);
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
+    final Color unselectedColor = colorScheme.onSurface.withAlpha(160);
+    final Color selectedColor = colorScheme.onSurface;
+    final TextStyle unselectedTextStyle = TextStyle(color: unselectedColor);
+    final TextStyle selectedTextStyle = TextStyle(color: selectedColor);
+
     return NavigationRail(
       selectedIndex: HomepageNavigationItem.values.indexOf(state.navItem),
       indicatorColor: Colors.transparent,
       backgroundColor: colorScheme.surfaceContainer,
-      labelType: NavigationRailLabelType.none,
+      labelType: NavigationRailLabelType.all,
       destinations: <NavigationRailDestination>[
         NavigationRailDestination(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           icon: Icon(
             Icons.shelves,
-            color: colorScheme.onSurface.withValues(alpha: 0.64),
+            color: unselectedColor,
           ),
-          selectedIcon: Icon(Icons.shelves, color: colorScheme.onSurface),
-          label: Text(appLocalizations.generalBookshelf),
+          selectedIcon: Icon(
+            Icons.shelves,
+            color: selectedColor,
+          ),
+          label: Text(
+            appLocalizations.generalBookshelf,
+            style: state.navItem.isBookshelf && state.isEnabled
+                ? selectedTextStyle
+                : unselectedTextStyle,
+          ),
           disabled: state.navItem.isBookshelf && state.isEnabled,
         ),
         NavigationRailDestination(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           icon: DiscoverBrowserIcon.outlined(
-            color: colorScheme.onSurface.withValues(alpha: 0.64),
+            color: unselectedColor,
           ),
           selectedIcon: DiscoverBrowserIcon(
-            color: colorScheme.onSurface,
+            color: selectedColor,
           ),
-          label: Text(appLocalizations.generalDiscover),
+          label: Text(
+            appLocalizations.generalDiscover,
+            style: state.navItem.isDiscovery && state.isEnabled
+                ? selectedTextStyle
+                : unselectedTextStyle,
+          ),
           disabled: state.navItem.isDiscovery && state.isEnabled,
         ),
         NavigationRailDestination(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           icon: Icon(
             Icons.bookmarks_outlined,
-            color: colorScheme.onSurface.withValues(alpha: 0.64),
+            color: unselectedColor,
           ),
           selectedIcon: Icon(
             Icons.bookmarks_rounded,
-            color: colorScheme.onSurface,
+            color: selectedColor,
           ),
-          label: Text(appLocalizations.generalBookmark(2)),
+          label: Text(
+            appLocalizations.generalBookmark(2),
+            style: state.navItem.isBookmark && state.isEnabled
+                ? selectedTextStyle
+                : unselectedTextStyle,
+          ),
           disabled: state.navItem.isBookmark && state.isEnabled,
         ),
         NavigationRailDestination(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           icon: Icon(
             Icons.settings_outlined,
-            color: colorScheme.onSurface.withValues(alpha: 0.64),
+            color: unselectedColor,
           ),
           selectedIcon: Icon(
             Icons.settings_rounded,
-            color: colorScheme.onSurface,
+            color: selectedColor,
           ),
-          label: Text(appLocalizations.generalSettings),
+          label: Text(
+            appLocalizations.generalSettings,
+            style: state.navItem.isSettings && state.isEnabled
+                ? selectedTextStyle
+                : unselectedTextStyle,
+          ),
           disabled: state.navItem.isSettings && state.isEnabled,
         ),
       ],

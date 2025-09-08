@@ -43,28 +43,28 @@ class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
   Future<void> browseCatalog([Uri? uri]) async {
     final Uri? requestedUri =
         uri ?? _parseHttpsUseCase(textEditingController.text);
+    final Uri? previousUri = state.currentUri;
 
-    if (requestedUri == null || requestedUri.toString().isEmpty) {
+    if (requestedUri == null ||
+        requestedUri.toString().isEmpty ||
+        previousUri == requestedUri) {
       return;
     }
 
-    final Uri? previousUri = state.currentUri;
-    await _loadFeed(requestedUri);
+    // Emit current uri
+    emit(state.copyWith(
+      currentUri: requestedUri,
+      restoreStack: const <Uri>[],
+    ));
 
-    if (!isClosed) {
-      // Emit current uri
+    if (previousUri != null) {
+      // Add the requested URI to the history stack and clear the restore stack
       emit(state.copyWith(
-        currentUri: requestedUri,
-        restoreStack: const <Uri>[],
+        historyStack: <Uri>[...state.historyStack, previousUri],
       ));
-
-      if (previousUri != null && previousUri != requestedUri) {
-        // Add the requested URI to the history stack and clear the restore stack
-        emit(state.copyWith(
-          historyStack: <Uri>[...state.historyStack, previousUri],
-        ));
-      }
     }
+
+    await _loadFeed(requestedUri);
   }
 
   Future<void> _loadFeed(Uri uri) async {

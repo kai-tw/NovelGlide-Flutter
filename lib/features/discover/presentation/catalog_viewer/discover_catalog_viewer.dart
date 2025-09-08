@@ -20,7 +20,6 @@ class DiscoverCatalogViewer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scrollbar(
       child: CustomScrollView(
-        clipBehavior: Clip.none,
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: ListTile(
@@ -33,13 +32,9 @@ class DiscoverCatalogViewer extends StatelessWidget {
               leading: const Icon(Icons.local_library_rounded),
               title: Text(
                 feed.title ?? '',
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .titleLarge
-                    ?.copyWith(
-                  fontWeight: FontWeight.w900,
-                ),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
               ),
               subtitle: Text(
                 LocaleUtils.dateTimeOf(context, feed.updated) ?? '',
@@ -48,7 +43,7 @@ class DiscoverCatalogViewer extends StatelessWidget {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
+              (BuildContext context, int index) {
                 return DiscoverEntryWidget(
                   entry: feed.entries[index],
                   onVisit: onVisit,

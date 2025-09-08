@@ -22,7 +22,10 @@ class DateTimeParserImpl implements DateTimeParser {
       retVal ??= DateFormat(pattern).tryParse(value);
     }
 
-    LogSystem.error('Failed to parse date time: $value');
+    if (retVal == null) {
+      LogSystem.error('Failed to parse date time: $value');
+    }
+
     return retVal;
   }
 }
