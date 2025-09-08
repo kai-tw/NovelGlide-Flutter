@@ -42,7 +42,7 @@ class DiscoverLinkWidget extends StatelessWidget {
   }
 
   String _getTitle(AppLocalizations appLocalizations) {
-    if (link.title != null) {
+    if (link.title?.isNotEmpty == true) {
       return link.title!;
     }
 
