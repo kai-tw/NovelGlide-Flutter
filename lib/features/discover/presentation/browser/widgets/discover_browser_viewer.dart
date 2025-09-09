@@ -15,6 +15,7 @@ class DiscoverBrowserViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     final DiscoverBrowserCubit cubit =
         BlocProvider.of<DiscoverBrowserCubit>(context);
 
@@ -33,7 +34,9 @@ class DiscoverBrowserViewer extends StatelessWidget {
 
           case LoadingStateCode.error:
             // Error
-            return const CommonErrorWidget();
+            return CommonErrorWidget(
+              content: appLocalizations.discoverFailedToLoadCatalog,
+            );
 
           case LoadingStateCode.loaded:
             if (state.catalogFeed == null) {

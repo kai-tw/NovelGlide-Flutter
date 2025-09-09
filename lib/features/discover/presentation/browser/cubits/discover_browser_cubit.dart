@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/log_system/log_system.dart';
 import '../../../../../core/parser_system/domain/use_cases/uri_parser_parse_https_use_case.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../books/domain/use_cases/book_download_and_add_use_case.dart';
@@ -76,12 +75,16 @@ class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
       ));
     }
 
-    try {
-      final String? favoriteIdentifier =
-          await _getFavoriteIdentifierByUriUseCase(uri);
-      final CatalogFeed feed = await _browseCatalogUseCase(uri);
+    final String? favoriteIdentifier =
+        await _getFavoriteIdentifierByUriUseCase(uri);
+    final CatalogFeed? feed = await _browseCatalogUseCase(uri);
 
-      if (!isClosed) {
+    if (!isClosed) {
+      if (feed == null) {
+        emit(const DiscoverBrowserState(
+          code: LoadingStateCode.error,
+        ));
+      } else {
         final DiscoverBrowserState newState = state
             .copyWith(
               code: LoadingStateCode.loaded,
@@ -90,18 +93,6 @@ class DiscoverBrowserCubit extends Cubit<DiscoverBrowserState> {
             .copyWithFavoriteIdentifier(favoriteIdentifier);
 
         emit(newState);
-      }
-    } catch (e, s) {
-      LogSystem.error(
-        'Failed to read the feed ($uri)',
-        error: e,
-        stackTrace: s,
-      );
-
-      if (!isClosed) {
-        emit(const DiscoverBrowserState(
-          code: LoadingStateCode.error,
-        ));
       }
     }
   }

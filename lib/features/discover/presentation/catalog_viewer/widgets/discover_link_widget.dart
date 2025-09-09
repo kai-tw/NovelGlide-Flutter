@@ -21,16 +21,29 @@ class DiscoverLinkWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return TextButton.icon(
-      onPressed: link.href == null
-          ? null
-          : switch (link.type) {
-              MimeType.atomFeed => () => onVisit?.call(link.href!),
-              MimeType.epub => () => onDownload?.call(link.href!),
-              _ => null,
-            },
+      onPressed: _buildOnPressed(),
       icon: _buildIcon(),
       label: Text(_getTitle(appLocalizations)),
     );
+  }
+
+  void Function()? _buildOnPressed() {
+    if (link.href == null) {
+      return null;
+    }
+
+    switch (link.type) {
+      case MimeType.atomFeed:
+        return () => onVisit?.call(link.href!);
+      default:
+    }
+
+    if (link.rel == PublicationLinkRelationship.acquisition &&
+        link.type == MimeType.epub) {
+      return () => onDownload?.call(link.href!);
+    }
+
+    return null;
   }
 
   Widget _buildIcon() {

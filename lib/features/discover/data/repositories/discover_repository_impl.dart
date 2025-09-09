@@ -11,7 +11,7 @@ class DiscoverRepositoryImpl implements DiscoverRepository {
   final DiscoverDataSource _dataSource;
 
   @override
-  Future<CatalogFeed> browseCatalog(Uri uri) {
+  Future<CatalogFeed?> browseCatalog(Uri uri) {
     return _dataSource.getCatalogFeed(uri);
   }
 }

@@ -25,10 +25,14 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
 
   /// Fetches an OPDS catalog feed from a given URL and parses it.
   @override
-  Future<CatalogFeed> getCatalogFeed(Uri uri) async {
-    final Response<String> response = await _dio.get(uri.toString());
+  Future<CatalogFeed?> getCatalogFeed(Uri uri) async {
+    try {
+      final Response<String> response = await _dio.get(uri.toString());
 
-    if (response.statusCode == 200 && response.data?.isNotEmpty == true) {
+      if (response.data?.isEmpty == true) {
+        return null;
+      }
+
       final AtomFeed feed = AtomFeed.parse(response.data!);
 
       return CatalogFeed(
@@ -38,8 +42,8 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
         links: feed.links.map(_parseLink).toList(),
         entries: feed.items.map(_parseEntry).toList(),
       );
-    } else {
-      throw Exception('Failed to load OPDS feed (${response.statusCode})');
+    } catch (_) {
+      return null;
     }
   }
 
@@ -61,6 +65,18 @@ class OpdsDataSourceImpl implements DiscoverDataSource {
           PublicationLinkRelationship.thumbnail,
         'http://opds-spec.org/cover' => PublicationLinkRelationship.cover,
         'http://opds-spec.org/image' => PublicationLinkRelationship.cover,
+        'http://opds-spec.org/acquisition/open-access' =>
+          PublicationLinkRelationship.acquisition,
+        'http://opds-spec.org/acquisition/buy' =>
+          PublicationLinkRelationship.buy,
+        'http://opds-spec.org/acquisition/borrow' =>
+          PublicationLinkRelationship.borrow,
+        'http://opds-spec.org/acquisition/subscribe' =>
+          PublicationLinkRelationship.subscribe,
+        'http://opds-spec.org/acquisition/sample' =>
+          PublicationLinkRelationship.sample,
+        'http://opds-spec.org/acquisition' =>
+          PublicationLinkRelationship.acquisition,
         _ => null,
       },
       type: mimeType,

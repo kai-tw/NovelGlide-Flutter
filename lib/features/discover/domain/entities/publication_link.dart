@@ -5,6 +5,11 @@ import '../../../../core/mime_resolver/domain/entities/mime_type.dart';
 enum PublicationLinkRelationship {
   thumbnail,
   cover,
+  acquisition,
+  buy,
+  borrow,
+  subscribe,
+  sample,
 }
 
 /// Represents a link to a related resource, such as a download or cover image.
