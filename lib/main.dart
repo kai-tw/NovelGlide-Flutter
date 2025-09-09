@@ -1,58 +1,52 @@
+import 'dart:isolate';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
-import 'core/presentation/app_global_cubit/app_global_cubit.dart';
-import 'core/services/log_service/log_service.dart';
-import 'features/appearance_services/appearance_services.dart';
-import 'features/homepage/homepage.dart';
-import 'features/locale_service/locale_services.dart';
+import 'app/app.dart';
+import 'core/log_system/log_system.dart';
+import 'core/setup_dependencies.dart';
 import 'firebase_options.dart';
-import 'generated/i18n/app_localizations.dart';
+
+final GetIt sl = GetIt.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Future initializations
-  await Future.wait(<Future<void>>[
-    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
-    AppearanceServices.ensureInitialized(),
-    LocaleServices.ensureInitialized(),
-  ]);
+  // Setup dependencies
+  await setupDependencies();
 
-  // Log Initialization
-  LogService.ensureInitialized();
+  // Firebase initializations
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Record Flutter error
+  FlutterError.onError = (FlutterErrorDetails errorDetails) {
+    if (kReleaseMode) {
+      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+    }
+  };
+
+  // Asynchronous errors
+  PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
+    LogSystem.error('Asynchronous Error', error: error, stackTrace: stack);
+    return true;
+  };
+
+  // Errors outside of Flutter
+  Isolate.current.addErrorListener(RawReceivePort((List<dynamic> pair) async {
+    final List<dynamic> errorAndStacktrace = pair;
+    LogSystem.error(
+      'Errors outside of Flutter',
+      error: errorAndStacktrace.first,
+      stackTrace: errorAndStacktrace.last,
+    );
+  }).sendPort);
 
   // Start App
   FirebaseAnalytics.instance.logAppOpen();
   runApp(const App());
-}
-
-class App extends StatelessWidget {
-  const App({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider<AppGlobalCubit>(
-      create: (_) => AppGlobalCubit(),
-      child: BlocBuilder<AppGlobalCubit, AppGlobalState>(
-        builder: (BuildContext context, AppGlobalState state) {
-          return MaterialApp(
-            title: 'NovelGlide',
-            theme: state.theme.lightTheme,
-            darkTheme: state.theme.darkTheme,
-            themeMode: state.themeMode,
-            locale: state.locale,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: LocaleServices.supportedLocales,
-            home: const Homepage(),
-            // builder: (BuildContext context, Widget? child) =>
-            //     AccessibilityTools(child: child),
-            debugShowCheckedModeBanner: false,
-          );
-        },
-      ),
-    );
-  }
 }

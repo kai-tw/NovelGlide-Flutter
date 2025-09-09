@@ -1,0 +1,67 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../enum/loading_state_code.dart';
+import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../shared_components/common_error_widgets/common_error_widget.dart';
+import '../../../../shared_components/common_loading_widgets/common_loading_widget.dart';
+import '../../catalog_viewer/discover_catalog_viewer.dart';
+import '../../favorite_list/discover_favorite_list.dart';
+import '../cubits/discover_browser_cubit.dart';
+import '../cubits/discover_browser_state.dart';
+
+class DiscoverBrowserViewer extends StatelessWidget {
+  const DiscoverBrowserViewer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    final DiscoverBrowserCubit cubit =
+        BlocProvider.of<DiscoverBrowserCubit>(context);
+
+    return BlocBuilder<DiscoverBrowserCubit, DiscoverBrowserState>(
+      buildWhen:
+          (DiscoverBrowserState previous, DiscoverBrowserState current) =>
+              previous.code != current.code,
+      builder: (BuildContext context, DiscoverBrowserState state) {
+        switch (state.code) {
+          case LoadingStateCode.initial:
+            return const DiscoverFavoriteList();
+
+          case LoadingStateCode.backgroundLoading:
+          case LoadingStateCode.loading:
+            return const CommonLoadingWidget();
+
+          case LoadingStateCode.error:
+            // Error
+            return CommonErrorWidget(
+              content: appLocalizations.discoverFailedToLoadCatalog,
+            );
+
+          case LoadingStateCode.loaded:
+            if (state.catalogFeed == null) {
+              return const CommonErrorWidget();
+            } else {
+              return DiscoverCatalogViewer(
+                feed: state.catalogFeed!,
+                onVisit: cubit.browseCatalog,
+                onDownload: (Uri uri, String? entryTitle) async {
+                  _showAddToDownloaderSnackBar(context);
+                  cubit.downloadBook(uri, entryTitle);
+                },
+              );
+            }
+        }
+      },
+    );
+  }
+
+  void _showAddToDownloaderSnackBar(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(appLocalizations.discoverBookAddedToDownloads),
+      ),
+    );
+  }
+}

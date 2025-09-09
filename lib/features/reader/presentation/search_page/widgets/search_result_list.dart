@@ -21,7 +21,11 @@ class _SearchResultList extends StatelessWidget {
 
           case LoadingStateCode.loading:
           case LoadingStateCode.backgroundLoading:
-            return const Center(child: CommonLoading());
+            return const CommonLoadingWidget();
+
+          case LoadingStateCode.error:
+            // Error
+            return const CommonErrorWidget();
 
           case LoadingStateCode.loaded:
             if (resultList.isEmpty) {
@@ -91,7 +95,7 @@ class _SearchResultList extends StatelessWidget {
     return ListTile(
       onTap: () {
         Navigator.of(context).pop();
-        cubit.webViewHandler.goto(result.cfi);
+        cubit.goto(result.cfi);
       },
       onLongPress: () {
         showDialog(

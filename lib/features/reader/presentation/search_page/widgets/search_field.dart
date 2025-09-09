@@ -19,6 +19,7 @@ class _SearchField extends StatelessWidget {
           onChanged: (String value) => cubit.setQuery(value),
           initialValue: state.query,
           readOnly: state.code == LoadingStateCode.loading,
+          onFieldSubmitted: (_) => cubit.startSearch(),
         );
       },
     );

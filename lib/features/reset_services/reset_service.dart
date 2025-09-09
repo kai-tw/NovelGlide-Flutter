@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/services/preference_service/preference_service.dart';
-import '../../core/shared_components/common_delete_dialog.dart';
-import '../../core/shared_components/common_loading.dart';
-import '../../core/shared_components/common_success_dialog.dart';
+import '../../features/shared_components/common_delete_dialog.dart';
+import '../../features/shared_components/common_success_dialog.dart';
 import '../../generated/i18n/app_localizations.dart';
-import '../book_service/book_service.dart';
-import '../bookmark_service/bookmark_service.dart';
-import '../collection_service/collection_service.dart';
-import '../collection_service/presentation/collection_list/cubit/collection_list_cubit.dart';
-import '../reader/data/repository/cache_repository.dart';
-import '../settings_page/settings_service.dart';
+import '../../main.dart';
+import '../bookmark/domain/use_cases/bookmark_reset_use_case.dart';
+import '../books/domain/use_cases/book_reset_use_case.dart';
+import '../collection/domain/use_cases/collection_reset_use_case.dart';
+import '../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
+import '../preference/domain/use_cases/preference_reset_use_case.dart';
+import '../reader/domain/use_cases/reader_clear_location_cache_use_case.dart';
+import '../settings_page/presentation/widgets/settings_card.dart';
+import '../settings_page/presentation/widgets/settings_list_tile.dart';
+import '../shared_components/common_loading_widgets/common_loading_dialog.dart';
 
 part 'presentation/reset_page.dart';
 part 'presentation/reset_service_settings_list_tile.dart';

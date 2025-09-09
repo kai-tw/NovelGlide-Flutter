@@ -1,38 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/shared_components/common_delete_drag_target.dart';
-import '../../core/shared_components/shared_list/shared_list.dart';
 import '../../enum/window_size.dart';
-import '../../generated/i18n/app_localizations.dart';
-import '../ads_service/ad_service.dart';
-import '../book_service/book_service.dart';
-import '../book_service/presentation/bookshelf/cubit/bookshelf_cubit.dart';
-import '../bookmark_service/bookmark_service.dart';
-import '../collection_service/collection_service.dart';
-import '../collection_service/presentation/collection_list/cubit/collection_list_cubit.dart';
-import '../settings_page/settings_service.dart';
+import '../../main.dart';
+import '../bookmark/presentation/bookmark_list/cubit/bookmark_list_cubit.dart';
+import '../books/presentation/book_list/cubit/bookshelf_cubit.dart';
+import '../books/presentation/bookshelf/cubit/bookshelf_cubit.dart';
+import '../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
+import '../discover/presentation/browser/cubits/discover_browser_cubit.dart';
 import 'cubit/homepage_cubit.dart';
+import 'widgets/homepage_app_bar_builder.dart';
+import 'widgets/homepage_floating_action_widget.dart';
+import 'widgets/homepage_navigation_bar.dart';
+import 'widgets/homepage_navigation_rail.dart';
+import 'widgets/homepage_scaffold_body.dart';
 
 part 'homepage_app_bar.dart';
-
 part 'view/homepage_compact_view.dart';
-
 part 'view/homepage_medium_view.dart';
-
-part 'widgets/app_bar.dart';
-
-part 'widgets/delete_drag_target.dart';
-
-part 'widgets/floating_action_button.dart';
-
-part 'widgets/floating_action_widget.dart';
-
-part 'widgets/navigation_bar.dart';
-
-part 'widgets/navigation_rail.dart';
-
-part 'widgets/scaffold_body.dart';
 
 /// The homepage of the app
 class Homepage extends StatelessWidget {
@@ -40,35 +25,33 @@ class Homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final WindowSize windowClass = WindowSize.of(context);
+
     return MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
-        BlocProvider<HomepageCubit>(create: (_) => HomepageCubit()),
-        BlocProvider<BookshelfCubit>(create: (_) => BookshelfCubit()),
-        BlocProvider<CollectionListCubit>(create: (_) => CollectionListCubit()),
-        BlocProvider<BookmarkListCubit>(create: (_) => BookmarkListCubit()),
+        BlocProvider<HomepageCubit>(
+          create: (_) => HomepageCubit(),
+        ),
+        BlocProvider<BookshelfCubit>(
+          create: (_) => BookshelfCubit(),
+        ),
+        BlocProvider<BookListCubit>(
+          create: (_) => sl<BookListCubit>(),
+        ),
+        BlocProvider<CollectionListCubit>(
+          create: (_) => sl<CollectionListCubit>(),
+        ),
+        BlocProvider<DiscoverBrowserCubit>(
+          create: (_) => sl<DiscoverBrowserCubit>(),
+        ),
+        BlocProvider<BookmarkListCubit>(
+          create: (_) => sl<BookmarkListCubit>(),
+        ),
       ],
-      child: const _Scaffold(),
+      child: switch (windowClass) {
+        WindowSize.compact => const HomepageCompactView(),
+        _ => const HomepageMediumView(),
+      },
     );
-  }
-}
-
-class _Scaffold extends StatelessWidget {
-  const _Scaffold();
-
-  @override
-  Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery
-        .sizeOf(context)
-        .width;
-    final WindowSize windowClass = WindowSize.fromWidth(screenWidth);
-
-    /// Display the homepage based on the window size
-    switch (windowClass) {
-      case WindowSize.compact:
-        return const HomepageCompactView();
-
-      default:
-        return const HomepageMediumView();
-    }
   }
 }

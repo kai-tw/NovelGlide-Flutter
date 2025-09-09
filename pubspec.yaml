@@ -1,5 +1,5 @@
-name: novelglide
-version: 1.2.4+57
+name: novel_glide
+version: 1.2.5+58
 publish_to: none
 environment:
   sdk: ">=3.2.3 <4.0.0"
@@ -9,6 +9,7 @@ dependencies:
   bitmap: ^0.2.0
   collection: ^1.18.0
   cupertino_icons: ^1.0.2
+  dio: ^5.9.0
   epubx: ^4.0.0
   equatable: ^2.0.5
   extension_google_sign_in_as_googleapis_auth: ^3.0.0

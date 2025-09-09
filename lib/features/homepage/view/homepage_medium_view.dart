@@ -7,7 +7,7 @@ class HomepageMediumView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      appBar: const _AppBar(),
+      appBar: const HomepageAppBarBuilder(),
       body: SafeArea(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -19,23 +19,22 @@ class HomepageMediumView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(36.0),
                 boxShadow: <BoxShadow>[
                   BoxShadow(
-                    color: Theme.of(context).colorScheme.shadow,
+                    color: Theme.of(context).colorScheme.shadow.withAlpha(50),
                     blurRadius: 16.0,
-                    spreadRadius: -10.0,
                     offset: const Offset(0.0, 8.0),
                   ),
                 ],
               ),
               clipBehavior: Clip.hardEdge,
-              child: const _NavigationRail(),
+              child: const HomepageNavigationRail(),
             ),
             const Expanded(
-              child: _ScaffoldBody(),
+              child: HomepageScaffoldBody(),
             ),
           ],
         ),
       ),
-      floatingActionButton: const _FloatingActionWidget(),
+      floatingActionButton: const HomepageFloatingActionWidget(),
     );
   }
 }

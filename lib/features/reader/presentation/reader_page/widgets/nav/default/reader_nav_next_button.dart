@@ -1,4 +1,10 @@
-part of '../../../reader.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../../../generated/i18n/app_localizations.dart';
+import '../../../cubit/reader_cubit.dart';
+import '../../../cubit/reader_tts_cubit.dart';
+import '../../../cubit/reader_tts_state.dart';
 
 class ReaderNavNextButton extends StatelessWidget {
   const ReaderNavNextButton({super.key});
@@ -9,14 +15,20 @@ class ReaderNavNextButton extends StatelessWidget {
     final ReaderCubit cubit = BlocProvider.of<ReaderCubit>(context);
     return BlocBuilder<ReaderCubit, ReaderState>(
       buildWhen: (ReaderState previous, ReaderState current) =>
-          previous.code != current.code ||
-          previous.ttsState != current.ttsState,
+          previous.code != current.code,
       builder: (BuildContext context, ReaderState state) {
-        final bool isEnabled = state.code.isLoaded && state.ttsState.isStopped;
-        return IconButton(
-          icon: const Icon(Icons.arrow_forward_ios_rounded),
-          tooltip: appLocalizations.readerNextPage,
-          onPressed: isEnabled ? cubit.nextPage : null,
+        return BlocBuilder<ReaderTtsCubit, ReaderTtsState>(
+          buildWhen: (ReaderTtsState previous, ReaderTtsState current) =>
+              previous.ttsState != current.ttsState,
+          builder: (BuildContext context, ReaderTtsState ttsState) {
+            final bool isEnabled =
+                state.code.isLoaded && ttsState.ttsState.isIdle;
+            return IconButton(
+              icon: const Icon(Icons.arrow_forward_ios_rounded),
+              tooltip: appLocalizations.generalNextPage,
+              onPressed: isEnabled ? cubit.nextPage : null,
+            );
+          },
         );
       },
     );

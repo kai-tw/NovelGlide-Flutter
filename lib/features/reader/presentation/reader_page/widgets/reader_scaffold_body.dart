@@ -10,6 +10,7 @@ class ReaderScaffoldBody extends StatelessWidget {
       children: <Widget>[
         const Advertisement(
           unitId: AdUnitId.reader,
+          height: 60.0,
         ),
         Expanded(
           child: Stack(
@@ -47,11 +48,11 @@ class ReaderScaffoldBody extends StatelessWidget {
             behavior: HitTestBehavior.translucent,
 
             /// Swipe to prev/next page
-            onHorizontalDragStart: cubit.gestureHandler!.onStart,
-            onHorizontalDragEnd: cubit.gestureHandler!.onEnd,
-            onHorizontalDragCancel: cubit.gestureHandler!.onCancel,
+            onHorizontalDragStart: cubit.gestureHandler.onStart,
+            onHorizontalDragEnd: cubit.gestureHandler.onEnd,
+            onHorizontalDragCancel: cubit.gestureHandler.onCancel,
             child: WebViewWidget(
-              controller: cubit.webViewHandler!.controller,
+              controller: cubit.webViewController,
               gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
                 Factory<LongPressGestureRecognizer>(
                   () => LongPressGestureRecognizer(

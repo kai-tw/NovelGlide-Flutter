@@ -34,7 +34,7 @@ class _LineHeightSlider extends StatelessWidget {
           },
           onChangeEnd: (double value) {
             cubit.lineHeight = value;
-            cubit.saveSettings();
+            cubit.savePreference();
           },
         );
       },

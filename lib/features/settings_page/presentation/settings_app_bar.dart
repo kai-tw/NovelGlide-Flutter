@@ -1,4 +1,7 @@
-part of '../settings_service.dart';
+import 'package:flutter/material.dart';
+
+import '../../../generated/i18n/app_localizations.dart';
+import '../../homepage/homepage.dart';
 
 class SettingsAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SettingsAppBar({super.key});
@@ -11,7 +14,7 @@ class SettingsAppBar extends StatelessWidget implements PreferredSizeWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
 
     return HomepageAppBar(
-      iconData: Icons.settings_rounded,
+      leading: const Icon(Icons.settings_rounded),
       title: appLocalizations.generalSettings,
     );
   }

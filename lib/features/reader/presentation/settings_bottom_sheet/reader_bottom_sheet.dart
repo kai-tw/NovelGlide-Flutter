@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/services/preference_service/data/model/reader_preference_data.dart';
 import '../../../../enum/common_button_state_code.dart';
 import '../../../../generated/i18n/app_localizations.dart';
-import '../../../settings_page/settings_service.dart';
-import '../../data/model/reader_page_num_type.dart';
+import '../../../preference/domain/entities/reader_preference_data.dart';
+import '../../../settings_page/presentation/widgets/settings_card.dart';
+import '../../domain/entities/reader_page_num_type.dart';
 import '../reader_page/cubit/reader_cubit.dart';
 
 part 'settings_reset_button.dart';

@@ -30,7 +30,7 @@ class _PageNumSelector extends StatelessWidget {
             onSelected: (ReaderPageNumType? value) {
               if (value != null) {
                 cubit.pageNumType = value;
-                cubit.saveSettings();
+                cubit.savePreference();
               }
             },
             dropdownMenuEntries: ReaderPageNumType.values
