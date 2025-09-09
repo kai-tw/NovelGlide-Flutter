@@ -1,5 +1,6 @@
 import '../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../core/file_system/domain/repositories/temp_repository.dart';
+import '../../core/lifecycle/domain/repositories/lifecycle_repository.dart';
 import '../../main.dart';
 import 'data/data_sources/downloader_transmission_source.dart';
 import 'data/data_sources/impl/downloader_transmission_dio_source.dart';
@@ -27,6 +28,7 @@ void setupDownloaderDependencies() {
       sl<DownloaderTransmissionSource>(),
       sl<TempRepository>(),
       sl<FileSystemRepository>(),
+      sl<LifecycleRepository>(),
     ),
   );
 

@@ -5,6 +5,7 @@ import 'package:path/path.dart';
 
 import '../../../../core/file_system/domain/repositories/file_system_repository.dart';
 import '../../../../core/file_system/domain/repositories/temp_repository.dart';
+import '../../../../core/lifecycle/domain/repositories/lifecycle_repository.dart';
 import '../../../../core/log_system/log_system.dart';
 import '../../../../core/utils/random_extension.dart';
 import '../../domain/entities/downloader_task.dart';
@@ -13,7 +14,24 @@ import '../../domain/repositories/downloader_repository.dart';
 import '../data_sources/downloader_transmission_source.dart';
 
 class DownloaderRepositoryImpl implements DownloaderRepository {
-  DownloaderRepositoryImpl(
+  factory DownloaderRepositoryImpl(
+    DownloaderTransmissionSource source,
+    TempRepository tempRepository,
+    FileSystemRepository fileSystemRepository,
+    LifecycleRepository lifecycleRepository,
+  ) {
+    final DownloaderRepositoryImpl instance = DownloaderRepositoryImpl._(
+      source,
+      tempRepository,
+      fileSystemRepository,
+    );
+
+    lifecycleRepository.onDetach.listen(instance.onDetach);
+
+    return instance;
+  }
+
+  DownloaderRepositoryImpl._(
     this._source,
     this._tempRepository,
     this._fileSystemRepository,
@@ -25,6 +43,7 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
   final FileSystemRepository _fileSystemRepository;
 
   final Map<String, DownloaderTask> _tasks = <String, DownloaderTask>{};
+  final Map<String, String> _tempDirectoryPaths = <String, String>{};
 
   final StreamController<void> _onListChangeController =
       StreamController<void>.broadcast();
@@ -57,6 +76,8 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
 
     try {
       final String tempDirectoryPath = await _tempRepository.getDirectoryPath();
+      _tempDirectoryPaths[identifier] = tempDirectoryPath;
+
       final StreamController<double> progressController =
           StreamController<double>.broadcast();
 
@@ -69,7 +90,6 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
             join(tempDirectoryPath, uri.pathSegments.lastOrNull ?? identifier),
         onDownloadStream: progressController.stream,
         startTime: DateTime.now(),
-        isManaged: true,
       );
 
       // Notify a new task was created.
@@ -120,17 +140,52 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
     return identifier;
   }
 
-  @override
-  Future<void> removeTask(String identifier) async {
+  Future<void> _deleteSavedFile(String identifier) async {
     final DownloaderTask? task = _tasks[identifier];
     if (task != null) {
-      await cancelTask(identifier);
+      final String path = task.savePath;
 
-      // Remove from memory.
-      _tasks.remove(identifier);
+      if (await _fileSystemRepository.existsFile(path)) {
+        await _fileSystemRepository.deleteFile(path);
+      }
+    }
+  }
+
+  Future<void> _deleteTempDirectory(String identifier) async {
+    final String? path = _tempDirectoryPaths[identifier];
+    if (path != null) {
+      // Remove from map.
+      _tempDirectoryPaths.remove(identifier);
+
+      // Check if the directory is exists.
+      if (await _fileSystemRepository.existsDirectory(path)) {
+        // Delete it.
+        await _fileSystemRepository.deleteDirectory(path);
+      }
+    }
+  }
+
+  @override
+  Future<void> removeTask(String identifier) async {
+    if (_tasks.containsKey(identifier)) {
+      await _removeTask(identifier);
 
       // Notify a task was removed
       _onListChangeController.add(null);
+    }
+  }
+
+  /// The function of removing task from the repository.
+  /// It will not notify listeners.
+  Future<void> _removeTask(String identifier) async {
+    if (_tasks.containsKey(identifier)) {
+      await cancelTask(identifier);
+
+      // Delete the temporary directory.
+      await _deleteTempDirectory(identifier);
+
+      // Remove from memory.
+      _tasks.remove(identifier);
     }
   }
 
@@ -138,7 +193,8 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
   Future<void> cancelTask(String identifier) async {
     final DownloaderTask? task = _tasks[identifier];
     if (task != null) {
-      if (task.stateCode == DownloaderTaskState.downloading) {
+      if (task.stateCode case DownloaderTaskState.downloading) {
+        // Cancel the download.
         await _source.cancelDownload(identifier);
 
         _tasks[identifier] = task.copyWith(
@@ -146,39 +202,38 @@ class DownloaderRepositoryImpl implements DownloaderRepository {
         );
       }
 
-      // Delete the file if it exists.
-      if (await _fileSystemRepository.existsFile(task.savePath)) {
-        await _fileSystemRepository.deleteFile(task.savePath);
-      }
+      // Delete the saved file.
+      await _deleteSavedFile(identifier);
     }
   }
 
   @override
   Future<void> clearTasks() async {
-    if (_tasks.isEmpty) {
-      return;
-    }
-
+    bool isChanged = false;
     int i = 0;
     while (i < _tasks.length) {
       final String identifier = _tasks.keys.elementAt(i);
       final DownloaderTask task = _tasks[identifier]!;
 
-      switch (task.stateCode) {
-        // Only clear all successful tasks.
-        case DownloaderTaskState.success:
-          await cancelTask(identifier);
+      // Only clear all successful tasks.
+      if (task.stateCode case DownloaderTaskState.success) {
+        await _removeTask(identifier);
 
-          // Remove from memory.
-          _tasks.remove(identifier);
-          break;
-
-        default:
-          i++;
+        isChanged = true;
+      } else {
+        i++;
       }
     }
 
-    // Notify all tasks was cleared
-    _onListChangeController.add(null);
+    if (isChanged) {
+      // Notify all tasks was cleared
+      _onListChangeController.add(null);
+    }
+  }
+
+  Future<void> onDetach(void _) async {
+    while (_tasks.isNotEmpty) {
+      await _removeTask(_tasks.keys.first);
+    }
   }
 }

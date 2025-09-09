@@ -16,7 +16,7 @@ class WebServerRepositoryImpl implements WebServerRepository {
       serverDataSource,
     );
 
-    lifecycleRepository.onDetach.listen((_) => instance.onDetach());
+    lifecycleRepository.onDetach.listen(instance.onDetach);
 
     return instance;
   }
@@ -48,7 +48,7 @@ class WebServerRepositoryImpl implements WebServerRepository {
     }
   }
 
-  Future<void> onDetach() async {
+  Future<void> onDetach(void _) async {
     for (final int port in _ports) {
       await _serverDataSource.stop(port);
     }

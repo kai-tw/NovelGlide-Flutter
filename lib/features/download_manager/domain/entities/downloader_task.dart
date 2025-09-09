@@ -10,7 +10,6 @@ class DownloaderTask extends Equatable {
     required this.savePath,
     required this.onDownloadStream,
     required this.startTime,
-    required this.isManaged,
   });
 
   final DownloaderTaskState stateCode;
@@ -20,9 +19,6 @@ class DownloaderTask extends Equatable {
   final Stream<double> onDownloadStream;
   final DateTime startTime;
 
-  // Is this task managed by app.
-  final bool isManaged;
-
   @override
   List<Object?> get props => <Object?>[
         stateCode,
@@ -31,7 +27,6 @@ class DownloaderTask extends Equatable {
         savePath,
         onDownloadStream,
         startTime,
-        isManaged,
       ];
 
   DownloaderTask copyWith({
@@ -41,7 +36,6 @@ class DownloaderTask extends Equatable {
     String? savePath,
     Stream<double>? onDownloadStream,
     DateTime? startTime,
-    bool? isManaged,
   }) {
     return DownloaderTask(
       stateCode: stateCode ?? this.stateCode,
@@ -50,7 +44,6 @@ class DownloaderTask extends Equatable {
       savePath: savePath ?? this.savePath,
       onDownloadStream: onDownloadStream ?? this.onDownloadStream,
       startTime: startTime ?? this.startTime,
-      isManaged: isManaged ?? this.isManaged,
     );
   }
 }
