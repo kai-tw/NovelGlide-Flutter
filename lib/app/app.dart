@@ -13,6 +13,8 @@ import 'cubit/app_cubit.dart';
 class App extends StatelessWidget {
   const App({super.key});
 
+  static const bool _enableAccessibilityTools = false;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AppCubit>(
@@ -37,7 +39,7 @@ class App extends StatelessWidget {
                     LocaleUtils.convertAppLocaleToLocale(appLocale))
                 .toList(),
             home: const Homepage(),
-            builder: false
+            builder: _enableAccessibilityTools
                 ? (BuildContext context, Widget? child) =>
                     AccessibilityTools(child: child)
                 : null,
