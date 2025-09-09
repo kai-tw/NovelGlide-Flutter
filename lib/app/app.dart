@@ -37,8 +37,10 @@ class App extends StatelessWidget {
                     LocaleUtils.convertAppLocaleToLocale(appLocale))
                 .toList(),
             home: const Homepage(),
-            builder: (BuildContext context, Widget? child) =>
-                AccessibilityTools(child: child),
+            builder: false
+                ? (BuildContext context, Widget? child) =>
+                    AccessibilityTools(child: child)
+                : null,
             debugShowCheckedModeBanner: false,
           );
         },
