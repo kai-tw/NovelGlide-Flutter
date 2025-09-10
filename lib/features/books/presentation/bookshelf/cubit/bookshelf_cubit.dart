@@ -16,4 +16,10 @@ class BookshelfCubit extends Cubit<BookshelfState> {
       isTabRunning: isRunning,
     ));
   }
+
+  void setTabEnabled(bool enableTab) {
+    emit(state.copyWith(
+      enableTab: enableTab,
+    ));
+  }
 }
