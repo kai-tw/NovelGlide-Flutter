@@ -5,7 +5,7 @@ import '../../../collection/domain/entities/collection_data.dart';
 import '../../../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
 import '../../../shared_components/shared_list/presentation/widgets/shared_list_delete_drag_target.dart';
 import '../../domain/entities/book.dart';
-import '../book_list/cubit/bookshelf_cubit.dart';
+import '../book_list/cubit/book_list_cubit.dart';
 import 'cubit/bookshelf_cubit.dart';
 import 'cubit/bookshelf_state.dart';
 

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../enum/window_size.dart';
 import '../../main.dart';
 import '../bookmark/presentation/bookmark_list/cubit/bookmark_list_cubit.dart';
-import '../books/presentation/book_list/cubit/bookshelf_cubit.dart';
+import '../books/presentation/book_list/cubit/book_list_cubit.dart';
 import '../books/presentation/bookshelf/cubit/bookshelf_cubit.dart';
 import '../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
 import '../discover/presentation/browser/cubits/discover_browser_cubit.dart';

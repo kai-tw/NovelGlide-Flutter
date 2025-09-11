@@ -7,7 +7,7 @@ import '../../../../../generated/i18n/app_localizations.dart';
 import '../../../../collection/presentation/add_book_page/collection_add_book_scaffold.dart';
 import '../../../../shared_components/common_delete_dialog.dart';
 import '../../../../shared_components/shared_list/shared_list.dart';
-import '../cubit/bookshelf_cubit.dart';
+import '../cubit/book_list_cubit.dart';
 
 class BookListAppBarMoreButton extends StatelessWidget {
   const BookListAppBarMoreButton({super.key});

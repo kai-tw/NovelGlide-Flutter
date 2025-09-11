@@ -7,7 +7,7 @@ import '../../../domain/entities/book.dart';
 import '../../../domain/entities/book_cover.dart';
 import '../../book_cover/book_cover_builder.dart';
 import '../../table_of_contents_page/table_of_contents.dart';
-import '../cubit/bookshelf_cubit.dart';
+import '../cubit/book_list_cubit.dart';
 import 'book_list_draggable_book.dart';
 
 class BookListItem extends StatelessWidget {

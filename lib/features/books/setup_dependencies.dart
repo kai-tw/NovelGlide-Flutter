@@ -36,7 +36,7 @@ import 'domain/use_cases/book_pick_use_case.dart';
 import 'domain/use_cases/book_read_bytes_use_case.dart';
 import 'domain/use_cases/book_reset_use_case.dart';
 import 'presentation/add_page/cubit/book_add_cubit.dart';
-import 'presentation/book_list/cubit/bookshelf_cubit.dart';
+import 'presentation/book_list/cubit/book_list_cubit.dart';
 import 'presentation/table_of_contents_page/cubit/toc_cubit.dart';
 
 void setupBookDependencies() {

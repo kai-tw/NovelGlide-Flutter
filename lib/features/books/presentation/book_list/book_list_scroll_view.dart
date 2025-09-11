@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../homepage/cubit/homepage_cubit.dart';
 import 'book_list.dart';
-import 'cubit/bookshelf_cubit.dart';
+import 'cubit/book_list_cubit.dart';
 
 class BookListScrollView extends StatelessWidget {
   const BookListScrollView({super.key});

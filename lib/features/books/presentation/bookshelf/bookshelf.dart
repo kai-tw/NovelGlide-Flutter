@@ -6,7 +6,7 @@ import '../../../../generated/i18n/app_localizations.dart';
 import '../../../collection/presentation/collection_list/collection_list_scroll_view.dart';
 import '../../../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
 import '../book_list/book_list_scroll_view.dart';
-import '../book_list/cubit/bookshelf_cubit.dart';
+import '../book_list/cubit/book_list_cubit.dart';
 import 'cubit/bookshelf_cubit.dart';
 import 'cubit/bookshelf_state.dart';
 

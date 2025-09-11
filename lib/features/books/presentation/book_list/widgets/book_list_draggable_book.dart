@@ -9,7 +9,7 @@ import '../../../../shared_components/shared_list/shared_list.dart';
 import '../../../domain/entities/book.dart';
 import '../../../domain/entities/book_cover.dart';
 import '../../book_widget/book_widget.dart';
-import '../cubit/bookshelf_cubit.dart';
+import '../cubit/book_list_cubit.dart';
 
 class BookListDraggableBook extends StatelessWidget {
   const BookListDraggableBook({

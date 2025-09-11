@@ -6,7 +6,7 @@ import '../../../../generated/i18n/app_localizations.dart';
 import '../../../shared_components/common_error_widgets/common_error_sliver_widget.dart';
 import '../../../shared_components/common_loading_widgets/common_loading_sliver_widget.dart';
 import '../../../shared_components/shared_list/shared_list.dart';
-import 'cubit/bookshelf_cubit.dart';
+import 'cubit/book_list_cubit.dart';
 import 'widgets/book_list_item.dart';
 
 class BookList extends StatelessWidget {
