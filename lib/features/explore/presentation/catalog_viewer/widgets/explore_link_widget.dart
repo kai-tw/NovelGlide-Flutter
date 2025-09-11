@@ -61,9 +61,9 @@ class ExploreLinkWidget extends StatelessWidget {
 
     switch (link.type) {
       case MimeType.atomFeed:
-        return appLocalizations.discoverBrowserViewIt;
+        return appLocalizations.exploreBrowserViewIt;
       case MimeType.epub:
-        return appLocalizations.discoverBrowserDownloadIt;
+        return appLocalizations.exploreBrowserDownloadIt;
       default:
     }
 
@@ -75,6 +75,6 @@ class ExploreLinkWidget extends StatelessWidget {
       default:
     }
 
-    return appLocalizations.discoverBrowserUnknownLink;
+    return appLocalizations.exploreBrowserUnknownLink;
   }
 }

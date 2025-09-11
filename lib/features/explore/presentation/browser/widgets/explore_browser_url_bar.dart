@@ -17,11 +17,11 @@ class ExploreBrowserUrlBar extends StatelessWidget {
       controller: cubit.textEditingController,
       decoration: InputDecoration(
         labelText: appLocalizations.generalUrl,
-        hintText: appLocalizations.discoverBrowserTypeUrl,
+        hintText: appLocalizations.exploreBrowserTypeUrl,
         suffixIcon: IconButton(
           onPressed: cubit.browseCatalog,
           icon: const Icon(Icons.search_rounded),
-          tooltip: appLocalizations.discoverBrowserBrowse,
+          tooltip: appLocalizations.exploreBrowserBrowse,
         ),
       ),
       onSubmitted: (_) => cubit.browseCatalog(),

@@ -13,7 +13,7 @@ class ExploreAddFavoritePageScaffold extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(appLocalizations.discoverAddToFavorites),
+        title: Text(appLocalizations.exploreAddToFavorites),
       ),
       body: const SafeArea(
         child: Scrollbar(

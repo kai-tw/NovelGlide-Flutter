@@ -63,7 +63,7 @@ class HomepageNavigationBar extends StatelessWidget {
               selectedIcon: ExploreBrowserIcon(
                 color: colorScheme.onSurface,
               ),
-              label: appLocalizations.generalDiscover,
+              label: appLocalizations.generalExplore,
               enabled: !state.navItem.isDiscovery && state.isEnabled,
             ),
             NavigationDestination(
@@ -97,7 +97,7 @@ class HomepageNavigationBar extends StatelessWidget {
               case HomepageNavigationItem.bookmark:
                 bookmarkListCubit.unfocused();
                 break;
-              case HomepageNavigationItem.discovery:
+              case HomepageNavigationItem.explore:
                 collectionListCubit.unfocused();
                 break;
               default:

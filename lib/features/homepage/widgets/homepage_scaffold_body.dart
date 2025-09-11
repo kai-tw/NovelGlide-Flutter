@@ -28,7 +28,7 @@ class HomepageScaffoldBody extends StatelessWidget {
                 case HomepageNavigationItem.bookshelf:
                   return const Bookshelf();
 
-                case HomepageNavigationItem.discovery:
+                case HomepageNavigationItem.explore:
                   return const ExploreBrowser();
 
                 case HomepageNavigationItem.bookmark:

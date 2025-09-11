@@ -23,8 +23,8 @@ class ExploreBrowserFavoriteButton extends StatelessWidget {
           icon: const Icon(Icons.favorite_rounded),
           color: isFavorite ? Theme.of(context).colorScheme.error : null,
           tooltip: isFavorite
-              ? appLocalizations.discoverRemoveFromFavorites
-              : appLocalizations.discoverAddToFavorites,
+              ? appLocalizations.exploreRemoveFromFavorites
+              : appLocalizations.exploreAddToFavorites,
           onPressed: state.code.isLoaded
               ? () {
                   if (isFavorite) {

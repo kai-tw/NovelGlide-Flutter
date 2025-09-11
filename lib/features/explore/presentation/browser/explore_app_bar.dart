@@ -17,7 +17,7 @@ class ExploreAppBar extends StatelessWidget implements PreferredSizeWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return HomepageAppBar(
       leading: const ExploreBrowserIcon(),
-      title: appLocalizations.generalDiscover,
+      title: appLocalizations.generalExplore,
       actions: const <Widget>[
         ExploreBrowserToManualButton(),
         ExploreBrowserToDownloadManagerButton(),

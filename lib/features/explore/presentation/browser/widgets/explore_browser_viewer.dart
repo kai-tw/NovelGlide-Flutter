@@ -34,7 +34,7 @@ class ExploreBrowserViewer extends StatelessWidget {
           case LoadingStateCode.error:
             // Error
             return CommonErrorWidget(
-              content: appLocalizations.discoverFailedToLoadCatalog,
+              content: appLocalizations.exploreFailedToLoadCatalog,
             );
 
           case LoadingStateCode.loaded:
@@ -59,7 +59,7 @@ class ExploreBrowserViewer extends StatelessWidget {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(appLocalizations.discoverBookAddedToDownloads),
+        content: Text(appLocalizations.exploreBookAddedToDownloads),
       ),
     );
   }

@@ -28,14 +28,14 @@ class ExploreAddFavoritePageForm extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 16.0),
               child: Text(
-                appLocalizations.discoverAddToFavorites,
+                appLocalizations.exploreAddToFavorites,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 48.0),
               child: Text(
-                appLocalizations.discoverAddFavoriteSubtitle,
+                appLocalizations.exploreAddFavoriteSubtitle,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
@@ -44,8 +44,7 @@ class ExploreAddFavoritePageForm extends StatelessWidget {
               child: TextFormField(
                 decoration: InputDecoration(
                   labelText: appLocalizations.generalName,
-                  helperText:
-                      appLocalizations.discoverAddFavoriteNameHelperText,
+                  helperText: appLocalizations.exploreAddFavoriteNameHelperText,
                 ),
                 validator: notEmptyValidator.validate,
                 inputFormatters: <TextInputFormatter>[
@@ -58,7 +57,7 @@ class ExploreAddFavoritePageForm extends StatelessWidget {
             TextFormField(
               decoration: InputDecoration(
                 labelText: appLocalizations.generalUrl,
-                helperText: appLocalizations.discoverAddFavoriteUrlHelperText,
+                helperText: appLocalizations.exploreAddFavoriteUrlHelperText,
               ),
               validator: urlValidator.validateLoosely,
               keyboardType: TextInputType.url,

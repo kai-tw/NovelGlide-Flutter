@@ -45,7 +45,7 @@ class ExploreFavoriteList extends StatelessWidget {
           // Title
           ListTile(
             title: Text(
-              appLocalizations.discoverFavorites,
+              appLocalizations.exploreFavorites,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w900,
                   ),
@@ -67,7 +67,7 @@ class ExploreFavoriteList extends StatelessWidget {
           // Add Favorite button
           ListTile(
             leading: const Icon(Icons.add_rounded),
-            title: Text(appLocalizations.discoverAddToFavorites),
+            title: Text(appLocalizations.exploreAddToFavorites),
             onTap: () => Navigator.of(context).push(MaterialPageRoute<void>(
               builder: (BuildContext context) => const ExploreAddFavoritePage(),
             )),

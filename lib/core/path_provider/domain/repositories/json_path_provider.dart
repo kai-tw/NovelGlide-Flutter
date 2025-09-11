@@ -3,5 +3,5 @@ abstract class JsonPathProvider {
 
   Future<String> get collectionJsonPath;
 
-  Future<String> get discoverFavoriteJsonPath;
+  Future<String> get exploreFavoriteJsonPath;
 }

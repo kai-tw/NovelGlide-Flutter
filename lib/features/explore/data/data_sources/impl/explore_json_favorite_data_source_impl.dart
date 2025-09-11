@@ -17,7 +17,7 @@ class ExploreJsonFavoriteDataSourceImpl implements ExploreFavoriteDataSource {
   @override
   Future<List<String>> getList() async {
     // Read the json contents.
-    final String jsonPath = await _jsonPathProvider.discoverFavoriteJsonPath;
+    final String jsonPath = await _jsonPathProvider.exploreFavoriteJsonPath;
     final Map<String, dynamic> jsonValue = await _jsonRepository.readJson(
       path: jsonPath,
     );
@@ -33,7 +33,7 @@ class ExploreJsonFavoriteDataSourceImpl implements ExploreFavoriteDataSource {
   @override
   Future<void> saveList(List<String> list) async {
     // Read the json contents.
-    final String jsonPath = await _jsonPathProvider.discoverFavoriteJsonPath;
+    final String jsonPath = await _jsonPathProvider.exploreFavoriteJsonPath;
     final Map<String, dynamic> jsonValue = await _jsonRepository.readJson(
       path: jsonPath,
     );
@@ -60,7 +60,7 @@ class ExploreJsonFavoriteDataSourceImpl implements ExploreFavoriteDataSource {
   @override
   Future<void> createData(ExploreFavoriteCatalogData data) async {
     // Read the json contents.
-    final String jsonPath = await _jsonPathProvider.discoverFavoriteJsonPath;
+    final String jsonPath = await _jsonPathProvider.exploreFavoriteJsonPath;
     final Map<String, dynamic> jsonValue = await _jsonRepository.readJson(
       path: jsonPath,
     );
@@ -88,7 +88,7 @@ class ExploreJsonFavoriteDataSourceImpl implements ExploreFavoriteDataSource {
   @override
   Future<void> deleteData(String identifier) async {
     // Read the json contents.
-    final String jsonPath = await _jsonPathProvider.discoverFavoriteJsonPath;
+    final String jsonPath = await _jsonPathProvider.exploreFavoriteJsonPath;
     final Map<String, dynamic> jsonValue = await _jsonRepository.readJson(
       path: jsonPath,
     );
@@ -115,7 +115,7 @@ class ExploreJsonFavoriteDataSourceImpl implements ExploreFavoriteDataSource {
   @override
   Future<ExploreFavoriteCatalogData?> readData(String identifier) async {
     // Read the json contents.
-    final String jsonPath = await _jsonPathProvider.discoverFavoriteJsonPath;
+    final String jsonPath = await _jsonPathProvider.exploreFavoriteJsonPath;
     final Map<String, dynamic> jsonValue = await _jsonRepository.readJson(
       path: jsonPath,
     );
@@ -131,7 +131,7 @@ class ExploreJsonFavoriteDataSourceImpl implements ExploreFavoriteDataSource {
   @override
   Future<void> updateData(ExploreFavoriteCatalogData data) async {
     // Read the json contents.
-    final String jsonPath = await _jsonPathProvider.discoverFavoriteJsonPath;
+    final String jsonPath = await _jsonPathProvider.exploreFavoriteJsonPath;
     final Map<String, dynamic> jsonValue = await _jsonRepository.readJson(
       path: jsonPath,
     );
@@ -155,7 +155,7 @@ class ExploreJsonFavoriteDataSourceImpl implements ExploreFavoriteDataSource {
   @override
   Future<bool> existsData(String identifier) async {
     // Read the json contents.
-    final String jsonPath = await _jsonPathProvider.discoverFavoriteJsonPath;
+    final String jsonPath = await _jsonPathProvider.exploreFavoriteJsonPath;
     final Map<String, dynamic> jsonValue = await _jsonRepository.readJson(
       path: jsonPath,
     );

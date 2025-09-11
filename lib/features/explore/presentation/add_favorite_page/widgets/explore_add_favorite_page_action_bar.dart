@@ -65,7 +65,7 @@ class ExploreAddFavoritePageActionBar extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return CommonSuccessDialog(
-              content: appLocalizations.discoverAddFavoriteSuccess,
+              content: appLocalizations.exploreAddFavoriteSuccess,
             );
           },
         );

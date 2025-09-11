@@ -81,7 +81,7 @@ class HomepageNavigationRail extends StatelessWidget {
             color: selectedColor,
           ),
           label: Text(
-            appLocalizations.generalDiscover,
+            appLocalizations.generalExplore,
             style: state.navItem.isDiscovery && state.isEnabled
                 ? selectedTextStyle
                 : unselectedTextStyle,
@@ -133,7 +133,7 @@ class HomepageNavigationRail extends StatelessWidget {
           case HomepageNavigationItem.bookmark:
             bookmarkListCubit.unfocused();
             break;
-          case HomepageNavigationItem.discovery:
+          case HomepageNavigationItem.explore:
             collectionListCubit.unfocused();
             break;
           default:

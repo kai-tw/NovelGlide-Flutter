@@ -24,7 +24,7 @@ class HomepageAppBarBuilder extends StatelessWidget
           case HomepageNavigationItem.bookshelf:
             return const BookshelfAppBar();
 
-          case HomepageNavigationItem.discovery:
+          case HomepageNavigationItem.explore:
             return const ExploreAppBar();
 
           case HomepageNavigationItem.bookmark:

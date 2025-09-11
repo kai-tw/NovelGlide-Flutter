@@ -22,7 +22,7 @@ class ExploreFavoriteListItemActionDialog extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: const Icon(Icons.delete_rounded),
-            title: Text(appLocalizations.discoverRemoveFromFavorites),
+            title: Text(appLocalizations.exploreRemoveFromFavorites),
             onTap: () => _showConfirmDialog(context),
           ),
         ],

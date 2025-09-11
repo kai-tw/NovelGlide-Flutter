@@ -21,7 +21,7 @@ class JsonPathProviderImpl extends JsonPathProvider {
   }
 
   @override
-  Future<String> get discoverFavoriteJsonPath async {
+  Future<String> get exploreFavoriteJsonPath async {
     final String dataPath = await _pathProvider.dataPath;
     return join(dataPath, 'discover_favorite.json');
   }
