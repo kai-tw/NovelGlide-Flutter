@@ -31,7 +31,7 @@ class BookCoverWidget extends StatelessWidget {
             width: constraints.maxWidth,
             height: constraints.maxHeight,
             fit: fit,
-            // semanticLabel: appLocalizations.generalBookCover,
+            semanticLabel: appLocalizations.generalBookCover,
           );
         },
       );
