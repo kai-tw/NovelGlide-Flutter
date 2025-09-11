@@ -12,7 +12,7 @@ class DiscoverManual extends StatelessWidget {
       ),
       body: const SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(24.0),
+          padding: EdgeInsets.symmetric(horizontal: 24.0),
           child: MarkdownWidget(
             data: '# What\'s Discovery?\n\n'
                 'The discovery system can help you to view catalogs on web, '
