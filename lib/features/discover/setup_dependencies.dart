@@ -5,105 +5,105 @@ import '../../core/parser_system/domain/use_cases/uri_parser_parse_https_use_cas
 import '../../core/path_provider/domain/repositories/json_path_provider.dart';
 import '../../main.dart';
 import '../books/domain/use_cases/book_download_and_add_use_case.dart';
-import 'data/data_sources/discover_data_source.dart';
-import 'data/data_sources/discover_favorite_data_source.dart';
-import 'data/data_sources/impl/discover_json_favorite_data_source_impl.dart';
+import 'data/data_sources/explore_data_source.dart';
+import 'data/data_sources/explore_favorite_data_source.dart';
+import 'data/data_sources/impl/explore_json_favorite_data_source_impl.dart';
 import 'data/data_sources/impl/opds_data_source_impl.dart';
-import 'data/repositories/discover_favorite_repository_impl.dart';
-import 'data/repositories/discover_repository_impl.dart';
-import 'domain/repositories/discover_favorite_repository.dart';
-import 'domain/repositories/discover_repository.dart';
-import 'domain/use_cases/discover_add_to_favorite_list_use_case.dart';
-import 'domain/use_cases/discover_browse_catalog_use_case.dart';
-import 'domain/use_cases/discover_get_favorite_identifier_by_uri_use_case.dart';
-import 'domain/use_cases/discover_get_favorite_list_use_case.dart';
-import 'domain/use_cases/discover_observe_favorite_list_change_use_case.dart';
-import 'domain/use_cases/discover_remove_from_favorite_list_use_case.dart';
-import 'presentation/add_favorite_page/cubits/discover_add_favorite_page_cubit.dart';
-import 'presentation/browser/cubits/discover_browser_cubit.dart';
-import 'presentation/favorite_list/cubit/discover_favorite_list_cubit.dart';
+import 'data/repositories/explore_favorite_repository_impl.dart';
+import 'data/repositories/explore_repository_impl.dart';
+import 'domain/repositories/explore_favorite_repository.dart';
+import 'domain/repositories/explore_repository.dart';
+import 'domain/use_cases/explore_add_to_favorite_list_use_case.dart';
+import 'domain/use_cases/explore_browse_catalog_use_case.dart';
+import 'domain/use_cases/explore_get_favorite_identifier_by_uri_use_case.dart';
+import 'domain/use_cases/explore_get_favorite_list_use_case.dart';
+import 'domain/use_cases/explore_observe_favorite_list_change_use_case.dart';
+import 'domain/use_cases/explore_remove_from_favorite_list_use_case.dart';
+import 'presentation/add_favorite_page/cubits/explore_add_favorite_page_cubit.dart';
+import 'presentation/browser/cubits/explore_browser_cubit.dart';
+import 'presentation/favorite_list/cubit/explore_favorite_list_cubit.dart';
 
 /// Setup the dependencies of discovery system
 void setupDiscoverDependencies() {
   // Register data sources
-  sl.registerLazySingleton<DiscoverDataSource>(
+  sl.registerLazySingleton<ExploreDataSource>(
     () => OpdsDataSourceImpl(
       sl<DateTimeParser>(),
       sl<UriParser>(),
     ),
   );
-  sl.registerLazySingleton<DiscoverFavoriteDataSource>(
-    () => DiscoverJsonFavoriteDataSourceImpl(
+  sl.registerLazySingleton<ExploreFavoriteDataSource>(
+    () => ExploreJsonFavoriteDataSourceImpl(
       sl<JsonPathProvider>(),
       sl<JsonRepository>(),
     ),
   );
 
   // Register repositories
-  sl.registerLazySingleton<DiscoverRepository>(
-    () => DiscoverRepositoryImpl(
-      sl<DiscoverDataSource>(),
+  sl.registerLazySingleton<ExploreRepository>(
+    () => ExploreRepositoryImpl(
+      sl<ExploreDataSource>(),
     ),
   );
-  sl.registerLazySingleton<DiscoverFavoriteRepository>(
-    () => DiscoverFavoriteRepositoryImpl(
-      sl<DiscoverFavoriteDataSource>(),
+  sl.registerLazySingleton<ExploreFavoriteRepository>(
+    () => ExploreFavoriteRepositoryImpl(
+      sl<ExploreFavoriteDataSource>(),
     ),
   );
 
   // Register browser use cases
-  sl.registerFactory<DiscoverBrowseCatalogUseCase>(
-    () => DiscoverBrowseCatalogUseCase(
-      sl<DiscoverRepository>(),
+  sl.registerFactory<ExploreBrowseCatalogUseCase>(
+    () => ExploreBrowseCatalogUseCase(
+      sl<ExploreRepository>(),
     ),
   );
 
   // Register favorite use cases
   sl.registerFactory<DiscoverAddToFavoriteListUseCase>(
     () => DiscoverAddToFavoriteListUseCase(
-      sl<DiscoverFavoriteRepository>(),
+      sl<ExploreFavoriteRepository>(),
     ),
   );
-  sl.registerFactory<DiscoverGetFavoriteListUseCase>(
-    () => DiscoverGetFavoriteListUseCase(
-      sl<DiscoverFavoriteRepository>(),
+  sl.registerFactory<ExploreGetFavoriteListUseCase>(
+    () => ExploreGetFavoriteListUseCase(
+      sl<ExploreFavoriteRepository>(),
     ),
   );
-  sl.registerFactory<DiscoverGetFavoriteIdentifierByUriUseCase>(
-    () => DiscoverGetFavoriteIdentifierByUriUseCase(
-      sl<DiscoverFavoriteRepository>(),
+  sl.registerFactory<ExploreGetFavoriteIdentifierByUriUseCase>(
+    () => ExploreGetFavoriteIdentifierByUriUseCase(
+      sl<ExploreFavoriteRepository>(),
     ),
   );
-  sl.registerFactory<DiscoverObserveFavoriteListChangeUseCase>(
-    () => DiscoverObserveFavoriteListChangeUseCase(
-      sl<DiscoverFavoriteRepository>(),
+  sl.registerFactory<ExploreObserveFavoriteListChangeUseCase>(
+    () => ExploreObserveFavoriteListChangeUseCase(
+      sl<ExploreFavoriteRepository>(),
     ),
   );
-  sl.registerFactory<DiscoverRemoveFromFavoriteListUseCase>(
-    () => DiscoverRemoveFromFavoriteListUseCase(
-      sl<DiscoverFavoriteRepository>(),
+  sl.registerFactory<ExploreRemoveFromFavoriteListUseCase>(
+    () => ExploreRemoveFromFavoriteListUseCase(
+      sl<ExploreFavoriteRepository>(),
     ),
   );
 
   // Register cubits
-  sl.registerFactory<DiscoverBrowserCubit>(
-    () => DiscoverBrowserCubit(
-      sl<DiscoverBrowseCatalogUseCase>(),
-      sl<DiscoverGetFavoriteIdentifierByUriUseCase>(),
-      sl<DiscoverRemoveFromFavoriteListUseCase>(),
+  sl.registerFactory<ExploreBrowserCubit>(
+    () => ExploreBrowserCubit(
+      sl<ExploreBrowseCatalogUseCase>(),
+      sl<ExploreGetFavoriteIdentifierByUriUseCase>(),
+      sl<ExploreRemoveFromFavoriteListUseCase>(),
       sl<DiscoverAddToFavoriteListUseCase>(),
       sl<UriParserParseHttpsUseCase>(),
       sl<BookDownloadAndAddUseCase>(),
     ),
   );
-  sl.registerFactory<DiscoverFavoriteListCubit>(
-    () => DiscoverFavoriteListCubit(
-      sl<DiscoverGetFavoriteListUseCase>(),
-      sl<DiscoverObserveFavoriteListChangeUseCase>(),
+  sl.registerFactory<ExploreFavoriteListCubit>(
+    () => ExploreFavoriteListCubit(
+      sl<ExploreGetFavoriteListUseCase>(),
+      sl<ExploreObserveFavoriteListChangeUseCase>(),
     ),
   );
-  sl.registerFactory<DiscoverAddFavoritePageCubit>(
-    () => DiscoverAddFavoritePageCubit(
+  sl.registerFactory<ExploreAddFavoritePageCubit>(
+    () => ExploreAddFavoritePageCubit(
       sl<DiscoverAddToFavoriteListUseCase>(),
       sl<UriParserParseHttpsUseCase>(),
     ),

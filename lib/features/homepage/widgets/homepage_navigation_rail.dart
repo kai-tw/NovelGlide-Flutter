@@ -5,7 +5,7 @@ import '../../../generated/i18n/app_localizations.dart';
 import '../../bookmark/presentation/bookmark_list/cubit/bookmark_list_cubit.dart';
 import '../../books/presentation/book_list/cubit/book_list_cubit.dart';
 import '../../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
-import '../../discover/presentation/browser/discover_browser_icon.dart';
+import '../../discover/presentation/browser/explore_browser_icon.dart';
 import '../cubit/homepage_cubit.dart';
 
 class HomepageNavigationRail extends StatelessWidget {
@@ -74,10 +74,10 @@ class HomepageNavigationRail extends StatelessWidget {
         ),
         NavigationRailDestination(
           padding: const EdgeInsets.symmetric(vertical: 16.0),
-          icon: DiscoverBrowserIcon.outlined(
+          icon: ExploreBrowserIcon.outlined(
             color: unselectedColor,
           ),
-          selectedIcon: DiscoverBrowserIcon(
+          selectedIcon: ExploreBrowserIcon(
             color: selectedColor,
           ),
           label: Text(

@@ -10,10 +10,10 @@ import '../../../domain/entities/catalog_feed.dart';
 import '../../../domain/entities/publication_author.dart';
 import '../../../domain/entities/publication_entry.dart';
 import '../../../domain/entities/publication_link.dart';
-import '../discover_data_source.dart';
+import '../explore_data_source.dart';
 
 /// A concrete implementation of DiscoverDataSource for OPDS feeds.
-class OpdsDataSourceImpl implements DiscoverDataSource {
+class OpdsDataSourceImpl implements ExploreDataSource {
   OpdsDataSourceImpl(
     this._dateTimeParser,
     this._uriParser,
