@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../generated/i18n/app_localizations.dart';
 import '../../../locale_system/locale_utils.dart';
 import '../../domain/entities/catalog_feed.dart';
 import 'widgets/explore_catalog_pagination.dart';
@@ -20,7 +19,6 @@ class ExploreCatalogViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scrollbar(
       child: CustomScrollView(
         slivers: <Widget?>[
