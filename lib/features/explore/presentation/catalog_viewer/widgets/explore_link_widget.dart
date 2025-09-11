@@ -37,11 +37,14 @@ class ExploreLinkWidget extends StatelessWidget {
       case MimeType.atomFeed:
         return () => onVisit?.call(link.href!);
       case MimeType.jpg:
-        return () => Navigator.of(context).push(MaterialPageRoute<void>(
-              builder: (BuildContext context) => PhotoViewer(
-                imageUrl: link.href!.toString(),
+      case MimeType.png:
+        return () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => PhotoViewer(
+                  imageUrl: link.href!.toString(),
+                ),
               ),
-            ));
+            );
       default:
     }
 
