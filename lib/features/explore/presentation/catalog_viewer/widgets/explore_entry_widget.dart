@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../enum/window_size.dart';
-import '../../../../books/domain/entities/book_cover.dart';
-import '../../../../books/presentation/book_cover/shared_book_cover_widget.dart';
 import '../../../../locale_system/locale_utils.dart';
 import '../../../domain/entities/publication_author.dart';
 import '../../../domain/entities/publication_entry.dart';
 import '../../../domain/entities/publication_link.dart';
 import 'explore_author_widget.dart';
 import 'explore_link_widget.dart';
+import 'explore_thumbnail_widget.dart';
 
 class ExploreEntryWidget extends StatelessWidget {
   const ExploreEntryWidget({
@@ -56,7 +54,9 @@ class ExploreEntryWidget extends StatelessWidget {
                   ].whereType<Widget>().toList(),
                 ),
               ),
-              _buildThumbnail(context),
+              ExploreThumbnailWidget(
+                entryLinks: entry.links,
+              ),
             ].whereType<Widget>().toList(),
           ),
         ].whereType<Widget>().toList(),
@@ -173,44 +173,5 @@ class ExploreEntryWidget extends StatelessWidget {
             .toList(),
       );
     }
-  }
-
-  Widget? _buildThumbnail(BuildContext context) {
-    final List<PublicationLink> priorityList = <PublicationLink>[];
-
-    // Make sure the cover is prioritized over the thumbnail.
-    int coverIndex = 0;
-    for (final PublicationLink link in entry.links) {
-      switch (link.rel) {
-        case PublicationLinkRelationship.cover:
-          priorityList.insert(coverIndex++, link);
-          break;
-        case PublicationLinkRelationship.thumbnail:
-          priorityList.add(link);
-          break;
-        default:
-      }
-    }
-
-    final double maxWidth = switch (WindowSize.of(context)) {
-      WindowSize.compact => 100,
-      WindowSize.medium => 150,
-      WindowSize.expanded => 200,
-      WindowSize.large => 250,
-      WindowSize.extraLarge => 300,
-    };
-
-    return Container(
-      padding: const EdgeInsets.only(left: 16.0),
-      constraints: BoxConstraints(maxWidth: maxWidth),
-      child: priorityList.isEmpty
-          ? const Icon(Icons.feed, size: 48.0)
-          : SharedBookCoverWidget(
-              coverData: BookCover(
-                identifier: priorityList.first.href.toString(),
-                url: priorityList.first.href,
-              ),
-            ),
-    );
   }
 }
