@@ -18,7 +18,7 @@ class ExploreBrowserToManualButton extends StatelessWidget {
         );
       },
       icon: const Icon(Icons.help_outline_rounded),
-      tooltip: 'Manual',
+      tooltip: appLocalizations.generalManual,
     );
   }
 }

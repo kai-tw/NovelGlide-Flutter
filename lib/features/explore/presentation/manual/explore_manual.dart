@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:markdown_widget/widget/markdown.dart';
 
+import '../../../../generated/i18n/app_localizations.dart';
+
 class ExploreManual extends StatelessWidget {
   const ExploreManual({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Discovery Manual'),
+        title: Text(appLocalizations.exploreManual),
       ),
       body: const SafeArea(
         child: Padding(
