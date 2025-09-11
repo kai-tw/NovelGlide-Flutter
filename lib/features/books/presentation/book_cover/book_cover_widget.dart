@@ -1,4 +1,3 @@
-import 'package:bitmap/bitmap.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/services/cache_memory_image_provider.dart';
@@ -27,16 +26,12 @@ class BookCoverWidget extends StatelessWidget {
           return Image(
             image: CacheMemoryImageProvider(
               coverData.identifier,
-              Bitmap.fromHeadless(
-                coverData.width!.truncate(),
-                coverData.height!.truncate(),
-                coverData.bytes!,
-              ).buildHeaded(),
+              coverData.bytes!,
             ),
             width: constraints.maxWidth,
             height: constraints.maxHeight,
             fit: fit,
-            semanticLabel: appLocalizations.generalBookCover,
+            // semanticLabel: appLocalizations.generalBookCover,
           );
         },
       );

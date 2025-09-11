@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nested/nested.dart';
 
 import '../../../../generated/i18n/app_localizations.dart';
 import '../../../collection/presentation/collection_list/collection_list_scroll_view.dart';
@@ -51,7 +50,7 @@ class _BookshelfState extends State<Bookshelf>
     final BookshelfCubit cubit = BlocProvider.of<BookshelfCubit>(context);
 
     return MultiBlocListener(
-      listeners: <SingleChildWidget>[
+      listeners: <BlocListener<dynamic, dynamic>>[
         // BookList dragging listener
         BlocListener<BookListCubit, BookListState>(
           listenWhen: (BookListState previous, BookListState current) =>

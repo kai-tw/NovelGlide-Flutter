@@ -6,7 +6,6 @@ environment:
 description: A cross-platform novel reader app.
 dependencies:
   accessibility_tools: ^2.2.1
-  bitmap: ^0.2.0
   collection: ^1.18.0
   cupertino_icons: ^1.0.2
   dio: ^5.9.0

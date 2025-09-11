@@ -7,11 +7,11 @@ import 'domain/use_cases/uri_parser_parse_https_use_case.dart';
 
 void setupParserDependencies() {
   // Register repositories
-  sl.registerLazySingleton<UriParser>(
-    () => UriParserImpl(),
-  );
   sl.registerLazySingleton<DateTimeParser>(
     () => DateTimeParserImpl(),
+  );
+  sl.registerLazySingleton<UriParser>(
+    () => UriParserImpl(),
   );
 
   // Register use cases

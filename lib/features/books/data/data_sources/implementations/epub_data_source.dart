@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 import 'package:epubx/epubx.dart' as epub;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:image/image.dart' as img;
 import 'package:image/image.dart';
 import 'package:novel_glide/core/utils/random_extension.dart';
 import 'package:path/path.dart';
@@ -119,7 +120,9 @@ class EpubDataSource extends BookLocalDataSource {
       identifier: bookIdentifier,
       width: coverImage?.width.toDouble(),
       height: coverImage?.height.toDouble(),
-      bytes: coverImage?.getBytes(),
+      bytes: coverImage == null
+          ? null
+          : Uint8List.fromList(img.encodePng(coverImage)),
     );
 
     return Book(
