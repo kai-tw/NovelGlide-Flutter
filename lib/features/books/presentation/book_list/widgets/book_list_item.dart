@@ -29,6 +29,7 @@ class BookListItem extends StatelessWidget {
     return InkWell(
       onTap: () => _onTap(context, coverData),
       borderRadius: BorderRadius.circular(24.0),
+      splashFactory: InkRipple.splashFactory,
       child: Semantics(
         label: appLocalizations.generalBook,
         onTapHint: appLocalizations.tapToOpenBook,
