@@ -12,6 +12,7 @@ import '../features/collection/setup_dependencies.dart';
 import '../features/download_manager/setup_dependencies.dart';
 import '../features/explore/setup_dependencies.dart';
 import '../features/locale_system/setup_dependencies.dart';
+import '../features/manual/setup_dependencies.dart';
 import '../features/pick_file/setup_dependencies.dart';
 import '../features/preference/domain/use_cases/preference_get_use_cases.dart';
 import '../features/preference/domain/use_cases/preference_observe_change_use_case.dart';
@@ -21,10 +22,10 @@ import '../features/reader/setup_dependencies.dart';
 import '../features/tts_service/setup_dependencies.dart';
 import '../main.dart';
 import 'file_system/setup_dependencies.dart';
+import 'http_client/setup_dependencies.dart';
 import 'lifecycle/setup_dependencies.dart';
 import 'log_system/setup_dependencies.dart';
 import 'mime_resolver/setup_dependencies.dart';
-import 'parser_system/setup_dependencies.dart';
 import 'path_provider/setup_dependencies.dart';
 import 'web_server/setup_dependencies.dart';
 
@@ -55,8 +56,12 @@ void _setupExternalDependencies() {
 }
 
 void _setupCoreDependencies() {
-  setupPathProviderDependencies();
   setupFileSystemDependencies();
+  setupLifecycleDependencies();
+  setupMimeResolverDependencies();
+  setupPathProviderDependencies();
+  setupHttpClientDependencies();
+  setupWebServerDependencies();
 }
 
 void _setupSystemsDependencies() {
@@ -68,18 +73,15 @@ void _setupSystemsDependencies() {
   setupBookmarkDependencies();
   setupCollectionDependencies();
   setupCloudDependencies();
-  setupDiscoverDependencies();
   setupDownloaderDependencies();
-  setupLifecycleDependencies();
+  setupExploreDependencies();
   setupLocaleDependencies();
   setupLogDependencies();
-  setupMimeResolverDependencies();
-  setupParserDependencies();
+  setupManualDependencies();
   setupPickFileDependencies();
   setupPreferenceDependencies();
   setupReaderDependencies();
   setupTtsDependencies();
-  setupWebServerDependencies();
 }
 
 void _setupAppDependencies() {

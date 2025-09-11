@@ -1,7 +1,5 @@
 import '../../core/file_system/domain/repositories/json_repository.dart';
-import '../../core/parser_system/domain/repository/datetime_parser.dart';
-import '../../core/parser_system/domain/repository/uri_parser.dart';
-import '../../core/parser_system/domain/use_cases/uri_parser_parse_https_use_case.dart';
+import '../../core/http_client/domain/use_cases/http_client_get_use_case.dart';
 import '../../core/path_provider/domain/repositories/json_path_provider.dart';
 import '../../main.dart';
 import '../books/domain/use_cases/book_download_and_add_use_case.dart';
@@ -24,12 +22,11 @@ import 'presentation/browser/cubits/explore_browser_cubit.dart';
 import 'presentation/favorite_list/cubit/explore_favorite_list_cubit.dart';
 
 /// Setup the dependencies of discovery system
-void setupDiscoverDependencies() {
+void setupExploreDependencies() {
   // Register data sources
   sl.registerLazySingleton<ExploreDataSource>(
     () => OpdsDataSourceImpl(
-      sl<DateTimeParser>(),
-      sl<UriParser>(),
+      sl<HttpClientGetUseCase>(),
     ),
   );
   sl.registerLazySingleton<ExploreFavoriteDataSource>(
@@ -92,7 +89,6 @@ void setupDiscoverDependencies() {
       sl<ExploreGetFavoriteIdentifierByUriUseCase>(),
       sl<ExploreRemoveFromFavoriteListUseCase>(),
       sl<DiscoverAddToFavoriteListUseCase>(),
-      sl<UriParserParseHttpsUseCase>(),
       sl<BookDownloadAndAddUseCase>(),
     ),
   );
@@ -105,7 +101,6 @@ void setupDiscoverDependencies() {
   sl.registerFactory<ExploreAddFavoritePageCubit>(
     () => ExploreAddFavoritePageCubit(
       sl<DiscoverAddToFavoriteListUseCase>(),
-      sl<UriParserParseHttpsUseCase>(),
     ),
   );
 }

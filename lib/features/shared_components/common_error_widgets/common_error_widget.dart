@@ -16,20 +16,22 @@ class CommonErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return SafeArea(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
-            child: Icon(
-              iconData,
-              color: Theme.of(context).colorScheme.error,
-              size: 36.0,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: Icon(
+                iconData,
+                color: Theme.of(context).colorScheme.error,
+                size: 36.0,
+              ),
             ),
-          ),
-          Text(content ?? appLocalizations.exceptionUnknownError),
-        ],
+            Text(content ?? appLocalizations.exceptionUnknownError),
+          ],
+        ),
       ),
     );
   }

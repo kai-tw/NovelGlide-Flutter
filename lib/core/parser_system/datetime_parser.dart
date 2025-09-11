@@ -1,11 +1,11 @@
 import 'package:intl/intl.dart';
 
-import '../../../log_system/log_system.dart';
-import '../../domain/repository/datetime_parser.dart';
+import '../log_system/log_system.dart';
 
-class DateTimeParserImpl implements DateTimeParser {
-  @override
-  DateTime? tryParse(String? value) {
+class DateTimeParser {
+  DateTimeParser._();
+
+  static DateTime? tryParse(String? value) {
     if (value == null || value.isEmpty) {
       return null;
     }

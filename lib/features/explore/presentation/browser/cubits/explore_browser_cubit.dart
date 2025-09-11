@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../core/parser_system/domain/use_cases/uri_parser_parse_https_use_case.dart';
+import '../../../../../core/parser_system/uri_parser.dart';
 import '../../../../../enum/loading_state_code.dart';
 import '../../../../books/domain/use_cases/book_download_and_add_use_case.dart';
 import '../../../domain/entities/catalog_feed.dart';
@@ -19,7 +19,6 @@ class ExploreBrowserCubit extends Cubit<ExploreBrowserState> {
     this._getFavoriteIdentifierByUriUseCase,
     this._removeFromFavoriteListUseCase,
     this._addToFavoriteListUseCase,
-    this._parseHttpsUseCase,
     this._bookDownloadAndAddUseCase,
   ) : super(const ExploreBrowserState());
 
@@ -33,7 +32,6 @@ class ExploreBrowserCubit extends Cubit<ExploreBrowserState> {
   final DiscoverAddToFavoriteListUseCase _addToFavoriteListUseCase;
 
   /// Use cases
-  final UriParserParseHttpsUseCase _parseHttpsUseCase;
   final BookDownloadAndAddUseCase _bookDownloadAndAddUseCase;
 
   /// Controllers
@@ -41,7 +39,7 @@ class ExploreBrowserCubit extends Cubit<ExploreBrowserState> {
 
   Future<void> browseCatalog([Uri? uri]) async {
     final Uri? requestedUri =
-        uri ?? _parseHttpsUseCase(textEditingController.text);
+        uri ?? UriParser.parseHttps(textEditingController.text);
     final Uri? previousUri = state.currentUri;
 
     if (requestedUri == null ||

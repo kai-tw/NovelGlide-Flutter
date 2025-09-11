@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../generated/i18n/app_localizations.dart';
-import '../../../manual/explore_manual.dart';
+import '../../../../../manual/presentation/cubit/shared_manual_file_path.dart';
+import '../../../../../manual/presentation/shared_manual.dart';
 
 class ExploreBrowserToManualButton extends StatelessWidget {
   const ExploreBrowserToManualButton({super.key});
@@ -13,7 +14,10 @@ class ExploreBrowserToManualButton extends StatelessWidget {
       onPressed: () {
         Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (_) => const ExploreManual(),
+            builder: (_) => SharedManual(
+              title: appLocalizations.exploreManual,
+              filePath: SharedManualFilePath.explore,
+            ),
           ),
         );
       },

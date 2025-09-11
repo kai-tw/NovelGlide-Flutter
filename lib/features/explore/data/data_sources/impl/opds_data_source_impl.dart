@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:rss_dart/dart_rss.dart';
 
+import '../../../../../core/http_client/domain/use_cases/http_client_get_use_case.dart';
 import '../../../../../core/mime_resolver/domain/entities/mime_type.dart';
-import '../../../../../core/parser_system/domain/repository/datetime_parser.dart';
-import '../../../../../core/parser_system/domain/repository/uri_parser.dart';
+import '../../../../../core/parser_system/datetime_parser.dart';
+import '../../../../../core/parser_system/uri_parser.dart';
 import '../../../domain/entities/catalog_feed.dart';
 import '../../../domain/entities/publication_author.dart';
 import '../../../domain/entities/publication_entry.dart';
@@ -15,19 +16,16 @@ import '../explore_data_source.dart';
 /// A concrete implementation of DiscoverDataSource for OPDS feeds.
 class OpdsDataSourceImpl implements ExploreDataSource {
   OpdsDataSourceImpl(
-    this._dateTimeParser,
-    this._uriParser,
+    this._getUseCase,
   );
 
-  final Dio _dio = Dio();
-  final DateTimeParser _dateTimeParser;
-  final UriParser _uriParser;
+  final HttpClientGetUseCase _getUseCase;
 
   /// Fetches an OPDS catalog feed from a given URL and parses it.
   @override
   Future<CatalogFeed?> getCatalogFeed(Uri uri) async {
     try {
-      final Response<String> response = await _dio.get(uri.toString());
+      final Response<String> response = await _getUseCase(uri);
 
       if (response.data?.isEmpty == true) {
         return null;
@@ -38,7 +36,7 @@ class OpdsDataSourceImpl implements ExploreDataSource {
       return CatalogFeed(
         id: feed.id?.trim(),
         title: feed.title?.trim(),
-        updated: _dateTimeParser.tryParse(feed.updated),
+        updated: DateTimeParser.tryParse(feed.updated),
         links: feed.links.map(_parseLink).toList(),
         entries: feed.items.map(_parseEntry).toList(),
       );
@@ -91,7 +89,7 @@ class OpdsDataSourceImpl implements ExploreDataSource {
     return PublicationEntry(
       id: item.id?.trim(),
       title: item.title?.trim(),
-      updated: _dateTimeParser.tryParse(item.updated),
+      updated: DateTimeParser.tryParse(item.updated),
       summary: item.summary,
       content: item.content?.trim(),
       authors: item.authors.map(_parseAuthor).toList(),
@@ -103,7 +101,7 @@ class OpdsDataSourceImpl implements ExploreDataSource {
     return PublicationAuthor(
       name: person.name?.trim().isNotEmpty == true ? person.name?.trim() : null,
       uri: person.uri?.trim().isNotEmpty == true
-          ? _uriParser.parseHttps(person.uri!)
+          ? UriParser.parseHttps(person.uri!)
           : null,
     );
   }
