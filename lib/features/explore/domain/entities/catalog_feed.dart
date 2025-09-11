@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/mime_resolver/domain/entities/mime_type.dart';
 import 'publication_entry.dart';
 import 'publication_link.dart';
 
@@ -18,6 +20,11 @@ class CatalogFeed extends Equatable {
   final DateTime? updated;
   final List<PublicationLink> links;
   final List<PublicationEntry> entries;
+
+  PublicationLink? get nextLink =>
+      links.firstWhereOrNull((PublicationLink link) =>
+          link.rel == PublicationLinkRelationship.nextCatalog &&
+          link.type == MimeType.atomFeed);
 
   @override
   List<Object?> get props => <Object?>[

@@ -59,6 +59,9 @@ class OpdsDataSourceImpl implements ExploreDataSource {
     return PublicationLink(
       href: href,
       rel: switch (rel) {
+        // Catalog rel
+        'next' => PublicationLinkRelationship.nextCatalog,
+        // Entry rel
         'http://opds-spec.org/thumbnail' =>
           PublicationLinkRelationship.thumbnail,
         'http://opds-spec.org/image/thumbnail' =>

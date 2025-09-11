@@ -3,6 +3,9 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/mime_resolver/domain/entities/mime_type.dart';
 
 enum PublicationLinkRelationship {
+  // Catalog rel
+  nextCatalog,
+  // Entries rel
   thumbnail,
   cover,
   acquisition,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../../generated/i18n/app_localizations.dart';
 import '../../../locale_system/locale_utils.dart';
 import '../../domain/entities/catalog_feed.dart';
+import 'widgets/explore_catalog_pagination.dart';
 import 'widgets/explore_entry_widget.dart';
 
 class ExploreCatalogViewer extends StatelessWidget {
@@ -18,9 +20,10 @@ class ExploreCatalogViewer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return Scrollbar(
       child: CustomScrollView(
-        slivers: <Widget>[
+        slivers: <Widget?>[
           SliverToBoxAdapter(
             child: ListTile(
               contentPadding: const EdgeInsets.fromLTRB(
@@ -53,7 +56,11 @@ class ExploreCatalogViewer extends StatelessWidget {
               childCount: feed.entries.length,
             ),
           ),
-        ],
+          ExploreCatalogPagination(
+            nextLink: feed.nextLink,
+            onVisit: onVisit,
+          ),
+        ].whereType<Widget>().toList(),
       ),
     );
   }
