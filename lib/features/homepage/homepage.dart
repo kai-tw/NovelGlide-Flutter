@@ -7,7 +7,7 @@ import '../bookmark/presentation/bookmark_list/cubit/bookmark_list_cubit.dart';
 import '../books/presentation/book_list/cubit/book_list_cubit.dart';
 import '../books/presentation/bookshelf/cubit/bookshelf_cubit.dart';
 import '../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
-import '../discover/presentation/browser/cubits/explore_browser_cubit.dart';
+import '../explore/presentation/browser/cubits/explore_browser_cubit.dart';
 import 'cubit/homepage_cubit.dart';
 import 'widgets/homepage_app_bar_builder.dart';
 import 'widgets/homepage_floating_action_widget.dart';
@@ -16,9 +16,7 @@ import 'widgets/homepage_navigation_rail.dart';
 import 'widgets/homepage_scaffold_body.dart';
 
 part 'homepage_app_bar.dart';
-
 part 'view/homepage_compact_view.dart';
-
 part 'view/homepage_medium_view.dart';
 
 /// The homepage of the app

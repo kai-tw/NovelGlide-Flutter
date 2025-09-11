@@ -1,4 +1,4 @@
-import 'package:novel_glide/features/discover/domain/entities/explore_favorite_catalog_data.dart';
+import 'package:novel_glide/features/explore/domain/entities/explore_favorite_catalog_data.dart';
 
 import '../../../../../core/file_system/domain/repositories/json_repository.dart';
 import '../../../../../core/path_provider/domain/repositories/json_path_provider.dart';

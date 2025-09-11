@@ -5,7 +5,7 @@ import '../../advertisement/domain/entities/ad_unit_id.dart';
 import '../../advertisement/presentation/advertisement.dart';
 import '../../bookmark/presentation/bookmark_list/bookmark_list_scaffold_body.dart';
 import '../../books/presentation/bookshelf/bookshelf.dart';
-import '../../discover/presentation/browser/explore_browser.dart';
+import '../../explore/presentation/browser/explore_browser.dart';
 import '../../settings_page/presentation/settings_page.dart';
 import '../cubit/homepage_cubit.dart';
 

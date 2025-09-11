@@ -5,7 +5,7 @@ import '../../../generated/i18n/app_localizations.dart';
 import '../../bookmark/presentation/bookmark_list/cubit/bookmark_list_cubit.dart';
 import '../../books/presentation/book_list/cubit/book_list_cubit.dart';
 import '../../collection/presentation/collection_list/cubit/collection_list_cubit.dart';
-import '../../discover/presentation/browser/explore_browser_icon.dart';
+import '../../explore/presentation/browser/explore_browser_icon.dart';
 import '../cubit/homepage_cubit.dart';
 
 class HomepageNavigationBar extends StatelessWidget {

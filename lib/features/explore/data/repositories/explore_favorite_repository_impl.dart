@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:novel_glide/features/discover/domain/entities/explore_favorite_catalog_data.dart';
+import 'package:novel_glide/features/explore/domain/entities/explore_favorite_catalog_data.dart';
 
 import '../../domain/repositories/explore_favorite_repository.dart';
 import '../data_sources/explore_favorite_data_source.dart';

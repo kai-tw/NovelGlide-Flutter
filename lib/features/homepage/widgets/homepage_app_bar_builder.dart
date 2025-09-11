@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bookmark/presentation/bookmark_list/bookmark_list_app_bar.dart';
 import '../../books/presentation/bookshelf/bookshelf_app_bar.dart';
-import '../../discover/presentation/browser/explore_app_bar.dart';
+import '../../explore/presentation/browser/explore_app_bar.dart';
 import '../../settings_page/presentation/settings_app_bar.dart';
 import '../cubit/homepage_cubit.dart';
 
