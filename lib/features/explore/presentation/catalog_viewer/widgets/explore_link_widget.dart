@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../../core/mime_resolver/domain/entities/mime_type.dart';
 import '../../../../../core/mime_resolver/presentation/mime_icon.dart';
 import '../../../../../generated/i18n/app_localizations.dart';
+import '../../../../photo_viewer/presentation/photo_viewer.dart';
 import '../../../domain/entities/publication_link.dart';
 
 class ExploreLinkWidget extends StatelessWidget {
@@ -21,13 +22,13 @@ class ExploreLinkWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
     return TextButton.icon(
-      onPressed: _buildOnPressed(),
+      onPressed: _buildOnPressed(context),
       icon: _buildIcon(),
       label: Text(_getTitle(appLocalizations)),
     );
   }
 
-  void Function()? _buildOnPressed() {
+  void Function()? _buildOnPressed(BuildContext context) {
     if (link.href == null) {
       return null;
     }
@@ -35,6 +36,12 @@ class ExploreLinkWidget extends StatelessWidget {
     switch (link.type) {
       case MimeType.atomFeed:
         return () => onVisit?.call(link.href!);
+      case MimeType.jpg:
+        return () => Navigator.of(context).push(MaterialPageRoute<void>(
+              builder: (BuildContext context) => PhotoViewer(
+                imageUrl: link.href!.toString(),
+              ),
+            ));
       default:
     }
 
