@@ -7,16 +7,50 @@ import '../../../../../generated/i18n/app_localizations.dart';
 import '../../../../collection/presentation/add_book_page/collection_add_book_scaffold.dart';
 import '../../../../shared_components/common_delete_dialog.dart';
 import '../../../../shared_components/shared_list/shared_list.dart';
+import '../../bookshelf/cubit/bookshelf_cubit.dart';
+import '../../bookshelf/cubit/bookshelf_state.dart';
 import '../cubit/book_list_cubit.dart';
 
-class BookListAppBarMoreButton extends StatelessWidget {
+class BookListAppBarMoreButton extends StatefulWidget {
   const BookListAppBarMoreButton({super.key});
 
   @override
+  State<BookListAppBarMoreButton> createState() =>
+      _BookListAppBarMoreButtonState();
+}
+
+class _BookListAppBarMoreButtonState extends State<BookListAppBarMoreButton> {
+  bool _isListDragging = false;
+  bool _isTabRunning = false;
+
+  @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<void>(
-      clipBehavior: Clip.hardEdge,
-      itemBuilder: _itemBuilder,
+    return MultiBlocListener(
+      listeners: <BlocListener<dynamic, dynamic>>[
+        BlocListener<BookListCubit, BookListState>(
+          listenWhen: (BookListState previous, BookListState current) =>
+              previous.isDragging != current.isDragging,
+          listener: (BuildContext _, BookListState state) {
+            setState(() {
+              _isListDragging = state.isDragging;
+            });
+          },
+        ),
+        BlocListener<BookshelfCubit, BookshelfState>(
+          listenWhen: (BookshelfState previous, BookshelfState current) =>
+              previous.isTabRunning != current.isTabRunning,
+          listener: (BuildContext _, BookshelfState state) {
+            setState(() {
+              _isTabRunning = state.isTabRunning;
+            });
+          },
+        ),
+      ],
+      child: PopupMenuButton<void>(
+        enabled: !_isListDragging && !_isTabRunning,
+        clipBehavior: Clip.hardEdge,
+        itemBuilder: _itemBuilder,
+      ),
     );
   }
 
