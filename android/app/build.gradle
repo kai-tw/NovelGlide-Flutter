@@ -59,7 +59,7 @@ android {
         // flutter.minSdkVersion = 21
 //        minSdkVersion flutter.minSdkVersion
         // AdMob requires a minimum SDK version of 23.
-        minSdkVersion 23
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
