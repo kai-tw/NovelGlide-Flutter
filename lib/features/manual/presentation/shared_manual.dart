@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../main.dart';
 import '../../locale_system/domain/entities/app_locale.dart';
 import '../../locale_system/locale_utils.dart';
+import '../domain/entities/shared_manual_file_path.dart';
 import 'cubit/shared_manual_cubit.dart';
-import 'cubit/shared_manual_file_path.dart';
 import 'widgets/shared_manual_content.dart';
 
 class SharedManual extends StatelessWidget {

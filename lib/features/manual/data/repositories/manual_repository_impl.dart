@@ -1,8 +1,8 @@
 import 'package:path/path.dart';
 
 import '../../../locale_system/domain/entities/app_locale.dart';
+import '../../domain/entities/shared_manual_file_path.dart';
 import '../../domain/repositories/manual_repository.dart';
-import '../../presentation/cubit/shared_manual_file_path.dart';
 import '../data_sources/manual_local_data_source.dart';
 
 class ManualRepositoryImpl implements ManualRepository {

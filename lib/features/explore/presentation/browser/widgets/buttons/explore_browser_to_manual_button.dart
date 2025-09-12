@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../generated/i18n/app_localizations.dart';
-import '../../../../../manual/presentation/cubit/shared_manual_file_path.dart';
+import '../../../../../manual/domain/entities/shared_manual_file_path.dart';
 import '../../../../../manual/presentation/shared_manual.dart';
 
 class ExploreBrowserToManualButton extends StatelessWidget {

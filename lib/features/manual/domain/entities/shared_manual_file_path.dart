@@ -8,5 +8,5 @@ enum SharedManualFilePath {
   @override
   String toString() => filePath;
 
-  static const String assetRootPath = 'assets/manual/';
+  static const String assetRootPath = 'assets/manuals/';
 }

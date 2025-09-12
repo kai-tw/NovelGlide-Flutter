@@ -2,8 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../enum/loading_state_code.dart';
 import '../../../locale_system/domain/entities/app_locale.dart';
+import '../../domain/entities/shared_manual_file_path.dart';
 import '../../domain/use_cases/manual_load_use_case.dart';
-import 'shared_manual_file_path.dart';
 import 'shared_manual_state.dart';
 
 class SharedManualCubit extends Cubit<SharedManualState> {
