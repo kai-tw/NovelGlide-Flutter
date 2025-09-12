@@ -11,6 +11,10 @@ class UriParser {
   static bool _hasProtocol(String input) => input.contains('://');
 
   static Uri? parseHttps(String input) {
+    if (input.isEmpty) {
+      return null;
+    }
+
     String normalizedUrl;
 
     // Protocol check.
