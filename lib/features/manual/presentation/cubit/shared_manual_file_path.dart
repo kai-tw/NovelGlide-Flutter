@@ -1,5 +1,5 @@
 enum SharedManualFilePath {
-  explore('Explore');
+  explore('explore');
 
   const SharedManualFilePath(this.filePath);
 
@@ -8,5 +8,5 @@ enum SharedManualFilePath {
   @override
   String toString() => filePath;
 
-  static const String rootUrl = 'https://repo.kai-wu.net/NovelGlide-Manual/';
+  static const String assetRootPath = 'assets/manual/';
 }

@@ -1,5 +1,5 @@
 import '../../core/file_system/domain/repositories/json_repository.dart';
-import '../../core/http_client/domain/use_cases/http_client_get_use_case.dart';
+import '../../core/http_client/domain/repositories/http_client_repository.dart';
 import '../../core/path_provider/domain/repositories/json_path_provider.dart';
 import '../../main.dart';
 import '../books/domain/use_cases/book_download_and_add_use_case.dart';
@@ -26,7 +26,7 @@ void setupExploreDependencies() {
   // Register data sources
   sl.registerLazySingleton<ExploreDataSource>(
     () => OpdsDataSourceImpl(
-      sl<HttpClientGetUseCase>(),
+      sl<HttpClientRepository>(),
     ),
   );
   sl.registerLazySingleton<ExploreFavoriteDataSource>(

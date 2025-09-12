@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart';
 
 import '../../../main.dart';
 import '../../locale_system/domain/entities/app_locale.dart';
@@ -21,30 +20,26 @@ class SharedManual extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Locale locale = Localizations.localeOf(context);
+    final AppLocale appLocale = LocaleUtils.convertLocaleToAppLocale(locale);
     return BlocProvider<SharedManualCubit>(
-      create: (_) =>
-          sl<SharedManualCubit>()..loadManual(_manualUriOf(context, filePath)),
+      create: (_) => sl<SharedManualCubit>()
+        ..loadManual(SharedManualFilePath.explore, appLocale),
       child: Scaffold(
         appBar: AppBar(
           title: Text(title),
         ),
         body: const SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.0),
+            padding: EdgeInsets.only(
+              left: 24.0,
+              right: 24.0,
+              bottom: 16.0,
+            ),
             child: SharedManualContent(),
           ),
         ),
       ),
     );
-  }
-
-  Uri _manualUriOf(BuildContext context, SharedManualFilePath filePath) {
-    final Locale locale = Localizations.localeOf(context);
-    final AppLocale appLocale = LocaleUtils.convertLocaleToAppLocale(locale);
-    return Uri.parse(join(
-      SharedManualFilePath.rootUrl,
-      filePath.toString(),
-      '$appLocale.md',
-    ));
   }
 }

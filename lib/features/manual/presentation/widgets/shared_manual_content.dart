@@ -29,6 +29,7 @@ class SharedManualContent extends StatelessWidget {
                 data: state.markdown!,
               );
             }
+            break;
 
           default:
         }

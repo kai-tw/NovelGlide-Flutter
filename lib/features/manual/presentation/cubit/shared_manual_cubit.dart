@@ -1,33 +1,38 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/http_client/domain/use_cases/http_client_get_use_case.dart';
-import '../../../../core/log_system/log_system.dart';
 import '../../../../enum/loading_state_code.dart';
+import '../../../locale_system/domain/entities/app_locale.dart';
+import '../../domain/use_cases/manual_load_use_case.dart';
+import 'shared_manual_file_path.dart';
 import 'shared_manual_state.dart';
 
 class SharedManualCubit extends Cubit<SharedManualState> {
   SharedManualCubit(
-    this._getUseCase,
+    this._loadUseCase,
   ) : super(const SharedManualState());
 
-  final HttpClientGetUseCase _getUseCase;
+  final ManualLoadUseCase _loadUseCase;
 
-  Future<void> loadManual(Uri uri) async {
+  Future<void> loadManual(
+      SharedManualFilePath filePath, AppLocale appLocale) async {
     emit(state.copyWith(code: LoadingStateCode.loading));
 
-    try {
-      final String markdown = await _getUseCase(uri);
+    final String? markdown = await _loadUseCase(ManualLoadUseCaseParam(
+      filePath: filePath,
+      appLocale: appLocale,
+    ));
 
+    if (markdown == null) {
+      // Unable to load the markdown string
+      if (!isClosed) {
+        emit(state.copyWith(code: LoadingStateCode.error));
+      }
+    } else {
       if (!isClosed) {
         emit(state.copyWith(
           code: LoadingStateCode.loaded,
           markdown: markdown,
         ));
-      }
-    } catch (e, s) {
-      LogSystem.error('Failed to load manual. ($uri)', error: e, stackTrace: s);
-      if (!isClosed) {
-        emit(state.copyWith(code: LoadingStateCode.error));
       }
     }
   }

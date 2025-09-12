@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:dio/dio.dart';
 import 'package:rss_dart/dart_rss.dart';
 
-import '../../../../../core/http_client/domain/use_cases/http_client_get_use_case.dart';
+import '../../../../../core/http_client/domain/repositories/http_client_repository.dart';
 import '../../../../../core/mime_resolver/domain/entities/mime_type.dart';
 import '../../../../../core/parser_system/datetime_parser.dart';
 import '../../../../../core/parser_system/uri_parser.dart';
@@ -16,22 +15,22 @@ import '../explore_data_source.dart';
 /// A concrete implementation of DiscoverDataSource for OPDS feeds.
 class OpdsDataSourceImpl implements ExploreDataSource {
   OpdsDataSourceImpl(
-    this._getUseCase,
+    this._httpClientRepository,
   );
 
-  final HttpClientGetUseCase _getUseCase;
+  final HttpClientRepository _httpClientRepository;
 
   /// Fetches an OPDS catalog feed from a given URL and parses it.
   @override
   Future<CatalogFeed?> getCatalogFeed(Uri uri) async {
     try {
-      final Response<String> response = await _getUseCase(uri);
+      final String? data = await _httpClientRepository.get<String>(uri);
 
-      if (response.data?.isEmpty == true) {
+      if (data?.isEmpty == true) {
         return null;
       }
 
-      final AtomFeed feed = AtomFeed.parse(response.data!);
+      final AtomFeed feed = AtomFeed.parse(data!);
 
       return CatalogFeed(
         id: feed.id?.trim(),
