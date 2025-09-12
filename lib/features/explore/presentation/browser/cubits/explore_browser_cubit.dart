@@ -39,7 +39,7 @@ class ExploreBrowserCubit extends Cubit<ExploreBrowserState> {
 
   Future<void> browseCatalog([Uri? uri]) async {
     final Uri? requestedUri =
-        uri ?? UriParser.parseHttps(textEditingController.text);
+        uri ?? UriParser.parseHttps(textEditingController.text.trim());
     final Uri? previousUri = state.currentUri;
 
     if (requestedUri == null ||
