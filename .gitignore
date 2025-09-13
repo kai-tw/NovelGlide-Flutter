@@ -54,3 +54,4 @@ app_untranslated.txt
 assets/renderer/**
 /lib/generated/
 /android/app/.cxx/**
+/android/fastlane/certificates/**

@@ -1,0 +1,8 @@
+Using NovelGlide as your personal ePUB ebook reader makes book management easy, convenient, and simple. Read anytime, anywhere, and with cloud backup support, you won't lose your books or your reading progress.
+
+■ Full ePUB support: Easily import books for a high-quality reading experience
+■ Personalizable appearance: Adjust text size and line spacing, and switch between light and dark modes
+■ Bookmarks: Easily insert bookmarks, jump to bookmarks, and support keyword searches within books
+■ Book management: Create collections, customize sorting, and easily organize your bookshelf, categorize, and save favorites
+■ Text-to-speech: Read books aloud to you
+■ Google Drive backup: Securely back up and sync your books, bookmarks, and collections to the cloud, ensuring you never lose your reading progress

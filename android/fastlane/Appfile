@@ -1,0 +1,2 @@
+json_key_file("fastlane/certificates/novelglide-fastlane-android.json")
+package_name("com.kai_wu.novelglide")

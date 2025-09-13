@@ -1,0 +1,2 @@
+■ Japanese language support
+■ Performance improvements
