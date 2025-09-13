@@ -14,7 +14,7 @@ import 'firebase_options.dart';
 
 final GetIt sl = GetIt.instance;
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Setup dependencies

@@ -50,9 +50,11 @@ Future<void> setupDependencies() async {
 }
 
 void _setupExternalDependencies() {
-  sl.registerSingletonAsync<SharedPreferences>(
-    () => SharedPreferences.getInstance(),
-  );
+  if (!sl.isRegistered<SharedPreferences>()) {
+    sl.registerSingletonAsync<SharedPreferences>(
+      () => SharedPreferences.getInstance(),
+    );
+  }
 }
 
 void _setupCoreDependencies() {

@@ -15,18 +15,18 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
-### android build_aab
+### android screenshots
 
 ```sh
-[bundle exec] fastlane android build_aab
+[bundle exec] fastlane android screenshots
 ```
 
-Build release aab
+Take screenshots automatically
 
-### android upload_android_to_firebase
+### android firebase
 
 ```sh
-[bundle exec] fastlane android upload_android_to_firebase
+[bundle exec] fastlane android firebase
 ```
 
 Submit a new Beta Build to Crashlytics Beta

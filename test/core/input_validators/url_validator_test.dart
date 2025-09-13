@@ -2,13 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:novel_glide/core/input_validators/url_validator.dart';
 import 'package:novel_glide/generated/i18n/app_localizations.dart';
 
-// A mock class to simulate the AppLocalizations dependency.
-// This mock is set up to return the hardcoded strings that the
-// UrlValidator is currently using, allowing the tests to pass.
 class MockLocalizations implements AppLocalizations {
-  String get pleaseEnterUrl => 'Please enter the URL';
+  @override
+  String get validatorRequiredField => 'Required field';
 
-  String get pleaseEnterValidUrl => 'Invalid URL';
+  @override
+  String get validatorPleaseEnterValidUrl => 'Invalid URL';
 
   @override
   dynamic noSuchMethod(Invocation invocation) {
@@ -37,17 +36,17 @@ void main() {
 
     test('should return the correct hardcoded error for an invalid URL', () {
       final String? result = validator.validateLoosely('not a url');
-      expect(result, mockLocalizations.pleaseEnterValidUrl);
+      expect(result, mockLocalizations.validatorPleaseEnterValidUrl);
     });
 
     test('should return the correct hardcoded error for an empty string', () {
       final String? result = validator.validateLoosely('');
-      expect(result, mockLocalizations.pleaseEnterUrl);
+      expect(result, mockLocalizations.validatorRequiredField);
     });
 
     test('should return the correct hardcoded error for a null value', () {
       final String? result = validator.validateLoosely(null);
-      expect(result, mockLocalizations.pleaseEnterUrl);
+      expect(result, mockLocalizations.validatorRequiredField);
     });
   });
 }
