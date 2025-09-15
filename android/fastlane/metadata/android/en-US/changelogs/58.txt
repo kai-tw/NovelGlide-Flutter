@@ -1,0 +1,3 @@
+■ Added a new exploring feature
+■ Support for reading books from Open Publication Distribution System (OPDS)
+■ Performance improvements

@@ -1,0 +1,3 @@
+■ 新しい探検機能の追加
+■ Open Publication Distribution System (OPDS) の読み取りサポート
+■ パフォーマンスの改善
