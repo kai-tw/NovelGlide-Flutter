@@ -20,108 +20,129 @@ void main() async {
   final IntegrationTestWidgetsFlutterBinding binding =
       IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  // Android Phone folder name
-  // const String deviceFolder = 'phoneScreenshots';
-
-  // Android Tablet 7 inches folder name
-  // const String deviceFolder = 'sevenInchScreenshots';
-
-  // Android Tablet 10 inches folder name
-  const String deviceFolder = 'tenInchScreenshots';
-
-  bool isSetup = false;
-
   group('App on Android Phone', () {
     for (final Locale locale in AppLocalizations.supportedLocales) {
-      final String directoryName = _localeToString(locale);
+      final String localeString = _localeToString(locale);
 
-      final String directoryRoot =
-          'android/fastlane/metadata/android/$directoryName/images/$deviceFolder/';
+      _progress(binding, locale, localeString, (int index) {
+        if (Platform.isAndroid) {
+          // Android Phone folder name
+          // const String deviceFolder = 'phoneScreenshots';
 
-      testWidgets(
-        'Take screenshot for $directoryName',
-        (WidgetTester tester) async {
-          if (!isSetup) {
-            await setupDependencies();
+          // Android Tablet 7 inches folder name
+          // const String deviceFolder = 'sevenInchScreenshots';
 
-            await Firebase.initializeApp(
-                options: DefaultFirebaseOptions.currentPlatform);
+          // Android Tablet 10 inches folder name
+          const String deviceFolder = 'tenInchScreenshots';
 
-            await _importBook(AppLocalizations.supportedLocales
-                .map(_localeToString)
-                .toList());
-            await tester.pumpAndSettle();
+          final String directoryRoot =
+              'android/fastlane/metadata/android/$localeString/images/$deviceFolder/';
 
-            isSetup = true;
-          }
+          return '$directoryRoot/${index + 1}_$localeString.png';
+        } else {
+          // iOS
+          final String directoryRoot =
+              'ios/fastlane/screenshots/$localeString/';
+          // iPhone
+          final String deviceFileName = '${index}_APP_IPHONE_67_$index.png';
+          // iPad
+          // final String deviceFileName = '${index}_APP_IPAD_PRO_3GEN_129_$index.png';
 
-          await tester.pumpWidget(App(
-            locale: locale,
-            enableAccessibilityTools: false,
-          ));
-          await tester.pumpAndSettle();
-
-          await binding.convertFlutterSurfaceToImage();
-          await tester.pumpAndSettle();
-
-          // Take the screenshot of the homepage.
-          await binding.takeScreenshot('$directoryRoot/1_$directoryName.png');
-
-          // Find the book
-          await tester.tap(
-              find.byKey(ValueKey<String>('bookList_$directoryName.epub')));
-          await tester.pumpAndSettle();
-
-          // Wait 5 seconds to load the next page
-          await Future<void>.delayed(const Duration(seconds: 2));
-
-          // Take the screenshot of the Table of Contents.
-          await binding.takeScreenshot('$directoryRoot/2_$directoryName.png');
-
-          // Click the second chapter item
-          await tester.tap(find.byKey(const ValueKey<String>('tocList_1')));
-          await tester.pumpAndSettle();
-
-          // Wait 5 seconds to load the next page
-          await Future<void>.delayed(const Duration(seconds: 2));
-
-          // Take the screenshot of the Reader.
-          await binding.takeScreenshot('$directoryRoot/3_$directoryName.png');
-
-          // Go to the next page
-          await tester
-              .tap(find.byKey(const ValueKey<String>('reader_next_button')));
-          await tester.pumpAndSettle();
-
-          // Wait 5 seconds to load the next page
-          await Future<void>.delayed(const Duration(seconds: 2));
-
-          // Take the screenshot of the Reader.
-          await binding.takeScreenshot('$directoryRoot/4_$directoryName.png');
-
-          // Tap back button.
-          await tester.tap(find.byType(BackButton));
-          await tester.pumpAndSettle();
-
-          // Tap back button again.
-          await tester.tap(find.byType(BackButton));
-          await tester.pumpAndSettle();
-
-          // Go to explore page
-          await tester
-              .tap(find.byKey(const ValueKey<String>('homepage_explore')));
-          await tester.pumpAndSettle();
-
-          // Take the screenshot of the Reader.
-          await binding.takeScreenshot('$directoryRoot/5_$directoryName.png');
-
-          // Verify that the homepage is displayed.
-          expect(
-              find.byKey(const ValueKey<String>('homepage')), findsOneWidget);
-        },
-      );
+          return directoryRoot + deviceFileName;
+        }
+      });
     }
   });
+}
+
+void _progress(
+  IntegrationTestWidgetsFlutterBinding binding,
+  Locale locale,
+  String localeString,
+  String Function(int index) getScreenshotName,
+) {
+  bool isSetup = false;
+  int index = 0;
+
+  testWidgets(
+    'Take screenshot for $localeString',
+    (WidgetTester tester) async {
+      if (!isSetup) {
+        await setupDependencies();
+
+        await Firebase.initializeApp(
+            options: DefaultFirebaseOptions.currentPlatform);
+
+        await _importBook(
+            AppLocalizations.supportedLocales.map(_localeToString).toList());
+        await tester.pumpAndSettle();
+
+        isSetup = true;
+      }
+
+      await tester.pumpWidget(App(
+        locale: locale,
+        enableAccessibilityTools: false,
+      ));
+      await tester.pumpAndSettle();
+
+      await binding.convertFlutterSurfaceToImage();
+      await tester.pumpAndSettle();
+
+      // Take the screenshot of the homepage.
+      await binding.takeScreenshot(getScreenshotName(index++));
+
+      // Find the book
+      await tester
+          .tap(find.byKey(ValueKey<String>('bookList_$localeString.epub')));
+      await tester.pumpAndSettle();
+
+      // Wait 5 seconds to load the next page
+      await Future<void>.delayed(const Duration(seconds: 2));
+
+      // Take the screenshot of the Table of Contents.
+      await binding.takeScreenshot(getScreenshotName(index++));
+
+      // Click the second chapter item
+      await tester.tap(find.byKey(const ValueKey<String>('tocList_1')));
+      await tester.pumpAndSettle();
+
+      // Wait 5 seconds to load the next page
+      await Future<void>.delayed(const Duration(seconds: 2));
+
+      // Take the screenshot of the Reader.
+      await binding.takeScreenshot(getScreenshotName(index++));
+
+      // Go to the next page
+      await tester
+          .tap(find.byKey(const ValueKey<String>('reader_next_button')));
+      await tester.pumpAndSettle();
+
+      // Wait 5 seconds to load the next page
+      await Future<void>.delayed(const Duration(seconds: 2));
+
+      // Take the screenshot of the Reader.
+      await binding.takeScreenshot(getScreenshotName(index++));
+
+      // Tap back button.
+      await tester.tap(find.byType(BackButton));
+      await tester.pumpAndSettle();
+
+      // Tap back button again.
+      await tester.tap(find.byType(BackButton));
+      await tester.pumpAndSettle();
+
+      // Go to explore page
+      await tester.tap(find.byKey(const ValueKey<String>('homepage_explore')));
+      await tester.pumpAndSettle();
+
+      // Take the screenshot of the Reader.
+      await binding.takeScreenshot(getScreenshotName(index++));
+
+      // Verify that the homepage is displayed.
+      expect(find.byKey(const ValueKey<String>('homepage')), findsOneWidget);
+    },
+  );
 }
 
 String _localeToString(Locale locale) {

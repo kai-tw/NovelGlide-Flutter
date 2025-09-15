@@ -1,0 +1,8 @@
+app_identifier("com.kaiwu.novelglide") # The bundle identifier of your app
+apple_id("wuvincentck505@gmail.com") # Your Apple Developer Portal username
+
+itc_team_id("127954863") # App Store Connect Team ID
+team_id("YCB45B33Z4") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
