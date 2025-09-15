@@ -15,14 +15,6 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
-### android screenshots
-
-```sh
-[bundle exec] fastlane android screenshots
-```
-
-Take screenshots automatically
-
 ### android firebase
 
 ```sh
