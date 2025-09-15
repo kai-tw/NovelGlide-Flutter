@@ -17,50 +17,41 @@ class BookCoverWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations appLocalizations = AppLocalizations.of(context)!;
+    ImageProvider? imageProvider;
 
     // Bytes are not null
     if (coverData.bytes != null && coverData.hasSize) {
       // Use bitmap to display the cover
-      return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          return Image(
-            image: CacheMemoryImageProvider(
-              coverData.identifier,
-              coverData.bytes!,
-            ),
-            width: constraints.maxWidth,
-            height: constraints.maxHeight,
-            fit: fit,
-            semanticLabel: appLocalizations.generalBookCover,
-          );
-        },
+      imageProvider = CacheMemoryImageProvider(
+        coverData.identifier,
+        coverData.bytes!,
       );
     }
 
     // Url are not empty
     if (coverData.url != null) {
       // Load the network image
-      return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          return Image.network(
-            coverData.url!.toString(),
-            width: constraints.maxWidth,
-            height: constraints.maxHeight,
-            fit: fit,
-            semanticLabel: appLocalizations.generalBookCover,
-          );
-        },
-      );
+      imageProvider ??= NetworkImage(coverData.url!.toString());
     }
 
     // There is not an image. Use the image in the asset.
     final Brightness brightness = Theme.of(context).brightness;
+    final String fileName =
+        'book_cover_${brightness == Brightness.dark ? 'dark' : 'light'}.jpg';
 
-    return Image.asset(
-      'assets/images/book_cover_${brightness == Brightness.dark ? 'dark' : 'light'}.jpg',
-      fit: BoxFit.cover,
-      gaplessPlayback: true,
-      semanticLabel: appLocalizations.generalBookCover,
+    imageProvider ??= AssetImage('assets/images/$fileName');
+
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Image(
+          image: imageProvider!,
+          fit: BoxFit.cover,
+          gaplessPlayback: true,
+          width: constraints.maxWidth,
+          height: constraints.maxHeight,
+          semanticLabel: appLocalizations.generalBookCover,
+        );
+      },
     );
   }
 }

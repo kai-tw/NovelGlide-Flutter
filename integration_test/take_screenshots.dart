@@ -21,13 +21,13 @@ void main() async {
       IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   // Android Phone folder name
-  const String deviceFolder = 'phoneScreenshots';
+  // const String deviceFolder = 'phoneScreenshots';
 
   // Android Tablet 7 inches folder name
   // const String deviceFolder = 'sevenInchScreenshots';
 
   // Android Tablet 10 inches folder name
-  // const String deviceFolder = 'tenInchScreenshots';
+  const String deviceFolder = 'tenInchScreenshots';
 
   bool isSetup = false;
 
@@ -111,6 +111,9 @@ void main() async {
           await tester
               .tap(find.byKey(const ValueKey<String>('homepage_explore')));
           await tester.pumpAndSettle();
+
+          // Take the screenshot of the Reader.
+          await binding.takeScreenshot('$directoryRoot/5_$directoryName.png');
 
           // Verify that the homepage is displayed.
           expect(
