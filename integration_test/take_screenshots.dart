@@ -47,10 +47,10 @@ void main() async {
           final String directoryRoot =
               'ios/fastlane/screenshots/$screenshotString/';
           // iPhone
-          // final String deviceFileName = '${index}_APP_IPHONE_69_$index.png';
+          // final String deviceFileName = '${index}_APP_IPHONE_67_$index.png';
           // iPad
           final String deviceFileName =
-              '${index}_APP_IPAD_PRO_3GEN_13_$index.png';
+              '${index}_APP_IPAD_PRO_3GEN_129_$index.png';
 
           return directoryRoot + deviceFileName;
         }
