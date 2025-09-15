@@ -20,11 +20,14 @@ void main() async {
   final IntegrationTestWidgetsFlutterBinding binding =
       IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
+  bool canSetup = true;
+
   group('App on Android Phone', () {
     for (final Locale locale in AppLocalizations.supportedLocales) {
-      final String localeString = _localeToString(locale);
+      final String screenshotString = _localeToImgFileName(locale);
+      final String bookLocaleString = _localeToBookName(locale);
 
-      _progress(binding, locale, localeString, (int index) {
+      _progress(binding, canSetup, locale, bookLocaleString, (int index) {
         if (Platform.isAndroid) {
           // Android Phone folder name
           // const String deviceFolder = 'phoneScreenshots';
@@ -36,13 +39,13 @@ void main() async {
           const String deviceFolder = 'tenInchScreenshots';
 
           final String directoryRoot =
-              'android/fastlane/metadata/android/$localeString/images/$deviceFolder/';
+              'android/fastlane/metadata/android/$screenshotString/images/$deviceFolder/';
 
-          return '$directoryRoot/${index + 1}_$localeString.png';
+          return '$directoryRoot/${index + 1}_$screenshotString.png';
         } else {
           // iOS
           final String directoryRoot =
-              'ios/fastlane/screenshots/$localeString/';
+              'ios/fastlane/screenshots/$screenshotString/';
           // iPhone
           final String deviceFileName = '${index}_APP_IPHONE_67_$index.png';
           // iPad
@@ -51,33 +54,33 @@ void main() async {
           return directoryRoot + deviceFileName;
         }
       });
+
+      canSetup = false;
     }
   });
 }
 
 void _progress(
   IntegrationTestWidgetsFlutterBinding binding,
+  bool canSetup,
   Locale locale,
   String localeString,
   String Function(int index) getScreenshotName,
 ) {
-  bool isSetup = false;
   int index = 0;
 
   testWidgets(
     'Take screenshot for $localeString',
     (WidgetTester tester) async {
-      if (!isSetup) {
+      if (canSetup) {
         await setupDependencies();
 
         await Firebase.initializeApp(
             options: DefaultFirebaseOptions.currentPlatform);
 
         await _importBook(
-            AppLocalizations.supportedLocales.map(_localeToString).toList());
+            AppLocalizations.supportedLocales.map(_localeToBookName).toList());
         await tester.pumpAndSettle();
-
-        isSetup = true;
       }
 
       await tester.pumpWidget(App(
@@ -145,7 +148,7 @@ void _progress(
   );
 }
 
-String _localeToString(Locale locale) {
+String _localeToBookName(Locale locale) {
   return switch (locale) {
     const Locale('en') => 'en-US',
     const Locale('zh') => 'zh-TW',
@@ -158,6 +161,36 @@ String _localeToString(Locale locale) {
     const Locale('ja') => 'ja-JP',
     _ => throw UnimplementedError('Missing directory name for $locale'),
   };
+}
+
+String _localeToImgFileName(Locale locale) {
+  if (Platform.isAndroid) {
+    return switch (locale) {
+      const Locale('en') => 'en-US',
+      const Locale('zh') => 'zh-TW',
+      const Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hans',
+        countryCode: 'CN',
+      ) =>
+        'zh-CN',
+      const Locale('ja') => 'ja-JP',
+      _ => throw UnimplementedError('Missing directory name for $locale'),
+    };
+  } else {
+    return switch (locale) {
+      const Locale('en') => 'en-US',
+      const Locale('zh') => 'zh-Hant',
+      const Locale.fromSubtags(
+        languageCode: 'zh',
+        scriptCode: 'Hans',
+        countryCode: 'CN',
+      ) =>
+        'zh-Hans',
+      const Locale('ja') => 'ja',
+      _ => throw UnimplementedError('Missing directory name for $locale'),
+    };
+  }
 }
 
 Future<void> _importBook(List<String> locales) async {
