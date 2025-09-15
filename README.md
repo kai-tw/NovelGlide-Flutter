@@ -30,7 +30,3 @@ A first attempt to develop a cross-platform app.
 - **Search feature**
     - Search a keyword in the current chapter.
     - Search a keyword in all chapters.
-
-## Epub renderer
-
-- [NovelGlide-EpubRenderer](https://github.com/kai-tw/NovelGlide-EpubRenderer)
