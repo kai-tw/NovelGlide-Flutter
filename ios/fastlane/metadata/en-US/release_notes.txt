@@ -1,2 +1,3 @@
-■ Japanese language support
+■ Added a new discovery feature
+■ Support for accessing open publishing systems
 ■ Performance improvements
