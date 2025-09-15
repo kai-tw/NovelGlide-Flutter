@@ -57,6 +57,8 @@ class BookList extends StatelessWidget {
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
                       return BookListItem(
+                        key: ValueKey<String>(
+                            'bookList_${state.dataList[index].identifier}'),
                         bookData: state.dataList[index],
                       );
                     },

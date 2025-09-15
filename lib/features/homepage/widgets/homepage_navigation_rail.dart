@@ -65,6 +65,7 @@ class HomepageNavigationRail extends StatelessWidget {
             color: selectedColor,
           ),
           label: Text(
+            key: const ValueKey<String>('homepage_bookshelf'),
             appLocalizations.generalBookshelf,
             style: state.navItem.isBookshelf && state.isEnabled
                 ? selectedTextStyle
@@ -81,6 +82,7 @@ class HomepageNavigationRail extends StatelessWidget {
             color: selectedColor,
           ),
           label: Text(
+            key: const ValueKey<String>('homepage_explore'),
             appLocalizations.generalExplore,
             style: state.navItem.isDiscovery && state.isEnabled
                 ? selectedTextStyle
@@ -99,6 +101,7 @@ class HomepageNavigationRail extends StatelessWidget {
             color: selectedColor,
           ),
           label: Text(
+            key: const ValueKey<String>('homepage_bookmark'),
             appLocalizations.generalBookmark(2),
             style: state.navItem.isBookmark && state.isEnabled
                 ? selectedTextStyle
@@ -117,6 +120,7 @@ class HomepageNavigationRail extends StatelessWidget {
             color: selectedColor,
           ),
           label: Text(
+            key: const ValueKey<String>('homepage_settings'),
             appLocalizations.generalSettings,
             style: state.navItem.isSettings && state.isEnabled
                 ? selectedTextStyle

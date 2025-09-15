@@ -48,6 +48,7 @@ class HomepageNavigationBar extends StatelessWidget {
           ),
           destinations: <Widget>[
             NavigationDestination(
+              key: const ValueKey<String>('homepage_bookshelf'),
               icon: Icon(
                 Icons.shelves,
                 color: unselectedColor,
@@ -57,6 +58,7 @@ class HomepageNavigationBar extends StatelessWidget {
               enabled: !state.navItem.isBookshelf && state.isEnabled,
             ),
             NavigationDestination(
+              key: const ValueKey<String>('homepage_explore'),
               icon: ExploreBrowserIcon.outlined(
                 color: unselectedColor,
               ),
@@ -67,6 +69,7 @@ class HomepageNavigationBar extends StatelessWidget {
               enabled: !state.navItem.isDiscovery && state.isEnabled,
             ),
             NavigationDestination(
+              key: const ValueKey<String>('homepage_bookmark'),
               icon: Icon(
                 Icons.bookmarks_outlined,
                 color: unselectedColor,
@@ -77,6 +80,7 @@ class HomepageNavigationBar extends StatelessWidget {
               enabled: !state.navItem.isBookmark && state.isEnabled,
             ),
             NavigationDestination(
+              key: const ValueKey<String>('homepage_settings'),
               icon: Icon(
                 Icons.settings_outlined,
                 color: unselectedColor,

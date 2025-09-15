@@ -1,4 +1,5 @@
 import 'package:accessibility_tools/accessibility_tools.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,9 +12,14 @@ import '../main.dart';
 import 'cubit/app_cubit.dart';
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const App({
+    super.key,
+    this.locale,
+    this.enableAccessibilityTools = kDebugMode,
+  });
 
-  static const bool _enableAccessibilityTools = false;
+  final Locale? locale;
+  final bool enableAccessibilityTools;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +27,10 @@ class App extends StatelessWidget {
       create: (_) => sl<AppCubit>(),
       child: BlocBuilder<AppCubit, AppState>(
         builder: (BuildContext context, AppState state) {
+          final Locale? stateLocale = state.userLocale == null
+              ? null
+              : LocaleUtils.convertAppLocaleToLocale(state.userLocale!);
+
           return MaterialApp(
             title: 'NovelGlide',
             theme: state.theme.lightTheme,
@@ -30,9 +40,7 @@ class App extends StatelessWidget {
               AppThemeMode.light => ThemeMode.light,
               AppThemeMode.dark => ThemeMode.dark,
             },
-            locale: state.userLocale == null
-                ? null
-                : LocaleUtils.convertAppLocaleToLocale(state.userLocale!),
+            locale: locale ?? stateLocale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: LocaleUtils.supportedLocales
                 .map((AppLocale appLocale) =>
@@ -41,7 +49,7 @@ class App extends StatelessWidget {
             home: const Homepage(
               key: ValueKey<String>('homepage'),
             ),
-            builder: _enableAccessibilityTools
+            builder: enableAccessibilityTools
                 ? (BuildContext context, Widget? child) =>
                     AccessibilityTools(child: child)
                 : null,

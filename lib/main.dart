@@ -24,11 +24,11 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Record Flutter error
-  FlutterError.onError = (FlutterErrorDetails errorDetails) {
-    if (kReleaseMode) {
+  if (kReleaseMode) {
+    FlutterError.onError = (FlutterErrorDetails errorDetails) {
       FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
-    }
-  };
+    };
+  }
 
   // Asynchronous errors
   PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {

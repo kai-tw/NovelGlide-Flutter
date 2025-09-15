@@ -31,6 +31,7 @@ class TocFabSection extends StatelessWidget {
         builder: (BuildContext context, TocState state) {
           final List<Widget> children = <Widget>[
             ElevatedButton.icon(
+              key: const ValueKey<String>('tocFabStartReading'),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute<void>(
                   builder: (_) => ReaderWidget(

@@ -7,7 +7,9 @@ import '../../../cubit/reader_tts_cubit.dart';
 import '../../../cubit/reader_tts_state.dart';
 
 class ReaderNavNextButton extends StatelessWidget {
-  const ReaderNavNextButton({super.key});
+  const ReaderNavNextButton({
+    super.key = const ValueKey<String>('reader_next_button'),
+  });
 
   @override
   Widget build(BuildContext context) {

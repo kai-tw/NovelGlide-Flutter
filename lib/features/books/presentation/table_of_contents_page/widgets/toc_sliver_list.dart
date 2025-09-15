@@ -53,6 +53,7 @@ class TocSliverList extends StatelessWidget {
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           return TocListItem(
+            key: ValueKey<String>('tocList_$index'),
             bookData: bookData,
             bookChapter: state.chapterList[index].chapterData,
             chapterNestedLevel: state.chapterList[index].nestedLevel,
