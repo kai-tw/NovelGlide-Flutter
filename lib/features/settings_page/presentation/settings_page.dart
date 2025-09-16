@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../app/widgets/app_version_widget.dart';
 import '../../../enum/window_size.dart';
@@ -10,6 +9,8 @@ import '../../backup/presentation/backup_service_page.dart';
 import '../../developer_page/developer_page.dart';
 import '../../feedback/presentation/feedback_page.dart';
 import '../../locale_system/presentation/locale_settings_page/locale_settings_page.dart';
+import '../../manual/domain/entities/shared_manual_path_enum.dart';
+import '../../manual/presentation/shared_manual.dart';
 import '../../reset_services/reset_service.dart';
 import '../../tts_service/presentation/tts_settings_page/tts_settings_page.dart';
 import 'widgets/settings_list_tile.dart';
@@ -87,12 +88,18 @@ class SettingsPage extends StatelessWidget {
 
               // Privacy policy
               SettingsListTile(
-                onTap: () => launchUrl(
-                  Uri.parse('https://www.kai-wu.net/novelglide-privacy-policy'),
-                ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => SharedManual(
+                        title: appLocalizations.privacyPolicy,
+                        filePath: SharedManualPathEnum.privacyPolicy,
+                      ),
+                    ),
+                  );
+                },
                 iconData: Icons.shield_outlined,
                 title: appLocalizations.privacyPolicy,
-                trailing: const Icon(Icons.north_east_rounded),
               ),
 
               /// ========== Development Sections Start!!! ==========

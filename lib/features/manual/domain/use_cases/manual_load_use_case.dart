@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/domain/use_cases/use_case.dart';
 import '../../../../core/log_system/log_system.dart';
 import '../../../locale_system/domain/entities/app_locale.dart';
-import '../entities/shared_manual_file_path.dart';
+import '../entities/shared_manual_path_enum.dart';
 import '../repositories/manual_repository.dart';
 
 class ManualLoadUseCaseParam extends Equatable {
@@ -12,7 +12,7 @@ class ManualLoadUseCaseParam extends Equatable {
     required this.appLocale,
   });
 
-  final SharedManualFilePath filePath;
+  final SharedManualPathEnum filePath;
   final AppLocale appLocale;
 
   @override

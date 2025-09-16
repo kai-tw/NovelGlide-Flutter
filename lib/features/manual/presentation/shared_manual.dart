@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../main.dart';
 import '../../locale_system/domain/entities/app_locale.dart';
 import '../../locale_system/locale_utils.dart';
-import '../domain/entities/shared_manual_file_path.dart';
+import '../domain/entities/shared_manual_path_enum.dart';
 import 'cubit/shared_manual_cubit.dart';
 import 'widgets/shared_manual_content.dart';
 
@@ -16,7 +16,7 @@ class SharedManual extends StatelessWidget {
   });
 
   final String title;
-  final SharedManualFilePath filePath;
+  final SharedManualPathEnum filePath;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,10 @@ class SharedManual extends StatelessWidget {
     final AppLocale appLocale = LocaleUtils.convertLocaleToAppLocale(locale);
     return BlocProvider<SharedManualCubit>(
       create: (_) => sl<SharedManualCubit>()
-        ..loadManual(SharedManualFilePath.explore, appLocale),
+        ..loadManual(
+          filePath,
+          appLocale,
+        ),
       child: Scaffold(
         appBar: AppBar(
           title: Text(title),

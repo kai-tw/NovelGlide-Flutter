@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../generated/i18n/app_localizations.dart';
-import '../../../../../manual/domain/entities/shared_manual_file_path.dart';
+import '../../../../../manual/domain/entities/shared_manual_path_enum.dart';
 import '../../../../../manual/presentation/shared_manual.dart';
 
 class ExploreBrowserToManualButton extends StatelessWidget {
@@ -16,7 +16,7 @@ class ExploreBrowserToManualButton extends StatelessWidget {
           MaterialPageRoute<void>(
             builder: (_) => SharedManual(
               title: appLocalizations.exploreManual,
-              filePath: SharedManualFilePath.explore,
+              filePath: SharedManualPathEnum.explore,
             ),
           ),
         );
