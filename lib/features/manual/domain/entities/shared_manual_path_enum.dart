@@ -1,6 +1,6 @@
 enum SharedManualPathEnum {
   explore(SharedManualLoadType.local, 'explore'),
-  privacyPolicy(SharedManualLoadType.remote, 'privacy_policy');
+  privacyPolicy(SharedManualLoadType.remote, 'privacy-policy');
 
   const SharedManualPathEnum(
     this.loadType,
